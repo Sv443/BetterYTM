@@ -11,7 +11,7 @@ Userscript that improves YouTube Music
     > Firefox: [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
     > Chrome: [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
     > Edge: [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
-- **[Click here :)](./BetterYTM.user.js)**
+- **[Click here :)](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js)**
 
 <br><br><br>
 
