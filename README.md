@@ -13,7 +13,7 @@ Userscript that improves YouTube Music
     > Edge: [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
 - **[Click here :)](./BetterYTM.user.js)**
 
-<br><br><br>
+<br><br><br><br><br><br>
 
 <div align="center" style="text-align: center;">
 

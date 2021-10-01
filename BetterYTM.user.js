@@ -13,20 +13,32 @@
 // ==/UserScript==
 
 
-
 /**
  * This is where you can enable or disable features  
  * If this userscript ever becomes something I might add like a menu to toggle these
  */
  const features = Object.freeze({
-    /** Whether arrow keys should skip the video */
+    /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
+    /** The theme color - accepts any CSS color value - default is "#ff0000" */
+    themeColor: "#0f0",
+});
+
+
+
+
+const info = Object.freeze({
+    name: GM.info.script.name, // eslint-disable-line no-undef
+    version: GM.info.script.version, // eslint-disable-line no-undef
+    namespace: GM.info.script.namespace, // eslint-disable-line no-undef
 });
 
 //#MARKER init
 
 function init()
 {
+    console.log(`${info.name} v${info.version} - ${info.namespace}`);
+
     document.addEventListener("DOMContentLoaded", onDomLoad);
 }
 
@@ -38,6 +50,9 @@ function init()
 function onDomLoad()
 {
     document.addEventListener("keydown", onKeyDown);
+
+    if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
+        applyTheme();
 }
 
 /**
@@ -114,6 +129,46 @@ function onKeyDown(evt)
                 break;
         }
     }
+}
+
+/**
+ * Applies the set theme color
+ */
+function applyTheme()
+{
+    const formatRegex = /^(\d{3}){1,2}$/;
+
+    const color = features.themeColor.match(formatRegex) ? `#${color}` : color;
+
+    /**
+     * A list of changes to be made to the page to apply the theme color
+     */
+    const themeChanges = [
+        {
+            elem: document.querySelector("#progressContainer > #primaryProgress"),
+            prop: "background",
+            important: false,
+        },
+        {
+            elem: document.querySelector(),
+            prop: "",
+            important: false,
+        },
+        {
+            elem: document.querySelector(),
+            prop: "",
+            important: false,
+        },
+    ];
+
+    themeChanges.forEach(change => {
+        if(change.elem)
+        {
+            const value = change.important === true ? `${color} !important` : color;
+
+            change.elem.style[change.prop] = value;
+        }
+    });
 }
 
 
