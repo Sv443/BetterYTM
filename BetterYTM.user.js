@@ -6,7 +6,7 @@
 // @description:de  Verbesserungen für YouTube Music
 // @author          Sv443
 // @license         MIT
-// @match           https://music.youtube.com/watch*
+// @match           https://music.youtube.com/*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @grant           none
 // @run-at          document-start
