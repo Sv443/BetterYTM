@@ -20,8 +20,8 @@
  const features = Object.freeze({
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
-    /** The theme color - accepts any CSS color value - default is "#ff0000" */
-    themeColor: "#0f0",
+    // /** The theme color - accepts any CSS color value - default is "#ff0000" */
+    // themeColor: "#0f0",
 });
 
 
@@ -51,8 +51,8 @@ function onDomLoad()
 {
     document.addEventListener("keydown", onKeyDown);
 
-    if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
-        applyTheme();
+    // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
+    //     applyTheme();
 }
 
 /**
@@ -131,45 +131,45 @@ function onKeyDown(evt)
     }
 }
 
-/**
- * Applies the set theme color
- */
-function applyTheme()
-{
-    const formatRegex = /^(\d{3}){1,2}$/;
+// /**
+//  * Applies the set theme color
+//  */
+// function applyTheme()
+// {
+//     const formatRegex = /^(\d{3}){1,2}$/;
 
-    const color = features.themeColor.match(formatRegex) ? `#${color}` : color;
+//     const color = features.themeColor.match(formatRegex) ? `#${color}` : color;
 
-    /**
-     * A list of changes to be made to the page to apply the theme color
-     */
-    const themeChanges = [
-        {
-            elem: document.querySelector("#progressContainer > #primaryProgress"),
-            prop: "background",
-            important: false,
-        },
-        {
-            elem: document.querySelector(),
-            prop: "",
-            important: false,
-        },
-        {
-            elem: document.querySelector(),
-            prop: "",
-            important: false,
-        },
-    ];
+//     /**
+//      * A list of changes to be made to the page to apply the theme color
+//      */
+//     const themeChanges = [
+//         {
+//             elem: document.querySelector("#progressContainer > #primaryProgress"),
+//             prop: "background",
+//             important: false,
+//         },
+//         {
+//             elem: document.querySelector(),
+//             prop: "",
+//             important: false,
+//         },
+//         {
+//             elem: document.querySelector(),
+//             prop: "",
+//             important: false,
+//         },
+//     ];
 
-    themeChanges.forEach(change => {
-        if(change.elem)
-        {
-            const value = change.important === true ? `${color} !important` : color;
+//     themeChanges.forEach(change => {
+//         if(change.elem)
+//         {
+//             const value = change.important === true ? `${color} !important` : color;
 
-            change.elem.style[change.prop] = value;
-        }
-    });
-}
+//             change.elem.style[change.prop] = value;
+//         }
+//     });
+// }
 
 
 (() => init())();
