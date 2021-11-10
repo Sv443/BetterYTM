@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            BetterYTM
 // @namespace       https://github.com/Sv443/BetterYTM#readme
-// @version         0.1.0
+// @version         0.2.0
 // @description:en  Improvements for YouTube Music
 // @description:de  Verbesserungen für YouTube Music
 // @author          Sv443
@@ -13,6 +13,10 @@
 // ==/UserScript==
 
 
+/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet or anyone else */
+/* C&D this Susan 🖕 */
+
+
 /**
  * This is where you can enable or disable features  
  * If this userscript ever becomes something I might add like a menu to toggle these
@@ -20,6 +24,9 @@
  const features = Object.freeze({
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
+    /** Whether to add a button or key combination (TODO) to switch between the YouTube and YouTube Music pages */
+    switchBetweenSites: true,
+
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
     // themeColor: "#0f0",
 });
