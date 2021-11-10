@@ -4,14 +4,16 @@ Userscript that improves YouTube Music
 <br>
 
 ## Features:
-- Add support for arrow keys to skip forward or backward (currently only by fixed 10 second interval) - (also how the fuck isn't this a thing already?)
+- Support for arrow keys to skip forward or backward by 10 seconds
+
+<br>
 
 ## Install:
 - Install a userscript manager
     > Firefox: [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
     > Chrome: [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
     > Edge: [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
-- **[Click here :)](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js)**
+- **[Install full version](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js)** (or [minified](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.min.user.js))
 
 <br><br><br><br><br><br>
 

@@ -1,10 +1,11 @@
 {
-  "name": "betterytm",
-  "version": "0.1.0",
+  "name": "@sv443/betterytm",
+  "version": "0.2.0",
   "description": "Userscript that improves YouTube Music",
   "main": "BetterYTM.user.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify": "minify BetterYTM.user.js > BetterYTM.min.user.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/Sv443/BetterYTM#readme",
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "minify": "^8.0.3"
   }
 }
