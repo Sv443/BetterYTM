@@ -1,21 +1,34 @@
 // ==UserScript==
 // @name            BetterYTM
+// @name:de         BetterYTM
 // @namespace       https://github.com/Sv443/BetterYTM#readme
 // @version         0.2.0
-// @description:en  Improvements for YouTube Music
-// @description:de  Verbesserungen für YouTube Music
-// @author          Sv443
 // @license         MIT
+// @author          Sv443
+// @copyright       Sv443 <contact@sv443.net> (https://github.com/Sv443)
+// @description     Improvements for YouTube Music
+// @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
+// @match           https://www.youtube.com/*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @grant           none
 // @run-at          document-start
+// @connect         self
+// @connect         *.youtube.com
+// @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
+// @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
 // ==/UserScript==
-
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet or anyone else */
 /* C&D this Susan 🖕 */
 
+
+
+/*
+ █▀▀▀█ ▄▄▄ █   █    ▀  ▄▄▄  ▄▄▄▄ ▄▄▄
+ ▀▀▬▄▄ █▄█ █▀  █▀  ▀█  █  █ █ ▄▄ █▄▄ ▀
+ █▄▄▄█ █▄▄ █▄▄ █▄▄ ▄█▄ █  █ █▄▄█ ▄▄█ ▄
+*/
 
 /**
  * This is where you can enable or disable features  
@@ -34,13 +47,17 @@
 
 
 
+//#MARKER types
+
+/** @typedef {"yt"|"ytm"} Domain */
+
+//#MARKER init
+
 const info = Object.freeze({
     name: GM.info.script.name, // eslint-disable-line no-undef
     version: GM.info.script.version, // eslint-disable-line no-undef
     namespace: GM.info.script.namespace, // eslint-disable-line no-undef
 });
-
-//#MARKER init
 
 function init()
 {
@@ -56,11 +73,21 @@ function init()
  */
 function onDomLoad()
 {
-    document.addEventListener("keydown", onKeyDown);
+    const domain = getDomain();
+
+    if(features.arrowKeySupport && domain === "ytm")
+        document.addEventListener("keydown", onKeyDown);
+
+    if(features.switchBetweenSites)
+        initSiteSwitch(domain);
 
     // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
     //     applyTheme();
 }
+
+//#MARKER features
+
+//#SECTION arrow key skip
 
 /**
  * Called when the user presses keys
@@ -68,7 +95,7 @@ function onDomLoad()
  */
 function onKeyDown(evt)
 {
-    if(features.arrowKeySupport && ["ArrowLeft", "ArrowRight"].includes(evt.code))
+    if(["ArrowLeft", "ArrowRight"].includes(evt.code))
     {
         switch(evt.code)
         {
@@ -138,6 +165,60 @@ function onKeyDown(evt)
     }
 }
 
+//#SECTION site switch
+
+/**
+ * Initializes the site switch feature
+ * @param {Domain} domain
+ */
+function initSiteSwitch(domain)
+{
+    // TODO:
+    // - create button element
+    // - bind event to switch href
+    // 
+    // extra features:
+    // - keep video time
+
+    const button = document.createElement("button");
+
+    if(domain === "yt")
+    {
+        button.on("click", switchSite(domain));
+    }
+    else if(domain === "ytm")
+    {
+        button.on("click", switchSite(domain));
+    }
+}
+
+/**
+ * Switches to the other site (between YT and YTM)
+ * @param {Domain} domain
+ */
+function switchSite(domain)
+{
+    let subdomain;
+    if(domain === "yt")
+        subdomain = "music";
+    else if(domain === "ytm")
+        subdomain = "www";
+
+    if(!subdomain)
+        throw new TypeError(`Unrecognized domain '${domain}'`);
+
+    const { pathname, search } = new URL(location.href);
+
+    const url = `https://${subdomain}.youtube.com${pathname}${search}`;
+
+
+    console.info(`BetterYTM - switching to domain '${domain}' at ${url}`);
+
+    location.href = url;
+}
+
+//# SECTION theme
+
 // /**
 //  * Applies the set theme color
 //  */
@@ -178,5 +259,18 @@ function onKeyDown(evt)
 //     });
 // }
 
+//#MARKER other
 
-(() => init())();
+/**
+ * Returns the current domain as a string representation
+ * @returns {Domain}
+ */
+function getDomain()
+{
+    // TODO: maybe improve this
+    return location.href.toLowerCase().includes("music.youtube") ? "ytm" : "yt"; // other cases are caught by `@match`es above
+}
+
+
+
+(() => init())(); // call init() when file is loaded

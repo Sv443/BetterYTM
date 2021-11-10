@@ -3,6 +3,9 @@
         "browser": true,
         "es6": true
     },
+    "ignorePatterns": [
+        "*.min.*"
+    ],
     "extends": "eslint:recommended",
     "globals": {
         "Atomics": "readonly",
