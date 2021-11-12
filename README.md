@@ -4,7 +4,8 @@ Userscript that improves YouTube Music
 <br>
 
 ## Features:
-- Support for arrow keys to skip forward or backward by 10 seconds
+- Use arrow keys to skip forward or backward by 10 seconds
+- Switch between YouTube and YouTube Music on a video by pressing a button / using a hotkey (TODO)
 
 <br>
 

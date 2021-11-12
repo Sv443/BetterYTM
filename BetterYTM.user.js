@@ -11,7 +11,6 @@
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
-// @grant           none
 // @run-at          document-start
 // @connect         self
 // @connect         *.youtube.com
@@ -23,11 +22,10 @@
 /* C&D this Susan 🖕 */
 
 
-
 /*
- █▀▀▀█ ▄▄▄ █   █    ▀  ▄▄▄  ▄▄▄▄ ▄▄▄
- ▀▀▬▄▄ █▄█ █▀  █▀  ▀█  █  █ █ ▄▄ █▄▄ ▀
- █▄▄▄█ █▄▄ █▄▄ █▄▄ ▄█▄ █  █ █▄▄█ ▄▄█ ▄
+    █▀▀█ ▄▄▄ █   █    ▀  ▄▄▄  ▄▄▄▄ ▄▄▄
+    ▀▀▄▄ █▄█ █▀  █▀  ▀█  █  █ █ ▄▄ █▄▄ ▀
+    █▄▄█ █▄▄ █▄▄ █▄▄ ▄█▄ █  █ █▄▄█ ▄▄█ ▄
 */
 
 /**
@@ -37,7 +35,7 @@
  const features = Object.freeze({
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
-    /** Whether to add a button or key combination (TODO) to switch between the YouTube and YouTube Music pages */
+    /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
 
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
@@ -69,7 +67,7 @@ function init()
 //#MARKER events
 
 /**
- * Called when the DOM has finished loading
+ * Called when the DOM has finished loading (after `DOMContentLoaded` is emitted)
  */
 function onDomLoad()
 {
@@ -97,71 +95,59 @@ function onKeyDown(evt)
 {
     if(["ArrowLeft", "ArrowRight"].includes(evt.code))
     {
+        // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
+        const defaultProps = {
+            altKey: false,
+            bubbles: true,
+            cancelBubble: false,
+            cancelable: true,
+            charCode: 0,
+            composed: true,
+            ctrlKey: false,
+            currentTarget: null,
+            defaultPrevented: evt.defaultPrevented,
+            explicitOriginalTarget: document.body,
+            isTrusted: true,
+            metaKey: false,
+            originalTarget: document.body,
+            repeat: false,
+            shiftKey: false,
+            srcElement: document.body,
+            target: document.body,
+            type: "keydown",
+            view: window,
+        };
+
+        let invalidKey = false;
+        let keyProps = {};
+
         switch(evt.code)
         {
-            case "ArrowLeft":
-                // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
-                document.body.dispatchEvent(new KeyboardEvent("keydown", {
-                    altKey: false,
-                    bubbles: true,
-                    cancelBubble: false,
-                    cancelable: true,
-                    charCode: 0,
-                    code: "KeyH",
-                    composed: true,
-                    ctrlKey: false,
-                    currentTarget: null,
-                    defaultPrevented: evt.defaultPrevented,
-                    explicitOriginalTarget: document.body,
-                    isTrusted: true,
-                    key: "h",
-                    keyCode: 72,
-                    metaKey: false,
-                    originalTarget: document.body,
-                    repeat: false,
-                    shiftKey: false,
-                    srcElement: document.body,
-                    target: document.body,
-                    type: "keydown",
-                    view: window,
-                    which: 72,
-                }));
+        case "ArrowLeft":
+            keyProps = {
+                code: "KeyH",
+                key: "h",
+                keyCode: 72,
+                which: 72,
+            };
+            break;
+        case "ArrowRight":
+            keyProps = {
+                code: "KeyL",
+                key: "l",
+                keyCode: 76,
+                which: 76,
+            };
+            break;
+        default:
+            console.warn("Unknown key", evt.code);
+            invalidKey = true;
 
-                break;
-            case "ArrowRight":
-                // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
-                document.body.dispatchEvent(new KeyboardEvent("keydown", {
-                    altKey: false,
-                    bubbles: true,
-                    cancelBubble: false,
-                    cancelable: true,
-                    charCode: 0,
-                    code: "KeyL",
-                    composed: true,
-                    ctrlKey: false,
-                    currentTarget: null,
-                    defaultPrevented: evt.defaultPrevented,
-                    explicitOriginalTarget: document.body,
-                    isTrusted: true,
-                    key: "l",
-                    keyCode: 76,
-                    metaKey: false,
-                    originalTarget: document.body,
-                    repeat: false,
-                    shiftKey: false,
-                    srcElement: document.body,
-                    target: document.body,
-                    type: "keydown",
-                    view: window,
-                    which: 76,
-                }));
-
-                break;
-            default:
-                console.warn("Unknown key", evt.code);
-
-                break;
+            break;
         }
+
+        if(!invalidKey)
+            document.body.dispatchEvent(new KeyboardEvent("keydown", { ...defaultProps, ...keyProps }));
     }
 }
 
@@ -179,6 +165,8 @@ function initSiteSwitch(domain)
     // 
     // extra features:
     // - keep video time
+
+    return; // #DEBUG to stop infinite recursion
 
     const button = document.createElement("button");
 
@@ -217,48 +205,6 @@ function switchSite(domain)
     location.href = url;
 }
 
-//# SECTION theme
-
-// /**
-//  * Applies the set theme color
-//  */
-// function applyTheme()
-// {
-//     const formatRegex = /^(\d{3}){1,2}$/;
-
-//     const color = features.themeColor.match(formatRegex) ? `#${color}` : color;
-
-//     /**
-//      * A list of changes to be made to the page to apply the theme color
-//      */
-//     const themeChanges = [
-//         {
-//             elem: document.querySelector("#progressContainer > #primaryProgress"),
-//             prop: "background",
-//             important: false,
-//         },
-//         {
-//             elem: document.querySelector(),
-//             prop: "",
-//             important: false,
-//         },
-//         {
-//             elem: document.querySelector(),
-//             prop: "",
-//             important: false,
-//         },
-//     ];
-
-//     themeChanges.forEach(change => {
-//         if(change.elem)
-//         {
-//             const value = change.important === true ? `${color} !important` : color;
-
-//             change.elem.style[change.prop] = value;
-//         }
-//     });
-// }
-
 //#MARKER other
 
 /**
@@ -267,8 +213,8 @@ function switchSite(domain)
  */
 function getDomain()
 {
-    // TODO: maybe improve this
-    return location.href.toLowerCase().includes("music.youtube") ? "ytm" : "yt"; // other cases are caught by `@match`es above
+    const { hostname } = new URL(location.href);
+    return hostname.toLowerCase().includes("music") ? "ytm" : "yt"; // other cases are caught by the `@match`es at the top
 }
 
 
