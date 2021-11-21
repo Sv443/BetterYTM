@@ -19,7 +19,7 @@
 // ==/UserScript==
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet or anyone else */
-/* C&D this Susan 🖕 */
+/* C&D this, Susan 🖕 */
 
 
 /*
@@ -45,11 +45,16 @@
 
 
 
+
+
 //#MARKER types
+
 
 /** @typedef {"yt"|"ytm"} Domain */
 
+
 //#MARKER init
+
 
 const info = Object.freeze({
     name: GM.info.script.name, // eslint-disable-line no-undef
@@ -64,7 +69,9 @@ function init()
     document.addEventListener("DOMContentLoaded", onDomLoad);
 }
 
+
 //#MARKER events
+
 
 /**
  * Called when the DOM has finished loading (after `DOMContentLoaded` is emitted)
@@ -83,7 +90,9 @@ function onDomLoad()
     //     applyTheme();
 }
 
+
 //#MARKER features
+
 
 //#SECTION arrow key skip
 
@@ -140,7 +149,7 @@ function onKeyDown(evt)
             };
             break;
         default:
-            console.warn("Unknown key", evt.code);
+            // console.warn("BetterYTM - Unknown key", evt.code);
             invalidKey = true;
 
             break;
@@ -160,52 +169,67 @@ function onKeyDown(evt)
 function initSiteSwitch(domain)
 {
     // TODO:
-    // - create button element
-    // - bind event to switch href
-    // 
     // extra features:
     // - keep video time
 
-    return; // #DEBUG to stop infinite recursion
-
-    const button = document.createElement("button");
-
-    if(domain === "yt")
-    {
-        button.on("click", switchSite(domain));
-    }
-    else if(domain === "ytm")
-    {
-        button.on("click", switchSite(domain));
-    }
+    document.addEventListener("keydown", (e) => {
+        if(e.key === "F8") // TODO:
+            switchSite(domain === "yt" ? "ytm" : "yt");
+    });
 }
 
 /**
  * Switches to the other site (between YT and YTM)
- * @param {Domain} domain
+ * @param {Domain} newDomain
  */
-function switchSite(domain)
+function switchSite(newDomain)
 {
     let subdomain;
-    if(domain === "yt")
+    if(newDomain === "ytm")
         subdomain = "music";
-    else if(domain === "ytm")
+    else if(newDomain === "yt")
         subdomain = "www";
 
     if(!subdomain)
-        throw new TypeError(`Unrecognized domain '${domain}'`);
-
-    const { pathname, search } = new URL(location.href);
-
-    const url = `https://${subdomain}.youtube.com${pathname}${search}`;
+        throw new TypeError(`Unrecognized domain '${newDomain}'`);
 
 
-    console.info(`BetterYTM - switching to domain '${domain}' at ${url}`);
+    const { pathname, search, hash } = new URL(location.href);
+
+    const newSearch = search.includes("?") ? `${search}&t=${getVideoTime()}` : `?t=${getVideoTime()}`;
+
+    const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+
+
+    console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
 
     location.href = url;
 }
 
+/**
+ * Returns the current video time in seconds
+ * @param {Domain} [domain]
+ * @returns {number|null} Returns null if video time is unavailable
+ */
+function getVideoTime(domain )
+{
+    if(typeof domain !== "string")
+        domain = getDomain();
+
+    if(domain === "ytm")
+    {
+        const pbEl = document.querySelector("#progress-bar");
+        return pbEl.value ?? null;
+    }
+    else if(domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
+        return document.querySelector();
+
+    return null;
+}
+
+
 //#MARKER other
+
 
 /**
  * Returns the current domain as a string representation
@@ -216,7 +240,6 @@ function getDomain()
     const { hostname } = new URL(location.href);
     return hostname.toLowerCase().includes("music") ? "ytm" : "yt"; // other cases are caught by the `@match`es at the top
 }
-
 
 
 (() => init())(); // call init() when file is loaded
