@@ -64,9 +64,16 @@ const info = Object.freeze({
 
 function init()
 {
-    console.log(`${info.name} v${info.version} - ${info.namespace}`);
+    try
+    {
+        console.log(`${info.name} v${info.version} - ${info.namespace}`);
 
-    document.addEventListener("DOMContentLoaded", onDomLoad);
+        document.addEventListener("DOMContentLoaded", onDomLoad);
+    }
+    catch(err)
+    {
+        console.error("BetterYTM Error:", err instanceof Error ? err : new Error(err));
+    }
 }
 
 
@@ -173,7 +180,7 @@ function initSiteSwitch(domain)
     // - keep video time
 
     document.addEventListener("keydown", (e) => {
-        if(e.key === "F8") // TODO:
+        if(e.key == "F9")
             switchSite(domain === "yt" ? "ytm" : "yt");
     });
 }
@@ -184,26 +191,34 @@ function initSiteSwitch(domain)
  */
 function switchSite(newDomain)
 {
-    let subdomain;
-    if(newDomain === "ytm")
-        subdomain = "music";
-    else if(newDomain === "yt")
-        subdomain = "www";
+    console.log(`BYTM/Debug: Switching from domain ${getDomain()} to ${newDomain}`);
 
-    if(!subdomain)
-        throw new TypeError(`Unrecognized domain '${newDomain}'`);
+    try
+    {
+        let subdomain;
+        if(newDomain === "ytm")
+            subdomain = "music";
+        else if(newDomain === "yt")
+            subdomain = "www";
 
-
-    const { pathname, search, hash } = new URL(location.href);
-
-    const newSearch = search.includes("?") ? `${search}&t=${getVideoTime()}` : `?t=${getVideoTime()}`;
-
-    const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+        if(!subdomain)
+            throw new TypeError(`Unrecognized domain '${newDomain}'`);
 
 
-    console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
+        const { pathname, search, hash } = new URL(location.href);
 
-    location.href = url;
+        const newSearch = search.includes("?") ? `${search}&t=${getVideoTime()}` : `?t=${getVideoTime()}`;
+
+        const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+
+        console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
+
+        location.href = url;
+    }
+    catch(err)
+    {
+        console.error(err instanceof Error ? err : new Error(err));
+    }
 }
 
 /**
@@ -211,7 +226,7 @@ function switchSite(newDomain)
  * @param {Domain} [domain]
  * @returns {number|null} Returns null if video time is unavailable
  */
-function getVideoTime(domain )
+function getVideoTime(domain)
 {
     if(typeof domain !== "string")
         domain = getDomain();
@@ -222,7 +237,7 @@ function getVideoTime(domain )
         return pbEl.value ?? null;
     }
     else if(domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
-        return document.querySelector();
+        return 0;
 
     return null;
 }
