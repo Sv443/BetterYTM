@@ -115,7 +115,10 @@ function onDomLoad()
         if(domain === "ytm")
         {
             if(features.arrowKeySupport)
+            {
                 document.addEventListener("keydown", onKeyDown);
+                dbg && console.info(`BetterYTM: Added key press listener`);
+            }
 
             if(features.removeUpgradeTab)
                 removeUpgradeTab();
@@ -151,7 +154,7 @@ function onKeyDown(evt)
 {
     if(["ArrowLeft", "ArrowRight"].includes(evt.code))
     {
-        dbg && console.info(`BetterYTM: Special key ${evt.code} pressed`);
+        dbg && console.info(`BetterYTM: Captured key '${evt.code}' in proxy listener`);
 
         // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
         const defaultProps = {
@@ -210,7 +213,7 @@ function onKeyDown(evt)
 
             document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
 
-            dbg && console.info(`BetterYTM: Dispatched proxy keydown event (from key '${evt.code}' to key '${proxyProps.code}')`);
+            dbg && console.info(`BetterYTM: Dispatched proxy keydown event [${evt.code}] -> [${proxyProps.code}]`);
         }
         else if(dbg)
             console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
@@ -233,6 +236,7 @@ function initSiteSwitch(domain)
         if(e.key == "F9")
             switchSite(domain === "yt" ? "ytm" : "yt");
     });
+    dbg && console.info(`BetterYTM: Initialized site switch listener`);
 }
 
 /**
@@ -286,7 +290,10 @@ function removeUpgradeTab()
 {
     const tabElem = document.querySelector(`.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]`);
     if(tabElem)
+    {
         tabElem.remove();
+        dbg && console.info(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
+    }
     else if(removeUpgradeTries < 10)
     {
         setTimeout(removeUpgradeTab, 250); // TODO: improve this
