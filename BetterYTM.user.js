@@ -21,6 +21,9 @@
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet or anyone else */
 /* C&D this, Susan 🖕 */
 
+(() => {
+"use-strict";
+
 
 /*
     █▀▀█ ▄▄▄ █   █    ▀  ▄▄▄  ▄▄▄▄ ▄▄▄
@@ -32,15 +35,27 @@
  * This is where you can enable or disable features  
  * If this userscript ever becomes something I might add like a menu to toggle these
  */
- const features = Object.freeze({
+const features = Object.freeze({
+  	// --- Quality of Life ---
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
+  	/** Whether to remove the "Upgrade" / YT Music Premium tab */
+    removeUpgradeTab: true,
+
+		// --- Extra Features ---
     /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
+
+  	// --- Other ---
+  	/** Set to true to remove the watermark next to the YTM logo */
+  	removeWatermark: false,
 
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
     // themeColor: "#0f0",
 });
+
+
+
 
 
 
@@ -72,7 +87,7 @@ function init()
     }
     catch(err)
     {
-        console.error("BetterYTM Error:", err instanceof Error ? err : new Error(err));
+        console.error("BetterYTM - General Error:", err instanceof Error ? err : new Error(err));
     }
 }
 
@@ -92,6 +107,58 @@ function onDomLoad()
 
     if(features.switchBetweenSites)
         initSiteSwitch(domain);
+  
+  	if(features.removeUpgradeTab)
+    {
+      	const tabElem = document.querySelector(`.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]`);
+      	tabElem.innerHTML = "";
+      	tabElem.outerHTML = "";
+    }
+  
+  	if(!features.removeWatermark)
+    {
+      	const watermark = document.createElement("a");
+
+      	watermark.id = "betterytm-watermark";
+      	watermark.className = "style-scope ytmusic-nav-bar";
+
+      	watermark.innerText = info.name;
+      	watermark.title = `${info.name} v${info.version}`;
+
+      	watermark.href = info.namespace;
+      	watermark.target = "_blank";
+      	watermark.rel = "noopener noreferrer";
+
+
+      	const style = `
+						#betterytm-watermark {
+					  		position: absolute;
+								left: 45px;
+								top: 43px;
+								z-index: 10;
+								color: white;
+								text-decoration: none;
+								cursor: pointer;
+						}
+
+						#betterytm-watermark:hover {
+					  		text-decoration: underline;
+						}
+				`;
+
+      	const styleElem = document.createElement("style");
+
+      	if(styleElem.styleSheet)
+    				styleElem.styleSheet.cssText = style;
+				else
+    				styleElem.appendChild(document.createTextNode(style));
+
+      	document.querySelector("head").appendChild(styleElem);
+
+
+      	const logoElem = document.querySelector("#left-content");
+    		logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
+    }
 
     // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
     //     applyTheme();
@@ -257,4 +324,5 @@ function getDomain()
 }
 
 
-(() => init())(); // call init() when file is loaded
+init(); // call init() when script is loaded
+})();
