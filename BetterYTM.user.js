@@ -56,6 +56,11 @@ const features = Object.freeze({
 
 
 
+/** Set to true to enable debug mode for more output in the JS console */
+const dbg = false;
+
+
+
 
 
 
@@ -102,22 +107,31 @@ function onDomLoad()
 {
     const domain = getDomain();
 
-    // YTM-specific
-    if(domain === "ytm")
+    dbg && console.info(`BetterYTM: Initializing features for domain '${domain}'`);
+
+    try
     {
-        if(features.arrowKeySupport)
-            document.addEventListener("keydown", onKeyDown);
+        // YTM-specific
+        if(domain === "ytm")
+        {
+            if(features.arrowKeySupport)
+                document.addEventListener("keydown", onKeyDown);
 
-        if(features.removeUpgradeTab)
-            removeUpgradeTab();
+            if(features.removeUpgradeTab)
+                removeUpgradeTab();
 
-        if(!features.removeWatermark)
-            addWatermark();
+            if(!features.removeWatermark)
+                addWatermark();
+        }
+
+        // Both YTM and YT
+        if(features.switchBetweenSites)
+            initSiteSwitch(domain);
     }
-
-    // Both YTM and YT
-    if(features.switchBetweenSites)
-        initSiteSwitch(domain);
+    catch(err)
+    {
+        console.error(`BetterYTM: General error while executing feature:`, err);
+    }
 
     // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
     //     applyTheme();
@@ -137,6 +151,8 @@ function onKeyDown(evt)
 {
     if(["ArrowLeft", "ArrowRight"].includes(evt.code))
     {
+        dbg && console.info(`BetterYTM: Special key ${evt.code} pressed`);
+
         // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
         const defaultProps = {
             altKey: false,
@@ -189,7 +205,15 @@ function onKeyDown(evt)
         }
 
         if(!invalidKey)
-            document.body.dispatchEvent(new KeyboardEvent("keydown", { ...defaultProps, ...keyProps }));
+        {
+            const proxyProps = { ...defaultProps, ...keyProps };
+
+            document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
+
+            dbg && console.info(`BetterYTM: Dispatched proxy keydown event (from key '${evt.code}' to key '${proxyProps.code}')`);
+        }
+        else if(dbg)
+            console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
     }
 }
 
@@ -217,7 +241,7 @@ function initSiteSwitch(domain)
  */
 function switchSite(newDomain)
 {
-    console.log(`BYTM/Debug: Switching from domain ${getDomain()} to ${newDomain}`);
+    dbg && console.info(`BetterYTM: Switching from domain '${getDomain()}' to '${newDomain}'`);
 
     try
     {
@@ -233,7 +257,11 @@ function switchSite(newDomain)
 
         const { pathname, search, hash } = new URL(location.href);
 
-        const newSearch = search.includes("?") ? `${search}&t=${getVideoTime()}` : `?t=${getVideoTime()}`;
+        const vt = getVideoTime() ?? 0;
+
+        dbg && console.info(`BetterYTM: Found video time of ${vt} seconds`);
+
+        const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
 
         const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
@@ -243,11 +271,13 @@ function switchSite(newDomain)
     }
     catch(err)
     {
-        console.error(err instanceof Error ? err : new Error(err));
+        console.error(`BetterYTM: Error while switching site:`, err);
     }
 }
 
 //#SECTION remove upgrade tab
+
+let removeUpgradeTries = 0;
 
 /**
  * Removes the "Upgrade" / YT Music Premium tab from the title / nav bar
@@ -255,7 +285,15 @@ function switchSite(newDomain)
 function removeUpgradeTab()
 {
     const tabElem = document.querySelector(`.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]`);
-    tabElem.remove();
+    if(tabElem)
+        tabElem.remove();
+    else if(removeUpgradeTries < 10)
+    {
+        setTimeout(removeUpgradeTab, 250); // TODO: improve this
+        removeUpgradeTries++;
+    }
+    else if(dbg)
+        console.info(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 
 //#SECTION add watermark
@@ -306,7 +344,10 @@ function addWatermark()
 
 
     const logoElem = document.querySelector("#left-content");
-        logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
+    logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
+
+
+    dbg && console.info(`BetterYTM: Added watermark element:`, watermark);
 }
 
 
