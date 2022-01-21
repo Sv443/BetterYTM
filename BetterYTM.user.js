@@ -13,12 +13,14 @@
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @run-at          document-start
 // @connect         self
-// @connect         *.youtube.com
+// @connect         youtube.com
+// @connect         github.com
+// @connect         githubusercontent.com
 // @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
 // @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
 // ==/UserScript==
 
-/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet or anyone else */
+/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this, Susan 🖕 */
 
 (() => {
@@ -42,12 +44,14 @@ const features = Object.freeze({
     /** Whether to remove the "Upgrade" / YT Music Premium tab */
     removeUpgradeTab: true,
 
-        // --- Extra Features ---
+    // --- Extra Features ---
     /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
+    /** Adds a button to the media controls bar to open the current song's genius.com lyrics in a new tab */
+    geniusLyrics: true,
 
     // --- Other ---
-    /** Set to true to remove the watermark next to the YTM logo */
+    /** Set to true to remove the watermark under the YTM logo */
     removeWatermark: false,
 
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
@@ -57,7 +61,7 @@ const features = Object.freeze({
 
 
 /** Set to true to enable debug mode for more output in the JS console */
-const dbg = false;
+const dbg = true;
 
 
 
@@ -125,6 +129,9 @@ function onDomLoad()
 
             if(!features.removeWatermark)
                 addWatermark();
+
+            if(features.geniusLyrics)
+                addGeniusButton();
         }
 
         // Both YTM and YT
@@ -355,6 +362,31 @@ function addWatermark()
 
 
     dbg && console.info(`BetterYTM: Added watermark element:`, watermark);
+}
+
+//#SECTION genius.com lyrics button
+
+function addGeniusButton()
+{
+    const menuElem = document.querySelector(".middle-controls-buttons tp-yt-paper-icon-button.dropdown-trigger");
+    if(!menuElem)
+        return setTimeout(addGeniusButton, 250);
+
+    const linkElem = document.createElement("a");
+    linkElem.id = "betterytm-genius-button";
+    linkElem.href = getGeniusUrl();
+    linkElem.target = "_blank";
+    linkElem.rel = "noopener noreferrer";
+
+    const imgElem = document.createElement("img");
+    imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/develop/resources/external/genius.png";
+    imgElem.style = "z-index: 10; width: 24px; height: 24px; padding: 8px; padding-left: 16px;";
+
+    linkElem.appendChild(imgElem);
+
+    dbg && console.info(`BetterYTM: Inserted genius button:`, linkElem);
+
+    menuElem.parentNode.insertBefore(linkElem, menuElem.nextSibling);
 }
 
 
