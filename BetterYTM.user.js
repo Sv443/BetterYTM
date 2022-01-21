@@ -36,19 +36,19 @@
  * If this userscript ever becomes something I might add like a menu to toggle these
  */
 const features = Object.freeze({
-  	// --- Quality of Life ---
+    // --- Quality of Life ---
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
-  	/** Whether to remove the "Upgrade" / YT Music Premium tab */
+    /** Whether to remove the "Upgrade" / YT Music Premium tab */
     removeUpgradeTab: true,
 
-		// --- Extra Features ---
+        // --- Extra Features ---
     /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
 
-  	// --- Other ---
-  	/** Set to true to remove the watermark next to the YTM logo */
-  	removeWatermark: false,
+    // --- Other ---
+    /** Set to true to remove the watermark next to the YTM logo */
+    removeWatermark: false,
 
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
     // themeColor: "#0f0",
@@ -87,7 +87,7 @@ function init()
     }
     catch(err)
     {
-        console.error("BetterYTM - General Error:", err instanceof Error ? err : new Error(err));
+        console.error("BetterYTM - General Error:", err);
     }
 }
 
@@ -102,63 +102,22 @@ function onDomLoad()
 {
     const domain = getDomain();
 
-    if(features.arrowKeySupport && domain === "ytm")
-        document.addEventListener("keydown", onKeyDown);
+    // YTM-specific
+    if(domain === "ytm")
+    {
+        if(features.arrowKeySupport)
+            document.addEventListener("keydown", onKeyDown);
 
+        if(features.removeUpgradeTab)
+            removeUpgradeTab();
+
+        if(!features.removeWatermark)
+            addWatermark();
+    }
+
+    // Both YTM and YT
     if(features.switchBetweenSites)
         initSiteSwitch(domain);
-  
-  	if(features.removeUpgradeTab)
-    {
-      	const tabElem = document.querySelector(`.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]`);
-      	tabElem.innerHTML = "";
-      	tabElem.outerHTML = "";
-    }
-  
-  	if(!features.removeWatermark)
-    {
-      	const watermark = document.createElement("a");
-
-      	watermark.id = "betterytm-watermark";
-      	watermark.className = "style-scope ytmusic-nav-bar";
-
-      	watermark.innerText = info.name;
-      	watermark.title = `${info.name} v${info.version}`;
-
-      	watermark.href = info.namespace;
-      	watermark.target = "_blank";
-      	watermark.rel = "noopener noreferrer";
-
-
-      	const style = `
-						#betterytm-watermark {
-					  		position: absolute;
-								left: 45px;
-								top: 43px;
-								z-index: 10;
-								color: white;
-								text-decoration: none;
-								cursor: pointer;
-						}
-
-						#betterytm-watermark:hover {
-					  		text-decoration: underline;
-						}
-				`;
-
-      	const styleElem = document.createElement("style");
-
-      	if(styleElem.styleSheet)
-    				styleElem.styleSheet.cssText = style;
-				else
-    				styleElem.appendChild(document.createTextNode(style));
-
-      	document.querySelector("head").appendChild(styleElem);
-
-
-      	const logoElem = document.querySelector("#left-content");
-    		logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
-    }
 
     // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
     //     applyTheme();
@@ -288,25 +247,66 @@ function switchSite(newDomain)
     }
 }
 
+//#SECTION remove upgrade tab
+
 /**
- * Returns the current video time in seconds
- * @param {Domain} [domain]
- * @returns {number|null} Returns null if video time is unavailable
+ * Removes the "Upgrade" / YT Music Premium tab from the title / nav bar
  */
-function getVideoTime(domain)
+function removeUpgradeTab()
 {
-    if(typeof domain !== "string")
-        domain = getDomain();
+    const tabElem = document.querySelector(`.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]`);
+    tabElem.remove();
+}
 
-    if(domain === "ytm")
-    {
-        const pbEl = document.querySelector("#progress-bar");
-        return pbEl.value ?? null;
-    }
-    else if(domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
-        return 0;
+//#SECTION add watermark
 
-    return null;
+/**
+ * Adds a watermark beneath the logo
+ */
+function addWatermark()
+{
+    const watermark = document.createElement("a");
+
+    watermark.id = "betterytm-watermark";
+    watermark.className = "style-scope ytmusic-nav-bar";
+
+    watermark.innerText = info.name;
+    watermark.title = `${info.name} v${info.version}`;
+
+    watermark.href = info.namespace;
+    watermark.target = "_blank";
+    watermark.rel = "noopener noreferrer";
+
+
+    const style = `
+        #betterytm-watermark {
+            position: absolute;
+            left: 45px;
+            top: 43px;
+            z-index: 10;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #betterytm-watermark:hover {
+            text-decoration: underline;
+        }
+    `;
+
+    const styleElem = document.createElement("style");
+    styleElem.id = "betterytm-watermark-style";
+
+    if(styleElem.styleSheet)
+        styleElem.styleSheet.cssText = style;
+    else
+        styleElem.appendChild(document.createTextNode(style));
+
+    document.querySelector("head").appendChild(styleElem);
+
+
+    const logoElem = document.querySelector("#left-content");
+        logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
 }
 
 
@@ -314,13 +314,40 @@ function getVideoTime(domain)
 
 
 /**
- * Returns the current domain as a string representation
+ * Returns the current domain as a constant string representation
  * @returns {Domain}
  */
 function getDomain()
 {
     const { hostname } = new URL(location.href);
     return hostname.toLowerCase().includes("music") ? "ytm" : "yt"; // other cases are caught by the `@match`es at the top
+}
+
+/**
+ * Returns the current video time in seconds
+ * @returns {number|null} Returns null if video time is unavailable
+ */
+function getVideoTime()
+{
+    const domain = getDomain();
+
+    try
+    {
+        if(domain === "ytm")
+        {
+            const pbEl = document.querySelector("#progress-bar");
+            return pbEl.value ?? null;
+        }
+        else if(domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
+            return 0;
+
+        return null;
+    }
+    catch(err)
+    {
+        console.error("BetterYTM: Couldn't get video time due to error:", err);
+        return null;
+    }
 }
 
 
