@@ -5,6 +5,7 @@
   "main": "BetterYTM.user.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "minify": "minify BetterYTM.user.js > BetterYTM.min.user.js"
   },
   "repository": {
