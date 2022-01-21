@@ -366,14 +366,17 @@ function addWatermark()
 
 //#SECTION genius.com lyrics button
 
+let currentSong = "";
+
 function addGeniusButton()
 {
     const menuElem = document.querySelector(".middle-controls-buttons tp-yt-paper-icon-button.dropdown-trigger");
     if(!menuElem)
-        return setTimeout(addGeniusButton, 250);
+        return setTimeout(addGeniusButton, 250); // TODO: improve this
 
     const linkElem = document.createElement("a");
     linkElem.id = "betterytm-genius-button";
+    linkElem.title = "Search for lyrics on genius.com";
     linkElem.href = getGeniusUrl();
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
@@ -387,6 +390,22 @@ function addGeniusButton()
     dbg && console.info(`BetterYTM: Inserted genius button:`, linkElem);
 
     menuElem.parentNode.insertBefore(linkElem, menuElem.nextSibling);
+
+    currentSong = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+
+    setInterval(() => { // TODO: improve this maybe idk
+        let newSong = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+
+        if(newSong != currentSong)
+        {
+            dbg && console.info(`BetterYTM: Detected song change, refreshing genius button`);
+
+            currentSong = newSong;
+
+            const lyricsBtn = document.querySelector("#betterytm-genius-button");
+            lyricsBtn.href = getGeniusUrl();
+        }
+    }, 1000);
 }
 
 
@@ -430,6 +449,42 @@ function getVideoTime()
     }
 }
 
+/**
+ * Returns the genius.com search URL for the current song
+ */
+function getGeniusUrl()
+{
+    try
+    {
+        const sanitizeSongName = (songName) => {
+            let sanitized;
+
+            if(songName.match(/\(|feat|ft/gmi))
+            {
+                // should hopefully trim right after the song name
+                sanitized = songName.substring(0, songName.indexOf("("));
+            }
+
+            return (sanitized || songName).trim();
+        };
+
+        const songNameRaw = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+        const songName = sanitizeSongName(songNameRaw);
+
+        const songMeta = document.querySelector("span.subtitle > yt-formatted-string:first-child").title;
+        const artist = songMeta.split(/\s*\u2022\s*/gmiu)[0];
+
+        const url = `https://genius.com/search?q=${encodeURIComponent(artist)}%20${encodeURIComponent(songName)}`;
+
+        dbg && console.info(`BetterYTM: Resolved genius.com URL for song '${songName}' by '${artist}': ${url}`);
+
+        return url;
+    }
+    catch(err)
+    {
+        console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
+    }
+}
 
 init(); // call init() when script is loaded
 })();
