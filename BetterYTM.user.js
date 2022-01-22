@@ -74,11 +74,13 @@ const dbg = true;
 //#MARKER types
 
 
-/** @typedef {"yt"|"ytm"} Domain */
+/** @typedef {"yt"|"ytm"} Domain Constant string representation of which domain this script is currently running on */
 
 
 //#MARKER init
 
+/** Specifies the hard limit for repetitive tasks */
+const triesLimit = 20;
 
 const info = Object.freeze({
     name: GM.info.script.name, // eslint-disable-line no-undef
@@ -220,7 +222,7 @@ function onKeyDown(evt)
 
             document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
 
-            dbg && console.info(`BetterYTM: Dispatched proxy keydown event [${evt.code}] -> [${proxyProps.code}]`);
+            dbg && console.info(`BetterYTM: Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
         }
         else if(dbg)
             console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
@@ -301,13 +303,13 @@ function removeUpgradeTab()
         tabElem.remove();
         dbg && console.info(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
     }
-    else if(removeUpgradeTries < 10)
+    else if(removeUpgradeTries < triesLimit)
     {
         setTimeout(removeUpgradeTab, 250); // TODO: improve this
         removeUpgradeTries++;
     }
-    else if(dbg)
-        console.info(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+    else
+        console.error(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 
 //#SECTION add watermark
@@ -330,35 +332,26 @@ function addWatermark()
     watermark.rel = "noopener noreferrer";
 
 
-    const style = `
-        #betterytm-watermark {
-            position: absolute;
-            left: 45px;
-            top: 43px;
-            z-index: 10;
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    const style = `\
+    #betterytm-watermark {
+        position: absolute;
+        left: 45px;
+        top: 43px;
+        z-index: 10;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-        #betterytm-watermark:hover {
-            text-decoration: underline;
-        }
-    `;
+    #betterytm-watermark:hover {
+        text-decoration: underline;
+    }`;
 
-    const styleElem = document.createElement("style");
-    styleElem.id = "betterytm-watermark-style";
-
-    if(styleElem.styleSheet)
-        styleElem.styleSheet.cssText = style;
-    else
-        styleElem.appendChild(document.createTextNode(style));
-
-    document.querySelector("head").appendChild(styleElem);
+    addGlobalStyle(style, "watermark");
 
 
     const logoElem = document.querySelector("#left-content");
-    logoElem.parentNode.insertBefore(watermark, logoElem.nextSibling);
+    insertAfter(logoElem, watermark);
 
 
     dbg && console.info(`BetterYTM: Added watermark element:`, watermark);
@@ -366,46 +359,99 @@ function addWatermark()
 
 //#SECTION genius.com lyrics button
 
-let currentSong = "";
+let currentSongTitle = "";
+let lyricsButtonAddTries = 0;
 
+/**
+ * Adds a genius.com lyrics button to the media controls bar
+ */
 function addGeniusButton()
 {
     const menuElem = document.querySelector(".middle-controls-buttons tp-yt-paper-icon-button.dropdown-trigger");
+
     if(!menuElem)
-        return setTimeout(addGeniusButton, 250); // TODO: improve this
+    {
+        lyricsButtonAddTries++;
+        if(lyricsButtonAddTries < triesLimit)
+            return setTimeout(addGeniusButton, 250); // TODO: improve this
+
+        return console.error(`BetterYTM: Couldn't find media control menu button to append lyrics button to, after ${lyricsButtonAddTries} tries`);
+    }
+
+    const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+
 
     const linkElem = document.createElement("a");
-    linkElem.id = "betterytm-genius-button";
+    linkElem.id = "betterytm-lyrics-button";
     linkElem.title = "Search for lyrics on genius.com";
     linkElem.href = getGeniusUrl();
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
 
+    const style = `\
+    #betterytm-lyrics-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        vertical-align: middle;
+
+        margin-left: 8px;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background-color: transparent;
+    }
+
+    #betterytm-lyrics-button:hover {
+        background-color: #383838;
+    }
+
+    #betterytm-lyrics-img {
+        display: inline-block;
+        z-index: 10;
+        width: 24px;
+        height: 24px;
+        padding: 5px;
+    }`;
+
+    addGlobalStyle(style, "lyrics");
+
+
     const imgElem = document.createElement("img");
+    imgElem.id = "betterytm-lyrics-img";
     imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/develop/resources/external/genius.png";
-    imgElem.style = "z-index: 10; width: 24px; height: 24px; padding: 8px; padding-left: 16px;";
 
     linkElem.appendChild(imgElem);
 
-    dbg && console.info(`BetterYTM: Inserted genius button:`, linkElem);
+    dbg && console.info(`BetterYTM: Inserted genius button after ${lyricsButtonAddTries} tries:`, linkElem);
 
-    menuElem.parentNode.insertBefore(linkElem, menuElem.nextSibling);
+    insertAfter(menuElem, linkElem);
 
-    currentSong = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
 
-    setInterval(() => { // TODO: improve this maybe idk
-        let newSong = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+    currentSongTitle = songTitleElem.title;
 
-        if(newSong != currentSong)
-        {
-            dbg && console.info(`BetterYTM: Detected song change, refreshing genius button`);
+    /** @param {MutationRecord[]} mutations */
+    const onMutation = (mutations) => {
+        mutations.forEach(mut => {
+            const newTitle = mut.target.title;
 
-            currentSong = newSong;
+            if(newTitle != currentSongTitle)
+            {
+                dbg && console.info(`BetterYTM: Song title changed from '${currentSongTitle}' to '${newTitle}'`);
 
-            const lyricsBtn = document.querySelector("#betterytm-genius-button");
-            lyricsBtn.href = getGeniusUrl();
-        }
-    }, 1000);
+                currentSongTitle = newTitle;
+
+                const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                lyricsBtn.href = getGeniusUrl();
+            }
+        });
+    };
+
+    // since YT and YTM don't reload the page on video change, MutationObserver needs to be used
+    const obs = new MutationObserver(onMutation);
+
+    obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
 
@@ -424,7 +470,7 @@ function getDomain()
 
 /**
  * Returns the current video time in seconds
- * @returns {number|null} Returns null if video time is unavailable
+ * @returns {number|null} Returns null if the video time is unavailable
  */
 function getVideoTime()
 {
@@ -451,6 +497,7 @@ function getVideoTime()
 
 /**
  * Returns the genius.com search URL for the current song
+ * @returns {string}
  */
 function getGeniusUrl()
 {
@@ -472,9 +519,10 @@ function getGeniusUrl()
         const songName = sanitizeSongName(songNameRaw);
 
         const songMeta = document.querySelector("span.subtitle > yt-formatted-string:first-child").title;
-        const artist = songMeta.split(/\s*\u2022\s*/gmiu)[0];
+        const artist = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
+        // TODO: artist might need further splitting before comma or ampersand
 
-        const url = `https://genius.com/search?q=${encodeURIComponent(artist)}%20${encodeURIComponent(songName)}`;
+        const url = `https://genius.com/search?q=${encodeURIComponent(songName)}%20${encodeURIComponent(artist)}`;
 
         dbg && console.info(`BetterYTM: Resolved genius.com URL for song '${songName}' by '${artist}': ${url}`);
 
@@ -484,6 +532,38 @@ function getGeniusUrl()
     {
         console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
     }
+}
+
+/**
+ * Inserts `afterNode` as a sibling just after the provided `beforeNode`
+ * @param {HTMLElement} beforeNode
+ * @param {HTMLElement} afterNode
+ * @returns {HTMLElement} Returns the `afterNode`
+ */
+function insertAfter(beforeNode, afterNode)
+{
+    beforeNode.parentNode.insertBefore(afterNode, beforeNode.nextSibling);
+    return afterNode;
+}
+
+/**
+ * Adds global CSS style through a &lt;style&gt; element in the document's &lt;head&gt;
+ * @param {string} style CSS string
+ * @param {string} ref Reference name that is included in the &lt;style&gt;'s ID
+ */
+function addGlobalStyle(style, ref)
+{
+    const styleElem = document.createElement("style");
+    styleElem.id = `betterytm-${ref}-style`;
+
+    if(styleElem.styleSheet)
+        styleElem.styleSheet.cssText = style;
+    else
+        styleElem.appendChild(document.createTextNode(style));
+
+    document.querySelector("head").appendChild(styleElem);
+
+    dbg && console.info(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
 }
 
 init(); // call init() when script is loaded
