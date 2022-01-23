@@ -10,6 +10,7 @@
 // @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
+// @match           https://genius.com/search*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @run-at          document-start
 // @connect         self
@@ -38,21 +39,25 @@
  * If this userscript ever becomes something I might add like a menu to toggle these
  */
 const features = Object.freeze({
-    // --- Quality of Life ---
+
+// --- Quality of Life ---
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
     /** Whether to remove the "Upgrade" / YT Music Premium tab */
     removeUpgradeTab: true,
 
-    // --- Extra Features ---
+// --- Extra Features ---
     /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
-    /** Adds a button to the media controls bar to open the current song's genius.com lyrics in a new tab */
+    /** Adds a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab */
     geniusLyrics: true,
+    /** This option makes the genius.com lyrics search button from above automatically open the best matching result */
+    geniusAutoclickBestResult: true,
 
-    // --- Other ---
+// --- Other ---
     /** Set to true to remove the watermark under the YTM logo */
     removeWatermark: false,
+
 
     // /** The theme color - accepts any CSS color value - default is "#ff0000" */
     // themeColor: "#0f0",
@@ -74,10 +79,11 @@ const dbg = true;
 //#MARKER types
 
 
-/** @typedef {"yt"|"ytm"} Domain Constant string representation of which domain this script is currently running on */
+/** @typedef {"yt"|"ytm"|"genius"} Domain Constant string representation of which domain this script is currently running on */
 
 
 //#MARKER init
+
 
 /** Specifies the hard limit for repetitive tasks */
 const triesLimit = 20;
@@ -117,7 +123,6 @@ function onDomLoad()
 
     try
     {
-        // YTM-specific
         if(domain === "ytm")
         {
             if(features.arrowKeySupport)
@@ -136,9 +141,17 @@ function onDomLoad()
                 addGeniusButton();
         }
 
-        // Both YTM and YT
-        if(features.switchBetweenSites)
-            initSiteSwitch(domain);
+        if(["ytm", "yt"].includes(domain))
+        {
+            if(features.switchBetweenSites)
+                initSiteSwitch(domain);
+        }
+
+        if(domain === "genius")
+        {
+            if(features.geniusAutoclickBestResult)
+                autoclickGeniusResult();
+        }
     }
     catch(err)
     {
@@ -454,18 +467,166 @@ function addGeniusButton()
     obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
+/**
+ * Returns the genius.com search URL for the current song
+ * @returns {string}
+ */
+function getGeniusUrl()
+{
+    try
+    {
+        const sanitizeSongName = (songName) => {
+            let sanitized;
+
+            if(songName.match(/\(|feat|ft/gmi))
+            {
+                // should hopefully trim right after the song name
+                sanitized = songName.substring(0, songName.indexOf("("));
+            }
+
+            return (sanitized || songName).trim();
+        };
+
+        const songNameRaw = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+        const songName = sanitizeSongName(songNameRaw);
+
+        const songMeta = document.querySelector("span.subtitle > yt-formatted-string:first-child").title;
+        const artistName = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
+        // TODO: artist might need further splitting before comma or ampersand
+
+        const sn = encodeURIComponent(songName);
+        const an = encodeURIComponent(artistName);
+
+        const acParams = features.geniusAutoclickBestResult ? `&bytm-ac-sn=${sn}&bytm-ac-an=${an}` : "";
+
+        const url = `https://genius.com/search?q=${sn}%20${an}${acParams}`;
+
+        dbg && console.info(`BetterYTM: Resolved genius.com URL for song '${songName}' by '${artistName}': ${url}`);
+
+        return url;
+    }
+    catch(err)
+    {
+        console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
+    }
+}
+
+//#SECTION autoclick best genius.com result
+
+/**
+ * Automatically clicks the best matching result in a genius.com search
+ */
+function autoclickGeniusResult()
+{
+    if(!location.pathname.includes("/search"))
+        return;
+
+    const miniCards = document.querySelectorAll(".mini_card-title_and_subtitle");
+
+    if(!miniCards || miniCards.length == 0)
+    {
+        if(geniusAutoclickTries < Math.round(triesLimit * 2.5)) // tries limit higher due to lower timeout
+        {
+            geniusAutoclickTries++;
+            return setTimeout(autoclickGeniusResult, 100); // TODO: improve this
+        }
+        else
+            return console.error(`BetterYTM: Couldn't find result minicards after ${geniusAutoclickTries} tries`);
+    }
+
+    const params = getGeniusAcParams();
+
+    if(!params)
+        return console.info("BetterYTM: No query params present, not autoclicking");
+
+    const { songName, artistName } = params;
+
+    const resultNode = findMatchingGeniusResult(songName, artistName);
+
+    if(!resultNode)
+        return console.error("BetterYTM: Couldn't find matching result node");
+
+    dbg && console.info(`BetterYTM: Found matching result node after ${geniusAutoclickTries} tries:`, resultNode);
+
+    resultNode.click();
+}
+
+let geniusAutoclickTries = 0;
+
+/**
+ * Finds a result minicard node that matches the provided song and artist names (case insensitive)
+ * @param {string} song
+ * @param {string} artist
+ * @returns {Node|null}
+ */
+function findMatchingGeniusResult(song, artist)
+{
+    const miniCards = document.querySelectorAll(".mini_card-title_and_subtitle");
+
+    dbg && console.info(`BetterYTM: Found ${miniCards.length} minicards in results, searching for match...`);
+
+    for(const card of miniCards)
+    {
+        if(card.childNodes && card.childNodes.length > 0)
+        {
+            const title = Array.from(card.childNodes).find(cn => cn.classList && cn.classList.contains("mini_card-title"));
+            const subTitle = Array.from(card.childNodes).find(cn => cn.classList && cn.classList.contains("mini_card-subtitle"));
+
+            if(!title || !subTitle || !title.innerText || !subTitle.innerText)
+                continue;
+
+            const songName = title.innerText.toLowerCase();
+            const artistName = subTitle.innerText.toLowerCase();
+
+            // TODO: there can be multiple artists and since their order and spelling on YTM and genius can differ, I need to split them and compare one by one
+            if(songName.includes(song.toLowerCase()) && artistName.includes(artist.toLowerCase()))
+                return card;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Returns autoclick query params if they exist, else returns null
+ * @returns {({ songName: string, artistName: string })|null}
+ */
+function getGeniusAcParams()
+{
+    const params = location.search.substring(1).split(/&/g);
+
+    if(params.find(p => p.includes("bytm-ac-sn=")) && params.find(p => p.includes("bytm-ac-an=")))
+    {
+        const songName = decodeURIComponent(params.find(p => p.includes("bytm-ac-sn=")).split(/=/)[1]);
+        const artistName = decodeURIComponent(params.find(p => p.includes("bytm-ac-an=")).split(/=/)[1]);
+
+        return { songName, artistName };
+    }
+
+    return null;
+}
+
 
 //#MARKER other
 
 
 /**
  * Returns the current domain as a constant string representation
+ * @throws {Error} If script runs on an unexpected website
  * @returns {Domain}
  */
 function getDomain()
 {
     const { hostname } = new URL(location.href);
-    return hostname.toLowerCase().includes("music") ? "ytm" : "yt"; // other cases are caught by the `@match`es at the top
+
+    if(hostname.includes("music.youtube"))
+        return "ytm";
+    else if(hostname.includes("youtube"))
+        return "yt";
+    else if(hostname.includes("genius"))
+        return "genius";
+    else
+        throw new Error("BetterYTM is running on an unexpected website");
 }
 
 /**
@@ -492,45 +653,6 @@ function getVideoTime()
     {
         console.error("BetterYTM: Couldn't get video time due to error:", err);
         return null;
-    }
-}
-
-/**
- * Returns the genius.com search URL for the current song
- * @returns {string}
- */
-function getGeniusUrl()
-{
-    try
-    {
-        const sanitizeSongName = (songName) => {
-            let sanitized;
-
-            if(songName.match(/\(|feat|ft/gmi))
-            {
-                // should hopefully trim right after the song name
-                sanitized = songName.substring(0, songName.indexOf("("));
-            }
-
-            return (sanitized || songName).trim();
-        };
-
-        const songNameRaw = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
-        const songName = sanitizeSongName(songNameRaw);
-
-        const songMeta = document.querySelector("span.subtitle > yt-formatted-string:first-child").title;
-        const artist = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
-        // TODO: artist might need further splitting before comma or ampersand
-
-        const url = `https://genius.com/search?q=${encodeURIComponent(songName)}%20${encodeURIComponent(artist)}`;
-
-        dbg && console.info(`BetterYTM: Resolved genius.com URL for song '${songName}' by '${artist}': ${url}`);
-
-        return url;
-    }
-    catch(err)
-    {
-        console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
     }
 }
 
