@@ -347,6 +347,7 @@ function addWatermark()
 
     const style = `\
     #betterytm-watermark {
+        display: inline-block;
         position: absolute;
         left: 45px;
         top: 43px;
@@ -354,6 +355,12 @@ function addWatermark()
         color: white;
         text-decoration: none;
         cursor: pointer;
+    }
+
+    @media(max-width: 615px) {
+        #betterytm-watermark {
+            display: none;
+        }
     }
 
     #betterytm-watermark:hover {
