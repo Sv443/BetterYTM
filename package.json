@@ -1,10 +1,11 @@
 {
-  "name": "betterytm",
-  "version": "0.1.0",
+  "name": "@sv443/betterytm",
+  "version": "0.2.0",
   "description": "Userscript that improves YouTube Music",
   "main": "BetterYTM.user.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
