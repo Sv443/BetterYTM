@@ -380,26 +380,30 @@ let lyricsButtonAddTries = 0;
  */
 function addGeniusButton()
 {
-    const menuElem = document.querySelector(".middle-controls-buttons tp-yt-paper-icon-button.dropdown-trigger");
+    const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");
 
-    if(!menuElem)
+    if(!likeContainer)
     {
         lyricsButtonAddTries++;
         if(lyricsButtonAddTries < triesLimit)
             return setTimeout(addGeniusButton, 250); // TODO: improve this
 
-        return console.error(`BetterYTM: Couldn't find media control menu button to append lyrics button to, after ${lyricsButtonAddTries} tries`);
+        return console.error(`BetterYTM: Couldn't find like buttons to append lyrics button to after ${lyricsButtonAddTries} tries`);
     }
 
     const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
 
 
+    const gUrl = getGeniusUrl();
+
     const linkElem = document.createElement("a");
     linkElem.id = "betterytm-lyrics-button";
+    linkElem.className = "ytmusic-player-bar";
     linkElem.title = "Search for lyrics on genius.com";
-    linkElem.href = getGeniusUrl();
+    linkElem.href = gUrl;
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
+    linkElem.style.visibility = gUrl ? "initial" : "hidden";
 
     const style = `\
     #betterytm-lyrics-button {
@@ -439,7 +443,7 @@ function addGeniusButton()
 
     dbg && console.info(`BetterYTM: Inserted genius button after ${lyricsButtonAddTries} tries:`, linkElem);
 
-    insertAfter(menuElem, linkElem);
+    insertAfter(likeContainer, linkElem);
 
 
     currentSongTitle = songTitleElem.title;
@@ -457,6 +461,7 @@ function addGeniusButton()
 
                 const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
                 lyricsBtn.href = getGeniusUrl();
+                lyricsBtn.style.visibility = "initial";
             }
         });
     };
@@ -469,12 +474,18 @@ function addGeniusButton()
 
 /**
  * Returns the genius.com search URL for the current song
- * @returns {string}
+ * @returns {string|null}
  */
 function getGeniusUrl()
 {
     try
     {
+        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+        const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
+
+        if(!songTitleElem || !songMetaElem || !songTitleElem.title)
+            return null;
+
         const sanitizeSongName = (songName) => {
             let sanitized;
 
@@ -487,10 +498,10 @@ function getGeniusUrl()
             return (sanitized || songName).trim();
         };
 
-        const songNameRaw = document.querySelector(".content-info-wrapper > yt-formatted-string").title;
+        const songNameRaw = songTitleElem.title;
         const songName = sanitizeSongName(songNameRaw);
 
-        const songMeta = document.querySelector("span.subtitle > yt-formatted-string:first-child").title;
+        const songMeta = songMetaElem.title;
         const artistName = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
         // TODO: artist might need further splitting before comma or ampersand
 
