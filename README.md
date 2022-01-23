@@ -36,6 +36,7 @@ Once you have the extension, click this button to install the userscript:
 
 ### Disclaimers:
 - I am not affiliated with YouTube, Google, Alphabet, Genius, or anyone else.
+- I do not own any third party icons, I just re-host them here for better stability and availability.
 - I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the respective site's servers.
 - I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new)
 
