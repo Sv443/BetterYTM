@@ -66,7 +66,7 @@ const features = Object.freeze({
 
 
 /** Set to true to enable debug mode for more output in the JS console */
-const dbg = true;
+const dbg = false;
 
 
 
