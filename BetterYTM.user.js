@@ -2,7 +2,7 @@
 // @name            BetterYTM
 // @name:de         BetterYTM
 // @namespace       https://github.com/Sv443/BetterYTM#readme
-// @version         0.2.0
+// @version         1.0.0
 // @license         MIT
 // @author          Sv443
 // @copyright       Sv443 <contact@sv443.net> (https://github.com/Sv443)
@@ -19,6 +19,7 @@
 // @connect         githubusercontent.com
 // @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
 // @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
+// @require         https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js
 // ==/UserScript==
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
@@ -53,6 +54,8 @@ const features = Object.freeze({
     geniusLyrics: true,
     /** This option makes the genius.com lyrics search button from above automatically open the best matching result */
     geniusAutoclickBestResult: true,
+    /** Whether to add a border around the best matching result to visualize it before redirecting */
+    visualizeBestResult: true,
 
 // --- Other ---
     /** Set to true to remove the watermark under the YTM logo */
@@ -564,6 +567,14 @@ function autoclickGeniusResult()
     if(!resultNode)
         return console.error("BetterYTM: Couldn't find matching result node");
 
+    if(features.visualizeBestResult)
+    {
+        const grandpaNode = resultNode.parentElement.parentElement;
+        grandpaNode.style.border = "2px dashed yellow";
+        grandpaNode.style.borderRadius = "7px";
+        grandpaNode.style.padding = "7px";
+    }
+
     dbg && console.info(`BetterYTM: Found matching result node after ${geniusAutoclickTries} tries:`, resultNode);
 
     resultNode.click();
@@ -571,17 +582,22 @@ function autoclickGeniusResult()
 
 let geniusAutoclickTries = 0;
 
+/** @typedef {({ songName: string, artistName: string, card: Element })} SearchItem */
+
 /**
  * Finds a result minicard node that matches the provided song and artist names (case insensitive)
  * @param {string} song
  * @param {string} artist
- * @returns {Node|null}
+ * @returns {Element|null}
  */
 function findMatchingGeniusResult(song, artist)
 {
     const miniCards = document.querySelectorAll(".mini_card-title_and_subtitle");
 
     dbg && console.info(`BetterYTM: Found ${miniCards.length} minicards in results, searching for match...`);
+
+    /** @type {SearchItem[]} */
+    const searchElems = [];
 
     for(const card of miniCards)
     {
@@ -596,13 +612,46 @@ function findMatchingGeniusResult(song, artist)
             const songName = title.innerText.toLowerCase();
             const artistName = subTitle.innerText.toLowerCase();
 
-            // TODO: there can be multiple artists and since their order and spelling on YTM and genius can differ, I need to split them and compare one by one
-            if(songName.includes(song.toLowerCase()) && artistName.includes(artist.toLowerCase()))
-                return card;
+            searchElems.push({ songName, artistName, card });
         }
     }
 
-    return null;
+    if(searchElems.length === 0)
+        return null;
+
+    try
+    {
+        const fuseOpts = {
+            includeScore: true,
+            isCaseSensitive: false,
+            findAllMatches: true,
+            threshold: 0.7,
+            keys: [ "songName", "artistName" ],
+        };
+
+        // fuzzy search for best accuracy and reliability
+        const fuse = new Fuse(searchElems, fuseOpts); // eslint-disable-line no-undef
+
+        /** @type {({ item: SearchItem, refIndex: number, score: number })[]} */
+        const searchResults = fuse.search(`${song} ${artist}`);
+
+        if(searchResults.length > 0)
+        {
+            // searchResults.sort((a, b) => {
+            //     return a.score > b.score;
+            // });
+
+            console.log("Found possible results:", searchResults);
+
+            return searchResults[0].item.card;
+        }
+
+        return null;
+    }
+    catch(err)
+    {
+        console.error("BetterYTM: Couldn't fuzzy search for matching result:", err);
+    }
 }
 
 /**
