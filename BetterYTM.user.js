@@ -508,16 +508,30 @@ function getGeniusUrl()
             return (sanitized || songName).trim();
         };
 
+        /** @param {string} songMeta */
+        const splitArtist = (songMeta) => {
+            songMeta = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
+
+            if(songMeta.match(/&/))
+                songMeta = songMeta.split(/\s*&\s*/gm)[0];
+
+            if(songMeta.match(/,/))
+                songMeta = songMeta.split(/,\s*/gm)[0];
+
+            return songMeta;
+        }
+
         const songNameRaw = songTitleElem.title;
         const songName = sanitizeSongName(songNameRaw);
 
-        const songMeta = songMetaElem.title;
-        const artistName = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
+        const artistName = splitArtist(songMetaElem.title);
+
         // TODO: artist might need further splitting before comma or ampersand
 
         const sn = encodeURIComponent(songName);
         const an = encodeURIComponent(artistName);
 
+        /** Autoclick URL params */
         const acParams = features.geniusAutoclickBestResult ? `&bytm-ac-sn=${sn}&bytm-ac-an=${an}` : "";
 
         const url = `https://genius.com/search?q=${sn}%20${an}${acParams}`;
