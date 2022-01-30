@@ -1,6 +1,6 @@
 {
-  "name": "@sv443/betterytm",
-  "version": "0.2.0",
+  "name": "betterytm",
+  "version": "1.0.0",
   "description": "Userscript that improves YouTube Music",
   "main": "BetterYTM.user.js",
   "scripts": {
