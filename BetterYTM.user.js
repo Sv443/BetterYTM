@@ -13,6 +13,8 @@
 // @match           https://genius.com/search*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @run-at          document-start
+// @grant           GM.getValue
+// @grant           GM.setValue
 // @connect         self
 // @connect         youtube.com
 // @connect         github.com
@@ -22,32 +24,21 @@
 // @require         https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js
 // ==/UserScript==
 
+
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this, Susan 🖕 */
 
-(() => {
+
+(async () => {
 "use-strict";
 
 
-/*
-    █▀▀█ ▄▄▄ █   █    ▀  ▄▄▄  ▄▄▄▄ ▄▄▄
-    ▀▀▄▄ █▄█ █▀  █▀  ▀█  █  █ █ ▄▄ █▄▄ ▀
-    █▄▄█ █▄▄ █▄▄ █▄▄ ▄█▄ █  █ █▄▄█ ▄▄█ ▄
-*/
-
-/**
- * This is where you can enable or disable features  
- * If this userscript ever becomes something I might add like a menu to toggle these
- */
-const features = Object.freeze({
-
-// --- Quality of Life ---
+const defaultFeatures = {
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
     /** Whether to remove the "Upgrade" / YT Music Premium tab */
     removeUpgradeTab: true,
 
-// --- Extra Features ---
     /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
     /** Adds a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab */
@@ -57,26 +48,23 @@ const features = Object.freeze({
     /** Whether to add a border around the best matching result to visualize it before redirecting */
     visualizeBestResult: true,
 
-// --- Other ---
     /** Set to true to remove the watermark under the YTM logo */
     removeWatermark: false,
+};
 
+const featureConf = await loadFeatureConf();
 
-    // /** The theme color - accepts any CSS color value - default is "#ff0000" */
-    // themeColor: "#0f0",
-});
+console.log("bytm load", featureConf);
 
+const features = { ...defaultFeatures, ...featureConf };
+
+console.log("bytm save", features);
+
+await saveFeatureConf(features);
 
 
 /** Set to true to enable debug mode for more output in the JS console */
 const dbg = false;
-
-
-
-
-
-
-
 
 
 //#MARKER types
@@ -767,6 +755,31 @@ function addGlobalStyle(style, ref)
     document.querySelector("head").appendChild(styleElem);
 
     dbg && console.info(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
+}
+
+/**
+ * Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved
+ * @returns {Promise<Readonly<typeof defaultFeatures | {}>>}
+ */
+async function loadFeatureConf()
+{
+    /** @type {string} */
+    const featureConf = await GM.getValue("bytm-featureconf"); // eslint-disable-line no-undef
+
+    return Object.freeze(featureConf ? JSON.parse(featureConf) : {});
+}
+
+/**
+ * Saves a feature configuration saved persistently
+ * @param {typeof defaultFeatures} featureConf
+ * @returns {Promise<void>}
+ */
+function saveFeatureConf(featureConf)
+{
+    if(!featureConf || typeof featureConf != "object")
+        throw new TypeError("Feature config not provided or invalid");
+
+    return GM.setValue("bytm-featureconf", JSON.stringify(featureConf)); // eslint-disable-line no-undef
 }
 
 init(); // call init() when script is loaded
