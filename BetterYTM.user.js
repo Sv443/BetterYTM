@@ -72,6 +72,11 @@ const dbg = false;
 
 /** @typedef {"yt"|"ytm"|"genius"} Domain Constant string representation of which domain this script is currently running on */
 
+/**
+ * @typedef {({ search: string, value?: T })} SearchItem An item that can be searched for in a fuse.js fuzzy search
+ * @template T If the search string differs from the actual desired value, set the value prop with this template type
+ */
+
 
 //#MARKER init
 
@@ -584,8 +589,6 @@ function autoclickGeniusResult()
 
 let geniusAutoclickTries = 0;
 
-/** @typedef {({ songName: string, artistName: string, card: Element })} SearchItem */
-
 /**
  * Finds a result minicard node that matches the provided song and artist names (case insensitive)
  * @param {string} song
@@ -598,7 +601,7 @@ function findMatchingGeniusResult(song, artist)
 
     dbg && console.info(`BetterYTM: Found ${miniCards.length} minicards in results, searching for match...`);
 
-    /** @type {SearchItem[]} */
+    /** @type {SearchItem<Element>[]} */
     const searchElems = [];
 
     for(const card of miniCards)
@@ -614,7 +617,9 @@ function findMatchingGeniusResult(song, artist)
             const songName = title.innerText.toLowerCase();
             const artistName = subTitle.innerText.toLowerCase();
 
-            searchElems.push({ songName, artistName, card });
+            const search = `${songName} ${artistName}`;
+
+            searchElems.push({ search, value: card });
         }
     }
 
@@ -628,24 +633,25 @@ function findMatchingGeniusResult(song, artist)
             isCaseSensitive: false,
             findAllMatches: true,
             threshold: 0.7,
-            keys: [ "songName", "artistName" ],
+            keys: [ "search" ],
         };
 
         // fuzzy search for best accuracy and reliability
         const fuse = new Fuse(searchElems, fuseOpts); // eslint-disable-line no-undef
 
-        /** @type {({ item: SearchItem, refIndex: number, score: number })[]} */
+        /** @type {({ item: SearchItem<Element>, refIndex: number, score: number })[]} */
         const searchResults = fuse.search(`${song} ${artist}`);
 
         if(searchResults.length > 0)
         {
-            // searchResults.sort((a, b) => {
-            //     return a.score > b.score;
-            // });
+            console.log(`BetterYTM: Found ${searchResults.length} results:`, searchResults);
 
-            console.log("Found possible results:", searchResults);
+            const resultCard = searchResults[0].item.value;
+            const resultText = searchResults[0].item.search;
 
-            return searchResults[0].item.card;
+            console.log(`BetterYTM: Found best result '${resultText}':`, resultCard);
+
+            return resultCard;
         }
 
         return null;
