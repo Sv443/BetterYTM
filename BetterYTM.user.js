@@ -33,6 +33,10 @@
 "use-strict";
 
 
+/** Set to true to enable debug mode for more output in the JS console */
+const dbg = true;
+
+
 const defaultFeatures = {
     /** Whether arrow keys should skip forwards and backwards by 10 seconds */
     arrowKeySupport: true,
@@ -61,10 +65,6 @@ const features = { ...defaultFeatures, ...featureConf };
 console.log("bytm save", features);
 
 await saveFeatureConf(features);
-
-
-/** Set to true to enable debug mode for more output in the JS console */
-const dbg = false;
 
 
 //#MARKER types
@@ -141,6 +141,15 @@ function onDomLoad()
         {
             if(features.switchBetweenSites)
                 initSiteSwitch(domain);
+
+            try
+            {
+                addMenu();
+            }
+            catch(err)
+            {
+                console.error("BetterYTM: Couldn't add menu:", err);
+            }
         }
 
         if(domain === "genius")
@@ -156,6 +165,166 @@ function onDomLoad()
 
     // if(features.themeColor != "#f00" && features.themeColor != "#ff0000")
     //     applyTheme();
+}
+
+
+//#MARKER menu
+
+
+/**
+ * Adds an element to open the BetterYTM menu
+ */
+function addMenu()
+{
+    const domain = getDomain();
+
+
+    // bg & menu
+    const backgroundElem = document.createElement("div");
+    backgroundElem.id = "betterytm-menu-bg";
+    backgroundElem.title = "Click here to close the menu";
+    backgroundElem.style.visibility = "hidden";
+    backgroundElem.style.display = "none";
+    backgroundElem.addEventListener("click", (e) => {
+        if(e.target.id === "betterytm-menu-bg")
+            closeMenu();
+    });
+
+    const menuContainer = document.createElement("div");
+    menuContainer.title = "";
+    menuContainer.id = "betterytm-menu";
+
+
+    // title
+    const titleCont = document.createElement("div");
+    titleCont.id = "betterytm-menu-titlecont";
+
+    const titleElem = document.createElement("h2");
+    titleElem.id = "betterytm-menu-title";
+    titleElem.innerText = "BetterYTM - Menu";
+
+    const linksCont = document.createElement("div");
+    linksCont.id = "betterytm-menu-linkscont";
+
+    const addLink = (imgSrc, href, title) => {
+        const anchorElem = document.createElement("a");
+        anchorElem.className = "betterytm-menu-link";
+        anchorElem.rel = "noopener noreferrer";
+        anchorElem.target = "_blank";
+        anchorElem.href = href;
+        anchorElem.title = title;
+
+        const linkElem = document.createElement("img");
+        linkElem.className = "betterytm-menu-img";
+        linkElem.src = imgSrc;
+
+        anchorElem.appendChild(linkElem);
+        linksCont.appendChild(anchorElem);
+    };
+
+    addLink("TODO:github.png", info.namespace, `${info.name} on GitHub`);
+    addLink("TODO:greasyfork.png", "https://greasyfork.org/", `${info.name} on GreasyFork`);
+
+    const closeElem = document.createElement("img");
+    closeElem.id = "betterytm-menu-close";
+    closeElem.src = "TODO:close.png";
+    closeElem.title = "Click to close the menu";
+    closeElem.addEventListener("click", closeMenu);
+
+    titleCont.appendChild(titleElem);
+    titleCont.appendChild(linksCont);
+    titleCont.appendChild(closeElem);
+
+
+    // TODO: features
+    const featuresCont = document.createElement("div");
+    featuresCont.id = "betterytm-menu-opts";
+
+
+    // finalize
+    menuContainer.appendChild(titleCont);
+    menuContainer.appendChild(featuresCont);
+    backgroundElem.appendChild(menuContainer);
+
+    document.body.appendChild(backgroundElem);
+
+
+    // add style
+    const menuStyle = `\
+    #betterytm-menu-bg {
+        display: block;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 15;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    #betterytm-menu {
+        display: inline-block;
+        position: fixed;
+        width: 50vw;
+        height: 50vh;
+        min-height: 500px;
+        left: 25vw;
+        top: 25vh;
+        z-index: 16;
+        overflow: auto;
+        padding: 8px;
+        color: #fff;
+        background-color: #212121;
+    }
+
+    #betterytm-menu-titlecont {
+        display: flex;
+    }
+
+    #betterytm-menu-title {
+        font-size: 20px;
+        margin-top: 5px;
+        margin-bottom: 8px;
+    }
+
+    #betterytm-menu-linkscont {
+        display: flex;
+    }
+
+    .betterytm-menu-link {
+        display: inline-block;
+    }
+
+    .betterytm-menu-img {
+
+    }
+
+    #betterytm-menu-close {
+        cursor: pointer;
+    }
+    `;
+
+    dbg && console.info("BetterYTM: Added menu elem:", backgroundElem);
+
+    /* #DEBUG */ openMenu();
+
+    addGlobalStyle(menuStyle, "menu");
+}
+
+function closeMenu()
+{
+    const menuBg = document.querySelector("#betterytm-menu-bg");
+
+    menuBg.style.visibility = "hidden";
+    menuBg.style.display = "none";
+}
+
+function openMenu()
+{
+    const menuBg = document.querySelector("#betterytm-menu-bg");
+
+    menuBg.style.visibility = "visible";
+    menuBg.style.display = "block";
 }
 
 
@@ -644,12 +813,12 @@ function findMatchingGeniusResult(song, artist)
 
         if(searchResults.length > 0)
         {
-            console.log(`BetterYTM: Found ${searchResults.length} results:`, searchResults);
+            dbg && console.info(`BetterYTM: Found ${searchResults.length} results:`, searchResults);
 
             const resultCard = searchResults[0].item.value;
             const resultText = searchResults[0].item.search;
 
-            console.log(`BetterYTM: Found best result '${resultText}':`, resultCard);
+            dbg && console.info(`BetterYTM: Found best result '${resultText}':`, resultCard);
 
             return resultCard;
         }
