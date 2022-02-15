@@ -746,7 +746,7 @@ function autoclickGeniusResult()
     if(features.visualizeBestResult)
     {
         const grandpaNode = resultNode.parentElement.parentElement;
-        grandpaNode.style.border = "2px dashed yellow";
+        grandpaNode.style.border = "2px dashed #ffff64";
         grandpaNode.style.borderRadius = "7px";
         grandpaNode.style.padding = "7px";
     }
