@@ -10,7 +10,6 @@
 // @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @match           https://genius.com/search*
 // @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
 // @run-at          document-start
 // @grant           GM.getValue
@@ -47,10 +46,8 @@ const defaultFeatures = {
     switchBetweenSites: true,
     /** Adds a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab */
     geniusLyrics: true,
-    /** This option makes the genius.com lyrics search button from above automatically open the best matching result */
-    geniusAutoclickBestResult: true,
-    /** Whether to add a border around the best matching result to visualize it before redirecting */
-    visualizeBestResult: true,
+    /** Adds a lyrics button to each song in the queue ("up next" tab) */
+    lyricsButtonsOnSongQueue: true,
 
     /** Set to true to remove the watermark under the YTM logo */
     removeWatermark: false,
@@ -70,7 +67,7 @@ await saveFeatureConf(features);
 //#MARKER types
 
 
-/** @typedef {"yt"|"ytm"|"genius"} Domain Constant string representation of which domain this script is currently running on */
+/** @typedef {"yt"|"ytm"} Domain Constant string representation of which domain this script is currently running on */
 
 /**
  * @typedef {({ search: string, value?: T })} SearchItem An item that can be searched for in a fuse.js fuzzy search
@@ -111,7 +108,7 @@ function init()
 /**
  * Called when the DOM has finished loading (after `DOMContentLoaded` is emitted)
  */
-function onDomLoad()
+async function onDomLoad()
 {
     const domain = getDomain();
 
@@ -134,7 +131,7 @@ function onDomLoad()
                 addWatermark();
 
             if(features.geniusLyrics)
-                addGeniusButton();
+                await addMediaCtrlGeniusBtn();
         }
 
         if(["ytm", "yt"].includes(domain))
@@ -176,7 +173,7 @@ function onDomLoad()
  */
 function addMenu()
 {
-    const domain = getDomain();
+    // const domain = getDomain();
 
 
     // bg & menu
@@ -306,7 +303,7 @@ function addMenu()
 
     dbg && console.info("BetterYTM: Added menu elem:", backgroundElem);
 
-    /* #DEBUG */ openMenu();
+    /* #DEBUG */ //openMenu();
 
     addGlobalStyle(menuStyle, "menu");
 }
@@ -319,13 +316,13 @@ function closeMenu()
     menuBg.style.display = "none";
 }
 
-function openMenu()
-{
-    const menuBg = document.querySelector("#betterytm-menu-bg");
+// function openMenu()
+// {
+//     const menuBg = document.querySelector("#betterytm-menu-bg");
 
-    menuBg.style.visibility = "visible";
-    menuBg.style.display = "block";
-}
+//     menuBg.style.visibility = "visible";
+//     menuBg.style.display = "block";
+// }
 
 
 //#MARKER features
@@ -544,29 +541,29 @@ function addWatermark()
 
 //#SECTION genius.com lyrics button
 
-let currentSongTitle = "";
-let lyricsButtonAddTries = 0;
+let mcCurrentSongTitle = "";
+let mcLyricsButtonAddTries = 0;
 
 /**
  * Adds a genius.com lyrics button to the media controls bar
  */
-function addGeniusButton()
+async function addMediaCtrlGeniusBtn()
 {
     const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");
 
     if(!likeContainer)
     {
-        lyricsButtonAddTries++;
-        if(lyricsButtonAddTries < triesLimit)
-            return setTimeout(addGeniusButton, 250); // TODO: improve this
+        mcLyricsButtonAddTries++;
+        if(mcLyricsButtonAddTries < triesLimit)
+            return setTimeout(addMediaCtrlGeniusBtn, 250); // TODO: improve this
 
-        return console.error(`BetterYTM: Couldn't find like buttons to append lyrics button to after ${lyricsButtonAddTries} tries`);
+        return console.error(`BetterYTM: Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
     }
 
     const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
 
 
-    const gUrl = getGeniusUrl();
+    const gUrl = await getCurrentGeniusUrl();
 
     const linkElem = document.createElement("a");
     linkElem.id = "betterytm-lyrics-button";
@@ -613,29 +610,30 @@ function addGeniusButton()
 
     linkElem.appendChild(imgElem);
 
-    dbg && console.info(`BetterYTM: Inserted genius button after ${lyricsButtonAddTries} tries:`, linkElem);
+    dbg && console.info(`BetterYTM: Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
 
     insertAfter(likeContainer, linkElem);
 
 
-    currentSongTitle = songTitleElem.title;
+    mcCurrentSongTitle = songTitleElem.title;
 
     /** @param {MutationRecord[]} mutations */
-    const onMutation = (mutations) => {
-        mutations.forEach(mut => {
+    const onMutation = async (mutations) => {
+        for await(const mut of mutations)
+        {
             const newTitle = mut.target.title;
 
-            if(newTitle != currentSongTitle)
+            if(newTitle != mcCurrentSongTitle)
             {
-                dbg && console.info(`BetterYTM: Song title changed from '${currentSongTitle}' to '${newTitle}'`);
+                dbg && console.info(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
 
-                currentSongTitle = newTitle;
+                mcCurrentSongTitle = newTitle;
 
                 const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                lyricsBtn.href = getGeniusUrl();
+                lyricsBtn.href = await getCurrentGeniusUrl();
                 lyricsBtn.style.visibility = "initial";
             }
-        });
+        }
     };
 
     // since YT and YTM don't reload the page on video change, MutationObserver needs to be used
@@ -644,11 +642,20 @@ function addGeniusButton()
     obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
+
 /**
- * Returns the genius.com search URL for the current song
+ * Adds genius lyrics buttons to the song queue
+ */
+async function addQueueGeniusBtns()
+{
+
+}
+
+/**
+ * Returns the genius.com lyrics site URL for the current song
  * @returns {string|null}
  */
-function getGeniusUrl()
+async function getCurrentGeniusUrl()
 {
     try
     {
@@ -690,22 +697,31 @@ function getGeniusUrl()
 
         // TODO: artist might need further splitting before comma or ampersand
 
-        const sn = encodeURIComponent(songName);
-        const an = encodeURIComponent(artistName);
+        const query = encodeURIComponent(`${songName} ${artistName}`);
 
-        /** Autoclick URL params */
-        const acParams = features.geniusAutoclickBestResult ? `&bytm-ac-sn=${sn}&bytm-ac-an=${an}` : "";
-
-        const url = `https://genius.com/search?q=${sn}%20${an}${acParams}`;
-
-        dbg && console.info(`BetterYTM: Resolved genius.com URL for song '${songName}' by '${artistName}': ${url}`);
-
-        return url;
+        return getGeniusUrl(query);
     }
     catch(err)
     {
         console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
     }
+}
+
+/**
+ * @param {string} query
+ * @returns {string|null}
+ */
+async function getGeniusUrl(query)
+{
+    const result = await (await fetch(`https://api.sv443.net/geniurl/search/top?q=${query}`)).json();
+
+    if(result.error)
+    {
+        console.error("BetterYTM: Couldn't fetch genius.com URL:", result.message);
+        return null;
+    }
+
+    return result.url;
 }
 
 //#SECTION autoclick best genius.com result
