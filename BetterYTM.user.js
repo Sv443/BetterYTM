@@ -132,6 +132,9 @@ async function onDomLoad()
 
             if(features.geniusLyrics)
                 await addMediaCtrlGeniusBtn();
+
+            if(features.lyricsButtonsOnSongQueue)
+                await addQueueGeniusBtns();
         }
 
         if(["ytm", "yt"].includes(domain))
@@ -642,10 +645,10 @@ async function addMediaCtrlGeniusBtn()
 /**
  * Adds genius lyrics buttons to the song queue
  */
-// async function addQueueGeniusBtns()
-// {
+async function addQueueGeniusBtns()
+{
 
-// }
+}
 
 /**
  * Returns the genius.com lyrics site URL for the current song
