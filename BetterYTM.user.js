@@ -112,7 +112,7 @@ async function onDomLoad()
 {
     const domain = getDomain();
 
-    dbg && console.info(`BetterYTM: Initializing features for domain '${domain}'`);
+    dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
 
     try
     {
@@ -121,7 +121,7 @@ async function onDomLoad()
             if(features.arrowKeySupport)
             {
                 document.addEventListener("keydown", onKeyDown);
-                dbg && console.info(`BetterYTM: Added key press listener`);
+                dbg && console.log(`BetterYTM: Added key press listener`);
             }
 
             if(features.removeUpgradeTab)
@@ -147,12 +147,6 @@ async function onDomLoad()
             {
                 console.error("BetterYTM: Couldn't add menu:", err);
             }
-        }
-
-        if(domain === "genius")
-        {
-            if(features.geniusAutoclickBestResult)
-                autoclickGeniusResult();
         }
     }
     catch(err)
@@ -301,7 +295,7 @@ function addMenu()
     }
     `;
 
-    dbg && console.info("BetterYTM: Added menu elem:", backgroundElem);
+    dbg && console.log("BetterYTM: Added menu elem:", backgroundElem);
 
     /* #DEBUG */ //openMenu();
 
@@ -338,7 +332,11 @@ function onKeyDown(evt)
 {
     if(["ArrowLeft", "ArrowRight"].includes(evt.code))
     {
-        dbg && console.info(`BetterYTM: Captured key '${evt.code}' in proxy listener`);
+        // discard the event when a (text) input is currently active, like when editing a playlist
+        if(["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName))
+            return dbg && console.info(`BetterYTM: Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);
+
+        dbg && console.log(`BetterYTM: Captured key '${evt.code}' in proxy listener`);
 
         // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
         const defaultProps = {
@@ -397,7 +395,7 @@ function onKeyDown(evt)
 
             document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
 
-            dbg && console.info(`BetterYTM: Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
+            dbg && console.log(`BetterYTM: Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
         }
         else if(dbg)
             console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
@@ -420,7 +418,7 @@ function initSiteSwitch(domain)
         if(e.key == "F9")
             switchSite(domain === "yt" ? "ytm" : "yt");
     });
-    dbg && console.info(`BetterYTM: Initialized site switch listener`);
+    dbg && console.log(`BetterYTM: Initialized site switch listener`);
 }
 
 /**
@@ -429,8 +427,6 @@ function initSiteSwitch(domain)
  */
 function switchSite(newDomain)
 {
-    dbg && console.info(`BetterYTM: Switching from domain '${getDomain()}' to '${newDomain}'`);
-
     try
     {
         let subdomain;
@@ -447,7 +443,7 @@ function switchSite(newDomain)
 
         const vt = getVideoTime() ?? 0;
 
-        dbg && console.info(`BetterYTM: Found video time of ${vt} seconds`);
+        dbg && console.log(`BetterYTM: Found video time of ${vt} seconds`);
 
         const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
 
@@ -476,7 +472,7 @@ function removeUpgradeTab()
     if(tabElem)
     {
         tabElem.remove();
-        dbg && console.info(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
+        dbg && console.log(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
     }
     else if(removeUpgradeTries < triesLimit)
     {
@@ -536,7 +532,7 @@ function addWatermark()
     insertAfter(logoElem, watermark);
 
 
-    dbg && console.info(`BetterYTM: Added watermark element:`, watermark);
+    dbg && console.log(`BetterYTM: Added watermark element:`, watermark);
 }
 
 //#SECTION genius.com lyrics button
@@ -610,7 +606,7 @@ async function addMediaCtrlGeniusBtn()
 
     linkElem.appendChild(imgElem);
 
-    dbg && console.info(`BetterYTM: Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+    dbg && console.log(`BetterYTM: Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
 
     insertAfter(likeContainer, linkElem);
 
@@ -625,7 +621,7 @@ async function addMediaCtrlGeniusBtn()
 
             if(newTitle != mcCurrentSongTitle)
             {
-                dbg && console.info(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                dbg && console.log(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
 
                 mcCurrentSongTitle = newTitle;
 
@@ -724,148 +720,6 @@ async function getGeniusUrl(query)
     return result.url;
 }
 
-//#SECTION autoclick best genius.com result
-
-/**
- * Automatically clicks the best matching result in a genius.com search
- */
-function autoclickGeniusResult()
-{
-    if(!location.pathname.includes("/search"))
-        return;
-
-    const miniCards = document.querySelectorAll(".mini_card-title_and_subtitle");
-
-    if(!miniCards || miniCards.length == 0)
-    {
-        if(geniusAutoclickTries < Math.round(triesLimit * 2.5)) // tries limit higher due to lower timeout
-        {
-            geniusAutoclickTries++;
-            return setTimeout(autoclickGeniusResult, 100); // TODO: improve this
-        }
-        else
-            return console.error(`BetterYTM: Couldn't find result minicards after ${geniusAutoclickTries} tries`);
-    }
-
-    const params = getGeniusAcParams();
-
-    if(!params)
-        return console.info("BetterYTM: No query params present, not autoclicking");
-
-    const { songName, artistName } = params;
-
-    const resultNode = findMatchingGeniusResult(songName, artistName);
-
-    if(!resultNode)
-        return console.error("BetterYTM: Couldn't find matching result node");
-
-    if(features.visualizeBestResult)
-    {
-        const grandpaNode = resultNode.parentElement.parentElement;
-        grandpaNode.style.border = "2px dashed #ffff64";
-        grandpaNode.style.borderRadius = "7px";
-        grandpaNode.style.padding = "7px";
-    }
-
-    dbg && console.info(`BetterYTM: Found matching result node after ${geniusAutoclickTries} tries:`, resultNode);
-
-    resultNode.click();
-}
-
-let geniusAutoclickTries = 0;
-
-/**
- * Finds a result minicard node that matches the provided song and artist names (case insensitive)
- * @param {string} song
- * @param {string} artist
- * @returns {Element|null}
- */
-function findMatchingGeniusResult(song, artist)
-{
-    const miniCards = document.querySelectorAll(".mini_card-title_and_subtitle");
-
-    dbg && console.info(`BetterYTM: Found ${miniCards.length} minicards in results, searching for match...`);
-
-    /** @type {SearchItem<Element>[]} */
-    const searchElems = [];
-
-    for(const card of miniCards)
-    {
-        if(card.childNodes && card.childNodes.length > 0)
-        {
-            const title = Array.from(card.childNodes).find(cn => cn.classList && cn.classList.contains("mini_card-title"));
-            const subTitle = Array.from(card.childNodes).find(cn => cn.classList && cn.classList.contains("mini_card-subtitle"));
-
-            if(!title || !subTitle || !title.innerText || !subTitle.innerText)
-                continue;
-
-            const songName = title.innerText.toLowerCase();
-            const artistName = subTitle.innerText.toLowerCase();
-
-            const search = `${songName} ${artistName}`;
-
-            searchElems.push({ search, value: card });
-        }
-    }
-
-    if(searchElems.length === 0)
-        return null;
-
-    try
-    {
-        const fuseOpts = {
-            includeScore: true,
-            isCaseSensitive: false,
-            findAllMatches: true,
-            threshold: 0.7,
-            keys: [ "search" ],
-        };
-
-        // fuzzy search for best accuracy and reliability
-        const fuse = new Fuse(searchElems, fuseOpts); // eslint-disable-line no-undef
-
-        /** @type {({ item: SearchItem<Element>, refIndex: number, score: number })[]} */
-        const searchResults = fuse.search(`${song} ${artist}`);
-
-        if(searchResults.length > 0)
-        {
-            dbg && console.info(`BetterYTM: Found ${searchResults.length} results:`, searchResults);
-
-            const resultCard = searchResults[0].item.value;
-            const resultText = searchResults[0].item.search;
-
-            dbg && console.info(`BetterYTM: Found best result '${resultText}':`, resultCard);
-
-            return resultCard;
-        }
-
-        return null;
-    }
-    catch(err)
-    {
-        console.error("BetterYTM: Couldn't fuzzy search for matching result:", err);
-    }
-}
-
-/**
- * Returns autoclick query params if they exist, else returns null
- * @returns {({ songName: string, artistName: string })|null}
- */
-function getGeniusAcParams()
-{
-    const params = location.search.substring(1).split(/&/g);
-
-    if(params.find(p => p.includes("bytm-ac-sn=")) && params.find(p => p.includes("bytm-ac-an=")))
-    {
-        const songName = decodeURIComponent(params.find(p => p.includes("bytm-ac-sn=")).split(/=/)[1]);
-        const artistName = decodeURIComponent(params.find(p => p.includes("bytm-ac-an=")).split(/=/)[1]);
-
-        return { songName, artistName };
-    }
-
-    return null;
-}
-
 
 //#MARKER other
 
@@ -883,13 +737,12 @@ function getDomain()
         return "ytm";
     else if(hostname.includes("youtube"))
         return "yt";
-    else if(hostname.includes("genius"))
-        return "genius";
     else
         throw new Error("BetterYTM is running on an unexpected website");
 }
 
 /**
+ * TODO: this is entirely broken now
  * Returns the current video time in seconds
  * @returns {number|null} Returns null if the video time is unavailable
  */
@@ -945,7 +798,7 @@ function addGlobalStyle(style, ref)
 
     document.querySelector("head").appendChild(styleElem);
 
-    dbg && console.info(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
+    dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
 }
 
 /**
