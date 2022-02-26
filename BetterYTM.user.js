@@ -624,13 +624,20 @@ async function addMediaCtrlGeniusBtn()
 
             if(newTitle != mcCurrentSongTitle)
             {
+                const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+
                 dbg && console.log(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+
+                lyricsBtn.style.cursor = "wait";
+                lyricsBtn.style.pointerEvents = "none";
 
                 mcCurrentSongTitle = newTitle;
 
-                const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                lyricsBtn.href = await getCurrentGeniusUrl();
+                lyricsBtn.href = await getCurrentGeniusUrl(); // can take a second or two
+
+                lyricsBtn.style.cursor = "pointer";
                 lyricsBtn.style.visibility = "initial";
+                lyricsBtn.style.pointerEvents = "initial";
             }
         }
     };
