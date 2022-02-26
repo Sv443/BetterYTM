@@ -20,7 +20,6 @@
 // @connect         githubusercontent.com
 // @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
 // @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/BetterYTM.user.js
-// @require         https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js
 // ==/UserScript==
 
 
@@ -68,11 +67,6 @@ await saveFeatureConf(features);
 
 
 /** @typedef {"yt"|"ytm"} Domain Constant string representation of which domain this script is currently running on */
-
-/**
- * @typedef {({ search: string, value?: T })} SearchItem An item that can be searched for in a fuse.js fuzzy search
- * @template T If the search string differs from the actual desired value, set the value prop with this template type
- */
 
 
 //#MARKER init
@@ -702,8 +696,9 @@ async function getCurrentGeniusUrl()
         const artistName = splitArtist(songMetaElem.title);
 
         // TODO: artist might need further splitting before comma or ampersand
+        // TODO: song title might need *less* splitting for something like "MyNewSong (wip)"
 
-        const query = encodeURIComponent(`${songName} ${artistName}`);
+        const query = encodeURIComponent(`${artistName} ${songName}`);
 
         return getGeniusUrl(query);
     }
