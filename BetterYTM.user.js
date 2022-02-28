@@ -41,7 +41,7 @@ const defaultFeatures = {
     /** Whether to remove the "Upgrade" / YT Music Premium tab */
     removeUpgradeTab: true,
 
-    /** Whether to add a button or key combination (TODO) to switch between the YT and YTM sites on a video */
+    /** Whether to add a key combination to switch between the YT and YTM sites on a video */
     switchBetweenSites: true,
     /** Adds a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab */
     geniusLyrics: true,
@@ -75,6 +75,12 @@ await saveFeatureConf(features);
 /** Specifies the hard limit for repetitive tasks */
 const triesLimit = 20;
 
+/** Base URL of geniURL */
+const geniURLBaseUrl = "https://api.sv443.net/geniurl";
+
+/** GeniURL endpoint that gives song metadata when provided with a `?q` parameter - [more info](https://api.sv443.net/geniurl) */
+const geniURLSearchTopUrl = `${geniURLBaseUrl}/search/top`;
+
 const info = Object.freeze({
     name: GM.info.script.name, // eslint-disable-line no-undef
     version: GM.info.script.version, // eslint-disable-line no-undef
@@ -86,6 +92,7 @@ function init()
     try
     {
         console.log(`${info.name} v${info.version} - ${info.namespace}`);
+        console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${geniURLBaseUrl}`);
 
         document.addEventListener("DOMContentLoaded", onDomLoad);
     }
@@ -665,14 +672,12 @@ async function getCurrentGeniusUrl()
         if(!songTitleElem || !songMetaElem || !songTitleElem.title)
             return null;
 
+        /** @param {string} songName */
         const sanitizeSongName = (songName) => {
             let sanitized;
 
             if(songName.match(/\(|feat|ft/gmi))
-            {
-                // should hopefully trim right after the song name
-                sanitized = songName.substring(0, songName.indexOf("("));
-            }
+                sanitized = songName.replace(/(\(|feat|ft).*$/gmi); // should hopefully trim right after the song name
 
             return (sanitized || songName).trim();
         };
@@ -687,7 +692,7 @@ async function getCurrentGeniusUrl()
             if(songMeta.match(/,/))
                 songMeta = songMeta.split(/,\s*/gm)[0];
 
-            return songMeta;
+            return songMeta.trim();
         }
 
         const songNameRaw = songTitleElem.title;
@@ -696,7 +701,6 @@ async function getCurrentGeniusUrl()
         const artistName = splitArtist(songMetaElem.title);
 
         // TODO: artist might need further splitting before comma or ampersand
-        // TODO: song title might need *less* splitting for something like "MyNewSong (wip)"
 
         const query = encodeURIComponent(`${artistName} ${songName}`);
 
@@ -714,7 +718,7 @@ async function getCurrentGeniusUrl()
  */
 async function getGeniusUrl(query)
 {
-    const result = await (await fetch(`https://api.sv443.net/geniurl/search/top?q=${query}`)).json();
+    const result = await (await fetch(`${geniURLSearchTopUrl}?q=${query}`)).json();
 
     if(result.error)
     {
