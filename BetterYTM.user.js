@@ -73,7 +73,7 @@ await saveFeatureConf(features);
 
 
 /** Specifies the hard limit for repetitive tasks */
-const triesLimit = 20;
+const triesLimit = 40;
 
 /** Base URL of geniURL */
 const geniURLBaseUrl = "https://api.sv443.net/geniurl";
@@ -666,6 +666,9 @@ async function getCurrentGeniusUrl()
 {
     try
     {
+        // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+        const isVideo = typeof document.querySelector("ytmusic-player").getAttribute("video-mode_") === "string";
+
         const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
         const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
 
@@ -676,15 +679,15 @@ async function getCurrentGeniusUrl()
         const sanitizeSongName = (songName) => {
             let sanitized;
 
-            if(songName.match(/\(|feat|ft/gmi))
-                sanitized = songName.replace(/(\(|feat|ft).*$/gmi); // should hopefully trim right after the song name
+            if(songName.match(/\(\s*(feat|ft)/gmi))
+                sanitized = songName.replace(/(\(|feat|ft).*$/gmi, ""); // should hopefully trim right after the song name
 
             return (sanitized || songName).trim();
         };
 
         /** @param {string} songMeta */
         const splitArtist = (songMeta) => {
-            songMeta = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; (•) character
+            songMeta = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at bullet (&bull; / •) character
 
             if(songMeta.match(/&/))
                 songMeta = songMeta.split(/\s*&\s*/gm)[0];
@@ -700,11 +703,23 @@ async function getCurrentGeniusUrl()
 
         const artistName = splitArtist(songMetaElem.title);
 
+        const defQuery = encodeURIComponent(`${artistName} ${songName}`);
+
+        /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
+        const getGeniusUrlVideo = async () => {
+            if(!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                return await getGeniusUrl(defQuery);
+
+            const query = encodeURIComponent(songName.split("-").map(v => v.trim()).join(" "));
+
+            return await getGeniusUrl(query);
+        };
+
         // TODO: artist might need further splitting before comma or ampersand
 
-        const query = encodeURIComponent(`${artistName} ${songName}`);
+        const url = isVideo ? await getGeniusUrlVideo() : (await getGeniusUrl(defQuery) ?? await getGeniusUrlVideo());
 
-        return getGeniusUrl(query);
+        return url;
     }
     catch(err)
     {
@@ -714,19 +729,28 @@ async function getCurrentGeniusUrl()
 
 /**
  * @param {string} query
- * @returns {string|null}
+ * @returns {Promise<string|undefined>}
  */
 async function getGeniusUrl(query)
 {
-    const result = await (await fetch(`${geniURLSearchTopUrl}?q=${query}`)).json();
-
-    if(result.error)
+    try
     {
-        console.error("BetterYTM: Couldn't fetch genius.com URL:", result.message);
-        return null;
-    }
+        dbg && console.log(`BetterYTM: Fetching genius URL from geniURL API for query '${query}'`);
+        const result = await (await fetch(`${geniURLSearchTopUrl}?q=${query}`)).json();
 
-    return result.url;
+        if(result.error)
+        {
+            console.error("BetterYTM: Couldn't fetch genius.com URL:", result.message);
+            return undefined;
+        }
+
+        return result?.url;
+    }
+    catch(err)
+    {
+        console.error("Couldn't get genius URL due to error:", err);
+        return undefined;
+    }
 }
 
 
