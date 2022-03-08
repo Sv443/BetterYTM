@@ -573,6 +573,7 @@ async function addMediaCtrlGeniusBtn()
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
     linkElem.style.visibility = gUrl ? "initial" : "hidden";
+    linkElem.style.display = gUrl ? "initial" : "none";
 
     const style = `\
     #betterytm-lyrics-button {
@@ -617,8 +618,7 @@ async function addMediaCtrlGeniusBtn()
 
     mcCurrentSongTitle = songTitleElem.title;
 
-    /** @param {MutationRecord[]} mutations */
-    const onMutation = async (mutations) => {
+    const onMutation = async (/**@type {MutationRecord[]}*/ mutations) => {
         for await(const mut of mutations)
         {
             const newTitle = mut.target.title;
@@ -638,6 +638,7 @@ async function addMediaCtrlGeniusBtn()
 
                 lyricsBtn.style.cursor = "pointer";
                 lyricsBtn.style.visibility = "initial";
+                lyricsBtn.style.display = "initial";
                 lyricsBtn.style.pointerEvents = "initial";
             }
         }
@@ -660,10 +661,12 @@ async function addQueueGeniusBtns()
 
 /**
  * Returns the genius.com lyrics site URL for the current song
- * @returns {string|null}
+ * @returns {Promise<string|null>}
  */
 async function getCurrentGeniusUrl()
 {
+    return null; //#DEBUG TODO: test how button reacts to API error
+
     try
     {
         // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
@@ -725,6 +728,7 @@ async function getCurrentGeniusUrl()
     catch(err)
     {
         console.error(`BetterYTM: Couldn't resolve genius.com URL:`, err);
+        return null;
     }
 }
 
