@@ -48,6 +48,11 @@ const defaultFeatures = {
     /** Adds a lyrics button to each song in the queue ("up next" tab) */
     lyricsButtonsOnSongQueue: true,
 
+    /** Makes the volume slider bigger */
+    bigVolumeSlider: true,
+    /** The smaller this number, the finer the volume control - YTM's default is 5 */
+    volumeSliderStep: 2,
+
     /** Set to true to remove the watermark under the YTM logo */
     removeWatermark: false,
 };
@@ -56,7 +61,8 @@ const featureConf = await loadFeatureConf();
 
 console.log("bytm load", featureConf);
 
-const features = { ...defaultFeatures, ...featureConf };
+// const features = { ...defaultFeatures, ...featureConf };
+const features = { ...defaultFeatures };
 
 console.log("bytm save", features);
 
@@ -136,6 +142,11 @@ async function onDomLoad()
 
             if(features.lyricsButtonsOnSongQueue)
                 await addQueueGeniusBtns();
+
+            if(features.bigVolumeSlider)
+                makeVolSliderBig();
+
+            setVolumeSliderStep();
         }
 
         if(["ytm", "yt"].includes(domain))
@@ -665,8 +676,6 @@ async function addQueueGeniusBtns()
  */
 async function getCurrentGeniusUrl()
 {
-    return null; //#DEBUG TODO: test how button reacts to API error
-
     try
     {
         // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
@@ -758,6 +767,30 @@ async function getGeniusUrl(query)
     }
 }
 
+// #SECTION volume slider
+
+/**
+ * Makes the volume slider big
+ */
+function makeVolSliderBig()
+{
+const style = `\
+.volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
+    width: 200px !important;
+}`;
+
+    addGlobalStyle(style, "big_vol_slider");
+}
+
+/**
+ * Sets the `step` attribute of the volume slider
+ */
+function setVolumeSliderStep()
+{
+    const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+
+    sliderElem.setAttribute("step", features.volumeSliderStep);
+}
 
 //#MARKER other
 
