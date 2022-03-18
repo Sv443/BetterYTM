@@ -37,46 +37,46 @@ const branch = "develop"; // #DEBUG#
 
 const featInfo = {
     arrowKeySupport: {
-        desc: "Arrow keys should skip forwards and backwards by 10 seconds",
+        desc: "Arrow keys should skip forwards and backwards by 10 seconds?",
         type: "toggle",
         default: true,
     },
     removeUpgradeTab: {
-        desc: "Remove the \"Upgrade\" / YT Music Premium tab",
+        desc: "Remove the \"Upgrade\" / YT Music Premium tab?",
         type: "toggle",
         default: true,
     },
     switchBetweenSites: {
-        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
+        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song?",
         type: "toggle",
         default: true,
     },
     geniusLyrics: {
-        desc: "Add a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab",
+        desc: "Add a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab?",
         type: "toggle",
         default: true,
     },
     lyricsButtonsOnSongQueue: {
-        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)",
+        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)?",
         type: "toggle",
         default: true,
     },
     volumeSliderSize: {
-        desc: "Set the width of the volume slider",
+        desc: "The width of the volume slider in px",
         type: "number",
         min: 10,
         max: 1000,
         default: 175,
     },
     volumeSliderStep: {
-        desc: "The smaller this number, the finer the volume control",
+        desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
         type: "slider",
         min: 1,
         max: 20,
         default: 2,
     },
     removeWatermark: {
-        desc: "Remove the watermark under the YTM logo",
+        desc: "Remove the watermark under the YTM logo?",
         type: "toggle",
         default: false,
     },
@@ -237,7 +237,7 @@ function addMenu()
 
     // title
     const titleCont = document.createElement("div");
-    titleCont.style.padding = "8px 20px";
+    titleCont.style.padding = "8px 20px 20px 8px";
     titleCont.style.display = "flex";
     titleCont.style.justifyContent = "space-between";
     titleCont.id = "betterytm-menu-titlecont";
@@ -257,12 +257,14 @@ function addMenu()
         anchorElem.href = href;
         anchorElem.title = title;
         anchorElem.style.marginLeft = "10px";
+        
+        const imgElem = document.createElement("img");
+        imgElem.className = "betterytm-menu-img";
+        imgElem.src = imgSrc;
+        imgElem.style.width = "32px";
+        imgElem.style.height = "32px";
 
-        const linkElem = document.createElement("img");
-        linkElem.className = "betterytm-menu-img";
-        linkElem.src = imgSrc;
-
-        anchorElem.appendChild(linkElem);
+        anchorElem.appendChild(imgElem);
         linksCont.appendChild(anchorElem);
     };
 
@@ -273,7 +275,9 @@ function addMenu()
     closeElem.id = "betterytm-menu-close";
     closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/icon/close.png`;
     closeElem.title = "Click to close the menu";
-    closeElem.style.marginLeft = "20px";
+    closeElem.style.marginLeft = "50px";
+    closeElem.style.width = "32px";
+    closeElem.style.height = "32px";
     closeElem.addEventListener("click", closeMenu);
 
     linksCont.appendChild(closeElem);
@@ -332,7 +336,7 @@ function addMenu()
         {
             const textElem = document.createElement("span");
             textElem.style.display = "inline-block";
-            textElem.style.fontSize = "16px";
+            textElem.style.fontSize = "15px";
             textElem.innerText = desc;
 
             ftConfElem.appendChild(textElem);
@@ -374,7 +378,7 @@ function addMenu()
             if(type === "toggle")
                 inputElem.checked = initialVal;
 
-            const fmtVal = v => typeof v === "number" ? `${v}px` : v;
+            const fmtVal = v => String(v);
 
             let labelElem;
             if(type === "slider")
@@ -416,6 +420,22 @@ function addMenu()
         featuresCont.appendChild(ftConfElem);
     }
 
+    const footerElem = document.createElement("div");
+    footerElem.style.marginTop = "40px";
+    footerElem.style.fontSize = "17px";
+    footerElem.style.textDecoration = "underline";
+    footerElem.style.padding = "8px 20px";
+    footerElem.innerText = "You need to reload the page to apply changes.";
+
+    const reloadElem = document.createElement("button");
+    reloadElem.style.marginLeft = "20px";
+    reloadElem.innerText = "Reload now";
+    reloadElem.title = "Click to reload the page";
+    reloadElem.addEventListener("click", () => location.reload());
+
+    footerElem.appendChild(reloadElem);
+    featuresCont.appendChild(footerElem);
+
 
     // finalize
     menuContainer.appendChild(titleCont);
@@ -442,7 +462,7 @@ function addMenu()
         display: inline-block;
         position: fixed;
         width: 50vw;
-        height: 50vh;
+        height: auto;
         min-height: 500px;
         left: 25vw;
         top: 25vh;
@@ -676,24 +696,22 @@ function removeUpgradeTab()
 function addWatermark()
 {
     const watermark = document.createElement("a");
-
     watermark.id = "betterytm-watermark";
     watermark.className = "style-scope ytmusic-nav-bar";
-
     watermark.innerText = info.name;
-    watermark.title = `${info.name} v${info.version}`;
+    watermark.title = "Open menu";
+    watermark.href = "#";
 
-    watermark.href = info.namespace;
-    watermark.target = "_blank";
-    watermark.rel = "noopener noreferrer";
+    watermark.addEventListener("click", () => openMenu());
 
 
     const style = `\
     #betterytm-watermark {
+        font-size: 10px;
         display: inline-block;
         position: absolute;
         left: 45px;
-        top: 43px;
+        top: 46px;
         z-index: 10;
         color: white;
         text-decoration: none;
