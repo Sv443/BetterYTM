@@ -10,7 +10,7 @@
 // @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://www.google.com/s2/favicons?domain=music.youtube.com
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/200.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
