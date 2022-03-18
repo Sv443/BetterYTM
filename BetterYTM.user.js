@@ -1,6 +1,5 @@
 // ==UserScript==
 // @name            BetterYTM
-// @name:de         BetterYTM
 // @namespace       https://github.com/Sv443/BetterYTM#readme
 // @version         1.0.0
 // @license         MIT
@@ -10,7 +9,7 @@
 // @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/200.png
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/v2.1_200.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
@@ -27,42 +26,74 @@
 /* C&D this, Susan 🖕 */
 
 
-(async () => {
 "use-strict";
 
-
+(async () => {
 /** Set to true to enable debug mode for more output in the JS console */
 const dbg = true;
 
+// const branch = "main";
+const branch = "develop"; // #DEBUG#
 
-const defaultFeatures = {
-    /** Whether arrow keys should skip forwards and backwards by 10 seconds */
-    arrowKeySupport: true,
-    /** Whether to remove the "Upgrade" / YT Music Premium tab */
-    removeUpgradeTab: true,
-
-    /** Whether to add a key combination to switch between the YT and YTM sites on a video */
-    switchBetweenSites: true,
-    /** Adds a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab */
-    geniusLyrics: true,
-    /** Adds a lyrics button to each song in the queue ("up next" tab) */
-    lyricsButtonsOnSongQueue: true,
-
-    /** Makes the volume slider bigger */
-    bigVolumeSlider: true,
-    /** The smaller this number, the finer the volume control - YTM's default is 5 */
-    volumeSliderStep: 2,
-
-    /** Set to true to remove the watermark under the YTM logo */
-    removeWatermark: false,
+const featInfo = {
+    arrowKeySupport: {
+        desc: "Arrow keys should skip forwards and backwards by 10 seconds",
+        type: "toggle",
+        default: true,
+    },
+    removeUpgradeTab: {
+        desc: "Remove the \"Upgrade\" / YT Music Premium tab",
+        type: "toggle",
+        default: true,
+    },
+    switchBetweenSites: {
+        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
+        type: "toggle",
+        default: true,
+    },
+    geniusLyrics: {
+        desc: "Add a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab",
+        type: "toggle",
+        default: true,
+    },
+    lyricsButtonsOnSongQueue: {
+        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)",
+        type: "toggle",
+        default: true,
+    },
+    volumeSliderSize: {
+        desc: "Set the width of the volume slider",
+        type: "number",
+        min: 10,
+        max: 1000,
+        default: 175,
+    },
+    volumeSliderStep: {
+        desc: "The smaller this number, the finer the volume control",
+        type: "slider",
+        min: 1,
+        max: 20,
+        default: 2,
+    },
+    removeWatermark: {
+        desc: "Remove the watermark under the YTM logo",
+        type: "toggle",
+        default: false,
+    },
 };
+
+/** @type {FeatureConfig} */
+const defaultFeatures = Object.keys(featInfo).reduce((acc, key) => {
+    acc[key] = featInfo[key].default;
+    return acc;
+}, {});
 
 const featureConf = await loadFeatureConf();
 
 console.log("bytm load", featureConf);
 
-// const features = { ...defaultFeatures, ...featureConf };
-const features = { ...defaultFeatures };
+const features = { ...defaultFeatures, ...featureConf };
+// const features = { ...defaultFeatures };
 
 console.log("bytm save", features);
 
@@ -74,6 +105,8 @@ await saveFeatureConf(features);
 
 /** @typedef {"yt"|"ytm"} Domain Constant string representation of which domain this script is currently running on */
 
+/** @typedef {typeof defaultFeatures} FeatureConfig */
+
 
 //#MARKER init
 
@@ -82,10 +115,10 @@ await saveFeatureConf(features);
 const triesLimit = 40;
 
 /** Base URL of geniURL */
-const geniURLBaseUrl = "https://api.sv443.net/geniurl";
+const geniUrlBase = "https://api.sv443.net/geniurl";
 
 /** GeniURL endpoint that gives song metadata when provided with a `?q` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchTopUrl = `${geniURLBaseUrl}/search/top`;
+const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 
 const info = Object.freeze({
     name: GM.info.script.name, // eslint-disable-line no-undef
@@ -98,7 +131,7 @@ function init()
     try
     {
         console.log(`${info.name} v${info.version} - ${info.namespace}`);
-        console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${geniURLBaseUrl}`);
+        console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${geniUrlBase}`);
 
         document.addEventListener("DOMContentLoaded", onDomLoad);
     }
@@ -143,10 +176,10 @@ async function onDomLoad()
             if(features.lyricsButtonsOnSongQueue)
                 await addQueueGeniusBtns();
 
-            if(features.bigVolumeSlider)
-                makeVolSliderBig();
+            if(typeof features.volumeSliderSize === "number")
+                setVolSliderSize(features.volumeSliderSize);
 
-            setVolumeSliderStep();
+            setVolSliderStep();
         }
 
         if(["ytm", "yt"].includes(domain))
@@ -199,15 +232,19 @@ function addMenu()
     const menuContainer = document.createElement("div");
     menuContainer.title = "";
     menuContainer.id = "betterytm-menu";
+    menuContainer.style.borderRadius = "15px";
 
 
     // title
     const titleCont = document.createElement("div");
+    titleCont.style.padding = "8px 20px";
+    titleCont.style.display = "flex";
+    titleCont.style.justifyContent = "space-between";
     titleCont.id = "betterytm-menu-titlecont";
 
     const titleElem = document.createElement("h2");
     titleElem.id = "betterytm-menu-title";
-    titleElem.innerText = "BetterYTM - Menu";
+    titleElem.innerText = "BetterYTM - Configuration";
 
     const linksCont = document.createElement("div");
     linksCont.id = "betterytm-menu-linkscont";
@@ -219,6 +256,7 @@ function addMenu()
         anchorElem.target = "_blank";
         anchorElem.href = href;
         anchorElem.title = title;
+        anchorElem.style.marginLeft = "10px";
 
         const linkElem = document.createElement("img");
         linkElem.className = "betterytm-menu-img";
@@ -228,23 +266,155 @@ function addMenu()
         linksCont.appendChild(anchorElem);
     };
 
-    addLink("TODO:github.png", info.namespace, `${info.name} on GitHub`);
-    addLink("TODO:greasyfork.png", "https://greasyfork.org/", `${info.name} on GreasyFork`);
+    addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/github.png`, info.namespace, `${info.name} on GitHub`);
+    addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${info.name} on GreasyFork`);
 
     const closeElem = document.createElement("img");
     closeElem.id = "betterytm-menu-close";
-    closeElem.src = "TODO:close.png";
+    closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/icon/close.png`;
     closeElem.title = "Click to close the menu";
+    closeElem.style.marginLeft = "20px";
     closeElem.addEventListener("click", closeMenu);
+
+    linksCont.appendChild(closeElem);
 
     titleCont.appendChild(titleElem);
     titleCont.appendChild(linksCont);
-    titleCont.appendChild(closeElem);
 
 
     // TODO: features
     const featuresCont = document.createElement("div");
     featuresCont.id = "betterytm-menu-opts";
+    featuresCont.style.display = "flex";
+    featuresCont.style.flexDirection = "column";
+
+    /**
+     * Gets called whenever the feature config is changed
+     * @param {keyof typeof defaultFeatures} key
+     * @param {number|boolean} initialVal
+     * @param {number|boolean} newVal
+     */
+    const confChanged = async (key, initialVal, newVal) => {
+        dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${initialVal}' to '${newVal}'`);
+
+        /** @type {FeatureConfig} */
+        const featConf = {...(await loadFeatureConf())};
+
+        featConf[key] = newVal;
+
+        await saveFeatureConf(featConf);
+
+        dbg && console.log("BetterYTM: Saved feature config changes");
+
+        console.log("#DEBUG", await GM.getValue("bytm-config")); // eslint-disable-line no-undef
+    };
+
+    const featKeys = Object.keys(features);
+    for(const key of featKeys)
+    {
+        const ftInfo = featInfo[key];
+
+        if(!ftInfo)
+            continue;
+
+        const { desc, type, default: ftDef } = ftInfo;
+        const val = features[key];
+
+        const initialVal = val || ftDef;
+
+        const ftConfElem = document.createElement("div");
+        ftConfElem.id = `bytm-ftconf-${key}`;
+        ftConfElem.style.display = "flex";
+        ftConfElem.style.flexDirection = "row";
+        ftConfElem.style.justifyContent = "space-between";
+        ftConfElem.style.padding = "8px 20px";
+
+        {
+            const textElem = document.createElement("span");
+            textElem.style.display = "inline-block";
+            textElem.style.fontSize = "16px";
+            textElem.innerText = desc;
+
+            ftConfElem.appendChild(textElem);
+        }
+
+        {
+            let inputType;
+            switch(type)
+            {
+                case "toggle":
+                    inputType = "checkbox";
+                    break;
+                case "slider":
+                    inputType = "range";
+                    break;
+                case "number":
+                    inputType = "number";
+                    break;
+            }
+
+            const inputElemId = `bytm-ftconf-${key}-input`;
+
+            const ctrlElem = document.createElement("span");
+            ctrlElem.style.display = "inline-block";
+            ctrlElem.style.whiteSpace = "nowrap";
+
+            const inputElem = document.createElement("input");
+            inputElem.id = inputElemId;
+            inputElem.style.marginRight = "20px";
+            inputElem.type = inputType;
+            inputElem.value = initialVal;
+
+            if(ftInfo.min && ftInfo.max)
+            {
+                inputElem.min = ftInfo.min;
+                inputElem.max = ftInfo.max;
+            }
+
+            if(type === "toggle")
+                inputElem.checked = initialVal;
+
+            const fmtVal = v => typeof v === "number" ? `${v}px` : v;
+
+            let labelElem;
+            if(type === "slider")
+            {
+                labelElem = document.createElement("label");
+                labelElem.style.marginRight = "20px";
+                labelElem.style.fontSize = "16px";
+                labelElem["for"] = inputElemId;
+                labelElem.innerText = fmtVal(initialVal);
+
+                inputElem.addEventListener("change", () => labelElem.innerText = fmtVal(parseInt(inputElem.value)));
+            }
+
+            inputElem.addEventListener("change", ({ currentTarget }) => {
+                let v = parseInt(currentTarget.value);
+                if(isNaN(v))
+                    v = currentTarget.value;
+                confChanged(key, initialVal, (type !== "toggle" ? v : currentTarget.checked));
+            });
+
+            const resetElem = document.createElement("button");
+            resetElem.innerText = "Reset";
+            resetElem.addEventListener("click", () => {
+                inputElem[type !== "toggle" ? "value" : "checked"] = ftDef;
+
+                if(labelElem)
+                    labelElem.innerText = fmtVal(parseInt(inputElem.value));
+
+                confChanged(key, initialVal, ftDef);
+            });
+
+            labelElem && ctrlElem.appendChild(labelElem);
+            ctrlElem.appendChild(inputElem);
+            ctrlElem.appendChild(resetElem);
+
+            ftConfElem.appendChild(ctrlElem);
+        }
+
+        featuresCont.appendChild(ftConfElem);
+    }
 
 
     // finalize
@@ -312,7 +482,7 @@ function addMenu()
 
     dbg && console.log("BetterYTM: Added menu elem:", backgroundElem);
 
-    /* #DEBUG */ //openMenu();
+    /* #DEBUG */ openMenu();
 
     addGlobalStyle(menuStyle, "menu");
 }
@@ -325,13 +495,13 @@ function closeMenu()
     menuBg.style.display = "none";
 }
 
-// function openMenu()
-// {
-//     const menuBg = document.querySelector("#betterytm-menu-bg");
+function openMenu()
+{
+    const menuBg = document.querySelector("#betterytm-menu-bg");
 
-//     menuBg.style.visibility = "visible";
-//     menuBg.style.display = "block";
-// }
+    menuBg.style.visibility = "visible";
+    menuBg.style.display = "block";
+}
 
 
 //#MARKER features
@@ -770,22 +940,27 @@ async function getGeniusUrl(query)
 // #SECTION volume slider
 
 /**
- * Makes the volume slider big
+ * Sets the volume slider to a set size
  */
-function makeVolSliderBig()
+function setVolSliderSize()
 {
+    const { volumeSliderSize: size } = features;
+
+    if(typeof size !== "number" || isNaN(parseInt(size)))
+        return;
+
 const style = `\
 .volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
-    width: 200px !important;
+    width: ${size}px !important;
 }`;
 
-    addGlobalStyle(style, "big_vol_slider");
+    addGlobalStyle(style, "vol_slider_size");
 }
 
 /**
  * Sets the `step` attribute of the volume slider
  */
-function setVolumeSliderStep()
+function setVolSliderStep()
 {
     const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
 
@@ -853,14 +1028,17 @@ function insertAfter(beforeNode, afterNode)
 }
 
 /**
- * Adds global CSS style through a &lt;style&gt; element in the document's &lt;head&gt;
+ * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param {string} style CSS string
- * @param {string} ref Reference name that is included in the &lt;style&gt;'s ID
+ * @param {string} [ref] Reference name that is included in the `<style>`'s ID - defaults to a random number if left undefined
  */
 function addGlobalStyle(style, ref)
 {
+    if(typeof ref !== "string" || ref.length === 0)
+        ref = String(Math.floor(Math.random() * 1000));
+
     const styleElem = document.createElement("style");
-    styleElem.id = `betterytm-${ref}-style`;
+    styleElem.id = `bytm-style-${ref}`;
 
     if(styleElem.styleSheet)
         styleElem.styleSheet.cssText = style;
@@ -872,21 +1050,39 @@ function addGlobalStyle(style, ref)
     dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
 }
 
+//#SECTION feature config
+
 /**
  * Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved
- * @returns {Promise<Readonly<typeof defaultFeatures | {}>>}
+ * @returns {Promise<Readonly<FeatureConfig | {}>>}
  */
 async function loadFeatureConf()
 {
-    /** @type {string} */
-    const featureConf = await GM.getValue("bytm-featureconf"); // eslint-disable-line no-undef
+    const defConf = Object.freeze({...defaultFeatures});
 
-    return Object.freeze(featureConf ? JSON.parse(featureConf) : {});
+    try
+    {
+        /** @type {string} */
+        const featureConf = await GM.getValue("bytm-config"); // eslint-disable-line no-undef
+
+        if(!featureConf)
+        {
+            await setDefaultFeatConf();
+            return defConf;
+        }
+
+        return Object.freeze(featureConf ? JSON.parse(featureConf) : {});
+    }
+    catch(err)
+    {
+        await setDefaultFeatConf();
+        return defConf;
+    }
 }
 
 /**
  * Saves a feature configuration saved persistently
- * @param {typeof defaultFeatures} featureConf
+ * @param {FeatureConfig} featureConf
  * @returns {Promise<void>}
  */
 function saveFeatureConf(featureConf)
@@ -894,7 +1090,15 @@ function saveFeatureConf(featureConf)
     if(!featureConf || typeof featureConf != "object")
         throw new TypeError("Feature config not provided or invalid");
 
-    return GM.setValue("bytm-featureconf", JSON.stringify(featureConf)); // eslint-disable-line no-undef
+    return GM.setValue("bytm-config", JSON.stringify(featureConf)); // eslint-disable-line no-undef
+}
+
+/**
+ * @returns {Promise<void>}
+ */
+function setDefaultFeatConf()
+{
+    return GM.setValue("bytm-config", JSON.stringify(defaultFeatures)); // eslint-disable-line no-undef
 }
 
 init(); // call init() when script is loaded
