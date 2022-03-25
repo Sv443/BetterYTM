@@ -502,8 +502,6 @@ function addMenu()
 
     dbg && console.log("BetterYTM: Added menu elem:", backgroundElem);
 
-    /* #DEBUG */ openMenu();
-
     addGlobalStyle(menuStyle, "menu");
 }
 
@@ -772,11 +770,10 @@ async function addMediaCtrlGeniusBtn()
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
     linkElem.style.visibility = gUrl ? "initial" : "hidden";
-    linkElem.style.display = gUrl ? "initial" : "none";
+    linkElem.style.display = gUrl ? "inline-flex" : "none";
 
     const style = `\
     #betterytm-lyrics-button {
-        display: inline-flex;
         align-items: center;
         justify-content: center;
         position: relative;
@@ -837,7 +834,7 @@ async function addMediaCtrlGeniusBtn()
 
                 lyricsBtn.style.cursor = "pointer";
                 lyricsBtn.style.visibility = "initial";
-                lyricsBtn.style.display = "initial";
+                lyricsBtn.style.display = "inline-flex";
                 lyricsBtn.style.pointerEvents = "initial";
             }
         }
