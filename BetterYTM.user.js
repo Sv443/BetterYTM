@@ -877,7 +877,7 @@ async function getCurrentGeniusUrl()
 
         /** @param {string} songName */
         const sanitizeSongName = (songName) => {
-            const songNameRegex = /\((\w|\d|\s|[.,\-_&/])+\)/gmi;
+            const songNameRegex = /\(.+\)/gmi;
             let sanitized;
 
             if(songName.match(songNameRegex))
