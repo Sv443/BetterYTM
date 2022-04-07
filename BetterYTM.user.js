@@ -38,27 +38,27 @@ const branch = "develop"; // #DEBUG#
 /** Contains all possible features with their default values and other config */
 const featInfo = {
     arrowKeySupport: {
-        desc: "Should arrow keys skip forwards and backwards by 10 seconds?",
+        desc: "Arrow keys skip forwards and backwards by 10 seconds",
         type: "toggle",
         default: true,
     },
     removeUpgradeTab: {
-        desc: "Remove the \"Upgrade\" / YT Music Premium tab?",
+        desc: "Remove the \"Upgrade\" / YT Music Premium tab",
         type: "toggle",
         default: true,
     },
     switchBetweenSites: {
-        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song?",
+        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
         type: "toggle",
         default: true,
     },
     geniusLyrics: {
-        desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab?",
+        desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
         type: "toggle",
         default: true,
     },
     lyricsButtonsOnSongQueue: {
-        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)?",
+        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)",
         type: "toggle",
         default: true,
     },
@@ -78,7 +78,7 @@ const featInfo = {
         default: 2,
     },
     watermarkEnabled: {
-        desc: "Enable the BetterYTM watermark under the YTM logo?",
+        desc: "Show a BetterYTM watermark under the YTM logo",
         type: "toggle",
         default: true,
     },
@@ -235,11 +235,14 @@ function addMenu()
     menuContainer.title = "";
     menuContainer.id = "betterytm-menu";
     menuContainer.style.borderRadius = "15px";
+    menuContainer.style.display = "flex";
+    menuContainer.style.flexDirection = "column";
+    menuContainer.style.justifyContent = "space-between";
 
 
     // title
     const titleCont = document.createElement("div");
-    titleCont.style.padding = "8px 20px 20px 8px";
+    titleCont.style.padding = "8px 20px 15px 8px";
     titleCont.style.display = "flex";
     titleCont.style.justifyContent = "space-between";
     titleCont.id = "betterytm-menu-titlecont";
@@ -367,7 +370,7 @@ function addMenu()
 
             const inputElem = document.createElement("input");
             inputElem.id = inputElemId;
-            inputElem.style.marginRight = "25px";
+            inputElem.style.marginRight = "37px";
             if(type === "toggle") inputElem.style.marginLeft = "5px";
             inputElem.type = inputType;
             inputElem.value = initialVal;
@@ -444,7 +447,7 @@ function addMenu()
     }
 
     const footerElem = document.createElement("div");
-    footerElem.style.marginTop = "40px";
+    footerElem.style.marginTop = "20px";
     footerElem.style.fontSize = "17px";
     footerElem.style.textDecoration = "underline";
     footerElem.style.padding = "8px 20px";
@@ -461,8 +464,28 @@ function addMenu()
 
 
     // finalize
-    menuContainer.appendChild(titleCont);
-    menuContainer.appendChild(featuresCont);
+    const menuBody = document.createElement("div");
+    menuBody.id = "bytm-menu-body";
+    menuBody.appendChild(titleCont);
+    menuBody.appendChild(featuresCont);
+
+    const versionCont = document.createElement("div");
+    versionCont.style.display = "flex";
+    versionCont.style.justifyContent = "space-around";
+    versionCont.style.fontSize = "1.15em";
+    versionCont.style.marginTop = "10px";
+    versionCont.style.marginBottom = "5px";
+
+    const versionElem = document.createElement("span");
+    versionElem.id = "betterytm-menu-version";
+    versionElem.innerText = `v${info.version}`;
+
+    versionCont.appendChild(versionElem);
+    featuresCont.appendChild(versionCont);
+
+    menuContainer.appendChild(menuBody);
+    menuContainer.appendChild(versionCont);
+
     backgroundElem.appendChild(menuContainer);
 
     document.body.appendChild(backgroundElem);
