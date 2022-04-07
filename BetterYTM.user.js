@@ -35,9 +35,10 @@ const dbg = true;
 // const branch = "main";
 const branch = "develop"; // #DEBUG#
 
+/** Contains all possible features with their default values and other config */
 const featInfo = {
     arrowKeySupport: {
-        desc: "Arrow keys should skip forwards and backwards by 10 seconds?",
+        desc: "Should arrow keys skip forwards and backwards by 10 seconds?",
         type: "toggle",
         default: true,
     },
@@ -52,7 +53,7 @@ const featInfo = {
         default: true,
     },
     geniusLyrics: {
-        desc: "Add a button to the media controls bar to search for the current song's lyrics on genius.com in a new tab?",
+        desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab?",
         type: "toggle",
         default: true,
     },
@@ -62,11 +63,12 @@ const featInfo = {
         default: true,
     },
     volumeSliderSize: {
-        desc: "The width of the volume slider in px",
+        desc: "The width of the volume slider in pixels",
         type: "number",
         min: 10,
         max: 1000,
-        default: 175,
+        step: 5,
+        default: 160,
     },
     volumeSliderStep: {
         desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
@@ -75,10 +77,10 @@ const featInfo = {
         max: 20,
         default: 2,
     },
-    removeWatermark: {
-        desc: "Remove the watermark under the YTM logo?",
+    watermarkEnabled: {
+        desc: "Enable the BetterYTM watermark under the YTM logo?",
         type: "toggle",
-        default: false,
+        default: true,
     },
 };
 
@@ -167,7 +169,7 @@ async function onDomLoad()
             if(features.removeUpgradeTab)
                 removeUpgradeTab();
 
-            if(!features.removeWatermark)
+            if(features.watermarkEnabled)
                 addWatermark();
 
             if(features.geniusLyrics)
@@ -321,7 +323,7 @@ function addMenu()
         if(!ftInfo)
             continue;
 
-        const { desc, type, default: ftDef } = ftInfo;
+        const { desc, type, default: ftDef, step } = ftInfo;
         const val = features[key];
 
         const initialVal = val || ftDef;
@@ -365,9 +367,11 @@ function addMenu()
 
             const inputElem = document.createElement("input");
             inputElem.id = inputElemId;
-            inputElem.style.marginRight = "20px";
+            inputElem.style.marginRight = "25px";
+            if(type === "toggle") inputElem.style.marginLeft = "5px";
             inputElem.type = inputType;
             inputElem.value = initialVal;
+            if(type === "number" && step) inputElem.step = step;
 
             if(ftInfo.min && ftInfo.max)
             {
@@ -379,17 +383,31 @@ function addMenu()
                 inputElem.checked = initialVal;
 
             const fmtVal = v => String(v);
+            const toggleLabelText = toggled => toggled ? "On" : "Off";
 
             let labelElem;
             if(type === "slider")
             {
                 labelElem = document.createElement("label");
+                labelElem.classList.add("bytm-ftconf-label");
                 labelElem.style.marginRight = "20px";
                 labelElem.style.fontSize = "16px";
-                labelElem["for"] = inputElemId;
+                labelElem.htmlFor = inputElemId;
                 labelElem.innerText = fmtVal(initialVal);
 
                 inputElem.addEventListener("change", () => labelElem.innerText = fmtVal(parseInt(inputElem.value)));
+            }
+            else if(type === "toggle")
+            {
+                labelElem = document.createElement("label");
+                labelElem.classList.add("bytm-ftconf-label");
+                labelElem.style.paddingLeft = "10px";
+                labelElem.style.paddingRight = "5px";
+                labelElem.style.fontSize = "16px";
+                labelElem.htmlFor = inputElemId;
+                labelElem.innerText = toggleLabelText(initialVal);
+
+                inputElem.addEventListener("change", () => labelElem.innerText = toggleLabelText(inputElem.checked));
             }
 
             inputElem.addEventListener("change", ({ currentTarget }) => {
@@ -405,7 +423,12 @@ function addMenu()
                 inputElem[type !== "toggle" ? "value" : "checked"] = ftDef;
 
                 if(labelElem)
-                    labelElem.innerText = fmtVal(parseInt(inputElem.value));
+                {
+                    if(type === "toggle")
+                        labelElem.innerText = toggleLabelText(inputElem.checked);
+                    else
+                        labelElem.innerText = fmtVal(parseInt(inputElem.value));
+                }
 
                 confChanged(key, initialVal, ftDef);
             });
@@ -491,12 +514,16 @@ function addMenu()
         display: inline-block;
     }
 
-    .betterytm-menu-img {
+    /*.betterytm-menu-img {
 
-    }
+    }*/
 
     #betterytm-menu-close {
         cursor: pointer;
+    }
+
+    .bytm-ftconf-label {
+        user-select: none;
     }
     `;
 
@@ -693,12 +720,11 @@ function removeUpgradeTab()
  */
 function addWatermark()
 {
-    const watermark = document.createElement("a");
+    const watermark = document.createElement("span");
     watermark.id = "betterytm-watermark";
     watermark.className = "style-scope ytmusic-nav-bar";
     watermark.innerText = info.name;
     watermark.title = "Open menu";
-    watermark.href = "#";
 
     watermark.addEventListener("click", () => openMenu());
 
