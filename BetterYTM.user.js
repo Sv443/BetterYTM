@@ -119,7 +119,7 @@ const triesLimit = 40;
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 
-/** GeniURL endpoint that gives song metadata when provided with a `?q` parameter - [more info](https://api.sv443.net/geniurl) */
+/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 
 const info = Object.freeze({
@@ -814,8 +814,9 @@ async function addMediaCtrlGeniusBtn()
     const linkElem = document.createElement("a");
     linkElem.id = "betterytm-lyrics-button";
     linkElem.className = "ytmusic-player-bar";
-    linkElem.title = "Search for lyrics on genius.com";
-    linkElem.href = gUrl;
+    linkElem.title = gUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
+    if(gUrl)
+        linkElem.href = gUrl;
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
     linkElem.style.visibility = gUrl ? "initial" : "hidden";
@@ -868,7 +869,7 @@ async function addMediaCtrlGeniusBtn()
         {
             const newTitle = mut.target.title;
 
-            if(newTitle != mcCurrentSongTitle)
+            if(newTitle != mcCurrentSongTitle && newTitle.length > 0)
             {
                 const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
 
@@ -879,12 +880,17 @@ async function addMediaCtrlGeniusBtn()
 
                 mcCurrentSongTitle = newTitle;
 
-                lyricsBtn.href = await getCurrentGeniusUrl(); // can take a second or two
+                const url = await getCurrentGeniusUrl(); // can take a second or two
+                if(url)
+                {
+                    lyricsBtn.href = url;
 
-                lyricsBtn.style.cursor = "pointer";
-                lyricsBtn.style.visibility = "initial";
-                lyricsBtn.style.display = "inline-flex";
-                lyricsBtn.style.pointerEvents = "initial";
+                    lyricsBtn.title = "Click to open this song's lyrics in a new tab";
+                    lyricsBtn.style.cursor = "pointer";
+                    lyricsBtn.style.visibility = "initial";
+                    lyricsBtn.style.display = "inline-flex";
+                    lyricsBtn.style.pointerEvents = "initial";
+                }
             }
         }
     };
@@ -950,21 +956,19 @@ async function getCurrentGeniusUrl()
 
         const artistName = splitArtist(songMetaElem.title);
 
-        const defQuery = encodeURIComponent(`${artistName} ${songName}`);
-
         /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
         const getGeniusUrlVideo = async () => {
             if(!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                return await getGeniusUrl(defQuery);
+                return await getGeniusUrl(artistName, songName);
 
-            const query = encodeURIComponent(songName.split("-").map(v => v.trim()).join(" "));
+            const [artist, ...rest] = songName.split("-").map(v => v.trim());
 
-            return await getGeniusUrl(query);
+            return await getGeniusUrl(artist, rest.join(" "));
         };
 
         // TODO: artist might need further splitting before comma or ampersand
 
-        const url = isVideo ? await getGeniusUrlVideo() : (await getGeniusUrl(defQuery) ?? await getGeniusUrlVideo());
+        const url = isVideo ? await getGeniusUrlVideo() : (await getGeniusUrl(artistName, songName) ?? await getGeniusUrlVideo());
 
         return url;
     }
@@ -976,15 +980,17 @@ async function getCurrentGeniusUrl()
 }
 
 /**
- * @param {string} query
+ * @param {string} artist
+ * @param {string} song
  * @returns {Promise<string|undefined>}
  */
-async function getGeniusUrl(query)
+async function getGeniusUrl(artist, song)
 {
     try
     {
-        dbg && console.log(`BetterYTM: Fetching genius URL from geniURL API for query '${query}'`);
-        const result = await (await fetch(`${geniURLSearchTopUrl}?q=${query}`)).json();
+        dbg && console.log(`BetterYTM: Fetching genius URL from geniURL API for song '${song}' by '${artist}'`);
+
+        const result = await (await fetch(`${geniURLSearchTopUrl}?artist=${artist}&song=${song}`)).json();
 
         if(result.error)
         {
@@ -992,11 +998,15 @@ async function getGeniusUrl(query)
             return undefined;
         }
 
-        return result?.url;
+        const url = result.url;
+
+        dbg && console.info(`BetterYTM: Found genius URL: ${url}`);
+
+        return url;
     }
     catch(err)
     {
-        console.error("Couldn't get genius URL due to error:", err);
+        console.error("BetterYTM: Couldn't get genius URL due to error:", err);
         return undefined;
     }
 }
