@@ -33,7 +33,7 @@
 const dbg = true;
 
 // const branch = "main";
-const branch = "develop"; // #DEBUG#
+const branch = "develop"; // #DEBUG
 
 /** Contains all possible features with their default values and other config */
 const featInfo = {
@@ -92,12 +92,12 @@ const defaultFeatures = Object.keys(featInfo).reduce((acc, key) => {
 
 const featureConf = await loadFeatureConf();
 
-console.log("bytm load", featureConf);
+// console.log("bytm load", featureConf);
 
 const features = { ...defaultFeatures, ...featureConf };
 // const features = { ...defaultFeatures };
 
-console.log("bytm save", features);
+// console.log("bytm save", features);
 
 await saveFeatureConf(features);
 
@@ -114,7 +114,9 @@ await saveFeatureConf(features);
 
 
 /** Specifies the hard limit for repetitive tasks */
-const triesLimit = 40;
+const triesLimit = 50;
+/** Specifies the interval for repetitive tasks */
+const triesInterval = 150;
 
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -315,7 +317,7 @@ function addMenu()
 
         dbg && console.log("BetterYTM: Saved feature config changes");
 
-        console.log("#DEBUG", await GM.getValue("bytm-config")); // eslint-disable-line no-undef
+        dbg && console.log("#DEBUG", await GM.getValue("bytm-config")); // eslint-disable-line no-undef
     };
 
     const featKeys = Object.keys(features);
@@ -729,7 +731,7 @@ function removeUpgradeTab()
     }
     else if(removeUpgradeTries < triesLimit)
     {
-        setTimeout(removeUpgradeTab, 250); // TODO: improve this
+        setTimeout(removeUpgradeTab, triesInterval); // TODO: improve this
         removeUpgradeTries++;
     }
     else
@@ -801,7 +803,7 @@ async function addMediaCtrlGeniusBtn()
     {
         mcLyricsButtonAddTries++;
         if(mcLyricsButtonAddTries < triesLimit)
-            return setTimeout(addMediaCtrlGeniusBtn, 250); // TODO: improve this
+            return setTimeout(addMediaCtrlGeniusBtn, triesInterval); // TODO: improve this
 
         return console.error(`BetterYTM: Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
     }
@@ -988,9 +990,11 @@ async function getGeniusUrl(artist, song)
 {
     try
     {
-        dbg && console.log(`BetterYTM: Fetching genius URL from geniURL API for song '${song}' by '${artist}'`);
+        const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
 
-        const result = await (await fetch(`${geniURLSearchTopUrl}?artist=${artist}&song=${song}`)).json();
+        dbg && console.log(`BetterYTM: Requesting URL from geniURL at '${fetchUrl}'`);
+
+        const result = await (await fetch(fetchUrl)).json();
 
         if(result.error)
         {
