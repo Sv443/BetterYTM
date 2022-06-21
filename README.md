@@ -19,8 +19,8 @@ Once this script is more finished, I might add a menu to toggle these more easil
 <br><br>
 
 ## Installation:
-**Requires a userscript manager browser extension:**
-> Firefox: [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)  
+**Requires a userscript manager browser extension. I recommend the following:**
+> Firefox: [FireMonkey](https://addons.mozilla.org/en-US/firefox/addon/firemonkey/) or [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)  
 > Chrome: [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)  
 > Edge: [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
 
