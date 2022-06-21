@@ -5,7 +5,7 @@ Userscript that improves [YouTube Music](https://music.youtube.com/)
 
 ## Features:
 - Use arrow keys to skip forward or backward by 10 seconds
-- Quickly search for the current song's lyrics on genius.com
+- Quickly open song lyrics on genius.com<!-- (powered by [geniURL](https://api.sv443.net/geniurl))-->
 - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default)
 - Remove the "Upgrade to YT Music Premium" tab in the title bar
 
@@ -19,8 +19,8 @@ Once this script is more finished, I might add a menu to toggle these more easil
 <br><br>
 
 ## Installation:
-**Requires a userscript manager extension:**
-> Firefox: [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)  
+**Requires a userscript manager browser extension. I recommend the following:**
+> Firefox: [FireMonkey](https://addons.mozilla.org/en-US/firefox/addon/firemonkey/) or [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)  
 > Chrome: [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)  
 > Edge: [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
 
