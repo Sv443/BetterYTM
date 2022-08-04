@@ -925,13 +925,15 @@ async function getCurrentGeniusUrl()
 
         /** @param {string} songName */
         const sanitizeSongName = (songName) => {
-            const songNameRegex = /\(.+\)/gmi;
-            let sanitized;
+            const parensRegex = /\(.+\)/gmi;
+            const squareParensRegex = /\[.+\]/gmi;
 
-            if(songName.match(songNameRegex))
-                sanitized = songName.replace(songNameRegex, ""); // should hopefully trim right after the song name
+            // trim right after the song name:
+            let sanitized = songName
+                .replace(parensRegex, "")
+                .replace(squareParensRegex, "");
 
-            return (sanitized ?? songName).trim();
+            return sanitized.trim();
         };
 
         /** @param {string} songMeta */
