@@ -596,24 +596,20 @@ function onKeyDown(evt)
         // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
         const defaultProps = {
             altKey: false,
+            ctrlKey: false,
+            metaKey: false,
+            shiftKey: false,
+            target: document.body,
+            currentTarget: document.body,
+            originalTarget: document.body,
+            explicitOriginalTarget: document.body,
+            srcElement: document.body,
+            type: "keydown",
             bubbles: true,
             cancelBubble: false,
             cancelable: true,
-            charCode: 0,
-            composed: true,
-            ctrlKey: false,
-            currentTarget: null,
-            defaultPrevented: evt.defaultPrevented,
-            explicitOriginalTarget: document.body,
             isTrusted: true,
-            metaKey: false,
-            originalTarget: document.body,
             repeat: false,
-            shiftKey: false,
-            srcElement: document.body,
-            target: document.body,
-            type: "keydown",
-            view: window,
         };
 
         let invalidKey = false;
@@ -638,9 +634,7 @@ function onKeyDown(evt)
             };
             break;
         default:
-            // console.warn("BetterYTM - Unknown key", evt.code);
             invalidKey = true;
-
             break;
         }
 
