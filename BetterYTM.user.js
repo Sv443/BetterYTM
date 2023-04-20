@@ -125,9 +125,9 @@ const geniUrlBase = "https://api.sv443.net/geniurl";
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 
 const info = Object.freeze({
-    name: GM.info.script.name, // eslint-disable-line no-undef
-    version: GM.info.script.version, // eslint-disable-line no-undef
-    namespace: GM.info.script.namespace, // eslint-disable-line no-undef
+    name: GM.info.script.name,
+    version: GM.info.script.version,
+    namespace: GM.info.script.namespace,
 });
 
 function init()
@@ -317,7 +317,7 @@ function addMenu()
 
         dbg && console.log("BetterYTM: Saved feature config changes");
 
-        dbg && console.log("#DEBUG", await GM.getValue("betterytm-config")); // eslint-disable-line no-undef
+        dbg && console.log("#DEBUG", await GM.getValue("betterytm-config"));
     };
 
     const featKeys = Object.keys(features);
@@ -1137,7 +1137,7 @@ async function loadFeatureConf()
     try
     {
         /** @type {string} */
-        const featureConf = await GM.getValue("betterytm-config"); // eslint-disable-line no-undef
+        const featureConf = await GM.getValue("betterytm-config");
 
         if(!featureConf)
         {
