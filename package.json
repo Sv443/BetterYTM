@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Sv443/BetterYTM#readme",
   "devDependencies": {
+    "@types/greasemonkey": "^4.0.4",
     "eslint": "^7.32.0"
   }
 }
