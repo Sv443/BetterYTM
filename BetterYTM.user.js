@@ -317,7 +317,7 @@ function addMenu()
 
         dbg && console.log("BetterYTM: Saved feature config changes");
 
-        dbg && console.log("#DEBUG", await GM.getValue("bytm-config")); // eslint-disable-line no-undef
+        dbg && console.log("#DEBUG", await GM.getValue("betterytm-config")); // eslint-disable-line no-undef
     };
 
     const featKeys = Object.keys(features);
@@ -334,7 +334,7 @@ function addMenu()
         const initialVal = val || ftDef;
 
         const ftConfElem = document.createElement("div");
-        ftConfElem.id = `bytm-ftconf-${key}`;
+        ftConfElem.id = `betterytm-ftconf-${key}`;
         ftConfElem.style.display = "flex";
         ftConfElem.style.flexDirection = "row";
         ftConfElem.style.justifyContent = "space-between";
@@ -364,7 +364,7 @@ function addMenu()
                     break;
             }
 
-            const inputElemId = `bytm-ftconf-${key}-input`;
+            const inputElemId = `betterytm-ftconf-${key}-input`;
 
             const ctrlElem = document.createElement("span");
             ctrlElem.style.display = "inline-block";
@@ -394,7 +394,7 @@ function addMenu()
             if(type === "slider")
             {
                 labelElem = document.createElement("label");
-                labelElem.classList.add("bytm-ftconf-label");
+                labelElem.classList.add("betterytm-ftconf-label");
                 labelElem.style.marginRight = "20px";
                 labelElem.style.fontSize = "16px";
                 labelElem.htmlFor = inputElemId;
@@ -405,7 +405,7 @@ function addMenu()
             else if(type === "toggle")
             {
                 labelElem = document.createElement("label");
-                labelElem.classList.add("bytm-ftconf-label");
+                labelElem.classList.add("betterytm-ftconf-label");
                 labelElem.style.paddingLeft = "10px";
                 labelElem.style.paddingRight = "5px";
                 labelElem.style.fontSize = "16px";
@@ -467,7 +467,7 @@ function addMenu()
 
     // finalize
     const menuBody = document.createElement("div");
-    menuBody.id = "bytm-menu-body";
+    menuBody.id = "betterytm-menu-body";
     menuBody.appendChild(titleCont);
     menuBody.appendChild(featuresCont);
 
@@ -547,7 +547,7 @@ function addMenu()
         cursor: pointer;
     }
 
-    .bytm-ftconf-label {
+    .betterytm-ftconf-label {
         user-select: none;
     }
     `;
@@ -1112,7 +1112,7 @@ function addGlobalStyle(style, ref)
         ref = String(Math.floor(Math.random() * 1000));
 
     const styleElem = document.createElement("style");
-    styleElem.id = `bytm-style-${ref}`;
+    styleElem.id = `betterytm-style-${ref}`;
 
     if(styleElem.styleSheet)
         styleElem.styleSheet.cssText = style;
@@ -1137,7 +1137,7 @@ async function loadFeatureConf()
     try
     {
         /** @type {string} */
-        const featureConf = await GM.getValue("bytm-config"); // eslint-disable-line no-undef
+        const featureConf = await GM.getValue("betterytm-config"); // eslint-disable-line no-undef
 
         if(!featureConf)
         {
@@ -1164,15 +1164,13 @@ function saveFeatureConf(featureConf)
     if(!featureConf || typeof featureConf != "object")
         throw new TypeError("Feature config not provided or invalid");
 
-    return GM.setValue("bytm-config", JSON.stringify(featureConf)); // eslint-disable-line no-undef
+    return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
 
-/**
- * @returns {Promise<void>}
- */
+/** @returns {Promise<void>} */
 function setDefaultFeatConf()
 {
-    return GM.setValue("bytm-config", JSON.stringify(defaultFeatures)); // eslint-disable-line no-undef
+    return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
 }
 
 init(); // call init() when script is loaded
