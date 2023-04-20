@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name            BetterYTM
-// @namespace       https://github.com/Sv443/BetterYTM#readme
+// @homepageURL     https://github.com/Sv443/BetterYTM#readme
+// @namespace       https://github.com/Sv443/BetterYTM
 // @version         1.0.0
+// @description     Improvements for YouTube Music
+// @description:de  Verbesserungen für YouTube Music
 // @license         MIT
 // @author          Sv443
 // @copyright       Sv443 <contact@sv443.net> (https://github.com/Sv443)
-// @description     Improvements for YouTube Music
-// @description:de  Verbesserungen für YouTube Music
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
 // @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/v2.1_200.png
