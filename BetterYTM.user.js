@@ -24,7 +24,7 @@
 
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this, Susan 🖕 */
+/* C&D this 🖕 */
 
 
 "use-strict";
