@@ -1,11 +1,25 @@
 {
-    "compilerOptions": {
-        "module": "None",
-        "allowJs": true,
-        "noEmit": true,
-        "lib": [
-            "DOM",
-            "DOM.Iterable"
-        ]
-    }
+  "compilerOptions": {
+    "module": "ES6",
+    "target": "ES2016",
+    "outDir": ".",
+    "allowJs": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "useDefineForClassFields": true,
+  },
+  "exclude": [
+    "**/*.js",
+  ]
 }
