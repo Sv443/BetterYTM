@@ -2,16 +2,22 @@
   "name": "betterytm",
   "version": "1.0.0",
   "description": "Userscript that improves YouTube Music",
-  "main": "BetterYTM.user.js",
+  "main": "./src/BetterYTM.user.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve --progress --mode development",
     "lint": "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sv443/BetterYTM.git"
   },
-  "author": "Sv443",
+  "author": {
+    "name": "Sv443",
+    "url": "https://github.com/Sv443",
+    "email": "contact@sv443.net"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sv443/BetterYTM/issues"
@@ -19,6 +25,18 @@
   "homepage": "https://github.com/Sv443/BetterYTM#readme",
   "devDependencies": {
     "@types/greasemonkey": "^4.0.4",
-    "eslint": "^7.32.0"
-  }
+    "@types/node": "^20.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^7.32.0",
+    "ts-loader": "^9.4.3",
+    "tslib": "^2.5.2",
+    "typescript": "^5.0.4",
+    "webpack-cli": "^5.1.1"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "not dead"
+  ]
 }
