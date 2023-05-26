@@ -31,6 +31,18 @@ Once you have the extension, click this button to install the userscript:
 <!-- <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a> -->
 <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BC-039e10" height="24"></a>
 
+<br><br>
+
+### Development:
+| Command | Description |
+| --- | --- |
+| `npm run lint` | Lints the userscript with ESLint |
+| `npm run build` | Builds the userscript |
+| `npm run watch` | Watches, rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager |
+
+When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+This makes it so the userscript automatically updates itself when the code changes.
+
 
 <br><br>
 
