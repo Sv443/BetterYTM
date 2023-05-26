@@ -21,6 +21,14 @@
 // @downloadURL     https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js
 // @updateURL       https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js
 // ==/UserScript==
+/*
+ ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+ █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+ █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+ █▄▄▀ █▄▄ █▄▄ █▄▄ █▄▄ █   █   █  █   █
+
+         Made with ❤️ by Sv443
+ I welcome every contribution on GitHub! */
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
