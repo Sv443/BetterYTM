@@ -28,6 +28,14 @@ const header = `// ==UserScript==
 // @downloadURL     ${scriptUrl}
 // @updateURL       ${scriptUrl}
 // ==/UserScript==
+/*
+ ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+ █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+ █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+ █▄▄▀ █▄▄ █▄▄ █▄▄ █▄▄ █   █   █  █   █
+
+         Made with ❤️ by Sv443
+ I welcome every contribution on GitHub! */
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
