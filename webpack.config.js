@@ -1,6 +1,5 @@
 const path = require("path");
 const { exec } = require("child_process");
-const package = require("./package.json");
 
 module.exports = {
   entry: "./src/BetterYTM.user.ts",
@@ -15,14 +14,14 @@ module.exports = {
       test: /\.html$/i,
       loader: "html-loader",
     },
-    {
-      test: /\.s[ac]ss$/i,
-      use: [
-        "style-loader",
-        "css-loader",
-        "sass-loader",
-      ],
-    },
+    // {
+    //   test: /\.s[ac]ss$/i,
+    //   use: [
+    //     "style-loader",
+    //     "css-loader",
+    //     "sass-loader",
+    //   ],
+    // },
     ],
   },
   plugins: [{

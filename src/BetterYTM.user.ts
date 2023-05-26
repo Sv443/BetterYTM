@@ -3,9 +3,7 @@ import type { Domain, FeatureConfig } from "./types";
 (async () => {
   /** Set to true to enable debug mode for more output in the JS console */
   const dbg = true;
-
-  // const branch = "main";
-  const branch = "develop"; // #DEBUG
+  const branch = dbg ? "develop" : "main";
 
   /** Contains all possible features with their default values and other config */
   const featInfo = {
