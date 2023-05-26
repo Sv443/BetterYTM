@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack serve --progress --mode development",
+    "serve": "http-server -s -c 5 -p 8710 .",
+    "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "eslint ."
   },
   "repository": {
@@ -29,7 +30,10 @@
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
     "eslint": "^7.32.0",
+    "http-server": "^14.1.1",
+    "nodemon": "^2.0.22",
     "ts-loader": "^9.4.3",
+    "ts-node": "^10.9.1",
     "tslib": "^2.5.2",
     "typescript": "^5.0.4",
     "webpack-cli": "^5.1.1"
@@ -38,5 +42,16 @@
     "last 1 version",
     "> 1%",
     "not dead"
-  ]
+  ],
+  "nodemonConfig": {
+    "watch": [
+      "src/*",
+      "tools/*"
+    ],
+    "ext": "ts,js,json",
+    "ignore": [
+      "BetterYTM.user.js",
+      "dev/*"
+    ]
+  }
 }
