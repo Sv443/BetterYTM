@@ -4,7 +4,7 @@ import { join } from "path";
 
 const userscriptName = "BetterYTM.user.js";
 const url = pkg.repository.url.replace("git+", "").replace(".git", "");
-const scriptUrl = pkg.repository.url.replace("git+", "").replace(".git", "") + "/raw/main/dist/" + userscriptName;
+const scriptUrl = `https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/${userscriptName}`;
 
 const header = `// ==UserScript==
 // @name            BetterYTM
