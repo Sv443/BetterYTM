@@ -8,35 +8,41 @@ module.exports = {
   //   minimize: false,
   // },
   module: {
-    rules: [{
-      test: /\.tsx?$/,
-      use: "ts-loader",
-      exclude: /node_modules/,
-    },
-    {
-      test: /\.html$/i,
-      loader: "html-loader",
-    },
-    // {
-    //   test: /\.s[ac]ss$/i,
-    //   use: [
-    //     "style-loader",
-    //     "css-loader",
-    //     "sass-loader",
-    //   ],
-    // },
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "html-loader",
+          },
+          {
+            loader: "markdown-loader",
+          },
+        ],
+      },
     ],
   },
-  plugins: [{
-    apply: (compiler) => {
-      compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
-        exec("node ./tools/post-build.js", (_err, stdout, stderr) => {
-          stdout && process.stdout.write(`${stdout}\n`);
-          stderr && process.stderr.write(`${stderr}\n`);
+  plugins: [
+    {
+      apply: (compiler) => {
+        compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
+          exec("node ./tools/post-build.js", (_err, stdout, stderr) => {
+            stdout && process.stdout.write(`${stdout}\n`);
+            stderr && process.stderr.write(`${stderr}\n`);
+          });
         });
-      });
-    }
-  }],
+      }
+    },
+  ],
   resolve: {
     extensions: [".ts", ".js"],
   },

@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require("fs/promises");
+const { readFile, writeFile, stat } = require("fs/promises");
 const package = require("../package.json");
 
 const userscriptName = "BetterYTM.user.js";
@@ -46,11 +46,12 @@ const header = `// ==UserScript==
     const path = `./${userscriptName}`;
     const input = String(await readFile(path));
     await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
-    console.info("Successfully added the userscript header!");
+    console.info("\nSuccessfully added the userscript header");
+    console.info(`\nFinal size is ${((await stat(path)).size / 1000).toFixed(2)} KB`);
   }
   catch(err) {
     console.error("Error while adding userscript header:");
     console.error(err);
-    process.exit(1);
+    setImmediate(() => process.exit(1));
   }
 })();

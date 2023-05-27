@@ -1,29 +1,17 @@
 import { getFeatures } from "./config";
-import { addMediaCtrlGeniusBtn, addMenu, addQueueGeniusBtns, addWatermark, geniUrlBase, initArrowKeySkip, initLayout, initSiteSwitch, removeUpgradeTab, setVolSliderSize, setVolSliderStep } from "./features/index";
+import { dbg, info } from "./constants";
+import { addMediaCtrlGeniusBtn, addMenu, addQueueGeniusBtns, addWatermark, geniUrlBase, initArrowKeySkip, initChangelog, initLayout as preInitLayout, initSiteSwitch, removeUpgradeTab, setVolSliderSize, setVolSliderStep } from "./features/index";
 import { getDomain } from "./utils";
-
-/** Set to true to enable debug mode for more output in the JS console */
-export const dbg = true;
-/** Specifies the hard limit for repetitive tasks */
-export const triesLimit = 50;
-/** Specifies the interval for repetitive tasks */
-export const triesInterval = 150;
-
-/** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-export const info = Object.freeze({
-  name: GM.info.script.name,
-  version: GM.info.script.version,
-  namespace: GM.info.script.namespace,
-});
 
 (async () => {
   //#MARKER init
 
   const features = await getFeatures();
 
-  await initLayout();
+  await preInitLayout();
 
   try {
+    // TODO: add some style
     console.log(`${info.name} v${info.version} - ${info.namespace}`);
     console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${geniUrlBase}`);
 
@@ -32,6 +20,8 @@ export const info = Object.freeze({
   catch(err) {
     console.error("BetterYTM - General Error:", err);
   }
+
+  await initChangelog();
 
   /** Called when the DOM has finished loading (after `DOMContentLoaded` is emitted) */
   async function onDomLoad() {

@@ -1,8 +1,9 @@
-import { dbg, info, triesInterval, triesLimit } from "../BetterYTM.user";
+import { dbg, info, triesInterval, triesLimit } from "../constants";
 import { defaultFeatures, getFeatures, saveFeatureConf } from "../config";
 import { addGlobalStyle, insertAfter } from "../utils";
 import { featInfo } from "./index";
 import type { FeatureConfig } from "../types";
+import changelog from "../../changelog.md";
 
 let features: FeatureConfig;
 
@@ -438,7 +439,7 @@ export function removeUpgradeTab() {
     console.error(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 
-// #SECTION volume slider
+//#MARKER volume slider
 
 /** Sets the volume slider to a set size */
 export function setVolSliderSize() {
@@ -449,7 +450,7 @@ export function setVolSliderSize() {
 
   const style = `\
 .volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
-    width: ${size}px !important;
+  width: ${size}px !important;
 }`;
 
   addGlobalStyle(style, "vol_slider_size");
@@ -460,4 +461,20 @@ export function setVolSliderStep() {
   const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider") as HTMLInputElement;
 
   sliderElem.setAttribute("step", String(features.volumeSliderStep));
+}
+
+//#MARKER changelog
+
+export async function initChangelog() {
+  // console.log("#DEBUG _CHANGELOG:", changelog);
+  // const cl = document.createElement("div");
+  // cl.style.position = "fixed";
+  // cl.style.top = "0";
+  // cl.style.left = "0";
+  // cl.style.minWidth = "500px";
+  // cl.style.minHeight = "500px";
+  // cl.style.overflowY = "scroll";
+  // cl.innerHTML = changelog;
+  // document.addEventListener("DOMContentLoaded", () => document.body.appendChild(cl));
+  void ["TODO", changelog];
 }
