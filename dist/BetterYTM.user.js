@@ -18,8 +18,8 @@
 // @connect         youtube.com
 // @connect         github.com
 // @connect         githubusercontent.com
-// @downloadURL     https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js
-// @updateURL       https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js
+// @downloadURL     https://github.com/Sv443/BetterYTM/raw/main/dist/BetterYTM.user.js
+// @updateURL       https://github.com/Sv443/BetterYTM/raw/main/dist/BetterYTM.user.js
 // ==/UserScript==
 /*
  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄

@@ -1,20 +1,21 @@
-const { readFile, writeFile, stat } = require("fs/promises");
-const package = require("../package.json");
+import { readFile, writeFile, stat } from "fs/promises";
+import pkg from "../../package.json";
+import { join } from "path";
 
 const userscriptName = "BetterYTM.user.js";
-const url = package.repository.url.replace("git+", "").replace(".git", "");
-const scriptUrl = package.repository.url.replace("git+", "").replace(".git", "") + "/raw/main/" + userscriptName;
+const url = pkg.repository.url.replace("git+", "").replace(".git", "");
+const scriptUrl = pkg.repository.url.replace("git+", "").replace(".git", "") + "/raw/main/dist/" + userscriptName;
 
 const header = `// ==UserScript==
 // @name            BetterYTM
-// @homepageURL     ${package.homepage}
+// @homepageURL     ${pkg.homepage}
 // @namespace       ${url}
-// @version         ${package.version}
+// @version         ${pkg.version}
 // @description     Improvements for YouTube Music
 // @description:de  Verbesserungen für YouTube Music
-// @license         ${package.license}
-// @author          ${package.author.name}
-// @copyright       ${package.author.name} <${package.author.email}>
+// @license         ${pkg.license}
+// @author          ${pkg.author.name}
+// @copyright       ${pkg.author.name} <${pkg.author.email}>
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
 // @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/v2.1_200.png
@@ -43,10 +44,10 @@ const header = `// ==UserScript==
 
 (async () => {
   try {
-    const path = `./${userscriptName}`;
+    const path = join(__dirname, `../../dist/${userscriptName}`);
     const input = String(await readFile(path));
     await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
-    console.info("\nSuccessfully added the userscript header");
+    console.info("Successfully added the userscript header");
     console.info(`\nFinal size is ${((await stat(path)).size / 1000).toFixed(2)} KB`);
   }
   catch(err) {
