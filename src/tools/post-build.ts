@@ -48,7 +48,7 @@ const header = `// ==UserScript==
     const input = String(await readFile(path));
     await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
     console.info("Successfully added the userscript header");
-    console.info(`\nFinal size is ${((await stat(path)).size / 1000).toFixed(2)} KB`);
+    console.info(`\nFinal size is ${((await stat(path)).size / 1024).toFixed(2)} KiB`);
   }
   catch(err) {
     console.error("Error while adding userscript header:");
