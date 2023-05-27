@@ -25,7 +25,7 @@
  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
  █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
- █▄▄▀ █▄▄ █▄▄ █▄▄ █▄▄ █   █   █  █   █
+ █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
          Made with ❤️ by Sv443
  I welcome every contribution on GitHub! */
@@ -33,4 +33,992 @@
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-!function(){"use strict";var e=function(e,t,n,o){return new(n||(n=Promise))((function(r,i){function l(e){try{c(o.next(e))}catch(e){i(e)}}function s(e){try{c(o.throw(e))}catch(e){i(e)}}function c(e){var t;e.done?r(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(l,s)}c((o=o.apply(e,t||[])).next())}))};e(void 0,void 0,void 0,(function*(){const t=!0,n=t?"develop":"main",o={arrowKeySupport:{desc:"Arrow keys skip forwards and backwards by 10 seconds",type:"toggle",default:!0},removeUpgradeTab:{desc:'Remove the "Upgrade" / YT Music Premium tab',type:"toggle",default:!0},switchBetweenSites:{desc:"Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",type:"toggle",default:!0},geniusLyrics:{desc:"Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",type:"toggle",default:!0},lyricsButtonsOnSongQueue:{desc:'TODO: Add a lyrics button to each song in the queue ("up next" tab)',type:"toggle",default:!0},volumeSliderSize:{desc:"The width of the volume slider in pixels",type:"number",min:10,max:1e3,step:5,default:160},volumeSliderStep:{desc:"Volume slider sensitivity - the smaller this number, the finer the volume control",type:"slider",min:1,max:20,default:2},watermarkEnabled:{desc:"Show a BetterYTM watermark under the YTM logo",type:"toggle",default:!0}},r=Object.keys(o).reduce(((e,t)=>(e[t]=o[t].default,e)),{}),i=yield E(),l=Object.assign(Object.assign({},r),i);yield M(l);const s=50,c=150,d="https://api.sv443.net/geniurl",a=`${d}/search/top`,u=Object.freeze({name:GM.info.script.name,version:GM.info.script.version,namespace:GM.info.script.namespace});function m(){return e(this,void 0,void 0,(function*(){const r=k();t&&console.log(`BetterYTM: Initializing features for domain '${r}'`);try{if("ytm"===r&&(l.arrowKeySupport&&(document.addEventListener("keydown",p),t&&console.log("BetterYTM: Added key press listener")),l.removeUpgradeTab&&f(),l.watermarkEnabled&&function(){const e=document.createElement("span");e.id="betterytm-watermark",e.className="style-scope ytmusic-nav-bar",e.innerText=u.name,e.title="Open menu",e.addEventListener("click",(()=>function(){const e=document.querySelector("#betterytm-menu-bg");e.style.visibility="visible",e.style.display="block"}())),S("    #betterytm-watermark {\n        font-size: 10px;\n        display: inline-block;\n        position: absolute;\n        left: 45px;\n        top: 46px;\n        z-index: 10;\n        color: white;\n        text-decoration: none;\n        cursor: pointer;\n    }\n\n    @media(max-width: 615px) {\n        #betterytm-watermark {\n            display: none;\n        }\n    }\n\n    #betterytm-watermark:hover {\n        text-decoration: underline;\n    }","watermark"),T(document.querySelector("#left-content"),e),t&&console.log("BetterYTM: Added watermark element:",e)}(),l.geniusLyrics&&(yield v()),l.lyricsButtonsOnSongQueue&&(yield function(){return e(this,void 0,void 0,(function*(){}))}()),"number"==typeof l.volumeSliderSize&&function(){const{volumeSliderSize:e}=l;"number"!=typeof e||isNaN(Number(e))||S(`.volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {\n    width: ${e}px !important;\n}`,"vol_slider_size")}(),document.querySelector("tp-yt-paper-slider#volume-slider").setAttribute("step",String(l.volumeSliderStep))),["ytm","yt"].includes(r)){l.switchBetweenSites&&function(e){document.addEventListener("keydown",(n=>{"F9"==n.key&&function(e){var n;try{let o;if("ytm"===e?o="music":"yt"===e&&(o="www"),!o)throw new TypeError(`Unrecognized domain '${e}'`);const{pathname:r,search:i,hash:l}=new URL(location.href),s=null!==(n=function(){var e;const t=k();try{return"ytm"===t?null!==(e=document.querySelector("#progress-bar").value)&&void 0!==e?e:null:"yt"===t?0:null}catch(e){return console.error("BetterYTM: Couldn't get video time due to error:",e),null}}())&&void 0!==n?n:0;t&&console.log(`BetterYTM: Found video time of ${s} seconds`);const c=`https://${o}.youtube.com${r}${i.includes("?")?`${i}&t=${s}`:`?t=${s}`}${l}`;console.info(`BetterYTM - switching to domain '${e}' at ${c}`),location.href=c}catch(e){console.error("BetterYTM: Error while switching site:",e)}}("yt"===e?"ytm":"yt")})),t&&console.log("BetterYTM: Initialized site switch listener")}(r);try{!function(){var r;const i=document.createElement("div");i.id="betterytm-menu-bg",i.title="Click here to close the menu",i.style.visibility="hidden",i.style.display="none",i.addEventListener("click",(e=>{"betterytm-menu-bg"===e.target.id&&y()}));const s=document.createElement("div");s.title="",s.id="betterytm-menu",s.style.borderRadius="15px",s.style.display="flex",s.style.flexDirection="column",s.style.justifyContent="space-between";const c=document.createElement("div");c.style.padding="8px 20px 15px 8px",c.style.display="flex",c.style.justifyContent="space-between",c.id="betterytm-menu-titlecont";const d=document.createElement("h2");d.id="betterytm-menu-title",d.innerText="BetterYTM - Configuration";const a=document.createElement("div");a.id="betterytm-menu-linkscont";const m=(e,t,n)=>{const o=document.createElement("a");o.className="betterytm-menu-link",o.rel="noopener noreferrer",o.target="_blank",o.href=t,o.title=n,o.style.marginLeft="10px";const r=document.createElement("img");r.className="betterytm-menu-img",r.src=e,r.style.width="32px",r.style.height="32px",o.appendChild(r),a.appendChild(o)};m(`https://raw.githubusercontent.com/Sv443/BetterYTM/${n}/resources/external/github.png`,u.namespace,`${u.name} on GitHub`),m(`https://raw.githubusercontent.com/Sv443/BetterYTM/${n}/resources/external/greasyfork.png`,"https://greasyfork.org/xyz",`${u.name} on GreasyFork`);const p=document.createElement("img");p.id="betterytm-menu-close",p.src=`https://raw.githubusercontent.com/Sv443/BetterYTM/${n}/resources/icon/close.png`,p.title="Click to close the menu",p.style.marginLeft="50px",p.style.width="32px",p.style.height="32px",p.addEventListener("click",y),a.appendChild(p),c.appendChild(d),c.appendChild(a);const g=document.createElement("div");g.id="betterytm-menu-opts",g.style.display="flex",g.style.flexDirection="column";const f=(n,o,r)=>e(this,void 0,void 0,(function*(){t&&console.info(`BetterYTM: Feature config changed, key '${n}' from value '${o}' to '${r}'`);const e=Object.assign({},yield E());e[n]=r,yield M(e),t&&console.log("BetterYTM: Saved feature config changes"),t&&console.log("#DEBUG",yield GM.getValue("betterytm-config"))})),h=Object.keys(l);for(const e of h){const t=o[e];if(!t)continue;const{desc:n,type:i,default:s}=t,c=null!==(r=null==t?void 0:t.step)&&void 0!==r?r:void 0,d=l[e]||s||void 0,a=document.createElement("div");a.id=`betterytm-ftconf-${e}`,a.style.display="flex",a.style.flexDirection="row",a.style.justifyContent="space-between",a.style.padding="8px 20px";{const e=document.createElement("span");e.style.display="inline-block",e.style.fontSize="15px",e.innerText=n,a.appendChild(e)}{let n="text";switch(i){case"toggle":n="checkbox";break;case"slider":n="range";break;case"number":n="number"}const o=`betterytm-ftconf-${e}-input`,r=document.createElement("span");r.style.display="inline-block",r.style.whiteSpace="nowrap";const l=document.createElement("input");l.id=o,l.style.marginRight="37px",l.type=n,"toggle"===i&&(l.style.marginLeft="5px"),void 0!==d&&(l.value=String(d)),"number"===i&&c&&(l.step=c),t.min&&t.max&&(l.min=t.min,l.max=t.max),"toggle"===i&&void 0!==d&&(l.checked=Boolean(d));const u=e=>String(e),m=e=>e?"On":"Off";let y;"slider"===i?(y=document.createElement("label"),y.classList.add("betterytm-ftconf-label"),y.style.marginRight="20px",y.style.fontSize="16px",y.htmlFor=o,y.innerText=u(d),l.addEventListener("change",(()=>{y&&(y.innerText=u(parseInt(l.value)))}))):"toggle"===i&&void 0!==d&&(y=document.createElement("label"),y.classList.add("betterytm-ftconf-label"),y.style.paddingLeft="10px",y.style.paddingRight="5px",y.style.fontSize="16px",y.htmlFor=o,y.innerText=m(Boolean(d)),l.addEventListener("change",(()=>{y&&(y.innerText=m(l.checked))}))),l.addEventListener("change",(({currentTarget:t})=>{const n=t;let o=parseInt(n.value);isNaN(o)&&(o=Number(n.value)),void 0!==d&&f(e,d,"toggle"!==i?o:n.checked)}));const p=document.createElement("button");p.innerText="Reset",p.addEventListener("click",(()=>{l["toggle"!==i?"value":"checked"]=s,y&&(y.innerText="toggle"===i?m(l.checked):u(parseInt(l.value))),void 0!==d&&f(e,d,s)})),y&&r.appendChild(y),r.appendChild(l),r.appendChild(p),a.appendChild(r)}g.appendChild(a)}const b=document.createElement("div");b.style.marginTop="20px",b.style.fontSize="17px",b.style.textDecoration="underline",b.style.padding="8px 20px",b.innerText="You need to reload the page to apply changes.";const v=document.createElement("button");v.style.marginLeft="20px",v.innerText="Reload now",v.title="Click to reload the page",v.addEventListener("click",(()=>location.reload())),b.appendChild(v),g.appendChild(b);const x=document.createElement("div");x.id="betterytm-menu-body",x.appendChild(c),x.appendChild(g);const w=document.createElement("div");w.style.display="flex",w.style.justifyContent="space-around",w.style.fontSize="1.15em",w.style.marginTop="10px",w.style.marginBottom="5px";const k=document.createElement("span");k.id="betterytm-menu-version",k.innerText=`v${u.version}`,w.appendChild(k),g.appendChild(w),s.appendChild(x),s.appendChild(w),i.appendChild(s),document.body.appendChild(i);t&&console.log("BetterYTM: Added menu elem:",i),S("    #betterytm-menu-bg {\n      display: block;\n      position: fixed;\n      width: 100vw;\n      height: 100vh;\n      top: 0;\n      left: 0;\n      z-index: 15;\n      background-color: rgba(0, 0, 0, 0.6);\n    }\n\n    #betterytm-menu {\n      display: inline-block;\n      position: fixed;\n      width: 50vw;\n      height: auto;\n      min-height: 500px;\n      left: 25vw;\n      top: 25vh;\n      z-index: 16;\n      overflow: auto;\n      padding: 8px;\n      color: #fff;\n      background-color: #212121;\n    }\n\n    #betterytm-menu-titlecont {\n      display: flex;\n    }\n\n    #betterytm-menu-title {\n      font-size: 20px;\n      margin-top: 5px;\n      margin-bottom: 8px;\n    }\n\n    #betterytm-menu-linkscont {\n      display: flex;\n    }\n\n    .betterytm-menu-link {\n      display: inline-block;\n    }\n\n    /*.betterytm-menu-img {\n\n    }*/\n\n    #betterytm-menu-close {\n      cursor: pointer;\n    }\n\n    .betterytm-ftconf-label {\n      user-select: none;\n    }\n    ","menu")}()}catch(e){console.error("BetterYTM: Couldn't add menu:",e)}}}catch(e){console.error("BetterYTM: General error while executing feature:",e)}}))}function y(){const e=document.querySelector("#betterytm-menu-bg");e.style.visibility="hidden",e.style.display="none"}function p(e){var n,o;if(["ArrowLeft","ArrowRight"].includes(e.code)){if(["INPUT","TEXTAREA","SELECT"].includes(null!==(o=null===(n=document.activeElement)||void 0===n?void 0:n.tagName)&&void 0!==o?o:"_"))return t&&console.info(`BetterYTM: Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);t&&console.log(`BetterYTM: Captured key '${e.code}' in proxy listener`);const r={altKey:!1,ctrlKey:!1,metaKey:!1,shiftKey:!1,target:document.body,currentTarget:document.body,originalTarget:document.body,explicitOriginalTarget:document.body,srcElement:document.body,type:"keydown",bubbles:!0,cancelBubble:!1,cancelable:!0,isTrusted:!0,repeat:!1};let i=!1,l={};switch(e.code){case"ArrowLeft":l={code:"KeyH",key:"h",keyCode:72,which:72};break;case"ArrowRight":l={code:"KeyL",key:"l",keyCode:76,which:76};break;default:i=!0}if(i)t&&console.warn(`BetterYTM: Captured key '${e.code}' has no defined behavior`);else{const n=Object.assign(Object.assign({code:""},r),l);document.body.dispatchEvent(new KeyboardEvent("keydown",n)),t&&console.log(`BetterYTM: Dispatched proxy keydown event: [${e.code}] -> [${n.code}]`)}}}let g=0;function f(){const e=document.querySelector('.ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id="SPunlimited"]');e?(e.remove(),t&&console.log(`BetterYTM: Removed upgrade tab after ${g} tries`)):g<s?(setTimeout(f,c),g++):console.error(`BetterYTM: Couldn't find upgrade tab to remove after ${g} tries`)}let h="",b=0;function v(){return e(this,void 0,void 0,(function*(){const n=document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");if(!n)return b++,b<s?setTimeout(v,c):console.error(`BetterYTM: Couldn't find element to append lyrics buttons to after ${b} tries`);const o=document.querySelector(".content-info-wrapper > yt-formatted-string"),r=yield x(),i=document.createElement("a");i.id="betterytm-lyrics-button",i.className="ytmusic-player-bar",i.title=r?"Click to open this song's lyrics in a new tab":"Loading...",r&&(i.href=r),i.target="_blank",i.rel="noopener noreferrer",i.style.visibility=r?"initial":"hidden",i.style.display=r?"inline-flex":"none",S("    #betterytm-lyrics-button {\n      align-items: center;\n      justify-content: center;\n      position: relative;\n      vertical-align: middle;\n\n      margin-left: 8px;\n      width: 40px;\n      height: 40px;\n      border-radius: 100%;\n      background-color: transparent;\n    }\n\n    #betterytm-lyrics-button:hover {\n      background-color: #383838;\n    }\n\n    #betterytm-lyrics-img {\n      display: inline-block;\n      z-index: 10;\n      width: 24px;\n      height: 24px;\n      padding: 5px;\n    }","lyrics");const l=document.createElement("img");l.id="betterytm-lyrics-img",l.src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/external/genius.png",i.appendChild(l),t&&console.log(`BetterYTM: Inserted genius button after ${b} tries:`,i),T(n,i),h=o.title,new MutationObserver((n=>{var o,r,i;return e(this,void 0,void 0,(function*(){var e,l,s,c;try{for(o=!0,r=function(e){if(!Symbol.asyncIterator)throw new TypeError("Symbol.asyncIterator is not defined.");var t,n=e[Symbol.asyncIterator];return n?n.call(e):(e="function"==typeof __values?__values(e):e[Symbol.iterator](),t={},o("next"),o("throw"),o("return"),t[Symbol.asyncIterator]=function(){return this},t);function o(n){t[n]=e[n]&&function(t){return new Promise((function(o,r){!function(e,t,n,o){Promise.resolve(o).then((function(t){e({value:t,done:n})}),t)}(o,r,(t=e[n](t)).done,t.value)}))}}}(n);!(e=(i=yield r.next()).done);){c=i.value,o=!1;try{const e=c.target.title;if(e!=h&&e.length>0){const n=document.querySelector("#betterytm-lyrics-button");if(!n)return;t&&console.log(`BetterYTM: Song title changed from '${h}' to '${e}'`),n.style.cursor="wait",n.style.pointerEvents="none",h=e;const o=yield x();if(!o)continue;n.href=o,n.title="Click to open this song's lyrics in a new tab",n.style.cursor="pointer",n.style.visibility="initial",n.style.display="inline-flex",n.style.pointerEvents="initial"}}finally{o=!0}}}catch(e){l={error:e}}finally{try{o||e||!(s=r.return)||(yield s.call(r))}finally{if(l)throw l.error}}}))})).observe(o,{attributes:!0,attributeFilter:["title"]})}))}function x(){var t,n;return e(this,void 0,void 0,(function*(){try{const o="string"==typeof(null===(t=document.querySelector("ytmusic-player"))||void 0===t?void 0:t.getAttribute("video-mode_")),r=document.querySelector(".content-info-wrapper > yt-formatted-string"),i=document.querySelector("span.subtitle > yt-formatted-string:first-child");if(!r||!i||!r.title)return null;const l=e=>e.replace(/\(.+\)/gim,"").replace(/\[.+\]/gim,"").trim(),s=e=>((e=e.split(/\s*\u2022\s*/gimu)[0]).match(/&/)&&(e=e.split(/\s*&\s*/gm)[0]),e.match(/,/)&&(e=e.split(/,\s*/gm)[0]),e.trim()),c=l(r.title),d=s(i.title),a=()=>e(this,void 0,void 0,(function*(){if(!c.includes("-"))return yield w(d,c);const[e,...t]=c.split("-").map((e=>e.trim()));return yield w(e,t.join(" "))}));return o?yield a():null!==(n=yield w(d,c))&&void 0!==n?n:yield a()}catch(e){return console.error("BetterYTM: Couldn't resolve genius.com URL:",e),null}}))}function w(n,o){return e(this,void 0,void 0,(function*(){try{const e=`${a}?artist=${encodeURIComponent(n)}&song=${encodeURIComponent(o)}`;t&&console.log(`BetterYTM: Requesting URL from geniURL at '${e}'`);const r=yield(yield fetch(e)).json();if(r.error)return void console.error("BetterYTM: Couldn't fetch genius.com URL:",r.message);const i=r.url;return t&&console.info(`BetterYTM: Found genius URL: ${i}`),i}catch(e){return void console.error("BetterYTM: Couldn't get genius URL due to error:",e)}}))}function k(){const{hostname:e}=new URL(location.href);if(e.includes("music.youtube"))return"ytm";if(e.includes("youtube"))return"yt";throw new Error("BetterYTM is running on an unexpected website")}function T(e,t){var n;return null===(n=e.parentNode)||void 0===n||n.insertBefore(t,e.nextSibling),t}function S(e,n){"string"==typeof n&&0!==n.length||(n=String(Math.floor(1e4*Math.random())));const o=document.createElement("style");o.id=`betterytm-style-${n}`,o.innerHTML=e,document.querySelector("head").appendChild(o),t&&console.log(`BetterYTM: Inserted global style with ref '${n}':`,o)}function E(){return e(this,void 0,void 0,(function*(){const e=Object.freeze(Object.assign({},r));try{const t=yield GM.getValue("betterytm-config");return"string"!=typeof t?(yield C(),e):Object.freeze(t?JSON.parse(t):{})}catch(t){return yield C(),e}}))}function M(e){if(!e||"object"!=typeof e)throw new TypeError("Feature config not provided or invalid");return GM.setValue("betterytm-config",JSON.stringify(e))}function C(){return GM.setValue("betterytm-config",JSON.stringify(r))}!function(){try{console.log(`${u.name} v${u.version} - ${u.namespace}`),console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${d}`),document.addEventListener("DOMContentLoaded",m)}catch(e){console.error("BetterYTM - General Error:",e)}}()}))}();
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  LV: function() { return /* binding */ dbg; },
+  um: function() { return /* binding */ info; },
+  k3: function() { return /* binding */ triesInterval; },
+  j_: function() { return /* binding */ triesLimit; }
+});
+
+;// CONCATENATED MODULE: ./src/utils.ts
+
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    const { hostname } = new URL(location.href);
+    if (hostname.includes("music.youtube"))
+        return "ytm";
+    else if (hostname.includes("youtube"))
+        return "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website");
+}
+/**
+ * TODO: this is entirely broken now
+ * Returns the current video time in seconds
+ * @returns Returns null if the video time is unavailable
+ */
+function getVideoTime() {
+    var _a;
+    const domain = getDomain();
+    try {
+        if (domain === "ytm") {
+            const pbEl = document.querySelector("#progress-bar");
+            return (_a = pbEl.value) !== null && _a !== void 0 ? _a : null;
+        }
+        else if (domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
+            return 0;
+        return null;
+    }
+    catch (err) {
+        console.error("BetterYTM: Couldn't get video time due to error:", err);
+        return null;
+    }
+}
+/**
+ * Inserts `afterNode` as a sibling just after the provided `beforeNode`
+ * @param beforeNode
+ * @param afterNode
+ * @returns Returns the `afterNode`
+ */
+function insertAfter(beforeNode, afterNode) {
+    var _a;
+    (_a = beforeNode.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(afterNode, beforeNode.nextSibling);
+    return afterNode;
+}
+/**
+ * Adds global CSS style through a `<style>` element in the document's `<head>`
+ * @param style CSS string
+ * @param ref Reference name that is included in the `<style>`'s ID - defaults to a random number if left undefined
+ */
+function addGlobalStyle(style, ref) {
+    if (typeof ref !== "string" || ref.length === 0)
+        ref = String(Math.floor(Math.random() * 10000));
+    const styleElem = document.createElement("style");
+    styleElem.id = `betterytm-style-${ref}`;
+    styleElem.innerHTML = style;
+    document.querySelector("head").appendChild(styleElem);
+    dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
+}
+
+;// CONCATENATED MODULE: ./src/features/input.ts
+
+
+//#MARKER arrow key skip
+function initArrowKeySkip() {
+    document.addEventListener("keydown", onKeyDown);
+    dbg && console.log("BetterYTM: Added key press listener");
+}
+/** Called when the user presses any key, anywhere */
+function onKeyDown(evt) {
+    var _a, _b;
+    if (["ArrowLeft", "ArrowRight"].includes(evt.code)) {
+        // discard the event when a (text) input is currently active, like when editing a playlist
+        if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
+            return dbg && console.info(`BetterYTM: Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);
+        dbg && console.log(`BetterYTM: Captured key '${evt.code}' in proxy listener`);
+        // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
+        const defaultProps = {
+            altKey: false,
+            ctrlKey: false,
+            metaKey: false,
+            shiftKey: false,
+            target: document.body,
+            currentTarget: document.body,
+            originalTarget: document.body,
+            explicitOriginalTarget: document.body,
+            srcElement: document.body,
+            type: "keydown",
+            bubbles: true,
+            cancelBubble: false,
+            cancelable: true,
+            isTrusted: true,
+            repeat: false,
+        };
+        let invalidKey = false;
+        let keyProps = {};
+        switch (evt.code) {
+            case "ArrowLeft":
+                keyProps = {
+                    code: "KeyH",
+                    key: "h",
+                    keyCode: 72,
+                    which: 72,
+                };
+                break;
+            case "ArrowRight":
+                keyProps = {
+                    code: "KeyL",
+                    key: "l",
+                    keyCode: 76,
+                    which: 76,
+                };
+                break;
+            default:
+                invalidKey = true;
+                break;
+        }
+        if (!invalidKey) {
+            // TODO: check if the code prop is correct
+            const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
+            document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
+            dbg && console.log(`BetterYTM: Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
+        }
+        else if (dbg)
+            console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
+    }
+}
+//#MARKER site switch
+/** Initializes the site switch feature */
+function initSiteSwitch(domain) {
+    // TODO:
+    // extra features:
+    // - keep video time
+    document.addEventListener("keydown", (e) => {
+        if (e.key == "F9")
+            switchSite(domain === "yt" ? "ytm" : "yt");
+    });
+    dbg && console.log("BetterYTM: Initialized site switch listener");
+}
+/** Switches to the other site (between YT and YTM) */
+function switchSite(newDomain) {
+    var _a;
+    try {
+        let subdomain;
+        if (newDomain === "ytm")
+            subdomain = "music";
+        else if (newDomain === "yt")
+            subdomain = "www";
+        if (!subdomain)
+            throw new TypeError(`Unrecognized domain '${newDomain}'`);
+        const { pathname, search, hash } = new URL(location.href);
+        const vt = (_a = getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        dbg && console.log(`BetterYTM: Found video time of ${vt} seconds`);
+        const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
+        const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+        console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
+        location.href = url;
+    }
+    catch (err) {
+        console.error("BetterYTM: Error while switching site:", err);
+    }
+}
+
+;// CONCATENATED MODULE: ./src/features/layout.ts
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+let features;
+function initLayout() {
+    return __awaiter(this, void 0, void 0, function* () {
+        features = yield getFeatures();
+    });
+}
+//#MARKER menu
+const branch = dbg ? "develop" : "main";
+/** Adds an element to open the BetterYTM menu */
+function addMenu() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        // bg & menu
+        const backgroundElem = document.createElement("div");
+        backgroundElem.id = "betterytm-menu-bg";
+        backgroundElem.title = "Click here to close the menu";
+        backgroundElem.style.visibility = "hidden";
+        backgroundElem.style.display = "none";
+        backgroundElem.addEventListener("click", (e) => {
+            if (e.target.id === "betterytm-menu-bg")
+                closeMenu();
+        });
+        const menuContainer = document.createElement("div");
+        menuContainer.title = "";
+        menuContainer.id = "betterytm-menu";
+        menuContainer.style.borderRadius = "15px";
+        menuContainer.style.display = "flex";
+        menuContainer.style.flexDirection = "column";
+        menuContainer.style.justifyContent = "space-between";
+        // title
+        const titleCont = document.createElement("div");
+        titleCont.style.padding = "8px 20px 15px 8px";
+        titleCont.style.display = "flex";
+        titleCont.style.justifyContent = "space-between";
+        titleCont.id = "betterytm-menu-titlecont";
+        const titleElem = document.createElement("h2");
+        titleElem.id = "betterytm-menu-title";
+        titleElem.innerText = "BetterYTM - Configuration";
+        const linksCont = document.createElement("div");
+        linksCont.id = "betterytm-menu-linkscont";
+        const addLink = (imgSrc, href, title) => {
+            const anchorElem = document.createElement("a");
+            anchorElem.className = "betterytm-menu-link";
+            anchorElem.rel = "noopener noreferrer";
+            anchorElem.target = "_blank";
+            anchorElem.href = href;
+            anchorElem.title = title;
+            anchorElem.style.marginLeft = "10px";
+            const imgElem = document.createElement("img");
+            imgElem.className = "betterytm-menu-img";
+            imgElem.src = imgSrc;
+            imgElem.style.width = "32px";
+            imgElem.style.height = "32px";
+            anchorElem.appendChild(imgElem);
+            linksCont.appendChild(anchorElem);
+        };
+        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/github.png`, info.namespace, `${info.name} on GitHub`);
+        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${info.name} on GreasyFork`);
+        const closeElem = document.createElement("img");
+        closeElem.id = "betterytm-menu-close";
+        closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/icon/close.png`;
+        closeElem.title = "Click to close the menu";
+        closeElem.style.marginLeft = "50px";
+        closeElem.style.width = "32px";
+        closeElem.style.height = "32px";
+        closeElem.addEventListener("click", closeMenu);
+        linksCont.appendChild(closeElem);
+        titleCont.appendChild(titleElem);
+        titleCont.appendChild(linksCont);
+        // TODO: features
+        const featuresCont = document.createElement("div");
+        featuresCont.id = "betterytm-menu-opts";
+        featuresCont.style.display = "flex";
+        featuresCont.style.flexDirection = "column";
+        /** Gets called whenever the feature config is changed */
+        const confChanged = (key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
+            dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${initialVal}' to '${newVal}'`);
+            const featConf = Object.assign({}, (yield getFeatures()));
+            featConf[key] = newVal;
+            yield saveFeatureConf(featConf);
+            dbg && console.log("BetterYTM: Saved feature config changes");
+            dbg && console.log("#DEBUG", yield GM.getValue("betterytm-config"));
+        });
+        const features = yield getFeatures();
+        const featKeys = Object.keys(features);
+        for (const key of featKeys) {
+            const ftInfo = featInfo[key];
+            if (!ftInfo)
+                continue;
+            const { desc, type, default: ftDef } = ftInfo;
+            // @ts-ignore
+            const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
+            const val = features[key];
+            const initialVal = val || ftDef || undefined;
+            const ftConfElem = document.createElement("div");
+            ftConfElem.id = `betterytm-ftconf-${key}`;
+            ftConfElem.style.display = "flex";
+            ftConfElem.style.flexDirection = "row";
+            ftConfElem.style.justifyContent = "space-between";
+            ftConfElem.style.padding = "8px 20px";
+            {
+                const textElem = document.createElement("span");
+                textElem.style.display = "inline-block";
+                textElem.style.fontSize = "15px";
+                textElem.innerText = desc;
+                ftConfElem.appendChild(textElem);
+            }
+            {
+                let inputType = "text";
+                switch (type) {
+                    case "toggle":
+                        inputType = "checkbox";
+                        break;
+                    case "slider":
+                        inputType = "range";
+                        break;
+                    case "number":
+                        inputType = "number";
+                        break;
+                }
+                const inputElemId = `betterytm-ftconf-${key}-input`;
+                const ctrlElem = document.createElement("span");
+                ctrlElem.style.display = "inline-block";
+                ctrlElem.style.whiteSpace = "nowrap";
+                const inputElem = document.createElement("input");
+                inputElem.id = inputElemId;
+                inputElem.style.marginRight = "37px";
+                inputElem.type = inputType;
+                if (type === "toggle")
+                    inputElem.style.marginLeft = "5px";
+                if (typeof initialVal !== "undefined")
+                    inputElem.value = String(initialVal);
+                if (type === "number" && step)
+                    inputElem.step = step;
+                // @ts-ignore
+                if (ftInfo.min && ftInfo.max) {
+                    // @ts-ignore
+                    inputElem.min = ftInfo.min;
+                    // @ts-ignore
+                    inputElem.max = ftInfo.max;
+                }
+                if (type === "toggle" && typeof initialVal !== "undefined")
+                    inputElem.checked = Boolean(initialVal);
+                const fmtVal = (v) => String(v);
+                const toggleLabelText = (toggled) => toggled ? "On" : "Off";
+                let labelElem;
+                if (type === "slider") {
+                    labelElem = document.createElement("label");
+                    labelElem.classList.add("betterytm-ftconf-label");
+                    labelElem.style.marginRight = "20px";
+                    labelElem.style.fontSize = "16px";
+                    labelElem.htmlFor = inputElemId;
+                    labelElem.innerText = fmtVal(initialVal);
+                    inputElem.addEventListener("change", () => {
+                        if (labelElem)
+                            labelElem.innerText = fmtVal(parseInt(inputElem.value));
+                    });
+                }
+                else if (type === "toggle" && typeof initialVal !== "undefined") {
+                    labelElem = document.createElement("label");
+                    labelElem.classList.add("betterytm-ftconf-label");
+                    labelElem.style.paddingLeft = "10px";
+                    labelElem.style.paddingRight = "5px";
+                    labelElem.style.fontSize = "16px";
+                    labelElem.htmlFor = inputElemId;
+                    labelElem.innerText = toggleLabelText(Boolean(initialVal));
+                    inputElem.addEventListener("change", () => {
+                        if (labelElem)
+                            labelElem.innerText = toggleLabelText(inputElem.checked);
+                    });
+                }
+                inputElem.addEventListener("change", ({ currentTarget }) => {
+                    const elem = currentTarget;
+                    let v = parseInt(elem.value);
+                    if (isNaN(v))
+                        v = Number(elem.value);
+                    if (typeof initialVal !== "undefined")
+                        confChanged(key, initialVal, (type !== "toggle" ? v : elem.checked));
+                });
+                const resetElem = document.createElement("button");
+                resetElem.innerText = "Reset";
+                resetElem.addEventListener("click", () => {
+                    inputElem[type !== "toggle" ? "value" : "checked"] = ftDef;
+                    if (labelElem) {
+                        if (type === "toggle")
+                            labelElem.innerText = toggleLabelText(inputElem.checked);
+                        else
+                            labelElem.innerText = fmtVal(parseInt(inputElem.value));
+                    }
+                    if (typeof initialVal !== "undefined")
+                        confChanged(key, initialVal, ftDef);
+                });
+                labelElem && ctrlElem.appendChild(labelElem);
+                ctrlElem.appendChild(inputElem);
+                ctrlElem.appendChild(resetElem);
+                ftConfElem.appendChild(ctrlElem);
+            }
+            featuresCont.appendChild(ftConfElem);
+        }
+        const footerElem = document.createElement("div");
+        footerElem.style.marginTop = "20px";
+        footerElem.style.fontSize = "17px";
+        footerElem.style.textDecoration = "underline";
+        footerElem.style.padding = "8px 20px";
+        footerElem.innerText = "You need to reload the page to apply changes.";
+        const reloadElem = document.createElement("button");
+        reloadElem.style.marginLeft = "20px";
+        reloadElem.innerText = "Reload now";
+        reloadElem.title = "Click to reload the page";
+        reloadElem.addEventListener("click", () => location.reload());
+        footerElem.appendChild(reloadElem);
+        featuresCont.appendChild(footerElem);
+        // finalize
+        const menuBody = document.createElement("div");
+        menuBody.id = "betterytm-menu-body";
+        menuBody.appendChild(titleCont);
+        menuBody.appendChild(featuresCont);
+        const versionCont = document.createElement("div");
+        versionCont.style.display = "flex";
+        versionCont.style.justifyContent = "space-around";
+        versionCont.style.fontSize = "1.15em";
+        versionCont.style.marginTop = "10px";
+        versionCont.style.marginBottom = "5px";
+        const versionElem = document.createElement("span");
+        versionElem.id = "betterytm-menu-version";
+        versionElem.innerText = `v${info.version}`;
+        versionCont.appendChild(versionElem);
+        featuresCont.appendChild(versionCont);
+        menuContainer.appendChild(menuBody);
+        menuContainer.appendChild(versionCont);
+        backgroundElem.appendChild(menuContainer);
+        document.body.appendChild(backgroundElem);
+        // add style
+        const menuStyle = `\
+#betterytm-menu-bg {
+  display: block;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#betterytm-menu {
+  display: inline-block;
+  position: fixed;
+  width: 50vw;
+  height: auto;
+  min-height: 500px;
+  left: 25vw;
+  top: 25vh;
+  z-index: 16;
+  overflow: auto;
+  padding: 8px;
+  color: #fff;
+  background-color: #212121;
+}
+
+#betterytm-menu-titlecont {
+  display: flex;
+}
+
+#betterytm-menu-title {
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+#betterytm-menu-linkscont {
+  display: flex;
+}
+
+.betterytm-menu-link {
+  display: inline-block;
+}
+
+/*.betterytm-menu-img {
+
+}*/
+
+#betterytm-menu-close {
+  cursor: pointer;
+}
+
+.betterytm-ftconf-label {
+  user-select: none;
+}`;
+        dbg && console.log("BetterYTM: Added menu elem:", backgroundElem);
+        addGlobalStyle(menuStyle, "menu");
+    });
+}
+function closeMenu() {
+    const menuBg = document.querySelector("#betterytm-menu-bg");
+    menuBg.style.visibility = "hidden";
+    menuBg.style.display = "none";
+}
+function openMenu() {
+    const menuBg = document.querySelector("#betterytm-menu-bg");
+    menuBg.style.visibility = "visible";
+    menuBg.style.display = "block";
+}
+//#MARKER watermark
+/**
+ * Adds a watermark beneath the logo
+ */
+function addWatermark() {
+    const watermark = document.createElement("span");
+    watermark.id = "betterytm-watermark";
+    watermark.className = "style-scope ytmusic-nav-bar";
+    watermark.innerText = info.name;
+    watermark.title = "Open menu";
+    watermark.addEventListener("click", () => openMenu());
+    const style = `\
+#betterytm-watermark {
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 45px;
+  top: 46px;
+  z-index: 10;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media(max-width: 615px) {
+  #betterytm-watermark {
+    display: none;
+  }
+}
+
+#betterytm-watermark:hover {
+  text-decoration: underline;
+}`;
+    addGlobalStyle(style, "watermark");
+    const logoElem = document.querySelector("#left-content");
+    insertAfter(logoElem, watermark);
+    dbg && console.log("BetterYTM: Added watermark element:", watermark);
+}
+//#MARKER remove upgrade tab
+let removeUpgradeTries = 0;
+/** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
+function removeUpgradeTab() {
+    const tabElem = document.querySelector(".ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id=\"SPunlimited\"]");
+    if (tabElem) {
+        tabElem.remove();
+        dbg && console.log(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
+    }
+    else if (removeUpgradeTries < triesLimit) {
+        setTimeout(removeUpgradeTab, triesInterval); // TODO: improve this
+        removeUpgradeTries++;
+    }
+    else
+        console.error(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+}
+// #SECTION volume slider
+/** Sets the volume slider to a set size */
+function setVolSliderSize() {
+    const { volumeSliderSize: size } = features;
+    if (typeof size !== "number" || isNaN(Number(size)))
+        return;
+    const style = `\
+.volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
+    width: ${size}px !important;
+}`;
+    addGlobalStyle(style, "vol_slider_size");
+}
+/** Sets the `step` attribute of the volume slider */
+function setVolSliderStep() {
+    const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+    sliderElem.setAttribute("step", String(features.volumeSliderStep));
+}
+
+;// CONCATENATED MODULE: ./src/features/lyrics.ts
+var lyrics_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
+
+
+/** Base URL of geniURL */
+const geniUrlBase = "https://api.sv443.net/geniurl";
+/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
+const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+let mcCurrentSongTitle = "";
+let mcLyricsButtonAddTries = 0;
+/** Adds a genius.com lyrics button to the media controls bar */
+function addMediaCtrlGeniusBtn() {
+    return lyrics_awaiter(this, void 0, void 0, function* () {
+        const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");
+        if (!likeContainer) {
+            mcLyricsButtonAddTries++;
+            if (mcLyricsButtonAddTries < triesLimit)
+                return setTimeout(addMediaCtrlGeniusBtn, triesInterval); // TODO: improve this
+            return console.error(`BetterYTM: Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
+        }
+        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+        const gUrl = yield getCurrentGeniusUrl();
+        const linkElem = document.createElement("a");
+        linkElem.id = "betterytm-lyrics-button";
+        linkElem.className = "ytmusic-player-bar";
+        linkElem.title = gUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
+        if (gUrl)
+            linkElem.href = gUrl;
+        linkElem.target = "_blank";
+        linkElem.rel = "noopener noreferrer";
+        linkElem.style.visibility = gUrl ? "initial" : "hidden";
+        linkElem.style.display = gUrl ? "inline-flex" : "none";
+        const style = `\
+    #betterytm-lyrics-button {
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      vertical-align: middle;
+
+      margin-left: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      background-color: transparent;
+    }
+
+    #betterytm-lyrics-button:hover {
+      background-color: #383838;
+    }
+
+    #betterytm-lyrics-img {
+      display: inline-block;
+      z-index: 10;
+      width: 24px;
+      height: 24px;
+      padding: 5px;
+    }`;
+        addGlobalStyle(style, "lyrics");
+        const imgElem = document.createElement("img");
+        imgElem.id = "betterytm-lyrics-img";
+        imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/external/genius.png";
+        linkElem.appendChild(imgElem);
+        dbg && console.log(`BetterYTM: Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+        insertAfter(likeContainer, linkElem);
+        mcCurrentSongTitle = songTitleElem.title;
+        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return lyrics_awaiter(this, void 0, void 0, function* () {
+            var _b, e_1, _c, _d;
+            try {
+                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b;) {
+                    _d = mutations_1_1.value;
+                    _a = false;
+                    try {
+                        const mut = _d;
+                        const newTitle = mut.target.title;
+                        if (newTitle != mcCurrentSongTitle && newTitle.length > 0) {
+                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                            if (!lyricsBtn)
+                                return;
+                            dbg && console.log(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                            lyricsBtn.style.cursor = "wait";
+                            lyricsBtn.style.pointerEvents = "none";
+                            mcCurrentSongTitle = newTitle;
+                            const url = yield getCurrentGeniusUrl(); // can take a second or two
+                            if (!url)
+                                continue;
+                            lyricsBtn.href = url;
+                            lyricsBtn.title = "Click to open this song's lyrics in a new tab";
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.visibility = "initial";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.pointerEvents = "initial";
+                        }
+                    }
+                    finally {
+                        _a = true;
+                    }
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+        }); };
+        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+        const obs = new MutationObserver(onMutation);
+        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+    });
+}
+/** Adds genius lyrics buttons to the song queue */
+function addQueueGeniusBtns() {
+    return lyrics_awaiter(this, void 0, void 0, function* () {
+        // TODO:
+    });
+}
+/** Returns the genius.com lyrics site URL for the current song */
+function getCurrentGeniusUrl() {
+    var _a, _b;
+    return lyrics_awaiter(this, void 0, void 0, function* () {
+        try {
+            // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.getAttribute("video-mode_")) === "string";
+            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
+            if (!songTitleElem || !songMetaElem || !songTitleElem.title)
+                return null;
+            const sanitizeSongName = (songName) => {
+                const parensRegex = /\(.+\)/gmi;
+                const squareParensRegex = /\[.+\]/gmi;
+                // trim right after the song name:
+                const sanitized = songName
+                    .replace(parensRegex, "")
+                    .replace(squareParensRegex, "");
+                return sanitized.trim();
+            };
+            const splitArtist = (songMeta) => {
+                songMeta = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at bullet (&bull; / •) character
+                if (songMeta.match(/&/))
+                    songMeta = songMeta.split(/\s*&\s*/gm)[0];
+                if (songMeta.match(/,/))
+                    songMeta = songMeta.split(/,\s*/gm)[0];
+                return songMeta.trim();
+            };
+            const songNameRaw = songTitleElem.title;
+            const songName = sanitizeSongName(songNameRaw);
+            const artistName = splitArtist(songMetaElem.title);
+            /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
+            const getGeniusUrlVideo = () => lyrics_awaiter(this, void 0, void 0, function* () {
+                if (!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                    return yield getGeniusUrl(artistName, songName);
+                const [artist, ...rest] = songName.split("-").map(v => v.trim());
+                return yield getGeniusUrl(artist, rest.join(" "));
+            });
+            // TODO: artist might need further splitting before comma or ampersand
+            const url = isVideo ? yield getGeniusUrlVideo() : ((_b = yield getGeniusUrl(artistName, songName)) !== null && _b !== void 0 ? _b : yield getGeniusUrlVideo());
+            return url;
+        }
+        catch (err) {
+            console.error("BetterYTM: Couldn't resolve genius.com URL:", err);
+            return null;
+        }
+    });
+}
+/**
+   * @param artist
+   * @param song
+   */
+function getGeniusUrl(artist, song) {
+    return lyrics_awaiter(this, void 0, void 0, function* () {
+        try {
+            const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+            dbg && console.log(`BetterYTM: Requesting URL from geniURL at '${fetchUrl}'`);
+            const result = yield (yield fetch(fetchUrl)).json();
+            if (result.error) {
+                console.error("BetterYTM: Couldn't fetch genius.com URL:", result.message);
+                return undefined;
+            }
+            const url = result.url;
+            dbg && console.info(`BetterYTM: Found genius URL: ${url}`);
+            return url;
+        }
+        catch (err) {
+            console.error("BetterYTM: Couldn't get genius URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+
+;// CONCATENATED MODULE: ./src/features/index.ts
+
+
+
+/** Contains all possible features with their default values and other config */
+const featInfo = {
+    arrowKeySupport: {
+        desc: "Arrow keys skip forwards and backwards by 10 seconds",
+        type: "toggle",
+        default: true,
+    },
+    removeUpgradeTab: {
+        desc: "Remove the \"Upgrade\" / YT Music Premium tab",
+        type: "toggle",
+        default: true,
+    },
+    switchBetweenSites: {
+        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
+        type: "toggle",
+        default: true,
+    },
+    geniusLyrics: {
+        desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
+        type: "toggle",
+        default: true,
+    },
+    lyricsButtonsOnSongQueue: {
+        desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)",
+        type: "toggle",
+        default: true,
+    },
+    volumeSliderSize: {
+        desc: "The width of the volume slider in pixels",
+        type: "number",
+        min: 10,
+        max: 1000,
+        step: 5,
+        default: 160,
+    },
+    volumeSliderStep: {
+        desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
+        type: "slider",
+        min: 1,
+        max: 20,
+        default: 2,
+    },
+    watermarkEnabled: {
+        desc: "Show a BetterYTM watermark under the YTM logo",
+        type: "toggle",
+        default: true,
+    },
+};
+
+;// CONCATENATED MODULE: ./src/config.ts
+var config_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+const defaultFeatures = Object.keys(featInfo).reduce((acc, key) => {
+    acc[key] = featInfo[key].default;
+    return acc;
+}, {});
+let featuresCache;
+/**
+ * Returns the current FeatureConfig in memory or reads it from GM storage
+ * Automatically applies defaults for non-existant keys
+ * @param forceRead Set to true to force reading the config from GM storage
+ */
+function getFeatures(forceRead = false) {
+    return config_awaiter(this, void 0, void 0, function* () {
+        let features;
+        if (featuresCache === undefined || forceRead) {
+            const featureConf = yield loadFeatureConf();
+            featuresCache = features = Object.assign(Object.assign({}, defaultFeatures), featureConf);
+            yield saveFeatureConf(features);
+        }
+        return featuresCache;
+    });
+}
+/** Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved */
+function loadFeatureConf() {
+    return config_awaiter(this, void 0, void 0, function* () {
+        const defConf = Object.freeze(Object.assign({}, defaultFeatures));
+        try {
+            /** @type {string} */
+            const featureConf = yield GM.getValue("betterytm-config");
+            if (typeof featureConf !== "string") {
+                yield setDefaultFeatConf();
+                return featuresCache = defConf;
+            }
+            return Object.freeze(featureConf ? JSON.parse(featureConf) : {});
+        }
+        catch (err) {
+            yield setDefaultFeatConf();
+            return featuresCache = defConf;
+        }
+    });
+}
+/**
+ * Saves a feature configuration saved persistently
+ * @param featureConf
+ */
+function saveFeatureConf(featureConf) {
+    if (!featureConf || typeof featureConf != "object")
+        throw new TypeError("Feature config not provided or invalid");
+    return GM.setValue("betterytm-config", JSON.stringify(featureConf));
+}
+function setDefaultFeatConf() {
+    return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
+}
+
+;// CONCATENATED MODULE: ./src/BetterYTM.user.ts
+var BetterYTM_user_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+/** Set to true to enable debug mode for more output in the JS console */
+const dbg = true;
+/** Specifies the hard limit for repetitive tasks */
+const triesLimit = 50;
+/** Specifies the interval for repetitive tasks */
+const triesInterval = 150;
+/** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
+const info = Object.freeze({
+    name: GM.info.script.name,
+    version: GM.info.script.version,
+    namespace: GM.info.script.namespace,
+});
+(() => BetterYTM_user_awaiter(void 0, void 0, void 0, function* () {
+    //#MARKER init
+    const features = yield getFeatures();
+    yield initLayout();
+    try {
+        console.log(`${info.name} v${info.version} - ${info.namespace}`);
+        console.log(`Powered by lots of ambition and my song metadata API called geniURL: ${geniUrlBase}`);
+        document.addEventListener("DOMContentLoaded", onDomLoad);
+    }
+    catch (err) {
+        console.error("BetterYTM - General Error:", err);
+    }
+    /** Called when the DOM has finished loading (after `DOMContentLoaded` is emitted) */
+    function onDomLoad() {
+        return BetterYTM_user_awaiter(this, void 0, void 0, function* () {
+            const domain = getDomain();
+            dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
+            try {
+                if (domain === "ytm") {
+                    if (features.arrowKeySupport)
+                        initArrowKeySkip();
+                    if (features.removeUpgradeTab)
+                        removeUpgradeTab();
+                    if (features.watermarkEnabled)
+                        addWatermark();
+                    if (features.geniusLyrics)
+                        yield addMediaCtrlGeniusBtn();
+                    if (features.lyricsButtonsOnSongQueue)
+                        yield addQueueGeniusBtns();
+                    if (typeof features.volumeSliderSize === "number")
+                        setVolSliderSize();
+                    setVolSliderStep();
+                }
+                if (["ytm", "yt"].includes(domain)) {
+                    if (features.switchBetweenSites)
+                        initSiteSwitch(domain);
+                    try {
+                        addMenu();
+                    }
+                    catch (err) {
+                        console.error("BetterYTM: Couldn't add menu:", err);
+                    }
+                }
+            }
+            catch (err) {
+                console.error("BetterYTM: General error while executing feature:", err);
+            }
+        });
+    }
+}))();
+
+/******/ })()
+;

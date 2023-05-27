@@ -32,7 +32,7 @@ const header = `// ==UserScript==
  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
  █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
- █▄▄▀ █▄▄ █▄▄ █▄▄ █▄▄ █   █   █  █   █
+ █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
          Made with ❤️ by Sv443
  I welcome every contribution on GitHub! */
