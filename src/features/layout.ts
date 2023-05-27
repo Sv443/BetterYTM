@@ -97,15 +97,13 @@ export async function addMenu() {
   const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean, newVal: number | boolean) => {
     dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${initialVal}' to '${newVal}'`);
 
-    const featConf = {...(await getFeatures())};
+    const featConf = { ...await getFeatures() };
 
     featConf[key] = newVal as never;
 
     await saveFeatureConf(featConf);
 
-    dbg && console.log("BetterYTM: Saved feature config changes");
-
-    dbg && console.log("#DEBUG", await GM.getValue("betterytm-config"));
+    dbg && console.log("BetterYTM: Saved feature config changes:\n", await GM.getValue("betterytm-config"));
   };
 
   const features = await getFeatures();
@@ -196,7 +194,7 @@ export async function addMenu() {
         labelElem.htmlFor = inputElemId;
         labelElem.innerText = fmtVal(initialVal);
 
-        inputElem.addEventListener("change", () => {
+        inputElem.addEventListener("input", () => {
           if(labelElem)
             labelElem.innerText = fmtVal(parseInt(inputElem.value));
         });
@@ -210,13 +208,13 @@ export async function addMenu() {
         labelElem.htmlFor = inputElemId;
         labelElem.innerText = toggleLabelText(Boolean(initialVal));
 
-        inputElem.addEventListener("change", () => {
+        inputElem.addEventListener("input", () => {
           if(labelElem)
             labelElem.innerText = toggleLabelText(inputElem.checked);
         });
       }
 
-      inputElem.addEventListener("change", ({ currentTarget }) => {
+      inputElem.addEventListener("input", ({ currentTarget }) => {
         const elem = currentTarget as HTMLInputElement;
         let v = parseInt(elem.value);
         if(isNaN(v))
