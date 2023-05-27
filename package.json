@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
+    "post-build": "ts-node ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "eslint ."

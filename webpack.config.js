@@ -1,4 +1,4 @@
-const path = require("path");
+const { join } = require("path");
 const { exec } = require("child_process");
 
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
-          exec("node ./tools/post-build.js", (_err, stdout, stderr) => {
+          exec("npm run post-build", (_err, stdout, stderr) => {
             stdout && process.stdout.write(`${stdout}\n`);
             stderr && process.stderr.write(`${stderr}\n`);
           });
@@ -48,6 +48,6 @@ module.exports = {
   },
   output: {
     filename: "BetterYTM.user.js",
-    path: path.resolve(__dirname),
+    path: join(__dirname, "/dist"),
   },
 };

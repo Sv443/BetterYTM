@@ -3,16 +3,17 @@
     "module": "NodeNext",
     "target": "ES2016",
     "outDir": ".",
-    "allowJs": true,
     "lib": [
       "DOM",
       "DOM.Iterable"
     ],
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
