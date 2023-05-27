@@ -35,7 +35,8 @@
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unused-vars": ["warn", { "ignoreRestSiblings": true, "argsIgnorePattern": "^_" }],
         "@typescript-eslint/ban-ts-comment": "off",
-        "comma-dangle": ["error", "only-multiline"]
+        "comma-dangle": ["error", "only-multiline"],
+        "no-misleading-character-class": "off"
     },
     "overrides": [
         {

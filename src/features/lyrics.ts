@@ -1,4 +1,4 @@
-import { dbg, triesInterval, triesLimit } from "../BetterYTM.user";
+import { dbg, triesInterval, triesLimit } from "../constants";
 import { addGlobalStyle, insertAfter } from "../utils";
 
 /** Base URL of geniURL */

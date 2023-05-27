@@ -1,5 +1,5 @@
 import { getVideoTime } from "../utils";
-import { dbg } from "../BetterYTM.user";
+import { dbg } from "../constants";
 import type { Domain } from "../types";
 
 //#MARKER arrow key skip
