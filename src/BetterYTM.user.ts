@@ -1,7 +1,18 @@
 import { getFeatures } from "./config";
 import { dbg, info } from "./constants";
-import { addMediaCtrlGeniusBtn, addMenu, addQueueGeniusBtns, addWatermark, geniUrlBase, initArrowKeySkip, initChangelog, initLayout as preInitLayout, initSiteSwitch, removeUpgradeTab, setVolSliderSize, setVolSliderStep } from "./features/index";
 import { getDomain } from "./utils";
+import {
+  // layout
+  addMediaCtrlGeniusBtn, addQueueGeniusBtns, addWatermark,
+  preInitLayout, removeUpgradeTab, setVolSliderSize,
+  setVolSliderStep,
+  // lyrics
+  geniUrlBase,
+  // input
+  initArrowKeySkip, initSiteSwitch,
+  // menu
+  addMenu, initChangelog,
+} from "./features/index";
 
 (async () => {
   //#MARKER init
