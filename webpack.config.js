@@ -4,9 +4,9 @@ const { exec } = require("child_process");
 module.exports = {
   entry: "./src/BetterYTM.user.ts",
   mode: "production",
-  optimization: {
-    minimize: false,
-  },
+  // optimization: {
+  //   minimize: false,
+  // },
   module: {
     rules: [{
       test: /\.tsx?$/,
