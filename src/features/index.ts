@@ -1,6 +1,7 @@
 export * from "./input";
 export * from "./layout";
 export * from "./lyrics";
+export * from "./menu";
 
 /** Contains all possible features with their default values and other config */
 export const featInfo = {
