@@ -3,8 +3,8 @@
 // @homepageURL     https://github.com/Sv443/BetterYTM#readme
 // @namespace       https://github.com/Sv443/BetterYTM
 // @version         1.0.0
-// @description     Improvements for YouTube Music
-// @description:de  Verbesserungen für YouTube Music
+// @description     Configurable Layout and UX improvements for YouTube Music
+// @description:de  Konfigurierbare Layout- und UX-Verbesserungen für YouTube Music
 // @license         MIT
 // @author          Sv443
 // @copyright       Sv443 (https://github.com/Sv443)

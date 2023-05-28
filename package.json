@@ -1,14 +1,15 @@
 {
   "name": "betterytm",
   "version": "1.0.0",
-  "description": "Userscript that improves YouTube Music",
+  "description": "Configurable Layout and UX improvements for YouTube Music",
+  "description:de": "Konfigurierbare Layout- und UX-Verbesserungen für YouTube Music",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/BetterYTM.user.ts",
   "type": "module",
   "scripts": {
-    "test": "node --loader ts-node/esm ./test.ts",
+    "test": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm ./test.ts",
     "build": "webpack",
-    "post-build": "node --loader ts-node/esm ./src/tools/post-build.ts",
+    "post-build": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "eslint ."
