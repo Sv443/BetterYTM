@@ -6,9 +6,9 @@
   "main": "./src/BetterYTM.user.ts",
   "type": "module",
   "scripts": {
-    "test": "ts-node --esm ./test.ts",
+    "test": "node --loader ts-node/esm ./test.ts",
     "build": "webpack",
-    "post-build": "ts-node --esm ./src/tools/post-build.ts",
+    "post-build": "node --loader ts-node/esm ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "eslint ."
@@ -26,8 +26,7 @@
     "url": "https://github.com/Sv443/BetterYTM/issues"
   },
   "dependencies": {
-    "@billjs/event-emitter": "^1.0.3",
-    "marked": "^5.0.3"
+    "@billjs/event-emitter": "^1.0.3"
   },
   "devDependencies": {
     "@types/greasemonkey": "^4.0.4",

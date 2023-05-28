@@ -3,8 +3,9 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 
+const repo = "Sv443/BetterYTM";
 const userscriptName = "BetterYTM.user.js";
-const scriptUrl = `https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/${userscriptName}`;
+const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptName}`;
 
 const header = `\
 // ==UserScript==
@@ -16,10 +17,10 @@ const header = `\
 // @description:de  Verbesserungen für YouTube Music
 // @license         ${pkg.license}
 // @author          ${pkg.author.name}
-// @copyright       ${pkg.author.name} <${pkg.author.email}>
+// @copyright       ${pkg.author.name} (${pkg.author.url})
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/v2.1_200.png
+// @icon            https://raw.githubusercontent.com/${repo}/main/resources/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
