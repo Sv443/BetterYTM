@@ -1,8 +1,8 @@
 {
   "name": "betterytm",
   "version": "1.0.0",
-  "description": "Configurable Layout and UX improvements for YouTube Music",
-  "description:de": "Konfigurierbare Layout- und UX-Verbesserungen für YouTube Music",
+  "description": "Configurable layout and UX improvements for YouTube Music",
+  "description:de": "Konfigurierbares Layout und UX-Verbesserungen für YouTube Music",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/BetterYTM.user.ts",
   "type": "module",

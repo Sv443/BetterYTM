@@ -3,20 +3,36 @@ export type Domain = "yt" | "ytm";
 
 /** Feature configuration */
 export interface FeatureConfig {
+  //#SECTION input
   /** Arrow keys skip forwards and backwards by 10 seconds */
   arrowKeySupport: boolean;
-  /** Remove the \"Upgrade\" / YT Music Premium tab */
-  removeUpgradeTab: boolean;
   /** Add F9 as a hotkey to switch between the YT and YTM sites on a video / song */
   switchBetweenSites: boolean;
-  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
-  geniusLyrics: boolean;
-  /** TODO: Add a lyrics button to each song in the queue (\"up next\" tab) */
-  lyricsButtonsOnSongQueue: boolean;
+  /** TODO: The hotkey that needs to be pressed to initiate the site switch */
+  switchSitesHotkey: {
+    key: string;
+    shift: boolean;
+    ctrl: boolean;
+    meta: boolean;
+  };
+
+  //#SECTION layout
+  /** Remove the \"Upgrade\" / YT Music Premium tab */
+  removeUpgradeTab: boolean;
   /** The width of the volume slider in pixels */
   volumeSliderSize: number;
   /** Volume slider sensitivity - the smaller this number, the finer the volume control */
   volumeSliderStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
+  /** TODO: Add an <a>nchor around song thumbnails */
+  anchorAroundThumbnail: boolean;
+  /** TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
+  queueButtons: boolean;
+  /** TODO: Automatically dismisses the "are you still there" popup */
+  dismissPopup: boolean;
+
+  //#SECTION lyrics
+  /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
+  geniusLyrics: boolean;
 }

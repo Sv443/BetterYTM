@@ -5,49 +5,85 @@ export * from "./menu";
 
 /** Contains all possible features with their default values and other config */
 export const featInfo = {
-  arrowKeySupport: { // category: input
+  //#SECTION input
+  arrowKeySupport: {
     desc: "Arrow keys skip forwards and backwards by 10 seconds",
     type: "toggle",
+    category: "input",
     default: true,
   },
-  removeUpgradeTab: { // category: layout
-    desc: "Remove the \"Upgrade\" / YT Music Premium tab",
-    type: "toggle",
-    default: true,
-  },
-  switchBetweenSites: { // category: input
+  switchBetweenSites: {
     desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
     type: "toggle",
+    category: "input",
     default: true,
   },
-  geniusLyrics: { // category: lyrics
-    desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
+  switchSitesHotkey: {
+    desc: "Which hotkey needs to be pressed to switch sites?",
+    type: "hotkey",
+    category: "input",
+    default: {
+      key: "F9",
+      shift: false,
+      ctrl: false,
+      meta: false,
+    },
+  },
+
+  //#SECTION layout
+  removeUpgradeTab: {
+    desc: "Remove the \"Upgrade\" / YT Music Premium tab",
     type: "toggle",
+    category: "layout",
     default: true,
   },
-  lyricsButtonsOnSongQueue: { // category: lyrics
-    desc: "TODO: Add a lyrics button to each song in the queue (\"up next\" tab)",
-    type: "toggle",
-    default: true,
-  },
-  volumeSliderSize: { // category: layout
+  volumeSliderSize: {
     desc: "The width of the volume slider in pixels",
     type: "number",
+    category: "layout",
     min: 10,
     max: 1000,
     step: 5,
     default: 160,
   },
-  volumeSliderStep: { // category: layout
+  volumeSliderStep: {
     desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
     type: "slider",
+    category: "layout",
     min: 1,
     max: 20,
     default: 2,
   },
-  watermarkEnabled: { // category: layout
+  watermarkEnabled: {
     desc: "Show a BetterYTM watermark under the YTM logo",
     type: "toggle",
+    category: "layout",
+    default: true,
+  },
+  anchorAroundThumbnail: {
+    desc: "TODO: Make it so middle clicking a song to open in a new tab is easier",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
+  queueButtons: {
+    desc: "TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
+  dismissPopup: {
+    desc: "TODO: Automatically dismisses the \"are you still there\" popup",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
+
+  //#SECTION lyrics
+  geniusLyrics: {
+    desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
+    type: "toggle",
+    category: "lyrics",
     default: true,
   },
 };

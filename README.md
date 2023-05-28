@@ -1,9 +1,13 @@
-# BetterYTM
-Userscript that improves [YouTube Music](https://music.youtube.com/)
+<div style="text-align: center;" align="center">
 
+<h1><img src="./resources/icon/icon.png" /><br>BetterYTM</h1>
+
+Configurable layout and UX improvements for YouTube Music
+
+</div>
 <br>
 
-## Features:
+### Features:
 - Input:
     - Use arrow keys to skip forward or backward by 10 seconds
     - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default)
@@ -18,7 +22,9 @@ Userscript that improves [YouTube Music](https://music.youtube.com/)
 <br>
 
 To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the settings menu.  
-Note that the page needs to be reloaded for the changes to take effect.
+Note that the page needs to be reloaded for the changes to take effect.  
+  
+My work relies on donations, so if you like this userscript please consider [supporting me ❤️](https://github.com/sponsors/Sv443)
 
 <br><br>
 
