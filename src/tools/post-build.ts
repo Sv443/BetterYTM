@@ -3,13 +3,13 @@ import pkg from "../../package.json";
 import { join } from "path";
 
 const userscriptName = "BetterYTM.user.js";
-const url = pkg.repository.url.replace("git+", "").replace(".git", "");
 const scriptUrl = `https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/${userscriptName}`;
 
-const header = `// ==UserScript==
+const header = `\
+// ==UserScript==
 // @name            BetterYTM
-// @homepageURL     ${pkg.homepage}
-// @namespace       ${url}
+// @homepageURL     ${pkg.homepage}#readme
+// @namespace       ${pkg.homepage}
 // @version         ${pkg.version}
 // @description     Improvements for YouTube Music
 // @description:de  Verbesserungen für YouTube Music

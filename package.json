@@ -2,6 +2,7 @@
   "name": "betterytm",
   "version": "1.0.0",
   "description": "Userscript that improves YouTube Music",
+  "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/BetterYTM.user.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,7 +25,6 @@
   "bugs": {
     "url": "https://github.com/Sv443/BetterYTM/issues"
   },
-  "homepage": "https://github.com/Sv443/BetterYTM#readme",
   "dependencies": {
     "@billjs/event-emitter": "^1.0.3",
     "marked": "^5.0.3"
@@ -40,7 +40,6 @@
     "http-server": "^14.1.1",
     "markdown-loader": "^8.0.0",
     "nodemon": "^2.0.22",
-    "raw-loader": "^4.0.2",
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.2",
