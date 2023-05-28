@@ -36,11 +36,11 @@ module.exports = {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
           exec("npm run post-build", (_err, stdout, stderr) => {
-            stdout && process.stdout.write(`${stdout}\n`);
-            stderr && process.stderr.write(`${stderr}\n`);
+            stdout && process.stdout.write(stdout);
+            stderr && process.stderr.write(stderr);
           });
         });
-      }
+      },
     },
   ],
   resolve: {
