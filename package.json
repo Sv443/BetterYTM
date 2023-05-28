@@ -7,12 +7,13 @@
   "main": "./src/BetterYTM.user.ts",
   "type": "module",
   "scripts": {
-    "test": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm ./test.ts",
+    "test": "npm run node-ts -- ./test.ts",
     "build": "webpack",
-    "post-build": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm ./src/tools/post-build.ts",
+    "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },
   "repository": {
     "type": "git",

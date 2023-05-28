@@ -51,4 +51,5 @@ export default {
     filename: "BetterYTM.user.js",
     path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
   },
+  devtool: "source-map",
 };
