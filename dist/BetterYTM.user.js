@@ -7,10 +7,10 @@
 // @description:de  Verbesserungen für YouTube Music
 // @license         MIT
 // @author          Sv443
-// @copyright       Sv443 <contact@sv443.net>
+// @copyright       Sv443 (https://github.com/Sv443)
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/v2.1_200.png
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
