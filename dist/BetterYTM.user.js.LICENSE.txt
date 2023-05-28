@@ -1,7 +1,0 @@
-/**
- * A simple and lightweight EventEmitter by TypeScript for Node.js or Browsers.
- *
- * @author billjs
- * @see https://github.com/billjs/event-emitter
- * @license MIT(https://opensource.org/licenses/MIT)
- */
