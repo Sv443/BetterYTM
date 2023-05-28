@@ -4,8 +4,9 @@ import { fileURLToPath } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 
 const repo = "Sv443/BetterYTM";
-const userscriptName = "BetterYTM.user.js";
-const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptName}`;
+const userscriptDistFile = "BetterYTM.user.js";
+const userscriptDistPath = `dist/${userscriptDistFile}`;
+const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
 
 const header = `\
 // ==UserScript==
@@ -13,8 +14,8 @@ const header = `\
 // @homepageURL     ${pkg.homepage}#readme
 // @namespace       ${pkg.homepage}
 // @version         ${pkg.version}
-// @description     Improvements for YouTube Music
-// @description:de  Verbesserungen für YouTube Music
+// @description     ${pkg.description}
+// @description:de  ${pkg["description:de"]}
 // @license         ${pkg.license}
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
@@ -46,11 +47,11 @@ const header = `\
 
 (async () => {
   try {
-    const path = join(dirname(fileURLToPath(import.meta.url)), `../../dist/${userscriptName}`);
+    const path = join(dirname(fileURLToPath(import.meta.url)), `../../${userscriptDistPath}`);
     const input = String(await readFile(path));
     await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
-    console.info("Successfully added the userscript header");
-    console.info(`\nFinal size is ${((await stat(path)).size / 1024).toFixed(2)} KiB\n`);
+    console.info("Successfully added the userscript header.");
+    console.info(`Final size is \x1b[32m${((await stat(path)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
   }
   catch(err) {
     console.error("Error while adding userscript header:");

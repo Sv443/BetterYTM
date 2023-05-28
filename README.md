@@ -4,17 +4,21 @@ Userscript that improves [YouTube Music](https://music.youtube.com/)
 <br>
 
 ## Features:
-- Use arrow keys to skip forward or backward by 10 seconds
-- Quickly open song lyrics on genius.com<!-- (powered by [geniURL](https://api.sv443.net/geniurl))-->
-- Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default)
-- Remove the "Upgrade to YT Music Premium" tab in the title bar
+- Input:
+    - Use arrow keys to skip forward or backward by 10 seconds
+    - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default)
+    - TODO: Automatically dismiss "are you still there" popup
+- Layout:
+    - Remove the "Upgrade to YT Music Premium" tab in the title bar
+    - Set a custom size and step resolution for the volume slider
+    - Quickly open any song's lyrics on genius.com
+  
+... and more!
 
 <br>
 
-To toggle features on or off, install the userscript, then edit it and look for the big "Settings" banner.  
-Below it you will find an object with properties that can be set to `true` or `false` accordingly.  
-  
-Once this script is more finished, I might add a menu to toggle these more easily.
+To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the settings menu.  
+Note that the page needs to be reloaded for the changes to take effect.
 
 <br><br>
 
