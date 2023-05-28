@@ -117,13 +117,6 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
-
-/** Adds genius lyrics buttons to the song queue */
-export async function addQueueGeniusBtns()
-{
-  // TODO:
-}
-
 /** Returns the genius.com lyrics site URL for the current song */
 export async function getCurrentGeniusUrl() {
   try {

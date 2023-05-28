@@ -3,7 +3,7 @@ import { dbg, info } from "./constants";
 import { getDomain } from "./utils";
 import {
   // layout
-  addMediaCtrlGeniusBtn, addQueueGeniusBtns, addWatermark,
+  addMediaCtrlGeniusBtn, addQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab, setVolSliderSize,
   setVolSliderStep,
   // lyrics
@@ -54,8 +54,8 @@ import {
         if(features.geniusLyrics)
           await addMediaCtrlGeniusBtn();
 
-        if(features.lyricsButtonsOnSongQueue)
-          await addQueueGeniusBtns();
+        if(features.queueButtons)
+          await addQueueButtons();
 
         if(typeof features.volumeSliderSize === "number")
           setVolSliderSize();

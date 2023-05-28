@@ -89,8 +89,9 @@ export async function addMenu() {
   featuresCont.style.flexDirection = "column";
 
   /** Gets called whenever the feature config is changed */
-  const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean, newVal: number | boolean) => {
-    dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${initialVal}' to '${newVal}'`);
+  const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+    const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
+    dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
     const featConf = { ...await getFeatures() };
 
@@ -302,6 +303,7 @@ export async function addMenu() {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* TODO:FIXME: needs better positioning (vw and vh === "big no no") */
 #betterytm-menu {
   display: inline-block;
   position: fixed;

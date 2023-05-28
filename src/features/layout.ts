@@ -100,3 +100,9 @@ export function setVolSliderStep() {
 
   sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
+
+//#MARKER queue buttons
+
+export function addQueueButtons() {
+  void "TODO";
+}
