@@ -6,7 +6,7 @@
   "main": "./src/BetterYTM.user.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-node --esm ./test.ts",
     "build": "webpack",
     "post-build": "ts-node --esm ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
@@ -19,8 +19,7 @@
   },
   "author": {
     "name": "Sv443",
-    "url": "https://github.com/Sv443",
-    "email": "contact@sv443.net"
+    "url": "https://github.com/Sv443"
   },
   "license": "MIT",
   "bugs": {
