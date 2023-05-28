@@ -1,7 +1,8 @@
-const { join } = require("path");
-const { exec } = require("child_process");
+import { dirname, join } from "path";
+import { exec } from "child_process";
+import { fileURLToPath } from "url";
 
-module.exports = {
+export default {
   entry: "./src/BetterYTM.user.ts",
   mode: "production",
   // optimization: {
@@ -48,6 +49,6 @@ module.exports = {
   },
   output: {
     filename: "BetterYTM.user.js",
-    path: join(__dirname, "/dist"),
+    path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
   },
 };

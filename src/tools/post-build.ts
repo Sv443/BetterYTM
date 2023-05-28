@@ -1,6 +1,7 @@
 import { readFile, writeFile, stat } from "fs/promises";
-import pkg from "../../package.json";
-import { join } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import pkg from "../../package.json" assert { type: "json" };
 
 const userscriptName = "BetterYTM.user.js";
 const scriptUrl = `https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/${userscriptName}`;
@@ -44,11 +45,11 @@ const header = `\
 
 (async () => {
   try {
-    const path = join(__dirname, `../../dist/${userscriptName}`);
+    const path = join(dirname(fileURLToPath(import.meta.url)), `../../dist/${userscriptName}`);
     const input = String(await readFile(path));
     await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
     console.info("Successfully added the userscript header");
-    console.info(`\nFinal size is ${((await stat(path)).size / 1024).toFixed(2)} KiB`);
+    console.info(`\nFinal size is ${((await stat(path)).size / 1024).toFixed(2)} KiB\n`);
   }
   catch(err) {
     console.error("Error while adding userscript header:");

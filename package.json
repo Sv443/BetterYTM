@@ -4,10 +4,11 @@
   "description": "Userscript that improves YouTube Music",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/BetterYTM.user.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "post-build": "ts-node ./src/tools/post-build.ts",
+    "post-build": "ts-node --esm ./src/tools/post-build.ts",
     "serve": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "eslint ."
@@ -58,7 +59,7 @@
     ],
     "ext": "ts,js,json",
     "ignore": [
-      "BetterYTM.user.js",
+      "dist/*",
       "dev/*"
     ]
   }
