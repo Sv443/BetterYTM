@@ -1,9 +1,9 @@
-import { defaultFeatures, getFeatures, saveFeatureConf } from "../config";
-import { dbg, info } from "../constants";
-import { featInfo } from "./index";
-import { FeatureConfig } from "../types";
-import { addGlobalStyle } from "../utils";
-import changelog from "../../changelog.md";
+import { defaultFeatures, getFeatures, saveFeatureConf } from "../../config";
+import { dbg, info } from "../../constants";
+import { featInfo } from "../index";
+import { FeatureConfig } from "../../types";
+import { addGlobalStyle } from "../../utils";
+import changelog from "../../../changelog.md";
 
 const branch = dbg ? "develop" : "main";
 
