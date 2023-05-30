@@ -2,6 +2,8 @@ import { EventEmitter, EventHandler } from "@billjs/event-emitter";
 import { dbg } from "./constants";
 import type { Domain } from "./types";
 
+//#SECTION BYTM-specific
+
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -41,6 +43,8 @@ export function getVideoTime() {
   }
 }
 
+//#SECTION DOM
+
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
  * @param beforeNode
@@ -59,7 +63,7 @@ export function insertAfter(beforeNode: HTMLElement, afterNode: HTMLElement) {
  */
 export function addGlobalStyle(style: string, ref?: string) {
   if(typeof ref !== "string" || ref.length === 0)
-    ref = String(Math.floor(Math.random() * 10000));
+    ref = String(Math.floor(Math.random() * 10_000));
 
   const styleElem = document.createElement("style");
   styleElem.id = `betterytm-style-${ref}`;
@@ -69,21 +73,33 @@ export function addGlobalStyle(style: string, ref?: string) {
   dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
 }
 
-interface SiteEvents extends EventEmitter {
-  /** Emitted whenever the site "changes" in a major way */
-  on(event: "change", handler: EventHandler): boolean;
+//#SECTION site events
+
+export interface SiteEvents extends EventEmitter {
+  /** Emitted whenever a song is added to or removed from the queue */
+  on(event: "queueChanged", listener: EventHandler): boolean;
 }
 
-class SiteEvents extends EventEmitter {
-  constructor() {
-    super();
-    document.addEventListener("DOMContentLoaded", this.initObserver);
-  }
+export const siteEvents = new EventEmitter() as SiteEvents;
 
-  initObserver() {
-    void "TODO: observe";
-  }
+let observers: MutationObserver[] = [];
+
+export function initSiteEvents() {
+  const queueObserver = new MutationObserver(([ record ]) => {
+    if(record.addedNodes.length > 0 || record.removedNodes.length > 0)
+      siteEvents.fire("queueChanged", record.target);
+  });
+  // only observe added or removed elements
+  queueObserver.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
+    childList: true,
+  });
+
+  observers = [
+    queueObserver,
+  ];
 }
 
-/** Emits all site-specific events */
-export const siteEvents = new SiteEvents();
+export function removeObservers() {
+  observers.forEach((observer) => observer.disconnect());
+  observers = [];
+}

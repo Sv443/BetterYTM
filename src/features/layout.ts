@@ -1,6 +1,6 @@
 import { dbg, info, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, insertAfter } from "../utils";
+import { addGlobalStyle, insertAfter, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu";
 
@@ -103,6 +103,42 @@ export function setVolSliderStep() {
 
 //#MARKER queue buttons
 
-export function addQueueButtons() {
-  void "TODO";
+export function initQueueButtons() {
+  siteEvents.on("queueChanged", (evt) => {
+    for(const queueItm of ((evt.data as HTMLElement).childNodes as NodeListOf<HTMLElement>)) {
+      if(!queueItm.dataset["bytm-has-queue-btns"])
+        addQueueButtons(queueItm);
+    }
+  });
+
+  const queueBtnsStyle = `\
+.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+  position: relative;
+}
+.side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
+  display: none;
+  position: absolute;
+  right: 0;
+}
+.side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
+  display: inline-block;
+}`;
+  addGlobalStyle(queueBtnsStyle, "queue-btns");
+
+  const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
+  if(queueItems.length === 0)
+    return;
+
+  queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
+}
+
+function addQueueButtons(queueItem: HTMLElement) {
+  console.log("Add queue btns:", queueItem);
+
+  const queueBtnsCont = document.createElement("div");
+  queueBtnsCont.className = "bytm-queue-btn-container";
+  queueBtnsCont.innerText = "ayo";
+
+  const songInfo = queueItem.querySelector(".song-info")!;
+  songInfo.appendChild(queueBtnsCont);
 }

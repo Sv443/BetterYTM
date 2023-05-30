@@ -1,9 +1,9 @@
 import { getFeatures } from "./config";
 import { dbg, info } from "./constants";
-import { getDomain } from "./utils";
+import { getDomain, initSiteEvents } from "./utils";
 import {
   // layout
-  addMediaCtrlGeniusBtn, addQueueButtons, addWatermark,
+  addMediaCtrlGeniusBtn, initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab, setVolSliderSize,
   setVolSliderStep,
   // lyrics
@@ -40,6 +40,8 @@ import {
 
     dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
 
+    initSiteEvents();
+
     try {
       if(domain === "ytm") {
         if(features.arrowKeySupport)
@@ -52,10 +54,10 @@ import {
           addWatermark();
 
         if(features.geniusLyrics)
-          await addMediaCtrlGeniusBtn();
+          addMediaCtrlGeniusBtn();
 
         if(features.queueButtons)
-          await addQueueButtons();
+          initQueueButtons();
 
         if(typeof features.volumeSliderSize === "number")
           setVolSliderSize();
