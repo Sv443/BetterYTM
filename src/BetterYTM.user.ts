@@ -52,10 +52,10 @@ import {
           addWatermark();
 
         if(features.geniusLyrics)
-          await addMediaCtrlGeniusBtn();
+          addMediaCtrlGeniusBtn();
 
         if(features.queueButtons)
-          await addQueueButtons();
+          addQueueButtons();
 
         if(typeof features.volumeSliderSize === "number")
           setVolSliderSize();
