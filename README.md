@@ -53,7 +53,8 @@ Once you have the extension, click this button to install the userscript:
 <!-- first column uses non-breaking space U+00A0 (' ') -->
 
 When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
-This makes it so the userscript automatically updates when the code changes.
+This makes it so the userscript automatically updates when the code changes.  
+Note: the tab needs to stay open on Firefox or the script will not update itself.
 
 
 <br><br>
