@@ -43,6 +43,7 @@
     "html-loader": "^4.2.0",
     "markdown-loader": "^8.0.0",
     "nodemon": "^2.0.22",
+    "raw-loader": "^4.0.2",
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.2",

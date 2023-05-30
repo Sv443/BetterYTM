@@ -3,7 +3,6 @@ import { dbg, info } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
 import { addGlobalStyle } from "../../utils";
-import changelog from "../../../changelog.md";
 
 const branch = dbg ? "develop" : "main";
 
@@ -366,54 +365,4 @@ export function openMenu() {
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
-}
-
-//#MARKER changelog
-
-export async function initChangelog() {
-  //   const clStyle = `\
-  // #betterytm-changelog-bg {
-  //   display: block;
-  //   position: fixed;
-  //   width: 100vw;
-  //   height: 100vh;
-  //   top: 0;
-  //   left: 0;
-  //   z-index: 15;
-  //   background-color: rgba(0, 0, 0, 0.6);
-  // }
-
-  // #betterytm-changelog {
-  //   display: inline-block;
-  //   position: fixed;
-  //   width: 50vw;
-  //   height: auto;
-  //   min-height: 500px;
-  //   left: 25vw;
-  //   top: 25vh;
-  //   z-index: 16;
-  //   overflow: auto;
-  //   padding: 8px;
-  //   color: #fff;
-  //   background-color: #212121;
-  // }
-
-  // #betterytm-changelog-close {
-  //   cursor: pointer;
-  // }`;
-
-
-  // console.log("#DEBUG _CHANGELOG:", changelog);
-  // const cl = document.createElement("div");
-  // cl.style.position = "fixed";
-  // cl.style.top = "0";
-  // cl.style.left = "0";
-  // cl.style.minWidth = "500px";
-  // cl.style.minHeight = "500px";
-  // cl.style.overflowY = "scroll";
-  // cl.innerHTML = changelog;
-  // document.addEventListener("DOMContentLoaded", () => document.body.appendChild(cl));
-
-
-  void ["TODO", changelog];
 }

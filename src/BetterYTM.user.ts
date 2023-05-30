@@ -11,7 +11,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch,
   // menu
-  addMenu, initChangelog,
+  initMenu, addMenu,
 } from "./features/index";
 
 (async () => {
@@ -31,8 +31,6 @@ import {
   catch(err) {
     console.error("BetterYTM - General Error:", err);
   }
-
-  await initChangelog();
 
   /** Called when the DOM has finished loading (after `DOMContentLoaded` is emitted) */
   async function onDomLoad() {
@@ -70,7 +68,7 @@ import {
           initSiteSwitch(domain);
 
         try {
-          addMenu();
+          addMenu(); // TODO: remove
         }
         catch(err) {
           console.error("BetterYTM: Couldn't add menu:", err);
@@ -80,5 +78,12 @@ import {
     catch(err) {
       console.error("BetterYTM: General error while executing feature:", err);
     }
+  }
+
+  try {
+    initMenu();
+  }
+  catch(err) {
+    console.error("BetterYTM: Couldn't initialize menu:", err);
   }
 })();
