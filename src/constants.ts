@@ -1,5 +1,6 @@
 /** Set to true to enable debug mode for more output in the JS console */
 export const dbg = true;
+
 /** Specifies the hard limit for repetitive tasks */
 export const triesLimit = 50;
 /** Specifies the interval for repetitive tasks */
@@ -10,4 +11,5 @@ export const info = Object.freeze({
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
+  lastCommit: "{{BUILD_NUMBER}}" as string, // assert as generic string instead of union
 });
