@@ -30,6 +30,10 @@ export default {
           },
         ],
       },
+      {
+        test: /\.css$/i,
+        use: "raw-loader",
+      },
     ],
   },
   plugins: [

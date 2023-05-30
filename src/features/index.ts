@@ -1,7 +1,8 @@
 export * from "./input";
 export * from "./layout";
 export * from "./lyrics";
-export * from "./menu";
+export { initMenu } from "./menu/menu"; // TODO
+export * from "./menu/menu_old";
 
 /** Contains all possible features with their default values and other config */
 export const featInfo = {

@@ -1,3 +1,17 @@
-.bytm-menu-tab[data-enabled="false"] {
+#bytm-menu-header-option {
+    display: "flex";
+    justify-content: center;
+    align-items: center;
+}
+
+#bytm-menu-header-option h3 {
+    margin: 0;
+}
+
+.bytm-menu-tab[data-active="true"] {
+    display: none;
+}
+
+.bytm-menu-tab[data-active="false"] {
     display: none;
 }

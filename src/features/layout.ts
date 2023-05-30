@@ -2,7 +2,7 @@ import { dbg, info, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
 import { addGlobalStyle, insertAfter, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
-import { openMenu } from "./menu";
+import { openMenu } from "./menu/menu_old";
 
 let features: FeatureConfig;
 
