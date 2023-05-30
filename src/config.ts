@@ -14,15 +14,8 @@ let featuresCache: FeatureConfig | undefined;
  * @param forceRead Set to true to force reading the config from GM storage
  */
 export async function getFeatures(forceRead = false) {
-  let features: FeatureConfig | undefined;
-
-  if(featuresCache === undefined || forceRead) {
-    const featureConf = await loadFeatureConf();
-
-    featuresCache = features = { ...defaultFeatures, ...featureConf };
-
-    await saveFeatureConf(features);
-  }
+  if(featuresCache === undefined || forceRead)
+    await saveFeatureConf(featuresCache = { ...defaultFeatures, ...await loadFeatureConf() }); // look at this sexy one liner
   return featuresCache;
 }
 
@@ -31,8 +24,7 @@ export async function loadFeatureConf(): Promise<FeatureConfig> {
   const defConf = Object.freeze({ ...defaultFeatures });
 
   try {
-    /** @type {string} */
-    const featureConf = await GM.getValue("betterytm-config");
+    const featureConf = await GM.getValue("betterytm-config") as string;
 
     if(typeof featureConf !== "string") {
       await setDefaultFeatConf();
@@ -55,9 +47,11 @@ export function saveFeatureConf(featureConf: FeatureConfig) {
   if(!featureConf || typeof featureConf != "object")
     throw new TypeError("Feature config not provided or invalid");
 
+  featuresCache = { ...featureConf };
   return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
 
 function setDefaultFeatConf() {
+  featuresCache = { ...defaultFeatures };
   return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
 }

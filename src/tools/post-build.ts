@@ -1,6 +1,7 @@
 import { readFile, writeFile, stat } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { exec } from "child_process";
 import pkg from "../../package.json" assert { type: "json" };
 
 const repo = "Sv443/BetterYTM";
@@ -47,10 +48,16 @@ const header = `\
 
 (async () => {
   try {
+    const lastCommitSha = await getLastCommitSha();
     const path = join(dirname(fileURLToPath(import.meta.url)), `../../${userscriptDistPath}`);
-    const input = String(await readFile(path));
-    await writeFile(path, `${header}\n${input}${input.endsWith("\n") ? "" : "\n"}`);
-    console.info("Successfully added the userscript header.");
+
+    // read userscript and inject build number
+    const userscript = String(await readFile(path))
+      .replace(/{{BUILD_NUMBER}}/gm, lastCommitSha);
+
+    await writeFile(path, `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`);
+
+    console.info(`Successfully added the userscript header. Last commit SHA is ${lastCommitSha}`);
     console.info(`Final size is \x1b[32m${((await stat(path)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
   }
   catch(err) {
@@ -59,3 +66,16 @@ const header = `\
     setImmediate(() => process.exit(1));
   }
 })();
+
+/** Used as a kind of "build number", though note it is always behind by at least one commit, as the act of putting this number in the userscript changes the hash again, indefinitely */
+function getLastCommitSha() {
+  return new Promise<string>((res, rej) => {
+    exec("git rev-parse HEAD", (err, stdout, stderr) => {
+      if(err) {
+        console.error("\x1b[31mError while checking for last Git commit. Do you have Git installed?\x1b[0m\n", stderr);
+        return rej(err);
+      }
+      return res(String(stdout).replace(/\r?\n/gm, "").trim().substring(0, 7));
+    });
+  });
+}

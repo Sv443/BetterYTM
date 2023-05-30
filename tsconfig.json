@@ -21,6 +21,10 @@
     "strict": true,
     "useDefineForClassFields": true,
   },
+  "ts-node": {
+    "esm": true,
+    "preferTsExts": true,
+  },
   "exclude": [
     "**/*.js",
     "dist/**",
