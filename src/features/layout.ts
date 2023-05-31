@@ -106,7 +106,7 @@ export function setVolSliderStep() {
 export function initQueueButtons() {
   siteEvents.on("queueChanged", (evt) => {
     for(const queueItm of ((evt.data as HTMLElement).childNodes as NodeListOf<HTMLElement>)) {
-      if(!queueItm.dataset["bytm-has-queue-btns"])
+      if(!queueItm.classList.contains("bytm-has-queue-btns"))
         addQueueButtons(queueItm);
     }
   });
@@ -141,4 +141,5 @@ function addQueueButtons(queueItem: HTMLElement) {
 
   const songInfo = queueItem.querySelector(".song-info")!;
   songInfo.appendChild(queueBtnsCont);
+  queueItem.classList.add("bytm-has-queue-btns");
 }

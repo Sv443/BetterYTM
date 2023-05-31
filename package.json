@@ -9,10 +9,9 @@
   "type": "module",
   "scripts": {
     "test": "npm run node-ts -- ./test.ts",
-    "build": "webpack",
+    "build": "tsc && webpack",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
-    "serve-old": "http-server -s -c 5 -p 8710 .",
     "watch": "nodemon --exec \"npm run build && npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
