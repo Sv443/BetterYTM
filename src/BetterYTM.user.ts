@@ -43,10 +43,10 @@ async function onDomLoad() {
 
   dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
 
-  initSiteEvents();
-
   try {
     if(domain === "ytm") {
+      initSiteEvents();
+
       if(features.arrowKeySupport)
         initArrowKeySkip();
 

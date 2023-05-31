@@ -133,8 +133,6 @@ export function initQueueButtons() {
 }
 
 function addQueueButtons(queueItem: HTMLElement) {
-  console.log("Add queue btns:", queueItem);
-
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
   queueBtnsCont.innerText = "ayo";
