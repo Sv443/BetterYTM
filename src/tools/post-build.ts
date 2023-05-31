@@ -8,10 +8,16 @@ const repo = "Sv443/BetterYTM";
 const userscriptDistFile = "BetterYTM.user.js";
 const userscriptDistPath = `dist/${userscriptDistFile}`;
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
+/** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
+const matchUrls = [
+  "https://music.youtube.com/*", "https://www.youtube.com/*"
+];
+
+const matchDirectives = matchUrls.reduce((a, c, i) => a + `// @match           ${c}${i === matchUrls.length - 1 ? "" : "\n"}`, "");
 
 const header = `\
 // ==UserScript==
-// @name            BetterYTM
+// @name            ${pkg.userscriptName}${process.env["NODE_ENV"] === "production" ? "" : "-experimental"}
 // @homepageURL     ${pkg.homepage}#readme
 // @namespace       ${pkg.homepage}
 // @version         ${pkg.version}
@@ -20,8 +26,7 @@ const header = `\
 // @license         ${pkg.license}
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
-// @match           https://music.youtube.com/*
-// @match           https://www.youtube.com/*
+${matchDirectives}
 // @icon            https://raw.githubusercontent.com/${repo}/main/resources/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
@@ -67,7 +72,10 @@ const header = `\
   }
 })();
 
-/** Used as a kind of "build number", though note it is always behind by at least one commit, as the act of putting this number in the userscript changes the hash again, indefinitely */
+/**
+ * Used as a kind of "build number", though note it is always behind by at least one commit,
+ * as the act of putting this number in the userscript changes the hash again, indefinitely
+ */
 function getLastCommitSha() {
   return new Promise<string>((res, rej) => {
     exec("git rev-parse HEAD", (err, stdout, stderr) => {
