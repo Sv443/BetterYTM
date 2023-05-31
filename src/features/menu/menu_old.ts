@@ -177,7 +177,10 @@ export async function addMenu() {
       if(type === "toggle" && typeof initialVal !== "undefined")
         inputElem.checked = Boolean(initialVal);
 
-      const fmtVal = (v: unknown) => String(v);
+      // @ts-ignore
+      const unitTxt = ftInfo?.unit ? " " + ftInfo.unit : "";
+
+      const fmtVal = (v: unknown) => String(v).trim();
       const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
 
       let labelElem: HTMLLabelElement | undefined;
@@ -187,7 +190,7 @@ export async function addMenu() {
         labelElem.style.marginRight = "20px";
         labelElem.style.fontSize = "16px";
         labelElem.htmlFor = inputElemId;
-        labelElem.innerText = fmtVal(initialVal);
+        labelElem.innerText = fmtVal(initialVal) + unitTxt;
 
         inputElem.addEventListener("input", () => {
           if(labelElem)
@@ -201,11 +204,11 @@ export async function addMenu() {
         labelElem.style.paddingRight = "5px";
         labelElem.style.fontSize = "16px";
         labelElem.htmlFor = inputElemId;
-        labelElem.innerText = toggleLabelText(Boolean(initialVal));
+        labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
 
         inputElem.addEventListener("input", () => {
           if(labelElem)
-            labelElem.innerText = toggleLabelText(inputElem.checked);
+            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
         });
       }
 
@@ -225,9 +228,9 @@ export async function addMenu() {
 
         if(labelElem) {
           if(type === "toggle")
-            labelElem.innerText = toggleLabelText(inputElem.checked);
+            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
           else
-            labelElem.innerText = fmtVal(parseInt(inputElem.value));
+            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
         }
 
         if(typeof initialVal !== "undefined")

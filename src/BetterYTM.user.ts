@@ -3,13 +3,13 @@ import { dbg, info } from "./constants";
 import { getDomain, initSiteEvents } from "./utils";
 import {
   // layout
-  addMediaCtrlGeniusBtn, initQueueButtons, addWatermark,
+  initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab, setVolSliderSize,
   setVolSliderStep,
   // lyrics
-  geniUrlBase,
+  addMediaCtrlGeniusBtn, geniUrlBase,
   // input
-  initArrowKeySkip, initSiteSwitch,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
   initMenu, addMenu,
 } from "./features/index";
@@ -64,6 +64,9 @@ async function onDomLoad() {
 
       if(typeof features.volumeSliderSize === "number")
         setVolSliderSize();
+
+      if(features.anchorImprovements)
+        addAnchorImprovements();
 
       setVolSliderStep();
     }
