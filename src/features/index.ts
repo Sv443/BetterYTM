@@ -1,3 +1,5 @@
+import { info } from "../constants";
+
 export * from "./input";
 export * from "./layout";
 export * from "./lyrics";
@@ -56,7 +58,7 @@ export const featInfo = {
     default: 2,
   },
   watermarkEnabled: {
-    desc: "Show a BetterYTM watermark under the YTM logo",
+    desc: `Show a ${info.name} watermark under the YTM logo`,
     type: "toggle",
     category: "layout",
     default: true,
