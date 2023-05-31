@@ -13,7 +13,7 @@ const matchUrls = [
   "https://music.youtube.com/*", "https://www.youtube.com/*"
 ];
 
-const matchDirectives = matchUrls.reduce((a, c, i) => a + `// @match           ${c}${i === matchUrls.length - 1 ? "" : "\n"}`, "");
+const matchDirectives = matchUrls.reduce((a, c) => a + `// @match           ${c}\n`, "");
 
 const header = `\
 // ==UserScript==
@@ -26,7 +26,7 @@ const header = `\
 // @license         ${pkg.license}
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
-${matchDirectives}
+${matchDirectives}\
 // @icon            https://raw.githubusercontent.com/${repo}/main/resources/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
