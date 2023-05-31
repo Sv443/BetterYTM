@@ -20,20 +20,37 @@ export function getDomain(): Domain {
 }
 
 /**
- * TODO: this is entirely broken now
  * Returns the current video time in seconds
+ * @param force Set to true to dispatch mouse movement events in case the video time can't be estimated
  * @returns Returns null if the video time is unavailable
  */
-export function getVideoTime() {
+export function getVideoTime(force = false) {
   const domain = getDomain();
 
   try {
     if(domain === "ytm") {
       const pbEl = document.querySelector("#progress-bar") as HTMLProgressElement;
-      return pbEl.value ?? null;
+      return !isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null;
     }
-    else if(domain === "yt") // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
-      return 0;
+    else if(domain === "yt") {
+      // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
+
+      // Possible solution:
+      // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
+      // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
+      // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
+      //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
+      // - Subtract one or two seconds to make up for rounding errors
+      // - profit
+
+      // if(!ytCurrentVideoTime) {
+      //   ytForceShowVideoTime();
+      //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
+      // }
+      void [ force, ytForceShowVideoTime ];
+
+      return null;
+    }
 
     return null;
   }
@@ -41,6 +58,43 @@ export function getVideoTime() {
     console.error("BetterYTM: Couldn't get video time due to error:", err);
     return null;
   }
+}
+
+/** Sends events that force the video controls to become visible for about 3 seconds */
+function ytForceShowVideoTime() {
+  const player = document.querySelector("#movie_player");
+  if(!player)
+    return false;
+
+  player.dispatchEvent(new MouseEvent("mouseenter", {
+    view: window,
+    bubbles: true,
+    cancelable: false,
+  }));
+
+  const { x, y, width, height } = player.getBoundingClientRect();
+  const screenY = Math.round(y + height / 2);
+  const screenX = x + Math.min(50, Math.round(width / 3));
+
+  player.dispatchEvent(new MouseEvent("mousemove", {
+    view: window,
+    bubbles: true,
+    cancelable: false,
+    screenY,
+    screenX,
+    movementX: 5,
+    movementY: 0
+  }));
+
+  setTimeout(() => {
+    player.dispatchEvent(new MouseEvent("mouseleave", {
+      view: window,
+      bubbles: true,
+      cancelable: false,
+    }));
+  }, 4000);
+
+  return true;
 }
 
 //#SECTION DOM

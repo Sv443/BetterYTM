@@ -35,6 +35,7 @@ function onKeyDown(evt: KeyboardEvent) {
       cancelable: true,
       isTrusted: true,
       repeat: false,
+      view: window,
     };
 
     let invalidKey = false;
