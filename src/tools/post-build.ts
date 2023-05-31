@@ -17,7 +17,7 @@ const matchDirectives = matchUrls.reduce((a, c, i) => a + `// @match           $
 
 const header = `\
 // ==UserScript==
-// @name            ${pkg.userscriptName}${process.env["NODE_ENV"] === "production" ? "" : "-experimental"}
+// @name            ${pkg.userscriptName}
 // @homepageURL     ${pkg.homepage}#readme
 // @namespace       ${pkg.homepage}
 // @version         ${pkg.version}
