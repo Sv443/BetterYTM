@@ -39,7 +39,7 @@ export async function addMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "betterytm-menu-title";
-  titleElem.innerText = "BetterYTM - Configuration";
+  titleElem.innerText = `${info.name} - Configuration`;
 
   const linksCont = document.createElement("div");
   linksCont.id = "betterytm-menu-linkscont";
