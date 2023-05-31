@@ -139,14 +139,18 @@ export const siteEvents = new EventEmitter() as SiteEvents;
 let observers: MutationObserver[] = [];
 
 export function initSiteEvents() {
-  const queueObserver = new MutationObserver(([ record ]) => {
-    if(record.addedNodes.length > 0 || record.removedNodes.length > 0)
-      siteEvents.fire("queueChanged", record.target);
+  const queueObserver = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+    if(addedNodes.length > 0 || removedNodes.length > 0) {
+      dbg && console.info("BetterYTM: Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+      siteEvents.fire("queueChanged", target);
+    }
   });
   // only observe added or removed elements
   queueObserver.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
     childList: true,
   });
+
+  dbg && console.info("BetterYTM: Successfully initialized SiteEvents observers");
 
   observers = [
     queueObserver,
