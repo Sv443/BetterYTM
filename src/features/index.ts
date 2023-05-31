@@ -6,8 +6,10 @@ export * from "./lyrics";
 export { initMenu } from "./menu/menu"; // TODO
 export * from "./menu/menu_old";
 
+export type FeatureCategory = "input" | "layout" | "lyrics";
+
 /** Contains all possible features with their default values and other config */
-export const featInfo = {
+export const featInfo = Object.freeze({
   //#SECTION input
   arrowKeySupport: {
     desc: "Arrow keys skip forwards and backwards by 10 seconds",
@@ -32,6 +34,12 @@ export const featInfo = {
       meta: false,
     },
   },
+  anchorImprovements: {
+    desc: "TODO: Make it so middle clicking a song to open it in a new tab is easier",
+    type: "toggle",
+    category: "input",
+    default: true,
+  },
 
   //#SECTION layout
   removeUpgradeTab: {
@@ -47,6 +55,7 @@ export const featInfo = {
     min: 10,
     max: 1000,
     step: 5,
+    unit: "px",
     default: 160,
   },
   volumeSliderStep: {
@@ -59,12 +68,6 @@ export const featInfo = {
   },
   watermarkEnabled: {
     desc: `Show a ${info.name} watermark under the YTM logo`,
-    type: "toggle",
-    category: "layout",
-    default: true,
-  },
-  anchorAroundThumbnail: {
-    desc: "TODO: Make it so middle clicking a song to open in a new tab is easier",
     type: "toggle",
     category: "layout",
     default: true,
@@ -89,4 +92,4 @@ export const featInfo = {
     category: "lyrics",
     default: true,
   },
-};
+});

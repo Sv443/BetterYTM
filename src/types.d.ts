@@ -15,6 +15,8 @@ export interface FeatureConfig {
     ctrl: boolean;
     meta: boolean;
   };
+  /** TODO: Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
+  anchorImprovements: boolean;
 
   //#SECTION layout
   /** Remove the \"Upgrade\" / YT Music Premium tab */
@@ -25,8 +27,6 @@ export interface FeatureConfig {
   volumeSliderStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
-  /** TODO: Add an <a>nchor around song thumbnails */
-  anchorAroundThumbnail: boolean;
   /** TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
   queueButtons: boolean;
   /** TODO: Automatically dismisses the "are you still there" popup */

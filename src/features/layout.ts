@@ -141,3 +141,9 @@ function addQueueButtons(queueItem: HTMLElement) {
   songInfo.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
 }
+
+//#MARKER better clickable stuff
+
+export function addAnchorImprovements() {
+  void 0;
+}
