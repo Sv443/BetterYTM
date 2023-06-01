@@ -122,7 +122,7 @@ export function addGlobalStyle(style: string, ref?: string) {
   const styleElem = document.createElement("style");
   styleElem.id = `betterytm-style-${ref}`;
   styleElem.innerHTML = style;
-  document.querySelector("head")!.appendChild(styleElem);
+  document.head.appendChild(styleElem);
 
   dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
 }
