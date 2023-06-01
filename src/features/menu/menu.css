@@ -1,3 +1,20 @@
+/* #bytm-menu-backdrop {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#bytm-menu-backdrop[data-menu-open="true"] {
+    display: flex;
+} */
+
+#bytm-menu-header-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 #bytm-menu-header-option {
     display: "flex";
     justify-content: center;

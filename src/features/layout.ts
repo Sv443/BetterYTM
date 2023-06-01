@@ -3,6 +3,7 @@ import { getFeatures } from "../config";
 import { addGlobalStyle, insertAfter, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
+import "./layout.css";
 
 let features: FeatureConfig;
 
@@ -12,9 +13,7 @@ export async function preInitLayout() {
 
 //#MARKER watermark
 
-/**
- * Adds a watermark beneath the logo
- */
+/** Adds a watermark beneath the logo */
 export function addWatermark() {
   const watermark = document.createElement("span");
   watermark.id = "betterytm-watermark";
@@ -24,36 +23,8 @@ export function addWatermark() {
 
   watermark.addEventListener("click", () => openMenu());
 
-
-  const style = `\
-#betterytm-watermark {
-  font-size: 10px;
-  display: inline-block;
-  position: absolute;
-  left: 45px;
-  top: 46px;
-  z-index: 10;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-@media(max-width: 615px) {
-  #betterytm-watermark {
-    display: none;
-  }
-}
-
-#betterytm-watermark:hover {
-  text-decoration: underline;
-}`;
-
-  addGlobalStyle(style, "watermark");
-
-
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
-
 
   dbg && console.log("BetterYTM: Added watermark element:", watermark);
 }
@@ -91,7 +62,7 @@ export function setVolSliderSize() {
   width: ${size}px !important;
 }`;
 
-  addGlobalStyle(style, "vol_slider_size");
+  addGlobalStyle(style, "vol-slider");
 }
 
 /** Sets the `step` attribute of the volume slider */
@@ -110,20 +81,6 @@ export function initQueueButtons() {
         addQueueButtons(queueItm);
     }
   });
-
-  const queueBtnsStyle = `\
-.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-  position: relative;
-}
-.side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
-  display: none;
-  position: absolute;
-  right: 0;
-}
-.side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
-  display: inline-block;
-}`;
-  addGlobalStyle(queueBtnsStyle, "queue-btns");
 
   const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length === 0)

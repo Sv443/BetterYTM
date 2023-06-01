@@ -113,7 +113,7 @@ export function insertAfter(beforeNode: HTMLElement, afterNode: HTMLElement) {
 /**
  * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param style CSS string
- * @param ref Reference name that is included in the `<style>`'s ID - defaults to a random number if left undefined
+ * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - defaults to a random number if left undefined
  */
 export function addGlobalStyle(style: string, ref?: string) {
   if(typeof ref !== "string" || ref.length === 0)
