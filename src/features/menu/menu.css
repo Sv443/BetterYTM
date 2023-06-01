@@ -13,12 +13,16 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    border-color: #ffffff;
+    border-style: none solid none none;
 }
 
-#bytm-menu-header-option {
+.bytm-menu-header-option {
     display: "flex";
     justify-content: center;
     align-items: center;
+    border-color: #ffffff;
+    border-style: solid none solid none;
 }
 
 #bytm-menu-header-option h3 {

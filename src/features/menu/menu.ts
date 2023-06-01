@@ -1,6 +1,4 @@
-// import { addGlobalStyle } from "../../utils";
 import { triesInterval, triesLimit } from "../../constants";
-
 import changelogContent from "../../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
@@ -14,13 +12,11 @@ import "./menu.css";
  */
 const tabsSelectors = {
   options: "bytm-menu-tab-options",
-  // info: "bytm-menu-tab-info",
+  info: "bytm-menu-tab-info",
   changelog: "bytm-menu-tab-changelog",
 };
 
 export function initMenu() {
-  // addGlobalStyle(menuStyle, "menu2"); // TODO
-
   document.addEventListener("DOMContentLoaded", () => {
     // create menu container
     const menuContainer = document.createElement("div");
@@ -30,9 +26,30 @@ export function initMenu() {
 
     document.body.appendChild(menuContainer);
 
-    initOptionsContent();
-    initChangelogContent();
+    initMenuContents();
   });
+}
+
+let menuContTries = 0;
+
+function initMenuContents(): unknown {
+  if(!document.querySelector("#bytm-menu-dialog"))
+    return menuContTries++ < triesLimit
+      ? setTimeout(initMenuContents, triesInterval)
+      : console.error(`BetterYTM: couldn't create menu element after ${triesLimit} tries.`);
+
+  // hook events
+  for(const tab in tabsSelectors) {
+    const selector = tabsSelectors[tab as keyof typeof tabsSelectors];
+    document.querySelector(`#${selector}-header`)?.addEventListener("click", () => {
+      setActiveTab(tab as keyof typeof tabsSelectors);
+    });
+  }
+
+  // init tab contents
+  initOptionsContent();
+  initInfoContent();
+  initChangelogContent();
 }
 
 /** Opens the specified tab */
@@ -61,19 +78,17 @@ export function closeMenu() {
 
 //#MARKER menu tab contents
 
-let optionsTries = 0;
-
-function initOptionsContent(): unknown {
-  const tab = document.querySelector("#bytm-menu-tab-options-content");
-  if(!tab)
-    return optionsTries++ < triesLimit ? setTimeout(initOptionsContent, triesInterval) : undefined;
+function initOptionsContent() {
+  const tab = document.querySelector("#bytm-menu-tab-options-content")!;
+  void tab;
 }
 
-let changelogTries = 0;
+function initInfoContent() {
+  const tab = document.querySelector("#bytm-menu-tab-info-content")!;
+  void tab;
+}
 
-function initChangelogContent(): unknown {
-  const tab = document.querySelector("#bytm-menu-tab-changelog-content");
-  if(!tab)
-    return changelogTries++ < triesLimit ? setTimeout(initChangelogContent, triesInterval) : undefined;
+function initChangelogContent() {
+  const tab = document.querySelector("#bytm-menu-tab-changelog-content")!;
   tab.innerHTML = changelogContent;
 }
