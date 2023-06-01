@@ -1,5 +1,7 @@
 node_modules/
-out/
 test.js
 test.ts
-*.map
+
+dist/*.map
+dist/out/
+dist/*.css

@@ -1,0 +1,40 @@
+/* #MARKER watermark */
+
+#betterytm-watermark {
+    font-size: 10px;
+    display: inline-block;
+    position: absolute;
+    left: 45px;
+    top: 46px;
+    z-index: 10;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media(max-width: 615px) {
+    #betterytm-watermark {
+        display: none;
+    }
+}
+
+#betterytm-watermark:hover {
+    text-decoration: underline;
+}
+
+/* #MARKER queue buttons */
+/* TODO: */
+
+.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+    position: relative;
+}
+
+.side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
+.side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
+    display: inline-block;
+}

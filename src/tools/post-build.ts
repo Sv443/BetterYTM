@@ -6,7 +6,7 @@ import pkg from "../../package.json" assert { type: "json" };
 
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = "BetterYTM.user.js";
-const userscriptDistPath = `dist/${userscriptDistFile}`;
+const distFolderPath = "./dist/";
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
 /** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
 const matchUrls = [
@@ -45,7 +45,9 @@ ${matchDirectives}\
  █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
          Made with ❤️ by Sv443
- I welcome every contribution on GitHub! */
+ I welcome every contribution on GitHub!
+   https://github.com/Sv443/BetterYTM
+*/
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
@@ -53,17 +55,22 @@ ${matchDirectives}\
 
 (async () => {
   try {
+    const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
     const lastCommitSha = await getLastCommitSha();
-    const path = join(dirname(fileURLToPath(import.meta.url)), `../../${userscriptDistPath}`);
+
+    const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
+    const globalStylePath = join(rootPath, distFolderPath, "main.css");
+    const globalStyle = String(await readFile(globalStylePath)).replace(/\n\s*\/\*.+\*\//gm, "");
 
     // read userscript and inject build number
-    const userscript = String(await readFile(path))
-      .replace(/{{BUILD_NUMBER}}/gm, lastCommitSha);
+    const userscript = String(await readFile(scriptPath))
+      .replace(/\/?\*?{{BUILD_NUMBER}}\*?\/?/gm, lastCommitSha)
+      .replace(/"\/?\*?{{GLOBAL_STYLE}}\*?\/?"/gm, `\`${globalStyle}\``);
 
-    await writeFile(path, `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`);
+    await writeFile(scriptPath, `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`);
 
     console.info(`Successfully added the userscript header. Last commit SHA is ${lastCommitSha}`);
-    console.info(`Final size is \x1b[32m${((await stat(path)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
+    console.info(`Final size is \x1b[32m${((await stat(scriptPath)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
   }
   catch(err) {
     console.error("Error while adding userscript header:");

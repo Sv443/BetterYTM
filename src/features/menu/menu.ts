@@ -1,7 +1,11 @@
-import { addGlobalStyle } from "../../utils";
-import changelog from "../../../changelog.md";
+// import { addGlobalStyle } from "../../utils";
+import { triesInterval, triesLimit } from "../../constants";
+
+import changelogContent from "../../../changelog.md";
 import menuContent from "./menu.html";
-import menuStyle from "./menu.css";
+import "./menu.css";
+
+//#MARKER menu
 
 /**
  * These are the base selector values for the menu tabs  
@@ -15,17 +19,19 @@ const tabsSelectors = {
 };
 
 export function initMenu() {
-  initChangelog();
-
-  addGlobalStyle(menuStyle, "menu2"); // TODO
+  // addGlobalStyle(menuStyle, "menu2"); // TODO
 
   document.addEventListener("DOMContentLoaded", () => {
-    // create menu backdrop element
-    const backdrop = document.createElement("div");
-    backdrop.id = "bytm-menu-backdrop";
-    backdrop.style.display = "none";
+    // create menu container
+    const menuContainer = document.createElement("div");
+    menuContainer.id = "bytm-menu-container";
     // add menu html
-    backdrop.innerHTML = menuContent;
+    menuContainer.innerHTML = menuContent;
+
+    document.body.appendChild(menuContainer);
+
+    initOptionsContent();
+    initChangelogContent();
   });
 }
 
@@ -53,52 +59,21 @@ export function closeMenu() {
   (document.querySelector("#bytm-menu-dialog") as HTMLDialogElement).close();
 }
 
-//#MARKER changelog
+//#MARKER menu tab contents
 
-async function initChangelog() {
-  //   const clStyle = `\
-  // #betterytm-changelog-bg {
-  //   display: block;
-  //   position: fixed;
-  //   width: 100vw;
-  //   height: 100vh;
-  //   top: 0;
-  //   left: 0;
-  //   z-index: 15;
-  //   background-color: rgba(0, 0, 0, 0.6);
-  // }
+let optionsTries = 0;
 
-  // #betterytm-changelog {
-  //   display: inline-block;
-  //   position: fixed;
-  //   width: 50vw;
-  //   height: auto;
-  //   min-height: 500px;
-  //   left: 25vw;
-  //   top: 25vh;
-  //   z-index: 16;
-  //   overflow: auto;
-  //   padding: 8px;
-  //   color: #fff;
-  //   background-color: #212121;
-  // }
+function initOptionsContent(): unknown {
+  const tab = document.querySelector("#bytm-menu-tab-options-content");
+  if(!tab)
+    return optionsTries++ < triesLimit ? setTimeout(initOptionsContent, triesInterval) : undefined;
+}
 
-  // #betterytm-changelog-close {
-  //   cursor: pointer;
-  // }`;
+let changelogTries = 0;
 
-
-  // console.log("#DEBUG _CHANGELOG:", changelog);
-  // const cl = document.createElement("div");
-  // cl.style.position = "fixed";
-  // cl.style.top = "0";
-  // cl.style.left = "0";
-  // cl.style.minWidth = "500px";
-  // cl.style.minHeight = "500px";
-  // cl.style.overflowY = "scroll";
-  // cl.innerHTML = changelog;
-  // document.addEventListener("DOMContentLoaded", () => document.body.appendChild(cl));
-
-
-  void ["TODO", changelog];
+function initChangelogContent(): unknown {
+  const tab = document.querySelector("#bytm-menu-tab-changelog-content");
+  if(!tab)
+    return changelogTries++ < triesLimit ? setTimeout(initChangelogContent, triesInterval) : undefined;
+  tab.innerHTML = changelogContent;
 }

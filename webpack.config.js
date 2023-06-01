@@ -2,6 +2,9 @@ import { dirname, join } from "path";
 import { exec } from "child_process";
 import { fileURLToPath } from "url";
 
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+
 export default {
   entry: "./src/BetterYTM.user.ts",
   mode: "production",
@@ -31,12 +34,23 @@ export default {
         ],
       },
       {
-        test: /\.css$/i,
-        use: "raw-loader",
+        test: /.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader" /*, "sass-loader"*/],
       },
+      // {
+      //   test: /\.css$/i,
+      //   use: "raw-loader",
+      // },
+    ],
+  },
+  optimization: {
+    minimizer: [
+      `...`,
+      new CssMinimizerPlugin(),
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
@@ -49,7 +63,7 @@ export default {
     },
   ],
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".css"],
   },
   output: {
     filename: "BetterYTM.user.js",

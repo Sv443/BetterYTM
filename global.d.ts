@@ -10,9 +10,3 @@ declare module "*.md" {
   const htmlContent: string;
   export default htmlContent;
 }
-
-declare module "*.css" {
-  /** Content of the CSS file as a string */
-  const cssContent: string;
-  export default cssContent;
-}

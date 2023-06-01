@@ -1,5 +1,6 @@
 import { dbg, triesInterval, triesLimit } from "../constants";
-import { addGlobalStyle, insertAfter } from "../utils";
+import { insertAfter } from "../utils";
+import "./lyrics.css";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -36,34 +37,6 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
   linkElem.rel = "noopener noreferrer";
   linkElem.style.visibility = gUrl ? "initial" : "hidden";
   linkElem.style.display = gUrl ? "inline-flex" : "none";
-
-  const style = `\
-    #betterytm-lyrics-button {
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      vertical-align: middle;
-
-      margin-left: 8px;
-      width: 40px;
-      height: 40px;
-      border-radius: 100%;
-      background-color: transparent;
-    }
-
-    #betterytm-lyrics-button:hover {
-      background-color: #383838;
-    }
-
-    #betterytm-lyrics-img {
-      display: inline-block;
-      z-index: 10;
-      width: 24px;
-      height: 24px;
-      padding: 5px;
-    }`;
-
-  addGlobalStyle(style, "lyrics");
 
 
   const imgElem = document.createElement("img");

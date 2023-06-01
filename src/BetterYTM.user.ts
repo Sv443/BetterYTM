@@ -1,6 +1,6 @@
 import { getFeatures } from "./config";
 import { dbg, info } from "./constants";
-import { getDomain, initSiteEvents } from "./utils";
+import { addGlobalStyle, getDomain, initSiteEvents } from "./utils";
 import {
   // layout
   initQueueButtons, addWatermark,
@@ -21,6 +21,9 @@ async function init() {
     // TODO: add some style
     console.log(`${info.name} v${info.version} (${info.lastCommit}) - ${info.namespace}`);
     console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
+
+    // post-build these double quotes are replaced by backticks
+    addGlobalStyle("{{GLOBAL_STYLE}}", "global");
 
     document.addEventListener("DOMContentLoaded", onDomLoad);
   }
