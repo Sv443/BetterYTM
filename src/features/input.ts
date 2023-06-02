@@ -147,11 +147,13 @@ export function initBeforeUnloadHook() {
   Error.stackTraceLimit = Infinity;
 
   (function(original) {
+    // @ts-ignore
     window.__proto__.addEventListener = function(...args) {
       const [type, listener, ...rest] = args;
       if(type === "beforeunload") {
         return original.apply(this, [
           type,
+          // @ts-ignore
           (...a) => {
             if(beforeUnloadEnabled)
               listener(...a);
@@ -162,6 +164,7 @@ export function initBeforeUnloadHook() {
       else
         return original.apply(this, args);
     };
+    // @ts-ignore
   })(window.__proto__.addEventListener);
 
   getFeatures().then(feats => {

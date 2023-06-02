@@ -33,6 +33,7 @@
     "enable": true,
     "include": [
       "types.d.ts",
+      "global.d.ts",
     ],
   },
 }

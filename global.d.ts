@@ -10,3 +10,12 @@ declare module "*.md" {
   const htmlContent: string;
   export default htmlContent;
 }
+
+// generic shim so TS doesn't complain *too* much
+declare global {
+  interface Window {
+    __proto__: {
+      addEventListener: (evt: string, listener: () => unknown, capture?: boolean) => void;
+    }
+  }
+}

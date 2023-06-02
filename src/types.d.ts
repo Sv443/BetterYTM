@@ -1,12 +1,3 @@
-// generic shim so TS doesn't complain *too* much
-declare global {
-  interface Window {
-    __proto__: {
-      addEventListener: (evt: string, listener: () => unknown, capture?: boolean) => void;
-    }
-  }
-}
-
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
 

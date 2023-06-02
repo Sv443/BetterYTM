@@ -5,14 +5,14 @@
       return maxWidth;
     return Math.floor(maxWidth / timeSteps) * timeKey;
   }
-    
+
   console.log("scrollY", window.scrollY);
 
   const elem = document.querySelector("tp-yt-paper-progress#sliderBar");
   const rect = getOffset(elem);
   const x = getX(1, rect.width);
   const y = rect.top - rect.height / 2;
-    
+
   console.log(x, y, rect);
 
   const evt = new MouseEvent("mousedown", {

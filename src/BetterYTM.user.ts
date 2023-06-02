@@ -18,6 +18,8 @@ import {
 console.log(`${info.name} v${info.version} (${info.lastCommit}) - ${info.namespace}`);
 console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
 
+const domain = getDomain();
+
 async function init() {
   await preInitLayout();
 
@@ -42,7 +44,6 @@ async function onDomLoad() {
   addGlobalStyle("{{GLOBAL_STYLE}}", "global");
 
   const features = await getFeatures();
-  const domain = getDomain();
 
   dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
 
@@ -92,5 +93,6 @@ async function onDomLoad() {
 }
 
 // needs to be called ASAP, before anything async happens
-initBeforeUnloadHook();
+if(domain === "ytm")
+  initBeforeUnloadHook();
 init();
