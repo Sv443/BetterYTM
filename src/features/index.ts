@@ -34,6 +34,12 @@ export const featInfo = Object.freeze({
       meta: false,
     },
   },
+  disableBeforeUnloadPopup: {
+    desc: "Whether to completely disable the popup that sometimes appears before leaving the site",
+    type: "toggle",
+    category: "input",
+    default: false,
+  },
   anchorImprovements: {
     desc: "TODO: Make it so middle clicking a song to open it in a new tab is easier",
     type: "toggle",
