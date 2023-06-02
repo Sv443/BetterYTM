@@ -8,7 +8,10 @@ const branch = dbg ? "develop" : "main";
 
 //#MARKER menu
 
-/** Adds an element to open the BetterYTM menu */
+/**
+ * Adds an element to open the BetterYTM menu
+ * @deprecated
+ */
 export async function addMenu() {
   // bg & menu
   const backgroundElem = document.createElement("div");
@@ -86,6 +89,7 @@ export async function addMenu() {
   featuresCont.id = "betterytm-menu-opts";
   featuresCont.style.display = "flex";
   featuresCont.style.flexDirection = "column";
+  featuresCont.style.overflowY = "auto";
 
   /** Gets called whenever the feature config is changed */
   const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
@@ -103,20 +107,19 @@ export async function addMenu() {
 
   const features = await getFeatures();
 
-  const featKeys = Object.keys(features);
-  for(const key of featKeys) {
+  for(const key in features) {
     const ftInfo = featInfo[key as keyof typeof features];
 
     if(!ftInfo)
       continue;
 
-    const { desc, type, default: ftDef } = ftInfo;
+    const { desc, type, default: ftDefault } = ftInfo;
 
     // @ts-ignore
     const step = ftInfo?.step ?? undefined;
     const val = features[key as keyof typeof features];
 
-    const initialVal = val || ftDef || undefined;
+    const initialVal = val ?? ftDefault ?? undefined;
 
     const ftConfElem = document.createElement("div");
     ftConfElem.id = `betterytm-ftconf-${key}`;
@@ -197,7 +200,7 @@ export async function addMenu() {
             labelElem.innerText = fmtVal(parseInt(inputElem.value));
         });
       }
-      else if(type === "toggle" && typeof initialVal !== "undefined") {
+      else if(type === "toggle") {
         labelElem = document.createElement("label");
         labelElem.classList.add("betterytm-ftconf-label");
         labelElem.style.paddingLeft = "10px";
@@ -212,19 +215,18 @@ export async function addMenu() {
         });
       }
 
-      inputElem.addEventListener("input", ({ currentTarget }) => {
-        const elem = currentTarget as HTMLInputElement;
-        let v = parseInt(elem.value);
+      inputElem.addEventListener("input", () => {
+        let v = parseInt(inputElem.value);
         if(isNaN(v))
-          v = Number(elem.value);
+          v = Number(inputElem.value);
         if(typeof initialVal !== "undefined")
-          confChanged(key as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : elem.checked));
+          confChanged(key as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
       });
 
       const resetElem = document.createElement("button");
       resetElem.innerText = "Reset";
       resetElem.addEventListener("click", () => {
-        inputElem[type !== "toggle" ? "value" : "checked"] = ftDef as never;
+        inputElem[type !== "toggle" ? "value" : "checked"] = ftDefault as never;
 
         if(labelElem) {
           if(type === "toggle")
@@ -234,7 +236,7 @@ export async function addMenu() {
         }
 
         if(typeof initialVal !== "undefined")
-          confChanged(key as keyof FeatureConfig, initialVal, ftDef);
+          confChanged(key as keyof FeatureConfig, initialVal, ftDefault);
       });
 
       labelElem && ctrlElem.appendChild(labelElem);
@@ -248,10 +250,14 @@ export async function addMenu() {
   }
 
   const footerElem = document.createElement("div");
+  footerElem.id = "betterytm-menu-footer";
   footerElem.style.marginTop = "20px";
   footerElem.style.fontSize = "17px";
   footerElem.style.textDecoration = "underline";
-  footerElem.style.padding = "8px 20px";
+  footerElem.style.padding = "10px 20px";
+  footerElem.style.position = "sticky";
+  footerElem.style.backgroundColor = "var(--bytm-menu-bg)";
+  footerElem.style.bottom = "0";
   footerElem.innerText = "You need to reload the page to apply changes.";
 
   const reloadElem = document.createElement("button");
@@ -294,6 +300,10 @@ export async function addMenu() {
 
   // add style
   const menuStyle = `\
+:root {
+  --bytm-menu-bg: #212121;
+}
+
 #betterytm-menu-bg {
   display: block;
   position: fixed;
@@ -311,14 +321,17 @@ export async function addMenu() {
   position: fixed;
   width: 50vw;
   height: auto;
-  min-height: 500px;
   left: 25vw;
-  top: 25vh;
+  top: 10vh;
   z-index: 16;
-  overflow: auto;
   padding: 8px;
   color: #fff;
-  background-color: #212121;
+  background-color: var(--bytm-menu-bg);
+}
+
+#betterytm-menu-opts {
+  max-height: 70vh;
+  overflow: auto;
 }
 
 #betterytm-menu-titlecont {
