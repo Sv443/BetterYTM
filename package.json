@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "test": "npm run node-ts -- ./test.ts",
-    "build": "tsc && webpack",
+    "build": "webpack",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "watch": "concurrently \"nodemon --exec npm run build\" \"npm run serve\"",
