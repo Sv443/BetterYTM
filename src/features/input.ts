@@ -1,6 +1,7 @@
 import { getVideoTime } from "../utils";
 import { dbg } from "../constants";
 import type { Domain } from "../types";
+import { getFeatures } from "../config";
 
 //#MARKER arrow key skip
 
@@ -83,9 +84,10 @@ export function initSiteSwitch(domain: Domain) {
   // TODO:
   // extra features:
   // - keep video time
+  // - configurable hotkey
 
   document.addEventListener("keydown", (e) => {
-    if(e.key == "F9")
+    if(e.key === "F9")
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
   dbg && console.log("BetterYTM: Initialized site switch listener");
@@ -116,9 +118,64 @@ function switchSite(newDomain: Domain) {
 
     console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
 
-    location.href = url;
+    disableBeforeUnload();
+    setImmediate(() => location.href = url);
   }
   catch(err) {
     console.error("BetterYTM: Error while switching site:", err);
   }
+}
+
+//#MARKER beforeunload popup
+
+let beforeUnloadEnabled = true;
+
+/** Disables the popup before leaving the site */
+export function disableBeforeUnload() {
+  beforeUnloadEnabled = false;
+  dbg && console.info("BetterYTM: Disabled popup before leaving the site");
+}
+
+/** (Re-)enables the popup before leaving the site */
+export function enableBeforeUnload() {
+  beforeUnloadEnabled = true;
+  dbg && console.info("BetterYTM: Enabled popup before leaving the site");
+}
+
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard events before they can be captured by the original site's listeners */
+export function initBeforeUnloadHook() {
+  Error.stackTraceLimit = Infinity;
+
+  (function(original) {
+    window.__proto__.addEventListener = function(...args) {
+      const [type, listener, ...rest] = args;
+      if(type === "beforeunload") {
+        return original.apply(this, [
+          type,
+          (...a) => {
+            if(beforeUnloadEnabled)
+              listener(...a);
+          },
+          ...rest,
+        ]);
+      }
+      else
+        return original.apply(this, args);
+    };
+  })(window.__proto__.addEventListener);
+
+  getFeatures().then(feats => {
+    if(feats.disableBeforeUnloadPopup)
+      disableBeforeUnload();
+  });
+
+  // (function(original) {
+  //   window.__proto__.removeEventListener = function(type, listener, useCapture) {
+  //     if(evtNames.includes(type)){
+  //       console.log("------> removeEventListener " + type, listener, useCapture);
+  //     }
+
+  //     return original.apply(this, arguments);
+  //   };
+  // })(window.__proto__.removeEventListener);
 }

@@ -11,20 +11,17 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu,
+  initMenu, addMenu, initBeforeUnloadHook,
 } from "./features/index";
+
+// TODO: add some style
+console.log(`${info.name} v${info.version} (${info.lastCommit}) - ${info.namespace}`);
+console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
 
 async function init() {
   await preInitLayout();
 
   try {
-    // TODO: add some style
-    console.log(`${info.name} v${info.version} (${info.lastCommit}) - ${info.namespace}`);
-    console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
-
-    // post-build these double quotes are replaced by backticks
-    addGlobalStyle("{{GLOBAL_STYLE}}", "global");
-
     document.addEventListener("DOMContentLoaded", onDomLoad);
   }
   catch(err) {
@@ -41,6 +38,9 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
+  // post-build these double quotes are replaced by backticks
+  addGlobalStyle("{{GLOBAL_STYLE}}", "global");
+
   const features = await getFeatures();
   const domain = getDomain();
 
@@ -91,4 +91,6 @@ async function onDomLoad() {
   }
 }
 
+// needs to be called ASAP, before anything async happens
+initBeforeUnloadHook();
 init();
