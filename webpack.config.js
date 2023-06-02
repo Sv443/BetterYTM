@@ -7,10 +7,20 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 export default {
   entry: "./src/BetterYTM.user.ts",
+  output: {
+    filename: "BetterYTM.user.js",
+    path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
+    clean: true,
+  },
   mode: "production",
-  // optimization: {
-  //   minimize: false,
-  // },
+  resolve: {
+    extensions: [
+      ".ts",
+      ".js",
+      ".css",
+      ".md",
+    ],
+  },
   module: {
     rules: [
       {
@@ -37,10 +47,6 @@ export default {
         test: /.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader" /*, "sass-loader"*/],
       },
-      // {
-      //   test: /\.css$/i,
-      //   use: "raw-loader",
-      // },
     ],
   },
   optimization: {
@@ -62,12 +68,5 @@ export default {
       },
     },
   ],
-  resolve: {
-    extensions: [".ts", ".js", ".css"],
-  },
-  output: {
-    filename: "BetterYTM.user.js",
-    path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
-  },
   devtool: "source-map",
 };

@@ -28,12 +28,11 @@
   "exclude": [
     "**/*.js",
     "dist/**",
-    "rollup.config.cjs",
   ],
   "typeAcquisition": {
     "enable": true,
     "include": [
       "types.d.ts",
-    ]
-  }
+    ],
+  },
 }

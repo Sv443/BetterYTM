@@ -12,7 +12,7 @@
     "build": "tsc && webpack",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
-    "watch": "nodemon --exec \"npm run build && npm run serve\"",
+    "watch": "concurrently \"nodemon --exec npm run build\" \"npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },
@@ -34,10 +34,10 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/greasemonkey": "^4.0.4",
-    "@types/marked": "^5.0.0",
     "@types/node": "^20.2.4",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.7",
+    "concurrently": "^8.1.0",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.0",
     "eslint": "^7.32.0",
