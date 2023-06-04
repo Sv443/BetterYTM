@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
+const minify = false;
+
 export default {
   entry: "./src/BetterYTM.user.ts",
   output: {
@@ -12,7 +14,7 @@ export default {
     path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
     clean: true,
   },
-  mode: "production",
+  mode: minify ? "production" : "development",
   resolve: {
     extensions: [
       ".ts",
