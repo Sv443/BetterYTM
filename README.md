@@ -27,7 +27,7 @@ All of these features can be toggled and configured!
 To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the settings menu.  
 Note that the page needs to be reloaded for the changes to take effect.  
   
-My work relies on donations, so if you like this userscript please consider [supporting me ❤️](https://github.com/sponsors/Sv443)
+My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
 
 <br><br>
 
