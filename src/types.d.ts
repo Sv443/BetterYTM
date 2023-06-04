@@ -1,3 +1,6 @@
+/** 0 = Debug, 1 = Info */
+export type LogLevel = 0 | 1;
+
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
 

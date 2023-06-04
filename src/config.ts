@@ -1,5 +1,6 @@
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
+import { log } from "./utils";
 
 export const defaultFeatures = (Object.keys(featInfo) as (keyof typeof featInfo)[]).reduce<Partial<FeatureConfig>>((acc, key) => {
   acc[key] = featInfo[key].default as unknown as undefined;
@@ -47,6 +48,7 @@ export function saveFeatureConf(featureConf: FeatureConfig) {
   if(!featureConf || typeof featureConf != "object")
     throw new TypeError("Feature config not provided or invalid");
 
+  log("");
   featuresCache = { ...featureConf };
   return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }

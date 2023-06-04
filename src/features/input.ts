@@ -1,5 +1,4 @@
-import { getVideoTime } from "../utils";
-import { dbg } from "../constants";
+import { getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
 import { getFeatures } from "../config";
 
@@ -7,7 +6,7 @@ import { getFeatures } from "../config";
 
 export function initArrowKeySkip() {
   document.addEventListener("keydown", onKeyDown);
-  dbg && console.log("BetterYTM: Added key press listener");
+  log("Added key press listener");
 }
 
 /** Called when the user presses any key, anywhere */
@@ -15,9 +14,9 @@ function onKeyDown(evt: KeyboardEvent) {
   if(["ArrowLeft", "ArrowRight"].includes(evt.code)) {
     // discard the event when a (text) input is currently active, like when editing a playlist
     if(["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName ?? "_"))
-      return dbg && console.info(`BetterYTM: Captured valid key but the current active element is <${document.activeElement!.tagName.toLowerCase()}>, so the keypress is ignored`);
+      return info(`Captured valid key but the current active element is <${document.activeElement!.tagName.toLowerCase()}>, so the keypress is ignored`);
 
-    dbg && console.log(`BetterYTM: Captured key '${evt.code}' in proxy listener`);
+    log(`Captured key '${evt.code}' in proxy listener`);
 
     // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
     const defaultProps = {
@@ -70,10 +69,10 @@ function onKeyDown(evt: KeyboardEvent) {
 
       document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
 
-      dbg && console.log(`BetterYTM: Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
+      log(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
     }
-    else if(dbg)
-      console.warn(`BetterYTM: Captured key '${evt.code}' has no defined behavior`);
+    else
+      warn(`Captured key '${evt.code}' has no defined behavior`);
   }
 }
 
@@ -90,7 +89,7 @@ export function initSiteSwitch(domain: Domain) {
     if(e.key === "F9")
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
-  dbg && console.log("BetterYTM: Initialized site switch listener");
+  log("Initialized site switch listener");
 }
 
 /** Switches to the other site (between YT and YTM) */
@@ -110,7 +109,7 @@ function switchSite(newDomain: Domain) {
 
     const vt = getVideoTime() ?? 0;
 
-    dbg && console.log(`BetterYTM: Found video time of ${vt} seconds`);
+    log(`Found video time of ${vt} seconds`);
 
     const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
 
@@ -122,7 +121,7 @@ function switchSite(newDomain: Domain) {
     setImmediate(() => location.href = url);
   }
   catch(err) {
-    console.error("BetterYTM: Error while switching site:", err);
+    console.error("Error while switching site:", err);
   }
 }
 
@@ -133,13 +132,13 @@ let beforeUnloadEnabled = true;
 /** Disables the popup before leaving the site */
 export function disableBeforeUnload() {
   beforeUnloadEnabled = false;
-  dbg && console.info("BetterYTM: Disabled popup before leaving the site");
+  info("Disabled popup before leaving the site");
 }
 
 /** (Re-)enables the popup before leaving the site */
 export function enableBeforeUnload() {
   beforeUnloadEnabled = true;
-  dbg && console.info("BetterYTM: Enabled popup before leaving the site");
+  info("Enabled popup before leaving the site");
 }
 
 /** Adds a spy function into `window.__proto__.addEventListener` to selectively discard events before they can be captured by the original site's listeners */

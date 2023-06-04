@@ -12,10 +12,11 @@ const ringBell = true;
 
 const app = express();
 
-app.use((_req, _res, next) => {
-  enableLogging && process.stdout.write("*");
-  next();
-});
+enableLogging &&
+  app.use((_req, _res, next) => {
+    process.stdout.write("*");
+    next();
+  });
 
 app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
   if(typeof err === "string" || err instanceof Error)

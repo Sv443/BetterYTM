@@ -36,7 +36,7 @@ function initMenuContents(): unknown {
   if(!document.querySelector("#bytm-menu-dialog"))
     return menuContTries++ < triesLimit
       ? setTimeout(initMenuContents, triesInterval)
-      : console.error(`BetterYTM: couldn't create menu element after ${triesLimit} tries.`);
+      : console.error(`couldn't create menu element after ${triesLimit} tries.`);
 
   // hook events
   for(const tab in tabsSelectors) {

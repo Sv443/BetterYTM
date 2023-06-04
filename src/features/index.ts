@@ -1,4 +1,4 @@
-import { info } from "../constants";
+import { scriptInfo } from "../constants";
 
 export * from "./input";
 export * from "./layout";
@@ -73,7 +73,7 @@ export const featInfo = Object.freeze({
     default: 2,
   },
   watermarkEnabled: {
-    desc: `Show a ${info.name} watermark under the YTM logo`,
+    desc: `Show a ${scriptInfo.name} watermark under the YTM logo`,
     type: "toggle",
     category: "layout",
     default: true,

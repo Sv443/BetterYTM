@@ -1,10 +1,8 @@
 import { defaultFeatures, getFeatures, saveFeatureConf } from "../../config";
-import { dbg, info } from "../../constants";
+import { branch, scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { addGlobalStyle } from "../../utils";
-
-const branch = dbg ? "develop" : "main";
+import { addGlobalStyle, info, log } from "../../utils";
 
 //#MARKER menu
 
@@ -42,7 +40,7 @@ export async function addMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "betterytm-menu-title";
-  titleElem.innerText = `${info.name} - Configuration`;
+  titleElem.innerText = `${scriptInfo.name} - Configuration`;
 
   const linksCont = document.createElement("div");
   linksCont.id = "betterytm-menu-linkscont";
@@ -66,8 +64,8 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/github.png`, info.namespace, `${info.name} on GitHub`);
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${info.name} on GreasyFork`);
+  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/github.png`, scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
+  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";
@@ -94,7 +92,7 @@ export async function addMenu() {
   /** Gets called whenever the feature config is changed */
   const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-    dbg && console.info(`BetterYTM: Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+    info(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
     const featConf = { ...await getFeatures() };
 
@@ -102,7 +100,7 @@ export async function addMenu() {
 
     await saveFeatureConf(featConf);
 
-    dbg && console.log("BetterYTM: Saved feature config changes:\n", await GM.getValue("betterytm-config"));
+    log("Saved feature config changes:\n", await GM.getValue("betterytm-config"));
   };
 
   const features = await getFeatures();
@@ -285,7 +283,7 @@ export async function addMenu() {
 
   const versionElem = document.createElement("span");
   versionElem.id = "betterytm-menu-version";
-  versionElem.innerText = `v${info.version}`;
+  versionElem.innerText = `v${scriptInfo.version}`;
 
   versionCont.appendChild(versionElem);
   featuresCont.appendChild(versionCont);
@@ -364,7 +362,7 @@ export async function addMenu() {
   user-select: none;
 }`;
 
-  dbg && console.log("BetterYTM: Added menu elem:", backgroundElem);
+  log("Added menu elem:", backgroundElem);
 
   addGlobalStyle(menuStyle, "menu");
 }

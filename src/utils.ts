@@ -1,8 +1,53 @@
 import { EventEmitter, EventHandler } from "@billjs/event-emitter";
-import { dbg } from "./constants";
-import type { Domain } from "./types";
+import type { Domain, LogLevel } from "./types";
+import { scriptInfo } from "./constants";
 
 //#SECTION BYTM-specific
+
+let curLogLevel: LogLevel = 1;
+
+/** Sets the current log level. 0 = Debug, 1 = Info */
+export function setLogLevel(level: LogLevel) {
+  curLogLevel = level;
+}
+
+function getLogLevel(...args: unknown[]): number {
+  if(typeof args.at(-1) === "number")
+    return args.splice(args.length - 1, 1)[0] as number;
+  return 0;
+}
+
+/**
+ * Logs string-compatible values to the console, as long as the log level is sufficient.  
+ * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ */
+export function log(...args: unknown[]): void {
+  if(curLogLevel <= getLogLevel(...args))
+    console.log(`${scriptInfo.name}: `, ...args);
+}
+
+/**
+ * Logs string-compatible values to the console as info, as long as the log level is sufficient.  
+ * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ */
+export function info(...args: unknown[]): void {
+  if(curLogLevel <= getLogLevel(...args))
+    console.info(`${scriptInfo.name}: `, ...args);
+}
+
+/**
+ * Logs string-compatible values to the console as a warning, as long as the log level is sufficient.  
+ * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ */
+export function warn(...args: unknown[]): void {
+  if(curLogLevel <= getLogLevel(...args))
+    console.warn(`${scriptInfo.name}: `, ...args);
+}
+
+/** Logs string-compatible values to the console as an error. */
+export function error(...args: unknown[]): void {
+  console.error(`${scriptInfo.name}: `, ...args);
+}
 
 /**
  * Returns the current domain as a constant string representation
@@ -55,7 +100,7 @@ export function getVideoTime(force = false) {
     return null;
   }
   catch(err) {
-    console.error("BetterYTM: Couldn't get video time due to error:", err);
+    console.error("Couldn't get video time due to error:", err);
     return null;
   }
 }
@@ -124,7 +169,7 @@ export function addGlobalStyle(style: string, ref?: string) {
   styleElem.innerHTML = style;
   document.head.appendChild(styleElem);
 
-  dbg && console.log(`BetterYTM: Inserted global style with ref '${ref}':`, styleElem);
+  log(`Inserted global style with ref '${ref}':`, styleElem);
 }
 
 //#SECTION site events
@@ -138,26 +183,33 @@ export const siteEvents = new EventEmitter() as SiteEvents;
 
 let observers: MutationObserver[] = [];
 
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance */
 export function initSiteEvents() {
-  const queueObserver = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
-    if(addedNodes.length > 0 || removedNodes.length > 0) {
-      dbg && console.info("BetterYTM: Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-      siteEvents.fire("queueChanged", target);
-    }
-  });
-  // only observe added or removed elements
-  queueObserver.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
-    childList: true,
-  });
+  try {
+    const queueObserver = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+      if(addedNodes.length > 0 || removedNodes.length > 0) {
+        info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+        siteEvents.fire("queueChanged", target);
+      }
+    });
+    // only observe added or removed elements
+    queueObserver.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
+      childList: true,
+    });
 
-  dbg && console.info("BetterYTM: Successfully initialized SiteEvents observers");
+    info("Successfully initialized SiteEvents observers");
 
-  observers = [
-    queueObserver,
-  ];
+    observers = [
+      queueObserver,
+    ];
+  }
+  catch(err) {
+    console.error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+  }
 }
 
-export function removeObservers() {
+/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
+export function removeAllObservers() {
   observers.forEach((observer) => observer.disconnect());
   observers = [];
 }

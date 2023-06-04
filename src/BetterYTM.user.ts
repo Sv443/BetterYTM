@@ -1,6 +1,6 @@
 import { getFeatures } from "./config";
-import { dbg, info } from "./constants";
-import { addGlobalStyle, getDomain, initSiteEvents } from "./utils";
+import { logLevel, scriptInfo } from "./constants";
+import { addGlobalStyle, error, getDomain, initSiteEvents, log, setLogLevel } from "./utils";
 import {
   // layout
   initQueueButtons, addWatermark,
@@ -15,7 +15,7 @@ import {
 } from "./features/index";
 
 // TODO: add some style
-console.log(`${info.name} v${info.version} (${info.lastCommit}) - ${info.namespace}`);
+console.log(`${scriptInfo.name} v${scriptInfo.version} (${scriptInfo.lastCommit}) - ${scriptInfo.namespace}`);
 console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
 
 const domain = getDomain();
@@ -34,7 +34,7 @@ async function init() {
     initMenu();
   }
   catch(err) {
-    console.error("BetterYTM: Couldn't initialize menu:", err);
+    error("Couldn't initialize menu:", err);
   }
 }
 
@@ -45,7 +45,7 @@ async function onDomLoad() {
 
   const features = await getFeatures();
 
-  dbg && console.log(`BetterYTM: Initializing features for domain '${domain}'`);
+  log(`Initializing features for domain '${domain}'`);
 
   try {
     if(domain === "ytm") {
@@ -83,16 +83,19 @@ async function onDomLoad() {
         addMenu(); // TODO: remove
       }
       catch(err) {
-        console.error("BetterYTM: Couldn't add menu:", err);
+        console.error("Couldn't add menu:", err);
       }
     }
   }
   catch(err) {
-    console.error("BetterYTM: General error while executing feature:", err);
+    console.error("General error while executing feature:", err);
   }
 }
 
-// needs to be called ASAP, before anything async happens
+// stuff that needs to be called ASAP, before anything async happens
+setLogLevel(logLevel);
+
 if(domain === "ytm")
   initBeforeUnloadHook();
+
 init();
