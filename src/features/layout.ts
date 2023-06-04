@@ -1,6 +1,6 @@
-import { dbg, info, triesInterval, triesLimit } from "../constants";
+import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, insertAfter, siteEvents } from "../utils";
+import { addGlobalStyle, insertAfter, log, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
@@ -18,7 +18,7 @@ export function addWatermark() {
   const watermark = document.createElement("span");
   watermark.id = "betterytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar";
-  watermark.innerText = info.name;
+  watermark.innerText = scriptInfo.name;
   watermark.title = "Open menu";
 
   watermark.addEventListener("click", () => openMenu());
@@ -26,7 +26,7 @@ export function addWatermark() {
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
 
-  dbg && console.log("BetterYTM: Added watermark element:", watermark);
+  log("Added watermark element:", watermark);
 }
 
 //#MARKER remove upgrade tab
@@ -38,14 +38,14 @@ export function removeUpgradeTab() {
   const tabElem = document.querySelector(".ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id=\"SPunlimited\"]");
   if(tabElem) {
     tabElem.remove();
-    dbg && console.log(`BetterYTM: Removed upgrade tab after ${removeUpgradeTries} tries`);
+    log(`Removed upgrade tab after ${removeUpgradeTries} tries`);
   }
   else if(removeUpgradeTries < triesLimit) {
     setTimeout(removeUpgradeTab, triesInterval); // TODO: improve this
     removeUpgradeTries++;
   }
   else
-    console.error(`BetterYTM: Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+    console.error(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 
 //#MARKER volume slider

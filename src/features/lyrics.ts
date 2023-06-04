@@ -1,5 +1,5 @@
-import { dbg, triesInterval, triesLimit } from "../constants";
-import { insertAfter } from "../utils";
+import { triesInterval, triesLimit } from "../constants";
+import { error, info, insertAfter, log } from "../utils";
 import "./lyrics.css";
 
 /** Base URL of geniURL */
@@ -19,7 +19,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
     if(mcLyricsButtonAddTries < triesLimit)
       return setTimeout(addMediaCtrlGeniusBtn, triesInterval); // TODO: improve this
 
-    return console.error(`BetterYTM: Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
+    return console.error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
   }
 
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
@@ -45,7 +45,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
 
   linkElem.appendChild(imgElem);
 
-  dbg && console.log(`BetterYTM: Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+  log(`Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
 
   insertAfter(likeContainer, linkElem);
 
@@ -62,7 +62,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
         if(!lyricsBtn)
           return;
 
-        dbg && console.log(`BetterYTM: Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+        log(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
 
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";
@@ -149,7 +149,7 @@ export async function getCurrentGeniusUrl() {
   }
   catch(err)
   {
-    console.error("BetterYTM: Couldn't resolve genius.com URL:", err);
+    error("Couldn't resolve genius.com URL:", err);
     return null;
   }
 }
@@ -162,24 +162,24 @@ async function getGeniusUrl(artist: string, song: string): Promise<string | unde
   try {
     const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
 
-    dbg && console.log(`BetterYTM: Requesting URL from geniURL at '${fetchUrl}'`);
+    log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
     const result = await (await fetch(fetchUrl)).json();
 
     if(result.error)
     {
-      console.error("BetterYTM: Couldn't fetch genius.com URL:", result.message);
+      error("Couldn't fetch genius.com URL:", result.message);
       return undefined;
     }
 
     const url = result.url;
 
-    dbg && console.info(`BetterYTM: Found genius URL: ${url}`);
+    info(`Found genius URL: ${url}`);
 
     return url;
   }
   catch(err) {
-    console.error("BetterYTM: Couldn't get genius URL due to error:", err);
+    error("Couldn't get genius URL due to error:", err);
     return undefined;
   }
 }
