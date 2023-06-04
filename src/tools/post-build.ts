@@ -71,10 +71,13 @@ ${matchDirectives}\
 
     console.info(`Successfully added the userscript header. Last commit SHA is ${lastCommitSha}`);
     console.info(`Final size is \x1b[32m${((await stat(scriptPath)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
+
+    setImmediate(() => process.exit(0));
   }
   catch(err) {
     console.error("Error while adding userscript header:");
     console.error(err);
+
     setImmediate(() => process.exit(1));
   }
 })();
