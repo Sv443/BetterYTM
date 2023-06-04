@@ -2,7 +2,7 @@ import { EventEmitter, EventHandler } from "@billjs/event-emitter";
 import type { Domain, LogLevel } from "./types";
 import { scriptInfo } from "./constants";
 
-//#SECTION BYTM-specific
+//#MARKER BYTM-specific
 
 let curLogLevel: LogLevel = 1;
 
@@ -17,13 +17,16 @@ function getLogLevel(...args: unknown[]): number {
   return 0;
 }
 
+/** Common prefix to be able to tell logged messages apart */
+const consPrefix = `[${scriptInfo.name}]`;
+
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.  
  * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
  */
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(...args))
-    console.log(`${scriptInfo.name}: `, ...args);
+    console.log(consPrefix, ...args);
 }
 
 /**
@@ -32,7 +35,7 @@ export function log(...args: unknown[]): void {
  */
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(...args))
-    console.info(`${scriptInfo.name}: `, ...args);
+    console.info(consPrefix, ...args);
 }
 
 /**
@@ -41,12 +44,12 @@ export function info(...args: unknown[]): void {
  */
 export function warn(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(...args))
-    console.warn(`${scriptInfo.name}: `, ...args);
+    console.warn(consPrefix, ...args);
 }
 
 /** Logs string-compatible values to the console as an error. */
 export function error(...args: unknown[]): void {
-  console.error(`${scriptInfo.name}: `, ...args);
+  console.error(consPrefix, ...args);
 }
 
 /**
@@ -142,7 +145,7 @@ function ytForceShowVideoTime() {
   return true;
 }
 
-//#SECTION DOM
+//#MARKER DOM
 
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
@@ -172,11 +175,13 @@ export function addGlobalStyle(style: string, ref?: string) {
   log(`Inserted global style with ref '${ref}':`, styleElem);
 }
 
-//#SECTION site events
+//#MARKER site events
 
 export interface SiteEvents extends EventEmitter {
-  /** Emitted whenever a song is added to or removed from the queue */
+  /** Emitted whenever child nodes are added to or removed from the song queue */
   on(event: "queueChanged", listener: EventHandler): boolean;
+  /** Emitted whenever carousel shelf containers are added or removed from their parent container */
+  on(event: "carouselShelvesChanged", listener: EventHandler): boolean;
 }
 
 export const siteEvents = new EventEmitter() as SiteEvents;
@@ -186,21 +191,34 @@ let observers: MutationObserver[] = [];
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance */
 export function initSiteEvents() {
   try {
-    const queueObserver = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+    //#SECTION queue
+    const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
         siteEvents.fire("queueChanged", target);
       }
     });
     // only observe added or removed elements
-    queueObserver.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
+    queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
+      childList: true,
+    });
+
+    //#SECTION carousel shelves
+    const shelfContainerObs = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
+      if(addedNodes.length > 0 || removedNodes.length > 0) {
+        info("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+        siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
+      }
+    });
+    shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer")!, {
       childList: true,
     });
 
     info("Successfully initialized SiteEvents observers");
 
     observers = [
-      queueObserver,
+      queueObs,
+      shelfContainerObs,
     ];
   }
   catch(err) {

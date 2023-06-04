@@ -1,4 +1,4 @@
-import { getFeatures } from "./config";
+import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
 import { addGlobalStyle, error, getDomain, initSiteEvents, log, setLogLevel } from "./utils";
 import {
@@ -43,7 +43,7 @@ async function onDomLoad() {
   // post-build these double quotes are replaced by backticks
   addGlobalStyle("{{GLOBAL_STYLE}}", "global");
 
-  const features = await getFeatures();
+  const features = await loadFeatureConf();
 
   log(`Initializing features for domain '${domain}'`);
 

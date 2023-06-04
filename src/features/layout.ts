@@ -74,6 +74,7 @@ export function setVolSliderStep() {
 
 //#MARKER queue buttons
 
+// TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 export function initQueueButtons() {
   siteEvents.on("queueChanged", (evt) => {
     for(const queueItm of ((evt.data as HTMLElement).childNodes as NodeListOf<HTMLElement>)) {
@@ -94,13 +95,18 @@ function addQueueButtons(queueItem: HTMLElement) {
   queueBtnsCont.className = "bytm-queue-btn-container";
   queueBtnsCont.innerText = "ayo";
 
-  const songInfo = queueItem.querySelector(".song-info")!;
+  const songInfo = queueItem.querySelector(".song-info");
+  if(!songInfo)
+    return false;
+
   songInfo.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
+  return true;
 }
 
 //#MARKER better clickable stuff
 
+// TODO: account for the fact initially the elements might not exist, if the site was opened directly with the /watch path
 export function addAnchorImprovements() {
   void 0;
 }
