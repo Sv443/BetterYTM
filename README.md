@@ -12,7 +12,6 @@ All of these features can be toggled and configured!
 - Input:
     - Use arrow keys to skip forward or backward by 10 seconds
     - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default) <!-- TODO: make configurable -->
-    - TODO: Automatically dismiss "are you still there" popup
 - Layout:
     - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
     - TODO: Quick actions on songs in a queue, to open their lyrics or remove them from the queue

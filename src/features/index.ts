@@ -87,13 +87,6 @@ export const featInfo = {
     default: true,
     visible: false,
   },
-  dismissPopup: {
-    desc: "TODO: Automatically dismisses the \"are you still there\" popup",
-    type: "toggle",
-    category: "layout",
-    default: true,
-    visible: false,
-  },
 
   //#SECTION lyrics
   geniusLyrics: {
