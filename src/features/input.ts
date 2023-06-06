@@ -35,7 +35,7 @@ function onKeyDown(evt: KeyboardEvent) {
       cancelable: true,
       isTrusted: true,
       repeat: false,
-      view: window,
+      view: unsafeWindow,
     };
 
     let invalidKey = false;
@@ -118,7 +118,7 @@ function switchSite(newDomain: Domain) {
     console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
 
     disableBeforeUnload();
-    setImmediate(() => location.href = url);
+    setTimeout(() => { location.href = url; }, 0);
   }
   catch(err) {
     console.error("Error while switching site:", err);

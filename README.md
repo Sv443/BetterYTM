@@ -44,7 +44,15 @@ Once you have the extension, click this button to install the userscript:
 <!-- <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a> -->
 <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BC-039e10" height="24"></a>
 
-<br><br>
+<br>
+
+<sub>
+
+Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
+
+</sub>
+
+<br><br><br>
 
 ### Development:
 | Command | Description |

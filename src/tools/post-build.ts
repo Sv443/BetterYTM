@@ -31,6 +31,7 @@ ${matchDirectives}\
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
+// @grant           unsafeWindow
 // @connect         self
 // @connect         youtube.com
 // @connect         github.com
