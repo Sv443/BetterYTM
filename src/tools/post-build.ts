@@ -27,7 +27,7 @@ const header = `\
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
 ${matchDirectives}\
-// @icon            https://raw.githubusercontent.com/${repo}/main/resources/icon/icon.png
+// @icon            https://raw.githubusercontent.com/${repo}/main/assets/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue

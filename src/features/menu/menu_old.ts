@@ -64,12 +64,12 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/github.png`, scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
+  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/external/github.png`, scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
+  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/external/greasyfork.png`, "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";
-  closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/resources/icon/close.png`;
+  closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/icon/close.png`;
   closeElem.title = "Click to close the menu";
   closeElem.style.marginLeft = "50px";
   closeElem.style.width = "32px";
