@@ -108,7 +108,8 @@ export async function addMenu() {
   for(const key in features) {
     const ftInfo = featInfo[key as keyof typeof features];
 
-    if(!ftInfo)
+    // @ts-ignore
+    if(!ftInfo || ftInfo.visible === false)
       continue;
 
     const { desc, type, default: ftDefault } = ftInfo;
@@ -179,7 +180,7 @@ export async function addMenu() {
         inputElem.checked = Boolean(initialVal);
 
       // @ts-ignore
-      const unitTxt = ftInfo?.unit ? " " + ftInfo.unit : "";
+      const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
 
       const fmtVal = (v: unknown) => String(v).trim();
       const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
@@ -195,7 +196,7 @@ export async function addMenu() {
 
         inputElem.addEventListener("input", () => {
           if(labelElem)
-            labelElem.innerText = fmtVal(parseInt(inputElem.value));
+            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
         });
       }
       else if(type === "toggle") {
@@ -228,9 +229,9 @@ export async function addMenu() {
 
         if(labelElem) {
           if(type === "toggle")
-            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+            labelElem.innerText = toggleLabelText(inputElem.checked);
           else
-            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+            labelElem.innerText = fmtVal(parseInt(inputElem.value));
         }
 
         if(typeof initialVal !== "undefined")

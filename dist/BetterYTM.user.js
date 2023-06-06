@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "5f1d963", // assert as generic string instead of union
+    lastCommit: "df39e39", // assert as generic string instead of union
 });
 
 
@@ -534,7 +534,7 @@ __webpack_require__.r(__webpack_exports__);
  // TODO
 
 /** Contains all possible features with their default values and other config */
-const featInfo = Object.freeze({
+const featInfo = {
     //#SECTION input
     arrowKeySupport: {
         desc: "Arrow keys skip forwards and backwards by 10 seconds",
@@ -549,7 +549,7 @@ const featInfo = Object.freeze({
         default: true,
     },
     switchSitesHotkey: {
-        desc: "Which hotkey needs to be pressed to switch sites?",
+        desc: "TODO: Which hotkey needs to be pressed to switch sites?",
         type: "hotkey",
         category: "input",
         default: {
@@ -558,9 +558,10 @@ const featInfo = Object.freeze({
             ctrl: false,
             meta: false,
         },
+        visible: false,
     },
     disableBeforeUnloadPopup: {
-        desc: "Whether to completely disable the popup that sometimes appears before leaving the site",
+        desc: "Completely disable the popup that sometimes appears before leaving the site",
         type: "toggle",
         category: "input",
         default: false,
@@ -570,6 +571,7 @@ const featInfo = Object.freeze({
         type: "toggle",
         category: "input",
         default: true,
+        visible: false,
     },
     //#SECTION layout
     removeUpgradeTab: {
@@ -585,8 +587,8 @@ const featInfo = Object.freeze({
         min: 10,
         max: 1000,
         step: 5,
-        unit: "px",
         default: 160,
+        unit: "px",
     },
     volumeSliderStep: {
         desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
@@ -607,12 +609,14 @@ const featInfo = Object.freeze({
         type: "toggle",
         category: "layout",
         default: true,
+        visible: false,
     },
     dismissPopup: {
         desc: "TODO: Automatically dismisses the \"are you still there\" popup",
         type: "toggle",
         category: "layout",
         default: true,
+        visible: false,
     },
     //#SECTION lyrics
     geniusLyrics: {
@@ -621,7 +625,7 @@ const featInfo = Object.freeze({
         category: "lyrics",
         default: true,
     },
-});
+};
 
 
 /***/ }),
@@ -674,7 +678,7 @@ function onKeyDown(evt) {
             cancelable: true,
             isTrusted: true,
             repeat: false,
-            view: unsafeWindow,
+            view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
         };
         let invalidKey = false;
         let keyProps = {};
@@ -740,7 +744,7 @@ function switchSite(newDomain) {
         const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
         console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
         disableBeforeUnload();
-        setTimeout(() => { location.href = url; }, 0);
+        location.assign(url);
     }
     catch (err) {
         console.error("Error while switching site:", err);
@@ -1322,7 +1326,8 @@ function addMenu() {
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.getFeatures)();
         for (const key in features) {
             const ftInfo = _index__WEBPACK_IMPORTED_MODULE_2__.featInfo[key];
-            if (!ftInfo)
+            // @ts-ignore
+            if (!ftInfo || ftInfo.visible === false)
                 continue;
             const { desc, type, default: ftDefault } = ftInfo;
             // @ts-ignore
@@ -1379,7 +1384,7 @@ function addMenu() {
                 if (type === "toggle" && typeof initialVal !== "undefined")
                     inputElem.checked = Boolean(initialVal);
                 // @ts-ignore
-                const unitTxt = (ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.unit) ? " " + ftInfo.unit : "";
+                const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
                 const fmtVal = (v) => String(v).trim();
                 const toggleLabelText = (toggled) => toggled ? "On" : "Off";
                 let labelElem;
@@ -1392,7 +1397,7 @@ function addMenu() {
                     labelElem.innerText = fmtVal(initialVal) + unitTxt;
                     inputElem.addEventListener("input", () => {
                         if (labelElem)
-                            labelElem.innerText = fmtVal(parseInt(inputElem.value));
+                            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
                     });
                 }
                 else if (type === "toggle") {
@@ -1421,9 +1426,9 @@ function addMenu() {
                     inputElem[type !== "toggle" ? "value" : "checked"] = ftDefault;
                     if (labelElem) {
                         if (type === "toggle")
-                            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+                            labelElem.innerText = toggleLabelText(inputElem.checked);
                         else
-                            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+                            labelElem.innerText = fmtVal(parseInt(inputElem.value));
                     }
                     if (typeof initialVal !== "undefined")
                         confChanged(key, initialVal, ftDefault);
@@ -1674,29 +1679,19 @@ function ytForceShowVideoTime() {
     const player = document.querySelector("#movie_player");
     if (!player)
         return false;
-    player.dispatchEvent(new MouseEvent("mouseenter", {
-        view: unsafeWindow,
+    const defaultProps = {
+        view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
         bubbles: true,
         cancelable: false,
-    }));
+    };
+    player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
     const { x, y, width, height } = player.getBoundingClientRect();
     const screenY = Math.round(y + height / 2);
     const screenX = x + Math.min(50, Math.round(width / 3));
-    player.dispatchEvent(new MouseEvent("mousemove", {
-        view: unsafeWindow,
-        bubbles: true,
-        cancelable: false,
-        screenY,
-        screenX,
-        movementX: 5,
-        movementY: 0
-    }));
+    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
+        screenX, movementX: 5, movementY: 0 })));
     setTimeout(() => {
-        player.dispatchEvent(new MouseEvent("mouseleave", {
-            view: unsafeWindow,
-            bubbles: true,
-            cancelable: false,
-        }));
+        player.dispatchEvent(new MouseEvent("mouseleave", defaultProps));
     }, 4000);
     return true;
 }

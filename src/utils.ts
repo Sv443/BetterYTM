@@ -114,20 +114,20 @@ function ytForceShowVideoTime() {
   if(!player)
     return false;
 
-  player.dispatchEvent(new MouseEvent("mouseenter", {
-    view: unsafeWindow,
+  const defaultProps = {
+    view: unsafeWindow ?? window,
     bubbles: true,
     cancelable: false,
-  }));
+  };
+
+  player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
 
   const { x, y, width, height } = player.getBoundingClientRect();
   const screenY = Math.round(y + height / 2);
   const screenX = x + Math.min(50, Math.round(width / 3));
 
   player.dispatchEvent(new MouseEvent("mousemove", {
-    view: unsafeWindow,
-    bubbles: true,
-    cancelable: false,
+    ...defaultProps,
     screenY,
     screenX,
     movementX: 5,
@@ -135,11 +135,7 @@ function ytForceShowVideoTime() {
   }));
 
   setTimeout(() => {
-    player.dispatchEvent(new MouseEvent("mouseleave", {
-      view: unsafeWindow,
-      bubbles: true,
-      cancelable: false,
-    }));
+    player.dispatchEvent(new MouseEvent("mouseleave", defaultProps));
   }, 4000);
 
   return true;
