@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "fab275d", // assert as generic string instead of union
+    lastCommit: "0f3557a", // assert as generic string instead of union
 });
 
 
@@ -740,7 +740,7 @@ function switchSite(newDomain) {
         location.assign(url);
     }
     catch (err) {
-        console.error("Error while switching site:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Error while switching site:", err);
     }
 }
 //#MARKER beforeunload popup
@@ -863,7 +863,7 @@ function removeUpgradeTab() {
         removeUpgradeTries++;
     }
     else
-        console.error(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 //#MARKER volume slider
 /** Sets the volume slider to a set size */
@@ -964,7 +964,7 @@ function addMediaCtrlGeniusBtn() {
             mcLyricsButtonAddTries++;
             if (mcLyricsButtonAddTries < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit)
                 return setTimeout(addMediaCtrlGeniusBtn, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval); // TODO: improve this
-            return console.error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
+            return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
         }
         const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
         const gUrl = yield getCurrentGeniusUrl();
@@ -1121,9 +1121,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setActiveTab: function() { return /* binding */ setActiveTab; }
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
-/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../changelog.md */ "./changelog.md");
-/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu.html */ "./src/features/menu/menu.html");
-/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./menu.css */ "./src/features/menu/menu.css");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
+/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../changelog.md */ "./changelog.md");
+/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./menu.html */ "./src/features/menu/menu.html");
+/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu.css */ "./src/features/menu/menu.css");
+
 
 
 
@@ -1145,7 +1147,7 @@ function initMenu() {
         const menuContainer = document.createElement("div");
         menuContainer.id = "bytm-menu-container";
         // add menu html
-        menuContainer.innerHTML = _menu_html__WEBPACK_IMPORTED_MODULE_2__["default"];
+        menuContainer.innerHTML = _menu_html__WEBPACK_IMPORTED_MODULE_3__["default"];
         document.body.appendChild(menuContainer);
         initMenuContents();
     });
@@ -1156,7 +1158,7 @@ function initMenuContents() {
     if (!document.querySelector("#bytm-menu-dialog"))
         return menuContTries++ < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit
             ? setTimeout(initMenuContents, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval)
-            : console.error(`couldn't create menu element after ${_constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit} tries.`);
+            : (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`couldn't create menu element after ${_constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit} tries.`);
     // hook events
     for (const tab in tabsSelectors) {
         const selector = tabsSelectors[tab];
@@ -1201,7 +1203,7 @@ function initInfoContent() {
 }
 function initChangelogContent() {
     const tab = document.querySelector("#bytm-menu-tab-changelog-content");
-    tab.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_1__["default"];
+    tab.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_2__["default"];
 }
 
 
@@ -1663,7 +1665,7 @@ function getVideoTime(force = false) {
         return null;
     }
     catch (err) {
-        console.error("Couldn't get video time due to error:", err);
+        error("Couldn't get video time due to error:", err);
         return null;
     }
 }
@@ -1747,7 +1749,7 @@ function initSiteEvents() {
         ];
     }
     catch (err) {
-        console.error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+        error("Couldn't initialize SiteEvents observers due to an error:\n", err);
     }
 }
 /** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
@@ -1850,7 +1852,7 @@ function init() {
             document.addEventListener("DOMContentLoaded", onDomLoad);
         }
         catch (err) {
-            console.error("BetterYTM - General Error:", err);
+            console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
         }
         try {
             (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initMenu)();
@@ -2001,12 +2003,12 @@ function onDomLoad() {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addMenu)(); // TODO: remove
                 }
                 catch (err) {
-                    console.error("Couldn't add menu:", err);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);
                 }
             }
         }
         catch (err) {
-            console.error("General error while executing feature:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("General error while executing feature:", err);
         }
     });
 }

@@ -19,7 +19,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
     if(mcLyricsButtonAddTries < triesLimit)
       return setTimeout(addMediaCtrlGeniusBtn, triesInterval); // TODO: improve this
 
-    return console.error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
+    return error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
   }
 
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;

@@ -1,6 +1,6 @@
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, insertAfter, log, siteEvents } from "../utils";
+import { addGlobalStyle, error, insertAfter, log, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
@@ -45,7 +45,7 @@ export function removeUpgradeTab() {
     removeUpgradeTries++;
   }
   else
-    console.error(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+    error(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
 }
 
 //#MARKER volume slider

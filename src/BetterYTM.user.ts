@@ -27,7 +27,7 @@ async function init() {
     document.addEventListener("DOMContentLoaded", onDomLoad);
   }
   catch(err) {
-    console.error("BetterYTM - General Error:", err);
+    console.error(`${scriptInfo.name} - General Error:`, err);
   }
 
   try {
@@ -83,12 +83,12 @@ async function onDomLoad() {
         addMenu(); // TODO: remove
       }
       catch(err) {
-        console.error("Couldn't add menu:", err);
+        error("Couldn't add menu:", err);
       }
     }
   }
   catch(err) {
-    console.error("General error while executing feature:", err);
+    error("General error while executing feature:", err);
   }
 }
 

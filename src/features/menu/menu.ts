@@ -1,4 +1,5 @@
 import { triesInterval, triesLimit } from "../../constants";
+import { error } from "../../utils";
 import changelogContent from "../../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
@@ -36,7 +37,7 @@ function initMenuContents(): unknown {
   if(!document.querySelector("#bytm-menu-dialog"))
     return menuContTries++ < triesLimit
       ? setTimeout(initMenuContents, triesInterval)
-      : console.error(`couldn't create menu element after ${triesLimit} tries.`);
+      : error(`couldn't create menu element after ${triesLimit} tries.`);
 
   // hook events
   for(const tab in tabsSelectors) {

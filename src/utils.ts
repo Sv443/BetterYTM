@@ -103,7 +103,7 @@ export function getVideoTime(force = false) {
     return null;
   }
   catch(err) {
-    console.error("Couldn't get video time due to error:", err);
+    error("Couldn't get video time due to error:", err);
     return null;
   }
 }
@@ -218,7 +218,7 @@ export function initSiteEvents() {
     ];
   }
   catch(err) {
-    console.error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+    error("Couldn't initialize SiteEvents observers due to an error:\n", err);
   }
 }
 
