@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "df39e39", // assert as generic string instead of union
+    lastCommit: "fab275d", // assert as generic string instead of union
 });
 
 
@@ -606,13 +606,6 @@ const featInfo = {
     },
     queueButtons: {
         desc: "TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
-        type: "toggle",
-        category: "layout",
-        default: true,
-        visible: false,
-    },
-    dismissPopup: {
-        desc: "TODO: Automatically dismisses the \"are you still there\" popup",
         type: "toggle",
         category: "layout",
         default: true,

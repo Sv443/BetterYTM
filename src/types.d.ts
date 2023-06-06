@@ -34,8 +34,6 @@ export interface FeatureConfig {
   watermarkEnabled: boolean;
   /** TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
   queueButtons: boolean;
-  /** TODO: Automatically dismisses the "are you still there" popup */
-  dismissPopup: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
