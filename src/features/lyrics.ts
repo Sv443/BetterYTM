@@ -41,7 +41,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
 
   const imgElem = document.createElement("img");
   imgElem.id = "betterytm-lyrics-img";
-  imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/external/genius.png";
+  imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
 
   linkElem.appendChild(imgElem);
 

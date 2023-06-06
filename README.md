@@ -1,6 +1,6 @@
 <div style="text-align: center;" align="center">
 
-<h1><img src="./resources/icon/icon.png" /><br>BetterYTM</h1>
+<h1><img src="./assets/icon/icon.png" /><br>BetterYTM</h1>
 
 Configurable layout and UX improvements for YouTube Music
 
