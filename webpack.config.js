@@ -13,6 +13,11 @@ export default {
     filename: "BetterYTM.user.js",
     path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
     clean: true,
+    module: true,
+  },
+  experiments: {
+    // userscripts are automatically wrapped in an IIFE by the browser extension, so this can be enabled
+    outputModule: true,
   },
   mode: minify ? "production" : "development",
   resolve: {
