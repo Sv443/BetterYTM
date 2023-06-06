@@ -12,6 +12,8 @@ const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscr
 const matchUrls = [
   "https://music.youtube.com/*", "https://www.youtube.com/*"
 ];
+/** Whether to trigger the bell sound in some terminals when the code has finished compiling */
+const ringBell = true;
 
 const matchDirectives = matchUrls.reduce((a, c) => a + `// @match           ${c}\n`, "");
 
@@ -72,6 +74,8 @@ ${matchDirectives}\
 
     console.info(`Successfully added the userscript header. Last commit SHA is ${lastCommitSha}`);
     console.info(`Final size is \x1b[32m${((await stat(scriptPath)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
+
+    ringBell && process.stdout.write("\u0007");
 
     setImmediate(() => process.exit(0));
   }

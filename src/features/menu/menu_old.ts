@@ -21,6 +21,10 @@ export async function addMenu() {
     if((e.target as HTMLElement).id === "betterytm-menu-bg")
       closeMenu();
   });
+  document.body.addEventListener("keydown", ({ key }) => {
+    if(key === "Escape")
+      closeMenu();
+  });
 
   const menuContainer = document.createElement("div");
   menuContainer.title = "";

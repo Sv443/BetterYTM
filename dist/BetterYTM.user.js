@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0f3557a", // assert as generic string instead of union
+    lastCommit: "4d46e00", // assert as generic string instead of union
 });
 
 
@@ -839,12 +839,15 @@ function preInitLayout() {
 //#MARKER watermark
 /** Adds a watermark beneath the logo */
 function addWatermark() {
-    const watermark = document.createElement("span");
+    const watermark = document.createElement("a");
+    watermark.role = "button";
     watermark.id = "betterytm-watermark";
     watermark.className = "style-scope ytmusic-nav-bar";
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name;
     watermark.title = "Open menu";
+    watermark.tabIndex = 1000;
     watermark.addEventListener("click", () => (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_3__.openMenu)());
+    watermark.addEventListener("keydown", (e) => e.key === "Enter" && (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_3__.openMenu)());
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element:", watermark);
@@ -1254,6 +1257,10 @@ function addMenu() {
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             if (e.target.id === "betterytm-menu-bg")
+                closeMenu();
+        });
+        document.body.addEventListener("keydown", ({ key }) => {
+            if (key === "Escape")
                 closeMenu();
         });
         const menuContainer = document.createElement("div");

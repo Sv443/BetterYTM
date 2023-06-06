@@ -15,13 +15,16 @@ export async function preInitLayout() {
 
 /** Adds a watermark beneath the logo */
 export function addWatermark() {
-  const watermark = document.createElement("span");
+  const watermark = document.createElement("a");
+  watermark.role = "button";
   watermark.id = "betterytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar";
   watermark.innerText = scriptInfo.name;
   watermark.title = "Open menu";
+  watermark.tabIndex = 1000;
 
   watermark.addEventListener("click", () => openMenu());
+  watermark.addEventListener("keydown", (e) => e.key === "Enter" && openMenu());
 
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
