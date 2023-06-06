@@ -115,7 +115,7 @@ function ytForceShowVideoTime() {
     return false;
 
   player.dispatchEvent(new MouseEvent("mouseenter", {
-    view: window,
+    view: unsafeWindow,
     bubbles: true,
     cancelable: false,
   }));
@@ -125,7 +125,7 @@ function ytForceShowVideoTime() {
   const screenX = x + Math.min(50, Math.round(width / 3));
 
   player.dispatchEvent(new MouseEvent("mousemove", {
-    view: window,
+    view: unsafeWindow,
     bubbles: true,
     cancelable: false,
     screenY,
@@ -136,7 +136,7 @@ function ytForceShowVideoTime() {
 
   setTimeout(() => {
     player.dispatchEvent(new MouseEvent("mouseleave", {
-      view: window,
+      view: unsafeWindow,
       bubbles: true,
       cancelable: false,
     }));
