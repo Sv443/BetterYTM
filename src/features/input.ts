@@ -1,4 +1,4 @@
-import { getVideoTime, info, log, warn } from "../utils";
+import { error, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
 import { getFeatures } from "../config";
 
@@ -121,7 +121,7 @@ function switchSite(newDomain: Domain) {
     location.assign(url);
   }
   catch(err) {
-    console.error("Error while switching site:", err);
+    error("Error while switching site:", err);
   }
 }
 
