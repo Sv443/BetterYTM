@@ -9,7 +9,7 @@ export * from "./menu/menu_old";
 export type FeatureCategory = "input" | "layout" | "lyrics";
 
 /** Contains all possible features with their default values and other config */
-export const featInfo = Object.freeze({
+export const featInfo = {
   //#SECTION input
   arrowKeySupport: {
     desc: "Arrow keys skip forwards and backwards by 10 seconds",
@@ -24,7 +24,7 @@ export const featInfo = Object.freeze({
     default: true,
   },
   switchSitesHotkey: {
-    desc: "Which hotkey needs to be pressed to switch sites?",
+    desc: "TODO: Which hotkey needs to be pressed to switch sites?",
     type: "hotkey",
     category: "input",
     default: {
@@ -33,9 +33,10 @@ export const featInfo = Object.freeze({
       ctrl: false,
       meta: false,
     },
+    visible: false,
   },
   disableBeforeUnloadPopup: {
-    desc: "Whether to completely disable the popup that sometimes appears before leaving the site",
+    desc: "Completely disable the popup that sometimes appears before leaving the site",
     type: "toggle",
     category: "input",
     default: false,
@@ -45,6 +46,7 @@ export const featInfo = Object.freeze({
     type: "toggle",
     category: "input",
     default: true,
+    visible: false,
   },
 
   //#SECTION layout
@@ -61,8 +63,8 @@ export const featInfo = Object.freeze({
     min: 10,
     max: 1000,
     step: 5,
-    unit: "px",
     default: 160,
+    unit: "px",
   },
   volumeSliderStep: {
     desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
@@ -83,12 +85,14 @@ export const featInfo = Object.freeze({
     type: "toggle",
     category: "layout",
     default: true,
+    visible: false,
   },
   dismissPopup: {
     desc: "TODO: Automatically dismisses the \"are you still there\" popup",
     type: "toggle",
     category: "layout",
     default: true,
+    visible: false,
   },
 
   //#SECTION lyrics
@@ -98,4 +102,4 @@ export const featInfo = Object.freeze({
     category: "lyrics",
     default: true,
   },
-});
+};
