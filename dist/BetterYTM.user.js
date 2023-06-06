@@ -10,10 +10,11 @@
 // @copyright       Sv443 (https://github.com/Sv443)
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/icon/icon.png
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
+// @grant           unsafeWindow
 // @connect         self
 // @connect         youtube.com
 // @connect         github.com
@@ -35,9 +36,7 @@
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-/******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+/******/ var __webpack_modules__ = ({
 
 /***/ "./node_modules/@billjs/event-emitter/lib/index.js":
 /*!*********************************************************!*\
@@ -487,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "97672b6", // assert as generic string instead of union
+    lastCommit: "5f1d963", // assert as generic string instead of union
 });
 
 
@@ -675,7 +674,7 @@ function onKeyDown(evt) {
             cancelable: true,
             isTrusted: true,
             repeat: false,
-            view: window,
+            view: unsafeWindow,
         };
         let invalidKey = false;
         let keyProps = {};
@@ -741,7 +740,7 @@ function switchSite(newDomain) {
         const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
         console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
         disableBeforeUnload();
-        setImmediate(() => location.href = url);
+        setTimeout(() => { location.href = url; }, 0);
     }
     catch (err) {
         console.error("Error while switching site:", err);
@@ -984,7 +983,7 @@ function addMediaCtrlGeniusBtn() {
         linkElem.style.display = gUrl ? "inline-flex" : "none";
         const imgElem = document.createElement("img");
         imgElem.id = "betterytm-lyrics-img";
-        imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/resources/external/genius.png";
+        imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
         linkElem.appendChild(imgElem);
         (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
         (0,_utils__WEBPACK_IMPORTED_MODULE_1__.insertAfter)(likeContainer, linkElem);
@@ -1292,11 +1291,11 @@ function addMenu() {
             anchorElem.appendChild(imgElem);
             linksCont.appendChild(anchorElem);
         };
-        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/resources/external/github.png`, _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GitHub`);
-        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/resources/external/greasyfork.png`, "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GreasyFork`);
+        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/external/github.png`, _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GitHub`);
+        addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/external/greasyfork.png`, "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "betterytm-menu-close";
-        closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/resources/icon/close.png`;
+        closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/icon/close.png`;
         closeElem.title = "Click to close the menu";
         closeElem.style.marginLeft = "50px";
         closeElem.style.width = "32px";
@@ -1676,7 +1675,7 @@ function ytForceShowVideoTime() {
     if (!player)
         return false;
     player.dispatchEvent(new MouseEvent("mouseenter", {
-        view: window,
+        view: unsafeWindow,
         bubbles: true,
         cancelable: false,
     }));
@@ -1684,7 +1683,7 @@ function ytForceShowVideoTime() {
     const screenY = Math.round(y + height / 2);
     const screenX = x + Math.min(50, Math.round(width / 3));
     player.dispatchEvent(new MouseEvent("mousemove", {
-        view: window,
+        view: unsafeWindow,
         bubbles: true,
         cancelable: false,
         screenY,
@@ -1694,7 +1693,7 @@ function ytForceShowVideoTime() {
     }));
     setTimeout(() => {
         player.dispatchEvent(new MouseEvent("mouseleave", {
-            view: window,
+            view: unsafeWindow,
             bubbles: true,
             cancelable: false,
         }));
@@ -1772,61 +1771,61 @@ function removeAllObservers() {
 
 /***/ })
 
-/******/ 	});
+/******/ });
 /************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
+/******/ // The module cache
+/******/ var __webpack_module_cache__ = {};
+/******/ 
+/******/ // The require function
+/******/ function __webpack_require__(moduleId) {
+/******/ 	// Check if module is in cache
+/******/ 	var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 	if (cachedModule !== undefined) {
+/******/ 		return cachedModule.exports;
 /******/ 	}
-/******/ 	
+/******/ 	// Create a new module (and put it into the cache)
+/******/ 	var module = __webpack_module_cache__[moduleId] = {
+/******/ 		// no module.id needed
+/******/ 		// no module.loaded needed
+/******/ 		exports: {}
+/******/ 	};
+/******/ 
+/******/ 	// Execute the module function
+/******/ 	__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 
+/******/ 	// Return the exports of the module
+/******/ 	return module.exports;
+/******/ }
+/******/ 
 /************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
+/******/ /* webpack/runtime/define property getters */
+/******/ !function() {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__webpack_require__.d = function(exports, definition) {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 			}
-/******/ 		};
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	!function() {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = function(exports) {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	}();
-/******/ 	
+/******/ 		}
+/******/ 	};
+/******/ }();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ !function() {
+/******/ 	__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ }();
+/******/ 
+/******/ /* webpack/runtime/make namespace object */
+/******/ !function() {
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/ }();
+/******/ 
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
@@ -2030,6 +2029,5 @@ if (domain === "ytm")
 init();
 
 }();
-/******/ })()
-;
+
 //# sourceMappingURL=BetterYTM.user.js.map
