@@ -3,8 +3,10 @@ import { resolve } from "path";
 import { fileURLToPath } from "url";
 import webpackCfg from "../../webpack.config.js";
 
+const envPort = Number(process.env.DEV_SERVER_PORT);
+
 /** HTTP port of the dev server */
-const devServerPort = 8710;
+const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 /** Whether to log requests to the console */
 const enableLogging = false;
 
@@ -26,7 +28,7 @@ app.use(express.static(
   resolve(fileURLToPath(import.meta.url), "../../", webpackCfg.output.path),
   {
     etag: false,
-    maxAge: 5_000,
+    maxAge: 0,
   }
 ));
 

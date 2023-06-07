@@ -1,16 +1,20 @@
 import { dirname, join } from "path";
 import { exec } from "child_process";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
 
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
-const minify = false;
+dotenv.config();
+
+const mode = ["development", "production"].includes(process.env.NODE_ENV) ? process.env.NODE_ENV : "development";
+const outFileSuffix = process.env.OUTFILE_SUFFIX ?? "";
 
 export default {
   entry: "./src/BetterYTM.user.ts",
   output: {
-    filename: "BetterYTM.user.js",
+    filename: `BetterYTM${outFileSuffix}.user.js`,
     path: join(dirname(fileURLToPath(import.meta.url)), "/dist"),
     clean: true,
     module: true,
@@ -19,7 +23,7 @@ export default {
     // userscripts are automatically wrapped in an IIFE by the browser extension, so this can be enabled
     outputModule: true,
   },
-  mode: minify ? "production" : "development",
+  mode,
   resolve: {
     extensions: [
       ".ts",
