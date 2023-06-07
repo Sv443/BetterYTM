@@ -1,11 +1,17 @@
-import { readFile, writeFile, stat } from "fs/promises";
-import { dirname, join } from "path";
+import { readFile, writeFile } from "fs/promises";
+import { dirname, join, relative } from "path";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
+import dotenv from "dotenv";
 import pkg from "../../package.json" assert { type: "json" };
 
+const { env, exit } = process;
+dotenv.config();
+
+const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
+
 const repo = "Sv443/BetterYTM";
-const userscriptDistFile = "BetterYTM.user.js";
+const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
 /** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
@@ -13,7 +19,7 @@ const matchUrls = [
   "https://music.youtube.com/*", "https://www.youtube.com/*"
 ];
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
-const ringBell = true;
+const ringBell = env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() !== "false");
 
 const matchDirectives = matchUrls.reduce((a, c) => a + `// @match           ${c}\n`, "");
 
@@ -63,27 +69,36 @@ ${matchDirectives}\
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
     const globalStylePath = join(rootPath, distFolderPath, "main.css");
-    const globalStyle = String(await readFile(globalStylePath)).replace(/\n\s*\/\*.+\*\//gm, "");
+    const globalStyle = String(await readFile(globalStylePath))
+      .replace(/\n\s*\/\*.+\*\//gm, ""); // remove comment-only lines
 
-    // read userscript and inject build number
+    // read userscript and inject build number and global CSS
     const userscript = String(await readFile(scriptPath))
       .replace(/\/?\*?{{BUILD_NUMBER}}\*?\/?/gm, lastCommitSha)
       .replace(/"\/?\*?{{GLOBAL_STYLE}}\*?\/?"/gm, `\`${globalStyle}\``);
 
-    await writeFile(scriptPath, `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`);
+    // insert userscript header and final newline
+    const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
-    console.info(`Successfully added the userscript header. Last commit SHA is ${lastCommitSha}`);
-    console.info(`Final size is \x1b[32m${((await stat(scriptPath)).size / 1024).toFixed(2)} KiB\x1b[0m\n`);
+    await writeFile(scriptPath, finalUserscript);
+
+    const envText = env.NODE_ENV === "production" ? "\x1b[32mproduction" : "\x1b[33mdevelopment";
+    const sizeKiB = (Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2);
+
+    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): \x1b[34m${lastCommitSha}\x1b[0m`);
+    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m\n`);
 
     ringBell && process.stdout.write("\u0007");
 
-    setImmediate(() => process.exit(0));
+    // schedule exit after I/O finishes
+    setImmediate(() => exit(0));
   }
   catch(err) {
     console.error("Error while adding userscript header:");
     console.error(err);
 
-    setImmediate(() => process.exit(1));
+    // schedule exit after I/O finishes
+    setImmediate(() => exit(1));
   }
 })();
 

@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "a89eef8", // assert as generic string instead of union
+    lastCommit: "dfc65aa", // assert as generic string instead of union
 });
 
 

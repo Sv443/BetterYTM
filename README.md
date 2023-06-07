@@ -62,9 +62,13 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 | `npm run watch` | Watches, rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager. Configure request logging and more in `src/tools/serve.ts` |
 <!-- first column uses non-breaking space U+00A0 (' ') -->
 
-When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
-This makes it so the userscript automatically updates when the code changes.  
-Note: the tab needs to stay open on Firefox or the script will not update itself.
+<br>
+
+- Copy the file `.env.template` to `.env` and change the `NODE_ENV` variable to enable or disable minification.  
+  If on `development` the code is readable and debuggable but also has a much bigger file size than on `production`
+- When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
+  This makes it so the userscript automatically updates when the code changes.  
+  Note: the tab needs to stay open on Firefox or the script will not update itself.
 
 
 <br><br>

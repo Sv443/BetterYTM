@@ -3,4 +3,7 @@
     "search.exclude": {
         "**/BetterYTM.user.js": true,
     },
+    "files.associations": {
+        "*.env.template": "dotenv"
+    }
 }
