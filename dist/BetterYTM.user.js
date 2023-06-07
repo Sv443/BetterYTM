@@ -478,15 +478,15 @@ const branch = "develop";
  */
 const logLevel = 0;
 /** Specifies the hard limit for repetitive tasks */
-const triesLimit = 25;
-/** Specifies the interval for repetitive tasks */
+const triesLimit = 50;
+/** Specifies the interval in ms for repetitive tasks */
 const triesInterval = 200;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "dfc65aa", // assert as generic string instead of union
+    lastCommit: "d6c77e0", // assert as generic string instead of union
 });
 
 
@@ -882,7 +882,7 @@ function setVolSliderStep() {
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 function initQueueButtons() {
     _utils__WEBPACK_IMPORTED_MODULE_2__.siteEvents.on("queueChanged", (evt) => {
-        for (const queueItm of evt.data.childNodes) {
+        for (const queueItm of (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getEvtData)(evt).childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns"))
                 addQueueButtons(queueItm);
         }
@@ -1566,6 +1566,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
+/* harmony export */   getEvtData: function() { return /* binding */ getEvtData; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   initSiteEvents: function() { return /* binding */ initSiteEvents; },
@@ -1727,6 +1728,14 @@ function addGlobalStyle(style, ref) {
     log(`Inserted global style with ref '${ref}':`, styleElem);
 }
 const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
+/**
+ * Returns the data of an event from the @billjs/event-emitter library
+ * @param evt Event object from the `.on()` or `.once()` method
+ * @template T Type of the data passed by `.fire(type: string, data: T)`
+ */
+function getEvtData(evt) {
+    return evt.data;
+}
 let observers = [];
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 function initSiteEvents() {
