@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "4d46e00", // assert as generic string instead of union
+    lastCommit: "841c8c3", // assert as generic string instead of union
 });
 
 
@@ -671,6 +671,7 @@ function onKeyDown(evt) {
             cancelable: true,
             isTrusted: true,
             repeat: false,
+            // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
             view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
         };
         let invalidKey = false;
@@ -755,24 +756,16 @@ function enableBeforeUnload() {
     beforeUnloadEnabled = true;
     (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Enabled popup before leaving the site");
 }
-/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard events before they can be captured by the original site's listeners */
+/**
+ * Adds a spy function into `window.__proto__.addEventListener` to selectively discard beforeunload event listeners before they can be attached by the site
+ */
 function initBeforeUnloadHook() {
     Error.stackTraceLimit = Infinity;
     (function (original) {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
-            const [type, listener, ...rest] = args;
-            if (type === "beforeunload") {
-                return original.apply(this, [
-                    type,
-                    // @ts-ignore
-                    (...a) => {
-                        if (beforeUnloadEnabled)
-                            listener(...a);
-                    },
-                    ...rest,
-                ]);
-            }
+            if (beforeUnloadEnabled && args[0] === "beforeunload")
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Prevented beforeunload event listener from attaching");
             else
                 return original.apply(this, args);
         };
@@ -1682,6 +1675,7 @@ function ytForceShowVideoTime() {
     if (!player)
         return false;
     const defaultProps = {
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
         view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
         bubbles: true,
         cancelable: false,
