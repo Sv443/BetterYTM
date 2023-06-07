@@ -1,4 +1,4 @@
-import { EventEmitter, EventHandler } from "@billjs/event-emitter";
+import { Event as EventParam, EventEmitter, EventHandler } from "@billjs/event-emitter";
 import type { Domain, LogLevel } from "./types";
 import { scriptInfo } from "./constants";
 
@@ -184,6 +184,15 @@ export interface SiteEvents extends EventEmitter {
 }
 
 export const siteEvents = new EventEmitter() as SiteEvents;
+
+/**
+ * Returns the data of an event from the @billjs/event-emitter library
+ * @param evt Event object from the `.on()` or `.once()` method
+ * @template T Type of the data passed by `.fire(type: string, data: T)`
+ */
+export function getEvtData<T>(evt: EventParam): T {
+  return evt.data as T;
+}
 
 let observers: MutationObserver[] = [];
 
