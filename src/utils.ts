@@ -179,16 +179,19 @@ export interface SiteEvents extends EventEmitter {
   on(event: "queueChanged", listener: EventHandler): boolean;
   /** Emitted whenever carousel shelf containers are added or removed from their parent container */
   on(event: "carouselShelvesChanged", listener: EventHandler): boolean;
+  /** Emitted once the home page is filled with content */
+  on(event: "homePageLoaded", listener: EventHandler): boolean;
 }
 
 export const siteEvents = new EventEmitter() as SiteEvents;
 
 let observers: MutationObserver[] = [];
 
-/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance */
-export function initSiteEvents() {
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
+export async function initSiteEvents() {
   try {
     //#SECTION queue
+    // the queue container always exists so it doesn't need the extra init function
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
@@ -200,22 +203,13 @@ export function initSiteEvents() {
       childList: true,
     });
 
-    //#SECTION carousel shelves
-    const shelfContainerObs = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
-      if(addedNodes.length > 0 || removedNodes.length > 0) {
-        info("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-        siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
-      }
-    });
-    shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer")!, {
-      childList: true,
-    });
+    //#SECTION home page observers
+    initHomeObservers();
 
     info("Successfully initialized SiteEvents observers");
 
     observers = [
       queueObs,
-      shelfContainerObs,
     ];
   }
   catch(err) {
@@ -227,4 +221,44 @@ export function initSiteEvents() {
 export function removeAllObservers() {
   observers.forEach((observer) => observer.disconnect());
   observers = [];
+}
+
+/**
+ * The home page might not exist yet if the site was accessed through any path like /watch directly.  
+ * This function will keep waiting for when the home page exists, then create the necessary MutationObservers.
+ */
+async function initHomeObservers() {
+  let interval: NodeJS.Timer | undefined;
+
+  // hidden="" attribute is only present if the content of the page doesn't exist yet
+  // so this resolves only once that attribute is removed
+  if(document.querySelector("ytmusic-browse-response#browse-page")?.hasAttribute("hidden")) {
+    await new Promise<void>((res) => {
+      interval = setInterval(() => {
+        if(!document.querySelector("ytmusic-browse-response#browse-page")?.hasAttribute("hidden")) {
+          info("found home page");
+          res();
+        }
+      }, 50);
+    });
+  }
+  interval && clearInterval(interval);
+
+  siteEvents.fire("homePageLoaded");
+
+  info("Initialized home page observers");
+
+  //#SECTION carousel shelves
+  const shelfContainerObs = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
+    if(addedNodes.length > 0 || removedNodes.length > 0) {
+      info("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+      siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
+    }
+  });
+
+  shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer")!, {
+    childList: true,
+  });
+
+  observers.concat([ shelfContainerObs ]);
 }
