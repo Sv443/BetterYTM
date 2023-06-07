@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "841c8c3", // assert as generic string instead of union
+    lastCommit: "a89eef8", // assert as generic string instead of union
 });
 
 
@@ -1578,6 +1578,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @billjs/event-emitter */ "./node_modules/@billjs/event-emitter/lib/index.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 //#MARKER BYTM-specific
@@ -1719,20 +1728,63 @@ function addGlobalStyle(style, ref) {
 }
 const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
 let observers = [];
-/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance */
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 function initSiteEvents() {
-    try {
-        //#SECTION queue
-        const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-            if (addedNodes.length > 0 || removedNodes.length > 0) {
-                info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-                siteEvents.fire("queueChanged", target);
-            }
-        });
-        // only observe added or removed elements
-        queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
-            childList: true,
-        });
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            //#SECTION queue
+            // the queue container always exists so it doesn't need the extra init function
+            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+                    siteEvents.fire("queueChanged", target);
+                }
+            });
+            // only observe added or removed elements
+            queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
+                childList: true,
+            });
+            //#SECTION home page observers
+            initHomeObservers();
+            info("Successfully initialized SiteEvents observers");
+            observers = [
+                queueObs,
+            ];
+        }
+        catch (err) {
+            error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+        }
+    });
+}
+/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
+function removeAllObservers() {
+    observers.forEach((observer) => observer.disconnect());
+    observers = [];
+}
+/**
+ * The home page might not exist yet if the site was accessed through any path like /watch directly.
+ * This function will keep waiting for when the home page exists, then create the necessary MutationObservers.
+ */
+function initHomeObservers() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        let interval;
+        // hidden="" attribute is only present if the content of the page doesn't exist yet
+        // so this resolves only once that attribute is removed
+        if ((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden")) {
+            yield new Promise((res) => {
+                interval = setInterval(() => {
+                    var _a;
+                    if (!((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden"))) {
+                        info("found home page");
+                        res();
+                    }
+                }, 50);
+            });
+        }
+        interval && clearInterval(interval);
+        siteEvents.fire("homePageLoaded");
+        info("Initialized home page observers");
         //#SECTION carousel shelves
         const shelfContainerObs = new MutationObserver(([{ addedNodes, removedNodes }]) => {
             if (addedNodes.length > 0 || removedNodes.length > 0) {
@@ -1743,20 +1795,8 @@ function initSiteEvents() {
         shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer"), {
             childList: true,
         });
-        info("Successfully initialized SiteEvents observers");
-        observers = [
-            queueObs,
-            shelfContainerObs,
-        ];
-    }
-    catch (err) {
-        error("Couldn't initialize SiteEvents observers due to an error:\n", err);
-    }
-}
-/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
-function removeAllObservers() {
-    observers.forEach((observer) => observer.disconnect());
-    observers = [];
+        observers.concat([shelfContainerObs]);
+    });
 }
 
 
