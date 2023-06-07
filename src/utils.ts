@@ -115,6 +115,7 @@ function ytForceShowVideoTime() {
     return false;
 
   const defaultProps = {
+    // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
     view: unsafeWindow ?? window,
     bubbles: true,
     cancelable: false,
