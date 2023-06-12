@@ -32,7 +32,7 @@ export async function loadFeatureConf(): Promise<FeatureConfig> {
       return featuresCache = defConf;
     }
 
-    return featuresCache = Object.freeze(featureConf ? JSON.parse(featureConf) : defConf);
+    return featuresCache = Object.freeze(featureConf ? JSON.parse(featureConf) as FeatureConfig : defConf);
   }
   catch(err) {
     await setDefaultFeatConf();
