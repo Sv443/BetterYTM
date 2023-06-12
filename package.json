@@ -10,9 +10,11 @@
   "scripts": {
     "test": "npm run node-ts -- ./test.ts",
     "build": "webpack",
+    "build-prod": "webpack --env mode=production",
+    "build-dev": "webpack --env mode=development",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
-    "watch": "concurrently \"nodemon --exec npm run build\" \"npm run serve\"",
+    "watch": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },

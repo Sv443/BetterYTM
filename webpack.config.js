@@ -11,7 +11,8 @@ dotenv.config();
 const mode = ["development", "production"].includes(process.env.NODE_ENV) ? process.env.NODE_ENV : "development";
 const outFileSuffix = process.env.OUTFILE_SUFFIX ?? "";
 
-export default {
+/** @param {import("./src/types").WebpackEnv} env */
+const getConfig = (env) => ({
   entry: "./src/BetterYTM.user.ts",
   output: {
     filename: `BetterYTM${outFileSuffix}.user.js`,
@@ -80,4 +81,6 @@ export default {
     },
   ],
   devtool: "source-map",
-};
+});
+
+export default getConfig;

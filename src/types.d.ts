@@ -1,3 +1,6 @@
+/** Env object passed to webpack.config.js */
+export type WebpackEnv = Partial<Record<"mode", "production" | "development">> & Record<"WEBPACK_BUNDLE" | "WEBPACK_BUILD", boolean>;
+
 /** 0 = Debug, 1 = Info */
 export type LogLevel = 0 | 1;
 
@@ -38,4 +41,6 @@ export interface FeatureConfig {
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
+  // /** Add a button to each song in the queue to allow for quickly pre-opening lyrics pages of upcoming songs */
+  // geniusLyricsInQueue: boolean;
 }
