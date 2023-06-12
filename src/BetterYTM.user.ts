@@ -7,7 +7,7 @@ import {
   preInitLayout, removeUpgradeTab, setVolSliderSize,
   setVolSliderStep,
   // lyrics
-  addMediaCtrlGeniusBtn, geniUrlBase,
+  addMediaCtrlLyricsBtn, geniUrlBase,
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
@@ -61,7 +61,7 @@ async function onDomLoad() {
         addWatermark();
 
       if(features.geniusLyrics)
-        addMediaCtrlGeniusBtn();
+        addMediaCtrlLyricsBtn();
 
       if(features.queueButtons)
         initQueueButtons();

@@ -10,14 +10,14 @@ const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 let mcCurrentSongTitle = "";
 let mcLyricsButtonAddTries = 0;
 
-/** Adds a genius.com lyrics button to the media controls bar */
-export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
+/** Adds a lyrics button to the media controls bar */
+export async function addMediaCtrlLyricsBtn(): Promise<unknown> {
   const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer") as HTMLElement;
 
   if(!likeContainer) {
     mcLyricsButtonAddTries++;
     if(mcLyricsButtonAddTries < triesLimit)
-      return setTimeout(addMediaCtrlGeniusBtn, triesInterval); // TODO: improve this
+      return setTimeout(addMediaCtrlLyricsBtn, triesInterval); // TODO: improve this
 
     return error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
   }
@@ -45,7 +45,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
 
   linkElem.appendChild(imgElem);
 
-  log(`Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+  log(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
 
   insertAfter(likeContainer, linkElem);
 
@@ -90,7 +90,7 @@ export async function addMediaCtrlGeniusBtn(): Promise<unknown> {
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
-/** Returns the genius.com lyrics site URL for the current song */
+/** Returns the lyrics URL from genius for the current song */
 export async function getCurrentGeniusUrl() {
   try {
     // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
@@ -149,7 +149,7 @@ export async function getCurrentGeniusUrl() {
   }
   catch(err)
   {
-    error("Couldn't resolve genius.com URL:", err);
+    error("Couldn't resolve lyrics URL:", err);
     return null;
   }
 }
@@ -166,20 +166,19 @@ async function getGeniusUrl(artist: string, song: string): Promise<string | unde
 
     const result = await (await fetch(fetchUrl)).json();
 
-    if(result.error)
-    {
-      error("Couldn't fetch genius.com URL:", result.message);
+    if(typeof result === "object" && result.error) {
+      error("Couldn't fetch lyrics URL:", result.message);
       return undefined;
     }
 
     const url = result.url;
 
-    info(`Found genius URL: ${url}`);
+    info(`Found lyrics URL: ${url}`);
 
     return url;
   }
   catch(err) {
-    error("Couldn't get genius URL due to error:", err);
+    error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
 }
