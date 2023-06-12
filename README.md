@@ -70,6 +70,11 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
 
+<br><br>
+
+### Dependencies:
+This userscript depends on these libraries:
+- [@billjs/event-emitter](https://npmjs.org/package/@billjs/event-emitter)
 
 <br><br>
 
