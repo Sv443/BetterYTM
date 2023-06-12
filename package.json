@@ -18,6 +18,10 @@
     "lint": "tsc --noEmit && eslint .",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sv443/BetterYTM.git"

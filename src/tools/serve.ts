@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
-import webpackCfg from "../../webpack.config.js";
+import { output as webpackCfgOutput } from "../../webpack.config.js";
 
 const envPort = Number(process.env.DEV_SERVER_PORT);
 
@@ -23,17 +23,13 @@ app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
     console.error("\x1b[31mError in dev server:\x1b[0m\n", err);
 });
 
-// serves everything from `webpack_config.output.path` (`dist/` by default)
+// serves everything from `webpackConfig.output.path` (`dist/` by default)
 app.use(express.static(
-  resolve(fileURLToPath(import.meta.url), "../../", webpackCfg.output.path),
-  {
-    etag: false,
-    maxAge: 0,
-  }
+  resolve(fileURLToPath(import.meta.url), "../../", webpackCfgOutput.path)
 ));
 
 app.listen(devServerPort, "0.0.0.0", () => {
-  console.log(`The dev server is running.\nUserscript is served at \x1b[34m\x1b[4mhttp://localhost:${devServerPort}/${webpackCfg.output.filename}\x1b[0m`);
+  console.log(`The dev server is running.\nUserscript is served at \x1b[34m\x1b[4mhttp://localhost:${devServerPort}/${webpackCfgOutput.filename}\x1b[0m`);
   if(enableLogging)
     process.stdout.write("\nRequests: ");
   else
