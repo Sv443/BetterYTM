@@ -8,7 +8,7 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 dotenv.config();
 
-const mode = ["development", "production"].includes(process.env.NODE_ENV) ? process.env.NODE_ENV : "development";
+const defaultMode = ["development", "production"].includes(process.env.NODE_ENV) ? process.env.NODE_ENV : "development";
 const outFileSuffix = process.env.OUTFILE_SUFFIX ?? "";
 
 /** Webpack configuration for the output file */
@@ -27,7 +27,7 @@ const getConfig = (env) => ({
     // userscripts are automatically wrapped in an IIFE by the browser extension, so this can be enabled
     outputModule: true,
   },
-  mode,
+  mode: env.mode ?? defaultMode,
   resolve: {
     extensions: [
       ".ts",
