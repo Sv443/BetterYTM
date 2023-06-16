@@ -486,7 +486,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "d6c77e0", // assert as generic string instead of union
+    lastCommit: "9a90673", // assert as generic string instead of union
 });
 
 
@@ -501,7 +501,7 @@ const scriptInfo = Object.freeze({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
-/* harmony export */   addMediaCtrlGeniusBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlGeniusBtn; },
+/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
 /* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
@@ -920,7 +920,7 @@ function addAnchorImprovements() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addMediaCtrlGeniusBtn: function() { return /* binding */ addMediaCtrlGeniusBtn; },
+/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* binding */ addMediaCtrlLyricsBtn; },
 /* harmony export */   geniUrlBase: function() { return /* binding */ geniUrlBase; },
 /* harmony export */   getCurrentGeniusUrl: function() { return /* binding */ getCurrentGeniusUrl; }
 /* harmony export */ });
@@ -952,14 +952,14 @@ const geniUrlBase = "https://api.sv443.net/geniurl";
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 let mcCurrentSongTitle = "";
 let mcLyricsButtonAddTries = 0;
-/** Adds a genius.com lyrics button to the media controls bar */
-function addMediaCtrlGeniusBtn() {
+/** Adds a lyrics button to the media controls bar */
+function addMediaCtrlLyricsBtn() {
     return __awaiter(this, void 0, void 0, function* () {
         const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");
         if (!likeContainer) {
             mcLyricsButtonAddTries++;
             if (mcLyricsButtonAddTries < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit)
-                return setTimeout(addMediaCtrlGeniusBtn, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval); // TODO: improve this
+                return setTimeout(addMediaCtrlLyricsBtn, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval); // TODO: improve this
             return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
         }
         const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
@@ -978,7 +978,7 @@ function addMediaCtrlGeniusBtn() {
         imgElem.id = "betterytm-lyrics-img";
         imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
         linkElem.appendChild(imgElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Inserted genius button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
         (0,_utils__WEBPACK_IMPORTED_MODULE_1__.insertAfter)(likeContainer, linkElem);
         mcCurrentSongTitle = songTitleElem.title;
         const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
@@ -1027,7 +1027,7 @@ function addMediaCtrlGeniusBtn() {
         obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
     });
 }
-/** Returns the genius.com lyrics site URL for the current song */
+/** Returns the lyrics URL from genius for the current song */
 function getCurrentGeniusUrl() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
@@ -1070,7 +1070,7 @@ function getCurrentGeniusUrl() {
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't resolve genius.com URL:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't resolve lyrics URL:", err);
             return null;
         }
     });
@@ -1085,16 +1085,16 @@ function getGeniusUrl(artist, song) {
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const result = yield (yield fetch(fetchUrl)).json();
-            if (result.error) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't fetch genius.com URL:", result.message);
+            if (typeof result === "object" && result.error) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't fetch lyrics URL:", result.message);
                 return undefined;
             }
             const url = result.url;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found genius URL: ${url}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL: ${url}`);
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't get genius URL due to error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't get lyrics URL due to error:", err);
             return undefined;
         }
     });
@@ -1129,8 +1129,8 @@ __webpack_require__.r(__webpack_exports__);
 //#MARKER menu
 /**
  * These are the base selector values for the menu tabs
- * Header selector: `#${baseValue}-header`
- * Content selector: `#${baseValue}-content`
+ * Header selector format: `#${baseValue}-header`
+ * Content selector format: `#${baseValue}-content`
  */
 const tabsSelectors = {
     options: "bytm-menu-tab-options",
@@ -2037,7 +2037,7 @@ function onDomLoad() {
                 if (features.watermarkEnabled)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addWatermark)();
                 if (features.geniusLyrics)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlGeniusBtn)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn)();
                 if (features.queueButtons)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initQueueButtons)();
                 if (typeof features.volumeSliderSize === "number")

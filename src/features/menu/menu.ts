@@ -8,8 +8,8 @@ import "./menu.css";
 
 /**
  * These are the base selector values for the menu tabs  
- * Header selector: `#${baseValue}-header`  
- * Content selector: `#${baseValue}-content`
+ * Header selector format: `#${baseValue}-header`  
+ * Content selector format: `#${baseValue}-content`
  */
 const tabsSelectors = {
   options: "bytm-menu-tab-options",
