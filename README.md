@@ -54,6 +54,17 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 <br><br><br>
 
 ### Development:
+This project is based on my template for making a userscript with TypeScript and many modern language features.  
+[Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
+  
+Setting up the project for local development:
+1. Have Node.js, npm and Git installed
+2. Download and extract or clone this repo
+3. Open a terminal in the project root and run `npm i`
+4. Copy the file `.env.template` to `.env` and modify the `NODE_ENV` variable to enable or disable minification.  
+  If on `development` the code is readable and debuggable but also has a much bigger file size than on `production`
+
+These are the CLI commands available after setting up the project:
 | Command | Description |
 | --- | --- |
 | `npm i` | Run once to install dependencies |
@@ -62,13 +73,9 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 | `npm run watch` | Watches, rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager. Configure request logging and more in `src/tools/serve.ts` |
 <!-- first column uses non-breaking space U+00A0 (' ') -->
 
-<br>
-
-- Copy the file `.env.template` to `.env` and change the `NODE_ENV` variable to enable or disable minification.  
-  If on `development` the code is readable and debuggable but also has a much bigger file size than on `production`
-- When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
-  This makes it so the userscript automatically updates when the code changes.  
-  Note: the tab needs to stay open on Firefox or the script will not update itself.
+When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
+This makes it so the userscript automatically updates when the code changes.  
+Note: the tab needs to stay open on Firefox or the script will not update itself.
 
 <br><br>
 
@@ -81,8 +88,8 @@ This userscript depends on these libraries:
 ### Disclaimers:
 - I am not affiliated with YouTube, Google, Alphabet, Genius, or anyone else.
 - I do not own any third party icons, I just re-host them here for better stability and availability.
-- I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the respective site's servers.
-- I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new)
+- I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site it currently runs on.
+- I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 
 <br><br><br><br><br><br>
 
