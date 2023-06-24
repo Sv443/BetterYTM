@@ -1,9 +1,11 @@
 // caveats:
 // only works once for some reason (should be enough tho)
 
+const view = unsafeWindow ?? window;
+
 const player = document.querySelector("#movie_player");
 player.dispatchEvent(new MouseEvent("mouseenter", {
-  view: window,
+  view,
   bubbles: true,
   cancelable: false,
 }));
@@ -13,7 +15,7 @@ const screenY = Math.round(y + height / 2);
 const screenX = x + Math.min(50, Math.round(width / 3));
 
 player.dispatchEvent(new MouseEvent("mousemove", {
-  view: window,
+  view,
   bubbles: true,
   cancelable: false,
   screenY,
@@ -25,7 +27,7 @@ console.log("x:", screenX, "y:", screenY);
 
 setTimeout(() => {
   player.dispatchEvent(new MouseEvent("mouseleave", {
-    view: window,
+    view,
     bubbles: true,
     cancelable: false,
   }));
