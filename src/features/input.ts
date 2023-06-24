@@ -65,7 +65,6 @@ function onKeyDown(evt: KeyboardEvent) {
     }
 
     if(!invalidKey) {
-      // TODO: check if the code prop is correct
       const proxyProps = { code: "", ...defaultProps, ...keyProps };
 
       document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));

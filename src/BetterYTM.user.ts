@@ -20,6 +20,16 @@ console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase
 
 const domain = getDomain();
 
+/** Stuff that needs to be called ASAP, before anything async happens */
+function preInit() {
+  setLogLevel(logLevel);
+
+  if(domain === "ytm")
+    initBeforeUnloadHook();
+
+  init();
+}
+
 async function init() {
   await preInitLayout();
 
@@ -92,10 +102,4 @@ async function onDomLoad() {
   }
 }
 
-// stuff that needs to be called ASAP, before anything async happens
-setLogLevel(logLevel);
-
-if(domain === "ytm")
-  initBeforeUnloadHook();
-
-init();
+preInit();
