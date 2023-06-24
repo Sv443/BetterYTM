@@ -1,14 +1,14 @@
 import { LogLevel } from "./types";
 
 /** The branch to use in the @icon, @downloadURL and @updateURL directives */
-export const branch = "develop";
+export const branch = "develop"; // TODO: change in prod.
 // export const branch = "main";
 
 /**
  * How much info should be logged to the devtools console?  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-export const logLevel: LogLevel = 0;
+export const logLevel: LogLevel = 0; // TODO: change in prod.
 /** Specifies the hard limit for repetitive tasks */
 export const triesLimit = 50;
 /** Specifies the interval in ms for repetitive tasks */
