@@ -2,11 +2,16 @@ import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { log } from "./utils";
 
-export const defaultFeatures = (Object.keys(featInfo) as (keyof typeof featInfo)[]).reduce<Partial<FeatureConfig>>((acc, key) => {
-  acc[key] = featInfo[key].default as unknown as undefined;
-  return acc;
-}, {}) as FeatureConfig;
+/** If this number is incremented, the features object needs to be migrated (TODO: migration not implemented yet) */
+const formatVersion = 1;
 
+export const defaultFeatures = (Object.keys(featInfo) as (keyof typeof featInfo)[])
+  .reduce<Partial<FeatureConfig>>((acc, key) => {
+    acc[key] = featInfo[key].default as unknown as undefined;
+    return acc;
+  }, {}) as FeatureConfig;
+
+/** In-memory features object to save on a little bit of I/O */
 let featuresCache: FeatureConfig | undefined;
 
 /**
@@ -50,11 +55,14 @@ export function saveFeatureConf(featureConf: FeatureConfig) {
 
   log("Saving new feature config:", featureConf);
   featuresCache = { ...featureConf };
+
+  GM.setValue("betterytm-config-ver", formatVersion);
   return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
 
 /** Resets the featuresCache synchronously and the persistent features storage asynchronously to its default values */
 export function setDefaultFeatConf() {
   featuresCache = { ...defaultFeatures };
+  GM.setValue("betterytm-config-ver", formatVersion);
   return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
 }
