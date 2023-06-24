@@ -16,17 +16,16 @@ jobs:
       matrix:
         node-version: [18.x]
 
+    env:
+      CI: "true"
+
     steps:
-      - uses: actions/checkout@v3 # checkout latest commit
-      - name: Use Node.js ${{ matrix.node-version }} # set up Node.js
+      - uses: actions/checkout@v3
+      - name: Set up Node.js v${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Clean install of dependencies # runs the npm ci command to install all dependencies
+      - name: Install dependencies # runs the npm ci command to install from package-lock.json
         run: npm ci
-        env:
-          CI: "true"
-      - name: Lint # runs ESLint
+      - name: Build with tsc & lint
         run: npm run lint
-        env:
-          CI: "true"
