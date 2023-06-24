@@ -19,6 +19,7 @@ module.exports = {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
     GM: "readonly",
+    unsafeWindow: "writable",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
