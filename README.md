@@ -69,7 +69,8 @@ These are the CLI commands available after setting up the project:
 | --- | --- |
 | `npm i` | Run once to install dependencies |
 | `npm run lint` | Lints the userscript with ESLint |
-| `npm run build` | Builds the userscript |
+| `npm run build-prod` | Builds the userscript for production (minified) |
+| `npm run build-dev` | Builds the userscript for development |
 | `npm run watch` | Watches, rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager. Configure request logging and more in `src/tools/serve.ts` |
 <!-- first column uses non-breaking space U+00A0 (' ') -->
 
