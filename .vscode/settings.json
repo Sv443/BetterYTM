@@ -1,9 +1,9 @@
 {
-    "javascript.preferences.importModuleSpecifier": "relative",
-    "search.exclude": {
-        "**/BetterYTM.user.js": true,
-    },
-    "files.associations": {
-        "*.env.template": "dotenv"
-    }
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "search.exclude": {
+    "**/BetterYTM.user.js": true,
+  },
+  "files.associations": {
+    "*.env.template": "dotenv",
+  },
 }
