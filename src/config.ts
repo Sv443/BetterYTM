@@ -27,7 +27,7 @@ export async function getFeatures(forceRead = false) {
 
 /** Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved */
 export async function loadFeatureConf(): Promise<FeatureConfig> {
-  const defConf = Object.freeze({ ...defaultFeatures });
+  const defConf = { ...defaultFeatures };
 
   try {
     const featureConf = await GM.getValue("betterytm-config") as string;
@@ -46,13 +46,13 @@ export async function loadFeatureConf(): Promise<FeatureConfig> {
 }
 
 /**
- * Saves a feature configuration saved persistently
+ * Saves the passed feature configuration persistently in GM storage and in the in-memory cache
  * @param featureConf
  */
 export function saveFeatureConf(featureConf: FeatureConfig) {
   if(!featureConf || typeof featureConf != "object")
     throw new TypeError("Feature config not provided or invalid");
-
+ 
   log("Saving new feature config:", featureConf);
   featuresCache = { ...featureConf };
 
