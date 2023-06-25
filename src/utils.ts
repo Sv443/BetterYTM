@@ -1,6 +1,6 @@
 import { Event as EventParam, EventEmitter, EventHandler } from "@billjs/event-emitter";
-import type { Domain, LogLevel } from "./types";
 import { scriptInfo } from "./constants";
+import type { Domain, LogLevel } from "./types";
 
 //#MARKER BYTM-specific
 
@@ -12,8 +12,15 @@ export function setLogLevel(level: LogLevel) {
 }
 
 function getLogLevel(args: unknown[]): number {
+  const minLogLvl = 0, maxLogLvl = 1;
   if(typeof args.at(-1) === "number")
-    return args.splice(args.length - 1, 1)[0] as number;
+    return Math.max(
+      Math.min(
+        args.splice(args.length - 1)[0] as number,
+        minLogLvl,
+      ),
+      maxLogLvl,
+    );
   return 0;
 }
 
@@ -22,7 +29,7 @@ const consPrefix = `[${scriptInfo.name}]`;
 
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
@@ -31,7 +38,7 @@ export function log(...args: unknown[]): void {
 
 /**
  * Logs string-compatible values to the console as info, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
@@ -40,7 +47,7 @@ export function info(...args: unknown[]): void {
 
 /**
  * Logs string-compatible values to the console as a warning, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 export function warn(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
@@ -197,6 +204,12 @@ export function getEvtData<T>(evt: EventParam): T {
 
 let observers: MutationObserver[] = [];
 
+/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
+export function removeAllObservers() {
+  observers.forEach((observer) => observer.disconnect());
+  observers = [];
+}
+
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 export async function initSiteEvents() {
   try {
@@ -225,12 +238,6 @@ export async function initSiteEvents() {
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
   }
-}
-
-/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
-export function removeAllObservers() {
-  observers.forEach((observer) => observer.disconnect());
-  observers = [];
 }
 
 /**
@@ -270,5 +277,5 @@ async function initHomeObservers() {
     childList: true,
   });
 
-  observers.concat([ shelfContainerObs ]);
+  observers = observers.concat([ shelfContainerObs ]);
 }
