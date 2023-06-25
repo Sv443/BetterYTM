@@ -8,7 +8,7 @@ import { addGlobalStyle, info, log } from "../../utils";
 
 /**
  * Adds an element to open the BetterYTM menu
- * @deprecated
+ * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
  */
 export async function addMenu() {
   // bg & menu
