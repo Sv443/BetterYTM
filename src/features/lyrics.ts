@@ -160,6 +160,7 @@ export async function getCurrentGeniusUrl() {
    */
 async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
   try {
+    const startTs = Date.now();
     const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
@@ -173,7 +174,7 @@ async function getGeniusUrl(artist: string, song: string): Promise<string | unde
 
     const url = result.url;
 
-    info(`Found lyrics URL: ${url}`);
+    info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
 
     return url;
   }
