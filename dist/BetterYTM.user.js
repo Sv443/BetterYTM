@@ -400,10 +400,14 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
-const defaultFeatures = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_0__.featInfo).reduce((acc, key) => {
+/** If this number is incremented, the features object needs to be migrated (TODO: migration not implemented yet) */
+const formatVersion = 1;
+const defaultFeatures = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_0__.featInfo)
+    .reduce((acc, key) => {
     acc[key] = _features_index__WEBPACK_IMPORTED_MODULE_0__.featInfo[key].default;
     return acc;
 }, {});
+/** In-memory features object to save on a little bit of I/O */
 let featuresCache;
 /**
  * Returns the current FeatureConfig in memory or reads it from GM storage
@@ -420,7 +424,7 @@ function getFeatures(forceRead = false) {
 /** Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved */
 function loadFeatureConf() {
     return __awaiter(this, void 0, void 0, function* () {
-        const defConf = Object.freeze(Object.assign({}, defaultFeatures));
+        const defConf = Object.assign({}, defaultFeatures);
         try {
             const featureConf = yield GM.getValue("betterytm-config");
             if (typeof featureConf !== "string") {
@@ -436,7 +440,7 @@ function loadFeatureConf() {
     });
 }
 /**
- * Saves a feature configuration saved persistently
+ * Saves the passed feature configuration persistently in GM storage and in the in-memory cache
  * @param featureConf
  */
 function saveFeatureConf(featureConf) {
@@ -444,11 +448,13 @@ function saveFeatureConf(featureConf) {
         throw new TypeError("Feature config not provided or invalid");
     (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Saving new feature config:", featureConf);
     featuresCache = Object.assign({}, featureConf);
+    GM.setValue("betterytm-config-ver", formatVersion);
     return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
 /** Resets the featuresCache synchronously and the persistent features storage asynchronously to its default values */
 function setDefaultFeatConf() {
     featuresCache = Object.assign({}, defaultFeatures);
+    GM.setValue("betterytm-config-ver", formatVersion);
     return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
 }
 
@@ -470,13 +476,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   triesLimit: function() { return /* binding */ triesLimit; }
 /* harmony export */ });
 /** The branch to use in the @icon, @downloadURL and @updateURL directives */
-const branch = "develop";
+const branch = "develop"; // TODO: change in prod.
 // export const branch = "main";
 /**
  * How much info should be logged to the devtools console?
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-const logLevel = 0;
+const logLevel = 0; // TODO: change in prod.
 /** Specifies the hard limit for repetitive tasks */
 const triesLimit = 50;
 /** Specifies the interval in ms for repetitive tasks */
@@ -486,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "c67e815", // assert as generic string instead of union
+    lastCommit: "ea71397", // assert as generic string instead of union
 });
 
 
@@ -698,7 +704,6 @@ function onKeyDown(evt) {
                 break;
         }
         if (!invalidKey) {
-            // TODO: check if the code prop is correct
             const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
             document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
@@ -1895,6 +1900,13 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 console.log(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} v${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version} (${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit}) - ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`);
 console.log(`Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase}`);
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)();
+/** Stuff that needs to be called ASAP, before anything async happens */
+function preInit() {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_1__.logLevel);
+    if (domain === "ytm")
+        (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initBeforeUnloadHook)();
+    init();
+}
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.preInitLayout)();
@@ -2062,11 +2074,7 @@ function onDomLoad() {
         }
     });
 }
-// stuff that needs to be called ASAP, before anything async happens
-(0,_utils__WEBPACK_IMPORTED_MODULE_2__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_1__.logLevel);
-if (domain === "ytm")
-    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initBeforeUnloadHook)();
-init();
+preInit();
 
 }();
 
