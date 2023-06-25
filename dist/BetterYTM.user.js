@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "ea71397", // assert as generic string instead of union
+    lastCommit: "346b74d", // assert as generic string instead of union
 });
 
 
@@ -1087,6 +1087,7 @@ function getCurrentGeniusUrl() {
 function getGeniusUrl(artist, song) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const startTs = Date.now();
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const result = yield (yield fetch(fetchUrl)).json();
@@ -1095,7 +1096,7 @@ function getGeniusUrl(artist, song) {
                 return undefined;
             }
             const url = result.url;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL: ${url}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
             return url;
         }
         catch (err) {
@@ -1242,7 +1243,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 //#MARKER menu
 /**
  * Adds an element to open the BetterYTM menu
- * @deprecated
+ * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
  */
 function addMenu() {
     var _a, _b;
@@ -1601,7 +1602,7 @@ let curLogLevel = 1;
 function setLogLevel(level) {
     curLogLevel = level;
 }
-function getLogLevel(...args) {
+function getLogLevel(args) {
     if (typeof args.at(-1) === "number")
         return args.splice(args.length - 1, 1)[0];
     return 0;
@@ -1610,26 +1611,26 @@ function getLogLevel(...args) {
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.
- * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
  */
 function log(...args) {
-    if (curLogLevel <= getLogLevel(...args))
+    if (curLogLevel <= getLogLevel(args))
         console.log(consPrefix, ...args);
 }
 /**
  * Logs string-compatible values to the console as info, as long as the log level is sufficient.
- * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
  */
 function info(...args) {
-    if (curLogLevel <= getLogLevel(...args))
+    if (curLogLevel <= getLogLevel(args))
         console.info(consPrefix, ...args);
 }
 /**
  * Logs string-compatible values to the console as a warning, as long as the log level is sufficient.
- * @param args Last parameter is logLevel: 0 = Debug, 1/undefined = Info
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info)
  */
 function warn(...args) {
-    if (curLogLevel <= getLogLevel(...args))
+    if (curLogLevel <= getLogLevel(args))
         console.warn(consPrefix, ...args);
 }
 /** Logs string-compatible values to the console as an error. */
@@ -1734,7 +1735,8 @@ function addGlobalStyle(style, ref) {
 }
 const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
 /**
- * Returns the data of an event from the @billjs/event-emitter library
+ * Returns the data of an event from the `@billjs/event-emitter` library.
+ * This function is used to assert the type passed in `<T>`
  * @param evt Event object from the `.on()` or `.once()` method
  * @template T Type of the data passed by `.fire(type: string, data: T)`
  */
@@ -1875,9 +1877,9 @@ function initHomeObservers() {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/*!*******************************!*\
-  !*** ./src/BetterYTM.user.ts ***!
-  \*******************************/
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
