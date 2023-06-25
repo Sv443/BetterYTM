@@ -57,23 +57,23 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 This project is based on my template for making a userscript with TypeScript and many modern language features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-Setting up the project for local development:
+#### Setting up the project for local development:
 1. Have Node.js, npm and Git installed
 2. Download and extract or clone this repo
 3. Open a terminal in the project root and run `npm i`
 4. Copy the file `.env.template` to `.env` and modify the `NODE_ENV` variable to enable or disable minification.  
   If on `development` the code is readable and debuggable but also has a much bigger file size than on `production`
 
-These are the CLI commands available after setting up the project:
+#### These are the CLI commands available after setting up the project:
 | Command | Description |
 | --- | --- |
-| `npm i` | Run once to install dependencies |
-| `npm run lint` | Lints the userscript with ESLint |
-| `npm run build-prod` | Builds the userscript for production (minified) |
-| `npm run build-dev` | Builds the userscript for development |
-| `npm run watch` | Watches, rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager. Configure request logging and more in `src/tools/serve.ts` |
-<!-- first column uses non-breaking space U+00A0 (' ') -->
+| `npm i` | Run once to install dependencies |
+| `npm run lint` | Lints the userscript with ESLint |
+| `npm run build-prod` | Builds the userscript for production (minified) |
+| `npm run build-dev` | Builds the userscript for development |
+| `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `src/tools/serve.ts` |
 
+#### Extras:
 When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
 This makes it so the userscript automatically updates when the code changes.  
 Note: the tab needs to stay open on Firefox or the script will not update itself.
@@ -92,7 +92,7 @@ This userscript depends on these libraries:
 - I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site it currently runs on.
 - I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 
-<br><br><br><br><br><br>
+<br><br><br><br>
 
 <div align="center" style="text-align: center;">
 

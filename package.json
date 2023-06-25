@@ -5,16 +5,15 @@
   "description": "Configurable layout and UX improvements for YouTube Music",
   "description:de": "Konfigurierbares Layout und UX-Verbesserungen für YouTube Music",
   "homepage": "https://github.com/Sv443/BetterYTM",
-  "main": "./src/BetterYTM.user.ts",
+  "main": "./src/index.ts",
   "type": "module",
   "scripts": {
     "test": "npm run node-ts -- ./test.ts",
-    "build": "webpack",
     "build-prod": "webpack --env mode=production",
     "build-dev": "webpack --env mode=development",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
-    "watch": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
+    "dev": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },
