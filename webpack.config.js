@@ -21,7 +21,7 @@ const output = {
 
 /** @param {import("./src/types").WebpackEnv} env */
 const getConfig = (env) => ({
-  entry: "./src/BetterYTM.user.ts",
+  entry: "./src/index.ts",
   output,
   experiments: {
     // userscripts are automatically wrapped in an IIFE by the browser extension, so this can be enabled
