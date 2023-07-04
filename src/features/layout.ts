@@ -4,6 +4,7 @@ import { addGlobalStyle, error, getEvtData, insertAfter, log, siteEvents } from 
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
+import { getGeniusUrl, getLyricsBtn, sanitizeArtists, sanitizeSong } from "./lyrics";
 
 let features: FeatureConfig;
 
@@ -93,17 +94,64 @@ export function initQueueButtons() {
   queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
 }
 
-function addQueueButtons(queueItem: HTMLElement) {
+/** For how long the user needs to hover over the song info to fetch the lyrics */
+const queueBtnLyricsLoadDebounce = 250;
+
+async function addQueueButtons(queueItem: HTMLElement) {
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
-  queueBtnsCont.innerText = "ayo";
 
   const songInfo = queueItem.querySelector(".song-info");
   if(!songInfo)
     return false;
 
+  const [songEl, artistEl] = (songInfo.querySelectorAll("yt-formatted-string") as NodeListOf<HTMLElement>);
+  const song = songEl.innerText;
+  const artist = artistEl.innerText;
+  if(!song || !artist)
+    return false;
+
+  // TODO: display "hover to load" and "currently loading" icons
+  const lyricsBtnElem = getLyricsBtn(undefined, false);
+
+  // load the URL only on hover because of geniURL rate limiting
+  songInfo.addEventListener("mouseenter", async () => {
+    const startTs = Date.now();
+    if(songInfo.classList.contains("bytm-fetched-lyrics-url"))
+      return;
+
+    /** Loads lyrics after `queueBtnLyricsLoadDebounce` time has passed - gets aborted if the mouse leaves before that time passed */
+    const lyricsLoadTimeout = setTimeout(async () => {
+      const lyricsUrl = await getGeniusUrl(sanitizeArtists(artist), sanitizeSong(song));
+
+      if(!lyricsUrl)
+        return false;
+
+      songInfo.classList.add("bytm-fetched-lyrics-url");
+
+      lyricsBtnElem.href = lyricsUrl;
+
+      lyricsBtnElem.title = "Open the current song's lyrics in a new tab";
+      lyricsBtnElem.style.cursor = "pointer";
+      lyricsBtnElem.style.visibility = "initial";
+      lyricsBtnElem.style.display = "inline-flex";
+      lyricsBtnElem.style.pointerEvents = "initial";
+    }, queueBtnLyricsLoadDebounce);
+
+    songInfo.addEventListener("mouseleave", () => {
+      if(Date.now() - startTs < queueBtnLyricsLoadDebounce) {
+        clearTimeout(lyricsLoadTimeout);
+        console.log("CLEAR", song);
+      }
+    });
+  });
+
+  queueBtnsCont.appendChild(lyricsBtnElem);
+
   songInfo.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
+
+  log(`Added queue buttons for song '${artist} - ${song}'`, queueBtnsCont);
   return true;
 }
 

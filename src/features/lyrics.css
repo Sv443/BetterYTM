@@ -1,4 +1,4 @@
-#betterytm-lyrics-button {
+.bytm-generic-lyrics-btn {
     align-items: center;
     justify-content: center;
     position: relative;
@@ -11,11 +11,11 @@
     background-color: transparent;
 }
 
-#betterytm-lyrics-button:hover {
+.bytm-generic-lyrics-btn:hover {
     background-color: #383838;
 }
 
-#betterytm-lyrics-img {
+.betterytm-lyrics-img {
     display: inline-block;
     z-index: 10;
     width: 24px;
