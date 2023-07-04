@@ -54,7 +54,7 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 <br><br><br>
 
 ### Development:
-This project is based on my template for making a userscript with TypeScript and many modern language features.  
+This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
 #### Setting up the project for local development:
