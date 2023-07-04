@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "7b3c32f", // assert as generic string instead of union
+    lastCommit: "b2d20db", // assert as generic string instead of union
 });
 
 
@@ -766,10 +766,11 @@ function enableBeforeUnload() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Enabled popup before leaving the site");
 }
 /**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard beforeunload event listeners before they can be attached by the site
+ * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
+ * event listeners before they can be attached by the site.
  */
 function initBeforeUnloadHook() {
-    Error.stackTraceLimit = Infinity;
+    Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
     (function (original) {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
@@ -784,14 +785,6 @@ function initBeforeUnloadHook() {
         if (feats.disableBeforeUnloadPopup)
             disableBeforeUnload();
     });
-    // (function(original) {
-    //   window.__proto__.removeEventListener = function(type, listener, useCapture) {
-    //     if(evtNames.includes(type)){
-    //       console.log("------> removeEventListener " + type, listener, useCapture);
-    //     }
-    //     return original.apply(this, arguments);
-    //   };
-    // })(window.__proto__.removeEventListener);
 }
 
 
@@ -903,8 +896,10 @@ function initQueueButtons() {
         return;
     queueItems.forEach(itm => addQueueButtons(itm));
 }
-/** For how long the user needs to hover over the song info to fetch the lyrics */
-const queueBtnLyricsLoadDebounce = 250;
+/**
+ * Adds the buttons to each item in the current song queue.
+ * Also observes for changes to add new buttons to new items in the queue.
+ */
 function addQueueButtons(queueItem) {
     return __awaiter(this, void 0, void 0, function* () {
         const queueBtnsCont = document.createElement("div");
@@ -917,32 +912,32 @@ function addQueueButtons(queueItem) {
         const artist = artistEl.innerText;
         if (!song || !artist)
             return false;
-        // TODO: display "hover to load" and "currently loading" icons
+        // TODO: display "currently loading" icon
         const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsBtn)(undefined, false);
-        // load the URL only on hover because of geniURL rate limiting
-        songInfo.addEventListener("mouseenter", () => __awaiter(this, void 0, void 0, function* () {
-            const startTs = Date.now();
-            if (songInfo.classList.contains("bytm-fetched-lyrics-url"))
-                return;
-            /** Loads lyrics after `queueBtnLyricsLoadDebounce` time has passed - gets aborted if the mouse leaves before that time passed */
-            const lyricsLoadTimeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-                const lyricsUrl = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)((0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist), (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song));
-                if (!lyricsUrl)
-                    return false;
-                songInfo.classList.add("bytm-fetched-lyrics-url");
-                lyricsBtnElem.href = lyricsUrl;
-                lyricsBtnElem.title = "Open the current song's lyrics in a new tab";
-                lyricsBtnElem.style.cursor = "pointer";
-                lyricsBtnElem.style.visibility = "initial";
-                lyricsBtnElem.style.display = "inline-flex";
-                lyricsBtnElem.style.pointerEvents = "initial";
-            }), queueBtnLyricsLoadDebounce);
-            songInfo.addEventListener("mouseleave", () => {
-                if (Date.now() - startTs < queueBtnLyricsLoadDebounce) {
-                    clearTimeout(lyricsLoadTimeout);
-                    console.log("CLEAR", song);
+        lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+        lyricsBtnElem.style.cursor = "pointer";
+        lyricsBtnElem.style.visibility = "initial";
+        lyricsBtnElem.style.display = "inline-flex";
+        lyricsBtnElem.style.pointerEvents = "initial";
+        lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            let lyricsUrl;
+            if (songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
+                lyricsUrl = songInfo.dataset.bytmLyrics;
+            else if (songInfo.dataset.bytmLoading !== "true") {
+                songInfo.dataset.bytmLoading = "true";
+                const imgEl = lyricsBtnElem.querySelector("img");
+                imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
+                lyricsUrl = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)((0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist), (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song));
+                songInfo.dataset.bytmLoading = "false";
+                imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                if (!lyricsUrl) {
+                    if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+                        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
+                    return;
                 }
-            });
+                songInfo.dataset.bytmLyrics = lyricsUrl;
+            }
+            lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
         }));
         queueBtnsCont.appendChild(lyricsBtnElem);
         songInfo.appendChild(queueBtnsCont);
@@ -1356,7 +1351,7 @@ function addMenu() {
         addLink((0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("external/greasyfork.png"), "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "betterytm-menu-close";
-        closeElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/close.png");
+        closeElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("close.png");
         closeElem.title = "Click to close the menu";
         closeElem.style.marginLeft = "50px";
         closeElem.style.width = "32px";
@@ -1626,6 +1621,7 @@ function openMenu() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
@@ -1635,6 +1631,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initSiteEvents: function() { return /* binding */ initSiteEvents; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
+/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
 /* harmony export */   removeAllObservers: function() { return /* binding */ removeAllObservers; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   siteEvents: function() { return /* binding */ siteEvents; },
@@ -1665,8 +1662,9 @@ function getLogLevel(args) {
         return Math.max(Math.min(args.splice(args.length - 1)[0], minLogLvl), maxLogLvl);
     return 0;
 }
-/** Common prefix to be able to tell logged messages apart */
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
+const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
@@ -1694,6 +1692,10 @@ function warn(...args) {
 /** Logs string-compatible values to the console as an error. */
 function error(...args) {
     console.error(consPrefix, ...args);
+}
+/** Logs string-compatible values to the console, intended for debugging only */
+function dbg(...args) {
+    console.log(consPrefixDbg, ...args);
 }
 /**
  * Returns the current domain as a constant string representation
@@ -1768,6 +1770,26 @@ function ytForceShowVideoTime() {
 /** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
 function getAssetUrl(path) {
     return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/${path}`;
+}
+/**
+ * Creates an invisible anchor with _blank target and clicks it.
+ * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
+ */
+function openInNewTab(href) {
+    const openElem = document.createElement("a");
+    Object.assign(openElem, {
+        className: "betterytm-open-in-new-tab",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        href: href,
+        style: {
+            visibility: "hidden",
+        },
+    });
+    document.body.appendChild(openElem);
+    openElem.click();
+    // just to be safe
+    setTimeout(() => openElem.remove(), 200);
 }
 //#MARKER DOM
 /**
