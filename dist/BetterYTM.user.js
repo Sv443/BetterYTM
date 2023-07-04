@@ -317,7 +317,7 @@ exports.globalEvent = new EventEmitter();
 
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2 id=\"history\">History:</h2>\n<ul>\n<li><strong><a href=\"#100\">v1.0.0</a></strong></li>\n<li><a href=\"#020\">v0.2.0</a></li>\n<li><a href=\"#010\">v0.1.0</a></li>\n</ul>\n<hr>\n<p><br><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li>Added menu to configure features</li>\n<li>New configurable features:<ul>\n<li>Make volume slider bigger</li>\n<li>Choose step of volume slider for finer control</li>\n<li>TODO: Add lyrics button to each song in a playlist</li>\n</ul>\n</li>\n<li>Changes / Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>TODO: Site switch with <kbd>F9</kbd> will now keep the video time</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n<p><br><br><br><br><br><br><br><br><br></p>\n";
+var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2 id=\"history\">History:</h2>\n<ul>\n<li><strong><a href=\"#100\">v1.0.0</a></strong></li>\n<li><a href=\"#020\">v0.2.0</a></li>\n<li><a href=\"#010\">v0.1.0</a></li>\n</ul>\n<hr>\n<p><br><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<p>TODO:</p>\n<ul>\n<li>Added menu to configure features</li>\n<li>New configurable features:<ul>\n<li>Make volume slider bigger</li>\n<li>Choose step of volume slider for finer control</li>\n<li>Add lyrics button to each song in a playlist</li>\n</ul>\n</li>\n<li>Changes / Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n<p><br><br><br><br><br><br><br><br><br></p>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b2d20db", // assert as generic string instead of union
+    lastCommit: "0dc0e6d", // assert as generic string instead of union
 });
 
 
@@ -2003,7 +2003,8 @@ function init() {
             console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
         }
         try {
-            (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initMenu)();
+            void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_3__.initMenu];
+            // initMenu();
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't initialize menu:", err);
@@ -2072,6 +2073,10 @@ function onDomLoad() {
 
 .bytm-generic-lyrics-btn:hover {
     background-color: #383838;
+}
+
+.bytm-queue-btn-container .bytm-generic-lyrics-btn:hover {
+    background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
 }
 
 .betterytm-lyrics-img {
