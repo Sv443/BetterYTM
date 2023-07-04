@@ -181,6 +181,17 @@ export function openInNewTab(href: string) {
   setTimeout(() => openElem.remove(), 200);
 }
 
+/**
+ * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
+ * @param word A word in singular form, to auto-convert to plural
+ * @param num If this is an array, the amount of items is used
+ */
+export function autoPlural(word: string, num: number | unknown[]) {
+  if(Array.isArray(num))
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
+}
+
 
 //#MARKER DOM
 
@@ -250,7 +261,7 @@ export async function initSiteEvents() {
     // the queue container always exists so it doesn't need the extra init function
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
-        info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+        info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
         siteEvents.fire("queueChanged", target);
       }
     });
