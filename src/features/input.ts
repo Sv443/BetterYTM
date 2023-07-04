@@ -142,14 +142,15 @@ export function enableBeforeUnload() {
 }
 
 /**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard beforeunload event listeners before they can be attached by the site
+ * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` 
+ * event listeners before they can be attached by the site.
  */
 export function initBeforeUnloadHook() {
-  Error.stackTraceLimit = Infinity;
+  Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
 
-  (function(original) {
+  (function(original: typeof window.addEventListener) {
     // @ts-ignore
-    window.__proto__.addEventListener = function(...args) {
+    window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
       if(beforeUnloadEnabled && args[0] === "beforeunload")
         return log("Prevented beforeunload event listener from attaching");
       else
@@ -162,14 +163,4 @@ export function initBeforeUnloadHook() {
     if(feats.disableBeforeUnloadPopup)
       disableBeforeUnload();
   });
-
-  // (function(original) {
-  //   window.__proto__.removeEventListener = function(type, listener, useCapture) {
-  //     if(evtNames.includes(type)){
-  //       console.log("------> removeEventListener " + type, listener, useCapture);
-  //     }
-
-  //     return original.apply(this, arguments);
-  //   };
-  // })(window.__proto__.removeEventListener);
 }

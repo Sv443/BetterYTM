@@ -139,10 +139,8 @@ async function addQueueButtons(queueItem: HTMLElement) {
     }, queueBtnLyricsLoadDebounce);
 
     songInfo.addEventListener("mouseleave", () => {
-      if(Date.now() - startTs < queueBtnLyricsLoadDebounce) {
+      if(Date.now() - startTs < queueBtnLyricsLoadDebounce)
         clearTimeout(lyricsLoadTimeout);
-        console.log("CLEAR", song);
-      }
     });
   });
 
