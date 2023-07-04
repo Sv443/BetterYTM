@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0dc0e6d", // assert as generic string instead of union
+    lastCommit: "4a165b6", // assert as generic string instead of union
 });
 
 
@@ -613,13 +613,13 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+        visible: false,
     },
     queueButtons: {
-        desc: "TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
+        desc: "Add buttons while hovering over a song in a queue to quickly remove it (TODO) or open its lyrics",
         type: "toggle",
         category: "layout",
         default: true,
-        visible: false,
     },
     //#SECTION lyrics
     geniusLyrics: {
@@ -886,15 +886,21 @@ function setVolSliderStep() {
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 function initQueueButtons() {
     _utils__WEBPACK_IMPORTED_MODULE_2__.siteEvents.on("queueChanged", (evt) => {
+        let amt = 0;
         for (const queueItm of (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getEvtData)(evt).childNodes) {
-            if (!queueItm.classList.contains("bytm-has-queue-btns"))
+            if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm);
+                amt++;
+            }
         }
+        if (amt > 0)
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${amt} new queue ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", amt)}`);
     });
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length === 0)
         return;
     queueItems.forEach(itm => addQueueButtons(itm));
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing queue items`);
 }
 /**
  * Adds the buttons to each item in the current song queue.
@@ -942,7 +948,6 @@ function addQueueButtons(queueItem) {
         queueBtnsCont.appendChild(lyricsBtnElem);
         songInfo.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added queue buttons for song '${artist} - ${song}'`, queueBtnsCont);
         return true;
     });
 }
@@ -1621,6 +1626,7 @@ function openMenu() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
@@ -1791,6 +1797,16 @@ function openInNewTab(href) {
     // just to be safe
     setTimeout(() => openElem.remove(), 200);
 }
+/**
+ * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
+ * @param word A word in singular form, to auto-convert to plural
+ * @param num If this is an array, the amount of items is used
+ */
+function autoPlural(word, num) {
+    if (Array.isArray(num))
+        num = num.length;
+    return `${word}${num === 1 ? "" : "s"}`;
+}
 //#MARKER DOM
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
@@ -1841,7 +1857,7 @@ function initSiteEvents() {
             // the queue container always exists so it doesn't need the extra init function
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info("Detected queue change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
                     siteEvents.fire("queueChanged", target);
                 }
             });

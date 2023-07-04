@@ -1,6 +1,6 @@
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, error, getAssetUrl, getEvtData, insertAfter, log, openInNewTab, siteEvents } from "../utils";
+import { addGlobalStyle, autoPlural, error, getAssetUrl, getEvtData, insertAfter, log, openInNewTab, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
@@ -81,10 +81,15 @@ export function setVolSliderStep() {
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 export function initQueueButtons() {
   siteEvents.on("queueChanged", (evt) => {
+    let amt = 0;
     for(const queueItm of getEvtData<HTMLElement>(evt).childNodes as NodeListOf<HTMLElement>) {
-      if(!queueItm.classList.contains("bytm-has-queue-btns"))
+      if(!queueItm.classList.contains("bytm-has-queue-btns")) {
         addQueueButtons(queueItm);
+        amt++;
+      }
     }
+    if(amt > 0)
+      log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
   });
 
   const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
@@ -92,6 +97,8 @@ export function initQueueButtons() {
     return;
 
   queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
+
+  log(`Added buttons to ${queueItems.length} existing queue items`);
 }
 
 /**
@@ -152,7 +159,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
   songInfo.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
 
-  log(`Added queue buttons for song '${artist} - ${song}'`, queueBtnsCont);
   return true;
 }
 
