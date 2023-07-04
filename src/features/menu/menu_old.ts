@@ -73,7 +73,7 @@ export async function addMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";
-  closeElem.src = getAssetUrl("icon/close.png");
+  closeElem.src = getAssetUrl("close.png");
   closeElem.title = "Click to close the menu";
   closeElem.style.marginLeft = "50px";
   closeElem.style.width = "32px";
