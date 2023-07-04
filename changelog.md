@@ -13,15 +13,15 @@
 <br><br>
 
 ## 1.0.0
-
+TODO:
 - Added menu to configure features
 - New configurable features:
   - Make volume slider bigger
   - Choose step of volume slider for finer control
-  - TODO: Add lyrics button to each song in a playlist
+  - Add lyrics button to each song in a playlist
 - Changes / Fixes:
   - Now the lyrics button will directly link to the lyrics (using my API [geniURL](https://github.com/Sv443/geniURL))
-  - TODO: Site switch with <kbd>F9</kbd> will now keep the video time
+  - Site switch with <kbd>F9</kbd> will now keep the video time
 
 <br>
 
