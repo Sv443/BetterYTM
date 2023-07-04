@@ -1,5 +1,5 @@
 import { Event as EventParam, EventEmitter, EventHandler } from "@billjs/event-emitter";
-import { scriptInfo } from "./constants";
+import { branch, scriptInfo } from "./constants";
 import type { Domain, LogLevel } from "./types";
 
 //#MARKER BYTM-specific
@@ -147,6 +147,11 @@ function ytForceShowVideoTime() {
   }, 4000);
 
   return true;
+}
+
+/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
+export function getAssetUrl(path: string) {
+  return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
 }
 
 //#MARKER DOM

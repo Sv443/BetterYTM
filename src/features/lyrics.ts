@@ -1,5 +1,5 @@
 import { triesInterval, triesLimit } from "../constants";
-import { error, info, insertAfter, log } from "../utils";
+import { error, getAssetUrl, info, insertAfter, log } from "../utils";
 import "./lyrics.css";
 
 /** Base URL of geniURL */
@@ -187,7 +187,7 @@ export function getLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnch
 
   const imgElem = document.createElement("img");
   imgElem.className = "betterytm-lyrics-img";
-  imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
+  imgElem.src = getAssetUrl("external/genius.png");
 
   linkElem.appendChild(imgElem);
 
