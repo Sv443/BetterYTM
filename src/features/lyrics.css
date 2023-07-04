@@ -12,10 +12,6 @@
 }
 
 .bytm-generic-lyrics-btn:hover {
-    background-color: #383838;
-}
-
-.bytm-queue-btn-container .bytm-generic-lyrics-btn:hover {
     background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
 }
 
