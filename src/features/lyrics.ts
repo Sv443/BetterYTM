@@ -11,44 +11,32 @@ let mcCurrentSongTitle = "";
 let mcLyricsButtonAddTries = 0;
 
 /** Adds a lyrics button to the media controls bar */
-export async function addMediaCtrlLyricsBtn(): Promise<unknown> {
+export function addMediaCtrlLyricsBtn(): void {
   const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer") as HTMLElement;
 
   if(!likeContainer) {
     mcLyricsButtonAddTries++;
-    if(mcLyricsButtonAddTries < triesLimit)
-      return setTimeout(addMediaCtrlLyricsBtn, triesInterval); // TODO: improve this
+    if(mcLyricsButtonAddTries < triesLimit) {
+      setTimeout(addMediaCtrlLyricsBtn, triesInterval); // TODO: improve this
+      return;
+    }
 
     return error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
   }
 
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
 
+  // run parallel without awaiting so the MutationObserver below can observe the title element in time
+  (async () => {
+    const gUrl = await getCurrentLyricsUrl();
 
-  const gUrl = await getCurrentGeniusUrl();
+    const linkElem = getLyricsBtn(gUrl ?? undefined);
+    linkElem.id = "betterytm-lyrics-button";
 
-  const linkElem = document.createElement("a");
-  linkElem.id = "betterytm-lyrics-button";
-  linkElem.className = "ytmusic-player-bar";
-  linkElem.title = gUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
-  if(gUrl)
-    linkElem.href = gUrl;
-  linkElem.target = "_blank";
-  linkElem.rel = "noopener noreferrer";
-  linkElem.style.visibility = gUrl ? "initial" : "hidden";
-  linkElem.style.display = gUrl ? "inline-flex" : "none";
+    log(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
 
-
-  const imgElem = document.createElement("img");
-  imgElem.id = "betterytm-lyrics-img";
-  imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
-
-  linkElem.appendChild(imgElem);
-
-  log(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
-
-  insertAfter(likeContainer, linkElem);
-
+    insertAfter(likeContainer, linkElem);
+  })();
 
   mcCurrentSongTitle = songTitleElem.title;
 
@@ -56,7 +44,7 @@ export async function addMediaCtrlLyricsBtn(): Promise<unknown> {
     for await(const mut of mutations) {
       const newTitle = (mut.target as HTMLElement).title;
 
-      if(newTitle != mcCurrentSongTitle && newTitle.length > 0) {
+      if(newTitle !== mcCurrentSongTitle && newTitle.length > 0) {
         const lyricsBtn = document.querySelector("#betterytm-lyrics-button") as HTMLAnchorElement;
 
         if(!lyricsBtn)
@@ -69,13 +57,13 @@ export async function addMediaCtrlLyricsBtn(): Promise<unknown> {
 
         mcCurrentSongTitle = newTitle;
 
-        const url = await getCurrentGeniusUrl(); // can take a second or two
+        const url = await getCurrentLyricsUrl(); // can take a second or two
         if(!url)
           continue;
 
         lyricsBtn.href = url;
 
-        lyricsBtn.title = "Click to open this song's lyrics in a new tab";
+        lyricsBtn.title = "Open the current song's lyrics in a new tab";
         lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "initial";
         lyricsBtn.style.display = "inline-flex";
@@ -90,8 +78,34 @@ export async function addMediaCtrlLyricsBtn(): Promise<unknown> {
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
-/** Returns the lyrics URL from genius for the current song */
-export async function getCurrentGeniusUrl() {
+/** Removes everything in parentheses from the passed song name */
+export function sanitizeSong(songName: string) {
+  const parensRegex = /\(.+\)/gmi;
+  const squareParensRegex = /\[.+\]/gmi;
+
+  // trim right after the song name:
+  const sanitized = songName
+    .replace(parensRegex, "")
+    .replace(squareParensRegex, "");
+
+  return sanitized.trim();
+}
+
+/** Removes the secondary artist (if it exists) from the passed artists string */
+export function sanitizeArtists(artists: string) {
+  artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+
+  if(artists.match(/&/))
+    artists = artists.split(/\s*&\s*/gm)[0];
+
+  if(artists.match(/,/))
+    artists = artists.split(/,\s*/gm)[0];
+
+  return artists.trim();
+}
+
+/** Returns the lyrics URL from genius for the currently selected song */
+export async function getCurrentLyricsUrl() {
   try {
     // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
     const isVideo = typeof document.querySelector("ytmusic-player")?.getAttribute("video-mode_") === "string";
@@ -102,34 +116,10 @@ export async function getCurrentGeniusUrl() {
     if(!songTitleElem || !songMetaElem || !songTitleElem.title)
       return null;
 
-    const sanitizeSongName = (songName: string) => {
-      const parensRegex = /\(.+\)/gmi;
-      const squareParensRegex = /\[.+\]/gmi;
-
-      // trim right after the song name:
-      const sanitized = songName
-        .replace(parensRegex, "")
-        .replace(squareParensRegex, "");
-
-      return sanitized.trim();
-    };
-
-    const splitArtist = (songMeta: string) => {
-      songMeta = songMeta.split(/\s*\u2022\s*/gmiu)[0]; // split at bullet (&bull; / •) character
-
-      if(songMeta.match(/&/))
-        songMeta = songMeta.split(/\s*&\s*/gm)[0];
-
-      if(songMeta.match(/,/))
-        songMeta = songMeta.split(/,\s*/gm)[0];
-
-      return songMeta.trim();
-    };
-
     const songNameRaw = songTitleElem.title;
-    const songName = sanitizeSongName(songNameRaw);
+    const songName = sanitizeSong(songNameRaw);
 
-    const artistName = splitArtist(songMetaElem.title);
+    const artistName = sanitizeArtists(songMetaElem.title);
 
     /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
     const getGeniusUrlVideo = async () => {
@@ -155,10 +145,10 @@ export async function getCurrentGeniusUrl() {
 }
 
 /**
-   * @param artist
-   * @param song
-   */
-async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
+ * @param artist
+ * @param song
+ */
+export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
   try {
     const startTs = Date.now();
     const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
@@ -182,4 +172,24 @@ async function getGeniusUrl(artist: string, song: string): Promise<string | unde
     error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
+}
+
+export function getLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
+  const linkElem = document.createElement("a");
+  linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
+  linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
+  if(geniusUrl)
+    linkElem.href = geniusUrl;
+  linkElem.target = "_blank";
+  linkElem.rel = "noopener noreferrer";
+  linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+  linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+
+  const imgElem = document.createElement("img");
+  imgElem.className = "betterytm-lyrics-img";
+  imgElem.src = "https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/genius.png";
+
+  linkElem.appendChild(imgElem);
+
+  return linkElem;
 }
