@@ -4,6 +4,7 @@
     "**/BetterYTM.user.js": true,
   },
   "files.associations": {
+    "*.env": "dotenv",
     "*.env.template": "dotenv",
   },
 }
