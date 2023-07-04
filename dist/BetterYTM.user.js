@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "4a165b6", // assert as generic string instead of union
+    lastCommit: "9d3831a", // assert as generic string instead of union
 });
 
 
@@ -2088,10 +2088,6 @@ function onDomLoad() {
 }
 
 .bytm-generic-lyrics-btn:hover {
-    background-color: #383838;
-}
-
-.bytm-queue-btn-container .bytm-generic-lyrics-btn:hover {
     background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
 }
 
