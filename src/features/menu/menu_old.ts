@@ -1,8 +1,8 @@
 import { defaultFeatures, getFeatures, saveFeatureConf } from "../../config";
-import { branch, scriptInfo } from "../../constants";
+import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { addGlobalStyle, info, log } from "../../utils";
+import { addGlobalStyle, getAssetUrl, info, log } from "../../utils";
 
 //#MARKER menu
 
@@ -68,12 +68,12 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/external/github.png`, scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
-  addLink(`https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/external/greasyfork.png`, "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
+  addLink(getAssetUrl("external/github.png"), scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
+  addLink(getAssetUrl("external/greasyfork.png"), "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";
-  closeElem.src = `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/icon/close.png`;
+  closeElem.src = getAssetUrl("icon/close.png");
   closeElem.title = "Click to close the menu";
   closeElem.style.marginLeft = "50px";
   closeElem.style.width = "32px";
