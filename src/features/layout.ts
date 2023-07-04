@@ -95,7 +95,7 @@ export function initQueueButtons() {
 }
 
 /** For how long the user needs to hover over the song info to fetch the lyrics */
-const queueBtnLyricsLoadDebounce = 250;
+const queueBtnLyricsLoadDebounce = 350;
 
 async function addQueueButtons(queueItem: HTMLElement) {
   const queueBtnsCont = document.createElement("div");
