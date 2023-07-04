@@ -41,7 +41,8 @@ async function init() {
   }
 
   try {
-    initMenu();
+    void ["TODO(v1.1):", initMenu];
+    // initMenu();
   }
   catch(err) {
     error("Couldn't initialize menu:", err);
