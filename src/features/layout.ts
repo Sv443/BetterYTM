@@ -126,16 +126,13 @@ async function addQueueButtons(queueItem: HTMLElement) {
     if(songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
       lyricsUrl = songInfo.dataset.bytmLyrics;
     else if(songInfo.dataset.bytmLoading !== "true") {
-      console.log("##--1", songInfo.dataset);
       songInfo.dataset.bytmLoading = "true";
-      console.log("##--2", songInfo.dataset);
       const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
       imgEl.src = getAssetUrl("loading.gif");
 
       lyricsUrl = await getGeniusUrl(sanitizeArtists(artist), sanitizeSong(song));
 
       songInfo.dataset.bytmLoading = "false";
-      console.log("##--3", songInfo.dataset);
       imgEl.src = getAssetUrl("external/genius.png");
 
       if(!lyricsUrl) {
@@ -146,8 +143,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
       songInfo.dataset.bytmLyrics = lyricsUrl;
     }
-
-    console.log("##--4", songInfo.dataset);
 
     lyricsUrl && openInNewTab(lyricsUrl);
   });

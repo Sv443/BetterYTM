@@ -24,8 +24,9 @@ function getLogLevel(args: unknown[]): number {
   return 0;
 }
 
-/** Common prefix to be able to tell logged messages apart */
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
+const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
 
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.  
@@ -57,6 +58,11 @@ export function warn(...args: unknown[]): void {
 /** Logs string-compatible values to the console as an error. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
+}
+
+/** Logs string-compatible values to the console, intended for debugging only */
+export function dbg(...args: unknown[]): void {
+  console.log(consPrefixDbg, ...args);
 }
 
 /**
