@@ -1,6 +1,6 @@
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, error, getEvtData, insertAfter, log, siteEvents } from "../utils";
+import { addGlobalStyle, error, getAssetUrl, getEvtData, insertAfter, log, openInNewTab, siteEvents } from "../utils";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
@@ -94,14 +94,15 @@ export function initQueueButtons() {
   queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
 }
 
-/** For how long the user needs to hover over the song info to fetch the lyrics */
-const queueBtnLyricsLoadDebounce = 350;
-
+/**
+ * Adds the buttons to each item in the current song queue.  
+ * Also observes for changes to add new buttons to new items in the queue.
+ */
 async function addQueueButtons(queueItem: HTMLElement) {
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
 
-  const songInfo = queueItem.querySelector(".song-info");
+  const songInfo = queueItem.querySelector(".song-info") as HTMLElement;
   if(!songInfo)
     return false;
 
@@ -111,37 +112,44 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(!song || !artist)
     return false;
 
-  // TODO: display "hover to load" and "currently loading" icons
+  // TODO: display "currently loading" icon
   const lyricsBtnElem = getLyricsBtn(undefined, false);
 
-  // load the URL only on hover because of geniURL rate limiting
-  songInfo.addEventListener("mouseenter", async () => {
-    const startTs = Date.now();
-    if(songInfo.classList.contains("bytm-fetched-lyrics-url"))
-      return;
+  lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+  lyricsBtnElem.style.cursor = "pointer";
+  lyricsBtnElem.style.visibility = "initial";
+  lyricsBtnElem.style.display = "inline-flex";
+  lyricsBtnElem.style.pointerEvents = "initial";
 
-    /** Loads lyrics after `queueBtnLyricsLoadDebounce` time has passed - gets aborted if the mouse leaves before that time passed */
-    const lyricsLoadTimeout = setTimeout(async () => {
-      const lyricsUrl = await getGeniusUrl(sanitizeArtists(artist), sanitizeSong(song));
+  lyricsBtnElem.addEventListener("click", async () => {
+    let lyricsUrl;
+    if(songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
+      lyricsUrl = songInfo.dataset.bytmLyrics;
+    else if(songInfo.dataset.bytmLoading !== "true") {
+      console.log("##--1", songInfo.dataset);
+      songInfo.dataset.bytmLoading = "true";
+      console.log("##--2", songInfo.dataset);
+      const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
+      imgEl.src = getAssetUrl("loading.gif");
 
-      if(!lyricsUrl)
-        return false;
+      lyricsUrl = await getGeniusUrl(sanitizeArtists(artist), sanitizeSong(song));
 
-      songInfo.classList.add("bytm-fetched-lyrics-url");
+      songInfo.dataset.bytmLoading = "false";
+      console.log("##--3", songInfo.dataset);
+      imgEl.src = getAssetUrl("external/genius.png");
 
-      lyricsBtnElem.href = lyricsUrl;
+      if(!lyricsUrl) {
+        if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+          openInNewTab("https://genius.com/search");
+        return;
+      }
 
-      lyricsBtnElem.title = "Open the current song's lyrics in a new tab";
-      lyricsBtnElem.style.cursor = "pointer";
-      lyricsBtnElem.style.visibility = "initial";
-      lyricsBtnElem.style.display = "inline-flex";
-      lyricsBtnElem.style.pointerEvents = "initial";
-    }, queueBtnLyricsLoadDebounce);
+      songInfo.dataset.bytmLyrics = lyricsUrl;
+    }
 
-    songInfo.addEventListener("mouseleave", () => {
-      if(Date.now() - startTs < queueBtnLyricsLoadDebounce)
-        clearTimeout(lyricsLoadTimeout);
-    });
+    console.log("##--4", songInfo.dataset);
+
+    lyricsUrl && openInNewTab(lyricsUrl);
   });
 
   queueBtnsCont.appendChild(lyricsBtnElem);

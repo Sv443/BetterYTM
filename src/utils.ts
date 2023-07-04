@@ -154,6 +154,28 @@ export function getAssetUrl(path: string) {
   return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
 }
 
+/**
+ * Creates an invisible anchor with _blank target and clicks it.  
+ * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
+ */
+export function openInNewTab(href: string) {
+  const openElem = document.createElement("a");
+  Object.assign(openElem, {
+    className: "betterytm-open-in-new-tab",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    href: href,
+    style: {
+      visibility: "hidden",
+    },
+  });
+  document.body.appendChild(openElem);
+  openElem.click();
+  // just to be safe
+  setTimeout(() => openElem.remove(), 200);
+}
+
+
 //#MARKER DOM
 
 /**
