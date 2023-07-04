@@ -6,8 +6,6 @@ export * from "./lyrics";
 export { initMenu } from "./menu/menu"; // TODO
 export * from "./menu/menu_old";
 
-export type FeatureCategory = "input" | "layout" | "lyrics";
-
 /** Contains all possible features with their default values and other config */
 export const featInfo = {
   //#SECTION input
@@ -79,13 +77,13 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
+    visible: false,
   },
   queueButtons: {
-    desc: "TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
+    desc: "Add buttons while hovering over a song in a queue to quickly remove it (TODO) or open its lyrics",
     type: "toggle",
     category: "layout",
     default: true,
-    visible: false,
   },
 
   //#SECTION lyrics
