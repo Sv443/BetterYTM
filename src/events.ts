@@ -50,14 +50,27 @@ export async function initSiteEvents() {
       childList: true,
     });
 
+    const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+      if(addedNodes.length > 0 || removedNodes.length > 0) {
+        info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+        siteEvents.fire("autoplayQueueChanged", target);
+      }
+    });
+
+    // TODO: check if this works since autoplay seems to be lazy-loaded
+    autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents")!, {
+      childList: true,
+    });
+
     //#SECTION home page observers
     initHomeObservers();
 
     info("Successfully initialized SiteEvents observers");
 
-    observers = [
+    observers = observers.concat([
       queueObs,
-    ];
+      autoplayObs,
+    ]);
   }
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
