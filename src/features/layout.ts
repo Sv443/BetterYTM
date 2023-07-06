@@ -5,7 +5,7 @@ import { getEvtData, siteEvents } from "../events";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
-import { getGeniusUrl, getLyricsBtn, sanitizeArtists, sanitizeSong } from "./lyrics";
+import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong } from "./lyrics";
 
 let features: FeatureConfig;
 
@@ -121,7 +121,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
     return false;
 
   // TODO: display "currently loading" icon
-  const lyricsBtnElem = getLyricsBtn(undefined, false);
+  const lyricsBtnElem = createLyricsBtn(undefined, false);
 
   lyricsBtnElem.title = "Open this song's lyrics in a new tab";
   lyricsBtnElem.style.cursor = "pointer";
