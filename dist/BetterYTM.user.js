@@ -10,7 +10,7 @@
 // @copyright       Sv443 (https://github.com/Sv443)
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icon/icon.png
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
@@ -19,8 +19,8 @@
 // @connect         youtube.com
 // @connect         github.com
 // @connect         githubusercontent.com
-// @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
-// @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
+// @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
 // ==/UserScript==
 /*
  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -475,9 +475,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   triesInterval: function() { return /* binding */ triesInterval; },
 /* harmony export */   triesLimit: function() { return /* binding */ triesLimit; }
 /* harmony export */ });
-/** The branch to use in the @icon, @downloadURL and @updateURL directives */
-const branch = "develop"; // TODO: change in prod.
-// export const branch = "main";
+const branchRaw = "develop";
+/** The branch to use in various URLs that point to the GitHub repo */
+const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 /**
  * How much info should be logged to the devtools console?
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "e9f4f18", // assert as generic string instead of union
+    lastCommit: "571541d", // assert as generic string instead of union
 });
 
 
