@@ -1,8 +1,9 @@
-import { LogLevel } from "./types";
+import type { LogLevel } from "./types";
 
-/** The branch to use in the @icon, @downloadURL and @updateURL directives */
-export const branch = "develop"; // TODO: change in prod.
-// export const branch = "main";
+const branchRaw = "{{BRANCH}}";
+
+/** The branch to use in various URLs that point to the GitHub repo */
+export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 
 /**
  * How much info should be logged to the devtools console?  

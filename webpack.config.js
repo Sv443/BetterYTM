@@ -8,7 +8,7 @@ import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 dotenv.config();
 
-const defaultMode = ["development", "production"].includes(process.env.NODE_ENV) ? process.env.NODE_ENV : "development";
+const defaultMode = ["development", "production"].includes(process.env.NODE_ENV) ? String(process.env.NODE_ENV) : "development";
 const outFileSuffix = process.env.OUTFILE_SUFFIX ?? "";
 
 /** Webpack configuration for the output file */
@@ -75,7 +75,7 @@ const getConfig = (env) => ({
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
-          exec("npm run post-build", (_err, stdout, stderr) => {
+          exec(`npm run post-build -- mode=${env.mode ?? defaultMode}`, (_err, stdout, stderr) => {
             stdout && process.stdout.write(stdout);
             stderr && process.stderr.write(stderr);
           });
