@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "571541d", // assert as generic string instead of union
+    lastCommit: "0331398", // assert as generic string instead of union
 });
 
 
@@ -557,12 +557,23 @@ function initSiteEvents() {
             queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
                 childList: true,
             });
+            const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    siteEvents.fire("autoplayQueueChanged", target);
+                }
+            });
+            // TODO: check if this works since autoplay seems to be lazy-loaded
+            autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents"), {
+                childList: true,
+            });
             //#SECTION home page observers
             initHomeObservers();
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Successfully initialized SiteEvents observers");
-            observers = [
+            observers = observers.concat([
                 queueObs,
-            ];
+                autoplayObs,
+            ]);
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't initialize SiteEvents observers due to an error:\n", err);
@@ -1000,7 +1011,7 @@ function setVolSliderStep() {
 //#MARKER queue buttons
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 function initQueueButtons() {
-    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("queueChanged", (evt) => {
+    const addQueueBtns = (evt) => {
         let amt = 0;
         for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt).childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -1010,7 +1021,9 @@ function initQueueButtons() {
         }
         if (amt > 0)
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${amt} new queue ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", amt)}`);
-    });
+    };
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("queueChanged", addQueueBtns);
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("autoplayQueueChanged", addQueueBtns);
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length === 0)
         return;
@@ -1777,16 +1790,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 //#MARKER BYTM-specific
+//#SECTION logging
 let curLogLevel = 1;
 /** Sets the current log level. 0 = Debug, 1 = Info */
 function setLogLevel(level) {
     curLogLevel = level;
 }
+/** Extracts the log level from the last item from spread arguments - returns 1 if the last item is not a number or too low or high */
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
         return Math.max(Math.min(args.splice(args.length - 1)[0], minLogLvl), maxLogLvl);
-    return 0;
+    return 1;
 }
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}]`;
@@ -1823,19 +1838,7 @@ function error(...args) {
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
 }
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-function getDomain() {
-    const { hostname } = new URL(location.href);
-    if (hostname.includes("music.youtube"))
-        return "ytm";
-    else if (hostname.includes("youtube"))
-        return "yt";
-    else
-        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
+//#SECTION video time
 /**
  * Returns the current video time in seconds
  * @param force Set to true to dispatch mouse movement events in case the video time can't be estimated
@@ -1893,10 +1896,6 @@ function ytForceShowVideoTime() {
     }, 4000);
     return true;
 }
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
-function getAssetUrl(path) {
-    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_0__.branch}/assets/${path}`;
-}
 /**
  * Creates an invisible anchor with _blank target and clicks it.
  * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
@@ -1917,17 +1916,7 @@ function openInNewTab(href) {
     // timeout just to be safe
     setTimeout(() => openElem.remove(), 200);
 }
-/**
- * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
- * @param word A word in singular form, to auto-convert to plural
- * @param num If this is an array, the amount of items is used
- */
-function autoPlural(word, num) {
-    if (Array.isArray(num))
-        num = num.length;
-    return `${word}${num === 1 ? "" : "s"}`;
-}
-//#MARKER DOM
+//#SECTION DOM
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
  * @param beforeNode
@@ -1952,6 +1941,34 @@ function addGlobalStyle(style, ref) {
     styleElem.innerHTML = style;
     document.head.appendChild(styleElem);
     log(`Inserted global style with ref '${ref}':`, styleElem);
+}
+//#SECTION misc
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    const { hostname } = new URL(location.href);
+    if (hostname.includes("music.youtube"))
+        return "ytm";
+    else if (hostname.includes("youtube"))
+        return "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
+function getAssetUrl(path) {
+    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_0__.branch}/assets/${path}`;
+}
+/**
+ * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
+ * @param word A word in singular form, to auto-convert to plural
+ * @param num If this is an array, the amount of items is used
+ */
+function autoPlural(word, num) {
+    if (Array.isArray(num))
+        num = num.length;
+    return `${word}${num === 1 ? "" : "s"}`;
 }
 
 

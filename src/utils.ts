@@ -3,6 +3,8 @@ import type { Domain, LogLevel } from "./types";
 
 //#MARKER BYTM-specific
 
+//#SECTION logging
+
 let curLogLevel: LogLevel = 1;
 
 /** Sets the current log level. 0 = Debug, 1 = Info */
@@ -10,6 +12,7 @@ export function setLogLevel(level: LogLevel) {
   curLogLevel = level;
 }
 
+/** Extracts the log level from the last item from spread arguments - returns 1 if the last item is not a number or too low or high */
 function getLogLevel(args: unknown[]): number {
   const minLogLvl = 0, maxLogLvl = 1;
   if(typeof args.at(-1) === "number")
@@ -20,7 +23,7 @@ function getLogLevel(args: unknown[]): number {
       ),
       maxLogLvl,
     );
-  return 0;
+  return 1;
 }
 
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -64,20 +67,7 @@ export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);
 }
 
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-export function getDomain(): Domain {
-  const { hostname } = new URL(location.href);
-
-  if(hostname.includes("music.youtube"))
-    return "ytm";
-  else if(hostname.includes("youtube"))
-    return "yt";
-  else
-    throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
+//#SECTION video time
 
 /**
  * Returns the current video time in seconds
@@ -154,11 +144,6 @@ function ytForceShowVideoTime() {
   return true;
 }
 
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
-export function getAssetUrl(path: string) {
-  return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
-}
-
 /**
  * Creates an invisible anchor with _blank target and clicks it.  
  * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
@@ -180,19 +165,7 @@ export function openInNewTab(href: string) {
   setTimeout(() => openElem.remove(), 200);
 }
 
-/**
- * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
- * @param word A word in singular form, to auto-convert to plural
- * @param num If this is an array, the amount of items is used
- */
-export function autoPlural(word: string, num: number | unknown[]) {
-  if(Array.isArray(num))
-    num = num.length;
-  return `${word}${num === 1 ? "" : "s"}`;
-}
-
-
-//#MARKER DOM
+//#SECTION DOM
 
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
@@ -220,4 +193,37 @@ export function addGlobalStyle(style: string, ref?: string) {
   document.head.appendChild(styleElem);
 
   log(`Inserted global style with ref '${ref}':`, styleElem);
+}
+
+//#SECTION misc
+
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+export function getDomain(): Domain {
+  const { hostname } = new URL(location.href);
+
+  if(hostname.includes("music.youtube"))
+    return "ytm";
+  else if(hostname.includes("youtube"))
+    return "yt";
+  else
+    throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+
+/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
+export function getAssetUrl(path: string) {
+  return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
+}
+
+/**
+ * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
+ * @param word A word in singular form, to auto-convert to plural
+ * @param num If this is an array, the amount of items is used
+ */
+export function autoPlural(word: string, num: number | unknown[]) {
+  if(Array.isArray(num))
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
 }
