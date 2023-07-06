@@ -1,6 +1,7 @@
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, autoPlural, error, getAssetUrl, getEvtData, insertAfter, log, openInNewTab, siteEvents } from "../utils";
+import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, openInNewTab } from "../utils";
+import { getEvtData, siteEvents } from "../events";
 import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
