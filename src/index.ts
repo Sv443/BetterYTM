@@ -1,6 +1,7 @@
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, error, getDomain, initSiteEvents, log, setLogLevel } from "./utils";
+import { addGlobalStyle, error, getDomain, log, setLogLevel } from "./utils";
+import { initSiteEvents } from "./events";
 import {
   // layout
   initQueueButtons, addWatermark,

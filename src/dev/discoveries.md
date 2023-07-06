@@ -2,7 +2,7 @@
 
 ### The problem with userscripts and SPAs:
 YTM is an SPA (single page application), meaning navigating to a different part of the site doesn't trigger the website, and by extension userscripts, to entirely reload like traditional redirects on MPAs (multi-page applications).  
-This means userscripts like BetterYTM rely on detecting changes in the DOM using something like the [MutationObserver API.](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)  
+This means userscripts like BetterYTM rely on detecting changes in the DOM using something like the [MutationObserver API](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) (see [`src/events.ts`](../events.ts)).  
 This causes a LOT of headaches (race conditions, detecting navigation, state consistency and more) but it's the only option as far as I'm aware.
 
 <br>
