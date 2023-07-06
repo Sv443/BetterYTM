@@ -492,8 +492,119 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "9d3831a", // assert as generic string instead of union
+    lastCommit: "e9f4f18", // assert as generic string instead of union
 });
+
+
+/***/ }),
+
+/***/ "./src/events.ts":
+/*!***********************!*\
+  !*** ./src/events.ts ***!
+  \***********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getEvtData: function() { return /* binding */ getEvtData; },
+/* harmony export */   initSiteEvents: function() { return /* binding */ initSiteEvents; },
+/* harmony export */   removeAllObservers: function() { return /* binding */ removeAllObservers; },
+/* harmony export */   siteEvents: function() { return /* binding */ siteEvents; }
+/* harmony export */ });
+/* harmony import */ var _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @billjs/event-emitter */ "./node_modules/@billjs/event-emitter/lib/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+/** EventEmitter instance that is used to detect changes to the site */
+const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
+/**
+ * Returns the data of an event from the `@billjs/event-emitter` library.
+ * This function is used as a shorthand to extract the data and assert it with the type passed in `<T>`
+ * @param evt Event object from the `.on()` or `.once()` method
+ * @template T Type of the data passed by `.fire(type: string, data: T)`
+ */
+function getEvtData(evt) {
+    return evt.data;
+}
+let observers = [];
+/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
+function removeAllObservers() {
+    observers.forEach((observer) => observer.disconnect());
+    observers = [];
+}
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
+function initSiteEvents() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            //#SECTION queue
+            // the queue container always exists so it doesn't need the extra init function
+            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    siteEvents.fire("queueChanged", target);
+                }
+            });
+            // only observe added or removed elements
+            queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
+                childList: true,
+            });
+            //#SECTION home page observers
+            initHomeObservers();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Successfully initialized SiteEvents observers");
+            observers = [
+                queueObs,
+            ];
+        }
+        catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't initialize SiteEvents observers due to an error:\n", err);
+        }
+    });
+}
+/**
+ * The home page might not exist yet if the site was accessed through any path like /watch directly.
+ * This function will keep waiting for when the home page exists, then create the necessary MutationObservers.
+ */
+function initHomeObservers() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        let interval;
+        // hidden="" attribute is only present if the content of the page doesn't exist yet
+        // so this pauses execution until that attribute is removed
+        if ((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden")) {
+            yield new Promise((res) => {
+                interval = setInterval(() => {
+                    var _a;
+                    if (!((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden"))) {
+                        clearInterval(interval);
+                        res();
+                    }
+                }, 50);
+            });
+        }
+        siteEvents.fire("homePageLoaded");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Initialized home page observers");
+        //#SECTION carousel shelves
+        const shelfContainerObs = new MutationObserver(([{ addedNodes, removedNodes }]) => {
+            if (addedNodes.length > 0 || removedNodes.length > 0) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+                siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
+            }
+        });
+        shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer"), {
+            childList: true,
+        });
+        observers = observers.concat([shelfContainerObs]);
+    });
+}
 
 
 /***/ }),
@@ -507,17 +618,19 @@ const scriptInfo = Object.freeze({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
+/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
 /* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
+/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
 /* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
 /* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.enableBeforeUnload; },
 /* harmony export */   featInfo: function() { return /* binding */ featInfo; },
 /* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase; },
 /* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getCurrentLyricsUrl; },
 /* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getGeniusUrl; },
-/* harmony export */   getLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsBtn; },
+/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsCacheEntry; },
 /* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
 /* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
 /* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
@@ -809,9 +922,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
-/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -821,6 +935,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -843,8 +958,8 @@ function addWatermark() {
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name;
     watermark.title = "Open menu";
     watermark.tabIndex = 1000;
-    watermark.addEventListener("click", () => (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_3__.openMenu)());
-    watermark.addEventListener("keydown", (e) => e.key === "Enter" && (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_3__.openMenu)());
+    watermark.addEventListener("click", () => (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
+    watermark.addEventListener("keydown", (e) => e.key === "Enter" && (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element:", watermark);
@@ -885,9 +1000,9 @@ function setVolSliderStep() {
 //#MARKER queue buttons
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 function initQueueButtons() {
-    _utils__WEBPACK_IMPORTED_MODULE_2__.siteEvents.on("queueChanged", (evt) => {
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("queueChanged", (evt) => {
         let amt = 0;
-        for (const queueItm of (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getEvtData)(evt).childNodes) {
+        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt).childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm);
                 amt++;
@@ -919,7 +1034,7 @@ function addQueueButtons(queueItem) {
         if (!song || !artist)
             return false;
         // TODO: display "currently loading" icon
-        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsBtn)(undefined, false);
+        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
         lyricsBtnElem.title = "Open this song's lyrics in a new tab";
         lyricsBtnElem.style.cursor = "pointer";
         lyricsBtnElem.style.visibility = "initial";
@@ -933,7 +1048,7 @@ function addQueueButtons(queueItem) {
                 songInfo.dataset.bytmLoading = "true";
                 const imgEl = lyricsBtnElem.querySelector("img");
                 imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
-                lyricsUrl = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)((0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist), (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song));
+                lyricsUrl = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)((0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeArtists)(artist), (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeSong)(song));
                 songInfo.dataset.bytmLoading = "false";
                 imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
                 if (!lyricsUrl) {
@@ -968,11 +1083,13 @@ function addAnchorImprovements() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addLyricsCacheEntry: function() { return /* binding */ addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* binding */ addMediaCtrlLyricsBtn; },
+/* harmony export */   createLyricsBtn: function() { return /* binding */ createLyricsBtn; },
 /* harmony export */   geniUrlBase: function() { return /* binding */ geniUrlBase; },
 /* harmony export */   getCurrentLyricsUrl: function() { return /* binding */ getCurrentLyricsUrl; },
 /* harmony export */   getGeniusUrl: function() { return /* binding */ getGeniusUrl; },
-/* harmony export */   getLyricsBtn: function() { return /* binding */ getLyricsBtn; },
+/* harmony export */   getLyricsCacheEntry: function() { return /* binding */ getLyricsCacheEntry; },
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
@@ -1002,6 +1119,24 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+//#MARKER cache
+/** Cache with key format `ARTIST - SONG` and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+const lyricsUrlCache = new Map();
+/** How many cache entries can exist at a time - this is used to cap memory usage */
+const maxLyricsCacheSize = 100;
+// TODO: implement this
+/** Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet */
+function getLyricsCacheEntry(artists, song) {
+    return lyricsUrlCache.get(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`);
+}
+/** Adds the provided entry into the lyrics URL cache */
+function addLyricsCacheEntry(artists, song, lyricsUrl) {
+    lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
+    // delete oldest entry if cache gets too big
+    if (lyricsUrlCache.size > maxLyricsCacheSize)
+        lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
+}
+//#MARKER media control bar
 let mcCurrentSongTitle = "";
 let mcLyricsButtonAddTries = 0;
 /** Adds a lyrics button to the media controls bar */
@@ -1019,7 +1154,7 @@ function addMediaCtrlLyricsBtn() {
     // run parallel without awaiting so the MutationObserver below can observe the title element in time
     (() => __awaiter(this, void 0, void 0, function* () {
         const gUrl = yield getCurrentLyricsUrl();
-        const linkElem = getLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+        const linkElem = createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
         linkElem.id = "betterytm-lyrics-button";
         (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
         (0,_utils__WEBPACK_IMPORTED_MODULE_1__.insertAfter)(likeContainer, linkElem);
@@ -1070,6 +1205,7 @@ function addMediaCtrlLyricsBtn() {
     const obs = new MutationObserver(onMutation);
     obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
 }
+//#MARKER utils
 /** Removes everything in parentheses from the passed song name */
 function sanitizeSong(songName) {
     const parensRegex = /\(.+\)/gmi;
@@ -1120,10 +1256,7 @@ function getCurrentLyricsUrl() {
         }
     });
 }
-/**
- * @param artist
- * @param song
- */
+/** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
 function getGeniusUrl(artist, song) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -1137,6 +1270,7 @@ function getGeniusUrl(artist, song) {
             }
             const url = result.url;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+            addLyricsCacheEntry(artist, song, url);
             return url;
         }
         catch (err) {
@@ -1145,7 +1279,8 @@ function getGeniusUrl(artist, song) {
         }
     });
 }
-function getLyricsBtn(geniusUrl, hideIfLoading = true) {
+/** Creates the base lyrics button element */
+function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     const linkElem = document.createElement("a");
     linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
     linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
@@ -1631,30 +1766,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
-/* harmony export */   getEvtData: function() { return /* binding */ getEvtData; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
-/* harmony export */   initSiteEvents: function() { return /* binding */ initSiteEvents; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
-/* harmony export */   removeAllObservers: function() { return /* binding */ removeAllObservers; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
-/* harmony export */   siteEvents: function() { return /* binding */ siteEvents; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @billjs/event-emitter */ "./node_modules/@billjs/event-emitter/lib/index.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 //#MARKER BYTM-specific
 let curLogLevel = 1;
@@ -1669,8 +1789,8 @@ function getLogLevel(args) {
     return 0;
 }
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
-const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
+const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}]`;
+const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}/#DEBUG]`;
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
@@ -1775,7 +1895,7 @@ function ytForceShowVideoTime() {
 }
 /** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
 function getAssetUrl(path) {
-    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/${path}`;
+    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_0__.branch}/assets/${path}`;
 }
 /**
  * Creates an invisible anchor with _blank target and clicks it.
@@ -1787,14 +1907,14 @@ function openInNewTab(href) {
         className: "betterytm-open-in-new-tab",
         target: "_blank",
         rel: "noopener noreferrer",
-        href: href,
+        href,
         style: {
             visibility: "hidden",
         },
     });
     document.body.appendChild(openElem);
     openElem.click();
-    // just to be safe
+    // timeout just to be safe
     setTimeout(() => openElem.remove(), 200);
 }
 /**
@@ -1832,87 +1952,6 @@ function addGlobalStyle(style, ref) {
     styleElem.innerHTML = style;
     document.head.appendChild(styleElem);
     log(`Inserted global style with ref '${ref}':`, styleElem);
-}
-const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
-/**
- * Returns the data of an event from the `@billjs/event-emitter` library.
- * This function is used to assert the type passed in `<T>`
- * @param evt Event object from the `.on()` or `.once()` method
- * @template T Type of the data passed by `.fire(type: string, data: T)`
- */
-function getEvtData(evt) {
-    return evt.data;
-}
-let observers = [];
-/** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
-function removeAllObservers() {
-    observers.forEach((observer) => observer.disconnect());
-    observers = [];
-}
-/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-function initSiteEvents() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            //#SECTION queue
-            // the queue container always exists so it doesn't need the extra init function
-            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    siteEvents.fire("queueChanged", target);
-                }
-            });
-            // only observe added or removed elements
-            queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
-                childList: true,
-            });
-            //#SECTION home page observers
-            initHomeObservers();
-            info("Successfully initialized SiteEvents observers");
-            observers = [
-                queueObs,
-            ];
-        }
-        catch (err) {
-            error("Couldn't initialize SiteEvents observers due to an error:\n", err);
-        }
-    });
-}
-/**
- * The home page might not exist yet if the site was accessed through any path like /watch directly.
- * This function will keep waiting for when the home page exists, then create the necessary MutationObservers.
- */
-function initHomeObservers() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        let interval;
-        // hidden="" attribute is only present if the content of the page doesn't exist yet
-        // so this resolves only once that attribute is removed
-        if ((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden")) {
-            yield new Promise((res) => {
-                interval = setInterval(() => {
-                    var _a;
-                    if (!((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden"))) {
-                        info("found home page");
-                        res();
-                    }
-                }, 50);
-            });
-        }
-        interval && clearInterval(interval);
-        siteEvents.fire("homePageLoaded");
-        info("Initialized home page observers");
-        //#SECTION carousel shelves
-        const shelfContainerObs = new MutationObserver(([{ addedNodes, removedNodes }]) => {
-            if (addedNodes.length > 0 || removedNodes.length > 0) {
-                info("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-                siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
-            }
-        });
-        shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer"), {
-            childList: true,
-        });
-        observers = observers.concat([shelfContainerObs]);
-    });
 }
 
 
@@ -1984,7 +2023,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
-/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./events */ "./src/events.ts");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1998,20 +2038,21 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 // TODO: add some style
 console.log(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} v${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version} (${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit}) - ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`);
-console.log(`Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase}`);
+console.log(`Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase}`);
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_1__.logLevel);
     if (domain === "ytm")
-        (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initBeforeUnloadHook)();
+        (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initBeforeUnloadHook)();
     init();
 }
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.preInitLayout)();
+        yield (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
         }
@@ -2019,7 +2060,7 @@ function init() {
             console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
         }
         try {
-            void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_3__.initMenu];
+            void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_4__.initMenu];
             // initMenu();
         }
         catch (err) {
@@ -2144,28 +2185,28 @@ function onDomLoad() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain '${domain}'`);
         try {
             if (domain === "ytm") {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.initSiteEvents)();
+                (0,_events__WEBPACK_IMPORTED_MODULE_3__.initSiteEvents)();
                 if (features.arrowKeySupport)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initArrowKeySkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.removeUpgradeTab)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.removeUpgradeTab)();
                 if (features.watermarkEnabled)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addWatermark)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addWatermark)();
                 if (features.geniusLyrics)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn)();
                 if (features.queueButtons)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initQueueButtons)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initQueueButtons)();
                 if (typeof features.volumeSliderSize === "number")
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.setVolSliderSize)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.setVolSliderSize)();
                 if (features.anchorImprovements)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addAnchorImprovements)();
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.setVolSliderStep)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addAnchorImprovements)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.setVolSliderStep)();
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.initSiteSwitch)(domain);
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initSiteSwitch)(domain);
                 try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.addMenu)(); // TODO: remove
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO: remove
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);
