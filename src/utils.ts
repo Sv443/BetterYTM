@@ -169,7 +169,7 @@ export function openInNewTab(href: string) {
     className: "betterytm-open-in-new-tab",
     target: "_blank",
     rel: "noopener noreferrer",
-    href: href,
+    href,
     style: {
       visibility: "hidden",
     },

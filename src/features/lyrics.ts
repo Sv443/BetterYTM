@@ -7,6 +7,29 @@ export const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 
+//#MARKER cache
+
+/** Cache with key format `ARTIST - SONG` and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+const lyricsUrlCache = new Map<string, string>();
+/** How many cache entries can exist at a time - this is used to cap memory usage */
+const maxLyricsCacheSize = 100;
+
+// TODO: implement this
+/** Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet */
+export function getLyricsCacheEntry(artists: string, song: string) {
+  return lyricsUrlCache.get(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`);
+}
+
+/** Adds the provided entry into the lyrics URL cache */
+export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: string) {
+  lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
+  // delete oldest entry if cache gets too big
+  if(lyricsUrlCache.size > maxLyricsCacheSize)
+    lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1)!);
+}
+
+//#MARKER media control bar
+
 let mcCurrentSongTitle = "";
 let mcLyricsButtonAddTries = 0;
 
@@ -30,7 +53,7 @@ export function addMediaCtrlLyricsBtn(): void {
   (async () => {
     const gUrl = await getCurrentLyricsUrl();
 
-    const linkElem = getLyricsBtn(gUrl ?? undefined);
+    const linkElem = createLyricsBtn(gUrl ?? undefined);
     linkElem.id = "betterytm-lyrics-button";
 
     log(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
@@ -77,6 +100,8 @@ export function addMediaCtrlLyricsBtn(): void {
 
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
+
+//#MARKER utils
 
 /** Removes everything in parentheses from the passed song name */
 export function sanitizeSong(songName: string) {
@@ -137,17 +162,13 @@ export async function getCurrentLyricsUrl() {
 
     return url;
   }
-  catch(err)
-  {
+  catch(err) {
     error("Couldn't resolve lyrics URL:", err);
     return null;
   }
 }
 
-/**
- * @param artist
- * @param song
- */
+/** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
 export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
   try {
     const startTs = Date.now();
@@ -165,6 +186,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
     const url = result.url;
 
     info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+    addLyricsCacheEntry(artist, song, url);
 
     return url;
   }
@@ -174,7 +196,8 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
   }
 }
 
-export function getLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
+/** Creates the base lyrics button element */
+export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
   linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
