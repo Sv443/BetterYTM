@@ -8,12 +8,14 @@ import pkg from "../../package.json" assert { type: "json" };
 const { env, exit } = process;
 dotenv.config();
 
+const mode = process.argv.find((v) => v.trim().match(/^(--)?mode=production$/)) ? "production" : "development";
+const branch = mode === "production" ? "main" : "develop";
 const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
 
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
-const scriptUrl = `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
+const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 /** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
 const matchUrls = [
   "https://music.youtube.com/*", "https://www.youtube.com/*"
@@ -35,7 +37,7 @@ const header = `\
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
 ${matchDirectives}\
-// @icon            https://raw.githubusercontent.com/${repo}/main/assets/icon/icon.png
+// @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
 // @run-at          document-start
 // @grant           GM.getValue
 // @grant           GM.setValue
@@ -74,6 +76,7 @@ ${matchDirectives}\
 
     // read userscript and inject build number and global CSS
     const userscript = String(await readFile(scriptPath))
+      .replace(/\/?\*?{{BRANCH}}\*?\/?/gm, branch)
       .replace(/\/?\*?{{BUILD_NUMBER}}\*?\/?/gm, lastCommitSha)
       .replace(/"\/?\*?{{GLOBAL_STYLE}}\*?\/?"/gm, `\`${globalStyle}\``);
 
@@ -82,7 +85,7 @@ ${matchDirectives}\
 
     await writeFile(scriptPath, finalUserscript);
 
-    const envText = env.NODE_ENV === "production" ? "\x1b[32mproduction" : "\x1b[33mdevelopment";
+    const envText = mode === "production" ? "\x1b[32mproduction" : "\x1b[33mdevelopment";
     const sizeKiB = (Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2);
 
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): \x1b[34m${lastCommitSha}\x1b[0m`);
