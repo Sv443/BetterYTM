@@ -6,6 +6,7 @@ import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
 import "./layout.css";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong } from "./lyrics";
+import { Event } from "@billjs/event-emitter";
 
 let features: FeatureConfig;
 
@@ -81,7 +82,7 @@ export function setVolSliderStep() {
 
 // TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 export function initQueueButtons() {
-  siteEvents.on("queueChanged", (evt) => {
+  const addQueueBtns = (evt: Event) => {
     let amt = 0;
     for(const queueItm of getEvtData<HTMLElement>(evt).childNodes as NodeListOf<HTMLElement>) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -91,7 +92,10 @@ export function initQueueButtons() {
     }
     if(amt > 0)
       log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
-  });
+  };
+
+  siteEvents.on("queueChanged", addQueueBtns);
+  siteEvents.on("autoplayQueueChanged", addQueueBtns);
 
   const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length === 0)
