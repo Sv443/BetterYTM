@@ -1,4 +1,4 @@
-import { error, getVideoTime, info, log, warn } from "../utils";
+import { error, getUnsafeWindow, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
 import { getFeatures } from "../config";
 
@@ -36,7 +36,7 @@ function onKeyDown(evt: KeyboardEvent) {
       isTrusted: true,
       repeat: false,
       // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-      view: unsafeWindow ?? window,
+      view: getUnsafeWindow(),
     };
 
     let invalidKey = false;

@@ -2,7 +2,14 @@
 // only works once for some reason (should be enough tho)
 
 // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-const view = unsafeWindow ?? window;
+const view = (() => {
+  try {
+    return unsafeWindow;
+  }
+  catch(e) {
+    return window;
+  }
+})();
 
 const player = document.querySelector("#movie_player");
 player.dispatchEvent(new MouseEvent("mouseenter", {
