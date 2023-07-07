@@ -18,10 +18,11 @@ const distFolderPath = "./dist/";
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 /** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
 const matchUrls = [
-  "https://music.youtube.com/*", "https://www.youtube.com/*"
+  "https://music.youtube.com/*",
+  "https://www.youtube.com/*",
 ];
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
-const ringBell = env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() !== "false");
+const ringBell = env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true");
 
 const matchDirectives = matchUrls.reduce((a, c) => a + `// @match           ${c}\n`, "");
 
