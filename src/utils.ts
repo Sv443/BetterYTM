@@ -1,8 +1,6 @@
 import { branch, scriptInfo } from "./constants";
 import type { Domain, LogLevel } from "./types";
 
-//#MARKER BYTM-specific
-
 //#SECTION logging
 
 let curLogLevel: LogLevel = 1;
@@ -118,7 +116,7 @@ function ytForceShowVideoTime() {
 
   const defaultProps = {
     // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-    view: unsafeWindow ?? window,
+    view: getUnsafeWindow(),
     bubbles: true,
     cancelable: false,
   };
@@ -142,27 +140,6 @@ function ytForceShowVideoTime() {
   }, 4000);
 
   return true;
-}
-
-/**
- * Creates an invisible anchor with _blank target and clicks it.  
- * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
- */
-export function openInNewTab(href: string) {
-  const openElem = document.createElement("a");
-  Object.assign(openElem, {
-    className: "betterytm-open-in-new-tab",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    href,
-    style: {
-      visibility: "hidden",
-    },
-  });
-  document.body.appendChild(openElem);
-  openElem.click();
-  // timeout just to be safe
-  setTimeout(() => openElem.remove(), 200);
 }
 
 //#SECTION DOM
@@ -196,6 +173,41 @@ export function addGlobalStyle(style: string, ref?: string) {
 }
 
 //#SECTION misc
+
+/**
+ * Creates an invisible anchor with _blank target and clicks it.  
+ * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
+ */
+export function openInNewTab(href: string) {
+  const openElem = document.createElement("a");
+  Object.assign(openElem, {
+    className: "betterytm-open-in-new-tab",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    href,
+    style: {
+      visibility: "hidden",
+    },
+  });
+  document.body.appendChild(openElem);
+  openElem.click();
+  // timeout just to be safe
+  setTimeout(() => openElem.remove(), 200);
+}
+
+/**
+ * Returns `unsafeWindow` if it is available, otherwise falls back to just `window`  
+ * unsafeWindow is sometimes needed because otherwise YTM errors out - see [this issue](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
+ */
+export function getUnsafeWindow() {
+  try {
+    // throws ReferenceError if the "@grant unsafeWindow" isn't present
+    return unsafeWindow;
+  }
+  catch(e) {
+    return window;
+  }
+}
 
 /**
  * Returns the current domain as a constant string representation
