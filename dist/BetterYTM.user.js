@@ -492,7 +492,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0331398", // assert as generic string instead of union
+    lastCommit: "814cb33", // assert as generic string instead of union
 });
 
 
@@ -806,7 +806,7 @@ function onKeyDown(evt) {
             isTrusted: true,
             repeat: false,
             // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-            view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
+            view: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
         };
         let invalidKey = false;
         let keyProps = {};
@@ -1779,6 +1779,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
@@ -1789,7 +1790,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
-//#MARKER BYTM-specific
 //#SECTION logging
 let curLogLevel = 1;
 /** Sets the current log level. 0 = Debug, 1 = Info */
@@ -1881,7 +1881,7 @@ function ytForceShowVideoTime() {
         return false;
     const defaultProps = {
         // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: unsafeWindow !== null && unsafeWindow !== void 0 ? unsafeWindow : window,
+        view: getUnsafeWindow(),
         bubbles: true,
         cancelable: false,
     };
@@ -1895,26 +1895,6 @@ function ytForceShowVideoTime() {
         player.dispatchEvent(new MouseEvent("mouseleave", defaultProps));
     }, 4000);
     return true;
-}
-/**
- * Creates an invisible anchor with _blank target and clicks it.
- * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
- */
-function openInNewTab(href) {
-    const openElem = document.createElement("a");
-    Object.assign(openElem, {
-        className: "betterytm-open-in-new-tab",
-        target: "_blank",
-        rel: "noopener noreferrer",
-        href,
-        style: {
-            visibility: "hidden",
-        },
-    });
-    document.body.appendChild(openElem);
-    openElem.click();
-    // timeout just to be safe
-    setTimeout(() => openElem.remove(), 200);
 }
 //#SECTION DOM
 /**
@@ -1943,6 +1923,39 @@ function addGlobalStyle(style, ref) {
     log(`Inserted global style with ref '${ref}':`, styleElem);
 }
 //#SECTION misc
+/**
+ * Creates an invisible anchor with _blank target and clicks it.
+ * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
+ */
+function openInNewTab(href) {
+    const openElem = document.createElement("a");
+    Object.assign(openElem, {
+        className: "betterytm-open-in-new-tab",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        href,
+        style: {
+            visibility: "hidden",
+        },
+    });
+    document.body.appendChild(openElem);
+    openElem.click();
+    // timeout just to be safe
+    setTimeout(() => openElem.remove(), 200);
+}
+/**
+ * Returns `unsafeWindow` if it is available, otherwise falls back to just `window`
+ * unsafeWindow is sometimes needed because otherwise YTM errors out - see [this issue](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
+ */
+function getUnsafeWindow() {
+    try {
+        // throws ReferenceError if the "@grant unsafeWindow" isn't present
+        return unsafeWindow;
+    }
+    catch (e) {
+        return window;
+    }
+}
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -2092,6 +2105,7 @@ function onDomLoad() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!***************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
+/* #MARKER watermark */
 
 #betterytm-watermark {
     font-size: 10px;
@@ -2114,6 +2128,9 @@ function onDomLoad() {
 #betterytm-watermark:hover {
     text-decoration: underline;
 }
+
+/* #MARKER queue buttons */
+/* TODO: */
 
 .side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
     position: relative;
@@ -2197,7 +2214,10 @@ function onDomLoad() {
 
 .bytm-menu-tab[data-active="false"] {
     display: none;
-}`, "global");
+}
+
+
+/*# sourceMappingURL=main.css.map*/`, "global");
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.loadFeatureConf)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain '${domain}'`);
         try {
