@@ -72,14 +72,18 @@ ${matchDirectives}\
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
     const globalStylePath = join(rootPath, distFolderPath, "main.css");
-    const globalStyle = String(await readFile(globalStylePath))
-      .replace(/\n\s*\/\*.+\*\//gm, ""); // remove comment-only lines
+    let globalStyle = String(await readFile(globalStylePath));
+    if(mode === "production")
+      globalStyle = remSourcemapComments(globalStyle);
 
     // read userscript and inject build number and global CSS
-    const userscript = String(await readFile(scriptPath))
+    let userscript = String(await readFile(scriptPath))
       .replace(/\/?\*?{{BRANCH}}\*?\/?/gm, branch)
       .replace(/\/?\*?{{BUILD_NUMBER}}\*?\/?/gm, lastCommitSha)
       .replace(/"\/?\*?{{GLOBAL_STYLE}}\*?\/?"/gm, `\`${globalStyle}\``);
+
+    if(mode === "production")
+      userscript = remSourcemapComments(userscript);
 
     // insert userscript header and final newline
     const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
@@ -98,13 +102,20 @@ ${matchDirectives}\
     setImmediate(() => exit(0));
   }
   catch(err) {
-    console.error("Error while adding userscript header:");
+    console.error("\x1b[31mError while adding userscript header:\x1b[0m");
     console.error(err);
 
     // schedule exit after I/O finishes
     setImmediate(() => exit(1));
   }
 })();
+
+/** Removes sourcemapping comments */
+function remSourcemapComments(input: string) {
+  return input
+    .replace(/\n\s*\/\*\s?#.+\*\//gm, "")
+    .replace(/\n\s*\/\/\s?#.+$/gm, "");
+}
 
 /**
  * Used as a kind of "build number", though note it is always behind by at least one commit,

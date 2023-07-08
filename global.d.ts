@@ -16,6 +16,6 @@ declare global {
   interface Window {
     __proto__: {
       addEventListener: (evt: string, listener: () => unknown, capture?: boolean) => void;
-    }
+    };
   }
 }
