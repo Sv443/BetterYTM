@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "6a79873", // assert as generic string instead of union
+    lastCommit: "f522232", // assert as generic string instead of union
 });
 
 
@@ -1047,27 +1047,25 @@ function addQueueButtons(queueItem) {
             lyricsBtnElem.style.pointerEvents = "initial";
             lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 let lyricsUrl;
-                if (songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
-                    lyricsUrl = songInfo.dataset.bytmLyrics;
-                else if (songInfo.dataset.bytmLoading !== "true") {
-                    songInfo.dataset.bytmLoading = "true";
+                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
+                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
+                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
+                if (cachedLyricsUrl)
+                    lyricsUrl = cachedLyricsUrl;
+                else if (!songInfo.hasAttribute("data-bytm-loading")) {
+                    if (!cachedLyricsUrl)
+                        songInfo.setAttribute("data-bytm-loading", "");
                     const imgEl = lyricsBtnElem.querySelector("img");
                     imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
-                    const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
-                    const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
-                    const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
                     if (!cachedLyricsUrl)
-                        songInfo.dataset.bytmLoading = "false";
+                        songInfo.removeAttribute("data-bytm-loading");
                     imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
                     if (!lyricsUrl) {
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
                             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
                         return;
                     }
-                    // no need to pollute the DOM if the result is already in cache
-                    if (!cachedLyricsUrl)
-                        songInfo.dataset.bytmLyrics = lyricsUrl;
                 }
                 lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
             }));
@@ -1218,6 +1216,7 @@ function addMediaCtrlLyricsBtn() {
                             continue;
                         lyricsBtn.href = url;
                         lyricsBtn.title = "Open the current song's lyrics in a new tab";
+                        lyricsBtn.style.cursor = "pointer";
                         lyricsBtn.style.visibility = "initial";
                         lyricsBtn.style.display = "inline-flex";
                         lyricsBtn.style.pointerEvents = "initial";
