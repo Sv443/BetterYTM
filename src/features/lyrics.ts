@@ -17,7 +17,7 @@ const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
 
 //#MARKER cache
 
-/** Cache with key format `ARTIST - SONG` and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+/** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map<string, string>();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 100;
@@ -179,6 +179,12 @@ export async function getCurrentLyricsUrl() {
 /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
 export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
   try {
+    const cacheEntry = getLyricsCacheEntry(artist, song);
+    if(cacheEntry) {
+      info(`Found lyrics URL in cache: ${cacheEntry}`);
+      return cacheEntry;
+    }
+
     const startTs = Date.now();
     const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
 
@@ -208,7 +214,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
-  linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
+  linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
   if(geniusUrl)
     linkElem.href = geniusUrl;
   linkElem.role = "button";
