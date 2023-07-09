@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "f522232", // assert as generic string instead of union
+    lastCommit: "9c4b7c5", // assert as generic string instead of union
 });
 
 
@@ -1145,10 +1145,12 @@ const geniUrlBase = "https://api.sv443.net/geniurl";
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 /**
  * The threshold to pass to geniURL's fuzzy filtering.
- * The lower the number, the more strictly the top results will adhere to the query.
+ * From fuse.js docs: At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.
  * Set to undefined to use the default.
  */
 const threshold = 0.55;
+/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+const geniUrlRatelimitTimeframe = 30;
 const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MODULE_1__.clamp)(threshold, 0, 1)}` : "";
 //#MARKER cache
 /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
@@ -1292,6 +1294,7 @@ function getCurrentLyricsUrl() {
 }
 /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
 function getGeniusUrl(artist, song) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
@@ -1302,7 +1305,17 @@ function getGeniusUrl(artist, song) {
             const startTs = Date.now();
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
-            const result = yield (yield fetch(fetchUrl)).json();
+            const fetchRes = yield fetch(fetchUrl);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.dbg)(fetchRes.headers);
+            if (fetchRes.status === 429) {
+                alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
+                return undefined;
+            }
+            else if (fetchRes.status < 200 || fetchRes.status >= 300) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${fetchRes.body}`);
+                return undefined;
+            }
+            const result = yield fetchRes.json();
             if (typeof result === "object" && result.error) {
                 (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't fetch lyrics URL:", result.message);
                 return undefined;
