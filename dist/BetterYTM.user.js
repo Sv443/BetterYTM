@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b6ab696", // assert as generic string instead of union
+    lastCommit: "6a79873", // assert as generic string instead of union
 });
 
 
@@ -1957,20 +1957,25 @@ function addGlobalStyle(style, ref) {
  * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
  */
 function openInNewTab(href) {
-    const openElem = document.createElement("a");
-    Object.assign(openElem, {
-        className: "betterytm-open-in-new-tab",
-        target: "_blank",
-        rel: "noopener noreferrer",
-        href,
-        style: {
-            visibility: "hidden",
-        },
-    });
-    document.body.appendChild(openElem);
-    openElem.click();
-    // timeout just to be safe
-    setTimeout(() => openElem.remove(), 200);
+    try {
+        const openElem = document.createElement("a");
+        Object.assign(openElem, {
+            className: "betterytm-open-in-new-tab",
+            target: "_blank",
+            rel: "noopener noreferrer",
+            href,
+            style: {
+                visibility: "hidden",
+            },
+        });
+        document.body.appendChild(openElem);
+        openElem.click();
+        // timeout just to be safe
+        setTimeout(() => openElem.remove(), 200);
+    }
+    catch (err) {
+        error("Couldn't open URL in a new tab due to an error:", err);
+    }
 }
 /**
  * Returns `unsafeWindow` if it is available, otherwise falls back to just `window`
