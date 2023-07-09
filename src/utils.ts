@@ -66,11 +66,11 @@ export function dbg(...args: unknown[]): void {
 //#SECTION video time
 
 /**
- * Returns the current video time in seconds
- * @param force Set to true to dispatch mouse movement events in case the video time can't be estimated
+ * Returns the current video time in seconds  
+ * Dispatches mouse movement events in case the video time can't be estimated
  * @returns Returns null if the video time is unavailable
  */
-export function getVideoTime(force = false) {
+export function getVideoTime() {
   const domain = getDomain();
 
   try {
@@ -93,7 +93,7 @@ export function getVideoTime(force = false) {
       //   ytForceShowVideoTime();
       //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
       // }
-      void [ force, ytForceShowVideoTime ];
+      void ytForceShowVideoTime;
 
       return null;
     }

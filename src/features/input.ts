@@ -102,7 +102,7 @@ function switchSite(newDomain: Domain) {
       subdomain = "www";
 
     if(!subdomain)
-      throw new TypeError(`Unrecognized domain '${newDomain}'`);
+      throw new Error(`Unrecognized domain '${newDomain}'`);
 
 
     const { pathname, search, hash } = new URL(location.href);
