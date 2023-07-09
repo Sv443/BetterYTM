@@ -1,11 +1,19 @@
 import { triesInterval, triesLimit } from "../constants";
-import { error, getAssetUrl, info, insertAfter, log } from "../utils";
+import { clamp, error, getAssetUrl, info, insertAfter, log } from "../utils";
 import "./lyrics.css";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+/**
+ * The threshold to pass to geniURL's fuzzy filtering.  
+ * The lower the number, the more strictly the top results will adhere to the query.  
+ * Set to undefined to use the default.
+ */
+const threshold = 0.55;
+
+const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
 
 //#MARKER cache
 
@@ -172,7 +180,7 @@ export async function getCurrentLyricsUrl() {
 export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
   try {
     const startTs = Date.now();
-    const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+    const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
