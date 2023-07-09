@@ -1,5 +1,5 @@
 import { triesInterval, triesLimit } from "../constants";
-import { clamp, error, getAssetUrl, info, insertAfter, log } from "../utils";
+import { clamp, dbg, error, getAssetUrl, info, insertAfter, log } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -7,10 +7,12 @@ export const geniUrlBase = "https://api.sv443.net/geniurl";
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 /**
  * The threshold to pass to geniURL's fuzzy filtering.  
- * The lower the number, the more strictly the top results will adhere to the query.  
+ * From fuse.js docs: At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.  
  * Set to undefined to use the default.
  */
 const threshold = 0.55;
+/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+const geniUrlRatelimitTimeframe = 30;
 
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
 
@@ -192,7 +194,17 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
-    const result = await (await fetch(fetchUrl)).json();
+    const fetchRes = await fetch(fetchUrl);
+    dbg(fetchRes.headers);
+    if(fetchRes.status === 429) {
+      alert(`You are being rate limited.\nPlease wait ${fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
+      return undefined;
+    }
+    else if(fetchRes.status < 200 || fetchRes.status >= 300) {
+      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${fetchRes.body}`);
+      return undefined;
+    }
+    const result = await fetchRes.json();
 
     if(typeof result === "object" && result.error) {
       error("Couldn't fetch lyrics URL:", result.message);
