@@ -97,6 +97,7 @@ export function addMediaCtrlLyricsBtn(): void {
         lyricsBtn.href = url;
 
         lyricsBtn.title = "Open the current song's lyrics in a new tab";
+        lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "initial";
         lyricsBtn.style.display = "inline-flex";
         lyricsBtn.style.pointerEvents = "initial";
