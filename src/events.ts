@@ -1,7 +1,7 @@
 import { Event as EventParam, EventEmitter, EventHandler } from "@billjs/event-emitter";
 import { error, info } from "./utils";
 
-export interface SiteEvents extends EventEmitter {
+interface SiteEvents extends EventEmitter {
   /** Emitted whenever child nodes are added to or removed from the song queue */
   on(event: "queueChanged", listener: EventHandler): boolean;
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
