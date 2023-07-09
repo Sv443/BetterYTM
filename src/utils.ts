@@ -14,11 +14,9 @@ export function setLogLevel(level: LogLevel) {
 function getLogLevel(args: unknown[]): number {
   const minLogLvl = 0, maxLogLvl = 1;
   if(typeof args.at(-1) === "number")
-    return Math.max(
-      Math.min(
-        args.splice(args.length - 1)[0] as number,
-        minLogLvl,
-      ),
+    return clamp(
+      args.splice(args.length - 1)[0] as number,
+      minLogLvl,
       maxLogLvl,
     );
   return 1;
@@ -238,4 +236,9 @@ export function autoPlural(word: string, num: number | unknown[]) {
   if(Array.isArray(num))
     num = num.length;
   return `${word}${num === 1 ? "" : "s"}`;
+}
+
+/** Ensures the passed `value` always stays between `min` and `max` */
+export function clamp(value: number, min: number, max: number) {
+  return Math.max(Math.min(value, min), max);
 }
