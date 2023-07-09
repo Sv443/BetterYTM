@@ -29,7 +29,10 @@ let observers: MutationObserver[] = [];
 
 /** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
 export function removeAllObservers() {
-  observers.forEach((observer) => observer.disconnect());
+  observers.forEach((observer, i) => {
+    observer.disconnect();
+    delete observers[i];
+  });
   observers = [];
 }
 

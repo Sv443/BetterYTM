@@ -349,18 +349,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/features/lyrics.css":
-/*!*********************************!*\
-  !*** ./src/features/lyrics.css ***!
-  \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./src/features/menu/menu.css":
 /*!************************************!*\
   !*** ./src/features/menu/menu.css ***!
@@ -492,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "814cb33", // assert as generic string instead of union
+    lastCommit: "b6ab696", // assert as generic string instead of union
 });
 
 
@@ -538,7 +526,10 @@ function getEvtData(evt) {
 let observers = [];
 /** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
 function removeAllObservers() {
-    observers.forEach((observer) => observer.disconnect());
+    observers.forEach((observer, i) => {
+        observer.disconnect();
+        delete observers[i];
+    });
     observers = [];
 }
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
@@ -863,7 +854,7 @@ function switchSite(newDomain) {
         else if (newDomain === "yt")
             subdomain = "www";
         if (!subdomain)
-            throw new TypeError(`Unrecognized domain '${newDomain}'`);
+            throw new Error(`Unrecognized domain '${newDomain}'`);
         const { pathname, search, hash } = new URL(location.href);
         const vt = (_a = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
         (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Found video time of ${vt} seconds`);
@@ -935,8 +926,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
-/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -970,6 +961,7 @@ function addWatermark() {
     watermark.title = "Open menu";
     watermark.tabIndex = 1000;
     watermark.addEventListener("click", () => (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
+    // when using the tab key to navigate
     watermark.addEventListener("keydown", (e) => e.key === "Enter" && (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
@@ -1038,6 +1030,7 @@ function addQueueButtons(queueItem) {
     return __awaiter(this, void 0, void 0, function* () {
         const queueBtnsCont = document.createElement("div");
         queueBtnsCont.className = "bytm-queue-btn-container";
+        //#SECTION lyrics
         const songInfo = queueItem.querySelector(".song-info");
         if (!songInfo)
             return false;
@@ -1046,34 +1039,56 @@ function addQueueButtons(queueItem) {
         const artist = artistEl.innerText;
         if (!song || !artist)
             return false;
-        // TODO: display "currently loading" icon
-        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
-        lyricsBtnElem.title = "Open this song's lyrics in a new tab";
-        lyricsBtnElem.style.cursor = "pointer";
-        lyricsBtnElem.style.visibility = "initial";
-        lyricsBtnElem.style.display = "inline-flex";
-        lyricsBtnElem.style.pointerEvents = "initial";
-        lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            let lyricsUrl;
-            if (songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
-                lyricsUrl = songInfo.dataset.bytmLyrics;
-            else if (songInfo.dataset.bytmLoading !== "true") {
-                songInfo.dataset.bytmLoading = "true";
-                const imgEl = lyricsBtnElem.querySelector("img");
-                imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
-                lyricsUrl = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)((0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeArtists)(artist), (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeSong)(song));
-                songInfo.dataset.bytmLoading = "false";
-                imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
-                if (!lyricsUrl) {
-                    if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
-                    return;
+        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
+        {
+            lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+            lyricsBtnElem.style.visibility = "initial";
+            lyricsBtnElem.style.display = "inline-flex";
+            lyricsBtnElem.style.pointerEvents = "initial";
+            lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                let lyricsUrl;
+                if (songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
+                    lyricsUrl = songInfo.dataset.bytmLyrics;
+                else if (songInfo.dataset.bytmLoading !== "true") {
+                    songInfo.dataset.bytmLoading = "true";
+                    const imgEl = lyricsBtnElem.querySelector("img");
+                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
+                    const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
+                    const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
+                    const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
+                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
+                    if (!cachedLyricsUrl)
+                        songInfo.dataset.bytmLoading = "false";
+                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                    if (!lyricsUrl) {
+                        if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+                            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
+                        return;
+                    }
+                    // no need to pollute the DOM if the result is already in cache
+                    if (!cachedLyricsUrl)
+                        songInfo.dataset.bytmLyrics = lyricsUrl;
                 }
-                songInfo.dataset.bytmLyrics = lyricsUrl;
-            }
-            lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
-        }));
+                lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
+            }));
+        }
+        //#SECTION delete from queue
+        const deleteBtnElem = document.createElement("a");
+        {
+            deleteBtnElem.className = "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn";
+            deleteBtnElem.role = "button";
+            deleteBtnElem.target = "_blank";
+            deleteBtnElem.rel = "noopener noreferrer";
+            deleteBtnElem.style.visibility = "initial";
+            deleteBtnElem.style.display = "inline-flex";
+            deleteBtnElem.addEventListener("click", () => alert("WIP"));
+            const imgElem = document.createElement("img");
+            imgElem.className = "bytm-generic-btn-img";
+            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png");
+            deleteBtnElem.appendChild(imgElem);
+        }
         queueBtnsCont.appendChild(lyricsBtnElem);
+        queueBtnsCont.appendChild(deleteBtnElem);
         songInfo.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
         return true;
@@ -1108,7 +1123,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _lyrics_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lyrics.css */ "./src/features/lyrics.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1127,20 +1141,29 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
 };
 
 
-
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+/**
+ * The threshold to pass to geniURL's fuzzy filtering.
+ * The lower the number, the more strictly the top results will adhere to the query.
+ * Set to undefined to use the default.
+ */
+const threshold = 0.55;
+const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MODULE_1__.clamp)(threshold, 0, 1)}` : "";
 //#MARKER cache
-/** Cache with key format `ARTIST - SONG` and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+/** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 100;
 // TODO: implement this
-/** Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet */
+/**
+ * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
+ * **The passed parameters need to be sanitized first!**
+ */
 function getLyricsCacheEntry(artists, song) {
-    return lyricsUrlCache.get(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`);
+    return lyricsUrlCache.get(`${artists} - ${song}`);
 }
 /** Adds the provided entry into the lyrics URL cache */
 function addLyricsCacheEntry(artists, song, lyricsUrl) {
@@ -1195,7 +1218,6 @@ function addMediaCtrlLyricsBtn() {
                             continue;
                         lyricsBtn.href = url;
                         lyricsBtn.title = "Open the current song's lyrics in a new tab";
-                        lyricsBtn.style.cursor = "pointer";
                         lyricsBtn.style.visibility = "initial";
                         lyricsBtn.style.display = "inline-flex";
                         lyricsBtn.style.pointerEvents = "initial";
@@ -1273,8 +1295,13 @@ function getCurrentLyricsUrl() {
 function getGeniusUrl(artist, song) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const cacheEntry = getLyricsCacheEntry(artist, song);
+            if (cacheEntry) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL in cache: ${cacheEntry}`);
+                return cacheEntry;
+            }
             const startTs = Date.now();
-            const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+            const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const result = yield (yield fetch(fetchUrl)).json();
             if (typeof result === "object" && result.error) {
@@ -1295,16 +1322,17 @@ function getGeniusUrl(artist, song) {
 /** Creates the base lyrics button element */
 function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     const linkElem = document.createElement("a");
-    linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
-    linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
+    linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+    linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
     if (geniusUrl)
         linkElem.href = geniusUrl;
+    linkElem.role = "button";
     linkElem.target = "_blank";
     linkElem.rel = "noopener noreferrer";
     linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
     linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
     const imgElem = document.createElement("img");
-    imgElem.className = "betterytm-lyrics-img";
+    imgElem.className = "bytm-generic-btn-img";
     imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("external/genius.png");
     linkElem.appendChild(imgElem);
     return linkElem;
@@ -1775,6 +1803,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
 /* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
+/* harmony export */   clamp: function() { return /* binding */ clamp; },
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
@@ -1800,7 +1829,7 @@ function setLogLevel(level) {
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
-        return Math.max(Math.min(args.splice(args.length - 1)[0], minLogLvl), maxLogLvl);
+        return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
     return 1;
 }
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -1841,10 +1870,10 @@ function dbg(...args) {
 //#SECTION video time
 /**
  * Returns the current video time in seconds
- * @param force Set to true to dispatch mouse movement events in case the video time can't be estimated
+ * Dispatches mouse movement events in case the video time can't be estimated
  * @returns Returns null if the video time is unavailable
  */
-function getVideoTime(force = false) {
+function getVideoTime() {
     const domain = getDomain();
     try {
         if (domain === "ytm") {
@@ -1864,7 +1893,7 @@ function getVideoTime(force = false) {
             //   ytForceShowVideoTime();
             //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
             // }
-            void [force, ytForceShowVideoTime];
+            void ytForceShowVideoTime;
             return null;
         }
         return null;
@@ -1982,6 +2011,10 @@ function autoPlural(word, num) {
     if (Array.isArray(num))
         num = num.length;
     return `${word}${num === 1 ? "" : "s"}`;
+}
+/** Ensures the passed `value` always stays between `min` and `max` */
+function clamp(value, min, max) {
+    return Math.max(Math.min(value, min), max);
 }
 
 
@@ -2105,73 +2138,73 @@ function onDomLoad() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!***************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
+/* #MARKER misc */
+
+.bytm-generic-btn {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+
+  margin-left: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: transparent;
+}
+
+.bytm-generic-btn:hover {
+  background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
+}
+
+.bytm-generic-btn-img {
+  display: inline-block;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+}
+
 /* #MARKER watermark */
 
 #betterytm-watermark {
-    font-size: 10px;
-    display: inline-block;
-    position: absolute;
-    left: 45px;
-    top: 46px;
-    z-index: 10;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 45px;
+  top: 46px;
+  z-index: 10;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media(max-width: 615px) {
-    #betterytm-watermark {
-        display: none;
-    }
+  #betterytm-watermark {
+    display: none;
+  }
 }
 
 #betterytm-watermark:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* #MARKER queue buttons */
 /* TODO: */
 
 .side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-    position: relative;
+  position: relative;
 }
 
 .side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
-    display: none;
-    position: absolute;
-    right: 0;
+  display: none;
+  position: absolute;
+  right: 0;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
-    display: inline-block;
-}
-
-/*!***************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/lyrics.css ***!
-  \***************************************************************************/
-.bytm-generic-lyrics-btn {
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    vertical-align: middle;
-
-    margin-left: 8px;
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    background-color: transparent;
-}
-
-.bytm-generic-lyrics-btn:hover {
-    background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
-}
-
-.betterytm-lyrics-img {
-    display: inline-block;
-    z-index: 10;
-    width: 24px;
-    height: 24px;
-    padding: 5px;
+  display: inline-block;
 }
 
 /*!******************************************************************************!*\

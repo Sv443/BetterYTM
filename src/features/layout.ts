@@ -1,12 +1,12 @@
+import type { Event } from "@billjs/event-emitter";
+import type { FeatureConfig } from "../types";
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
 import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, openInNewTab } from "../utils";
 import { getEvtData, siteEvents } from "../events";
-import type { FeatureConfig } from "../types";
 import { openMenu } from "./menu/menu_old";
+import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
 import "./layout.css";
-import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong } from "./lyrics";
-import { Event } from "@billjs/event-emitter";
 
 let features: FeatureConfig;
 
@@ -27,6 +27,7 @@ export function addWatermark() {
   watermark.tabIndex = 1000;
 
   watermark.addEventListener("click", () => openMenu());
+  // when using the tab key to navigate
   watermark.addEventListener("keydown", (e) => e.key === "Enter" && openMenu());
 
   const logoElem = document.querySelector("#left-content") as HTMLElement;
@@ -114,6 +115,8 @@ async function addQueueButtons(queueItem: HTMLElement) {
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
 
+  //#SECTION lyrics
+
   const songInfo = queueItem.querySelector(".song-info") as HTMLElement;
   if(!songInfo)
     return false;
@@ -124,42 +127,68 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(!song || !artist)
     return false;
 
-  // TODO: display "currently loading" icon
   const lyricsBtnElem = createLyricsBtn(undefined, false);
+  {
+    lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+    lyricsBtnElem.style.visibility = "initial";
+    lyricsBtnElem.style.display = "inline-flex";
+    lyricsBtnElem.style.pointerEvents = "initial";
 
-  lyricsBtnElem.title = "Open this song's lyrics in a new tab";
-  lyricsBtnElem.style.cursor = "pointer";
-  lyricsBtnElem.style.visibility = "initial";
-  lyricsBtnElem.style.display = "inline-flex";
-  lyricsBtnElem.style.pointerEvents = "initial";
+    lyricsBtnElem.addEventListener("click", async () => {
+      let lyricsUrl;
+      if(songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
+        lyricsUrl = songInfo.dataset.bytmLyrics;
+      else if(songInfo.dataset.bytmLoading !== "true") {
+        songInfo.dataset.bytmLoading = "true";
+        const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
+        imgEl.src = getAssetUrl("loading.gif");
 
-  lyricsBtnElem.addEventListener("click", async () => {
-    let lyricsUrl;
-    if(songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
-      lyricsUrl = songInfo.dataset.bytmLyrics;
-    else if(songInfo.dataset.bytmLoading !== "true") {
-      songInfo.dataset.bytmLoading = "true";
-      const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
-      imgEl.src = getAssetUrl("loading.gif");
+        const artistsSan = sanitizeArtists(artist);
+        const songSan = sanitizeSong(song);
 
-      lyricsUrl = await getGeniusUrl(sanitizeArtists(artist), sanitizeSong(song));
+        const cachedLyricsUrl = getLyricsCacheEntry(artistsSan, songSan);
+        lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
-      songInfo.dataset.bytmLoading = "false";
-      imgEl.src = getAssetUrl("external/genius.png");
+        if(!cachedLyricsUrl)
+          songInfo.dataset.bytmLoading = "false";
+        imgEl.src = getAssetUrl("external/genius.png");
 
-      if(!lyricsUrl) {
-        if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-          openInNewTab("https://genius.com/search");
-        return;
+        if(!lyricsUrl) {
+          if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+            openInNewTab("https://genius.com/search");
+          return;
+        }
+
+        // no need to pollute the DOM if the result is already in cache
+        if(!cachedLyricsUrl)
+          songInfo.dataset.bytmLyrics = lyricsUrl;
       }
 
-      songInfo.dataset.bytmLyrics = lyricsUrl;
-    }
+      lyricsUrl && openInNewTab(lyricsUrl);
+    });
+  }
 
-    lyricsUrl && openInNewTab(lyricsUrl);
-  });
+  //#SECTION delete from queue
+  const deleteBtnElem = document.createElement("a");
+  {
+    deleteBtnElem.className = "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn";
+    deleteBtnElem.role = "button";
+    deleteBtnElem.target = "_blank";
+    deleteBtnElem.rel = "noopener noreferrer";
+    deleteBtnElem.style.visibility = "initial";
+    deleteBtnElem.style.display = "inline-flex";
+
+    deleteBtnElem.addEventListener("click", () => alert("WIP"));
+
+    const imgElem = document.createElement("img");
+    imgElem.className = "bytm-generic-btn-img";
+    imgElem.src = getAssetUrl("close.png");
+
+    deleteBtnElem.appendChild(imgElem);
+  }
 
   queueBtnsCont.appendChild(lyricsBtnElem);
+  queueBtnsCont.appendChild(deleteBtnElem);
 
   songInfo.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");

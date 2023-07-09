@@ -119,7 +119,7 @@ function remSourcemapComments(input: string) {
 
 /**
  * Used as a kind of "build number", though note it is always behind by at least one commit,
- * as the act of putting this number in the userscript changes the hash again, indefinitely
+ * as the act of putting this number in the userscript and committing it changes the hash again, indefinitely
  */
 function getLastCommitSha() {
   return new Promise<string>((res, rej) => {
