@@ -136,21 +136,23 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
     lyricsBtnElem.addEventListener("click", async () => {
       let lyricsUrl;
-      if(songInfo.dataset.bytmLyrics && songInfo.dataset.bytmLyrics.length > 0)
-        lyricsUrl = songInfo.dataset.bytmLyrics;
-      else if(songInfo.dataset.bytmLoading !== "true") {
-        songInfo.dataset.bytmLoading = "true";
+      const artistsSan = sanitizeArtists(artist);
+      const songSan = sanitizeSong(song);
+      const cachedLyricsUrl = getLyricsCacheEntry(artistsSan, songSan);
+
+      if(cachedLyricsUrl)
+        lyricsUrl = cachedLyricsUrl;
+      else if(!songInfo.hasAttribute("data-bytm-loading")) {
+        if(!cachedLyricsUrl)
+          songInfo.setAttribute("data-bytm-loading", "");
+
         const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
         imgEl.src = getAssetUrl("loading.gif");
 
-        const artistsSan = sanitizeArtists(artist);
-        const songSan = sanitizeSong(song);
-
-        const cachedLyricsUrl = getLyricsCacheEntry(artistsSan, songSan);
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
         if(!cachedLyricsUrl)
-          songInfo.dataset.bytmLoading = "false";
+          songInfo.removeAttribute("data-bytm-loading");
         imgEl.src = getAssetUrl("external/genius.png");
 
         if(!lyricsUrl) {
@@ -158,10 +160,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
             openInNewTab("https://genius.com/search");
           return;
         }
-
-        // no need to pollute the DOM if the result is already in cache
-        if(!cachedLyricsUrl)
-          songInfo.dataset.bytmLyrics = lyricsUrl;
       }
 
       lyricsUrl && openInNewTab(lyricsUrl);
