@@ -1,40 +1,68 @@
+/* #MARKER misc */
+
+.bytm-generic-btn {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+
+  margin-left: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: transparent;
+}
+
+.bytm-generic-btn:hover {
+  background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
+}
+
+.bytm-generic-btn-img {
+  display: inline-block;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+}
+
 /* #MARKER watermark */
 
 #betterytm-watermark {
-    font-size: 10px;
-    display: inline-block;
-    position: absolute;
-    left: 45px;
-    top: 46px;
-    z-index: 10;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 45px;
+  top: 46px;
+  z-index: 10;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media(max-width: 615px) {
-    #betterytm-watermark {
-        display: none;
-    }
+  #betterytm-watermark {
+    display: none;
+  }
 }
 
 #betterytm-watermark:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* #MARKER queue buttons */
 /* TODO: */
 
 .side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-    position: relative;
+  position: relative;
 }
 
 .side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
-    display: none;
-    position: absolute;
-    right: 0;
+  display: none;
+  position: absolute;
+  right: 0;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
-    display: inline-block;
+  display: inline-block;
 }

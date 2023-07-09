@@ -1,6 +1,5 @@
 import { triesInterval, triesLimit } from "../constants";
 import { clamp, error, getAssetUrl, info, insertAfter, log } from "../utils";
-import "./lyrics.css";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -23,9 +22,12 @@ const lyricsUrlCache = new Map<string, string>();
 const maxLyricsCacheSize = 100;
 
 // TODO: implement this
-/** Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet */
+/**
+ * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.  
+ * **The passed parameters need to be sanitized first!**
+ */
 export function getLyricsCacheEntry(artists: string, song: string) {
-  return lyricsUrlCache.get(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`);
+  return lyricsUrlCache.get(`${artists} - ${song}`);
 }
 
 /** Adds the provided entry into the lyrics URL cache */
@@ -95,7 +97,6 @@ export function addMediaCtrlLyricsBtn(): void {
         lyricsBtn.href = url;
 
         lyricsBtn.title = "Open the current song's lyrics in a new tab";
-        lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "initial";
         lyricsBtn.style.display = "inline-flex";
         lyricsBtn.style.pointerEvents = "initial";
@@ -213,7 +214,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 /** Creates the base lyrics button element */
 export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
   const linkElem = document.createElement("a");
-  linkElem.className = "ytmusic-player-bar bytm-generic-lyrics-btn";
+  linkElem.className = "ytmusic-player-bar bytm-generic-btn";
   linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
   if(geniusUrl)
     linkElem.href = geniusUrl;
@@ -224,7 +225,7 @@ export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLA
   linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
 
   const imgElem = document.createElement("img");
-  imgElem.className = "betterytm-lyrics-img";
+  imgElem.className = "bytm-generic-btn-img";
   imgElem.src = getAssetUrl("external/genius.png");
 
   linkElem.appendChild(imgElem);
