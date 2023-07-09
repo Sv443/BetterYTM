@@ -211,6 +211,7 @@ export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLA
   linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading...";
   if(geniusUrl)
     linkElem.href = geniusUrl;
+  linkElem.role = "button";
   linkElem.target = "_blank";
   linkElem.rel = "noopener noreferrer";
   linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
