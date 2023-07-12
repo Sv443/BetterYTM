@@ -245,5 +245,5 @@ export function autoPlural(word: string, num: number | unknown[]) {
 
 /** Ensures the passed `value` always stays between `min` and `max` */
 export function clamp(value: number, min: number, max: number) {
-  return Math.max(Math.min(value, min), max);
+  return Math.max(Math.min(value, max), min);
 }
