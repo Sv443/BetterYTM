@@ -2,7 +2,7 @@ import type { Event } from "@billjs/event-emitter";
 import type { FeatureConfig } from "../types";
 import { scriptInfo, triesInterval, triesLimit } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, openInNewTab } from "../utils";
+import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, openInNewTab, pauseFor } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -110,6 +110,7 @@ export function initQueueButtons() {
 /**
  * Adds the buttons to each item in the current song queue.  
  * Also observes for changes to add new buttons to new items in the queue.
+ * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 async function addQueueButtons(queueItem: HTMLElement) {
   const queueBtnsCont = document.createElement("div");
@@ -176,11 +177,41 @@ async function addQueueButtons(queueItem: HTMLElement) {
     deleteBtnElem.style.visibility = "initial";
     deleteBtnElem.style.display = "inline-flex";
 
-    deleteBtnElem.addEventListener("click", () => alert("WIP"));
+    deleteBtnElem.addEventListener("click", async () => {
+      // container of the queue item popup menu - element gets reused for every queue item
+      let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown") as HTMLElement;
+      try {
+        // three dots button to open the popup menu of a queue item
+        const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape button") as HTMLButtonElement;
+
+        if(queuePopupCont)
+          queuePopupCont.setAttribute("data-bytm-hidden", "true");
+
+        dotsBtnElem.click();
+        await pauseFor(25);
+        queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown") as HTMLElement;
+
+        if(!queuePopupCont.hasAttribute("data-bytm-hidden"))
+          queuePopupCont.setAttribute("data-bytm-hidden", "true");
+
+        // a little bit janky and unreliable but the only way afaik
+        const removeFromQueueBtn = queuePopupCont.querySelector("tp-yt-paper-listbox *[role=option]:nth-child(7)") as HTMLElement;
+
+        await pauseFor(20);
+
+        removeFromQueueBtn.click();
+      }
+      catch(err) {
+        error("Couldn't remove song from queue due to error:", err);
+      }
+      finally {
+        queuePopupCont?.removeAttribute("data-bytm-hidden");
+      }
+    });
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = getAssetUrl("close.png");
+    imgElem.src = getAssetUrl("close.png"); // TODO: make own icon for this
 
     deleteBtnElem.appendChild(imgElem);
   }

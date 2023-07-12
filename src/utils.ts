@@ -53,7 +53,7 @@ export function warn(...args: unknown[]): void {
     console.warn(consPrefix, ...args);
 }
 
-/** Logs string-compatible values to the console as an error. */
+/** Logs string-compatible values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
 }
@@ -246,4 +246,11 @@ export function autoPlural(word: string, num: number | unknown[]) {
 /** Ensures the passed `value` always stays between `min` and `max` */
 export function clamp(value: number, min: number, max: number) {
   return Math.max(Math.min(value, max), min);
+}
+
+/** Pauses async execution for the specified time in ms */
+export function pauseFor(time: number) {
+  return new Promise((res) => {
+    setTimeout(res, time);
+  });
 }

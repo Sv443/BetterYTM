@@ -200,7 +200,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${await fetchRes.text()}`);
+      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
       return undefined;
     }
     const result = await fetchRes.json();
