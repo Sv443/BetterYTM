@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "9c4b7c5", // assert as generic string instead of union
+    lastCommit: "049bc75", // assert as generic string instead of union
 });
 
 
@@ -1025,6 +1025,7 @@ function initQueueButtons() {
 /**
  * Adds the buttons to each item in the current song queue.
  * Also observes for changes to add new buttons to new items in the queue.
+ * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 function addQueueButtons(queueItem) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -1079,10 +1080,34 @@ function addQueueButtons(queueItem) {
             deleteBtnElem.rel = "noopener noreferrer";
             deleteBtnElem.style.visibility = "initial";
             deleteBtnElem.style.display = "inline-flex";
-            deleteBtnElem.addEventListener("click", () => alert("WIP"));
+            deleteBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                // container of the queue item popup menu - element gets reused for every queue item
+                let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+                try {
+                    // three dots button to open the popup menu of a queue item
+                    const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape button");
+                    if (queuePopupCont)
+                        queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                    dotsBtnElem.click();
+                    yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.pauseFor)(25);
+                    queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+                    if (!queuePopupCont.hasAttribute("data-bytm-hidden"))
+                        queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                    // a little bit janky and unreliable but the only way afaik
+                    const removeFromQueueBtn = queuePopupCont.querySelector("tp-yt-paper-listbox *[role=option]:nth-child(7)");
+                    yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.pauseFor)(20);
+                    removeFromQueueBtn.click();
+                }
+                catch (err) {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't remove song from queue due to error:", err);
+                }
+                finally {
+                    queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
+                }
+            }));
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png");
+            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"); // TODO: make own icon for this
             deleteBtnElem.appendChild(imgElem);
         }
         queueBtnsCont.appendChild(lyricsBtnElem);
@@ -1263,7 +1288,7 @@ function sanitizeArtists(artists) {
 }
 /** Returns the lyrics URL from genius for the currently selected song */
 function getCurrentLyricsUrl() {
-    var _a, _b;
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
@@ -1283,7 +1308,7 @@ function getCurrentLyricsUrl() {
                 return yield getGeniusUrl(artist, rest.join(" "));
             });
             // TODO: artist might need further splitting before comma or ampersand
-            const url = isVideo ? yield getGeniusUrlVideo() : ((_b = yield getGeniusUrl(artistName, songName)) !== null && _b !== void 0 ? _b : yield getGeniusUrlVideo());
+            const url = isVideo ? yield getGeniusUrlVideo() : yield getGeniusUrl(artistName, songName);
             return url;
         }
         catch (err) {
@@ -1294,7 +1319,7 @@ function getCurrentLyricsUrl() {
 }
 /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
 function getGeniusUrl(artist, song) {
-    var _a;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
@@ -1306,13 +1331,12 @@ function getGeniusUrl(artist, song) {
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const fetchRes = yield fetch(fetchUrl);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.dbg)(fetchRes.headers);
             if (fetchRes.status === 429) {
                 alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${fetchRes.body}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
                 return undefined;
             }
             const result = yield fetchRes.json();
@@ -1826,6 +1850,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
+/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
@@ -1871,7 +1896,7 @@ function warn(...args) {
     if (curLogLevel <= getLogLevel(args))
         console.warn(consPrefix, ...args);
 }
-/** Logs string-compatible values to the console as an error. */
+/** Logs string-compatible values to the console as an error, no matter the log level. */
 function error(...args) {
     console.error(consPrefix, ...args);
 }
@@ -2031,7 +2056,13 @@ function autoPlural(word, num) {
 }
 /** Ensures the passed `value` always stays between `min` and `max` */
 function clamp(value, min, max) {
-    return Math.max(Math.min(value, min), max);
+    return Math.max(Math.min(value, max), min);
+}
+/** Pauses async execution for the specified time in ms */
+function pauseFor(time) {
+    return new Promise((res) => {
+        setTimeout(res, time);
+    });
 }
 
 
@@ -2222,6 +2253,10 @@ function onDomLoad() {
 
 .side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
   display: inline-block;
+}
+
+ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+  display: none !important;
 }
 
 /*!******************************************************************************!*\
