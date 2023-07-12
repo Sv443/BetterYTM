@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "049bc75", // assert as generic string instead of union
+    lastCommit: "57129c1", // assert as generic string instead of union
 });
 
 
@@ -1029,9 +1029,9 @@ function initQueueButtons() {
  */
 function addQueueButtons(queueItem) {
     return __awaiter(this, void 0, void 0, function* () {
+        //#SECTION general queue item stuff
         const queueBtnsCont = document.createElement("div");
         queueBtnsCont.className = "bytm-queue-btn-container";
-        //#SECTION lyrics
         const songInfo = queueItem.querySelector(".song-info");
         if (!songInfo)
             return false;
@@ -1040,12 +1040,17 @@ function addQueueButtons(queueItem) {
         const artist = artistEl.innerText;
         if (!song || !artist)
             return false;
+        //#SECTION lyrics btn
         const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
         {
-            lyricsBtnElem.title = "Open this song's lyrics in a new tab";
-            lyricsBtnElem.style.visibility = "initial";
-            lyricsBtnElem.style.display = "inline-flex";
-            lyricsBtnElem.style.pointerEvents = "initial";
+            Object.assign(lyricsBtnElem, {
+                title: "Open this song's lyrics in a new tab",
+                style: {
+                    visibility: "initial",
+                    display: "inline-flex",
+                    pointerEvents: "initial",
+                },
+            });
             lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
@@ -1071,15 +1076,20 @@ function addQueueButtons(queueItem) {
                 lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
             }));
         }
-        //#SECTION delete from queue
+        //#SECTION delete from queue btn
         const deleteBtnElem = document.createElement("a");
         {
-            deleteBtnElem.className = "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn";
-            deleteBtnElem.role = "button";
-            deleteBtnElem.target = "_blank";
-            deleteBtnElem.rel = "noopener noreferrer";
-            deleteBtnElem.style.visibility = "initial";
-            deleteBtnElem.style.display = "inline-flex";
+            Object.assign(deleteBtnElem, {
+                title: "Remove this song from the queue",
+                className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
+                role: "button",
+                target: "_blank",
+                rel: "noopener noreferrer",
+                style: {
+                    visibility: "initial",
+                    display: "inline-flex",
+                },
+            });
             deleteBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 // container of the queue item popup menu - element gets reused for every queue item
                 let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
@@ -1110,6 +1120,7 @@ function addQueueButtons(queueItem) {
             imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"); // TODO: make own icon for this
             deleteBtnElem.appendChild(imgElem);
         }
+        //#SECTION append elements to DOM
         queueBtnsCont.appendChild(lyricsBtnElem);
         queueBtnsCont.appendChild(deleteBtnElem);
         songInfo.appendChild(queueBtnsCont);

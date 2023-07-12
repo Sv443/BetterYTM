@@ -113,10 +113,9 @@ export function initQueueButtons() {
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 async function addQueueButtons(queueItem: HTMLElement) {
+  //#SECTION general queue item stuff
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
-
-  //#SECTION lyrics
 
   const songInfo = queueItem.querySelector(".song-info") as HTMLElement;
   if(!songInfo)
@@ -128,12 +127,17 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(!song || !artist)
     return false;
 
+  //#SECTION lyrics btn
   const lyricsBtnElem = createLyricsBtn(undefined, false);
   {
-    lyricsBtnElem.title = "Open this song's lyrics in a new tab";
-    lyricsBtnElem.style.visibility = "initial";
-    lyricsBtnElem.style.display = "inline-flex";
-    lyricsBtnElem.style.pointerEvents = "initial";
+    Object.assign(lyricsBtnElem, {
+      title: "Open this song's lyrics in a new tab",
+      style: {
+        visibility: "initial",
+        display: "inline-flex",
+        pointerEvents: "initial",
+      },
+    });
 
     lyricsBtnElem.addEventListener("click", async () => {
       let lyricsUrl;
@@ -167,15 +171,20 @@ async function addQueueButtons(queueItem: HTMLElement) {
     });
   }
 
-  //#SECTION delete from queue
+  //#SECTION delete from queue btn
   const deleteBtnElem = document.createElement("a");
   {
-    deleteBtnElem.className = "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn";
-    deleteBtnElem.role = "button";
-    deleteBtnElem.target = "_blank";
-    deleteBtnElem.rel = "noopener noreferrer";
-    deleteBtnElem.style.visibility = "initial";
-    deleteBtnElem.style.display = "inline-flex";
+    Object.assign(deleteBtnElem, {
+      title: "Remove this song from the queue",
+      className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
+      role: "button",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: {
+        visibility: "initial",
+        display: "inline-flex",
+      },
+    });
 
     deleteBtnElem.addEventListener("click", async () => {
       // container of the queue item popup menu - element gets reused for every queue item
@@ -215,6 +224,8 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
     deleteBtnElem.appendChild(imgElem);
   }
+
+  //#SECTION append elements to DOM
 
   queueBtnsCont.appendChild(lyricsBtnElem);
   queueBtnsCont.appendChild(deleteBtnElem);
