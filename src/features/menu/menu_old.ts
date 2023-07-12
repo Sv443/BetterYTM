@@ -18,7 +18,7 @@ export async function addMenu() {
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if((e.target as HTMLElement).id === "betterytm-menu-bg")
+    if((e.target as HTMLElement)?.id === "betterytm-menu-bg")
       closeMenu();
   });
   document.body.addEventListener("keydown", ({ key }) => {

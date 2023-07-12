@@ -92,7 +92,7 @@ async function onDomLoad() {
         initSiteSwitch(domain);
 
       try {
-        addMenu(); // TODO: remove
+        addMenu(); // TODO(v1.1): remove
       }
       catch(err) {
         error("Couldn't add menu:", err);
