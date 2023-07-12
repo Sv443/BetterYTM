@@ -1,5 +1,5 @@
 import { triesInterval, triesLimit } from "../constants";
-import { clamp, dbg, error, getAssetUrl, info, insertAfter, log } from "../utils";
+import { clamp, error, getAssetUrl, info, insertAfter, log } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -170,7 +170,7 @@ export async function getCurrentLyricsUrl() {
 
     // TODO: artist might need further splitting before comma or ampersand
 
-    const url = isVideo ? await getGeniusUrlVideo() : (await getGeniusUrl(artistName, songName) ?? await getGeniusUrlVideo());
+    const url = isVideo ? await getGeniusUrlVideo() : await getGeniusUrl(artistName, songName);
 
     return url;
   }
@@ -195,13 +195,12 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
     const fetchRes = await fetch(fetchUrl);
-    dbg(fetchRes.headers);
     if(fetchRes.status === 429) {
       alert(`You are being rate limited.\nPlease wait ${fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${fetchRes.body}`);
+      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${await fetchRes.text()}`);
       return undefined;
     }
     const result = await fetchRes.json();
