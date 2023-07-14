@@ -184,10 +184,9 @@ export function openInNewTab(href: string) {
       target: "_blank",
       rel: "noopener noreferrer",
       href,
-      style: {
-        visibility: "hidden",
-      },
     });
+    openElem.style.visibility = "hidden";
+
     document.body.appendChild(openElem);
     openElem.click();
     // timeout just to be safe
