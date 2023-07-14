@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "57129c1", // assert as generic string instead of union
+    lastCommit: "55c43a2", // assert as generic string instead of union
 });
 
 
@@ -1043,14 +1043,10 @@ function addQueueButtons(queueItem) {
         //#SECTION lyrics btn
         const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
         {
-            Object.assign(lyricsBtnElem, {
-                title: "Open this song's lyrics in a new tab",
-                style: {
-                    visibility: "initial",
-                    display: "inline-flex",
-                    pointerEvents: "initial",
-                },
-            });
+            lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+            lyricsBtnElem.style.display = "inline-flex";
+            lyricsBtnElem.style.visibility = "initial";
+            lyricsBtnElem.style.pointerEvents = "initial";
             lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
@@ -1085,11 +1081,8 @@ function addQueueButtons(queueItem) {
                 role: "button",
                 target: "_blank",
                 rel: "noopener noreferrer",
-                style: {
-                    visibility: "initial",
-                    display: "inline-flex",
-                },
             });
+            deleteBtnElem.style.visibility = "initial";
             deleteBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 // container of the queue item popup menu - element gets reused for every queue item
                 let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
@@ -1534,7 +1527,8 @@ function addMenu() {
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
-            if (e.target.id === "betterytm-menu-bg")
+            var _a;
+            if (((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg")
                 closeMenu();
         });
         document.body.addEventListener("keydown", ({ key }) => {
@@ -2012,10 +2006,8 @@ function openInNewTab(href) {
             target: "_blank",
             rel: "noopener noreferrer",
             href,
-            style: {
-                visibility: "hidden",
-            },
         });
+        openElem.style.visibility = "hidden";
         document.body.appendChild(openElem);
         openElem.click();
         // timeout just to be safe
@@ -2200,6 +2192,7 @@ function onDomLoad() {
 /* #MARKER misc */
 
 .bytm-generic-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -2339,7 +2332,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                 if (features.switchBetweenSites)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initSiteSwitch)(domain);
                 try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO: remove
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO(v1.1): remove
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);

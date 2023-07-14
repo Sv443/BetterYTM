@@ -130,14 +130,10 @@ async function addQueueButtons(queueItem: HTMLElement) {
   //#SECTION lyrics btn
   const lyricsBtnElem = createLyricsBtn(undefined, false);
   {
-    Object.assign(lyricsBtnElem, {
-      title: "Open this song's lyrics in a new tab",
-      style: {
-        visibility: "initial",
-        display: "inline-flex",
-        pointerEvents: "initial",
-      },
-    });
+    lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+    lyricsBtnElem.style.display = "inline-flex";
+    lyricsBtnElem.style.visibility = "initial";
+    lyricsBtnElem.style.pointerEvents = "initial";
 
     lyricsBtnElem.addEventListener("click", async () => {
       let lyricsUrl;
@@ -180,11 +176,8 @@ async function addQueueButtons(queueItem: HTMLElement) {
       role: "button",
       target: "_blank",
       rel: "noopener noreferrer",
-      style: {
-        visibility: "initial",
-        display: "inline-flex",
-      },
     });
+    deleteBtnElem.style.visibility = "initial";
 
     deleteBtnElem.addEventListener("click", async () => {
       // container of the queue item popup menu - element gets reused for every queue item
