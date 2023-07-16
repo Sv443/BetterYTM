@@ -16,15 +16,9 @@ const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
-/** Which URLs should the userscript be active on - see https://wiki.greasespot.net/Metadata_Block#%40match */
-const matchUrls = [
-  "https://music.youtube.com/*",
-  "https://www.youtube.com/*",
-];
-/** Whether to trigger the bell sound in some terminals when the code has finished compiling */
-const ringBell = env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true");
 
-const matchDirectives = matchUrls.reduce((a, c) => a + `// @match           ${c}\n`, "");
+/** Whether to trigger the bell sound in some terminals when the code has finished compiling */
+const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
 const header = `\
 // ==UserScript==
@@ -37,18 +31,16 @@ const header = `\
 // @license         ${pkg.license}
 // @author          ${pkg.author.name}
 // @copyright       ${pkg.author.name} (${pkg.author.url})
-${matchDirectives}\
 // @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
+// @match           https://music.youtube.com/*
+// @match           https://www.youtube.com/*
 // @run-at          document-start
+// @downloadURL     ${scriptUrl}
+// @updateURL       ${scriptUrl}
+// @connect         api.sv443.net
 // @grant           GM.getValue
 // @grant           GM.setValue
 // @grant           unsafeWindow
-// @connect         self
-// @connect         youtube.com
-// @connect         github.com
-// @connect         githubusercontent.com
-// @downloadURL     ${scriptUrl}
-// @updateURL       ${scriptUrl}
 // ==/UserScript==
 /*
  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -90,7 +82,7 @@ ${matchDirectives}\
 
     await writeFile(scriptPath, finalUserscript);
 
-    const envText = mode === "production" ? "\x1b[32mproduction" : "\x1b[33mdevelopment";
+    const envText = `${mode === "production" ? "\x1b[32m" : "\x1b[33m"}${mode}`;
     const sizeKiB = (Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2);
 
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): \x1b[34m${lastCommitSha}\x1b[0m`);
