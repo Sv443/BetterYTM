@@ -33,18 +33,12 @@
   font-size: 10px;
   display: inline-block;
   position: absolute;
-  left: 45px;
+  left: 97px;
   top: 46px;
   z-index: 10;
   color: white;
   text-decoration: none;
   cursor: pointer;
-}
-
-@media(max-width: 615px) {
-  #betterytm-watermark {
-    display: none;
-  }
 }
 
 #betterytm-watermark:hover {
