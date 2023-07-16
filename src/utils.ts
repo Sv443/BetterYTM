@@ -19,7 +19,7 @@ function getLogLevel(args: unknown[]): number {
       minLogLvl,
       maxLogLvl,
     );
-  return 1;
+  return 0;
 }
 
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
