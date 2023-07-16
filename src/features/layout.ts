@@ -42,9 +42,11 @@ let removeUpgradeTries = 0;
 
 /** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
 export function removeUpgradeTab() {
-  const tabElem = document.querySelector(".ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id=\"SPunlimited\"]");
-  if(tabElem) {
-    tabElem.remove();
+  const tabElem = document.querySelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)");
+  const tabElemMini = document.querySelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)");
+  if(tabElem || tabElemMini) {
+    tabElem && tabElem.remove();
+    tabElemMini && tabElemMini.remove();
     log(`Removed upgrade tab after ${removeUpgradeTries} tries`);
   }
   else if(removeUpgradeTries < triesLimit) {
