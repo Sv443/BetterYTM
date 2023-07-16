@@ -15,9 +15,21 @@ import {
   initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
 } from "./features/index";
 
-// TODO: add some style
-console.log(`${scriptInfo.name} v${scriptInfo.version} (${scriptInfo.lastCommit}) - ${scriptInfo.namespace}`);
-console.log(`Powered by lots of ambition and my song metadata API: ${geniUrlBase}`);
+{
+  // console watermark with sexy gradient
+  const styleGradient = "background: rgba(165,38,38,1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
+  const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px;";
+
+  console.log();
+  console.log(
+    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${scriptInfo.lastCommit} ─ ${scriptInfo.namespace}`,
+    `${styleGradient} ${styleCommon}`,
+    `background-color: #333; ${styleCommon}`,
+    "padding: initial;",
+  );
+  console.log(`─ Powered by lots of ambition and my song metadata API: ${geniUrlBase} ─`);
+  console.log();
+}
 
 const domain = getDomain();
 
