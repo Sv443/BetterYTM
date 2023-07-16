@@ -14,7 +14,7 @@ export async function preInitLayout() {
   features = await getFeatures();
 }
 
-//#MARKER watermark
+//#MARKER BYTM-Config buttons
 
 /** Adds a watermark beneath the logo */
 export function addWatermark() {
@@ -34,6 +34,15 @@ export function addWatermark() {
   insertAfter(logoElem, watermark);
 
   log("Added watermark element:", watermark);
+}
+
+/** Called whenever the menu exists to add a BYTM-Configuration button */
+export function addConfigMenuOption(container: HTMLElement) {
+  const cfgElem = document.createElement("div");
+  cfgElem.innerText = "TODO: BYTM Config";
+  container.appendChild(cfgElem);
+
+  log("Added BYTM-Config button to menu popup");
 }
 
 //#MARKER remove upgrade tab

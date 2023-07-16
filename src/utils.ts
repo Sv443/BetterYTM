@@ -170,6 +170,46 @@ export function addGlobalStyle(style: string, ref?: string) {
   log(`Inserted global style with ref '${ref}':`, styleElem);
 }
 
+const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
+
+/**
+ * Calls the `listener` as soon as the `selector` exists in the DOM.  
+ * Listeners are deleted as soon as they are called once.  
+ * Multiple listeners with the same selector may be registered.
+ */
+export function onSelectorExists(selector: string, listener: (element: HTMLElement) => void) {
+  const el = document.querySelector<HTMLElement>(selector);
+
+  if(el)
+    listener(el);
+  else {
+    if(selectorExistsMap.get(selector))
+      selectorExistsMap.set(selector, [...selectorExistsMap.get(selector)!, listener]);
+    else
+      selectorExistsMap.set(selector, [listener]);
+  }
+}
+
+/** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
+export function initSelectorExistsCheck() {
+  const observer = new MutationObserver(() => {
+    for(const [selector, listeners] of selectorExistsMap.entries()) {
+      const el = document.querySelector<HTMLElement>(selector);
+      if(el) {
+        listeners.forEach(listener => listener(el));
+        selectorExistsMap.delete(selector);
+      }
+    }
+  });
+
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+  });
+
+  log("Initialized \"selector exists\" MutationObserver");
+}
+
 //#SECTION misc
 
 /**
