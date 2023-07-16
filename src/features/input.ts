@@ -151,7 +151,7 @@ export function initBeforeUnloadHook() {
   (function(original: typeof window.addEventListener) {
     // @ts-ignore
     window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
-      if(beforeUnloadEnabled && args[0] === "beforeunload")
+      if(!beforeUnloadEnabled && args[0] === "beforeunload")
         return log("Prevented beforeunload event listener from attaching");
       else
         return original.apply(this, args);
