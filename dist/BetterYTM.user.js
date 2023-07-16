@@ -477,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "ca8034f", // assert as generic string instead of union
+    lastCommit: "8c0c6c8", // assert as generic string instead of union
 });
 
 
@@ -1882,7 +1882,7 @@ function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
         return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-    return 1;
+    return 0;
 }
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}]`;
@@ -2197,9 +2197,15 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-// TODO: add some style
-console.log(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} v${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version} (${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit}) - ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`);
-console.log(`Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase}`);
+{
+    // console watermark with sexy gradient
+    const styleGradient = "background: rgba(165,38,38,1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
+    const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px;";
+    console.log();
+    console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`, `${styleGradient} ${styleCommon}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+    console.log(`─ Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase} ─`);
+    console.log();
+}
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
