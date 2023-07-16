@@ -477,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "46e21fb", // assert as generic string instead of union
+    lastCommit: "ca8034f", // assert as generic string instead of union
 });
 
 
@@ -887,7 +887,7 @@ function initBeforeUnloadHook() {
     (function (original) {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
-            if (beforeUnloadEnabled && args[0] === "beforeunload")
+            if (!beforeUnloadEnabled && args[0] === "beforeunload")
                 return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Prevented beforeunload event listener from attaching");
             else
                 return original.apply(this, args);
