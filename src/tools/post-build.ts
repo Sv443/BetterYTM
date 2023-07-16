@@ -69,10 +69,15 @@ const header = `\
       globalStyle = remSourcemapComments(globalStyle);
 
     // read userscript and inject build number and global CSS
-    let userscript = String(await readFile(scriptPath))
-      .replace(/\/?\*?{{BRANCH}}\*?\/?/gm, branch)
-      .replace(/\/?\*?{{BUILD_NUMBER}}\*?\/?/gm, lastCommitSha)
-      .replace(/"\/?\*?{{GLOBAL_STYLE}}\*?\/?"/gm, `\`${globalStyle}\``);
+    let userscript = insertValues(
+      String(await readFile(scriptPath)),
+      {
+        BRANCH: branch,
+        BUILD_NUMBER: lastCommitSha,
+      },
+    )
+      // needs special treatment because the double quotes need to be replaced with backticks
+      .replace(/"(\/\*)?{{GLOBAL_STYLE}}(\*\/)?"/gm, `\`${globalStyle}\``);
 
     if(mode === "production")
       userscript = remSourcemapComments(userscript);
@@ -102,11 +107,19 @@ const header = `\
   }
 })();
 
+type Stringifiable = { toString(): string; } | string;
+
+/** Replaces tokens in the format `{{key}}` or `/⋆{{key}}⋆/` of the `replacements` param with their respective value */
+function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
+  for(const key in replacements)
+    userscript = userscript.replace(new RegExp(`(\\/\\*)?{{${key}}}(\\*\\/)?`), String(replacements[key]));
+  return userscript;
+}
+
 /** Removes sourcemapping comments */
 function remSourcemapComments(input: string) {
   return input
-    .replace(/\n\s*\/\*\s?#.+\*\//gm, "")
-    .replace(/\n\s*\/\/\s?#.+$/gm, "");
+    .replace(/\n\s*\/(\*|\/)\s?#.+(\*\/)?$/gm, "");
 }
 
 /**

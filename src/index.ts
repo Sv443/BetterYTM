@@ -52,7 +52,7 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  // post-build these double quotes are replaced by backticks
+  // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
   addGlobalStyle("{{GLOBAL_STYLE}}", "global");
 
   const features = await loadFeatureConf();
