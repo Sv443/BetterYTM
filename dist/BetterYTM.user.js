@@ -33,41 +33,6 @@
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-// ==UserScript==
-// @name            BetterYTM
-// @homepageURL     https://github.com/Sv443/BetterYTM#readme
-// @namespace       https://github.com/Sv443/BetterYTM
-// @version         1.0.0
-// @description     Configurable layout and UX improvements for YouTube Music
-// @description:de  Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
-// @license         MIT
-// @author          Sv443
-// @copyright       Sv443 (https://github.com/Sv443)
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon.png
-// @match           https://music.youtube.com/*
-// @match           https://www.youtube.com/*
-// @run-at          document-start
-// @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @connect         api.sv443.net
-// @grant           GM.getValue
-// @grant           GM.setValue
-// @grant           unsafeWindow
-// ==/UserScript==
-/*
- ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
- █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
- █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
- █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-         Made with ❤️ by Sv443
- I welcome every contribution on GitHub!
-   https://github.com/Sv443/BetterYTM
-*/
-
-/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-
 /******/ var __webpack_modules__ = ({
 
 /***/ "./node_modules/@billjs/event-emitter/lib/index.js":
@@ -512,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "fae706c", // assert as generic string instead of union
+    lastCommit: "9360180", // assert as generic string instead of union
 });
 
 
@@ -2217,7 +2182,7 @@ function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
-        // post-build these double quotes are replaced by backticks
+        // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!***************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
