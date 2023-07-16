@@ -477,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "f9c801b", // assert as generic string instead of union
+    lastCommit: "46e21fb", // assert as generic string instead of union
 });
 
 
@@ -617,6 +617,7 @@ function initHomeObservers() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
+/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
 /* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
@@ -911,6 +912,7 @@ function initBeforeUnloadHook() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* binding */ addAnchorImprovements; },
+/* harmony export */   addConfigMenuOption: function() { return /* binding */ addConfigMenuOption; },
 /* harmony export */   addWatermark: function() { return /* binding */ addWatermark; },
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
@@ -947,7 +949,7 @@ function preInitLayout() {
         features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
     });
 }
-//#MARKER watermark
+//#MARKER BYTM-Config buttons
 /** Adds a watermark beneath the logo */
 function addWatermark() {
     const watermark = document.createElement("a");
@@ -963,6 +965,13 @@ function addWatermark() {
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element:", watermark);
+}
+/** Called whenever the menu exists to add a BYTM-Configuration button */
+function addConfigMenuOption(container) {
+    const cfgElem = document.createElement("div");
+    cfgElem.innerText = "TODO: BYTM Config";
+    container.appendChild(cfgElem);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Config button to menu popup");
 }
 //#MARKER remove upgrade tab
 let removeUpgradeTries = 0;
@@ -1851,8 +1860,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
+/* harmony export */   initSelectorExistsCheck: function() { return /* binding */ initSelectorExistsCheck; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
+/* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
 /* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
@@ -1991,6 +2002,40 @@ function addGlobalStyle(style, ref) {
     styleElem.innerHTML = style;
     document.head.appendChild(styleElem);
     log(`Inserted global style with ref '${ref}':`, styleElem);
+}
+const selectorExistsMap = new Map();
+/**
+ * Calls the `listener` as soon as the `selector` exists in the DOM.
+ * Listeners are deleted as soon as they are called once.
+ * Multiple listeners with the same selector may be registered.
+ */
+function onSelectorExists(selector, listener) {
+    const el = document.querySelector(selector);
+    if (el)
+        listener(el);
+    else {
+        if (selectorExistsMap.get(selector))
+            selectorExistsMap.set(selector, [...selectorExistsMap.get(selector), listener]);
+        else
+            selectorExistsMap.set(selector, [listener]);
+    }
+}
+/** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
+function initSelectorExistsCheck() {
+    const observer = new MutationObserver(() => {
+        for (const [selector, listeners] of selectorExistsMap.entries()) {
+            const el = document.querySelector(selector);
+            if (el) {
+                listeners.forEach(listener => listener(el));
+                selectorExistsMap.delete(selector);
+            }
+        }
+    });
+    observer.observe(document.body, {
+        subtree: true,
+        childList: true,
+    });
+    log("Initialized \"selector exists\" MutationObserver");
 }
 //#SECTION misc
 /**
@@ -2301,10 +2346,12 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
 
 /*# sourceMappingURL=main.css.map*/`, "global");
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.loadFeatureConf)();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.initSelectorExistsCheck)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain '${domain}'`);
         try {
             if (domain === "ytm") {
                 (0,_events__WEBPACK_IMPORTED_MODULE_3__.initSiteEvents)();
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", _features_index__WEBPACK_IMPORTED_MODULE_4__.addConfigMenuOption);
                 if (features.arrowKeySupport)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)

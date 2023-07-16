@@ -1,6 +1,6 @@
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, error, getDomain, log, setLogLevel } from "./utils";
+import { addGlobalStyle, error, getDomain, initSelectorExistsCheck, log, onSelectorExists, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -12,7 +12,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook,
+  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
 } from "./features/index";
 
 // TODO: add some style
@@ -57,11 +57,15 @@ async function onDomLoad() {
 
   const features = await loadFeatureConf();
 
+  initSelectorExistsCheck();
+
   log(`Initializing features for domain '${domain}'`);
 
   try {
     if(domain === "ytm") {
       initSiteEvents();
+
+      onSelectorExists("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", addConfigMenuOption);
 
       if(features.arrowKeySupport)
         initArrowKeySkip();
