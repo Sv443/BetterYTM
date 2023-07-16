@@ -477,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "9360180", // assert as generic string instead of union
+    lastCommit: "f9c801b", // assert as generic string instead of union
 });
 
 
@@ -968,9 +968,11 @@ function addWatermark() {
 let removeUpgradeTries = 0;
 /** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
 function removeUpgradeTab() {
-    const tabElem = document.querySelector(".ytmusic-nav-bar ytmusic-pivot-bar-item-renderer[tab-id=\"SPunlimited\"]");
-    if (tabElem) {
-        tabElem.remove();
+    const tabElem = document.querySelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)");
+    const tabElemMini = document.querySelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)");
+    if (tabElem || tabElemMini) {
+        tabElem && tabElem.remove();
+        tabElemMini && tabElemMini.remove();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Removed upgrade tab after ${removeUpgradeTries} tries`);
     }
     else if (removeUpgradeTries < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit) {
