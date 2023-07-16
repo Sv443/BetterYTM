@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "7cf476f", // assert as generic string instead of union
+    lastCommit: "770496b", // assert as generic string instead of union
 });
 
 
@@ -1754,7 +1754,7 @@ function addMenu() {
         // add style
         const menuStyle = `\
 :root {
-  --bytm-menu-bg: #212121;
+  --bytm-menu-bg: #282828;
 }
 
 #betterytm-menu-bg {

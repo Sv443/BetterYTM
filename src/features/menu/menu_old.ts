@@ -304,7 +304,7 @@ export async function addMenu() {
   // add style
   const menuStyle = `\
 :root {
-  --bytm-menu-bg: #212121;
+  --bytm-menu-bg: #282828;
 }
 
 #betterytm-menu-bg {
