@@ -480,7 +480,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "55c43a2", // assert as generic string instead of union
+    lastCommit: "7cf476f", // assert as generic string instead of union
 });
 
 
@@ -2224,18 +2224,12 @@ function onDomLoad() {
   font-size: 10px;
   display: inline-block;
   position: absolute;
-  left: 45px;
+  left: 97px;
   top: 46px;
   z-index: 10;
   color: white;
   text-decoration: none;
   cursor: pointer;
-}
-
-@media(max-width: 615px) {
-  #betterytm-watermark {
-    display: none;
-  }
 }
 
 #betterytm-watermark:hover {
