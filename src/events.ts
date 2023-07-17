@@ -60,7 +60,6 @@ export async function initSiteEvents() {
       }
     });
 
-    // TODO: check if this works since autoplay seems to be lazy-loaded
     autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents")!, {
       childList: true,
     });
