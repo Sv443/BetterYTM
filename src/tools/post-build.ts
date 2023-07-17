@@ -75,6 +75,7 @@ const header = `\
     let userscript = insertValues(
       String(await readFile(scriptPath)),
       {
+        MODE: mode,
         BRANCH: branch,
         BUILD_NUMBER: lastCommitSha,
       },

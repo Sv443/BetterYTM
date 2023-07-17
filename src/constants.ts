@@ -1,7 +1,10 @@
 import type { LogLevel } from "./types";
 
+const modeRaw = "{{MODE}}";
 const branchRaw = "{{BRANCH}}";
 
+/** The mode in which the script was built (production or development) */
+export const mode = modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw;
 /** The branch to use in various URLs that point to the GitHub repo */
 export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 
@@ -9,7 +12,8 @@ export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
  * How much info should be logged to the devtools console?  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-export const logLevel: LogLevel = 0; // TODO: change in prod.
+export const logLevel: LogLevel = mode === "production" ? 1 : 0;
+
 /** Specifies the hard limit for repetitive tasks */
 export const triesLimit = 50;
 /** Specifies the interval in ms for repetitive tasks */
