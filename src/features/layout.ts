@@ -147,7 +147,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
     lyricsBtnElem.style.pointerEvents = "initial";
 
     lyricsBtnElem.addEventListener("click", async () => {
-      let lyricsUrl;
+      let lyricsUrl: string | undefined;
       const artistsSan = sanitizeArtists(artist);
       const songSan = sanitizeSong(song);
       const cachedLyricsUrl = getLyricsCacheEntry(artistsSan, songSan);
@@ -155,23 +155,25 @@ async function addQueueButtons(queueItem: HTMLElement) {
       if(cachedLyricsUrl)
         lyricsUrl = cachedLyricsUrl;
       else if(!songInfo.hasAttribute("data-bytm-loading")) {
-        if(!cachedLyricsUrl)
+        const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
+        if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
-        const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
-        imgEl.classList.add("bytm-spinner");
-        imgEl.src = getAssetUrl("loading.svg");
+          imgEl.classList.add("bytm-spinner");
+          imgEl.src = getAssetUrl("loading.svg");
+        }
 
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
-        if(!cachedLyricsUrl)
+        if(!cachedLyricsUrl) {
           songInfo.removeAttribute("data-bytm-loading");
 
-        // so the new image doesn't "blink"
-        setTimeout(() => {
-          imgEl.src = getAssetUrl("external/genius.png");
-          imgEl.classList.remove("bytm-spinner");
-        }, 100);
+          // so the new image doesn't "blink"
+          setTimeout(() => {
+            imgEl.src = getAssetUrl("external/genius.png");
+            imgEl.classList.remove("bytm-spinner");
+          }, 100);
+        }
 
         if(!lyricsUrl) {
           if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
