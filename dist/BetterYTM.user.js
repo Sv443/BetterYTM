@@ -475,7 +475,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "3db6e17", // assert as generic string instead of union
+    lastCommit: "afe4ca5", // assert as generic string instead of union
 });
 
 
@@ -2287,7 +2287,6 @@ function onDomLoad() {
 
 .bytm-cfg-menu-option {
   display: block;
-  cursor: pointer;
   padding: 8px 0;
 }
 
@@ -2301,6 +2300,7 @@ function onDomLoad() {
   padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
   min-height: var(--paper-item-min-height, 40px);
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .bytm-cfg-menu-option-item:hover {

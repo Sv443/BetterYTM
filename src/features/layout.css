@@ -44,7 +44,6 @@
 
 .bytm-cfg-menu-option {
   display: block;
-  cursor: pointer;
   padding: 8px 0;
 }
 
@@ -58,6 +57,7 @@
   padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
   min-height: var(--paper-item-min-height, 40px);
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .bytm-cfg-menu-option-item:hover {
