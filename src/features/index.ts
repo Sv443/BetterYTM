@@ -77,10 +77,9 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    visible: false,
   },
   queueButtons: {
-    desc: "Add buttons while hovering over a song in a queue to quickly remove it (TODO) or open its lyrics",
+    desc: "Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
     type: "toggle",
     category: "layout",
     default: true,

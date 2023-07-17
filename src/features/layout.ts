@@ -38,11 +38,37 @@ export function addWatermark() {
 
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 export function addConfigMenuOption(container: HTMLElement) {
-  const cfgElem = document.createElement("div");
-  cfgElem.innerText = "TODO: BYTM Config";
-  container.appendChild(cfgElem);
+  const cfgOptElem = document.createElement("a");
+  cfgOptElem.role = "button";
+  cfgOptElem.tabIndex = 0;
+  cfgOptElem.className = "bytm-cfg-menu-option";
+  
+  const cfgOptItemElem = document.createElement("div");
+  cfgOptItemElem.className = "bytm-cfg-menu-option-item";
 
-  log("Added BYTM-Config button to menu popup");
+  const cfgOptIconElem = document.createElement("img");
+  cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
+  cfgOptIconElem.src = getAssetUrl("icon/icon.png");
+  
+  const cfgOptTextElem = document.createElement("div");
+  cfgOptTextElem.className = "bytm-cfg-menu-option-text";
+  cfgOptTextElem.innerText = "BetterYTM Configuration";
+  cfgOptTextElem.title = "Click to open BetterYTM's configuration menu";
+
+  cfgOptItemElem.appendChild(cfgOptIconElem);
+  cfgOptItemElem.appendChild(cfgOptTextElem);
+
+  cfgOptElem.appendChild(cfgOptItemElem);
+
+  cfgOptElem.addEventListener("click", () => {
+    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+    settingsBtnElem?.click();
+    openMenu();
+  });
+
+  container.appendChild(cfgOptElem);
+
+  log("Added BYTM-Configuration button to menu popover");
 }
 
 //#MARKER remove upgrade tab
