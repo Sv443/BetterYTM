@@ -143,7 +143,7 @@ export function enableBeforeUnload() {
 
 /**
  * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` 
- * event listeners before they can be attached by the site.
+ * event listeners before they can be called by the site.
  */
 export function initBeforeUnloadHook() {
   Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
@@ -152,7 +152,7 @@ export function initBeforeUnloadHook() {
     // @ts-ignore
     window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
       if(!beforeUnloadEnabled && args[0] === "beforeunload")
-        return log("Prevented beforeunload event listener from attaching");
+        return log("Prevented beforeunload event listener from being called");
       else
         return original.apply(this, args);
     };
