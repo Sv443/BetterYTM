@@ -1,5 +1,4 @@
-import { triesInterval, triesLimit } from "../constants";
-import { clamp, error, getAssetUrl, info, insertAfter, log } from "../utils";
+import { clamp, error, getAssetUrl, info, insertAfter, log, onSelectorExists } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -42,22 +41,14 @@ export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: st
 //#MARKER media control bar
 
 let mcCurrentSongTitle = "";
-let mcLyricsButtonAddTries = 0;
 
 /** Adds a lyrics button to the media controls bar */
 export function addMediaCtrlLyricsBtn(): void {
-  const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer") as HTMLElement;
+  onSelectorExists(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
+}
 
-  if(!likeContainer) {
-    mcLyricsButtonAddTries++;
-    if(mcLyricsButtonAddTries < triesLimit) {
-      setTimeout(addMediaCtrlLyricsBtn, triesInterval); // TODO: improve this
-      return;
-    }
-
-    return error(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
-  }
-
+/** Actually adds the lyrics button after the like button renderer has been verified to exist */
+function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
 
   // run parallel without awaiting so the MutationObserver below can observe the title element in time
@@ -67,7 +58,7 @@ export function addMediaCtrlLyricsBtn(): void {
     const linkElem = createLyricsBtn(gUrl ?? undefined);
     linkElem.id = "betterytm-lyrics-button";
 
-    log(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
+    log("Inserted lyrics button into media controls bar");
 
     insertAfter(likeContainer, linkElem);
   })();

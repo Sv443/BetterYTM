@@ -14,11 +14,6 @@ export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
  */
 export const logLevel: LogLevel = mode === "production" ? 1 : 0;
 
-/** Specifies the hard limit for repetitive tasks */
-export const triesLimit = 50;
-/** Specifies the interval in ms for repetitive tasks */
-export const triesInterval = 200;
-
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 export const scriptInfo = Object.freeze({
   name: GM.info.script.name,

@@ -1,8 +1,8 @@
 import type { Event } from "@billjs/event-emitter";
 import type { FeatureConfig } from "../types";
-import { scriptInfo, triesInterval, triesLimit } from "../constants";
+import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, openInNewTab, pauseFor } from "../utils";
+import { addGlobalStyle, autoPlural, error, getAssetUrl, insertAfter, log, onSelectorExists, openInNewTab, pauseFor } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -73,23 +73,16 @@ export function addConfigMenuOption(container: HTMLElement) {
 
 //#MARKER remove upgrade tab
 
-let removeUpgradeTries = 0;
-
 /** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
 export function removeUpgradeTab() {
-  const tabElem = document.querySelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)");
-  const tabElemMini = document.querySelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)");
-  if(tabElem || tabElemMini) {
-    tabElem && tabElem.remove();
-    tabElemMini && tabElemMini.remove();
-    log(`Removed upgrade tab after ${removeUpgradeTries} tries`);
-  }
-  else if(removeUpgradeTries < triesLimit) {
-    setTimeout(removeUpgradeTab, triesInterval); // TODO: improve this
-    removeUpgradeTries++;
-  }
-  else
-    error(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+  onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
+    tabElemLarge.remove();
+    log("Removed large upgrade tab");
+  });
+  onSelectorExists("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
+    tabElemSmall.remove();
+    log("Removed small upgrade tab");
+  });
 }
 
 //#MARKER volume slider
