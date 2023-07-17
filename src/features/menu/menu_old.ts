@@ -18,12 +18,16 @@ export async function addMenu() {
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if((e.target as HTMLElement)?.id === "betterytm-menu-bg")
+    if((e.target as HTMLElement)?.id === "betterytm-menu-bg") {
+      e.stopPropagation();
       closeMenu();
+    }
   });
-  document.body.addEventListener("keydown", ({ key }) => {
-    if(key === "Escape")
+  document.body.addEventListener("keydown", (e) => {
+    if(e.key === "Escape") {
+      e.stopPropagation();
       closeMenu();
+    }
   });
 
   const menuContainer = document.createElement("div");
