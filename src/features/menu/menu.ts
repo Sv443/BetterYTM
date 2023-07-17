@@ -2,6 +2,13 @@ import changelogContent from "../../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
 
+// REQUIREMENTS:
+// - modal using the <dialog> element
+// - sections with headers
+// - support for "custom widgets"
+// - debounce or save on button press to store new configuration
+// - much better scaling including no vw and vh units
+
 //#MARKER menu
 
 /**

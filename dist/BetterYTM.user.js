@@ -475,7 +475,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "afe4ca5", // assert as generic string instead of union
+    lastCommit: "069aba5", // assert as generic string instead of union
 });
 
 
@@ -970,6 +970,11 @@ function addConfigMenuOption(container) {
     cfgOptElem.className = "bytm-cfg-menu-option";
     const cfgOptItemElem = document.createElement("div");
     cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+    cfgOptItemElem.addEventListener("click", () => {
+        const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+        settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
+        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+    });
     const cfgOptIconElem = document.createElement("img");
     cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
     cfgOptIconElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
@@ -980,11 +985,6 @@ function addConfigMenuOption(container) {
     cfgOptItemElem.appendChild(cfgOptIconElem);
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
-    cfgOptElem.addEventListener("click", () => {
-        const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
-        settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
-        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
-    });
     container.appendChild(cfgOptElem);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
 }
@@ -1415,6 +1415,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// REQUIREMENTS:
+// - modal using the <dialog> element
+// - sections with headers
+// - support for "custom widgets"
+// - debounce or save on button press to store new configuration
+// - much better scaling including no vw and vh units
 //#MARKER menu
 /**
  * These are the base selector values for the menu tabs
