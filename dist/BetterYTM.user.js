@@ -457,9 +457,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   branch: function() { return /* binding */ branch; },
 /* harmony export */   logLevel: function() { return /* binding */ logLevel; },
 /* harmony export */   mode: function() { return /* binding */ mode; },
-/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; },
-/* harmony export */   triesInterval: function() { return /* binding */ triesInterval; },
-/* harmony export */   triesLimit: function() { return /* binding */ triesLimit; }
+/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; }
 /* harmony export */ });
 const modeRaw = "development";
 const branchRaw = "develop";
@@ -472,16 +470,12 @@ const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
 const logLevel = mode === "production" ? 1 : 0;
-/** Specifies the hard limit for repetitive tasks */
-const triesLimit = 50;
-/** Specifies the interval in ms for repetitive tasks */
-const triesInterval = 200;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "6cf497e", // assert as generic string instead of union
+    lastCommit: "3db6e17", // assert as generic string instead of union
 });
 
 
@@ -995,22 +989,16 @@ function addConfigMenuOption(container) {
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
 }
 //#MARKER remove upgrade tab
-let removeUpgradeTries = 0;
 /** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
 function removeUpgradeTab() {
-    const tabElem = document.querySelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)");
-    const tabElemMini = document.querySelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)");
-    if (tabElem || tabElemMini) {
-        tabElem && tabElem.remove();
-        tabElemMini && tabElemMini.remove();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Removed upgrade tab after ${removeUpgradeTries} tries`);
-    }
-    else if (removeUpgradeTries < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit) {
-        setTimeout(removeUpgradeTab, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval); // TODO: improve this
-        removeUpgradeTries++;
-    }
-    else
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Couldn't find upgrade tab to remove after ${removeUpgradeTries} tries`);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
+        tabElemLarge.remove();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed large upgrade tab");
+    });
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
+        tabElemSmall.remove();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed small upgrade tab");
+    });
 }
 //#MARKER volume slider
 /** Sets the volume slider to a set size */
@@ -1184,8 +1172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1203,7 +1190,6 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 
-
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
@@ -1216,7 +1202,7 @@ const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
-const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MODULE_1__.clamp)(threshold, 0, 1)}` : "";
+const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(threshold, 0, 1)}` : "";
 //#MARKER cache
 /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map();
@@ -1238,26 +1224,20 @@ function addLyricsCacheEntry(artists, song, lyricsUrl) {
 }
 //#MARKER media control bar
 let mcCurrentSongTitle = "";
-let mcLyricsButtonAddTries = 0;
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
-    const likeContainer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer");
-    if (!likeContainer) {
-        mcLyricsButtonAddTries++;
-        if (mcLyricsButtonAddTries < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit) {
-            setTimeout(addMediaCtrlLyricsBtn, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval); // TODO: improve this
-            return;
-        }
-        return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't find element to append lyrics buttons to after ${mcLyricsButtonAddTries} tries`);
-    }
+    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.onSelectorExists)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
+}
+/** Actually adds the lyrics button after the like button renderer has been verified to exist */
+function addActualMediaCtrlLyricsBtn(likeContainer) {
     const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
     // run parallel without awaiting so the MutationObserver below can observe the title element in time
     (() => __awaiter(this, void 0, void 0, function* () {
         const gUrl = yield getCurrentLyricsUrl();
         const linkElem = createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
         linkElem.id = "betterytm-lyrics-button";
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Inserted lyrics button after ${mcLyricsButtonAddTries} tries:`, linkElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.insertAfter)(likeContainer, linkElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Inserted lyrics button into media controls bar");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
     }))();
     mcCurrentSongTitle = songTitleElem.title;
     const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
@@ -1273,7 +1253,7 @@ function addMediaCtrlLyricsBtn() {
                         const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
                         if (!lyricsBtn)
                             return;
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
                         lyricsBtn.style.cursor = "wait";
                         lyricsBtn.style.pointerEvents = "none";
                         mcCurrentSongTitle = newTitle;
@@ -1351,7 +1331,7 @@ function getCurrentLyricsUrl() {
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't resolve lyrics URL:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't resolve lyrics URL:", err);
             return null;
         }
     });
@@ -1363,33 +1343,33 @@ function getGeniusUrl(artist, song) {
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
             if (cacheEntry) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL in cache: ${cacheEntry}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Found lyrics URL in cache: ${cacheEntry}`);
                 return cacheEntry;
             }
             const startTs = Date.now();
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const fetchRes = yield fetch(fetchUrl);
             if (fetchRes.status === 429) {
                 alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
                 return undefined;
             }
             const result = yield fetchRes.json();
             if (typeof result === "object" && result.error) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't fetch lyrics URL:", result.message);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't fetch lyrics URL:", result.message);
                 return undefined;
             }
             const url = result.url;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
             addLyricsCacheEntry(artist, song, url);
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't get lyrics URL due to error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't get lyrics URL due to error:", err);
             return undefined;
         }
     });
@@ -1408,7 +1388,7 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("external/genius.png");
+    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
     linkElem.appendChild(imgElem);
     return linkElem;
 }
@@ -1429,13 +1409,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; },
 /* harmony export */   setActiveTab: function() { return /* binding */ setActiveTab; }
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
-/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../changelog.md */ "./changelog.md");
-/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./menu.html */ "./src/features/menu/menu.html");
-/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu.css */ "./src/features/menu/menu.css");
-
-
+/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../changelog.md */ "./changelog.md");
+/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu.html */ "./src/features/menu/menu.html");
+/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu.css */ "./src/features/menu/menu.css");
 
 
 
@@ -1456,18 +1432,13 @@ function initMenu() {
         const menuContainer = document.createElement("div");
         menuContainer.id = "bytm-menu-container";
         // add menu html
-        menuContainer.innerHTML = _menu_html__WEBPACK_IMPORTED_MODULE_3__["default"];
+        menuContainer.innerHTML = _menu_html__WEBPACK_IMPORTED_MODULE_1__["default"];
         document.body.appendChild(menuContainer);
         initMenuContents();
     });
 }
-let menuContTries = 0;
 function initMenuContents() {
     var _a;
-    if (!document.querySelector("#bytm-menu-dialog"))
-        return menuContTries++ < _constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit
-            ? setTimeout(initMenuContents, _constants__WEBPACK_IMPORTED_MODULE_0__.triesInterval)
-            : (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`couldn't create menu element after ${_constants__WEBPACK_IMPORTED_MODULE_0__.triesLimit} tries.`);
     // hook events
     for (const tab in tabsSelectors) {
         const selector = tabsSelectors[tab];
@@ -1485,9 +1456,9 @@ function setActiveTab(tab) {
     const tabs = Object.assign({}, tabsSelectors);
     delete tabs[tab];
     // disable all but new active tab
-    for (const disableTab of Object.keys(tabs)) {
-        document.querySelector(`#${tabs[disableTab]}-header`).dataset.active = "false";
-        document.querySelector(`#${tabs[disableTab]}-content`).dataset.active = "false";
+    for (const [, val] of Object.entries(tabs)) {
+        document.querySelector(`#${val}-header`).dataset.active = "false";
+        document.querySelector(`#${val}-content`).dataset.active = "false";
     }
     // enable new active tab
     document.querySelector(`#${tabsSelectors[tab]}-header`).dataset.active = "true";
@@ -1512,7 +1483,7 @@ function initInfoContent() {
 }
 function initChangelogContent() {
     const tab = document.querySelector("#bytm-menu-tab-changelog-content");
-    tab.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_2__["default"];
+    tab.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_0__["default"];
 }
 
 
