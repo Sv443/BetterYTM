@@ -45,6 +45,11 @@ export function addConfigMenuOption(container: HTMLElement) {
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+  cfgOptItemElem.addEventListener("click", () => {
+    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+    settingsBtnElem?.click();
+    openMenu();
+  });
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
@@ -59,12 +64,6 @@ export function addConfigMenuOption(container: HTMLElement) {
   cfgOptItemElem.appendChild(cfgOptTextElem);
 
   cfgOptElem.appendChild(cfgOptItemElem);
-
-  cfgOptElem.addEventListener("click", () => {
-    const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
-    settingsBtnElem?.click();
-    openMenu();
-  });
 
   container.appendChild(cfgOptElem);
 
