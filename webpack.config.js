@@ -24,7 +24,8 @@ const getConfig = (env) => ({
   entry: "./src/index.ts",
   output,
   experiments: {
-    // userscripts are automatically wrapped in an IIFE by the browser extension, so this can be enabled
+    // userscripts are automatically wrapped in an IIFE by the browser extension,
+    // also all modern browsers support ESM so this can safely be enabled
     outputModule: true,
   },
   mode: env.mode ?? defaultMode,
