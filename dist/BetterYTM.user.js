@@ -475,7 +475,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "069aba5", // assert as generic string instead of union
+    lastCommit: "b2e3e69", // assert as generic string instead of union
 });
 
 
@@ -955,9 +955,17 @@ function addWatermark() {
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name;
     watermark.title = "Open menu";
     watermark.tabIndex = 1000;
-    watermark.addEventListener("click", () => (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
+    watermark.addEventListener("click", (e) => {
+        e.stopPropagation();
+        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+    });
     // when using the tab key to navigate
-    watermark.addEventListener("keydown", (e) => e.key === "Enter" && (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)());
+    watermark.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.stopPropagation();
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+        }
+    });
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element:", watermark);
@@ -1064,7 +1072,8 @@ function addQueueButtons(queueItem) {
             lyricsBtnElem.style.display = "inline-flex";
             lyricsBtnElem.style.visibility = "initial";
             lyricsBtnElem.style.pointerEvents = "initial";
-            lyricsBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            lyricsBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
+                e.stopPropagation();
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
                 const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
@@ -1075,8 +1084,8 @@ function addQueueButtons(queueItem) {
                     const imgEl = lyricsBtnElem.querySelector("img");
                     if (!cachedLyricsUrl) {
                         songInfo.setAttribute("data-bytm-loading", "");
-                        imgEl.classList.add("bytm-spinner");
                         imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg");
+                        imgEl.classList.add("bytm-spinner");
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
                     if (!cachedLyricsUrl) {
@@ -1107,7 +1116,8 @@ function addQueueButtons(queueItem) {
                 rel: "noopener noreferrer",
             });
             deleteBtnElem.style.visibility = "initial";
-            deleteBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            deleteBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
+                e.stopPropagation();
                 // container of the queue item popup menu - element gets reused for every queue item
                 let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
                 try {
@@ -1836,7 +1846,8 @@ function addMenu() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.addGlobalStyle)(menuStyle, "menu");
     });
 }
-function closeMenu() {
+function closeMenu(e) {
+    (e === null || e === void 0 ? void 0 : e.bubbles) && e.stopPropagation();
     const menuBg = document.querySelector("#betterytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
