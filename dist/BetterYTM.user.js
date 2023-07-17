@@ -358,6 +358,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/features/menu/menu_old.css":
+/*!****************************************!*\
+  !*** ./src/features/menu/menu_old.css ***!
+  \****************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/config.ts":
 /*!***********************!*\
   !*** ./src/config.ts ***!
@@ -475,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b2e3e69", // assert as generic string instead of union
+    lastCommit: "a98c0f6", // assert as generic string instead of union
 });
 
 
@@ -1521,6 +1533,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
+/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu_old.css */ "./src/features/menu/menu_old.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1530,6 +1543,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -1777,73 +1791,7 @@ function addMenu() {
         menuContainer.appendChild(versionCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
-        // add style
-        const menuStyle = `\
-:root {
-  --bytm-menu-bg: #282828;
-}
-
-#betterytm-menu-bg {
-  display: block;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 15;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-/* TODO:FIXME: needs better positioning (vw and vh === "big no no") */
-#betterytm-menu {
-  display: inline-block;
-  position: fixed;
-  width: 50vw;
-  height: auto;
-  left: 25vw;
-  top: 10vh;
-  z-index: 16;
-  padding: 8px;
-  color: #fff;
-  background-color: var(--bytm-menu-bg);
-}
-
-#betterytm-menu-opts {
-  max-height: 70vh;
-  overflow: auto;
-}
-
-#betterytm-menu-titlecont {
-  display: flex;
-}
-
-#betterytm-menu-title {
-  font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 8px;
-}
-
-#betterytm-menu-linkscont {
-  display: flex;
-}
-
-.betterytm-menu-link {
-  display: inline-block;
-}
-
-/*.betterytm-menu-img {
-
-}*/
-
-#betterytm-menu-close {
-  cursor: pointer;
-}
-
-.betterytm-ftconf-label {
-  user-select: none;
-}`;
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added menu elem:", backgroundElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.addGlobalStyle)(menuStyle, "menu");
     });
 }
 function closeMenu(e) {
@@ -2255,7 +2203,72 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!***************************************************************************!*\
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!**********************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
+  \**********************************************************************************/
+:root {
+  --bytm-menu-bg: #282828;
+}
+
+#betterytm-menu-bg {
+  display: block;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#betterytm-menu {
+  display: inline-block;
+  position: fixed;
+  width: 50vw;
+  height: auto;
+  left: 25vw;
+  top: 10vh;
+  z-index: 16;
+  padding: 8px;
+  color: #fff;
+  background-color: var(--bytm-menu-bg);
+}
+
+#betterytm-menu-opts {
+  max-height: 70vh;
+  overflow: auto;
+}
+
+#betterytm-menu-titlecont {
+  display: flex;
+}
+
+#betterytm-menu-title {
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+#betterytm-menu-linkscont {
+  display: flex;
+}
+
+.betterytm-menu-link {
+  display: inline-block;
+}
+
+/*.betterytm-menu-img {
+
+}*/
+
+#betterytm-menu-close {
+  cursor: pointer;
+}
+
+.betterytm-ftconf-label {
+  user-select: none;
+}
+/*!***************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
 /* #MARKER misc */
