@@ -25,3 +25,8 @@ This is about the only reliable way I've found to discern the two without relyin
 ### Why read song info from the DOM?
 I've searched far and wide but haven't been able to locate any variable I could tap into to grab the song title and artist. As far as I know this is all done in a lower scope, so I can't access it from the level of a userscript. That'd possibly need a modified browser and most definitely humongous amounts of reverse-engineering.  
 So instead I have to entirely rely on the text that's displayed to the user, which might seem like it would be enough, but as mentioned in [difference between YT and YTM songs](#difference-between-yt-songs-and-ytm-songs), it's wildly inconsistent.
+  
+**Edit:**  
+Apparently there's an API for telling the OS which song is playing so this might be a better spot to grab the song data from, at least for the currently playing song. As a fallback, reading the DOM could still be used.  
+Whether it's worth it or not to implement this is another question.  
+[See issue #25](https://github.com/Sv443/BetterYTM/issues/25)
