@@ -477,7 +477,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "8c0c6c8", // assert as generic string instead of union
+    lastCommit: "dd4f803", // assert as generic string instead of union
 });
 
 
@@ -880,7 +880,7 @@ function enableBeforeUnload() {
 }
 /**
  * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
- * event listeners before they can be attached by the site.
+ * event listeners before they can be called by the site.
  */
 function initBeforeUnloadHook() {
     Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
@@ -888,7 +888,7 @@ function initBeforeUnloadHook() {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
             if (!beforeUnloadEnabled && args[0] === "beforeunload")
-                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Prevented beforeunload event listener from attaching");
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Prevented beforeunload event listener from being called");
             else
                 return original.apply(this, args);
         };
@@ -1066,11 +1066,16 @@ function addQueueButtons(queueItem) {
                     if (!cachedLyricsUrl)
                         songInfo.setAttribute("data-bytm-loading", "");
                     const imgEl = lyricsBtnElem.querySelector("img");
-                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.gif");
+                    imgEl.classList.add("bytm-spinner");
+                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg");
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
                     if (!cachedLyricsUrl)
                         songInfo.removeAttribute("data-bytm-loading");
-                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                    // so the new image doesn't "blink"
+                    setTimeout(() => {
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                        imgEl.classList.remove("bytm-spinner");
+                    }, 100);
                     if (!lyricsUrl) {
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
                             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
@@ -2199,7 +2204,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 {
     // console watermark with sexy gradient
-    const styleGradient = "background: rgba(165,38,38,1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
+    const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
     const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px;";
     console.log();
     console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`, `${styleGradient} ${styleCommon}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
@@ -2266,6 +2271,19 @@ function onDomLoad() {
   width: 24px;
   height: 24px;
   padding: 5px;
+}
+
+.bytm-spinner {
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* #MARKER watermark */
