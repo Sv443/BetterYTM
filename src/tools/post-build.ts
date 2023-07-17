@@ -5,6 +5,9 @@ import { exec } from "child_process";
 import dotenv from "dotenv";
 import pkg from "../../package.json" assert { type: "json" };
 
+/** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
+type Stringifiable = string | { toString(): string; };
+
 const { env, exit } = process;
 dotenv.config();
 
@@ -107,12 +110,10 @@ const header = `\
   }
 })();
 
-type Stringifiable = { toString(): string; } | string;
-
 /** Replaces tokens in the format `{{key}}` or `/⋆{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
   for(const key in replacements)
-    userscript = userscript.replace(new RegExp(`(\\/\\*)?{{${key}}}(\\*\\/)?`), String(replacements[key]));
+    userscript = userscript.replace(new RegExp(`(\\/\\*)?{{${key}}}(\\*\\/)?`, "gm"), String(replacements[key]));
   return userscript;
 }
 
