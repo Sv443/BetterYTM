@@ -376,7 +376,8 @@ export async function addMenu() {
   addGlobalStyle(menuStyle, "menu");
 }
 
-export function closeMenu() {
+export function closeMenu(e?: MouseEvent) {
+  e?.bubbles && e.stopPropagation();
   const menuBg = document.querySelector("#betterytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";

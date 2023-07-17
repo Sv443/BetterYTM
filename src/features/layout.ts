@@ -26,9 +26,17 @@ export function addWatermark() {
   watermark.title = "Open menu";
   watermark.tabIndex = 1000;
 
-  watermark.addEventListener("click", () => openMenu());
+  watermark.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openMenu();
+  });
   // when using the tab key to navigate
-  watermark.addEventListener("keydown", (e) => e.key === "Enter" && openMenu());
+  watermark.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") {
+      e.stopPropagation();
+      openMenu();
+    }
+  });
 
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
@@ -164,7 +172,9 @@ async function addQueueButtons(queueItem: HTMLElement) {
     lyricsBtnElem.style.visibility = "initial";
     lyricsBtnElem.style.pointerEvents = "initial";
 
-    lyricsBtnElem.addEventListener("click", async () => {
+    lyricsBtnElem.addEventListener("click", async (e) => {
+      e.stopPropagation();
+
       let lyricsUrl: string | undefined;
       const artistsSan = sanitizeArtists(artist);
       const songSan = sanitizeSong(song);
@@ -177,8 +187,8 @@ async function addQueueButtons(queueItem: HTMLElement) {
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
-          imgEl.classList.add("bytm-spinner");
           imgEl.src = getAssetUrl("loading.svg");
+          imgEl.classList.add("bytm-spinner");
         }
 
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
@@ -216,7 +226,9 @@ async function addQueueButtons(queueItem: HTMLElement) {
     });
     deleteBtnElem.style.visibility = "initial";
 
-    deleteBtnElem.addEventListener("click", async () => {
+    deleteBtnElem.addEventListener("click", async (e) => {
+      e.stopPropagation();
+
       // container of the queue item popup menu - element gets reused for every queue item
       let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown") as HTMLElement;
       try {
