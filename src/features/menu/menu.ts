@@ -1,5 +1,3 @@
-import { triesInterval, triesLimit } from "../../constants";
-import { error } from "../../utils";
 import changelogContent from "../../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
@@ -31,14 +29,7 @@ export function initMenu() {
   });
 }
 
-let menuContTries = 0;
-
-function initMenuContents(): unknown {
-  if(!document.querySelector("#bytm-menu-dialog"))
-    return menuContTries++ < triesLimit
-      ? setTimeout(initMenuContents, triesInterval)
-      : error(`couldn't create menu element after ${triesLimit} tries.`);
-
+function initMenuContents() {
   // hook events
   for(const tab in tabsSelectors) {
     const selector = tabsSelectors[tab as keyof typeof tabsSelectors];
@@ -58,9 +49,9 @@ export function setActiveTab(tab: keyof typeof tabsSelectors) {
   const tabs = { ...tabsSelectors };
   delete tabs[tab];
   // disable all but new active tab
-  for(const disableTab of Object.keys(tabs)) {
-    (document.querySelector(`#${tabs[disableTab as keyof typeof tabs]}-header`) as HTMLElement).dataset.active = "false";
-    (document.querySelector(`#${tabs[disableTab as keyof typeof tabs]}-content`) as HTMLElement).dataset.active = "false";
+  for(const [, val] of Object.entries(tabs)) {
+    (document.querySelector(`#${val}-header`) as HTMLElement).dataset.active = "false";
+    (document.querySelector(`#${val}-content`) as HTMLElement).dataset.active = "false";
   }
   // enable new active tab
   (document.querySelector(`#${tabsSelectors[tab]}-header`) as HTMLElement).dataset.active = "true";
