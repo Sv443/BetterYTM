@@ -2,7 +2,8 @@ import { defaultFeatures, getFeatures, saveFeatureConf } from "../../config";
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { addGlobalStyle, getAssetUrl, info, log } from "../../utils";
+import { getAssetUrl, info, log } from "../../utils";
+import "./menu_old.css";
 
 //#MARKER menu
 
@@ -304,76 +305,7 @@ export async function addMenu() {
 
   document.body.appendChild(backgroundElem);
 
-
-  // add style
-  const menuStyle = `\
-:root {
-  --bytm-menu-bg: #282828;
-}
-
-#betterytm-menu-bg {
-  display: block;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 15;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-/* TODO:FIXME: needs better positioning (vw and vh === "big no no") */
-#betterytm-menu {
-  display: inline-block;
-  position: fixed;
-  width: 50vw;
-  height: auto;
-  left: 25vw;
-  top: 10vh;
-  z-index: 16;
-  padding: 8px;
-  color: #fff;
-  background-color: var(--bytm-menu-bg);
-}
-
-#betterytm-menu-opts {
-  max-height: 70vh;
-  overflow: auto;
-}
-
-#betterytm-menu-titlecont {
-  display: flex;
-}
-
-#betterytm-menu-title {
-  font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 8px;
-}
-
-#betterytm-menu-linkscont {
-  display: flex;
-}
-
-.betterytm-menu-link {
-  display: inline-block;
-}
-
-/*.betterytm-menu-img {
-
-}*/
-
-#betterytm-menu-close {
-  cursor: pointer;
-}
-
-.betterytm-ftconf-label {
-  user-select: none;
-}`;
-
   log("Added menu elem:", backgroundElem);
-
-  addGlobalStyle(menuStyle, "menu");
 }
 
 export function closeMenu(e?: MouseEvent) {
