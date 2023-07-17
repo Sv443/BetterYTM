@@ -159,13 +159,19 @@ async function addQueueButtons(queueItem: HTMLElement) {
           songInfo.setAttribute("data-bytm-loading", "");
 
         const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
-        imgEl.src = getAssetUrl("loading.gif");
+        imgEl.classList.add("bytm-spinner");
+        imgEl.src = getAssetUrl("loading.svg");
 
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
         if(!cachedLyricsUrl)
           songInfo.removeAttribute("data-bytm-loading");
-        imgEl.src = getAssetUrl("external/genius.png");
+
+        // so the new image doesn't "blink"
+        setTimeout(() => {
+          imgEl.src = getAssetUrl("external/genius.png");
+          imgEl.classList.remove("bytm-spinner");
+        }, 100);
 
         if(!lyricsUrl) {
           if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
