@@ -23,7 +23,6 @@ const lyricsUrlCache = new Map<string, string>();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 100;
 
-// TODO: implement this
 /**
  * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.  
  * **The passed parameters need to be sanitized first!**

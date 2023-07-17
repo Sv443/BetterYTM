@@ -17,7 +17,7 @@ export interface FeatureConfig {
   arrowKeySupport: boolean;
   /** Add F9 as a hotkey to switch between the YT and YTM sites on a video / song */
   switchBetweenSites: boolean;
-  /** TODO: The hotkey that needs to be pressed to initiate the site switch */
+  /** TODO(v1.1): The hotkey that needs to be pressed to initiate the site switch */
   switchSitesHotkey: {
     key: string;
     shift: boolean;
@@ -38,7 +38,7 @@ export interface FeatureConfig {
   volumeSliderStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
-  /** TODO: Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
+  /** Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
   queueButtons: boolean;
 
   //#SECTION lyrics
