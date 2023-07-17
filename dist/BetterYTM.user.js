@@ -456,18 +456,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   branch: function() { return /* binding */ branch; },
 /* harmony export */   logLevel: function() { return /* binding */ logLevel; },
+/* harmony export */   mode: function() { return /* binding */ mode; },
 /* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; },
 /* harmony export */   triesInterval: function() { return /* binding */ triesInterval; },
 /* harmony export */   triesLimit: function() { return /* binding */ triesLimit; }
 /* harmony export */ });
+const modeRaw = "development";
 const branchRaw = "develop";
+/** The mode in which the script was built (production or development) */
+const mode = modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw;
 /** The branch to use in various URLs that point to the GitHub repo */
 const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 /**
  * How much info should be logged to the devtools console?
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-const logLevel = 0; // TODO: change in prod.
+const logLevel = mode === "production" ? 1 : 0;
 /** Specifies the hard limit for repetitive tasks */
 const triesLimit = 50;
 /** Specifies the interval in ms for repetitive tasks */
@@ -477,7 +481,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "dd4f803", // assert as generic string instead of union
+    lastCommit: "6cf497e", // assert as generic string instead of union
 });
 
 
@@ -551,7 +555,6 @@ function initSiteEvents() {
                     siteEvents.fire("autoplayQueueChanged", target);
                 }
             });
-            // TODO: check if this works since autoplay seems to be lazy-loaded
             autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents"), {
                 childList: true,
             });
@@ -726,10 +729,9 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
-        visible: false,
     },
     queueButtons: {
-        desc: "Add buttons while hovering over a song in a queue to quickly remove it (TODO) or open its lyrics",
+        desc: "Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
         type: "toggle",
         category: "layout",
         default: true,
@@ -968,10 +970,29 @@ function addWatermark() {
 }
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 function addConfigMenuOption(container) {
-    const cfgElem = document.createElement("div");
-    cfgElem.innerText = "TODO: BYTM Config";
-    container.appendChild(cfgElem);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Config button to menu popup");
+    const cfgOptElem = document.createElement("a");
+    cfgOptElem.role = "button";
+    cfgOptElem.tabIndex = 0;
+    cfgOptElem.className = "bytm-cfg-menu-option";
+    const cfgOptItemElem = document.createElement("div");
+    cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+    const cfgOptIconElem = document.createElement("img");
+    cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
+    cfgOptIconElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+    const cfgOptTextElem = document.createElement("div");
+    cfgOptTextElem.className = "bytm-cfg-menu-option-text";
+    cfgOptTextElem.innerText = "BetterYTM Configuration";
+    cfgOptTextElem.title = "Click to open BetterYTM's configuration menu";
+    cfgOptItemElem.appendChild(cfgOptIconElem);
+    cfgOptItemElem.appendChild(cfgOptTextElem);
+    cfgOptElem.appendChild(cfgOptItemElem);
+    cfgOptElem.addEventListener("click", () => {
+        const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+        settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
+        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+    });
+    container.appendChild(cfgOptElem);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
 }
 //#MARKER remove upgrade tab
 let removeUpgradeTries = 0;
@@ -1063,19 +1084,21 @@ function addQueueButtons(queueItem) {
                 if (cachedLyricsUrl)
                     lyricsUrl = cachedLyricsUrl;
                 else if (!songInfo.hasAttribute("data-bytm-loading")) {
-                    if (!cachedLyricsUrl)
-                        songInfo.setAttribute("data-bytm-loading", "");
                     const imgEl = lyricsBtnElem.querySelector("img");
-                    imgEl.classList.add("bytm-spinner");
-                    imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg");
+                    if (!cachedLyricsUrl) {
+                        songInfo.setAttribute("data-bytm-loading", "");
+                        imgEl.classList.add("bytm-spinner");
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg");
+                    }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
-                    if (!cachedLyricsUrl)
+                    if (!cachedLyricsUrl) {
                         songInfo.removeAttribute("data-bytm-loading");
-                    // so the new image doesn't "blink"
-                    setTimeout(() => {
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
-                        imgEl.classList.remove("bytm-spinner");
-                    }, 100);
+                        // so the new image doesn't "blink"
+                        setTimeout(() => {
+                            imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                            imgEl.classList.remove("bytm-spinner");
+                        }, 100);
+                    }
                     if (!lyricsUrl) {
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
                             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
@@ -1199,7 +1222,6 @@ const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MOD
 const lyricsUrlCache = new Map();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 100;
-// TODO: implement this
 /**
  * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
  * **The passed parameters need to be sanitized first!**
@@ -1541,12 +1563,16 @@ function addMenu() {
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             var _a;
-            if (((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg")
+            if (((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg") {
+                e.stopPropagation();
                 closeMenu();
+            }
         });
-        document.body.addEventListener("keydown", ({ key }) => {
-            if (key === "Escape")
+        document.body.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                e.stopPropagation();
                 closeMenu();
+            }
         });
         const menuContainer = document.createElement("div");
         menuContainer.title = "";
@@ -2286,6 +2312,49 @@ function onDomLoad() {
   }
 }
 
+/* #MARKER menu */
+
+.bytm-cfg-menu-option {
+  display: block;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.bytm-cfg-menu-option-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
+  min-height: var(--paper-item-min-height, 40px);
+  white-space: nowrap;
+}
+
+.bytm-cfg-menu-option-item:hover {
+  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+}
+
+.bytm-cfg-menu-option-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: none;
+}
+
+.bytm-cfg-menu-option-text {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
+  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
+}
+
 /* #MARKER watermark */
 
 #betterytm-watermark {
@@ -2305,7 +2374,6 @@ function onDomLoad() {
 }
 
 /* #MARKER queue buttons */
-/* TODO: */
 
 .side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
   position: relative;
