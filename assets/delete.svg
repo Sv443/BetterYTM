@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" viewBox="0 -960 960 960">
-  <path fill="#ffffff" d="M295.615-160q-22.442 0-38.913-16.471-16.471-16.471-16.471-38.913v-518.462H200v-30.77h154.154v-26.154h251.692v26.154H760v30.77h-40.231v518.462q0 23.057-16.163 39.221Q687.443-160 664.385-160h-368.77ZM689-733.846H271v518.462q0 10.769 7.308 17.692 7.307 6.923 17.307 6.923h368.77q9.231 0 16.923-7.692Q689-206.154 689-215.384v-518.462ZM395.461-273.692h30.77v-378.231h-30.77v378.231Zm138.308 0h30.77v-378.231h-30.77v378.231ZM271-733.846v543.077-543.077Z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg4"
+   version="1.1"
+   viewBox="0 -960 960 960"
+   height="48px"
+   width="48px">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <path
+     style="fill:#ffffff;stroke-width:1.11608088"
+     id="path2"
+     d="m 274.21143,-123.38983 q -25.04709,0 -43.43006,-18.38297 -18.38297,-18.38297 -18.38297,-43.43005 v -578.64553 h -44.90105 v -34.34181 h 172.04834 v -29.18998 h 280.90862 v 29.18998 h 172.04834 v 34.34181 H 747.6016 v 578.64553 q 0,25.73347 -18.03922,43.7738 -18.03921,18.03922 -43.77381,18.03922 z M 713.2609,-763.84838 H 246.7391 v 578.64553 q 0,12.01907 8.15631,19.7457 8.15521,7.72663 19.31602,7.72663 h 411.57714 q 10.30255,0 18.88744,-8.5849 8.58489,-8.58601 8.58489,-18.88743 z M 385.64764,-250.2793 h 34.34181 v -422.13639 h -34.34181 z m 154.36291,0 h 34.34181 V -672.41569 H 540.01055 Z M 246.7391,-763.84838 v 606.11786 z" />
 </svg>
