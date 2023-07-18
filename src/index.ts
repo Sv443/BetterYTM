@@ -25,12 +25,12 @@ const precacheImgs = [
 {
   // console watermark with sexy gradient
   const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
-  const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px;";
+  const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px 6px;";
 
   console.log();
   console.log(
     `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${scriptInfo.lastCommit} ─ ${scriptInfo.namespace}`,
-    `${styleGradient} ${styleCommon}`,
+    `font-weight: bold; ${styleCommon} ${styleGradient}`,
     `background-color: #333; ${styleCommon}`,
     "padding: initial;",
   );

@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b81ac69", // assert as generic string instead of union
+    lastCommit: "2af9133", // assert as generic string instead of union
 });
 
 
@@ -2242,9 +2242,9 @@ const precacheImgs = [
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
-    const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px;";
+    const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px 6px;";
     console.log();
-    console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`, `${styleGradient} ${styleCommon}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+    console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
     console.log(`─ Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase} ─`);
     console.log();
 }
