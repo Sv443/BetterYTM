@@ -7,4 +7,38 @@
     "*.env": "dotenv",
     "*.env.template": "dotenv",
   },
+
+  // requires extension: fabiospampinato.vscode-highlight
+  "highlight.regexes": {
+    "(TODO(\\((\\s|\\d|\\w|[,.-_+*&])+\\))?:?)": { // TODO: or TODO or TODO(xy): but not todo or todo:
+      "backgroundColor": "#ed0",
+      "color": "black",
+      "overviewRulerColor": "#ed0"
+    },
+    "(#MARKER)": { // #MARKER test
+      "backgroundColor": "#c31",
+      "color": "#fff",
+      "isWholeLine": true,
+      "overviewRulerColor": "#c31"
+    },
+    "(#SECTION ([^\\S\\r\\n]*[\\w,.\\-_&]+)*[:]*)": { // #SECTION test, 123 & foo
+      "backgroundColor": "#44f",
+      "color": "white",
+      "overviewRulerColor": "#44f"
+    },
+    "(#?(DEBUG|DBG)#?)": { // #DEBUG or DEBUG or #DBG or #DBG#
+      "backgroundColor": "#ff0",
+      "color": "blue",
+      "overviewRulerColor": "#ff0"
+    },
+    "(IMPORTANT:)": { // IMPORTANT:
+      "backgroundColor": "#a22",
+      "color": "#fff"
+    },
+    "(FIXME:)": { // FIXME:
+      "backgroundColor": "#a22",
+      "color": "#fff",
+      "overviewRulerColor": "#752020"
+    }
+  },
 }
