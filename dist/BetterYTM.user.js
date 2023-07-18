@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "bdafbdf", // assert as generic string instead of union
+    lastCommit: "0de7c51", // assert as generic string instead of union
 });
 
 
@@ -985,8 +985,8 @@ function addWatermark() {
 function addConfigMenuOption(container) {
     const cfgOptElem = document.createElement("a");
     cfgOptElem.role = "button";
-    cfgOptElem.tabIndex = 0;
     cfgOptElem.className = "bytm-cfg-menu-option";
+    cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
     const cfgOptItemElem = document.createElement("div");
     cfgOptItemElem.className = "bytm-cfg-menu-option-item";
     cfgOptItemElem.addEventListener("click", () => {
@@ -1000,7 +1000,6 @@ function addConfigMenuOption(container) {
     const cfgOptTextElem = document.createElement("div");
     cfgOptTextElem.className = "bytm-cfg-menu-option-text";
     cfgOptTextElem.innerText = "BetterYTM Configuration";
-    cfgOptTextElem.title = "Click to open BetterYTM's configuration menu";
     cfgOptItemElem.appendChild(cfgOptIconElem);
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
@@ -1037,7 +1036,6 @@ function setVolSliderStep() {
     sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 //#MARKER queue buttons
-// TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 function initQueueButtons() {
     const addQueueBtns = (evt) => {
         let amt = 0;
@@ -1156,7 +1154,7 @@ function addQueueButtons(queueItem) {
             }));
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"); // TODO: make own icon for this
+            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg");
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
@@ -1168,7 +1166,6 @@ function addQueueButtons(queueItem) {
     });
 }
 //#MARKER better clickable stuff
-// TODO: account for the fact initially the elements might not exist, if the site was opened directly with the /watch path
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
     /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
@@ -2242,6 +2239,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 const precacheImgs = [
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png"),
 ];
 {
