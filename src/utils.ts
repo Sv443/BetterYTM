@@ -153,6 +153,19 @@ export function insertAfter(beforeNode: HTMLElement, afterNode: HTMLElement) {
   return afterNode;
 }
 
+/** Adds a parent container around the provided element - returns the new parent node */
+export function addParent(element: HTMLElement, newParent: HTMLElement) {
+  const oldParent = element.parentNode;
+
+  if(!oldParent)
+    throw new Error("Element doesn't have a parent node");
+
+  oldParent.replaceChild(newParent, element);
+  newParent.appendChild(element);
+
+  return newParent;
+}
+
 /**
  * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param style CSS string
@@ -210,16 +223,16 @@ export function initSelectorExistsCheck() {
   log("Initialized \"selector exists\" MutationObserver");
 }
 
-/** Preloads an image by URL so it can be loaded from cache later on */
-export function precacheImage(src: string, rejects = false) {
-  return new Promise((res, rej) => {
+/** Preloads an array of image URLs so they can be loaded instantly from cache later on */
+export function precacheImages(srcUrls: string[], rejects = false) {
+  const promises = srcUrls.map(src => new Promise((res, rej) => {
     const image = new Image();
-
     image.src = src;
-
     image.addEventListener("load", () => res(image));
     image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
-  });
+  }));
+
+  return Promise.allSettled(promises);
 }
 
 //#SECTION misc

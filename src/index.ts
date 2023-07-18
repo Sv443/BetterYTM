@@ -1,6 +1,6 @@
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImage, setLogLevel } from "./utils";
+import { addGlobalStyle, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImages, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -56,8 +56,9 @@ async function init() {
   try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
 
-    Promise.all(precacheImgs.map(imgSrc => precacheImage(imgSrc)))
-      .then(() => log(`Pre-cached ${precacheImgs.length} images`));
+    precacheImages(precacheImgs)
+      .then(() => log(`Pre-cached ${precacheImgs.length} images`))
+      .catch((e) => error(`Pre-caching error: ${e}`));
   }
   catch(err) {
     console.error(`${scriptInfo.name} - General Error:`, err);

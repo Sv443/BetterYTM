@@ -120,3 +120,13 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
   display: none !important;
 }
+
+/* #MARKER anchor improvements */
+
+ytmusic-responsive-list-item-renderer .left-items {
+  margin-right: 0 !important;
+}
+
+.bytm-carousel-shelf-anchor {
+  margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
+}
