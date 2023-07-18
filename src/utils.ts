@@ -210,6 +210,18 @@ export function initSelectorExistsCheck() {
   log("Initialized \"selector exists\" MutationObserver");
 }
 
+/** Preloads an image by URL so it can be loaded from cache later on */
+export function precacheImage(src: string, rejects = false) {
+  return new Promise((res, rej) => {
+    const image = new Image();
+
+    image.src = src;
+
+    image.addEventListener("load", () => res(image));
+    image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
+  });
+}
+
 //#SECTION misc
 
 /**

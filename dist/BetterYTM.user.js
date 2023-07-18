@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "a98c0f6", // assert as generic string instead of union
+    lastCommit: "d2eee28", // assert as generic string instead of union
 });
 
 
@@ -1062,6 +1062,7 @@ function initQueueButtons() {
 /**
  * Adds the buttons to each item in the current song queue.
  * Also observes for changes to add new buttons to new items in the queue.
+ * TODO:FIXME: deleting an element from the queue shifts the lyrics buttons
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 function addQueueButtons(queueItem) {
@@ -1833,6 +1834,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
 /* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
+/* harmony export */   precacheImage: function() { return /* binding */ precacheImage; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
@@ -2004,6 +2006,15 @@ function initSelectorExistsCheck() {
     });
     log("Initialized \"selector exists\" MutationObserver");
 }
+/** Preloads an image by URL so it can be loaded from cache later on */
+function precacheImage(src, rejects = false) {
+    return new Promise((res, rej) => {
+        const image = new Image();
+        image.src = src;
+        image.addEventListener("load", () => res(image));
+        image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
+    });
+}
 //#SECTION misc
 /**
  * Creates an invisible anchor with _blank target and clicks it.
@@ -2164,6 +2175,12 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+/** URLs of images to pre-cache so they can be displayed instantly */
+const precacheImgs = [
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png"),
+];
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -2186,6 +2203,8 @@ function init() {
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
+            Promise.all(precacheImgs.map(imgSrc => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImage)(imgSrc)))
+                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`));
         }
         catch (err) {
             console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
