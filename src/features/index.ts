@@ -78,7 +78,7 @@ export const featInfo = {
     default: true,
   },
   queueButtons: {
-    desc: "Add buttons to each song in the queue to quickly open its lyrics or remove it from the queue",
+    desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
     type: "toggle",
     category: "layout",
     default: true,

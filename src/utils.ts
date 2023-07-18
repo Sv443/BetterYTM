@@ -144,8 +144,6 @@ function ytForceShowVideoTime() {
 
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
- * @param beforeNode
- * @param afterNode
  * @returns Returns the `afterNode`
  */
 export function insertAfter(beforeNode: HTMLElement, afterNode: HTMLElement) {
