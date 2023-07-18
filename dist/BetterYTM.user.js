@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "402f7b0", // assert as generic string instead of union
+    lastCommit: "5f4f423", // assert as generic string instead of union
 });
 
 
@@ -1154,7 +1154,7 @@ function addQueueButtons(queueItem) {
             }));
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg");
+            imgElem.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgaWQ9InN2ZzQiCiAgIHZlcnNpb249IjEuMSIKICAgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiCiAgIGhlaWdodD0iNDhweCIKICAgd2lkdGg9IjQ4cHgiPgogIDxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTEwIj4KICAgIDxyZGY6UkRGPgogICAgICA8Y2M6V29yawogICAgICAgICByZGY6YWJvdXQ9IiI+CiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+CiAgICAgICAgPGRjOnR5cGUKICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPgogICAgICAgIDxkYzp0aXRsZT48L2RjOnRpdGxlPgogICAgICA8L2NjOldvcms+CiAgICA8L3JkZjpSREY+CiAgPC9tZXRhZGF0YT4KICA8ZGVmcwogICAgIGlkPSJkZWZzOCIgLz4KICA8cGF0aAogICAgIHN0eWxlPSJmaWxsOiNmZmZmZmY7c3Ryb2tlLXdpZHRoOjEuMTE2MDgwODgiCiAgICAgaWQ9InBhdGgyIgogICAgIGQ9Im0gMjc0LjIxMTQzLC0xMjMuMzg5ODMgcSAtMjUuMDQ3MDksMCAtNDMuNDMwMDYsLTE4LjM4Mjk3IC0xOC4zODI5NywtMTguMzgyOTcgLTE4LjM4Mjk3LC00My40MzAwNSB2IC01NzguNjQ1NTMgaCAtNDQuOTAxMDUgdiAtMzQuMzQxODEgaCAxNzIuMDQ4MzQgdiAtMjkuMTg5OTggaCAyODAuOTA4NjIgdiAyOS4xODk5OCBoIDE3Mi4wNDgzNCB2IDM0LjM0MTgxIEggNzQ3LjYwMTYgdiA1NzguNjQ1NTMgcSAwLDI1LjczMzQ3IC0xOC4wMzkyMiw0My43NzM4IC0xOC4wMzkyMSwxOC4wMzkyMiAtNDMuNzczODEsMTguMDM5MjIgeiBNIDcxMy4yNjA5LC03NjMuODQ4MzggSCAyNDYuNzM5MSB2IDU3OC42NDU1MyBxIDAsMTIuMDE5MDcgOC4xNTYzMSwxOS43NDU3IDguMTU1MjEsNy43MjY2MyAxOS4zMTYwMiw3LjcyNjYzIGggNDExLjU3NzE0IHEgMTAuMzAyNTUsMCAxOC44ODc0NCwtOC41ODQ5IDguNTg0ODksLTguNTg2MDEgOC41ODQ4OSwtMTguODg3NDMgeiBNIDM4NS42NDc2NCwtMjUwLjI3OTMgaCAzNC4zNDE4MSB2IC00MjIuMTM2MzkgaCAtMzQuMzQxODEgeiBtIDE1NC4zNjI5MSwwIGggMzQuMzQxODEgViAtNjcyLjQxNTY5IEggNTQwLjAxMDU1IFogTSAyNDYuNzM5MSwtNzYzLjg0ODM4IHYgNjA2LjExNzg2IHoiIC8+Cjwvc3ZnPgo=";
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
