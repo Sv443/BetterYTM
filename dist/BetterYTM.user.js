@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "20d21a6", // assert as generic string instead of union
+    lastCommit: "b81ac69", // assert as generic string instead of union
 });
 
 
@@ -736,14 +736,14 @@ const featInfo = {
         default: true,
     },
     queueButtons: {
-        desc: "Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
+        desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
         type: "toggle",
         category: "layout",
         default: true,
     },
     //#SECTION lyrics
     geniusLyrics: {
-        desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
+        desc: "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
         type: "toggle",
         category: "lyrics",
         default: true,
@@ -1999,8 +1999,6 @@ function ytForceShowVideoTime() {
 //#SECTION DOM
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
- * @param beforeNode
- * @param afterNode
  * @returns Returns the `afterNode`
  */
 function insertAfter(beforeNode, afterNode) {
