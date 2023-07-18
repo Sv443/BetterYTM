@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0e73b92", // assert as generic string instead of union
+    lastCommit: "402f7b0", // assert as generic string instead of union
 });
 
 
@@ -2237,10 +2237,9 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 /** URLs of images to pre-cache so they can be displayed instantly */
 const precacheImgs = [
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("close.png"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("spinner.svg"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png"),
 ];
 {
     // console watermark with sexy gradient
