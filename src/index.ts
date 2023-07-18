@@ -1,6 +1,6 @@
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, error, getDomain, initSelectorExistsCheck, log, onSelectorExists, setLogLevel } from "./utils";
+import { addGlobalStyle, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImage, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -14,6 +14,13 @@ import {
   // menu
   initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
 } from "./features/index";
+
+/** URLs of images to pre-cache so they can be displayed instantly */
+const precacheImgs = [
+  getAssetUrl("close.png"),
+  getAssetUrl("loading.svg"),
+  getAssetUrl("icon/icon.png"),
+];
 
 {
   // console watermark with sexy gradient
@@ -48,6 +55,9 @@ async function init() {
 
   try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
+
+    Promise.all(precacheImgs.map(imgSrc => precacheImage(imgSrc)))
+      .then(() => log(`Pre-cached ${precacheImgs.length} images`));
   }
   catch(err) {
     console.error(`${scriptInfo.name} - General Error:`, err);

@@ -146,7 +146,8 @@ export function initQueueButtons() {
 
 /**
  * Adds the buttons to each item in the current song queue.  
- * Also observes for changes to add new buttons to new items in the queue.
+ * Also observes for changes to add new buttons to new items in the queue.  
+ * TODO:FIXME: deleting an element from the queue shifts the lyrics buttons
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 async function addQueueButtons(queueItem: HTMLElement) {
