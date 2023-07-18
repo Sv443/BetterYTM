@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "2af9133", // assert as generic string instead of union
+    lastCommit: "5390c55", // assert as generic string instead of union
 });
 
 
@@ -2526,7 +2526,7 @@ ytmusic-responsive-list-item-renderer .left-items {
 }
 
 
-/*# sourceMappingURL=main.css.map*/`, "global");
+/*# sourceMappingURL=http://localhost:8710/main.css.map*/`, "global");
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.loadFeatureConf)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.initSelectorExistsCheck)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain '${domain}'`);
@@ -2570,4 +2570,4 @@ preInit();
 
 }();
 
-//# sourceMappingURL=BetterYTM.user.js.map
+//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map

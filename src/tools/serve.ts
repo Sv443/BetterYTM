@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
 import { output as webpackCfgOutput } from "../../webpack.config.js";
+import "dotenv/config";
 
 const envPort = Number(process.env.DEV_SERVER_PORT);
 

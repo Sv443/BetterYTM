@@ -15,6 +15,10 @@ const mode = process.argv.find((v) => v.trim().match(/^(--)?mode=production$/)) 
 const branch = mode === "production" ? "main" : "develop";
 const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
 
+const envPort = Number(process.env.DEV_SERVER_PORT);
+/** HTTP port of the dev server */
+const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
+
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
@@ -85,6 +89,8 @@ const header = `\
 
     if(mode === "production")
       userscript = remSourcemapComments(userscript);
+    else
+      userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
     // insert userscript header and final newline
     const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
