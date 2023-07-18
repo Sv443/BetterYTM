@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "1d36fe9", // assert as generic string instead of union
+    lastCommit: "bdafbdf", // assert as generic string instead of union
 });
 
 
@@ -1008,7 +1008,7 @@ function addConfigMenuOption(container) {
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
 }
 //#MARKER remove upgrade tab
-/** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
+/** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
         tabElemLarge.remove();
@@ -1195,6 +1195,8 @@ function addAnchorImprovements() {
             addedNodes.forEach(conditionalAnchorImprovements);
     });
 }
+// TODO: add to "related" tab in /watch
+// TODO: add anchors around "home", "explore" and "library" in sidebar
 /**
  * Actually adds the anchor improvements to carousel shelf items
  * @param itemsElement The container with the selector `ul#items` inside of each `ytmusic-carousel`
@@ -2264,9 +2266,10 @@ function init() {
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImages)(precacheImgs)
-                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`))
-                .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Pre-caching error: ${e}`));
+            if (domain === "ytm")
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImages)(precacheImgs)
+                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`))
+                    .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Pre-caching error: ${e}`));
         }
         catch (err) {
             console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);

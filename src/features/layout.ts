@@ -80,7 +80,7 @@ export function addConfigMenuOption(container: HTMLElement) {
 
 //#MARKER remove upgrade tab
 
-/** Removes the "Upgrade" / YT Music Premium tab from the title / nav bar */
+/** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export function removeUpgradeTab() {
   onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
     tabElemLarge.remove();
@@ -311,6 +311,9 @@ export function addAnchorImprovements() {
       addedNodes.forEach(conditionalAnchorImprovements);
   });
 }
+
+// TODO: add to "related" tab in /watch
+// TODO: add anchors around "home", "explore" and "library" in sidebar
 
 /**
  * Actually adds the anchor improvements to carousel shelf items
