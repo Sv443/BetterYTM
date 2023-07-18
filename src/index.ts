@@ -17,10 +17,9 @@ import {
 
 /** URLs of images to pre-cache so they can be displayed instantly */
 const precacheImgs = [
-  getAssetUrl("close.png"),
-  getAssetUrl("loading.svg"),
+  getAssetUrl("spinner.svg"),
   getAssetUrl("delete.svg"),
-  getAssetUrl("icon/icon.png"),
+  getAssetUrl("external/genius.png"),
 ];
 
 {
