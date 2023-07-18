@@ -68,10 +68,10 @@ This project is based on my extensive template for making a userscript with Type
 | Command | Description |
 | --- | --- |
 | `npm i` | Run once to install dependencies |
-| `npm run lint` | Lints the userscript with ESLint |
 | `npm run build-prod` | Builds the userscript for production (minified) |
 | `npm run build-dev` | Builds the userscript for development |
 | `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `src/tools/serve.ts` |
+| `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint |
 
 #### Extras:
 When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
@@ -81,7 +81,7 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 <br><br>
 
 ### Dependencies:
-This userscript depends on these libraries:
+This userscript depends on these runtime libraries:
 - [@billjs/event-emitter](https://npmjs.org/package/@billjs/event-emitter)
 
 <br><br>
