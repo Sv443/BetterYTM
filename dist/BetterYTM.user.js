@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "d2eee28", // assert as generic string instead of union
+    lastCommit: "1d36fe9", // assert as generic string instead of union
 });
 
 
@@ -663,7 +663,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // TODO
+
 
 /** Contains all possible features with their default values and other config */
 const featInfo = {
@@ -699,11 +699,10 @@ const featInfo = {
         default: false,
     },
     anchorImprovements: {
-        desc: "TODO: Make it so middle clicking a song to open it in a new tab is easier",
+        desc: "Make it so middle clicking a song to open it in a new tab is easier",
         type: "toggle",
         category: "input",
         default: true,
-        visible: false,
     },
     //#SECTION layout
     removeUpgradeTab: {
@@ -1170,8 +1169,59 @@ function addQueueButtons(queueItem) {
 }
 //#MARKER better clickable stuff
 // TODO: account for the fact initially the elements might not exist, if the site was opened directly with the /watch path
+/** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
-    void 0;
+    /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
+    const conditionalAnchorImprovements = (el) => {
+        const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
+        if (listItemRenderer) {
+            const itemsElem = el.querySelector("ul#items");
+            if (itemsElem) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Adding anchor improvements to carousel shelf");
+                improveCarouselAnchors(itemsElem);
+            }
+        }
+    };
+    // initial three shelves aren't included in the event fire
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
+        const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
+        carouselShelves.forEach(conditionalAnchorImprovements);
+    });
+    // every shelf that's loaded by scrolling:
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
+        const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
+        void removedNodes;
+        if (addedNodes.length > 0)
+            addedNodes.forEach(conditionalAnchorImprovements);
+    });
+}
+/**
+ * Actually adds the anchor improvements to carousel shelf items
+ * @param itemsElement The container with the selector `ul#items` inside of each `ytmusic-carousel`
+ */
+function improveCarouselAnchors(itemsElement) {
+    if (itemsElement.classList.contains("bytm-anchors-improved"))
+        return;
+    itemsElement.classList.add("bytm-anchors-improved");
+    for (const listItem of itemsElement.querySelectorAll("ytmusic-responsive-list-item-renderer")) {
+        try {
+            const thumbnailElem = listItem.querySelector(".left-items");
+            const titleElem = listItem.querySelector(".title-column yt-formatted-string.title a");
+            if (!thumbnailElem || !titleElem) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
+                continue;
+            }
+            const thumbnailAnchor = document.createElement("a");
+            thumbnailAnchor.className = "bytm-carousel-shelf-anchor";
+            thumbnailAnchor.href = titleElem.href;
+            thumbnailAnchor.target = "_self";
+            thumbnailAnchor.role = "button";
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(thumbnailElem, thumbnailAnchor);
+        }
+        catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
+        }
+    }
 }
 
 
@@ -1819,6 +1869,7 @@ function openMenu() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   addParent: function() { return /* binding */ addParent; },
 /* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
 /* harmony export */   clamp: function() { return /* binding */ clamp; },
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
@@ -1834,7 +1885,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
 /* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
-/* harmony export */   precacheImage: function() { return /* binding */ precacheImage; },
+/* harmony export */   precacheImages: function() { return /* binding */ precacheImages; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
@@ -1958,6 +2009,15 @@ function insertAfter(beforeNode, afterNode) {
     (_a = beforeNode.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(afterNode, beforeNode.nextSibling);
     return afterNode;
 }
+/** Adds a parent container around the provided element - returns the new parent node */
+function addParent(element, newParent) {
+    const oldParent = element.parentNode;
+    if (!oldParent)
+        throw new Error("Element doesn't have a parent node");
+    oldParent.replaceChild(newParent, element);
+    newParent.appendChild(element);
+    return newParent;
+}
 /**
  * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param style CSS string
@@ -2006,14 +2066,15 @@ function initSelectorExistsCheck() {
     });
     log("Initialized \"selector exists\" MutationObserver");
 }
-/** Preloads an image by URL so it can be loaded from cache later on */
-function precacheImage(src, rejects = false) {
-    return new Promise((res, rej) => {
+/** Preloads an array of image URLs so they can be loaded instantly from cache later on */
+function precacheImages(srcUrls, rejects = false) {
+    const promises = srcUrls.map(src => new Promise((res, rej) => {
         const image = new Image();
         image.src = src;
         image.addEventListener("load", () => res(image));
         image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
-    });
+    }));
+    return Promise.allSettled(promises);
 }
 //#SECTION misc
 /**
@@ -2203,8 +2264,9 @@ function init() {
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
-            Promise.all(precacheImgs.map(imgSrc => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImage)(imgSrc)))
-                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`));
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImages)(precacheImgs)
+                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`))
+                .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Pre-caching error: ${e}`));
         }
         catch (err) {
             console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
@@ -2411,6 +2473,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
   display: none !important;
+}
+
+/* #MARKER anchor improvements */
+
+ytmusic-responsive-list-item-renderer .left-items {
+  margin-right: 0 !important;
+}
+
+.bytm-carousel-shelf-anchor {
+  margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
 }
 
 /*!******************************************************************************!*\
