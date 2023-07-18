@@ -56,9 +56,10 @@ async function init() {
   try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
 
-    precacheImages(precacheImgs)
-      .then(() => log(`Pre-cached ${precacheImgs.length} images`))
-      .catch((e) => error(`Pre-caching error: ${e}`));
+    if(domain === "ytm")
+      precacheImages(precacheImgs)
+        .then(() => log(`Pre-cached ${precacheImgs.length} images`))
+        .catch((e) => error(`Pre-caching error: ${e}`));
   }
   catch(err) {
     console.error(`${scriptInfo.name} - General Error:`, err);
