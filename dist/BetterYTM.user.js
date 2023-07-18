@@ -487,7 +487,7 @@ const scriptInfo = Object.freeze({
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0de7c51", // assert as generic string instead of union
+    lastCommit: "0e73b92", // assert as generic string instead of union
 });
 
 
@@ -1094,7 +1094,7 @@ function addQueueButtons(queueItem) {
                     const imgEl = lyricsBtnElem.querySelector("img");
                     if (!cachedLyricsUrl) {
                         songInfo.setAttribute("data-bytm-loading", "");
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("loading.svg");
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("spinner.svg");
                         imgEl.classList.add("bytm-spinner");
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);

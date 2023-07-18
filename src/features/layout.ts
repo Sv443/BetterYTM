@@ -186,7 +186,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
-          imgEl.src = getAssetUrl("loading.svg");
+          imgEl.src = getAssetUrl("spinner.svg");
           imgEl.classList.add("bytm-spinner");
         }
 
