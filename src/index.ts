@@ -19,6 +19,7 @@ import {
 const precacheImgs = [
   getAssetUrl("close.png"),
   getAssetUrl("loading.svg"),
+  getAssetUrl("delete.svg"),
   getAssetUrl("icon/icon.png"),
 ];
 

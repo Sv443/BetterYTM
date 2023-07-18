@@ -48,8 +48,8 @@ export function addWatermark() {
 export function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("a");
   cfgOptElem.role = "button";
-  cfgOptElem.tabIndex = 0;
   cfgOptElem.className = "bytm-cfg-menu-option";
+  cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
@@ -66,7 +66,6 @@ export function addConfigMenuOption(container: HTMLElement) {
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
   cfgOptTextElem.innerText = "BetterYTM Configuration";
-  cfgOptTextElem.title = "Click to open BetterYTM's configuration menu";
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
   cfgOptItemElem.appendChild(cfgOptTextElem);
@@ -118,7 +117,6 @@ export function setVolSliderStep() {
 
 //#MARKER queue buttons
 
-// TODO: account for the fact initially the elements might not exist, if the site was not opened directly with a video playing or via the /watch path
 export function initQueueButtons() {
   const addQueueBtns = (evt: Event) => {
     let amt = 0;
@@ -263,7 +261,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = getAssetUrl("close.png"); // TODO: make own icon for this
+    imgElem.src = getAssetUrl("delete.svg");
 
     deleteBtnElem.appendChild(imgElem);
   }
@@ -281,7 +279,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
 //#MARKER better clickable stuff
 
-// TODO: account for the fact initially the elements might not exist, if the site was opened directly with the /watch path
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
   /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
