@@ -3,7 +3,7 @@ import { scriptInfo } from "../constants";
 export * from "./input";
 export * from "./layout";
 export * from "./lyrics";
-export { initMenu } from "./menu/menu"; // TODO
+export { initMenu } from "./menu/menu";
 export * from "./menu/menu_old";
 
 /** Contains all possible features with their default values and other config */
@@ -40,11 +40,10 @@ export const featInfo = {
     default: false,
   },
   anchorImprovements: {
-    desc: "TODO: Make it so middle clicking a song to open it in a new tab is easier",
+    desc: "Make it so middle clicking a song to open it in a new tab is easier",
     type: "toggle",
     category: "input",
     default: true,
-    visible: false,
   },
 
   //#SECTION layout
