@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "adpyke.vscode-userscript",
+    "dbaeumer.vscode-eslint",
+    "fabiospampinato.vscode-highlight"
+  ]
+}
