@@ -78,7 +78,7 @@ export const featInfo = {
     default: true,
   },
   queueButtons: {
-    desc: "Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics",
+    desc: "Add buttons to each song in the queue to quickly open its lyrics or remove it from the queue",
     type: "toggle",
     category: "layout",
     default: true,
@@ -86,7 +86,7 @@ export const featInfo = {
 
   //#SECTION lyrics
   geniusLyrics: {
-    desc: "Add a button to the media controls to open the current song's lyrics on genius.com in a new tab",
+    desc: "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
     type: "toggle",
     category: "lyrics",
     default: true,
