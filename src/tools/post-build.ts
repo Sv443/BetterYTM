@@ -15,7 +15,7 @@ const mode = process.argv.find((v) => v.trim().match(/^(--)?mode=production$/)) 
 const branch = mode === "production" ? "main" : "develop";
 const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
 
-const envPort = Number(process.env.DEV_SERVER_PORT);
+const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 

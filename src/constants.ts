@@ -15,9 +15,9 @@ export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 export const logLevel: LogLevel = mode === "production" ? 1 : 0;
 
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-export const scriptInfo = Object.freeze({
+export const scriptInfo = {
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
   lastCommit: "{{BUILD_NUMBER}}" as string, // assert as generic string instead of union
-});
+};
