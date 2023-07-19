@@ -40,6 +40,11 @@
   }
 }
 
+.bytm-anchor {
+  all: unset;
+  cursor: pointer;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {
