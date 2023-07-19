@@ -130,12 +130,8 @@ function ytForceShowVideoTime() {
     screenY,
     screenX,
     movementX: 5,
-    movementY: 0
+    movementY: 0,
   }));
-
-  setTimeout(() => {
-    player.dispatchEvent(new MouseEvent("mouseleave", defaultProps));
-  }, 4000);
 
   return true;
 }

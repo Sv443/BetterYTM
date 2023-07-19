@@ -483,12 +483,12 @@ const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
  */
 const logLevel = mode === "production" ? 1 : 0;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-const scriptInfo = Object.freeze({
+const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "5390c55", // assert as generic string instead of union
-});
+    lastCommit: "f6d21e7", // assert as generic string instead of union
+};
 
 
 /***/ }),
@@ -699,7 +699,7 @@ const featInfo = {
         default: false,
     },
     anchorImprovements: {
-        desc: "Make it so middle clicking a song to open it in a new tab is easier",
+        desc: "Add link elements all over the page so stuff can be opened in a new tab easier",
         type: "toggle",
         category: "input",
         default: true,
@@ -985,7 +985,7 @@ function addWatermark() {
 function addConfigMenuOption(container) {
     const cfgOptElem = document.createElement("a");
     cfgOptElem.role = "button";
-    cfgOptElem.className = "bytm-cfg-menu-option";
+    cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
     cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
     const cfgOptItemElem = document.createElement("div");
     cfgOptItemElem.className = "bytm-cfg-menu-option-item";
@@ -1168,32 +1168,80 @@ function addQueueButtons(queueItem) {
 //#MARKER better clickable stuff
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
-    /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
-    const conditionalAnchorImprovements = (el) => {
-        const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
-        if (listItemRenderer) {
-            const itemsElem = el.querySelector("ul#items");
-            if (itemsElem) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Adding anchor improvements to carousel shelf");
-                improveCarouselAnchors(itemsElem);
+    //#SECTION carousel shelves
+    try {
+        /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
+        const condCarouselImprovements = (el) => {
+            const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
+            if (listItemRenderer) {
+                const itemsElem = el.querySelector("ul#items");
+                if (itemsElem) {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Adding anchor improvements to carousel shelf");
+                    improveCarouselAnchors(itemsElem);
+                }
             }
-        }
-    };
-    // initial three shelves aren't included in the event fire
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
-        const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
-        carouselShelves.forEach(conditionalAnchorImprovements);
-    });
-    // every shelf that's loaded by scrolling:
-    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
-        const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
-        void removedNodes;
-        if (addedNodes.length > 0)
-            addedNodes.forEach(conditionalAnchorImprovements);
-    });
+        };
+        // initial three shelves aren't included in the event fire
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
+            const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
+            carouselShelves.forEach(condCarouselImprovements);
+        });
+        // every shelf that's loaded by scrolling:
+        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
+            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
+            void removedNodes;
+            if (addedNodes.length > 0)
+                addedNodes.forEach(condCarouselImprovements);
+        });
+    }
+    catch (err) {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve carousel shelf anchors due to an error:", err);
+    }
+    //#SECTION sidebar
+    try {
+        const addSidebarAnchors = (sidebarCont) => {
+            const items = sidebarCont.parentNode.querySelectorAll("ytmusic-guide-entry-renderer tp-yt-paper-item");
+            improveSidebarAnchors(items);
+            return items.length;
+        };
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
+            const itemsAmt = addSidebarAnchors(sidebarCont);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} sidebar items`);
+        });
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
+            const itemsAmt = addSidebarAnchors(miniSidebarCont);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} mini sidebar items`);
+        });
+    }
+    catch (err) {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchors to sidebar items due to an error:", err);
+    }
 }
 // TODO: add to "related" tab in /watch
-// TODO: add anchors around "home", "explore" and "library" in sidebar
+const sidebarPaths = [
+    "/",
+    "/explore",
+    "/library",
+];
+/**
+ * Adds anchors to the sidebar items so they can be opened in a new tab
+ * @param sidebarItem
+ */
+function improveSidebarAnchors(sidebarItems) {
+    sidebarItems.forEach((item, i) => {
+        var _a;
+        const anchorElem = document.createElement("a");
+        anchorElem.className = "bytm-anchor";
+        anchorElem.role = "button";
+        anchorElem.target = "_self";
+        anchorElem.href = (_a = sidebarPaths[i]) !== null && _a !== void 0 ? _a : "#";
+        anchorElem.title = "Middle click to open in a new tab";
+        anchorElem.addEventListener("click", (e) => {
+            e.preventDefault();
+        });
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(item, anchorElem);
+    });
+}
 /**
  * Actually adds the anchor improvements to carousel shelf items
  * @param itemsElement The container with the selector `ul#items` inside of each `ytmusic-carousel`
@@ -1211,10 +1259,13 @@ function improveCarouselAnchors(itemsElement) {
                 continue;
             }
             const thumbnailAnchor = document.createElement("a");
-            thumbnailAnchor.className = "bytm-carousel-shelf-anchor";
+            thumbnailAnchor.className = "bytm-carousel-shelf-anchor bytm-anchor";
             thumbnailAnchor.href = titleElem.href;
             thumbnailAnchor.target = "_self";
             thumbnailAnchor.role = "button";
+            thumbnailAnchor.addEventListener("click", (e) => {
+                e.preventDefault();
+            });
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(thumbnailElem, thumbnailAnchor);
         }
         catch (err) {
@@ -1991,9 +2042,6 @@ function ytForceShowVideoTime() {
     const screenX = x + Math.min(50, Math.round(width / 3));
     player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
         screenX, movementX: 5, movementY: 0 })));
-    setTimeout(() => {
-        player.dispatchEvent(new MouseEvent("mouseleave", defaultProps));
-    }, 4000);
     return true;
 }
 //#SECTION DOM
@@ -2390,6 +2438,11 @@ function onDomLoad() {
   to {
     transform: rotate(360deg);
   }
+}
+
+.bytm-anchor {
+  all: unset;
+  cursor: pointer;
 }
 
 /* #MARKER menu */
