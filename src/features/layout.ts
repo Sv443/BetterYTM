@@ -48,7 +48,7 @@ export function addWatermark() {
 export function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("a");
   cfgOptElem.role = "button";
-  cfgOptElem.className = "bytm-cfg-menu-option";
+  cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
   cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
   
   const cfgOptItemElem = document.createElement("div");
@@ -281,36 +281,90 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
-  /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
-  const conditionalAnchorImprovements = (el: HTMLElement) => {
-    const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
-    if(listItemRenderer) {
-      const itemsElem = el.querySelector<HTMLElement>("ul#items");
-      if(itemsElem) {
-        log("Adding anchor improvements to carousel shelf");
-        improveCarouselAnchors(itemsElem);
+  //#SECTION carousel shelves
+  try {
+    /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
+    const condCarouselImprovements = (el: HTMLElement) => {
+      const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
+      if(listItemRenderer) {
+        const itemsElem = el.querySelector<HTMLElement>("ul#items");
+        if(itemsElem) {
+          log("Adding anchor improvements to carousel shelf");
+          improveCarouselAnchors(itemsElem);
+        }
       }
-    }
-  };
+    };
 
-  // initial three shelves aren't included in the event fire
-  onSelectorExists("ytmusic-carousel-shelf-renderer", () => {
-    const carouselShelves = document.body.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
-    carouselShelves.forEach(conditionalAnchorImprovements);
-  });
+    // initial three shelves aren't included in the event fire
+    onSelectorExists("ytmusic-carousel-shelf-renderer", () => {
+      const carouselShelves = document.body.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
+      carouselShelves.forEach(condCarouselImprovements);
+    });
 
-  // every shelf that's loaded by scrolling:
-  siteEvents.on("carouselShelvesChanged", (evt) => {
-    const { addedNodes, removedNodes } = getEvtData<Record<"addedNodes" | "removedNodes", NodeListOf<HTMLElement>>>(evt);
-    void removedNodes;
+    // every shelf that's loaded by scrolling:
+    siteEvents.on("carouselShelvesChanged", (evt) => {
+      const { addedNodes, removedNodes } = getEvtData<Record<"addedNodes" | "removedNodes", NodeListOf<HTMLElement>>>(evt);
+      void removedNodes;
 
-    if(addedNodes.length > 0)
-      addedNodes.forEach(conditionalAnchorImprovements);
-  });
+      if(addedNodes.length > 0)
+        addedNodes.forEach(condCarouselImprovements);
+    });
+  }
+  catch(err) {
+    error("Couldn't improve carousel shelf anchors due to an error:", err);
+  }
+
+  //#SECTION sidebar
+
+  try {
+    const addSidebarAnchors = (sidebarCont: HTMLElement) => {
+      const items = sidebarCont.parentNode!.querySelectorAll<HTMLElement>("ytmusic-guide-entry-renderer tp-yt-paper-item");
+      improveSidebarAnchors(items);
+      return items.length;
+    };
+
+    onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
+      const itemsAmt = addSidebarAnchors(sidebarCont);
+      log(`Added anchors around ${itemsAmt} sidebar items`);
+    });
+
+    onSelectorExists("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
+      const itemsAmt = addSidebarAnchors(miniSidebarCont);
+      log(`Added anchors around ${itemsAmt} mini sidebar items`);
+    });
+  }
+  catch(err) {
+    error("Couldn't add anchors to sidebar items due to an error:", err);
+  }
 }
 
 // TODO: add to "related" tab in /watch
-// TODO: add anchors around "home", "explore" and "library" in sidebar
+
+const sidebarPaths = [
+  "/",
+  "/explore",
+  "/library",
+];
+
+/**
+ * Adds anchors to the sidebar items so they can be opened in a new tab
+ * @param sidebarItem 
+ */
+function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
+  sidebarItems.forEach((item, i) => {
+    const anchorElem = document.createElement("a");
+    anchorElem.className = "bytm-anchor";
+    anchorElem.role = "button";
+    anchorElem.target = "_self";
+    anchorElem.href = sidebarPaths[i] ?? "#";
+    anchorElem.title = "Middle click to open in a new tab";
+    anchorElem.addEventListener("click", (e) => {
+      e.preventDefault();
+    });
+
+    addParent(item, anchorElem);
+  });
+}
 
 /**
  * Actually adds the anchor improvements to carousel shelf items
@@ -332,10 +386,14 @@ function improveCarouselAnchors(itemsElement: HTMLElement) {
       }
 
       const thumbnailAnchor = document.createElement("a");
-      thumbnailAnchor.className = "bytm-carousel-shelf-anchor";
+      thumbnailAnchor.className = "bytm-carousel-shelf-anchor bytm-anchor";
       thumbnailAnchor.href = titleElem.href;
       thumbnailAnchor.target = "_self";
       thumbnailAnchor.role = "button";
+
+      thumbnailAnchor.addEventListener("click", (e) => {
+        e.preventDefault();
+      });
 
       addParent(thumbnailElem, thumbnailAnchor);
     }

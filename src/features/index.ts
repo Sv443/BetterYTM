@@ -40,7 +40,7 @@ export const featInfo = {
     default: false,
   },
   anchorImprovements: {
-    desc: "Make it so middle clicking a song to open it in a new tab is easier",
+    desc: "Add link elements all over the page so stuff can be opened in a new tab easier",
     type: "toggle",
     category: "input",
     default: true,
