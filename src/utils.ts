@@ -231,6 +231,26 @@ export function precacheImages(srcUrls: string[], rejects = false) {
 
 //#SECTION misc
 
+type FetchOpts = RequestInit & {
+  timeout: number;
+};
+
+/** Calls the fetch API with special options */
+export async function fetchAdvanced(url: string, options: Partial<FetchOpts> = {}) {
+  const { timeout = 10000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  const res = await fetch(url, {
+    ...options,
+    signal: controller.signal,
+  });
+
+  clearTimeout(id);
+  return res;
+}
+
 /**
  * Creates an invisible anchor with _blank target and clicks it.  
  * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
