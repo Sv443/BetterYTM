@@ -83,10 +83,17 @@ async function onDomLoad() {
 
   initSelectorExistsCheck();
 
-  log(`Initializing features for domain '${domain}'`);
+  log(`Initializing features for domain "${domain}"...`);
 
   try {
     if(domain === "ytm") {
+      try {
+        addMenu(); // TODO(v1.1): remove
+      }
+      catch(err) {
+        error("Couldn't add menu:", err);
+      }
+
       initSiteEvents();
 
       onSelectorExists("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", addConfigMenuOption);
@@ -118,13 +125,6 @@ async function onDomLoad() {
     if(["ytm", "yt"].includes(domain)) {
       if(features.switchBetweenSites)
         initSiteSwitch(domain);
-
-      try {
-        addMenu(); // TODO(v1.1): remove
-      }
-      catch(err) {
-        error("Couldn't add menu:", err);
-      }
     }
   }
   catch(err) {

@@ -26,7 +26,7 @@ export interface FeatureConfig {
   };
   /** Whether to completely disable the popup that sometimes appears before leaving the site */
   disableBeforeUnloadPopup: boolean;
-  /** TODO: Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
+  /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
 
   //#SECTION layout
