@@ -11,13 +11,13 @@ Configurable layout and UX improvements for YouTube Music
 All of these features can be toggled and configured!
 - Input:
   - Use arrow keys to skip forward or backward by 10 seconds
-  - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default) <!-- TODO: make configurable -->
+  - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default) <!-- TODO(v1.1): make configurable -->
 - Layout:
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
-  - TODO: Quick actions on songs in a queue, to open their lyrics or remove them from the queue
-  - Remove the "Upgrade to YT Music Premium" tab in the title bar
+  - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
+  - Remove the premium tab in the sidebar
   - Set a custom size and step resolution for the volume slider
-  - TODO: Improvements to clickability of song titles and thumbnails (to open them in a new tab better)
+  - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
   
 ... and more!
 
