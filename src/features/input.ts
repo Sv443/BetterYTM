@@ -93,7 +93,7 @@ export function initSiteSwitch(domain: Domain) {
 }
 
 /** Switches to the other site (between YT and YTM) */
-function switchSite(newDomain: Domain) {
+async function switchSite(newDomain: Domain) {
   try {
     let subdomain;
     if(newDomain === "ytm")
@@ -104,21 +104,23 @@ function switchSite(newDomain: Domain) {
     if(!subdomain)
       throw new Error(`Unrecognized domain '${newDomain}'`);
 
+    disableBeforeUnload();
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const vt = getVideoTime() ?? 0;
+    const vt = await getVideoTime() ?? 0;
 
     log(`Found video time of ${vt} seconds`);
 
-    const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
+    const cleanSearch = search.split("&")
+      .filter((param) => !param.match(/^\??t=/))
+      .join("&");
 
-    const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+    const newSearch = cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&t=${vt}` : `?t=${vt}`;
+    const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
-    console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
-
-    disableBeforeUnload();
-    location.assign(url);
+    info(`Switching to domain '${newDomain}' at ${newUrl}`);
+    location.assign(newUrl);
   }
   catch(err) {
     error("Error while switching site:", err);

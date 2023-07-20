@@ -71,42 +71,71 @@ export function dbg(...args: unknown[]): void {
  * @returns Returns null if the video time is unavailable
  */
 export function getVideoTime() {
-  const domain = getDomain();
+  return new Promise<number | null>((res) => {
+    const domain = getDomain();
 
-  try {
-    if(domain === "ytm") {
-      const pbEl = document.querySelector("#progress-bar") as HTMLProgressElement;
-      return !isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null;
+    try {
+      if(domain === "ytm") {
+        const pbEl = document.querySelector("#progress-bar") as HTMLProgressElement;
+        return res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null);
+      }
+      else if(domain === "yt") {
+        // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
+
+        ytForceShowVideoTime();
+
+        const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+        const progElem = document.querySelector<HTMLProgressElement>(pbSelector);
+        let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")!) : -1;
+
+        const mut = new MutationObserver(() => {
+          // .observe() is only called when the element exists
+          videoTime = Number(document.querySelector<HTMLProgressElement>(pbSelector)!.getAttribute("aria-valuenow")!);
+          dbg("video time changed:", videoTime);
+        });
+
+        const observe = (progElem: HTMLElement) => {
+          mut.observe(progElem, {
+            attributes: true,
+            attributeFilter: ["aria-valuenow"],
+          });
+
+          setTimeout(() => {
+            res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+            dbg("final video time:", videoTime);
+          }, 500);
+        };
+
+        if(!progElem)
+          return onSelectorExists(pbSelector, observe);
+        else
+          return observe(progElem);
+
+        // Possible solution:
+        // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
+        // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
+        // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
+        //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
+        // - Subtract one or two seconds to make up for rounding errors
+        // - profit
+
+        // if(!ytCurrentVideoTime) {
+        //   ytForceShowVideoTime();
+        //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
+        // }
+      }
     }
-    else if(domain === "yt") {
-      // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
-
-      // Possible solution:
-      // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
-      // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
-      // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
-      //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
-      // - Subtract one or two seconds to make up for rounding errors
-      // - profit
-
-      // if(!ytCurrentVideoTime) {
-      //   ytForceShowVideoTime();
-      //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
-      // }
-      void ytForceShowVideoTime;
-
-      return null;
+    catch(err) {
+      error("Couldn't get video time due to error:", err);
+      res(null);
     }
-
-    return null;
-  }
-  catch(err) {
-    error("Couldn't get video time due to error:", err);
-    return null;
-  }
+  });
 }
 
-/** Sends events that force the video controls to become visible for about 3 seconds */
+/**
+ * Sends events that force the video controls to become visible for about 3 seconds.  
+ * This only works once, then the page needs to be reloaded!
+ */
 function ytForceShowVideoTime() {
   const player = document.querySelector("#movie_player");
   if(!player)
@@ -135,6 +164,22 @@ function ytForceShowVideoTime() {
 
   return true;
 }
+
+// /** Parses a video time string in the format `[hh:m]m:ss` to the equivalent number of seconds - returns 0 if input couldn't be parsed */
+// function parseVideoTime(videoTime: string) {
+//   const matches = /^((\d{1,2}):)?(\d{1,2}):(\d{2})$/.exec(videoTime);
+//   if(!matches)
+//     return 0;
+
+//   const [, , hrs, min, sec] = matches as unknown as [string, string | undefined, string | undefined, string, string];
+
+//   let finalTime = 0;
+//   if(hrs)
+//     finalTime += Number(hrs) * 60 * 60;
+//   finalTime += Number(min) * 60 + Number(sec);
+
+//   return isNaN(finalTime) ? 0 : finalTime;
+// }
 
 //#SECTION DOM
 
