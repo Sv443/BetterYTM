@@ -87,6 +87,10 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         mcCurrentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
+
+        imgElem.src = getAssetUrl("external/genius.png");
+        imgElem.classList.remove("bytm-spinner");
+
         if(!url)
           continue;
 
@@ -97,9 +101,6 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         lyricsBtn.style.visibility = "initial";
         lyricsBtn.style.display = "inline-flex";
         lyricsBtn.style.pointerEvents = "initial";
-
-        imgElem.src = getAssetUrl("external/genius.png");
-        imgElem.classList.remove("bytm-spinner");
       }
     }
   };
@@ -148,7 +149,7 @@ export async function getCurrentLyricsUrl() {
     const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child") as HTMLElement;
 
     if(!songTitleElem || !songMetaElem || !songTitleElem.title)
-      return null;
+      return undefined;
 
     const songNameRaw = songTitleElem.title;
     const songName = sanitizeSong(songNameRaw);
@@ -173,7 +174,7 @@ export async function getCurrentLyricsUrl() {
   }
   catch(err) {
     error("Couldn't resolve lyrics URL:", err);
-    return null;
+    return undefined;
   }
 }
 
