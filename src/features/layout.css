@@ -113,10 +113,12 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
-  background-color: black;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
   display: none;
   position: absolute;
   right: 0;
+  padding-left: 25px;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {
@@ -127,7 +129,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() is not viable since the nesting changes the actual value of the variable */
-  background-color: #1d1d1d;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
 }
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
