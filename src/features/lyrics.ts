@@ -1,4 +1,4 @@
-import { clamp, error, getAssetUrl, info, insertAfter, log, onSelectorExists } from "../utils";
+import { clamp, error, fetchAdvanced, getAssetUrl, info, insertAfter, log, onSelectorExists } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -80,6 +80,10 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";
 
+        const imgElem = lyricsBtn.querySelector<HTMLImageElement>("img")!;
+        imgElem.src = getAssetUrl("spinner.svg");
+        imgElem.classList.add("bytm-spinner");
+
         mcCurrentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
@@ -93,6 +97,9 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         lyricsBtn.style.visibility = "initial";
         lyricsBtn.style.display = "inline-flex";
         lyricsBtn.style.pointerEvents = "initial";
+
+        imgElem.src = getAssetUrl("external/genius.png");
+        imgElem.classList.remove("bytm-spinner");
       }
     }
   };
@@ -184,7 +191,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
-    const fetchRes = await fetch(fetchUrl);
+    const fetchRes = await fetchAdvanced(fetchUrl);
     if(fetchRes.status === 429) {
       alert(`You are being rate limited.\nPlease wait ${fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
       return undefined;
