@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "51936fb", // assert as generic string instead of union
+    lastCommit: "402b99a", // assert as generic string instead of union
 };
 
 
@@ -769,6 +769,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 //#MARKER arrow key skip
@@ -852,26 +861,31 @@ function initSiteSwitch(domain) {
 /** Switches to the other site (between YT and YTM) */
 function switchSite(newDomain) {
     var _a;
-    try {
-        let subdomain;
-        if (newDomain === "ytm")
-            subdomain = "music";
-        else if (newDomain === "yt")
-            subdomain = "www";
-        if (!subdomain)
-            throw new Error(`Unrecognized domain '${newDomain}'`);
-        const { pathname, search, hash } = new URL(location.href);
-        const vt = (_a = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Found video time of ${vt} seconds`);
-        const newSearch = search.includes("?") ? `${search}&t=${vt}` : `?t=${vt}`;
-        const url = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-        console.info(`BetterYTM - switching to domain '${newDomain}' at ${url}`);
-        disableBeforeUnload();
-        location.assign(url);
-    }
-    catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Error while switching site:", err);
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let subdomain;
+            if (newDomain === "ytm")
+                subdomain = "music";
+            else if (newDomain === "yt")
+                subdomain = "www";
+            if (!subdomain)
+                throw new Error(`Unrecognized domain '${newDomain}'`);
+            disableBeforeUnload();
+            const { pathname, search, hash } = new URL(location.href);
+            const vt = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Found video time of ${vt} seconds`);
+            const cleanSearch = search.split("&")
+                .filter((param) => !param.match(/^\??t=/))
+                .join("&");
+            const newSearch = cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&t=${vt}` : `?t=${vt}`;
+            const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
+            location.assign(newUrl);
+        }
+        catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Error while switching site:", err);
+        }
+    });
 }
 //#MARKER beforeunload popup
 let beforeUnloadEnabled = true;
@@ -2009,36 +2023,61 @@ function dbg(...args) {
  * @returns Returns null if the video time is unavailable
  */
 function getVideoTime() {
-    const domain = getDomain();
-    try {
-        if (domain === "ytm") {
-            const pbEl = document.querySelector("#progress-bar");
-            return !isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null;
+    return new Promise((res) => {
+        const domain = getDomain();
+        try {
+            if (domain === "ytm") {
+                const pbEl = document.querySelector("#progress-bar");
+                return res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null);
+            }
+            else if (domain === "yt") {
+                // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
+                ytForceShowVideoTime();
+                const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+                const progElem = document.querySelector(pbSelector);
+                let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")) : -1;
+                const mut = new MutationObserver(() => {
+                    // .observe() is only called when the element exists
+                    videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
+                    dbg("video time changed:", videoTime);
+                });
+                const observe = (progElem) => {
+                    mut.observe(progElem, {
+                        attributes: true,
+                        attributeFilter: ["aria-valuenow"],
+                    });
+                    setTimeout(() => {
+                        res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+                        dbg("final video time:", videoTime);
+                    }, 500);
+                };
+                if (!progElem)
+                    return onSelectorExists(pbSelector, observe);
+                else
+                    return observe(progElem);
+                // Possible solution:
+                // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
+                // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
+                // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
+                //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
+                // - Subtract one or two seconds to make up for rounding errors
+                // - profit
+                // if(!ytCurrentVideoTime) {
+                //   ytForceShowVideoTime();
+                //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
+                // }
+            }
         }
-        else if (domain === "yt") {
-            // YT doesn't update the progress bar when it's hidden (YTM doesn't hide it) so TODO: come up with some solution here
-            // Possible solution:
-            // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
-            // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
-            // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
-            //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
-            // - Subtract one or two seconds to make up for rounding errors
-            // - profit
-            // if(!ytCurrentVideoTime) {
-            //   ytForceShowVideoTime();
-            //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
-            // }
-            void ytForceShowVideoTime;
-            return null;
+        catch (err) {
+            error("Couldn't get video time due to error:", err);
+            res(null);
         }
-        return null;
-    }
-    catch (err) {
-        error("Couldn't get video time due to error:", err);
-        return null;
-    }
+    });
 }
-/** Sends events that force the video controls to become visible for about 3 seconds */
+/**
+ * Sends events that force the video controls to become visible for about 3 seconds.
+ * This only works once, then the page needs to be reloaded!
+ */
 function ytForceShowVideoTime() {
     const player = document.querySelector("#movie_player");
     if (!player)
@@ -2057,6 +2096,18 @@ function ytForceShowVideoTime() {
         screenX, movementX: 5, movementY: 0 })));
     return true;
 }
+// /** Parses a video time string in the format `[hh:m]m:ss` to the equivalent number of seconds - returns 0 if input couldn't be parsed */
+// function parseVideoTime(videoTime: string) {
+//   const matches = /^((\d{1,2}):)?(\d{1,2}):(\d{2})$/.exec(videoTime);
+//   if(!matches)
+//     return 0;
+//   const [, , hrs, min, sec] = matches as unknown as [string, string | undefined, string | undefined, string, string];
+//   let finalTime = 0;
+//   if(hrs)
+//     finalTime += Number(hrs) * 60 * 60;
+//   finalTime += Number(min) * 60 + Number(sec);
+//   return isNaN(finalTime) ? 0 : finalTime;
+// }
 //#SECTION DOM
 /**
  * Inserts `afterNode` as a sibling just after the provided `beforeNode`
@@ -2613,9 +2664,15 @@ ytmusic-responsive-list-item-renderer .left-items {
 /*# sourceMappingURL=http://localhost:8710/main.css.map*/`, "global");
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.loadFeatureConf)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.initSelectorExistsCheck)();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain '${domain}'`);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
+                try {
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO(v1.1): remove
+                }
+                catch (err) {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);
+                }
                 (0,_events__WEBPACK_IMPORTED_MODULE_3__.initSiteEvents)();
                 (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", _features_index__WEBPACK_IMPORTED_MODULE_4__.addConfigMenuOption);
                 if (features.arrowKeySupport)
@@ -2637,12 +2694,6 @@ ytmusic-responsive-list-item-renderer .left-items {
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initSiteSwitch)(domain);
-                try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO(v1.1): remove
-                }
-                catch (err) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);
-                }
             }
         }
         catch (err) {
