@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "f6d21e7", // assert as generic string instead of union
+    lastCommit: "29dfd74", // assert as generic string instead of union
 };
 
 
@@ -1122,8 +1122,6 @@ function addQueueButtons(queueItem) {
                 title: "Remove this song from the queue",
                 className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
                 role: "button",
-                target: "_blank",
-                rel: "noopener noreferrer",
             });
             deleteBtnElem.style.visibility = "initial";
             deleteBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
@@ -1379,6 +1377,9 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
                         lyricsBtn.style.cursor = "wait";
                         lyricsBtn.style.pointerEvents = "none";
+                        const imgElem = lyricsBtn.querySelector("img");
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("spinner.svg");
+                        imgElem.classList.add("bytm-spinner");
                         mcCurrentSongTitle = newTitle;
                         const url = yield getCurrentLyricsUrl(); // can take a second or two
                         if (!url)
@@ -1389,6 +1390,8 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         lyricsBtn.style.visibility = "initial";
                         lyricsBtn.style.display = "inline-flex";
                         lyricsBtn.style.pointerEvents = "initial";
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
+                        imgElem.classList.remove("bytm-spinner");
                     }
                 }
                 finally {
@@ -1472,7 +1475,7 @@ function getGeniusUrl(artist, song) {
             const startTs = Date.now();
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
-            const fetchRes = yield fetch(fetchUrl);
+            const fetchRes = yield (0,_utils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
             if (fetchRes.status === 429) {
                 alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
                 return undefined;
@@ -1924,6 +1927,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   clamp: function() { return /* binding */ clamp; },
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
 /* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
@@ -1940,6 +1944,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 //#SECTION logging
 let curLogLevel = 1;
@@ -2121,7 +2134,17 @@ function precacheImages(srcUrls, rejects = false) {
     }));
     return Promise.allSettled(promises);
 }
-//#SECTION misc
+/** Calls the fetch API with special options */
+function fetchAdvanced(url, options = {}) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { timeout = 10000 } = options;
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        const res = yield fetch(url, Object.assign(Object.assign({}, options), { signal: controller.signal }));
+        clearTimeout(id);
+        return res;
+    });
+}
 /**
  * Creates an invisible anchor with _blank target and clicks it.
  * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
@@ -2512,14 +2535,22 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   position: relative;
 }
 
-.side-panel.modular ytmusic-player-queue-item .song-info .bytm-queue-btn-container {
+.side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
+  background-color: black;
   display: none;
   position: absolute;
   right: 0;
 }
 
-.side-panel.modular ytmusic-player-queue-item:hover .song-info .bytm-queue-btn-container {
+.side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {
   display: inline-block;
+}
+
+.side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() is not viable since the nesting changes the actual value of the variable */
+  background-color: #1d1d1d;
 }
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {

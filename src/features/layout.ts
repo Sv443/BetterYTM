@@ -220,8 +220,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
       title: "Remove this song from the queue",
       className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
       role: "button",
-      target: "_blank",
-      rel: "noopener noreferrer",
     });
     deleteBtnElem.style.visibility = "initial";
 
