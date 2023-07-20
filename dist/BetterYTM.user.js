@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "402b99a", // assert as generic string instead of union
+    lastCommit: "267cbfb", // assert as generic string instead of union
 };
 
 
@@ -1396,6 +1396,8 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         imgElem.classList.add("bytm-spinner");
                         mcCurrentSongTitle = newTitle;
                         const url = yield getCurrentLyricsUrl(); // can take a second or two
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
+                        imgElem.classList.remove("bytm-spinner");
                         if (!url)
                             continue;
                         lyricsBtn.href = url;
@@ -1404,8 +1406,6 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         lyricsBtn.style.visibility = "initial";
                         lyricsBtn.style.display = "inline-flex";
                         lyricsBtn.style.pointerEvents = "initial";
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
-                        imgElem.classList.remove("bytm-spinner");
                     }
                 }
                 finally {
@@ -1455,7 +1455,7 @@ function getCurrentLyricsUrl() {
             const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
             const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
             if (!songTitleElem || !songMetaElem || !songTitleElem.title)
-                return null;
+                return undefined;
             const songNameRaw = songTitleElem.title;
             const songName = sanitizeSong(songNameRaw);
             const artistName = sanitizeArtists(songMetaElem.title);
@@ -1472,7 +1472,7 @@ function getCurrentLyricsUrl() {
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't resolve lyrics URL:", err);
-            return null;
+            return undefined;
         }
     });
 }
@@ -2587,10 +2587,12 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
-  background-color: black;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
   display: none;
   position: absolute;
   right: 0;
+  padding-left: 25px;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {
@@ -2601,7 +2603,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() is not viable since the nesting changes the actual value of the variable */
-  background-color: #1d1d1d;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
 }
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
