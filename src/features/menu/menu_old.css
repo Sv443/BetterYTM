@@ -1,5 +1,5 @@
 :root {
-  --bytm-menu-bg: #282828;
+  --bytm-menu-bg: #212121;
 }
 
 #betterytm-menu-bg {
@@ -21,7 +21,7 @@
   left: 25vw;
   top: 10vh;
   z-index: 16;
-  padding: 8px;
+  padding: 10px 25px;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }
@@ -49,14 +49,14 @@
   display: inline-block;
 }
 
-/*.betterytm-menu-img {
-
-}*/
-
 #betterytm-menu-close {
   cursor: pointer;
 }
 
 .betterytm-ftconf-label {
   user-select: none;
+}
+
+body.bytm-disable-scroll {
+  overflow-y: hidden !important;
 }

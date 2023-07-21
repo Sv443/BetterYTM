@@ -60,7 +60,7 @@ export function saveFeatureConf(featureConf: FeatureConfig) {
   return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
 
-/** Resets the featuresCache synchronously and the persistent features storage asynchronously to its default values */
+/** Resets the featuresCache synchronously and the persistent features storage asynchronously to their default values */
 export function setDefaultFeatConf() {
   featuresCache = { ...defaultFeatures };
   GM.setValue("betterytm-config-ver", formatVersion);
