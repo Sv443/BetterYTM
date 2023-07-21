@@ -1,34 +1,32 @@
-import { defaultFeatures, getFeatures, saveFeatureConf } from "../../config";
+import { defaultFeatures, getFeatures, saveFeatureConf, setDefaultFeatConf } from "../../config";
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
 import { getAssetUrl, info, log } from "../../utils";
 import "./menu_old.css";
 
-//#MARKER menu
+//#MARKER create menu elements
+
+let isMenuOpen = false;
 
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
  */
 export async function addMenu() {
-  // bg & menu
+  //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "betterytm-menu-bg";
   backgroundElem.title = "Click here to close the menu";
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if((e.target as HTMLElement)?.id === "betterytm-menu-bg") {
-      e.stopPropagation();
-      closeMenu();
-    }
+    if(isMenuOpen && (e.target as HTMLElement)?.id === "betterytm-menu-bg")
+      closeMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
-    if(e.key === "Escape") {
-      e.stopPropagation();
-      closeMenu();
-    }
+    if(isMenuOpen && e.key === "Escape")
+      closeMenu(e);
   });
 
   const menuContainer = document.createElement("div");
@@ -40,7 +38,7 @@ export async function addMenu() {
   menuContainer.style.justifyContent = "space-between";
 
 
-  // title
+  //#SECTION title bar
   const titleCont = document.createElement("div");
   titleCont.style.padding = "8px 20px 15px 8px";
   titleCont.style.display = "flex";
@@ -91,7 +89,7 @@ export async function addMenu() {
   titleCont.appendChild(linksCont);
 
 
-  // TODO: features
+  //#SECTION feature list
   const featuresCont = document.createElement("div");
   featuresCont.id = "betterytm-menu-opts";
   featuresCont.style.display = "flex";
@@ -168,7 +166,6 @@ export async function addMenu() {
 
       const inputElem = document.createElement("input");
       inputElem.id = inputElemId;
-      inputElem.style.marginRight = "37px";
       inputElem.type = inputType;
       if(type === "toggle")
         inputElem.style.marginLeft = "5px";
@@ -224,32 +221,15 @@ export async function addMenu() {
       }
 
       inputElem.addEventListener("input", () => {
-        let v = parseInt(inputElem.value);
+        let v = Number(String(inputElem.value).trim());
         if(isNaN(v))
           v = Number(inputElem.value);
         if(typeof initialVal !== "undefined")
           confChanged(key as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
       });
 
-      const resetElem = document.createElement("button");
-      resetElem.innerText = "Reset";
-      resetElem.addEventListener("click", () => {
-        inputElem[type !== "toggle" ? "value" : "checked"] = ftDefault as never;
-
-        if(labelElem) {
-          if(type === "toggle")
-            labelElem.innerText = toggleLabelText(inputElem.checked);
-          else
-            labelElem.innerText = fmtVal(parseInt(inputElem.value));
-        }
-
-        if(typeof initialVal !== "undefined")
-          confChanged(key as keyof FeatureConfig, initialVal, ftDefault);
-      });
-
       labelElem && ctrlElem.appendChild(labelElem);
       ctrlElem.appendChild(inputElem);
-      ctrlElem.appendChild(resetElem);
 
       ftConfElem.appendChild(ctrlElem);
     }
@@ -257,15 +237,22 @@ export async function addMenu() {
     featuresCont.appendChild(ftConfElem);
   }
 
+  //#SECTION footer
+  const footerCont = document.createElement("div");
+  footerCont.id = "betterytm-menu-footer-cont";
+  footerCont.style.display = "flex";
+  footerCont.style.flexDirection = "row";
+  footerCont.style.justifyContent = "space-between";
+  footerCont.style.padding = "10px 20px";
+  footerCont.style.marginTop = "20px";
+  footerCont.style.position = "sticky";
+  footerCont.style.bottom = "0";
+  footerCont.style.backgroundColor = "var(--bytm-menu-bg)";
+
   const footerElem = document.createElement("div");
   footerElem.id = "betterytm-menu-footer";
-  footerElem.style.marginTop = "20px";
   footerElem.style.fontSize = "17px";
   footerElem.style.textDecoration = "underline";
-  footerElem.style.padding = "10px 20px";
-  footerElem.style.position = "sticky";
-  footerElem.style.backgroundColor = "var(--bytm-menu-bg)";
-  footerElem.style.bottom = "0";
   footerElem.innerText = "You need to reload the page to apply changes.";
 
   const reloadElem = document.createElement("button");
@@ -274,11 +261,24 @@ export async function addMenu() {
   reloadElem.title = "Click to reload the page";
   reloadElem.addEventListener("click", () => location.reload());
 
+  const resetElem = document.createElement("button");
+  resetElem.className = "bytm-cfg-reset-btn";
+  resetElem.innerText = "Reset";
+  resetElem.addEventListener("click", async () => {
+    if(confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
+      await setDefaultFeatConf();
+      location.reload();
+    }
+  });
+
   footerElem.appendChild(reloadElem);
-  featuresCont.appendChild(footerElem);
+  footerCont.appendChild(footerElem);
+  footerCont.appendChild(resetElem);
+
+  featuresCont.appendChild(footerCont);
 
 
-  // finalize
+  //#SECTION finalize
   const menuBody = document.createElement("div");
   menuBody.id = "betterytm-menu-body";
   menuBody.appendChild(titleCont);
@@ -308,15 +308,28 @@ export async function addMenu() {
   log("Added menu elem:", backgroundElem);
 }
 
-export function closeMenu(e?: MouseEvent) {
+//#MARKER utilities
+
+export function closeMenu(e?: MouseEvent | KeyboardEvent) {
+  if(!isMenuOpen)
+    return;
+  isMenuOpen = false;
   e?.bubbles && e.stopPropagation();
+
+  document.body.classList.remove("bytm-disable-scroll");
   const menuBg = document.querySelector("#betterytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
 }
 
+// function that opens the menu, it should do the inverse of closeMenu()
 export function openMenu() {
+  if(isMenuOpen)
+    return;
+  isMenuOpen = true;
+
+  document.body.classList.add("bytm-disable-scroll");
   const menuBg = document.querySelector("#betterytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "visible";
