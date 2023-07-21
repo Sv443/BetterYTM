@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "6342999", // assert as generic string instead of union
+    lastCommit: "f902649", // assert as generic string instead of union
 };
 
 
@@ -1875,6 +1875,7 @@ function addMenu() {
         reloadElem.addEventListener("click", () => location.reload());
         const resetElem = document.createElement("button");
         resetElem.className = "bytm-cfg-reset-btn";
+        resetElem.title = "Click to reset all settings to their default value";
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
             if (confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
