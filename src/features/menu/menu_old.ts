@@ -263,6 +263,7 @@ export async function addMenu() {
 
   const resetElem = document.createElement("button");
   resetElem.className = "bytm-cfg-reset-btn";
+  resetElem.title = "Click to reset all settings to their default value";
   resetElem.innerText = "Reset";
   resetElem.addEventListener("click", async () => {
     if(confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
