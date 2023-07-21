@@ -80,11 +80,6 @@ function onKeyDown(evt: KeyboardEvent) {
 
 /** Initializes the site switch feature */
 export function initSiteSwitch(domain: Domain) {
-  // TODO:
-  // extra features:
-  // - keep video time
-  // - configurable hotkey
-
   document.addEventListener("keydown", (e) => {
     if(e.key === "F9")
       switchSite(domain === "yt" ? "ytm" : "yt");
@@ -95,6 +90,9 @@ export function initSiteSwitch(domain: Domain) {
 /** Switches to the other site (between YT and YTM) */
 async function switchSite(newDomain: Domain) {
   try {
+    if(newDomain === "ytm" && !location.href.includes("/watch"))
+      return warn("Not on a video page, so the site switch is ignored");
+
     let subdomain;
     if(newDomain === "ytm")
       subdomain = "music";
