@@ -328,7 +328,7 @@ var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2
 
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<dialog id=\"bytm-menu-dialog\">\n    <div id=\"bytm-menu-header-container\">\n        <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-options-header\" data-active=\"true\">\n            <h3>Options</h3>\n        </div>\n        <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-info-header\" data-active=\"false\">\n            <h3>Info</h3>\n        </div>\n        <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-changelog-header\" data-active=\"false\">\n            <h3>Changelog</h3>\n        </div>\n    </div>\n    <div id=\"bytm-menu-body\">\n        <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-options-content\" data-active=\"true\"></div>\n        <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-info-content\" data-active=\"false\">\n            ayo info\n        </div>\n        <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-changelog-content\" data-active=\"false\"></div>\n    </div>\n</dialog>\n";
+var code = "<dialog id=\"bytm-menu-dialog\">\n  <div id=\"bytm-menu-header-container\">\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-options-header\" data-active=\"true\">\n      <h3>Options</h3>\n    </div>\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-info-header\" data-active=\"false\">\n      <h3>Info</h3>\n    </div>\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-changelog-header\" data-active=\"false\">\n      <h3>Changelog</h3>\n    </div>\n  </div>\n  <div id=\"bytm-menu-body\">\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-options-content\" data-active=\"true\"></div>\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-info-content\" data-active=\"false\">\n      ayo info\n    </div>\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-changelog-content\" data-active=\"false\"></div>\n  </div>\n</dialog>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -448,7 +448,7 @@ function saveFeatureConf(featureConf) {
     GM.setValue("betterytm-config-ver", formatVersion);
     return GM.setValue("betterytm-config", JSON.stringify(featureConf));
 }
-/** Resets the featuresCache synchronously and the persistent features storage asynchronously to its default values */
+/** Resets the featuresCache synchronously and the persistent features storage asynchronously to their default values */
 function setDefaultFeatConf() {
     featuresCache = Object.assign({}, defaultFeatures);
     GM.setValue("betterytm-config-ver", formatVersion);
@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "267cbfb", // assert as generic string instead of union
+    lastCommit: "6342999", // assert as generic string instead of union
 };
 
 
@@ -848,10 +848,6 @@ function onKeyDown(evt) {
 //#MARKER site switch
 /** Initializes the site switch feature */
 function initSiteSwitch(domain) {
-    // TODO:
-    // extra features:
-    // - keep video time
-    // - configurable hotkey
     document.addEventListener("keydown", (e) => {
         if (e.key === "F9")
             switchSite(domain === "yt" ? "ytm" : "yt");
@@ -863,6 +859,8 @@ function switchSite(newDomain) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            if (newDomain === "ytm" && !location.href.includes("/watch"))
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)("Not on a video page, so the site switch is ignored");
             let subdomain;
             if (newDomain === "ytm")
                 subdomain = "music";
@@ -1666,7 +1664,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-//#MARKER menu
+//#MARKER create menu elements
+let isMenuOpen = false;
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1674,7 +1673,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 function addMenu() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        // bg & menu
+        //#SECTION backdrop & menu container
         const backgroundElem = document.createElement("div");
         backgroundElem.id = "betterytm-menu-bg";
         backgroundElem.title = "Click here to close the menu";
@@ -1682,16 +1681,12 @@ function addMenu() {
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             var _a;
-            if (((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg") {
-                e.stopPropagation();
-                closeMenu();
-            }
+            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg")
+                closeMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                e.stopPropagation();
-                closeMenu();
-            }
+            if (isMenuOpen && e.key === "Escape")
+                closeMenu(e);
         });
         const menuContainer = document.createElement("div");
         menuContainer.title = "";
@@ -1700,7 +1695,7 @@ function addMenu() {
         menuContainer.style.display = "flex";
         menuContainer.style.flexDirection = "column";
         menuContainer.style.justifyContent = "space-between";
-        // title
+        //#SECTION title bar
         const titleCont = document.createElement("div");
         titleCont.style.padding = "8px 20px 15px 8px";
         titleCont.style.display = "flex";
@@ -1740,7 +1735,7 @@ function addMenu() {
         linksCont.appendChild(closeElem);
         titleCont.appendChild(titleElem);
         titleCont.appendChild(linksCont);
-        // TODO: features
+        //#SECTION feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "betterytm-menu-opts";
         featuresCont.style.display = "flex";
@@ -1798,7 +1793,6 @@ function addMenu() {
                 ctrlElem.style.whiteSpace = "nowrap";
                 const inputElem = document.createElement("input");
                 inputElem.id = inputElemId;
-                inputElem.style.marginRight = "37px";
                 inputElem.type = inputType;
                 if (type === "toggle")
                     inputElem.style.marginLeft = "5px";
@@ -1846,50 +1840,53 @@ function addMenu() {
                     });
                 }
                 inputElem.addEventListener("input", () => {
-                    let v = parseInt(inputElem.value);
+                    let v = Number(String(inputElem.value).trim());
                     if (isNaN(v))
                         v = Number(inputElem.value);
                     if (typeof initialVal !== "undefined")
                         confChanged(key, initialVal, (type !== "toggle" ? v : inputElem.checked));
                 });
-                const resetElem = document.createElement("button");
-                resetElem.innerText = "Reset";
-                resetElem.addEventListener("click", () => {
-                    inputElem[type !== "toggle" ? "value" : "checked"] = ftDefault;
-                    if (labelElem) {
-                        if (type === "toggle")
-                            labelElem.innerText = toggleLabelText(inputElem.checked);
-                        else
-                            labelElem.innerText = fmtVal(parseInt(inputElem.value));
-                    }
-                    if (typeof initialVal !== "undefined")
-                        confChanged(key, initialVal, ftDefault);
-                });
                 labelElem && ctrlElem.appendChild(labelElem);
                 ctrlElem.appendChild(inputElem);
-                ctrlElem.appendChild(resetElem);
                 ftConfElem.appendChild(ctrlElem);
             }
             featuresCont.appendChild(ftConfElem);
         }
+        //#SECTION footer
+        const footerCont = document.createElement("div");
+        footerCont.id = "betterytm-menu-footer-cont";
+        footerCont.style.display = "flex";
+        footerCont.style.flexDirection = "row";
+        footerCont.style.justifyContent = "space-between";
+        footerCont.style.padding = "10px 20px";
+        footerCont.style.marginTop = "20px";
+        footerCont.style.position = "sticky";
+        footerCont.style.bottom = "0";
+        footerCont.style.backgroundColor = "var(--bytm-menu-bg)";
         const footerElem = document.createElement("div");
         footerElem.id = "betterytm-menu-footer";
-        footerElem.style.marginTop = "20px";
         footerElem.style.fontSize = "17px";
         footerElem.style.textDecoration = "underline";
-        footerElem.style.padding = "10px 20px";
-        footerElem.style.position = "sticky";
-        footerElem.style.backgroundColor = "var(--bytm-menu-bg)";
-        footerElem.style.bottom = "0";
         footerElem.innerText = "You need to reload the page to apply changes.";
         const reloadElem = document.createElement("button");
         reloadElem.style.marginLeft = "20px";
         reloadElem.innerText = "Reload now";
         reloadElem.title = "Click to reload the page";
         reloadElem.addEventListener("click", () => location.reload());
+        const resetElem = document.createElement("button");
+        resetElem.className = "bytm-cfg-reset-btn";
+        resetElem.innerText = "Reset";
+        resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
+                yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.setDefaultFeatConf)();
+                location.reload();
+            }
+        }));
         footerElem.appendChild(reloadElem);
-        featuresCont.appendChild(footerElem);
-        // finalize
+        footerCont.appendChild(footerElem);
+        footerCont.appendChild(resetElem);
+        featuresCont.appendChild(footerCont);
+        //#SECTION finalize
         const menuBody = document.createElement("div");
         menuBody.id = "betterytm-menu-body";
         menuBody.appendChild(titleCont);
@@ -1912,13 +1909,23 @@ function addMenu() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added menu elem:", backgroundElem);
     });
 }
+//#MARKER utilities
 function closeMenu(e) {
+    if (!isMenuOpen)
+        return;
+    isMenuOpen = false;
     (e === null || e === void 0 ? void 0 : e.bubbles) && e.stopPropagation();
+    document.body.classList.remove("bytm-disable-scroll");
     const menuBg = document.querySelector("#betterytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
+// function that opens the menu, it should do the inverse of closeMenu()
 function openMenu() {
+    if (isMenuOpen)
+        return;
+    isMenuOpen = true;
+    document.body.classList.add("bytm-disable-scroll");
     const menuBg = document.querySelector("#betterytm-menu-bg");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
@@ -2408,7 +2415,7 @@ function onDomLoad() {
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
   \**********************************************************************************/
 :root {
-  --bytm-menu-bg: #282828;
+  --bytm-menu-bg: #212121;
 }
 
 #betterytm-menu-bg {
@@ -2430,7 +2437,7 @@ function onDomLoad() {
   left: 25vw;
   top: 10vh;
   z-index: 16;
-  padding: 8px;
+  padding: 10px 25px;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }
@@ -2458,10 +2465,6 @@ function onDomLoad() {
   display: inline-block;
 }
 
-/*.betterytm-menu-img {
-
-}*/
-
 #betterytm-menu-close {
   cursor: pointer;
 }
@@ -2469,6 +2472,11 @@ function onDomLoad() {
 .betterytm-ftconf-label {
   user-select: none;
 }
+
+body.bytm-disable-scroll {
+  overflow-y: hidden !important;
+}
+
 /*!***************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
