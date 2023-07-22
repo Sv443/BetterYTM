@@ -89,9 +89,8 @@ export function getVideoTime() {
         let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")!) : -1;
 
         const mut = new MutationObserver(() => {
-          // .observe() is only called when the element exists
+          // .observe() is only called when the element exists - no need to check for null
           videoTime = Number(document.querySelector<HTMLProgressElement>(pbSelector)!.getAttribute("aria-valuenow")!);
-          dbg("video time changed:", videoTime);
         });
 
         const observe = (progElem: HTMLElement) => {
@@ -102,7 +101,6 @@ export function getVideoTime() {
 
           setTimeout(() => {
             res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
-            dbg("final video time:", videoTime);
           }, 500);
         };
 
