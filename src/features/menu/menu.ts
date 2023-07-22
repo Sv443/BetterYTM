@@ -57,22 +57,22 @@ export function setActiveTab(tab: keyof typeof tabsSelectors) {
   delete tabs[tab];
   // disable all but new active tab
   for(const [, val] of Object.entries(tabs)) {
-    (document.querySelector(`#${val}-header`) as HTMLElement).dataset.active = "false";
-    (document.querySelector(`#${val}-content`) as HTMLElement).dataset.active = "false";
+    document.querySelector<HTMLElement>(`#${val}-header`)!.dataset.active = "false";
+    document.querySelector<HTMLElement>(`#${val}-content`)!.dataset.active = "false";
   }
   // enable new active tab
-  (document.querySelector(`#${tabsSelectors[tab]}-header`) as HTMLElement).dataset.active = "true";
-  (document.querySelector(`#${tabsSelectors[tab]}-content`) as HTMLElement).dataset.active = "true";
+  document.querySelector<HTMLElement>(`#${tabsSelectors[tab]}-header`)!.dataset.active = "true";
+  document.querySelector<HTMLElement>(`#${tabsSelectors[tab]}-content`)!.dataset.active = "true";
 }
   
 /** Opens the modal menu dialog */
 export function openMenu() {
-  (document.querySelector("#bytm-menu-dialog") as HTMLDialogElement).showModal();
+  document.querySelector<HTMLDialogElement>("#bytm-menu-dialog")?.showModal();
 }
   
 /** Closes the modal menu dialog */
 export function closeMenu() {
-  (document.querySelector("#bytm-menu-dialog") as HTMLDialogElement).close();
+  document.querySelector<HTMLDialogElement>("#bytm-menu-dialog")?.close();
 }
 
 //#MARKER menu tab contents
