@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "9c0980d", // assert as generic string instead of union
+    lastCommit: "cc533ad", // assert as generic string instead of union
 };
 
 
@@ -1110,15 +1110,17 @@ function addQueueButtons(queueItem) {
                         imgEl.classList.add("bytm-spinner");
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
+                    const resetImgElem = () => {
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                        imgEl.classList.remove("bytm-spinner");
+                    };
                     if (!cachedLyricsUrl) {
                         songInfo.removeAttribute("data-bytm-loading");
                         // so the new image doesn't "blink"
-                        setTimeout(() => {
-                            imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
-                            imgEl.classList.remove("bytm-spinner");
-                        }, 100);
+                        setTimeout(resetImgElem, 100);
                     }
                     if (!lyricsUrl) {
+                        resetImgElem();
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
                             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
                         return;
@@ -1610,11 +1612,13 @@ function setActiveTab(tab) {
 }
 /** Opens the modal menu dialog */
 function openMenu() {
-    document.querySelector("#bytm-menu-dialog").showModal();
+    var _a;
+    (_a = document.querySelector("#bytm-menu-dialog")) === null || _a === void 0 ? void 0 : _a.showModal();
 }
 /** Closes the modal menu dialog */
 function closeMenu() {
-    document.querySelector("#bytm-menu-dialog").close();
+    var _a;
+    (_a = document.querySelector("#bytm-menu-dialog")) === null || _a === void 0 ? void 0 : _a.close();
 }
 //#MARKER menu tab contents
 function initOptionsContent() {
@@ -2045,9 +2049,8 @@ function getVideoTime() {
                 const progElem = document.querySelector(pbSelector);
                 let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")) : -1;
                 const mut = new MutationObserver(() => {
-                    // .observe() is only called when the element exists
+                    // .observe() is only called when the element exists - no need to check for null
                     videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
-                    dbg("video time changed:", videoTime);
                 });
                 const observe = (progElem) => {
                     mut.observe(progElem, {
@@ -2056,7 +2059,6 @@ function getVideoTime() {
                     });
                     setTimeout(() => {
                         res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
-                        dbg("final video time:", videoTime);
                     }, 500);
                 };
                 if (!progElem)
