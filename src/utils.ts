@@ -348,7 +348,7 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
+/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
 export function getAssetUrl(path: string) {
   return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
 }
