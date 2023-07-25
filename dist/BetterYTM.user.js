@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "cc533ad", // assert as generic string instead of union
+    lastCommit: "d76e16e", // assert as generic string instead of union
 };
 
 
@@ -2255,7 +2255,7 @@ function getDomain() {
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `ROOT/assets/`) */
+/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
 function getAssetUrl(path) {
     return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_0__.branch}/assets/${path}`;
 }
