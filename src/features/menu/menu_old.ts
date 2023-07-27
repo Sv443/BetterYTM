@@ -40,7 +40,7 @@ export async function addMenu() {
 
   //#SECTION title bar
   const titleCont = document.createElement("div");
-  titleCont.style.padding = "8px 20px 15px 8px";
+  titleCont.style.padding = "8px 20px 15px 20px";
   titleCont.style.display = "flex";
   titleCont.style.justifyContent = "space-between";
   titleCont.id = "betterytm-menu-titlecont";
