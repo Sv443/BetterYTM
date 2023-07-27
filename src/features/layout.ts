@@ -284,6 +284,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 export function addAnchorImprovements() {
   //#SECTION carousel shelves
   try {
+    // home page
     /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
     const condCarouselImprovements = (el: HTMLElement) => {
       const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
@@ -309,6 +310,14 @@ export function addAnchorImprovements() {
 
       if(addedNodes.length > 0)
         addedNodes.forEach(condCarouselImprovements);
+    });
+
+    // "related" tab
+    // TODO: test this lol
+    onSelectorExists("ytmusic-carousel-shelf-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] contents", (relatedTabContents) => {
+      const relatedCarouselShelves = relatedTabContents?.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
+      if(relatedCarouselShelves)
+        relatedCarouselShelves.forEach(condCarouselImprovements);
     });
   }
   catch(err) {
