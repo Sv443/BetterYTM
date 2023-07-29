@@ -47,6 +47,7 @@ export function addMediaCtrlLyricsBtn(): void {
   onSelectorExists(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
 }
 
+// TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
