@@ -487,7 +487,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "d76e16e", // assert as generic string instead of union
+    lastCommit: "ceec092", // assert as generic string instead of union
 };
 
 
@@ -681,7 +681,7 @@ const featInfo = {
         default: true,
     },
     switchSitesHotkey: {
-        desc: "TODO: Which hotkey needs to be pressed to switch sites?",
+        desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
         type: "hotkey",
         category: "input",
         default: {
@@ -1182,14 +1182,15 @@ function addQueueButtons(queueItem) {
 function addAnchorImprovements() {
     //#SECTION carousel shelves
     try {
+        // home page
         /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
         const condCarouselImprovements = (el) => {
             const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
             if (listItemRenderer) {
                 const itemsElem = el.querySelector("ul#items");
                 if (itemsElem) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Adding anchor improvements to carousel shelf");
-                    improveCarouselAnchors(itemsElem);
+                    const improvedElems = improveCarouselAnchors(itemsElem);
+                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf items`);
                 }
             }
         };
@@ -1204,6 +1205,27 @@ function addAnchorImprovements() {
             void removedNodes;
             if (addedNodes.length > 0)
                 addedNodes.forEach(condCarouselImprovements);
+        });
+        // related tab in /watch
+        // TODO: items are lazy-loaded so this needs to be done differently
+        // maybe the onSelectorExists feature can be expanded to support conditional continuous checking & querySelectorAll
+        const relatedTabAnchorImprovements = (tabElem) => {
+            const relatedCarouselShelves = tabElem === null || tabElem === void 0 ? void 0 : tabElem.querySelectorAll("ytmusic-carousel-shelf-renderer");
+            if (relatedCarouselShelves)
+                relatedCarouselShelves.forEach(condCarouselImprovements);
+        };
+        const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
+            const relatedTabObserver = new MutationObserver(([{ addedNodes, removedNodes }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0)
+                    relatedTabAnchorImprovements(document.querySelector(relatedTabContentsSelector));
+            });
+            relatedTabObserver.observe(relatedTabContainer, {
+                childList: true,
+            });
+        });
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)(relatedTabContentsSelector, (relatedTabContents) => {
+            relatedTabAnchorImprovements(relatedTabContents);
         });
     }
     catch (err) {
@@ -1229,7 +1251,6 @@ function addAnchorImprovements() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchors to sidebar items due to an error:", err);
     }
 }
-// TODO: add to "related" tab in /watch
 const sidebarPaths = [
     "/",
     "/explore",
@@ -1260,10 +1281,11 @@ function improveSidebarAnchors(sidebarItems) {
  */
 function improveCarouselAnchors(itemsElement) {
     if (itemsElement.classList.contains("bytm-anchors-improved"))
-        return;
-    itemsElement.classList.add("bytm-anchors-improved");
-    for (const listItem of itemsElement.querySelectorAll("ytmusic-responsive-list-item-renderer")) {
-        try {
+        return 0;
+    let improvedElems = 0;
+    try {
+        const allListItems = itemsElement.querySelectorAll("ytmusic-responsive-list-item-renderer");
+        for (const listItem of allListItems) {
             const thumbnailElem = listItem.querySelector(".left-items");
             const titleElem = listItem.querySelector(".title-column yt-formatted-string.title a");
             if (!thumbnailElem || !titleElem) {
@@ -1279,11 +1301,16 @@ function improveCarouselAnchors(itemsElement) {
                 e.preventDefault();
             });
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(thumbnailElem, thumbnailAnchor);
-        }
-        catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
+            improvedElems++;
         }
     }
+    catch (err) {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
+    }
+    finally {
+        itemsElement.classList.add("bytm-anchors-improved");
+    }
+    return improvedElems;
 }
 
 
@@ -1363,6 +1390,7 @@ let mcCurrentSongTitle = "";
 function addMediaCtrlLyricsBtn() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_0__.onSelectorExists)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
 }
+// TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 function addActualMediaCtrlLyricsBtn(likeContainer) {
     const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
@@ -1672,7 +1700,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 let isMenuOpen = false;
 /**
  * Adds an element to open the BetterYTM menu
- * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
+ * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 function addMenu() {
     var _a, _b;
@@ -1701,7 +1729,7 @@ function addMenu() {
         menuContainer.style.justifyContent = "space-between";
         //#SECTION title bar
         const titleCont = document.createElement("div");
-        titleCont.style.padding = "8px 20px 15px 8px";
+        titleCont.style.padding = "8px 20px 15px 20px";
         titleCont.style.display = "flex";
         titleCont.style.justifyContent = "space-between";
         titleCont.id = "betterytm-menu-titlecont";
@@ -2065,17 +2093,6 @@ function getVideoTime() {
                     return onSelectorExists(pbSelector, observe);
                 else
                     return observe(progElem);
-                // Possible solution:
-                // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
-                // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
-                // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
-                //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
-                // - Subtract one or two seconds to make up for rounding errors
-                // - profit
-                // if(!ytCurrentVideoTime) {
-                //   ytForceShowVideoTime();
-                //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
-                // }
             }
         }
         catch (err) {
@@ -2140,16 +2157,15 @@ function addParent(element, newParent) {
 /**
  * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param style CSS string
- * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - defaults to a random number if left undefined
+ * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - no ID is given if it's `undefined`
  */
 function addGlobalStyle(style, ref) {
-    if (typeof ref !== "string" || ref.length === 0)
-        ref = String(Math.floor(Math.random() * 10000));
     const styleElem = document.createElement("style");
-    styleElem.id = `betterytm-style-${ref}`;
+    if (ref)
+        styleElem.id = `betterytm-style-${ref}`;
     styleElem.innerHTML = style;
     document.head.appendChild(styleElem);
-    log(`Inserted global style with ref '${ref}':`, styleElem);
+    log(`Inserted global style${ref ? ` with ref '${ref}'` : ""}:`, styleElem);
 }
 const selectorExistsMap = new Map();
 /**

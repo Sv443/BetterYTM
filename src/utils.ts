@@ -108,19 +108,6 @@ export function getVideoTime() {
           return onSelectorExists(pbSelector, observe);
         else
           return observe(progElem);
-
-        // Possible solution:
-        // - Use MutationObserver to detect when attributes of progress bar (selector `div.ytp-progress-bar[role="slider"]`) change
-        // - Wait until the attribute increments, then save the value of `aria-valuenow` and the current system time to memory
-        // - When site switch hotkey is pressed, take saved `aria-valuenow` value and add the difference between saved system time and current system time
-        //   - If no value is present, use the script from `dev/ytForceShowVideoTime.js` to simulate mouse movement to force the element to update
-        // - Subtract one or two seconds to make up for rounding errors
-        // - profit
-
-        // if(!ytCurrentVideoTime) {
-        //   ytForceShowVideoTime();
-        //   const videoTime = document.querySelector("#TODO")?.getAttribute("aria-valuenow") ?? null;
-        // }
       }
     }
     catch(err) {

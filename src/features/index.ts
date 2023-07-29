@@ -22,7 +22,7 @@ export const featInfo = {
     default: true,
   },
   switchSitesHotkey: {
-    desc: "TODO: Which hotkey needs to be pressed to switch sites?",
+    desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
     type: "hotkey",
     category: "input",
     default: {

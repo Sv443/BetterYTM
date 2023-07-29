@@ -11,7 +11,7 @@ let isMenuOpen = false;
 
 /**
  * Adds an element to open the BetterYTM menu
- * @deprecated TODO: replace in v1.1.0 - see https://github.com/Sv443/BetterYTM/issues/23
+ * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 export async function addMenu() {
   //#SECTION backdrop & menu container
