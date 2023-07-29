@@ -285,14 +285,15 @@ export function addAnchorImprovements() {
   //#SECTION carousel shelves
   try {
     // home page
+
     /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
     const condCarouselImprovements = (el: HTMLElement) => {
       const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
       if(listItemRenderer) {
         const itemsElem = el.querySelector<HTMLElement>("ul#items");
         if(itemsElem) {
-          log("Adding anchor improvements to carousel shelf");
-          improveCarouselAnchors(itemsElem);
+          const improvedElems = improveCarouselAnchors(itemsElem);
+          improvedElems > 0 && log(`Added anchor improvements to ${improvedElems} carousel shelf items`);
         }
       }
     };
@@ -312,12 +313,30 @@ export function addAnchorImprovements() {
         addedNodes.forEach(condCarouselImprovements);
     });
 
-    // "related" tab
-    // TODO: test this lol
-    onSelectorExists("ytmusic-carousel-shelf-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] contents", (relatedTabContents) => {
-      const relatedCarouselShelves = relatedTabContents?.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
+    // related tab in /watch
+
+    // TODO: items are lazy-loaded so this needs to be done differently
+    // maybe the onSelectorExists feature can be expanded to support conditional continuous checking & querySelectorAll
+    const relatedTabAnchorImprovements = (tabElem: HTMLElement) => {
+      const relatedCarouselShelves = tabElem?.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
       if(relatedCarouselShelves)
         relatedCarouselShelves.forEach(condCarouselImprovements);
+    };
+
+    const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
+
+    onSelectorExists("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
+      const relatedTabObserver = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
+        if(addedNodes.length > 0 || removedNodes.length > 0)
+          relatedTabAnchorImprovements(document.querySelector<HTMLElement>(relatedTabContentsSelector)!);
+      });
+      relatedTabObserver.observe(relatedTabContainer, {
+        childList: true,
+      });
+    });
+
+    onSelectorExists(relatedTabContentsSelector, (relatedTabContents) => {
+      relatedTabAnchorImprovements(relatedTabContents);
     });
   }
   catch(err) {
@@ -347,8 +366,6 @@ export function addAnchorImprovements() {
     error("Couldn't add anchors to sidebar items due to an error:", err);
   }
 }
-
-// TODO: add to "related" tab in /watch
 
 const sidebarPaths = [
   "/",
@@ -382,11 +399,12 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
  */
 function improveCarouselAnchors(itemsElement: HTMLElement) {
   if(itemsElement.classList.contains("bytm-anchors-improved"))
-    return;
-  itemsElement.classList.add("bytm-anchors-improved");
+    return 0;
 
-  for(const listItem of itemsElement.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer")) {
-    try {
+  let improvedElems = 0;
+  try {
+    const allListItems = itemsElement.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
+    for(const listItem of allListItems) {
       const thumbnailElem = listItem.querySelector<HTMLElement>(".left-items");
       const titleElem = listItem.querySelector<HTMLAnchorElement>(".title-column yt-formatted-string.title a");
 
@@ -406,9 +424,15 @@ function improveCarouselAnchors(itemsElement: HTMLElement) {
       });
 
       addParent(thumbnailElem, thumbnailAnchor);
-    }
-    catch(err) {
-      error("Couldn't add anchor improvements due to error:", err);
+      improvedElems++;
     }
   }
+  catch(err) {
+    error("Couldn't add anchor improvements due to error:", err);
+  }
+  finally {
+    itemsElement.classList.add("bytm-anchors-improved");
+  }
+
+  return improvedElems;
 }
