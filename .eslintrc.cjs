@@ -46,6 +46,12 @@ module.exports = {
       files: ["**.js"],
       rules: {
         "@typescript-eslint/no-var-requires": "off",
+        "quotes": [ "error", "double" ],
+        "semi": [ "error", "always" ],
+        "eol-last": [ "error", "always" ],
+        "no-async-promise-executor": "off",
+        "indent": ["error", 2, { "ignoredNodes": ["VariableDeclaration[declarations.length=0]"] }],
+        "comma-dangle": ["error", "only-multiline"],
       },
     },
   ],
