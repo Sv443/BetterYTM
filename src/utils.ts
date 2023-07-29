@@ -206,18 +206,16 @@ export function addParent(element: HTMLElement, newParent: HTMLElement) {
 /**
  * Adds global CSS style through a `<style>` element in the document's `<head>`
  * @param style CSS string
- * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - defaults to a random number if left undefined
+ * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - no ID is given if it's `undefined`
  */
 export function addGlobalStyle(style: string, ref?: string) {
-  if(typeof ref !== "string" || ref.length === 0)
-    ref = String(Math.floor(Math.random() * 10_000));
-
   const styleElem = document.createElement("style");
-  styleElem.id = `betterytm-style-${ref}`;
+  if(ref)
+    styleElem.id = `betterytm-style-${ref}`;
   styleElem.innerHTML = style;
   document.head.appendChild(styleElem);
 
-  log(`Inserted global style with ref '${ref}':`, styleElem);
+  log(`Inserted global style${ref ? ` with ref '${ref}'` : ""}:`, styleElem);
 }
 
 const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
