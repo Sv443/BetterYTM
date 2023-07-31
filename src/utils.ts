@@ -343,8 +343,8 @@ export function getAssetUrl(path: string) {
  * @param word A word in singular form, to auto-convert to plural
  * @param num If this is an array, the amount of items is used
  */
-export function autoPlural(word: string, num: number | unknown[]) {
-  if(Array.isArray(num))
+export function autoPlural(word: string, num: number | unknown[] | NodeList) {
+  if(Array.isArray(num) || num instanceof NodeList)
     num = num.length;
   return `${word}${num === 1 ? "" : "s"}`;
 }

@@ -41,7 +41,7 @@ export function addWatermark() {
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
 
-  log("Added watermark element:", watermark);
+  log("Added watermark element", watermark);
 }
 
 /** Called whenever the menu exists to add a BYTM-Configuration button */
@@ -74,7 +74,7 @@ export function addConfigMenuOption(container: HTMLElement) {
 
   container.appendChild(cfgOptElem);
 
-  log("Added BYTM-Configuration button to menu popover");
+  log("Added BYTM-Configuration button to menu popover", cfgOptElem);
 }
 
 //#MARKER remove upgrade tab
@@ -139,7 +139,7 @@ export function initQueueButtons() {
 
   queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
 
-  log(`Added buttons to ${queueItems.length} existing queue items`);
+  log(`Added buttons to ${queueItems.length} existing queue ${autoPlural("item", queueItems)}`);
 }
 
 /**
@@ -293,7 +293,7 @@ export function addAnchorImprovements() {
         const itemsElem = el.querySelector<HTMLElement>("ul#items");
         if(itemsElem) {
           const improvedElems = improveCarouselAnchors(itemsElem);
-          improvedElems > 0 && log(`Added anchor improvements to ${improvedElems} carousel shelf items`);
+          improvedElems > 0 && log(`Added anchor improvements to ${improvedElems} carousel shelf ${autoPlural("item", improvedElems)}`);
         }
       }
     };
@@ -354,12 +354,12 @@ export function addAnchorImprovements() {
 
     onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
       const itemsAmt = addSidebarAnchors(sidebarCont);
-      log(`Added anchors around ${itemsAmt} sidebar items`);
+      log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
     });
 
     onSelectorExists("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
       const itemsAmt = addSidebarAnchors(miniSidebarCont);
-      log(`Added anchors around ${itemsAmt} mini sidebar items`);
+      log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
     });
   }
   catch(err) {
