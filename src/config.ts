@@ -1,6 +1,6 @@
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
-import { log } from "./utils";
+import { error, log } from "./utils";
 
 /** If this number is incremented, the features object needs to be migrated (TODO: migration not implemented yet) */
 const formatVersion = 1;
@@ -15,13 +15,13 @@ export const defaultFeatures = (Object.keys(featInfo) as (keyof typeof featInfo)
 let featuresCache: FeatureConfig | undefined;
 
 /**
- * Returns the current FeatureConfig in memory or reads it from GM storage  
+ * Returns the current FeatureConfig in memory or reads it from GM storage if undefined.  
  * Automatically applies defaults for non-existant keys
  * @param forceRead Set to true to force reading the config from GM storage
  */
 export async function getFeatures(forceRead = false) {
-  if(featuresCache === undefined || forceRead)
-    await saveFeatureConf(featuresCache = { ...defaultFeatures, ...await loadFeatureConf() }); // look at this sexy one liner
+  if(!featuresCache || forceRead)
+    featuresCache = await loadFeatureConf();
   return featuresCache;
 }
 
@@ -32,14 +32,16 @@ export async function loadFeatureConf(): Promise<FeatureConfig> {
   try {
     const featureConf = await GM.getValue("betterytm-config") as string;
 
-    if(typeof featureConf !== "string") {
+    // empty object length is 2, so we check for 3 to be sure
+    if(typeof featureConf !== "string" || featureConf.length <= 3) {
       await setDefaultFeatConf();
       return featuresCache = defConf;
     }
 
-    return featuresCache = Object.freeze(featureConf ? JSON.parse(featureConf) as FeatureConfig : defConf);
+    return featuresCache = featureConf ? JSON.parse(featureConf) as FeatureConfig : defConf;
   }
   catch(err) {
+    error("Error loading feature configuration, resetting to default:", err);
     await setDefaultFeatConf();
     return featuresCache = defConf;
   }
