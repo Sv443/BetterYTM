@@ -2,7 +2,9 @@
 
 <h1><img src="./assets/icon/icon.png" /><br>BetterYTM</h1>
 
-Configurable layout and UX improvements for YouTube Music
+### Configurable layout and UX improvements for YouTube Music
+
+[Features](#features) • [Installation](#installation) • [Development](#development) • [Disclaimers](#disclaimers)
 
 </div>
 <br>
@@ -61,8 +63,7 @@ This project is based on my extensive template for making a userscript with Type
 1. Have Node.js, npm and Git installed
 2. Download and extract or clone this repo
 3. Open a terminal in the project root and run `npm i`
-4. Copy the file `.env.template` to `.env` and modify the `NODE_ENV` variable to enable or disable minification.  
-  If on `development` the code is readable and debuggable but also has a much bigger file size than on `production`
+4. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
 
 #### These are the CLI commands available after setting up the project:
 | Command | Description |
@@ -74,7 +75,7 @@ This project is based on my extensive template for making a userscript with Type
 | `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint |
 
 #### Extras:
-When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/dist/BetterYTM.user.js`](http://localhost:8710/dist/BetterYTM.user.js) and select the `Track local file` option.  
+When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
 This makes it so the userscript automatically updates when the code changes.  
 Note: the tab needs to stay open on Firefox or the script will not update itself.
 
@@ -83,6 +84,8 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 ### Dependencies:
 This userscript depends on these runtime libraries:
 - [@billjs/event-emitter](https://npmjs.org/package/@billjs/event-emitter)
+  
+For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
 
 <br><br>
 
