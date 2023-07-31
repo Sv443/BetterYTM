@@ -306,7 +306,7 @@ export async function addMenu() {
 
   document.body.appendChild(backgroundElem);
 
-  log("Added menu elem:", backgroundElem);
+  log("Added menu element:", backgroundElem);
 }
 
 //#MARKER utilities

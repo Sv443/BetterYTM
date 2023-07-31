@@ -76,7 +76,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         if(!lyricsBtn)
           return;
 
-        log(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+        info(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
 
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";

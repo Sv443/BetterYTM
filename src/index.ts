@@ -1,6 +1,6 @@
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImages, setLogLevel } from "./utils";
+import { addGlobalStyle, autoPlural, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImages, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -58,11 +58,11 @@ async function init() {
 
     if(domain === "ytm")
       precacheImages(precacheImgs)
-        .then(() => log(`Pre-cached ${precacheImgs.length} images`))
+        .then(() => log(`Pre-cached ${precacheImgs.length} ${autoPlural("image", precacheImgs)}`))
         .catch((e) => error(`Pre-caching error: ${e}`));
   }
   catch(err) {
-    console.error(`${scriptInfo.name} - General Error:`, err);
+    error("General Error:", err);
   }
 
   try {
