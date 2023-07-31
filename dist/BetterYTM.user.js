@@ -407,14 +407,14 @@ const defaultFeatures = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_0__
 /** In-memory features object to save on a little bit of I/O */
 let featuresCache;
 /**
- * Returns the current FeatureConfig in memory or reads it from GM storage
+ * Returns the current FeatureConfig in memory or reads it from GM storage if undefined.
  * Automatically applies defaults for non-existant keys
  * @param forceRead Set to true to force reading the config from GM storage
  */
 function getFeatures(forceRead = false) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (featuresCache === undefined || forceRead)
-            yield saveFeatureConf(featuresCache = Object.assign(Object.assign({}, defaultFeatures), yield loadFeatureConf())); // look at this sexy one liner
+        if (!featuresCache || forceRead)
+            featuresCache = yield loadFeatureConf();
         return featuresCache;
     });
 }
@@ -424,13 +424,15 @@ function loadFeatureConf() {
         const defConf = Object.assign({}, defaultFeatures);
         try {
             const featureConf = yield GM.getValue("betterytm-config");
-            if (typeof featureConf !== "string") {
+            // empty object length is 2, so we check for 3 to be sure
+            if (typeof featureConf !== "string" || featureConf.length <= 3) {
                 yield setDefaultFeatConf();
                 return featuresCache = defConf;
             }
-            return featuresCache = Object.freeze(featureConf ? JSON.parse(featureConf) : defConf);
+            return featuresCache = featureConf ? JSON.parse(featureConf) : defConf;
         }
         catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Error loading feature configuration, resetting to default:", err);
             yield setDefaultFeatConf();
             return featuresCache = defConf;
         }
@@ -487,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "ceec092", // assert as generic string instead of union
+    lastCommit: "ad72937", // assert as generic string instead of union
 };
 
 
@@ -991,7 +993,7 @@ function addWatermark() {
     });
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element:", watermark);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element", watermark);
 }
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 function addConfigMenuOption(container) {
@@ -1016,7 +1018,7 @@ function addConfigMenuOption(container) {
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     container.appendChild(cfgOptElem);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
 }
 //#MARKER remove upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
@@ -1066,7 +1068,7 @@ function initQueueButtons() {
     if (queueItems.length === 0)
         return;
     queueItems.forEach(itm => addQueueButtons(itm));
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing queue items`);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing queue ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", queueItems)}`);
 }
 /**
  * Adds the buttons to each item in the current song queue.
@@ -1190,7 +1192,7 @@ function addAnchorImprovements() {
                 const itemsElem = el.querySelector("ul#items");
                 if (itemsElem) {
                     const improvedElems = improveCarouselAnchors(itemsElem);
-                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf items`);
+                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", improvedElems)}`);
                 }
             }
         };
@@ -1240,11 +1242,11 @@ function addAnchorImprovements() {
         };
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
             const itemsAmt = addSidebarAnchors(sidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} sidebar items`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", itemsAmt)}`);
         });
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
             const itemsAmt = addSidebarAnchors(miniSidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} mini sidebar items`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", itemsAmt)}`);
         });
     }
     catch (err) {
@@ -1416,7 +1418,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
                         if (!lyricsBtn)
                             return;
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
                         lyricsBtn.style.cursor = "wait";
                         lyricsBtn.style.pointerEvents = "none";
                         const imgElem = lyricsBtn.querySelector("img");
@@ -1939,7 +1941,7 @@ function addMenu() {
         menuContainer.appendChild(versionCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added menu elem:", backgroundElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added menu element:", backgroundElem);
     });
 }
 //#MARKER utilities
@@ -2281,7 +2283,7 @@ function getAssetUrl(path) {
  * @param num If this is an array, the amount of items is used
  */
 function autoPlural(word, num) {
-    if (Array.isArray(num))
+    if (Array.isArray(num) || num instanceof NodeList)
         num = num.length;
     return `${word}${num === 1 ? "" : "s"}`;
 }
@@ -2411,11 +2413,11 @@ function init() {
             document.addEventListener("DOMContentLoaded", onDomLoad);
             if (domain === "ytm")
                 (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImages)(precacheImgs)
-                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} images`))
+                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("image", precacheImgs)}`))
                     .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Pre-caching error: ${e}`));
         }
         catch (err) {
-            console.error(`${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - General Error:`, err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("General Error:", err);
         }
         try {
             void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_4__.initMenu];
