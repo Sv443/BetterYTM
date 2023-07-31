@@ -4,7 +4,7 @@
 
 ### Configurable layout and UX improvements for YouTube Music
 
-[Features](#features) • [Installation](#installation) • [Development](#development) • [Disclaimers](#disclaimers)
+[Features](#features) • [Installation](#installation) • [Development](#development) • [Attributions](#attributions) • [Disclaimers](#disclaimers)
 
 </div>
 <br>
@@ -81,11 +81,15 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 
 <br><br>
 
-### Dependencies:
+### Attributions:
 This userscript depends on these runtime libraries:
 - [@billjs/event-emitter](https://npmjs.org/package/@billjs/event-emitter)
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
+  
+Icons:  
+- Most icons are from [Material Icons](https://fonts.google.com/icons)
+- For external icon attributions, see [`./assets/external/README.md`](assets/external/)
 
 <br><br>
 
