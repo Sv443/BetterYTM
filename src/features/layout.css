@@ -119,6 +119,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   position: absolute;
   right: 0;
   padding-left: 25px;
+  height: 100%;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {
