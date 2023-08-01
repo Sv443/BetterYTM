@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "ad72937", // assert as generic string instead of union
+    lastCommit: "816715e", // assert as generic string instead of literal
 };
 
 
@@ -1210,7 +1210,7 @@ function addAnchorImprovements() {
         });
         // related tab in /watch
         // TODO: items are lazy-loaded so this needs to be done differently
-        // maybe the onSelectorExists feature can be expanded to support conditional continuous checking & querySelectorAll
+        // maybe the onSelectorExists feature can be expanded to conditionally support continuous checking & querySelectorAll
         const relatedTabAnchorImprovements = (tabElem) => {
             const relatedCarouselShelves = tabElem === null || tabElem === void 0 ? void 0 : tabElem.querySelectorAll("ytmusic-carousel-shelf-renderer");
             if (relatedCarouselShelves)
@@ -1992,10 +1992,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initSelectorExistsCheck: function() { return /* binding */ initSelectorExistsCheck; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
+/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
 /* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
 /* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
 /* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
 /* harmony export */   precacheImages: function() { return /* binding */ precacheImages; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
@@ -2185,6 +2187,27 @@ function onSelectorExists(selector, listener) {
         else
             selectorExistsMap.set(selector, [listener]);
     }
+}
+/**
+ * Calls the `listener` as soon as the `selector` exists in the DOM.
+ * Listeners are deleted when they are called once, unless `options.continuous` is set.
+ * Multiple listeners with the same selector may be registered.
+ * @template TElem The type of element that this selector will return - FIXME: listener inferring doesn't work when this generic is given
+ */
+function onSelector(options, listener) {
+    // TODO:
+    void [options, listener];
+}
+// onSelector({
+//   selector: "a",
+//   all: true,
+// }, (elem) => {
+//   void elem;
+// });
+/** Removes all listeners registered in `onSelector()` with a matching selector property */
+function removeOnSelector(selector) {
+    // TODO:
+    void [selector];
 }
 /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
 function initSelectorExistsCheck() {
@@ -2622,6 +2645,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   position: absolute;
   right: 0;
   padding-left: 25px;
+  height: 100%;
 }
 
 .side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {

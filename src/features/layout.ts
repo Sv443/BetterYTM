@@ -316,7 +316,7 @@ export function addAnchorImprovements() {
     // related tab in /watch
 
     // TODO: items are lazy-loaded so this needs to be done differently
-    // maybe the onSelectorExists feature can be expanded to support conditional continuous checking & querySelectorAll
+    // maybe the onSelectorExists feature can be expanded to conditionally support continuous checking & querySelectorAll
     const relatedTabAnchorImprovements = (tabElem: HTMLElement) => {
       const relatedCarouselShelves = tabElem?.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
       if(relatedCarouselShelves)
