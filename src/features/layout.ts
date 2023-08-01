@@ -280,6 +280,9 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
 //#MARKER better clickable stuff
 
+// TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
+// TODO: add to thumbnails in playlists (/playlist?list=$id)
+
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
   //#SECTION carousel shelves
