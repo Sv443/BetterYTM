@@ -1113,7 +1113,7 @@ function addQueueButtons(queueItem) {
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
                     const resetImgElem = () => {
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png");
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("lyrics.svg");
                         imgEl.classList.remove("bytm-spinner");
                     };
                     if (!cachedLyricsUrl) {
@@ -1426,7 +1426,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         imgElem.classList.add("bytm-spinner");
                         mcCurrentSongTitle = newTitle;
                         const url = yield getCurrentLyricsUrl(); // can take a second or two
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("lyrics.svg");
                         imgElem.classList.remove("bytm-spinner");
                         if (!url)
                             continue;
@@ -1558,7 +1558,7 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("external/genius.png");
+    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("lyrics.svg");
     linkElem.appendChild(imgElem);
     return linkElem;
 }
@@ -2410,7 +2410,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 const precacheImgs = [
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("spinner.svg"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("external/genius.png"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("lyrics.svg"),
 ];
 {
     // console watermark with sexy gradient

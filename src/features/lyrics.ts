@@ -89,7 +89,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
 
-        imgElem.src = getAssetUrl("external/genius.png");
+        imgElem.src = getAssetUrl("lyrics.svg");
         imgElem.classList.remove("bytm-spinner");
 
         if(!url)
@@ -237,7 +237,7 @@ export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLA
 
   const imgElem = document.createElement("img");
   imgElem.className = "bytm-generic-btn-img";
-  imgElem.src = getAssetUrl("external/genius.png");
+  imgElem.src = getAssetUrl("lyrics.svg");
 
   linkElem.appendChild(imgElem);
 

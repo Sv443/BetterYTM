@@ -193,7 +193,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
         const resetImgElem = () => {
-          imgEl.src = getAssetUrl("external/genius.png");
+          imgEl.src = getAssetUrl("lyrics.svg");
           imgEl.classList.remove("bytm-spinner");
         };
 

@@ -19,7 +19,7 @@ import {
 const precacheImgs = [
   getAssetUrl("spinner.svg"),
   getAssetUrl("delete.svg"),
-  getAssetUrl("external/genius.png"),
+  getAssetUrl("lyrics.svg"),
 ];
 
 {
