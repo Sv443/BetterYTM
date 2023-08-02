@@ -45,6 +45,37 @@
   cursor: pointer;
 }
 
+/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out infinite;
+} */
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
+  width: 24px;
+  height: 24px;
+  z-index: 1000;
+  position: absolute;
+  animation: rotate-fade-in 1s ease-in-out;
+}
+
+@keyframes rotate-fade-in {
+  from {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {

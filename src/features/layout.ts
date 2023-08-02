@@ -2,7 +2,7 @@ import type { Event } from "@billjs/event-emitter";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, addParent, autoPlural, error, getAssetUrl, insertAfter, log, onSelectorExists, openInNewTab, pauseFor } from "../utils";
+import { addGlobalStyle, addParent, autoPlural, error, fetchAdvanced, getAssetUrl, insertAfter, log, onSelectorExists, openInNewTab, pauseFor } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -16,6 +16,8 @@ export async function preInitLayout() {
 
 //#MARKER BYTM-Config buttons
 
+let clicksAmt = 0, logoExchanged = false;
+
 /** Adds a watermark beneath the logo */
 export function addWatermark() {
   const watermark = document.createElement("a");
@@ -26,10 +28,18 @@ export function addWatermark() {
   watermark.title = "Open menu";
   watermark.tabIndex = 1000;
 
+  improveLogo();
+
   watermark.addEventListener("click", (e) => {
     e.stopPropagation();
-    openMenu();
+    clicksAmt++;
+
+    if((!e.shiftKey || logoExchanged) && clicksAmt !== 5)
+      openMenu();
+    if((!logoExchanged && e.shiftKey) || clicksAmt === 5)
+      exchangeLogo();
   });
+
   // when using the tab key to navigate
   watermark.addEventListener("keydown", (e) => {
     if(e.key === "Enter") {
@@ -44,13 +54,58 @@ export function addWatermark() {
   log("Added watermark element", watermark);
 }
 
+/** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
+async function improveLogo() {
+  try {
+    const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+    const svg = await res.text();
+    
+    onSelectorExists("ytmusic-logo a", (logoElem) => {
+      logoElem.classList.add("bytm-mod-logo");
+      logoElem.innerHTML = svg;
+
+      logoElem.querySelectorAll("ellipse").forEach((e) => {
+        e.classList.add("bytm-mod-logo-ellipse");
+      });
+
+      logoElem.querySelector("path")?.classList.add("bytm-mod-logo-path");
+
+      log("Swapped logo to inline SVG");
+    });
+  }
+  catch(err) {
+    error("Couldn't improve logo due to an error:", err);
+  }
+}
+
+/** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
+function exchangeLogo() {
+  onSelectorExists(".bytm-mod-logo", (logoElem) => {
+    if(logoElem.classList.contains("bytm-logo-exchanged"))
+      return;
+
+    logoExchanged = true;
+    logoElem.classList.add("bytm-logo-exchanged");
+
+    const newLogo = document.createElement("img");
+    newLogo.className = "bytm-mod-logo-img";
+    newLogo.src = getAssetUrl("icon/icon.png");
+
+    logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
+
+    setTimeout(() => {
+      logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+    }, 1000);
+  });
+}
+
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 export function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("a");
   cfgOptElem.role = "button";
   cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
   cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
-  
+
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
   cfgOptItemElem.addEventListener("click", () => {
@@ -62,7 +117,7 @@ export function addConfigMenuOption(container: HTMLElement) {
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
   cfgOptIconElem.src = getAssetUrl("icon/icon.png");
-  
+
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
   cfgOptTextElem.innerText = "BetterYTM Configuration";
