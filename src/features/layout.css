@@ -64,14 +64,17 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
 }
 
 @keyframes rotate-fade-in {
-  from {
+  0% {
+    opacity: 0;
     transform: rotate(0deg);
+  }
+  30% {
     opacity: 0;
   }
   90% {
     opacity: 1;
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }

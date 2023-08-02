@@ -93,6 +93,10 @@ function exchangeLogo() {
 
     logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
+    document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach(e => {
+      e.href = getAssetUrl("icon/icon.png");
+    });
+
     setTimeout(() => {
       logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
     }, 1000);
