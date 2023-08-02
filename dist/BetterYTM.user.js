@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "e7a2c9f", // assert as generic string instead of literal
+    lastCommit: "df6a5c7", // assert as generic string instead of literal
 };
 
 
@@ -1034,6 +1034,9 @@ function exchangeLogo() {
         newLogo.className = "bytm-mod-logo-img";
         newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
         logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
+        document.head.querySelectorAll("link[rel=\"icon\"]").forEach(e => {
+            e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+        });
         setTimeout(() => {
             logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
         }, 1000);
@@ -2637,14 +2640,17 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
 }
 
 @keyframes rotate-fade-in {
-  from {
+  0% {
+    opacity: 0;
     transform: rotate(0deg);
+  }
+  30% {
     opacity: 0;
   }
   90% {
     opacity: 1;
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
