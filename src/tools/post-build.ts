@@ -66,6 +66,8 @@ const header = `\
 
 type BuildStats = {
   sizeKiB: number;
+  mode: string;
+  timestamp: number;
 };
 
 (async () => {
@@ -111,16 +113,18 @@ type BuildStats = {
     let sizeIndicator = "";
     if(buildStats.sizeKiB) {
       const sizeDiff = sizeKiB - buildStats.sizeKiB;
-      sizeIndicator = " \x1b[2m[\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m↑" : (sizeDiff !== 0 ? "\x1b[32m↓" : "\x1b[32m=")) + "\x1b[0m\x1b[2m]\x1b[0m";
+      sizeIndicator = " \x1b[2m[\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m↑↑↑" : (sizeDiff !== 0 ? "\x1b[32m↓↓↓" : "\x1b[32m===")) + "\x1b[0m\x1b[2m]\x1b[0m";
     }
 
-    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): \x1b[34m${lastCommitSha}\x1b[0m`);
-    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}\n`);
+    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
+    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[34m${sizeKiB} KiB\x1b[0m${sizeIndicator}\n`);
 
     ringBell && process.stdout.write("\u0007");
 
     const buildStatsNew: BuildStats = {
       sizeKiB,
+      mode,
+      timestamp: Date.now(),
     };
     await writeFile(".build.json", JSON.stringify(buildStatsNew));
 
