@@ -50,7 +50,7 @@ const getConfig = (env) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.html$/i,
+          test: /\.(html|svg)$/i,
           loader: "html-loader",
         },
         {
