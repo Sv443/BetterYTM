@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "816715e", // assert as generic string instead of literal
+    lastCommit: "e7a2c9f", // assert as generic string instead of literal
 };
 
 
@@ -971,6 +971,7 @@ function preInitLayout() {
     });
 }
 //#MARKER BYTM-Config buttons
+let clicksAmt = 0, logoExchanged = false;
 /** Adds a watermark beneath the logo */
 function addWatermark() {
     const watermark = document.createElement("a");
@@ -980,9 +981,14 @@ function addWatermark() {
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name;
     watermark.title = "Open menu";
     watermark.tabIndex = 1000;
+    improveLogo();
     watermark.addEventListener("click", (e) => {
         e.stopPropagation();
-        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+        clicksAmt++;
+        if ((!e.shiftKey || logoExchanged) && clicksAmt !== 5)
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+        if ((!logoExchanged && e.shiftKey) || clicksAmt === 5)
+            exchangeLogo();
     });
     // when using the tab key to navigate
     watermark.addEventListener("keydown", (e) => {
@@ -994,6 +1000,44 @@ function addWatermark() {
     const logoElem = document.querySelector("#left-content");
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element", watermark);
+}
+/** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
+function improveLogo() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const res = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg");
+            const svg = yield res.text();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-logo a", (logoElem) => {
+                var _a;
+                logoElem.classList.add("bytm-mod-logo");
+                logoElem.innerHTML = svg;
+                logoElem.querySelectorAll("ellipse").forEach((e) => {
+                    e.classList.add("bytm-mod-logo-ellipse");
+                });
+                (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Swapped logo to inline SVG");
+            });
+        }
+        catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve logo due to an error:", err);
+        }
+    });
+}
+/** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
+function exchangeLogo() {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)(".bytm-mod-logo", (logoElem) => {
+        if (logoElem.classList.contains("bytm-logo-exchanged"))
+            return;
+        logoExchanged = true;
+        logoElem.classList.add("bytm-logo-exchanged");
+        const newLogo = document.createElement("img");
+        newLogo.className = "bytm-mod-logo-img";
+        newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+        logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
+        setTimeout(() => {
+            logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+        }, 1000);
+    });
 }
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 function addConfigMenuOption(container) {
@@ -1180,6 +1224,8 @@ function addQueueButtons(queueItem) {
     });
 }
 //#MARKER better clickable stuff
+// TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
+// TODO: add to thumbnails in playlists (/playlist?list=$id)
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
     //#SECTION carousel shelves
@@ -1602,6 +1648,7 @@ const tabsSelectors = {
     info: "bytm-menu-tab-info",
     changelog: "bytm-menu-tab-changelog",
 };
+/** Called from init(), before DOMContentLoaded is fired  */
 function initMenu() {
     document.addEventListener("DOMContentLoaded", () => {
         // create menu container
@@ -2569,6 +2616,37 @@ body.bytm-disable-scroll {
 .bytm-anchor {
   all: unset;
   cursor: pointer;
+}
+
+/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out infinite;
+} */
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
+  width: 24px;
+  height: 24px;
+  z-index: 1000;
+  position: absolute;
+  animation: rotate-fade-in 1s ease-in-out;
+}
+
+@keyframes rotate-fade-in {
+  from {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* #MARKER menu */
