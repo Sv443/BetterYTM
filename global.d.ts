@@ -5,6 +5,12 @@ declare module "*.html" {
   export default htmlContent;
 }
 
+declare module "*.svg" {
+  /** Content of the SVG file as a string */
+  const htmlContent: string;
+  export default htmlContent;
+}
+
 declare module "*.md" {
   /** Content of the markdown file, converted to an HTML string */
   const htmlContent: string;

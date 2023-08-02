@@ -22,6 +22,7 @@ const tabsSelectors = {
   changelog: "bytm-menu-tab-changelog",
 };
 
+/** Called from init(), before DOMContentLoaded is fired  */
 export function initMenu() {
   document.addEventListener("DOMContentLoaded", () => {
     // create menu container
