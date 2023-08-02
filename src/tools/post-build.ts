@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { access, readFile, writeFile } from "fs/promises";
 import { dirname, join, relative } from "path";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
@@ -64,6 +64,10 @@ const header = `\
 /* C&D this 🖕 */
 `;
 
+type BuildStats = {
+  sizeKiB: number;
+};
+
 (async () => {
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
@@ -98,12 +102,27 @@ const header = `\
     await writeFile(scriptPath, finalUserscript);
 
     const envText = `${mode === "production" ? "\x1b[32m" : "\x1b[33m"}${mode}`;
-    const sizeKiB = (Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2);
+    const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
+
+    let buildStats: Partial<BuildStats> = {};
+    if(await exists(".build.json"))
+      buildStats = JSON.parse(String(await readFile(".build.json"))) as BuildStats;
+
+    let sizeIndicator = "";
+    if(buildStats.sizeKiB) {
+      const sizeDiff = sizeKiB - buildStats.sizeKiB;
+      sizeIndicator = " \x1b[2m[\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m↑" : (sizeDiff !== 0 ? "\x1b[32m↓" : "\x1b[32m=")) + "\x1b[0m\x1b[2m]\x1b[0m";
+    }
 
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): \x1b[34m${lastCommitSha}\x1b[0m`);
-    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m\n`);
+    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}\n`);
 
     ringBell && process.stdout.write("\u0007");
+
+    const buildStatsNew: BuildStats = {
+      sizeKiB,
+    };
+    await writeFile(".build.json", JSON.stringify(buildStatsNew));
 
     // schedule exit after I/O finishes
     setImmediate(() => exit(0));
@@ -144,4 +163,14 @@ function getLastCommitSha() {
       return res(String(stdout).replace(/\r?\n/gm, "").trim().substring(0, 7));
     });
   });
+}
+
+async function exists(path: string) {
+  try {
+    await access(path);
+    return true;
+  }
+  catch(err) {
+    return false;
+  }
 }
