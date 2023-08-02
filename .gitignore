@@ -6,3 +6,4 @@ node_modules/
 dist/*.map
 dist/out/
 dist/*.css
+.build.json
