@@ -22,8 +22,8 @@ let clicksAmt = 0, logoExchanged = false;
 export function addWatermark() {
   const watermark = document.createElement("a");
   watermark.role = "button";
-  watermark.id = "betterytm-watermark";
-  watermark.className = "style-scope ytmusic-nav-bar";
+  watermark.id = "bytm-watermark";
+  watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
   watermark.title = "Open menu";
   watermark.tabIndex = 1000;
@@ -61,7 +61,7 @@ async function improveLogo() {
     const svg = await res.text();
     
     onSelectorExists("ytmusic-logo a", (logoElem) => {
-      logoElem.classList.add("bytm-mod-logo");
+      logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
       logoElem.innerHTML = svg;
 
       logoElem.querySelectorAll("ellipse").forEach((e) => {
@@ -442,7 +442,7 @@ const sidebarPaths = [
 function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   sidebarItems.forEach((item, i) => {
     const anchorElem = document.createElement("a");
-    anchorElem.className = "bytm-anchor";
+    anchorElem.classList.add("bytm-anchor", "bytm-no-select");
     anchorElem.role = "button";
     anchorElem.target = "_self";
     anchorElem.href = sidebarPaths[i] ?? "#";

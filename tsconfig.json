@@ -20,6 +20,7 @@
     "sourceMap": true,
     "strict": true,
     "useDefineForClassFields": true,
+    "noImplicitThis": false,
   },
   "ts-node": {
     "esm": true,
