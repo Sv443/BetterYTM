@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b1c8007", // assert as generic string instead of literal
+    lastCommit: "c277312", // assert as generic string instead of literal
 };
 
 
@@ -2376,7 +2376,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 /** URLs of images to pre-cache so they can be displayed instantly */
-const precacheImgs = [
+const preloadImgs = [
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("spinner.svg"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("delete.svg"),
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("lyrics.svg"),
@@ -2406,13 +2407,13 @@ function preInit() {
 }
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (domain === "ytm")
+            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.preloadImages)(preloadImgs, true)
+                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Preloaded ${preloadImgs.length} ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("image", preloadImgs)}`))
+                .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)(`Couldn't preload images: ${e}`));
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
-            if (domain === "ytm")
-                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.preloadImages)(precacheImgs)
-                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Pre-cached ${precacheImgs.length} ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("image", precacheImgs)}`))
-                    .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)(`Pre-caching error: ${e}`));
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General Error:", err);
