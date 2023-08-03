@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "bc1ce1b", // assert as generic string instead of literal
+    lastCommit: "cae8613", // assert as generic string instead of literal
 };
 
 
@@ -769,7 +769,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -943,7 +943,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setVolSliderSize: function() { return /* binding */ setVolSliderSize; },
 /* harmony export */   setVolSliderStep: function() { return /* binding */ setVolSliderStep; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1015,15 +1015,17 @@ function improveLogo() {
         try {
             const res = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg");
             const svg = yield res.text();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-logo a", (logoElem) => {
-                var _a;
-                logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-                logoElem.innerHTML = svg;
-                logoElem.querySelectorAll("ellipse").forEach((e) => {
-                    e.classList.add("bytm-mod-logo-ellipse");
-                });
-                (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Swapped logo to inline SVG");
+            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-logo a", {
+                listener: (logoElem) => {
+                    var _a;
+                    logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+                    logoElem.innerHTML = svg;
+                    logoElem.querySelectorAll("ellipse").forEach((e) => {
+                        e.classList.add("bytm-mod-logo-ellipse");
+                    });
+                    (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Swapped logo to inline SVG");
+                },
             });
         }
         catch (err) {
@@ -1033,21 +1035,23 @@ function improveLogo() {
 }
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)(".bytm-mod-logo", (logoElem) => {
-        if (logoElem.classList.contains("bytm-logo-exchanged"))
-            return;
-        logoExchanged = true;
-        logoElem.classList.add("bytm-logo-exchanged");
-        const newLogo = document.createElement("img");
-        newLogo.className = "bytm-mod-logo-img";
-        newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
-        logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
-        document.head.querySelectorAll("link[rel=\"icon\"]").forEach(e => {
-            e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
-        });
-        setTimeout(() => {
-            logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
-        }, 1000);
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(".bytm-mod-logo", {
+        listener: (logoElem) => {
+            if (logoElem.classList.contains("bytm-logo-exchanged"))
+                return;
+            logoExchanged = true;
+            logoElem.classList.add("bytm-logo-exchanged");
+            const newLogo = document.createElement("img");
+            newLogo.className = "bytm-mod-logo-img";
+            newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
+            logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
+            document.head.querySelectorAll("link[rel=\"icon\"]").forEach(e => {
+                e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
+            });
+            setTimeout(() => {
+                logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+            }, 1000);
+        },
     });
 }
 /** Called whenever the menu exists to add a BYTM-Configuration button */
@@ -1082,13 +1086,17 @@ function addConfigMenuOption(container) {
 //#MARKER remove upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
-        tabElemLarge.remove();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", {
+        listener: (tabElemLarge) => {
+            tabElemLarge.remove();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
+        },
     });
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
-        tabElemSmall.remove();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed small upgrade tab");
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", {
+        listener: (tabElemSmall) => {
+            tabElemSmall.remove();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed small upgrade tab");
+        },
     });
 }
 //#MARKER volume slider
@@ -1259,9 +1267,11 @@ function addAnchorImprovements() {
             }
         };
         // initial three shelves aren't included in the event fire
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
-            const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
-            carouselShelves.forEach(condCarouselImprovements);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-carousel-shelf-renderer", {
+            listener: () => {
+                const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
+                carouselShelves.forEach(condCarouselImprovements);
+            },
         });
         // every shelf that's loaded by scrolling:
         _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("carouselShelvesChanged", (evt) => {
@@ -1279,17 +1289,21 @@ function addAnchorImprovements() {
                 relatedCarouselShelves.forEach(condCarouselImprovements);
         };
         const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
-            const relatedTabObserver = new MutationObserver(([{ addedNodes, removedNodes }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0)
-                    relatedTabAnchorImprovements(document.querySelector(relatedTabContentsSelector));
-            });
-            relatedTabObserver.observe(relatedTabContainer, {
-                childList: true,
-            });
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", {
+            listener: (relatedTabContainer) => {
+                const relatedTabObserver = new MutationObserver(([{ addedNodes, removedNodes }]) => {
+                    if (addedNodes.length > 0 || removedNodes.length > 0)
+                        relatedTabAnchorImprovements(document.querySelector(relatedTabContentsSelector));
+                });
+                relatedTabObserver.observe(relatedTabContainer, {
+                    childList: true,
+                });
+            },
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)(relatedTabContentsSelector, (relatedTabContents) => {
-            relatedTabAnchorImprovements(relatedTabContents);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(relatedTabContentsSelector, {
+            listener: (relatedTabContents) => {
+                relatedTabAnchorImprovements(relatedTabContents);
+            },
         });
     }
     catch (err) {
@@ -1302,13 +1316,17 @@ function addAnchorImprovements() {
             improveSidebarAnchors(items);
             return items.length;
         };
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
-            const itemsAmt = addSidebarAnchors(sidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+            listener: (sidebarCont) => {
+                const itemsAmt = addSidebarAnchors(sidebarCont);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+            },
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
-            const itemsAmt = addSidebarAnchors(miniSidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+            listener: (miniSidebarCont) => {
+                const itemsAmt = addSidebarAnchors(miniSidebarCont);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+            },
         });
     }
     catch (err) {
@@ -1398,7 +1416,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1454,7 +1472,7 @@ function addLyricsCacheEntry(artists, song, lyricsUrl) {
 let mcCurrentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.onSelectorExists)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 // TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
@@ -1744,7 +1762,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
@@ -2051,13 +2069,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
-/* harmony export */   initSelectorExistsCheck: function() { return /* binding */ initSelectorExistsCheck; },
 /* harmony export */   log: function() { return /* binding */ log; },
-/* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 
@@ -2143,7 +2159,7 @@ function getVideoTime() {
                     }, 500);
                 };
                 if (!progElem)
-                    return onSelectorExists(pbSelector, observe);
+                    return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(pbSelector, { listener: observe });
                 else
                     return observe(progElem);
             }
@@ -2188,40 +2204,40 @@ function ytForceShowVideoTime() {
 //   finalTime += Number(min) * 60 + Number(sec);
 //   return isNaN(finalTime) ? 0 : finalTime;
 // }
-const selectorExistsMap = new Map();
-/**
- * Calls the `listener` as soon as the `selector` exists in the DOM.
- * Listeners are deleted as soon as they are called once.
- * Multiple listeners with the same selector may be registered.
- */
-function onSelectorExists(selector, listener) {
-    const el = document.querySelector(selector);
-    if (el)
-        listener(el);
-    else {
-        if (selectorExistsMap.get(selector))
-            selectorExistsMap.set(selector, [...selectorExistsMap.get(selector), listener]);
-        else
-            selectorExistsMap.set(selector, [listener]);
-    }
-}
-/** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
-function initSelectorExistsCheck() {
-    const observer = new MutationObserver(() => {
-        for (const [selector, listeners] of selectorExistsMap.entries()) {
-            const el = document.querySelector(selector);
-            if (el) {
-                listeners.forEach(listener => listener(el));
-                selectorExistsMap.delete(selector);
-            }
-        }
-    });
-    observer.observe(document.body, {
-        subtree: true,
-        childList: true,
-    });
-    log("Initialized \"selector exists\" MutationObserver");
-}
+// const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
+// /**
+//  * Calls the `listener` as soon as the `selector` exists in the DOM.  
+//  * Listeners are deleted as soon as they are called once.  
+//  * Multiple listeners with the same selector may be registered.
+//  */
+// export function onSelectorExists(selector: string, listener: (element: HTMLElement) => void) {
+//   const el = document.querySelector<HTMLElement>(selector);
+//   if(el)
+//     listener(el);
+//   else {
+//     if(selectorExistsMap.get(selector))
+//       selectorExistsMap.set(selector, [...selectorExistsMap.get(selector)!, listener]);
+//     else
+//       selectorExistsMap.set(selector, [listener]);
+//   }
+// }
+// /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
+// export function initSelectorExistsCheck() {
+//   const observer = new MutationObserver(() => {
+//     for(const [selector, listeners] of selectorExistsMap.entries()) {
+//       const el = document.querySelector<HTMLElement>(selector);
+//       if(el) {
+//         listeners.forEach(listener => listener(el));
+//         selectorExistsMap.delete(selector);
+//       }
+//     }
+//   });
+//   observer.observe(document.body, {
+//     subtree: true,
+//     childList: true,
+//   });
+//   log("Initialized \"selector exists\" MutationObserver");
+// }
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -2243,34 +2259,212 @@ function getAssetUrl(path) {
 
 /***/ }),
 
-/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
-/*!**************************************************************!*\
-  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
-  \**************************************************************/
+/***/ "../../svn/UserUtils/dist/index.mjs":
+/*!******************************************!*\
+  !*** ../../svn/UserUtils/dist/index.mjs ***!
+  \******************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addGlobalStyle: function() { return /* binding */ k; },
-/* harmony export */   addParent: function() { return /* binding */ _; },
-/* harmony export */   autoPlural: function() { return /* binding */ h; },
-/* harmony export */   clamp: function() { return /* binding */ O; },
-/* harmony export */   debounce: function() { return /* binding */ A; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ H; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ y; },
-/* harmony export */   insertAfter: function() { return /* binding */ M; },
-/* harmony export */   interceptEvent: function() { return /* binding */ g; },
-/* harmony export */   interceptWindowEvent: function() { return /* binding */ j; },
-/* harmony export */   onSelector: function() { return /* binding */ F; },
-/* harmony export */   openInNewTab: function() { return /* binding */ N; },
-/* harmony export */   pauseFor: function() { return /* binding */ w; },
-/* harmony export */   preloadImages: function() { return /* binding */ S; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ W; }
+/* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   addParent: function() { return /* binding */ addParent; },
+/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
+/* harmony export */   clamp: function() { return /* binding */ clamp; },
+/* harmony export */   debounce: function() { return /* binding */ debounce; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
+/* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
+/* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
+/* harmony export */   interceptEvent: function() { return /* binding */ interceptEvent; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ interceptWindowEvent; },
+/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
+/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
+/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
+/* harmony export */   preloadImages: function() { return /* binding */ preloadImages; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; }
 /* harmony export */ });
-var E=Object.defineProperty,T=Object.defineProperties;var x=Object.getOwnPropertyDescriptors;var l=Object.getOwnPropertySymbols;var v=Object.prototype.hasOwnProperty,b=Object.prototype.propertyIsEnumerable;var p=(t,e,n)=>e in t?E(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,u=(t,e)=>{for(var n in e||(e={}))v.call(e,n)&&p(t,n,e[n]);if(l)for(var n of l(e))b.call(e,n)&&p(t,n,e[n]);return t},m=(t,e)=>T(t,x(e));var f=(t,e,n)=>new Promise((o,r)=>{var a=s=>{try{c(n.next(s));}catch(d){r(d);}},i=s=>{try{c(n.throw(s));}catch(d){r(d);}},c=s=>s.done?o(s.value):Promise.resolve(s.value).then(a,i);c((n=n.apply(t,e)).next());});function h(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function O(t,e,n){return Math.max(Math.min(t,n),e)}function w(t){return new Promise(e=>{setTimeout(e,t);})}function A(t,e=300){let n;return function(...o){clearTimeout(n),n=setTimeout(()=>t.apply(this,o),e);}}function y(){try{return unsafeWindow}catch(t){return window}}function M(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function _(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function k(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function S(t,e=!1){let n=t.map(o=>new Promise((r,a)=>{let i=new Image;i.src=o,i.addEventListener("load",()=>r(i)),i.addEventListener("error",c=>e&&a(c));}));return Promise.allSettled(n)}function H(n){return f(this,arguments,function*(t,e={}){let{timeout:o=1e4}=e,r=new AbortController,a=setTimeout(()=>r.abort(),o),i=yield fetch(t,m(u({},e),{signal:r.signal}));return clearTimeout(a),i})}function N(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function g(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(o){element.__proto__.addEventListener=function(...r){if(!(r[0]===e&&n()))return o.apply(this,r)};}(t.__proto__.addEventListener);}function j(t,e){return g(y(),t,e)}function F(t,e){}function W(t){}
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+// lib/utils.ts
+function autoPlural(word, num) {
+  if (Array.isArray(num) || num instanceof NodeList)
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
+}
+function clamp(value, min, max) {
+  return Math.max(Math.min(value, max), min);
+}
+function pauseFor(time) {
+  return new Promise((res) => {
+    setTimeout(res, time);
+  });
+}
+function debounce(func, timeout = 300) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
+}
+function getUnsafeWindow() {
+  try {
+    return unsafeWindow;
+  } catch (e) {
+    return window;
+  }
+}
+function insertAfter(beforeElement, afterElement) {
+  var _a;
+  (_a = beforeElement.parentNode) == null ? void 0 : _a.insertBefore(afterElement, beforeElement.nextSibling);
+  return afterElement;
+}
+function addParent(element2, newParent) {
+  const oldParent = element2.parentNode;
+  if (!oldParent)
+    throw new Error("Element doesn't have a parent node");
+  oldParent.replaceChild(newParent, element2);
+  newParent.appendChild(element2);
+  return newParent;
+}
+function addGlobalStyle(style) {
+  const styleElem = document.createElement("style");
+  styleElem.innerHTML = style;
+  document.head.appendChild(styleElem);
+}
+function preloadImages(srcUrls, rejects = false) {
+  const promises = srcUrls.map((src) => new Promise((res, rej) => {
+    const image = new Image();
+    image.src = src;
+    image.addEventListener("load", () => res(image));
+    image.addEventListener("error", (evt) => rejects && rej(evt));
+  }));
+  return Promise.allSettled(promises);
+}
+function fetchAdvanced(_0) {
+  return __async(this, arguments, function* (url, options = {}) {
+    const { timeout = 1e4 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
+      signal: controller.signal
+    }));
+    clearTimeout(id);
+    return res;
+  });
+}
+function openInNewTab(href) {
+  const openElem = document.createElement("a");
+  Object.assign(openElem, {
+    className: "userutils-open-in-new-tab",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    href
+  });
+  openElem.style.display = "none";
+  document.body.appendChild(openElem);
+  openElem.click();
+  setTimeout(openElem.remove, 50);
+}
+function interceptEvent(eventObject, eventName, predicate) {
+  if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
+    Error.stackTraceLimit = 1e3;
+  }
+  (function(original) {
+    element.__proto__.addEventListener = function(...args) {
+      if (args[0] === eventName && predicate())
+        return;
+      else
+        return original.apply(this, args);
+    };
+  })(eventObject.__proto__.addEventListener);
+}
+function interceptWindowEvent(eventName, predicate) {
+  return interceptEvent(getUnsafeWindow(), eventName, predicate);
+}
+
+// lib/onSelector.ts
+var selectorMap = /* @__PURE__ */ new Map();
+function onSelector(selector, options) {
+  let selectorMapItems = [];
+  if (selectorMap.has(selector))
+    selectorMapItems = selectorMap.get(selector);
+  selectorMapItems.push(options);
+  selectorMap.set(selector, selectorMapItems);
+  checkSelectorExists(selector, selectorMapItems);
+}
+function removeOnSelector(selector) {
+  return selectorMap.delete(selector);
+}
+function checkSelectorExists(selector, options) {
+  const deleteIndices = [];
+  options.forEach((option, i) => {
+    try {
+      const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
+      if (elements) {
+        option.listener(elements);
+        if (!option.continuous)
+          deleteIndices.push(i);
+      }
+    } catch (err) {
+    }
+  });
+  if (deleteIndices.length > 0) {
+    selectorMap.set(selector, options.filter((_, i) => !deleteIndices.includes(i)));
+  }
+}
+function initOnSelector(opts = {}) {
+  const observer = new MutationObserver(() => {
+    for (const [selector, options] of selectorMap.entries())
+      checkSelectorExists(selector, options);
+  });
+  observer.observe(document.body, __spreadProps(__spreadValues({}, opts), {
+    // subtree: true, // this setting applies the options to the childList (which isn't necessary in this use case)
+    childList: true
+  }));
+}
 
 
-
+//# sourceMappingURL=http://localhost:8710/out.js.map
+//# sourceMappingURL=http://localhost:8710/index.mjs.map
 
 /***/ })
 
@@ -2337,7 +2531,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -2406,7 +2600,7 @@ function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
-        // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
+        // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(/* BetterYTM - global style */
 `/*!**********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
@@ -2712,8 +2906,8 @@ ytmusic-responsive-list-item-renderer .left-items {
 
 
 /*# sourceMappingURL=http://localhost:8710/main.css.map*/`);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.initOnSelector)();
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.loadFeatureConf)();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.initSelectorExistsCheck)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
@@ -2724,7 +2918,7 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
                 }
                 (0,_events__WEBPACK_IMPORTED_MODULE_4__.initSiteEvents)();
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", _features_index__WEBPACK_IMPORTED_MODULE_5__.addConfigMenuOption);
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_5__.addConfigMenuOption });
                 if (features.arrowKeySupport)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)

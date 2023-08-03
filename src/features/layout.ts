@@ -1,9 +1,9 @@
 import type { Event } from "@billjs/event-emitter";
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { error, getAssetUrl, log, onSelectorExists } from "../utils";
+import { error, getAssetUrl, log } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -66,17 +66,19 @@ async function improveLogo() {
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
     
-    onSelectorExists("ytmusic-logo a", (logoElem) => {
-      logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-      logoElem.innerHTML = svg;
+    onSelector("ytmusic-logo a", {
+      listener: (logoElem) => {
+        logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
+        logoElem.innerHTML = svg;
 
-      logoElem.querySelectorAll("ellipse").forEach((e) => {
-        e.classList.add("bytm-mod-logo-ellipse");
-      });
+        logoElem.querySelectorAll("ellipse").forEach((e) => {
+          e.classList.add("bytm-mod-logo-ellipse");
+        });
 
-      logoElem.querySelector("path")?.classList.add("bytm-mod-logo-path");
+        logoElem.querySelector("path")?.classList.add("bytm-mod-logo-path");
 
-      log("Swapped logo to inline SVG");
+        log("Swapped logo to inline SVG");
+      },
     });
   }
   catch(err) {
@@ -86,26 +88,28 @@ async function improveLogo() {
 
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-  onSelectorExists(".bytm-mod-logo", (logoElem) => {
-    if(logoElem.classList.contains("bytm-logo-exchanged"))
-      return;
+  onSelector(".bytm-mod-logo", {
+    listener: (logoElem) => {
+      if(logoElem.classList.contains("bytm-logo-exchanged"))
+        return;
 
-    logoExchanged = true;
-    logoElem.classList.add("bytm-logo-exchanged");
+      logoExchanged = true;
+      logoElem.classList.add("bytm-logo-exchanged");
 
-    const newLogo = document.createElement("img");
-    newLogo.className = "bytm-mod-logo-img";
-    newLogo.src = getAssetUrl("icon/icon.png");
+      const newLogo = document.createElement("img");
+      newLogo.className = "bytm-mod-logo-img";
+      newLogo.src = getAssetUrl("icon/icon.png");
 
-    logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
+      logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-    document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach(e => {
-      e.href = getAssetUrl("icon/icon.png");
-    });
+      document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach(e => {
+        e.href = getAssetUrl("icon/icon.png");
+      });
 
-    setTimeout(() => {
-      logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
-    }, 1000);
+      setTimeout(() => {
+        logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
+      }, 1000);
+    },
   });
 }
 
@@ -150,13 +154,17 @@ export function addConfigMenuOption(container: HTMLElement) {
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export function removeUpgradeTab() {
-  onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
-    tabElemLarge.remove();
-    log("Removed large upgrade tab");
+  onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", {
+    listener: (tabElemLarge) => {
+      tabElemLarge.remove();
+      log("Removed large upgrade tab");
+    },
   });
-  onSelectorExists("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
-    tabElemSmall.remove();
-    log("Removed small upgrade tab");
+  onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", {
+    listener: (tabElemSmall) => {
+      tabElemSmall.remove();
+      log("Removed small upgrade tab");
+    },
   });
 }
 
@@ -372,9 +380,11 @@ export function addAnchorImprovements() {
     };
 
     // initial three shelves aren't included in the event fire
-    onSelectorExists("ytmusic-carousel-shelf-renderer", () => {
-      const carouselShelves = document.body.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
-      carouselShelves.forEach(condCarouselImprovements);
+    onSelector("ytmusic-carousel-shelf-renderer", {
+      listener: () => {
+        const carouselShelves = document.body.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
+        carouselShelves.forEach(condCarouselImprovements);
+      },
     });
 
     // every shelf that's loaded by scrolling:
@@ -398,18 +408,22 @@ export function addAnchorImprovements() {
 
     const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
 
-    onSelectorExists("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
-      const relatedTabObserver = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
-        if(addedNodes.length > 0 || removedNodes.length > 0)
-          relatedTabAnchorImprovements(document.querySelector<HTMLElement>(relatedTabContentsSelector)!);
-      });
-      relatedTabObserver.observe(relatedTabContainer, {
-        childList: true,
-      });
+    onSelector("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", {
+      listener: (relatedTabContainer) => {
+        const relatedTabObserver = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
+          if(addedNodes.length > 0 || removedNodes.length > 0)
+            relatedTabAnchorImprovements(document.querySelector<HTMLElement>(relatedTabContentsSelector)!);
+        });
+        relatedTabObserver.observe(relatedTabContainer, {
+          childList: true,
+        });
+      },
     });
 
-    onSelectorExists(relatedTabContentsSelector, (relatedTabContents) => {
-      relatedTabAnchorImprovements(relatedTabContents);
+    onSelector(relatedTabContentsSelector, {
+      listener: (relatedTabContents) => {
+        relatedTabAnchorImprovements(relatedTabContents);
+      },
     });
   }
   catch(err) {
@@ -425,14 +439,18 @@ export function addAnchorImprovements() {
       return items.length;
     };
 
-    onSelectorExists("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
-      const itemsAmt = addSidebarAnchors(sidebarCont);
-      log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
+    onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+      listener: (sidebarCont) => {
+        const itemsAmt = addSidebarAnchors(sidebarCont);
+        log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
+      },
     });
 
-    onSelectorExists("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
-      const itemsAmt = addSidebarAnchors(miniSidebarCont);
-      log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+    onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+      listener: (miniSidebarCont) => {
+        const itemsAmt = addSidebarAnchors(miniSidebarCont);
+        log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+      },
     });
   }
   catch(err) {
