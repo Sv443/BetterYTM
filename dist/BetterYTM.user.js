@@ -314,7 +314,7 @@ exports.globalEvent = new EventEmitter();
 
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2 id=\"history\">History:</h2>\n<ul>\n<li><strong><a href=\"#100\">v1.0.0</a></strong></li>\n<li><a href=\"#020\">v0.2.0</a></li>\n<li><a href=\"#010\">v0.1.0</a></li>\n</ul>\n<hr>\n<p><br><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<p>TODO:</p>\n<ul>\n<li>Added menu to configure features</li>\n<li>New configurable features:<ul>\n<li>Make volume slider bigger</li>\n<li>Choose step of volume slider for finer control</li>\n<li>Add lyrics button to each song in a playlist</li>\n</ul>\n</li>\n<li>Changes / Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n<p><br><br><br><br><br><br><br><br><br></p>\n";
+var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2 id=\"history\">History:</h2>\n<ul>\n<li><strong><a href=\"#100\">v1.0.0</a></strong></li>\n<li><a href=\"#020\">v0.2.0</a></li>\n<li><a href=\"#010\">v0.1.0</a></li>\n</ul>\n<hr>\n<p><br><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<p>TODO:</p>\n<ul>\n<li>Added menu to configure features</li>\n<li>New configurable features:<ul>\n<li>Make volume slider bigger</li>\n<li>Choose step of volume slider for finer control</li>\n<li>Add lyrics button to each song in a playlist</li>\n</ul>\n</li>\n<li>Changes / Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "8f23acf", // assert as generic string instead of literal
+    lastCommit: "bc1ce1b", // assert as generic string instead of literal
 };
 
 
@@ -717,8 +717,8 @@ const featInfo = {
         desc: "The width of the volume slider in pixels",
         type: "number",
         category: "layout",
-        min: 10,
-        max: 1000,
+        min: 50,
+        max: 500,
         step: 5,
         default: 160,
         unit: "px",
@@ -769,8 +769,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -782,10 +783,11 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
+
 //#MARKER arrow key skip
 function initArrowKeySkip() {
     document.addEventListener("keydown", onKeyDown);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Added key press listener");
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Added key press listener");
 }
 /** Called when the user presses any key, anywhere */
 function onKeyDown(evt) {
@@ -793,8 +795,8 @@ function onKeyDown(evt) {
     if (["ArrowLeft", "ArrowRight"].includes(evt.code)) {
         // discard the event when a (text) input is currently active, like when editing a playlist
         if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
-            return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Captured key '${evt.code}' in proxy listener`);
+            return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Captured key '${evt.code}' in proxy listener`);
         // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
         const defaultProps = {
             altKey: false,
@@ -813,7 +815,7 @@ function onKeyDown(evt) {
             isTrusted: true,
             repeat: false,
             // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-            view: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
+            view: (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
         };
         let invalidKey = false;
         let keyProps = {};
@@ -841,10 +843,10 @@ function onKeyDown(evt) {
         if (!invalidKey) {
             const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
             document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
         }
         else
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)(`Captured key '${evt.code}' has no defined behavior`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.warn)(`Captured key '${evt.code}' has no defined behavior`);
     }
 }
 //#MARKER site switch
@@ -854,7 +856,7 @@ function initSiteSwitch(domain) {
         if (e.key === "F9")
             switchSite(domain === "yt" ? "ytm" : "yt");
     });
-    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Initialized site switch listener");
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Initialized site switch listener");
 }
 /** Switches to the other site (between YT and YTM) */
 function switchSite(newDomain) {
@@ -862,7 +864,7 @@ function switchSite(newDomain) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (newDomain === "ytm" && !location.href.includes("/watch"))
-                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)("Not on a video page, so the site switch is ignored");
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.warn)("Not on a video page, so the site switch is ignored");
             let subdomain;
             if (newDomain === "ytm")
                 subdomain = "music";
@@ -872,18 +874,18 @@ function switchSite(newDomain) {
                 throw new Error(`Unrecognized domain '${newDomain}'`);
             disableBeforeUnload();
             const { pathname, search, hash } = new URL(location.href);
-            const vt = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Found video time of ${vt} seconds`);
+            const vt = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Found video time of ${vt} seconds`);
             const cleanSearch = search.split("&")
                 .filter((param) => !param.match(/^\??t=/))
                 .join("&");
             const newSearch = cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&t=${vt}` : `?t=${vt}`;
             const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
             location.assign(newUrl);
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Error while switching site:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Error while switching site:", err);
         }
     });
 }
@@ -892,12 +894,12 @@ let beforeUnloadEnabled = true;
 /** Disables the popup before leaving the site */
 function disableBeforeUnload() {
     beforeUnloadEnabled = false;
-    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Disabled popup before leaving the site");
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Disabled popup before leaving the site");
 }
 /** (Re-)enables the popup before leaving the site */
 function enableBeforeUnload() {
     beforeUnloadEnabled = true;
-    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Enabled popup before leaving the site");
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Enabled popup before leaving the site");
 }
 /**
  * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
@@ -909,13 +911,13 @@ function initBeforeUnloadHook() {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
             if (!beforeUnloadEnabled && args[0] === "beforeunload")
-                return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Prevented beforeunload event listener from being called");
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Prevented beforeunload event listener from being called");
             else
                 return original.apply(this, args);
         };
         // @ts-ignore
     })(window.__proto__.addEventListener);
-    (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().then(feats => {
+    (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)().then(feats => {
         if (feats.disableBeforeUnloadPopup)
             disableBeforeUnload();
     });
@@ -941,13 +943,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setVolSliderSize: function() { return /* binding */ setVolSliderSize; },
 /* harmony export */   setVolSliderStep: function() { return /* binding */ setVolSliderStep; }
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../events */ "./src/events.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -964,78 +967,83 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 let features;
 function preInitLayout() {
     return __awaiter(this, void 0, void 0, function* () {
-        features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
+        features = yield (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)();
     });
 }
 //#MARKER BYTM-Config buttons
-let clicksAmt = 0, logoExchanged = false;
+let menuOpenAmt = 0, logoExchanged = false;
 /** Adds a watermark beneath the logo */
 function addWatermark() {
     const watermark = document.createElement("a");
     watermark.role = "button";
-    watermark.id = "betterytm-watermark";
-    watermark.className = "style-scope ytmusic-nav-bar";
-    watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name;
+    watermark.id = "bytm-watermark";
+    watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
+    watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name;
     watermark.title = "Open menu";
     watermark.tabIndex = 1000;
     improveLogo();
     watermark.addEventListener("click", (e) => {
         e.stopPropagation();
-        clicksAmt++;
-        if ((!e.shiftKey || logoExchanged) && clicksAmt !== 5)
-            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
-        if ((!logoExchanged && e.shiftKey) || clicksAmt === 5)
+        menuOpenAmt++;
+        if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+        if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
             exchangeLogo();
     });
     // when using the tab key to navigate
     watermark.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             e.stopPropagation();
-            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+            menuOpenAmt++;
+            if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+            if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                exchangeLogo();
         }
     });
     const logoElem = document.querySelector("#left-content");
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.insertAfter)(logoElem, watermark);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element", watermark);
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(logoElem, watermark);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added watermark element", watermark);
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
 function improveLogo() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const res = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg");
+            const res = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg");
             const svg = yield res.text();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-logo a", (logoElem) => {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-logo a", (logoElem) => {
                 var _a;
-                logoElem.classList.add("bytm-mod-logo");
+                logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
                 logoElem.innerHTML = svg;
                 logoElem.querySelectorAll("ellipse").forEach((e) => {
                     e.classList.add("bytm-mod-logo-ellipse");
                 });
                 (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Swapped logo to inline SVG");
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Swapped logo to inline SVG");
             });
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve logo due to an error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't improve logo due to an error:", err);
         }
     });
 }
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)(".bytm-mod-logo", (logoElem) => {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)(".bytm-mod-logo", (logoElem) => {
         if (logoElem.classList.contains("bytm-logo-exchanged"))
             return;
         logoExchanged = true;
         logoElem.classList.add("bytm-logo-exchanged");
         const newLogo = document.createElement("img");
         newLogo.className = "bytm-mod-logo-img";
-        newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+        newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
         logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
         document.head.querySelectorAll("link[rel=\"icon\"]").forEach(e => {
-            e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+            e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
         });
         setTimeout(() => {
             logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
@@ -1050,14 +1058,18 @@ function addConfigMenuOption(container) {
     cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
     const cfgOptItemElem = document.createElement("div");
     cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-    cfgOptItemElem.addEventListener("click", () => {
+    cfgOptItemElem.addEventListener("click", (e) => {
         const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
         settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
-        (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+        menuOpenAmt++;
+        if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+        if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+            exchangeLogo();
     });
     const cfgOptIconElem = document.createElement("img");
     cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-    cfgOptIconElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("icon/icon.png");
+    cfgOptIconElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
     const cfgOptTextElem = document.createElement("div");
     cfgOptTextElem.className = "bytm-cfg-menu-option-text";
     cfgOptTextElem.innerText = "BetterYTM Configuration";
@@ -1065,18 +1077,18 @@ function addConfigMenuOption(container) {
     cfgOptItemElem.appendChild(cfgOptTextElem);
     cfgOptElem.appendChild(cfgOptItemElem);
     container.appendChild(cfgOptElem);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
 }
 //#MARKER remove upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemLarge) => {
         tabElemLarge.remove();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed large upgrade tab");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
     });
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer:nth-child(4)", (tabElemSmall) => {
         tabElemSmall.remove();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed small upgrade tab");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed small upgrade tab");
     });
 }
 //#MARKER volume slider
@@ -1086,10 +1098,11 @@ function setVolSliderSize() {
     if (typeof size !== "number" || isNaN(Number(size)))
         return;
     const style = `\
+/* BetterYTM - set volume slider size */
 .volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
   width: ${size}px !important;
 }`;
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(style, "vol-slider");
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(style);
 }
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep() {
@@ -1100,22 +1113,22 @@ function setVolSliderStep() {
 function initQueueButtons() {
     const addQueueBtns = (evt) => {
         let amt = 0;
-        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt).childNodes) {
+        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_4__.getEvtData)(evt).childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm);
                 amt++;
             }
         }
         if (amt > 0)
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${amt} new queue ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", amt)}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added buttons to ${amt} new queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", amt)}`);
     };
-    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("queueChanged", addQueueBtns);
-    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("autoplayQueueChanged", addQueueBtns);
+    _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("queueChanged", addQueueBtns);
+    _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("autoplayQueueChanged", addQueueBtns);
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length === 0)
         return;
     queueItems.forEach(itm => addQueueButtons(itm));
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing queue ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", queueItems)}`);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added buttons to ${queueItems.length} existing queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", queueItems)}`);
 }
 /**
  * Adds the buttons to each item in the current song queue.
@@ -1137,7 +1150,7 @@ function addQueueButtons(queueItem) {
         if (!song || !artist)
             return false;
         //#SECTION lyrics btn
-        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
+        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
         {
             lyricsBtnElem.title = "Open this song's lyrics in a new tab";
             lyricsBtnElem.style.display = "inline-flex";
@@ -1146,21 +1159,21 @@ function addQueueButtons(queueItem) {
             lyricsBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 e.stopPropagation();
                 let lyricsUrl;
-                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
-                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
-                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
+                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeArtists)(artist);
+                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeSong)(song);
+                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getLyricsCacheEntry)(artistsSan, songSan);
                 if (cachedLyricsUrl)
                     lyricsUrl = cachedLyricsUrl;
                 else if (!songInfo.hasAttribute("data-bytm-loading")) {
                     const imgEl = lyricsBtnElem.querySelector("img");
                     if (!cachedLyricsUrl) {
                         songInfo.setAttribute("data-bytm-loading", "");
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("spinner.svg");
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("spinner.svg");
                         imgEl.classList.add("bytm-spinner");
                     }
-                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
+                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)(artistsSan, songSan);
                     const resetImgElem = () => {
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("lyrics.svg");
+                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("lyrics.svg");
                         imgEl.classList.remove("bytm-spinner");
                     };
                     if (!cachedLyricsUrl) {
@@ -1171,11 +1184,11 @@ function addQueueButtons(queueItem) {
                     if (!lyricsUrl) {
                         resetImgElem();
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-                            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)("https://genius.com/search");
+                            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.openInNewTab)("https://genius.com/search");
                         return;
                     }
                 }
-                lyricsUrl && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.openInNewTab)(lyricsUrl);
+                lyricsUrl && (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.openInNewTab)(lyricsUrl);
             }));
         }
         //#SECTION delete from queue btn
@@ -1197,17 +1210,17 @@ function addQueueButtons(queueItem) {
                     if (queuePopupCont)
                         queuePopupCont.setAttribute("data-bytm-hidden", "true");
                     dotsBtnElem.click();
-                    yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.pauseFor)(25);
+                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(25);
                     queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
                     if (!queuePopupCont.hasAttribute("data-bytm-hidden"))
                         queuePopupCont.setAttribute("data-bytm-hidden", "true");
                     // a little bit janky and unreliable but the only way afaik
                     const removeFromQueueBtn = queuePopupCont.querySelector("tp-yt-paper-listbox *[role=option]:nth-child(7)");
-                    yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.pauseFor)(20);
+                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(20);
                     removeFromQueueBtn.click();
                 }
                 catch (err) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't remove song from queue due to error:", err);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't remove song from queue due to error:", err);
                 }
                 finally {
                     queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
@@ -1215,7 +1228,7 @@ function addQueueButtons(queueItem) {
             }));
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg");
+            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("delete.svg");
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
@@ -1241,18 +1254,18 @@ function addAnchorImprovements() {
                 const itemsElem = el.querySelector("ul#items");
                 if (itemsElem) {
                     const improvedElems = improveCarouselAnchors(itemsElem);
-                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", improvedElems)}`);
+                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", improvedElems)}`);
                 }
             }
         };
         // initial three shelves aren't included in the event fire
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-carousel-shelf-renderer", () => {
             const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
             carouselShelves.forEach(condCarouselImprovements);
         });
         // every shelf that's loaded by scrolling:
-        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
-            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
+        _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("carouselShelvesChanged", (evt) => {
+            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_4__.getEvtData)(evt);
             void removedNodes;
             if (addedNodes.length > 0)
                 addedNodes.forEach(condCarouselImprovements);
@@ -1266,7 +1279,7 @@ function addAnchorImprovements() {
                 relatedCarouselShelves.forEach(condCarouselImprovements);
         };
         const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", (relatedTabContainer) => {
             const relatedTabObserver = new MutationObserver(([{ addedNodes, removedNodes }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0)
                     relatedTabAnchorImprovements(document.querySelector(relatedTabContentsSelector));
@@ -1275,12 +1288,12 @@ function addAnchorImprovements() {
                 childList: true,
             });
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)(relatedTabContentsSelector, (relatedTabContents) => {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)(relatedTabContentsSelector, (relatedTabContents) => {
             relatedTabAnchorImprovements(relatedTabContents);
         });
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve carousel shelf anchors due to an error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't improve carousel shelf anchors due to an error:", err);
     }
     //#SECTION sidebar
     try {
@@ -1289,17 +1302,17 @@ function addAnchorImprovements() {
             improveSidebarAnchors(items);
             return items.length;
         };
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", (sidebarCont) => {
             const itemsAmt = addSidebarAnchors(sidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", itemsAmt)}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", (miniSidebarCont) => {
             const itemsAmt = addSidebarAnchors(miniSidebarCont);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("item", itemsAmt)}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
         });
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchors to sidebar items due to an error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add anchors to sidebar items due to an error:", err);
     }
 }
 const sidebarPaths = [
@@ -1315,7 +1328,7 @@ function improveSidebarAnchors(sidebarItems) {
     sidebarItems.forEach((item, i) => {
         var _a;
         const anchorElem = document.createElement("a");
-        anchorElem.className = "bytm-anchor";
+        anchorElem.classList.add("bytm-anchor", "bytm-no-select");
         anchorElem.role = "button";
         anchorElem.target = "_self";
         anchorElem.href = (_a = sidebarPaths[i]) !== null && _a !== void 0 ? _a : "#";
@@ -1323,7 +1336,7 @@ function improveSidebarAnchors(sidebarItems) {
         anchorElem.addEventListener("click", (e) => {
             e.preventDefault();
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(item, anchorElem);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(item, anchorElem);
     });
 }
 /**
@@ -1340,7 +1353,7 @@ function improveCarouselAnchors(itemsElement) {
             const thumbnailElem = listItem.querySelector(".left-items");
             const titleElem = listItem.querySelector(".title-column yt-formatted-string.title a");
             if (!thumbnailElem || !titleElem) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
                 continue;
             }
             const thumbnailAnchor = document.createElement("a");
@@ -1351,12 +1364,12 @@ function improveCarouselAnchors(itemsElement) {
             thumbnailAnchor.addEventListener("click", (e) => {
                 e.preventDefault();
             });
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addParent)(thumbnailElem, thumbnailAnchor);
+            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(thumbnailElem, thumbnailAnchor);
             improvedElems++;
         }
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add anchor improvements due to error:", err);
     }
     finally {
         itemsElement.classList.add("bytm-anchors-improved");
@@ -1385,7 +1398,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1403,6 +1417,7 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 
+
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
@@ -1415,7 +1430,7 @@ const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
 const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
-const thresholdParam = threshold ? `&threshold=${(0,_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(threshold, 0, 1)}` : "";
+const thresholdParam = threshold ? `&threshold=${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(threshold, 0, 1)}` : "";
 //#MARKER cache
 /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map();
@@ -1439,7 +1454,7 @@ function addLyricsCacheEntry(artists, song, lyricsUrl) {
 let mcCurrentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.onSelectorExists)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.onSelectorExists)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", addActualMediaCtrlLyricsBtn);
 }
 // TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
@@ -1450,8 +1465,8 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
         const gUrl = yield getCurrentLyricsUrl();
         const linkElem = createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
         linkElem.id = "betterytm-lyrics-button";
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)("Inserted lyrics button into media controls bar");
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Inserted lyrics button into media controls bar");
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
     }))();
     mcCurrentSongTitle = songTitleElem.title;
     const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
@@ -1467,15 +1482,15 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                         const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
                         if (!lyricsBtn)
                             return;
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
                         lyricsBtn.style.cursor = "wait";
                         lyricsBtn.style.pointerEvents = "none";
                         const imgElem = lyricsBtn.querySelector("img");
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("spinner.svg");
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("spinner.svg");
                         imgElem.classList.add("bytm-spinner");
                         mcCurrentSongTitle = newTitle;
                         const url = yield getCurrentLyricsUrl(); // can take a second or two
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("lyrics.svg");
+                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("lyrics.svg");
                         imgElem.classList.remove("bytm-spinner");
                         if (!url)
                             continue;
@@ -1550,7 +1565,7 @@ function getCurrentLyricsUrl() {
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't resolve lyrics URL:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't resolve lyrics URL:", err);
             return undefined;
         }
     });
@@ -1562,33 +1577,33 @@ function getGeniusUrl(artist, song) {
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
             if (cacheEntry) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Found lyrics URL in cache: ${cacheEntry}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL in cache: ${cacheEntry}`);
                 return cacheEntry;
             }
             const startTs = Date.now();
             const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
-            const fetchRes = yield (0,_utils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
+            const fetchRes = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
             if (fetchRes.status === 429) {
                 alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
                 return undefined;
             }
             const result = yield fetchRes.json();
             if (typeof result === "object" && result.error) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't fetch lyrics URL:", result.message);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't fetch lyrics URL:", result.message);
                 return undefined;
             }
             const url = result.url;
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
             addLyricsCacheEntry(artist, song, url);
             return url;
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't get lyrics URL due to error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't get lyrics URL due to error:", err);
             return undefined;
         }
     });
@@ -1607,7 +1622,7 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.getAssetUrl)("lyrics.svg");
+    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("lyrics.svg");
     linkElem.appendChild(imgElem);
     return linkElem;
 }
@@ -1729,11 +1744,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
-/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu_old.css */ "./src/features/menu/menu_old.css");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
+/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu_old.css */ "./src/features/menu/menu_old.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1743,6 +1759,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -1787,7 +1804,8 @@ function addMenu() {
         titleCont.id = "betterytm-menu-titlecont";
         const titleElem = document.createElement("h2");
         titleElem.id = "betterytm-menu-title";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} - Configuration`;
+        titleElem.classList.add("bytm-no-select");
+        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
         const linksCont = document.createElement("div");
         linksCont.id = "betterytm-menu-linkscont";
         const addLink = (imgSrc, href, title) => {
@@ -1799,18 +1817,18 @@ function addMenu() {
             anchorElem.title = title;
             anchorElem.style.marginLeft = "10px";
             const imgElem = document.createElement("img");
-            imgElem.className = "betterytm-menu-img";
+            imgElem.className = "betterytm-menu-img bytm-no-select";
             imgElem.src = imgSrc;
             imgElem.style.width = "32px";
             imgElem.style.height = "32px";
             anchorElem.appendChild(imgElem);
             linksCont.appendChild(anchorElem);
         };
-        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("external/github.png"), _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GitHub`);
-        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("external/greasyfork.png"), "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} on GreasyFork`);
+        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("external/github.png"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
+        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("external/greasyfork.png"), "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "betterytm-menu-close";
-        closeElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("close.png");
+        closeElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("close.png");
         closeElem.title = "Click to close the menu";
         closeElem.style.marginLeft = "50px";
         closeElem.style.width = "32px";
@@ -1826,17 +1844,17 @@ function addMenu() {
         featuresCont.style.flexDirection = "column";
         featuresCont.style.overflowY = "auto";
         /** Gets called whenever the feature config is changed */
-        const confChanged = (key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
+        const confChanged = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.debounce)((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.info)(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
-            const featConf = Object.assign({}, yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.getFeatures)());
+            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.info)(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+            const featConf = Object.assign({}, yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)());
             featConf[key] = newVal;
-            yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.saveFeatureConf)(featConf);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Saved feature config changes:\n", yield GM.getValue("betterytm-config"));
-        });
-        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.getFeatures)();
+            yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatureConf)(featConf);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Saved feature config changes:\n", yield GM.getValue("betterytm-config"));
+        }));
+        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
         for (const key in features) {
-            const ftInfo = _index__WEBPACK_IMPORTED_MODULE_2__.featInfo[key];
+            const ftInfo = _index__WEBPACK_IMPORTED_MODULE_3__.featInfo[key];
             // @ts-ignore
             if (!ftInfo || ftInfo.visible === false)
                 continue;
@@ -1963,7 +1981,7 @@ function addMenu() {
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
             if (confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
-                yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.setDefaultFeatConf)();
+                yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatConf)();
                 location.reload();
             }
         }));
@@ -1984,14 +2002,14 @@ function addMenu() {
         versionCont.style.marginBottom = "5px";
         const versionElem = document.createElement("span");
         versionElem.id = "betterytm-menu-version";
-        versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}`;
+        versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}`;
         versionCont.appendChild(versionElem);
         featuresCont.appendChild(versionCont);
         menuContainer.appendChild(menuBody);
         menuContainer.appendChild(versionCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added menu element:", backgroundElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Added menu element:", backgroundElem);
     });
 }
 //#MARKER utilities
@@ -2027,40 +2045,21 @@ function openMenu() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
-/* harmony export */   addParent: function() { return /* binding */ addParent; },
-/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
-/* harmony export */   clamp: function() { return /* binding */ clamp; },
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
 /* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   initSelectorExistsCheck: function() { return /* binding */ initSelectorExistsCheck; },
-/* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
 /* harmony export */   log: function() { return /* binding */ log; },
-/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
 /* harmony export */   onSelectorExists: function() { return /* binding */ onSelectorExists; },
-/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
-/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
-/* harmony export */   precacheImages: function() { return /* binding */ precacheImages; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
+
 
 //#SECTION logging
 let curLogLevel = 1;
@@ -2072,12 +2071,12 @@ function setLogLevel(level) {
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
-        return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+        return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
     return 0;
 }
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}]`;
-const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name}/#DEBUG]`;
+const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
+const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
 /**
  * Logs string-compatible values to the console, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
@@ -2165,7 +2164,7 @@ function ytForceShowVideoTime() {
         return false;
     const defaultProps = {
         // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: getUnsafeWindow(),
+        view: (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
         bubbles: true,
         cancelable: false,
     };
@@ -2189,38 +2188,6 @@ function ytForceShowVideoTime() {
 //   finalTime += Number(min) * 60 + Number(sec);
 //   return isNaN(finalTime) ? 0 : finalTime;
 // }
-//#SECTION DOM
-/**
- * Inserts `afterNode` as a sibling just after the provided `beforeNode`
- * @returns Returns the `afterNode`
- */
-function insertAfter(beforeNode, afterNode) {
-    var _a;
-    (_a = beforeNode.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(afterNode, beforeNode.nextSibling);
-    return afterNode;
-}
-/** Adds a parent container around the provided element - returns the new parent node */
-function addParent(element, newParent) {
-    const oldParent = element.parentNode;
-    if (!oldParent)
-        throw new Error("Element doesn't have a parent node");
-    oldParent.replaceChild(newParent, element);
-    newParent.appendChild(element);
-    return newParent;
-}
-/**
- * Adds global CSS style through a `<style>` element in the document's `<head>`
- * @param style CSS string
- * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - no ID is given if it's `undefined`
- */
-function addGlobalStyle(style, ref) {
-    const styleElem = document.createElement("style");
-    if (ref)
-        styleElem.id = `betterytm-style-${ref}`;
-    styleElem.innerHTML = style;
-    document.head.appendChild(styleElem);
-    log(`Inserted global style${ref ? ` with ref '${ref}'` : ""}:`, styleElem);
-}
 const selectorExistsMap = new Map();
 /**
  * Calls the `listener` as soon as the `selector` exists in the DOM.
@@ -2237,27 +2204,6 @@ function onSelectorExists(selector, listener) {
         else
             selectorExistsMap.set(selector, [listener]);
     }
-}
-/**
- * Calls the `listener` as soon as the `selector` exists in the DOM.
- * Listeners are deleted when they are called once, unless `options.continuous` is set.
- * Multiple listeners with the same selector may be registered.
- * @template TElem The type of element that this selector will return - FIXME: listener inferring doesn't work when this generic is given
- */
-function onSelector(options, listener) {
-    // TODO:
-    void [options, listener];
-}
-// onSelector({
-//   selector: "a",
-//   all: true,
-// }, (elem) => {
-//   void elem;
-// });
-/** Removes all listeners registered in `onSelector()` with a matching selector property */
-function removeOnSelector(selector) {
-    // TODO:
-    void [selector];
 }
 /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
 function initSelectorExistsCheck() {
@@ -2276,63 +2222,6 @@ function initSelectorExistsCheck() {
     });
     log("Initialized \"selector exists\" MutationObserver");
 }
-/** Preloads an array of image URLs so they can be loaded instantly from cache later on */
-function precacheImages(srcUrls, rejects = false) {
-    const promises = srcUrls.map(src => new Promise((res, rej) => {
-        const image = new Image();
-        image.src = src;
-        image.addEventListener("load", () => res(image));
-        image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
-    }));
-    return Promise.allSettled(promises);
-}
-/** Calls the fetch API with special options */
-function fetchAdvanced(url, options = {}) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const { timeout = 10000 } = options;
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        const res = yield fetch(url, Object.assign(Object.assign({}, options), { signal: controller.signal }));
-        clearTimeout(id);
-        return res;
-    });
-}
-/**
- * Creates an invisible anchor with _blank target and clicks it.
- * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
- */
-function openInNewTab(href) {
-    try {
-        const openElem = document.createElement("a");
-        Object.assign(openElem, {
-            className: "betterytm-open-in-new-tab",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            href,
-        });
-        openElem.style.visibility = "hidden";
-        document.body.appendChild(openElem);
-        openElem.click();
-        // timeout just to be safe
-        setTimeout(() => openElem.remove(), 200);
-    }
-    catch (err) {
-        error("Couldn't open URL in a new tab due to an error:", err);
-    }
-}
-/**
- * Returns `unsafeWindow` if it is available, otherwise falls back to just `window`
- * unsafeWindow is sometimes needed because otherwise YTM errors out - see [this issue](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
- */
-function getUnsafeWindow() {
-    try {
-        // throws ReferenceError if the "@grant unsafeWindow" isn't present
-        return unsafeWindow;
-    }
-    catch (e) {
-        return window;
-    }
-}
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -2348,28 +2237,39 @@ function getDomain() {
 }
 /** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
 function getAssetUrl(path) {
-    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_0__.branch}/assets/${path}`;
+    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/${path}`;
 }
-/**
- * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
- * @param word A word in singular form, to auto-convert to plural
- * @param num If this is an array, the amount of items is used
- */
-function autoPlural(word, num) {
-    if (Array.isArray(num) || num instanceof NodeList)
-        num = num.length;
-    return `${word}${num === 1 ? "" : "s"}`;
-}
-/** Ensures the passed `value` always stays between `min` and `max` */
-function clamp(value, min, max) {
-    return Math.max(Math.min(value, max), min);
-}
-/** Pauses async execution for the specified time in ms */
-function pauseFor(time) {
-    return new Promise((res) => {
-        setTimeout(res, time);
-    });
-}
+
+
+/***/ }),
+
+/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addGlobalStyle: function() { return /* binding */ k; },
+/* harmony export */   addParent: function() { return /* binding */ _; },
+/* harmony export */   autoPlural: function() { return /* binding */ h; },
+/* harmony export */   clamp: function() { return /* binding */ O; },
+/* harmony export */   debounce: function() { return /* binding */ A; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ H; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ y; },
+/* harmony export */   insertAfter: function() { return /* binding */ M; },
+/* harmony export */   interceptEvent: function() { return /* binding */ g; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ j; },
+/* harmony export */   onSelector: function() { return /* binding */ F; },
+/* harmony export */   openInNewTab: function() { return /* binding */ N; },
+/* harmony export */   pauseFor: function() { return /* binding */ w; },
+/* harmony export */   preloadImages: function() { return /* binding */ S; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ W; }
+/* harmony export */ });
+var E=Object.defineProperty,T=Object.defineProperties;var x=Object.getOwnPropertyDescriptors;var l=Object.getOwnPropertySymbols;var v=Object.prototype.hasOwnProperty,b=Object.prototype.propertyIsEnumerable;var p=(t,e,n)=>e in t?E(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,u=(t,e)=>{for(var n in e||(e={}))v.call(e,n)&&p(t,n,e[n]);if(l)for(var n of l(e))b.call(e,n)&&p(t,n,e[n]);return t},m=(t,e)=>T(t,x(e));var f=(t,e,n)=>new Promise((o,r)=>{var a=s=>{try{c(n.next(s));}catch(d){r(d);}},i=s=>{try{c(n.throw(s));}catch(d){r(d);}},c=s=>s.done?o(s.value):Promise.resolve(s.value).then(a,i);c((n=n.apply(t,e)).next());});function h(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function O(t,e,n){return Math.max(Math.min(t,n),e)}function w(t){return new Promise(e=>{setTimeout(e,t);})}function A(t,e=300){let n;return function(...o){clearTimeout(n),n=setTimeout(()=>t.apply(this,o),e);}}function y(){try{return unsafeWindow}catch(t){return window}}function M(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function _(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function k(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function S(t,e=!1){let n=t.map(o=>new Promise((r,a)=>{let i=new Image;i.src=o,i.addEventListener("load",()=>r(i)),i.addEventListener("error",c=>e&&a(c));}));return Promise.allSettled(n)}function H(n){return f(this,arguments,function*(t,e={}){let{timeout:o=1e4}=e,r=new AbortController,a=setTimeout(()=>r.abort(),o),i=yield fetch(t,m(u({},e),{signal:r.signal}));return clearTimeout(a),i})}function N(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function g(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(o){element.__proto__.addEventListener=function(...r){if(!(r[0]===e&&n()))return o.apply(this,r)};}(t.__proto__.addEventListener);}function j(t,e){return g(y(),t,e)}function F(t,e){}function W(t){}
+
+
 
 
 /***/ })
@@ -2437,11 +2337,12 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./src/config.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
-/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./events */ "./src/events.ts");
-/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./events */ "./src/events.ts");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2456,48 +2357,49 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 /** URLs of images to pre-cache so they can be displayed instantly */
 const precacheImgs = [
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("spinner.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("delete.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getAssetUrl)("lyrics.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("spinner.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("delete.svg"),
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("lyrics.svg"),
 ];
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
     const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px 6px;";
     console.log();
-    console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
-    console.log(`─ Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase} ─`);
+    console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+    console.log(`─ Powered by lots of ambition and my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_5__.geniUrlBase} ─`);
     console.log();
 }
-const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)();
+const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_1__.logLevel);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_2__.logLevel);
     if (domain === "ytm")
-        (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initBeforeUnloadHook)();
+        (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initBeforeUnloadHook)();
     init();
 }
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.preInitLayout)();
+        yield (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
             if (domain === "ytm")
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.precacheImages)(precacheImgs)
-                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Pre-cached ${precacheImgs.length} ${(0,_utils__WEBPACK_IMPORTED_MODULE_2__.autoPlural)("image", precacheImgs)}`))
-                    .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)(`Pre-caching error: ${e}`));
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.preloadImages)(precacheImgs)
+                    .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Pre-cached ${precacheImgs.length} ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("image", precacheImgs)}`))
+                    .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)(`Pre-caching error: ${e}`));
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("General Error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General Error:", err);
         }
         try {
-            void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_4__.initMenu];
+            void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_5__.initMenu];
             // initMenu();
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't initialize menu:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't initialize menu:", err);
         }
     });
 }
@@ -2505,7 +2407,8 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.addGlobalStyle)(`/*!**********************************************************************************!*\
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(/* BetterYTM - global style */
+`/*!**********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
   \**********************************************************************************/
 :root {
@@ -2556,6 +2459,7 @@ function onDomLoad() {
 }
 
 .betterytm-menu-link {
+  cursor: pointer;
   display: inline-block;
 }
 
@@ -2655,6 +2559,13 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   }
 }
 
+.bytm-no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {
@@ -2700,7 +2611,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 /* #MARKER watermark */
 
-#betterytm-watermark {
+#bytm-watermark {
   font-size: 10px;
   display: inline-block;
   position: absolute;
@@ -2712,7 +2623,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   cursor: pointer;
 }
 
-#betterytm-watermark:hover {
+#bytm-watermark:hover {
   text-decoration: underline;
 }
 
@@ -2800,43 +2711,43 @@ ytmusic-responsive-list-item-renderer .left-items {
 }
 
 
-/*# sourceMappingURL=http://localhost:8710/main.css.map*/`, "global");
-        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_0__.loadFeatureConf)();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.initSelectorExistsCheck)();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initializing features for domain "${domain}"...`);
+/*# sourceMappingURL=http://localhost:8710/main.css.map*/`);
+        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.loadFeatureConf)();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.initSelectorExistsCheck)();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
                 try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMenu)(); // TODO(v1.1): remove
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMenu)(); // TODO(v1.1): remove
                 }
                 catch (err) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add menu:", err);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
                 }
-                (0,_events__WEBPACK_IMPORTED_MODULE_3__.initSiteEvents)();
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.onSelectorExists)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", _features_index__WEBPACK_IMPORTED_MODULE_4__.addConfigMenuOption);
+                (0,_events__WEBPACK_IMPORTED_MODULE_4__.initSiteEvents)();
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.onSelectorExists)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", _features_index__WEBPACK_IMPORTED_MODULE_5__.addConfigMenuOption);
                 if (features.arrowKeySupport)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initArrowKeySkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.removeUpgradeTab)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.removeUpgradeTab)();
                 if (features.watermarkEnabled)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addWatermark)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addWatermark)();
                 if (features.geniusLyrics)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMediaCtrlLyricsBtn)();
                 if (features.queueButtons)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initQueueButtons)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
                 if (typeof features.volumeSliderSize === "number")
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.setVolSliderSize)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.setVolSliderSize)();
                 if (features.anchorImprovements)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.addAnchorImprovements)();
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.setVolSliderStep)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.setVolSliderStep)();
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_4__.initSiteSwitch)(domain);
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initSiteSwitch)(domain);
             }
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("General error while executing feature:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General error while executing feature:", err);
         }
     });
 }

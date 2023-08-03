@@ -1,6 +1,7 @@
+import { addGlobalStyle, autoPlural, preloadImages } from "@sv443-network/userutils";
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { addGlobalStyle, autoPlural, error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, precacheImages, setLogLevel } from "./utils";
+import { error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -57,7 +58,7 @@ async function init() {
     document.addEventListener("DOMContentLoaded", onDomLoad);
 
     if(domain === "ytm")
-      precacheImages(precacheImgs)
+      preloadImages(precacheImgs)
         .then(() => log(`Pre-cached ${precacheImgs.length} ${autoPlural("image", precacheImgs)}`))
         .catch((e) => error(`Pre-caching error: ${e}`));
   }
@@ -77,7 +78,7 @@ async function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
   // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
-  addGlobalStyle("{{GLOBAL_STYLE}}", "global");
+  addGlobalStyle("{{GLOBAL_STYLE}}");
 
   const features = await loadFeatureConf();
 

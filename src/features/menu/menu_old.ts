@@ -1,8 +1,9 @@
+import { debounce } from "@sv443-network/userutils";
 import { defaultFeatures, getFeatures, saveFeatureConf, setDefaultFeatConf } from "../../config";
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { debounce, getAssetUrl, info, log } from "../../utils";
+import { getAssetUrl, info, log } from "../../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements
