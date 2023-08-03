@@ -26,7 +26,7 @@ const precacheImgs = [
 {
   // console watermark with sexy gradient
   const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
-  const styleCommon = "color: #fff; font-size: 1.25em; padding: 4px 6px;";
+  const styleCommon = "color: #fff; font-size: 1.25em; padding-left: 8px; padding-right: 8px;";
 
   console.log();
   console.log(
@@ -35,7 +35,13 @@ const precacheImgs = [
     `background-color: #333; ${styleCommon}`,
     "padding: initial;",
   );
-  console.log(`─ Powered by lots of ambition and my song metadata API: ${geniUrlBase} ─`);
+  console.log([
+    "Powered by:",
+    "─ lots of ambition",
+    `─ my song metadata API: ${geniUrlBase}`,
+    "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
+    "─ this tiny event listener library: https://github.com/billjs/event-emitter",
+  ].join("\n"));
   console.log();
 }
 
