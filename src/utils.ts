@@ -387,3 +387,15 @@ export function pauseFor(time: number) {
     setTimeout(res, time);
   });
 }
+
+/**
+ * Calls the passed `func` after the specified `timeout` in ms.  
+ * Any subsequent calls to this function will reset the timer and discard previous calls.
+ */
+export function debounce<TFunc extends (...args: TArgs[]) => void, TArgs = any>(func: TFunc, timeout = 300) { // eslint-disable-line @typescript-eslint/no-explicit-any
+  let timer: NodeJS.Timer | undefined;
+  return function(...args: TArgs[]) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
+}
