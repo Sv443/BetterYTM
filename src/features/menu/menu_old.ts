@@ -2,7 +2,7 @@ import { defaultFeatures, getFeatures, saveFeatureConf, setDefaultFeatConf } fro
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { getAssetUrl, info, log } from "../../utils";
+import { debounce, getAssetUrl, info, log } from "../../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements
@@ -47,6 +47,7 @@ export async function addMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "betterytm-menu-title";
+  titleElem.classList.add("bytm-no-select");
   titleElem.innerText = `${scriptInfo.name} - Configuration`;
 
   const linksCont = document.createElement("div");
@@ -62,7 +63,7 @@ export async function addMenu() {
     anchorElem.style.marginLeft = "10px";
         
     const imgElem = document.createElement("img");
-    imgElem.className = "betterytm-menu-img";
+    imgElem.className = "betterytm-menu-img bytm-no-select";
     imgElem.src = imgSrc;
     imgElem.style.width = "32px";
     imgElem.style.height = "32px";
@@ -97,7 +98,7 @@ export async function addMenu() {
   featuresCont.style.overflowY = "auto";
 
   /** Gets called whenever the feature config is changed */
-  const confChanged = async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+  const confChanged = debounce(async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
@@ -108,7 +109,7 @@ export async function addMenu() {
     await saveFeatureConf(featConf);
 
     log("Saved feature config changes:\n", await GM.getValue("betterytm-config"));
-  };
+  });
 
   const features = await getFeatures();
 

@@ -46,6 +46,7 @@
 }
 
 .betterytm-menu-link {
+  cursor: pointer;
   display: inline-block;
 }
 
