@@ -1,7 +1,7 @@
-import { addGlobalStyle, autoPlural, preloadImages } from "@sv443-network/userutils";
+import { addGlobalStyle, autoPlural, preloadImages, initOnSelector, onSelector } from "@sv443-network/userutils";
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { error, getAssetUrl, getDomain, initSelectorExistsCheck, log, onSelectorExists, setLogLevel } from "./utils";
+import { error, getAssetUrl, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -77,12 +77,12 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  // post-build these double quotes are replaced by backticks (if backticks are used here, webpack converts them to double quotes)
+  // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
   addGlobalStyle("{{GLOBAL_STYLE}}");
 
-  const features = await loadFeatureConf();
+  initOnSelector();
 
-  initSelectorExistsCheck();
+  const features = await loadFeatureConf();
 
   log(`Initializing features for domain "${domain}"...`);
 
@@ -97,7 +97,7 @@ async function onDomLoad() {
 
       initSiteEvents();
 
-      onSelectorExists("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", addConfigMenuOption);
+      onSelector("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
 
       if(features.arrowKeySupport)
         initArrowKeySkip();
