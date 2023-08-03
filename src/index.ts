@@ -17,7 +17,8 @@ import {
 } from "./features/index";
 
 /** URLs of images to pre-cache so they can be displayed instantly */
-const precacheImgs = [
+const preloadImgs = [
+  getAssetUrl("icon/icon.png"),
   getAssetUrl("spinner.svg"),
   getAssetUrl("delete.svg"),
   getAssetUrl("lyrics.svg"),
@@ -58,15 +59,15 @@ function preInit() {
 }
 
 async function init() {
+  if(domain === "ytm")
+    preloadImages(preloadImgs, true)
+      .then(() => log(`Preloaded ${preloadImgs.length} ${autoPlural("image", preloadImgs)}`))
+      .catch((e) => error(`Couldn't preload images: ${e}`));
+
   await preInitLayout();
 
   try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
-
-    if(domain === "ytm")
-      preloadImages(precacheImgs)
-        .then(() => log(`Pre-cached ${precacheImgs.length} ${autoPlural("image", precacheImgs)}`))
-        .catch((e) => error(`Pre-caching error: ${e}`));
   }
   catch(err) {
     error("General Error:", err);
