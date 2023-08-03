@@ -10,15 +10,6 @@ export type Domain = "yt" | "ytm";
 /** Feature category to be used in the menu for grouping features */
 export type FeatureCategory = "input" | "layout" | "lyrics";
 
-export type SelectorExistsOpts = {
-  /** The selector to check for */
-  selector: string;
-  /** Whether to use `querySelectorAll()` instead */
-  all?: boolean;
-  /** Whether to call the listener continuously instead of once */
-  continuous?: boolean;
-};
-
 /** Feature configuration */
 export interface FeatureConfig {
   //#SECTION input

@@ -1,4 +1,5 @@
-import { clamp, error, fetchAdvanced, getAssetUrl, info, insertAfter, log, onSelectorExists } from "../utils";
+import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { error, getAssetUrl, info, log, onSelectorExists } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";

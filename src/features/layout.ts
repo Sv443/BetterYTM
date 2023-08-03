@@ -1,8 +1,9 @@
 import type { Event } from "@billjs/event-emitter";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { addGlobalStyle, addParent, autoPlural, error, fetchAdvanced, getAssetUrl, insertAfter, log, onSelectorExists, openInNewTab, pauseFor } from "../utils";
+import { error, getAssetUrl, log, onSelectorExists } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -16,7 +17,7 @@ export async function preInitLayout() {
 
 //#MARKER BYTM-Config buttons
 
-let clicksAmt = 0, logoExchanged = false;
+let menuOpenAmt = 0, logoExchanged = false;
 
 /** Adds a watermark beneath the logo */
 export function addWatermark() {
@@ -32,11 +33,11 @@ export function addWatermark() {
 
   watermark.addEventListener("click", (e) => {
     e.stopPropagation();
-    clicksAmt++;
+    menuOpenAmt++;
 
-    if((!e.shiftKey || logoExchanged) && clicksAmt !== 5)
+    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
       openMenu();
-    if((!logoExchanged && e.shiftKey) || clicksAmt === 5)
+    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
       exchangeLogo();
   });
 
@@ -44,7 +45,12 @@ export function addWatermark() {
   watermark.addEventListener("keydown", (e) => {
     if(e.key === "Enter") {
       e.stopPropagation();
-      openMenu();
+      menuOpenAmt++;
+
+      if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+        openMenu();
+      if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+        exchangeLogo();
     }
   });
 
@@ -112,10 +118,14 @@ export function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-  cfgOptItemElem.addEventListener("click", () => {
+  cfgOptItemElem.addEventListener("click", (e) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
-    openMenu();
+    menuOpenAmt++;
+    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+      openMenu();
+    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+      exchangeLogo();
   });
 
   const cfgOptIconElem = document.createElement("img");
@@ -160,11 +170,12 @@ export function setVolSliderSize() {
     return;
 
   const style = `\
+/* BetterYTM - set volume slider size */
 .volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
   width: ${size}px !important;
 }`;
 
-  addGlobalStyle(style, "vol-slider");
+  addGlobalStyle(style);
 }
 
 /** Sets the `step` attribute of the volume slider */

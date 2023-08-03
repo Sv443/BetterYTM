@@ -1,4 +1,5 @@
-import { error, getUnsafeWindow, getVideoTime, info, log, warn } from "../utils";
+import { getUnsafeWindow } from "@sv443-network/userutils";
+import { error, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
 import { getFeatures } from "../config";
 

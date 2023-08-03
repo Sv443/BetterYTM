@@ -1,5 +1,6 @@
+import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
 import { branch, scriptInfo } from "./constants";
-import type { Domain, LogLevel, SelectorExistsOpts } from "./types";
+import type { Domain, LogLevel } from "./types";
 
 //#SECTION logging
 
@@ -166,45 +167,6 @@ function ytForceShowVideoTime() {
 //   return isNaN(finalTime) ? 0 : finalTime;
 // }
 
-//#SECTION DOM
-
-/**
- * Inserts `afterNode` as a sibling just after the provided `beforeNode`
- * @returns Returns the `afterNode`
- */
-export function insertAfter(beforeNode: HTMLElement, afterNode: HTMLElement) {
-  beforeNode.parentNode?.insertBefore(afterNode, beforeNode.nextSibling);
-  return afterNode;
-}
-
-/** Adds a parent container around the provided element - returns the new parent node */
-export function addParent(element: HTMLElement, newParent: HTMLElement) {
-  const oldParent = element.parentNode;
-
-  if(!oldParent)
-    throw new Error("Element doesn't have a parent node");
-
-  oldParent.replaceChild(newParent, element);
-  newParent.appendChild(element);
-
-  return newParent;
-}
-
-/**
- * Adds global CSS style through a `<style>` element in the document's `<head>`
- * @param style CSS string
- * @param ref Reference name that is included in the `<style>`'s ID - prefixed with `betterytm-style-` - no ID is given if it's `undefined`
- */
-export function addGlobalStyle(style: string, ref?: string) {
-  const styleElem = document.createElement("style");
-  if(ref)
-    styleElem.id = `betterytm-style-${ref}`;
-  styleElem.innerHTML = style;
-  document.head.appendChild(styleElem);
-
-  log(`Inserted global style${ref ? ` with ref '${ref}'` : ""}:`, styleElem);
-}
-
 const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
 
 /**
@@ -223,33 +185,6 @@ export function onSelectorExists(selector: string, listener: (element: HTMLEleme
     else
       selectorExistsMap.set(selector, [listener]);
   }
-}
-
-/**
- * Calls the `listener` as soon as the `selector` exists in the DOM.  
- * Listeners are deleted when they are called once, unless `options.continuous` is set.  
- * Multiple listeners with the same selector may be registered.
- * @template TElem The type of element that this selector will return - FIXME: listener inferring doesn't work when this generic is given
- */
-export function onSelector<TElem = HTMLElement, TOpts extends SelectorExistsOpts = SelectorExistsOpts>(
-  options: TOpts,
-  listener: (element: TOpts["all"] extends true ? (TElem extends HTMLElement ? NodeListOf<TElem> : TElem) : TElem) => void,
-) {
-  // TODO:
-  void [options, listener];
-}
-
-// onSelector({
-//   selector: "a",
-//   all: true,
-// }, (elem) => {
-//   void elem;
-// });
-
-/** Removes all listeners registered in `onSelector()` with a matching selector property */
-export function removeOnSelector(selector: string) {
-  // TODO:
-  void [selector];
 }
 
 /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
@@ -272,79 +207,6 @@ export function initSelectorExistsCheck() {
   log("Initialized \"selector exists\" MutationObserver");
 }
 
-/** Preloads an array of image URLs so they can be loaded instantly from cache later on */
-export function precacheImages(srcUrls: string[], rejects = false) {
-  const promises = srcUrls.map(src => new Promise((res, rej) => {
-    const image = new Image();
-    image.src = src;
-    image.addEventListener("load", () => res(image));
-    image.addEventListener("error", () => rejects && rej(`Failed to preload image with URL '${src}'`));
-  }));
-
-  return Promise.allSettled(promises);
-}
-
-//#SECTION misc
-
-type FetchOpts = RequestInit & {
-  timeout: number;
-};
-
-/** Calls the fetch API with special options */
-export async function fetchAdvanced(url: string, options: Partial<FetchOpts> = {}) {
-  const { timeout = 10000 } = options;
-
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-
-  const res = await fetch(url, {
-    ...options,
-    signal: controller.signal,
-  });
-
-  clearTimeout(id);
-  return res;
-}
-
-/**
- * Creates an invisible anchor with _blank target and clicks it.  
- * This has to be run in relatively quick succession to a user interaction event, else the browser rejects it.
- */
-export function openInNewTab(href: string) {
-  try {
-    const openElem = document.createElement("a");
-    Object.assign(openElem, {
-      className: "betterytm-open-in-new-tab",
-      target: "_blank",
-      rel: "noopener noreferrer",
-      href,
-    });
-    openElem.style.visibility = "hidden";
-
-    document.body.appendChild(openElem);
-    openElem.click();
-    // timeout just to be safe
-    setTimeout(() => openElem.remove(), 200);
-  }
-  catch(err) {
-    error("Couldn't open URL in a new tab due to an error:", err);
-  }
-}
-
-/**
- * Returns `unsafeWindow` if it is available, otherwise falls back to just `window`  
- * unsafeWindow is sometimes needed because otherwise YTM errors out - see [this issue](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
- */
-export function getUnsafeWindow() {
-  try {
-    // throws ReferenceError if the "@grant unsafeWindow" isn't present
-    return unsafeWindow;
-  }
-  catch(e) {
-    return window;
-  }
-}
-
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -363,39 +225,4 @@ export function getDomain(): Domain {
 /** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
 export function getAssetUrl(path: string) {
   return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
-}
-
-/**
- * Automatically appends an `s` to the passed `word`, if `num` is not equal to 1
- * @param word A word in singular form, to auto-convert to plural
- * @param num If this is an array, the amount of items is used
- */
-export function autoPlural(word: string, num: number | unknown[] | NodeList) {
-  if(Array.isArray(num) || num instanceof NodeList)
-    num = num.length;
-  return `${word}${num === 1 ? "" : "s"}`;
-}
-
-/** Ensures the passed `value` always stays between `min` and `max` */
-export function clamp(value: number, min: number, max: number) {
-  return Math.max(Math.min(value, max), min);
-}
-
-/** Pauses async execution for the specified time in ms */
-export function pauseFor(time: number) {
-  return new Promise((res) => {
-    setTimeout(res, time);
-  });
-}
-
-/**
- * Calls the passed `func` after the specified `timeout` in ms.  
- * Any subsequent calls to this function will reset the timer and discard previous calls.
- */
-export function debounce<TFunc extends (...args: TArgs[]) => void, TArgs = any>(func: TFunc, timeout = 300) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  let timer: NodeJS.Timer | undefined;
-  return function(...args: TArgs[]) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), timeout);
-  };
 }

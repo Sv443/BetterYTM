@@ -84,6 +84,7 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 ### Attributions:
 This userscript depends on these runtime libraries:
 - [@billjs/event-emitter](https://npmjs.org/package/@billjs/event-emitter)
+- [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
   
