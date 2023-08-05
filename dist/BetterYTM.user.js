@@ -489,7 +489,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "c277312", // assert as generic string instead of literal
+    lastCommit: "05b3f51", // assert as generic string instead of literal
 };
 
 
@@ -632,6 +632,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
+/* harmony export */   addVolumeSliderLabel: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addVolumeSliderLabel; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
 /* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
 /* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
@@ -713,8 +714,14 @@ const featInfo = {
         category: "layout",
         default: true,
     },
+    volumeSliderLabel: {
+        desc: "Add a percentage label to the volume slider",
+        type: "toggle",
+        category: "layout",
+        default: true,
+    },
     volumeSliderSize: {
-        desc: "The width of the volume slider in pixels",
+        desc: "Width of the volume slider in pixels",
         type: "number",
         category: "layout",
         min: 50,
@@ -936,6 +943,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* binding */ addAnchorImprovements; },
 /* harmony export */   addConfigMenuOption: function() { return /* binding */ addConfigMenuOption; },
+/* harmony export */   addVolumeSliderLabel: function() { return /* binding */ addVolumeSliderLabel; },
 /* harmony export */   addWatermark: function() { return /* binding */ addWatermark; },
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
@@ -951,6 +959,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
 /* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
 /* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! . */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -960,6 +969,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -1100,6 +1110,26 @@ function removeUpgradeTab() {
     });
 }
 //#MARKER volume slider
+const volSliderSelector = "tp-yt-paper-slider#volume-slider";
+/** Adds a percentage label to the volume slider and tooltip */
+function addVolumeSliderLabel() {
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(volSliderSelector, {
+        listener: (sliderElem) => {
+            const labelElem = document.createElement("div");
+            labelElem.className = "bytm-vol-slider-label";
+            labelElem.innerText = `${sliderElem.value}%`;
+            sliderElem.addEventListener("input", () => {
+                var _a;
+                const label = `${sliderElem.value}%`;
+                const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_8__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${sliderElem.step})` : "";
+                const labelFull = `Volume: ${label}${sensText}`;
+                sliderElem.setAttribute("title", labelFull); // TODO: probably needs to be on the parent
+                sliderElem.setAttribute("aria-valuetext", labelFull);
+                (_a = document.querySelector(".bytm-vol-slider-label")) === null || _a === void 0 ? void 0 : _a.setAttribute("innerText", label);
+            });
+        },
+    });
+}
 /** Sets the volume slider to a set size */
 function setVolSliderSize() {
     const { volumeSliderSize: size } = features;
@@ -1114,8 +1144,11 @@ function setVolSliderSize() {
 }
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep() {
-    const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
-    sliderElem.setAttribute("step", String(features.volumeSliderStep));
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(volSliderSelector, {
+        listener: (sliderElem) => {
+            sliderElem.setAttribute("step", String(features.volumeSliderStep));
+        },
+    });
 }
 //#MARKER queue buttons
 function initQueueButtons() {
@@ -2759,6 +2792,8 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMediaCtrlLyricsBtn)();
                 if (features.queueButtons)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
+                if (features.volumeSliderLabel)
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addVolumeSliderLabel)();
                 if (typeof features.volumeSliderSize === "number")
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.setVolSliderSize)();
                 if (features.anchorImprovements)

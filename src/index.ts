@@ -13,7 +13,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
+  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, addVolumeSliderLabel,
 } from "./features/index";
 
 /** URLs of images to pre-cache so they can be displayed instantly */
@@ -120,6 +120,9 @@ async function onDomLoad() {
 
       if(features.queueButtons)
         initQueueButtons();
+
+      if(features.volumeSliderLabel)
+        addVolumeSliderLabel();
 
       if(typeof features.volumeSliderSize === "number")
         setVolSliderSize();

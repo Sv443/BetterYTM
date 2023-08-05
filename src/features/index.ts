@@ -6,6 +6,8 @@ export * from "./lyrics";
 export { initMenu } from "./menu/menu";
 export * from "./menu/menu_old";
 
+export type FeatInfoKeys = keyof typeof featInfo;
+
 /** Contains all possible features with their default values and other config */
 export const featInfo = {
   //#SECTION input
@@ -53,8 +55,14 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  volumeSliderLabel: {
+    desc: "Add a percentage label to the volume slider",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
   volumeSliderSize: {
-    desc: "The width of the volume slider in pixels",
+    desc: "Width of the volume slider in pixels",
     type: "number",
     category: "layout",
     min: 50,
