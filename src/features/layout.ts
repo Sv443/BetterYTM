@@ -8,6 +8,7 @@ import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
 import "./layout.css";
+import { featInfo } from ".";
 
 let features: FeatureConfig;
 
@@ -170,6 +171,30 @@ export function removeUpgradeTab() {
 
 //#MARKER volume slider
 
+const volSliderSelector = "tp-yt-paper-slider#volume-slider";
+
+/** Adds a percentage label to the volume slider and tooltip */
+export function addVolumeSliderLabel() {
+  onSelector<HTMLInputElement>(volSliderSelector, {
+    listener: (sliderElem) => {
+      const labelElem = document.createElement("div");
+      labelElem.className = "bytm-vol-slider-label";
+      labelElem.innerText = `${sliderElem.value}%`;
+
+      sliderElem.addEventListener("input", () => {
+        const label = `${sliderElem.value}%`;
+        const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${sliderElem.step})` : "";
+        const labelFull = `Volume: ${label}${sensText}`;
+
+        sliderElem.setAttribute("title", labelFull); // TODO: probably needs to be on the parent
+        sliderElem.setAttribute("aria-valuetext", labelFull);
+
+        document.querySelector<HTMLDivElement>(".bytm-vol-slider-label")?.setAttribute("innerText", label);
+      });
+    },
+  });
+}
+
 /** Sets the volume slider to a set size */
 export function setVolSliderSize() {
   const { volumeSliderSize: size } = features;
@@ -188,9 +213,11 @@ export function setVolSliderSize() {
 
 /** Sets the `step` attribute of the volume slider */
 export function setVolSliderStep() {
-  const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider") as HTMLInputElement;
-
-  sliderElem.setAttribute("step", String(features.volumeSliderStep));
+  onSelector<HTMLInputElement>(volSliderSelector, {
+    listener: (sliderElem) => {
+      sliderElem.setAttribute("step", String(features.volumeSliderStep));
+    },
+  });
 }
 
 //#MARKER queue buttons

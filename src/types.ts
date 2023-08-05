@@ -32,6 +32,8 @@ export interface FeatureConfig {
   //#SECTION layout
   /** Remove the \"Upgrade\" / YT Music Premium tab */
   removeUpgradeTab: boolean;
+  /** Add a percentage label to the volume slider */
+  volumeSliderLabel: boolean;
   /** The width of the volume slider in pixels */
   volumeSliderSize: number;
   /** Volume slider sensitivity - the smaller this number, the finer the volume control */
