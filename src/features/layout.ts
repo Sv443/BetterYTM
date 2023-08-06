@@ -171,17 +171,36 @@ export function removeUpgradeTab() {
 
 //#MARKER volume slider
 
+export function initVolumeFeatures() {
+  onSelector("tp-yt-paper-slider#volume-slider", {
+    listener: (sliderElem) => {
+      const volSliderCont = document.createElement("div");
+      volSliderCont.id = "bytm-vol-slider-cont";
+
+      addParent(sliderElem, volSliderCont);
+
+      if(typeof features.volumeSliderSize === "number")
+        setVolSliderSize();
+
+      if(features.volumeSliderLabel)
+        addVolumeSliderLabel();
+
+      setVolSliderStep();
+    },
+  });
+}
+
 const volSliderSelector = "tp-yt-paper-slider#volume-slider";
 
 /** Adds a percentage label to the volume slider and tooltip */
-export function addVolumeSliderLabel() {
+function addVolumeSliderLabel() {
   onSelector<HTMLInputElement>(volSliderSelector, {
     listener: (sliderElem) => {
       const labelElem = document.createElement("div");
       labelElem.className = "bytm-vol-slider-label";
       labelElem.innerText = `${sliderElem.value}%`;
 
-      sliderElem.addEventListener("input", () => {
+      sliderElem.addEventListener("change", () => {
         const label = `${sliderElem.value}%`;
         const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${sliderElem.step})` : "";
         const labelFull = `Volume: ${label}${sensText}`;
@@ -189,30 +208,37 @@ export function addVolumeSliderLabel() {
         sliderElem.setAttribute("title", labelFull); // TODO: probably needs to be on the parent
         sliderElem.setAttribute("aria-valuetext", labelFull);
 
-        document.querySelector<HTMLDivElement>(".bytm-vol-slider-label")?.setAttribute("innerText", label);
+        const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
+        if(labelElem2)
+          labelElem2.innerText = label;
+      });
+
+      onSelector("#bytm-vol-slider-cont", {
+        listener: (volumeCont) => {
+          volumeCont.appendChild(labelElem);
+          log("Added volume slider label", labelElem);
+        },
       });
     },
   });
 }
 
 /** Sets the volume slider to a set size */
-export function setVolSliderSize() {
+function setVolSliderSize() {
   const { volumeSliderSize: size } = features;
 
   if(typeof size !== "number" || isNaN(Number(size)))
     return;
 
-  const style = `\
+  addGlobalStyle(`\
 /* BetterYTM - set volume slider size */
-.volume-slider.ytmusic-player-bar, .expand-volume-slider.ytmusic-player-bar {
+#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
-}`;
-
-  addGlobalStyle(style);
+}`);
 }
 
 /** Sets the `step` attribute of the volume slider */
-export function setVolSliderStep() {
+function setVolSliderStep() {
   onSelector<HTMLInputElement>(volSliderSelector, {
     listener: (sliderElem) => {
       sliderElem.setAttribute("step", String(features.volumeSliderStep));

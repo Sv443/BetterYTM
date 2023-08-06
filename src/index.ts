@@ -1,19 +1,19 @@
-import { addGlobalStyle, autoPlural, preloadImages, initOnSelector, onSelector } from "@sv443-network/userutils";
+import { addGlobalStyle, autoPlural, preloadImages, initOnSelector, onSelector, getSelectorMap } from "@sv443-network/userutils";
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { error, getAssetUrl, getDomain, log, setLogLevel } from "./utils";
+import { dbg, error, getAssetUrl, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
   initQueueButtons, addWatermark,
-  preInitLayout, removeUpgradeTab, setVolSliderSize,
-  setVolSliderStep,
+  preInitLayout, removeUpgradeTab,
+  initVolumeFeatures,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, addVolumeSliderLabel,
+  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
 } from "./features/index";
 
 /** URLs of images to pre-cache so they can be displayed instantly */
@@ -121,16 +121,16 @@ async function onDomLoad() {
       if(features.queueButtons)
         initQueueButtons();
 
-      if(features.volumeSliderLabel)
-        addVolumeSliderLabel();
-
-      if(typeof features.volumeSliderSize === "number")
-        setVolSliderSize();
-
       if(features.anchorImprovements)
         addAnchorImprovements();
 
-      setVolSliderStep();
+      //#DEBUG
+      setInterval(() => {
+        const selMap = getSelectorMap();
+        dbg("selector map", selMap.size, selMap);
+      }, 500);
+
+      // initVolumeFeatures();
     }
 
     if(["ytm", "yt"].includes(domain)) {
