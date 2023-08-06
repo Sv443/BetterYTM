@@ -32,13 +32,16 @@ export async function loadFeatureConf(): Promise<FeatureConfig> {
   try {
     const featureConf = await GM.getValue("betterytm-config") as string;
 
-    // empty object length is 2, so we check for 3 to be sure
+    // empty object length is 2-3, so check for >3 to be sure
     if(typeof featureConf !== "string" || featureConf.length <= 3) {
       await setDefaultFeatConf();
       return featuresCache = defConf;
     }
 
-    return featuresCache = featureConf ? JSON.parse(featureConf) as FeatureConfig : defConf;
+    return featuresCache = {
+      ...defConf,
+      ...(featureConf ? JSON.parse(featureConf) as FeatureConfig : {}),
+    };
   }
   catch(err) {
     error("Error loading feature configuration, resetting to default:", err);
