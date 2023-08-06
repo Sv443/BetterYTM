@@ -76,7 +76,7 @@ type BuildStats = {
     const lastCommitSha = await getLastCommitSha();
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
-    const globalStylePath = join(rootPath, distFolderPath, "main.css");
+    const globalStylePath = join(rootPath, distFolderPath, "global.css");
     let globalStyle = String(await readFile(globalStylePath));
     if(mode === "production")
       globalStyle = remSourcemapComments(globalStyle);
@@ -159,12 +159,12 @@ function remSourcemapComments(input: string) {
  */
 function getLastCommitSha() {
   return new Promise<string>((res, rej) => {
-    exec("git rev-parse HEAD", (err, stdout, stderr) => {
+    exec("git rev-parse --short HEAD", (err, stdout, stderr) => {
       if(err) {
         console.error("\x1b[31mError while checking for last Git commit. Do you have Git installed?\x1b[0m\n", stderr);
         return rej(err);
       }
-      return res(String(stdout).replace(/\r?\n/gm, "").trim().substring(0, 7));
+      return res(String(stdout).replace(/\r?\n/gm, "").trim());
     });
   });
 }

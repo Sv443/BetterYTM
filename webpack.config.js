@@ -77,7 +77,9 @@ const getConfig = (env) => {
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin({
+        filename: "global.css",
+      }),
       {
         apply: (compiler) => {
           console.log("Running post-build script...\n");
