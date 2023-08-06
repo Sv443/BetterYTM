@@ -24,6 +24,11 @@ app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
     console.error("\x1b[31mError in dev server:\x1b[0m\n", err);
 });
 
+app.use((_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
+
 // serves everything from `webpackConfig.output.path` (`dist/` by default)
 app.use(express.static(
   resolve(fileURLToPath(import.meta.url), "../../", webpackCfgOutput.path)
