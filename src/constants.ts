@@ -9,7 +9,7 @@ export const mode = modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw;
 export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
 
 /**
- * How much info should be logged to the devtools console?  
+ * How much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
 export const logLevel: LogLevel = mode === "production" ? 1 : 0;
