@@ -1,4 +1,4 @@
-import { access, readFile, writeFile } from "fs/promises";
+import { access, readFile, writeFile, constants as fsconstants } from "fs/promises";
 import { dirname, join, relative } from "path";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
@@ -171,7 +171,7 @@ function getLastCommitSha() {
 
 async function exists(path: string) {
   try {
-    await access(path);
+    await access(path, fsconstants.R_OK | fsconstants.W_OK);
     return true;
   }
   catch(err) {
