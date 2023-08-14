@@ -91,7 +91,7 @@ type BuildStats = {
       }, 
     )
       // needs special treatment because the double quotes need to be replaced with backticks
-      .replace(/"(\/\*)?{{GLOBAL_STYLE}}(\*\/)?"/gm, `/* BetterYTM - global style */\n\`${globalStyle}\``);
+      .replace(/"(\/\*)?{{GLOBAL_STYLE}}(\*\/)?"/gm, `/* BetterYTM - global style */${mode === "development" ? "\n" : ""}\`${globalStyle}\``);
 
     if(mode === "production")
       userscript = remSourcemapComments(userscript);
