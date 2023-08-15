@@ -1,6 +1,7 @@
 import { clamp, getUnsafeWindow, onSelector } from "@sv443-network/userutils";
-import { branch, scriptInfo } from "./constants";
+import { scriptInfo } from "./constants";
 import type { Domain, LogLevel } from "./types";
+import * as resources from "../assets/resources.json" assert { type: "json" };
 
 //#SECTION logging
 
@@ -222,7 +223,7 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
-export function getAssetUrl(path: string) {
-  return `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
+/** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
+export function getResourceUrl(name: keyof typeof resources) {
+  return GM.getResourceUrl(name);
 }

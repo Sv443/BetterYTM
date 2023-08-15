@@ -1,5 +1,5 @@
 import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
-import { error, getAssetUrl, info, log } from "../utils";
+import { error, getResourceUrl, info, log } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -50,14 +50,14 @@ export function addMediaCtrlLyricsBtn(): void {
 
 // TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
-function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
+async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
 
   // run parallel without awaiting so the MutationObserver below can observe the title element in time
   (async () => {
     const gUrl = await getCurrentLyricsUrl();
 
-    const linkElem = createLyricsBtn(gUrl ?? undefined);
+    const linkElem = await createLyricsBtn(gUrl ?? undefined);
     linkElem.id = "betterytm-lyrics-button";
 
     log("Inserted lyrics button into media controls bar");
@@ -66,6 +66,9 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   })();
 
   mcCurrentSongTitle = songTitleElem.title;
+
+  const spinnerIconUrl = await getResourceUrl("spinner");
+  const lyricsIconUrl = await getResourceUrl("lyrics");
 
   const onMutation = async (mutations: MutationRecord[]) => {
     for await(const mut of mutations) {
@@ -83,14 +86,14 @@ function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         lyricsBtn.style.pointerEvents = "none";
 
         const imgElem = lyricsBtn.querySelector<HTMLImageElement>("img")!;
-        imgElem.src = getAssetUrl("spinner.svg");
+        imgElem.src = spinnerIconUrl;
         imgElem.classList.add("bytm-spinner");
 
         mcCurrentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
 
-        imgElem.src = getAssetUrl("lyrics.svg");
+        imgElem.src = lyricsIconUrl;
         imgElem.classList.remove("bytm-spinner");
 
         if(!url)
@@ -224,7 +227,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 }
 
 /** Creates the base lyrics button element */
-export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLAnchorElement {
+export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-btn";
   linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
@@ -238,7 +241,7 @@ export function createLyricsBtn(geniusUrl?: string, hideIfLoading = true): HTMLA
 
   const imgElem = document.createElement("img");
   imgElem.className = "bytm-generic-btn-img";
-  imgElem.src = getAssetUrl("lyrics.svg");
+  imgElem.src = await getResourceUrl("lyrics");
 
   linkElem.appendChild(imgElem);
 

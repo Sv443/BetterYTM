@@ -3,7 +3,7 @@ import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSe
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { error, getAssetUrl, log } from "../utils";
+import { error, getResourceUrl, log } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
@@ -90,21 +90,23 @@ async function improveLogo() {
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
   onSelector(".bytm-mod-logo", {
-    listener: (logoElem) => {
+    listener: async (logoElem) => {
       if(logoElem.classList.contains("bytm-logo-exchanged"))
         return;
 
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
+      const iconUrl = await getResourceUrl("icon");
+
       const newLogo = document.createElement("img");
       newLogo.className = "bytm-mod-logo-img";
-      newLogo.src = getAssetUrl("icon/icon.png");
+      newLogo.src = iconUrl;
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
 
-      document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach(e => {
-        e.href = getAssetUrl("icon/icon.png");
+      document.head.querySelectorAll<HTMLLinkElement>("link[rel=\"icon\"]").forEach((e) => {
+        e.href = iconUrl;
       });
 
       setTimeout(() => {
@@ -115,7 +117,7 @@ function exchangeLogo() {
 }
 
 /** Called whenever the menu exists to add a BYTM-Configuration button */
-export function addConfigMenuOption(container: HTMLElement) {
+export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("a");
   cfgOptElem.role = "button";
   cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
@@ -135,7 +137,7 @@ export function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-  cfgOptIconElem.src = getAssetUrl("icon/icon.png");
+  cfgOptIconElem.src = await getResourceUrl("icon");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
@@ -295,8 +297,12 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(!song || !artist)
     return false;
 
+
+  const lyricsIconUrl = await getResourceUrl("lyrics");
+  const deleteIconUrl = await getResourceUrl("delete");
+
   //#SECTION lyrics btn
-  const lyricsBtnElem = createLyricsBtn(undefined, false);
+  const lyricsBtnElem = await createLyricsBtn(undefined, false);
   {
     lyricsBtnElem.title = "Open this song's lyrics in a new tab";
     lyricsBtnElem.style.display = "inline-flex";
@@ -318,14 +324,14 @@ async function addQueueButtons(queueItem: HTMLElement) {
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
-          imgEl.src = getAssetUrl("spinner.svg");
+          imgEl.src = await getResourceUrl("spinner");
           imgEl.classList.add("bytm-spinner");
         }
 
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
         const resetImgElem = () => {
-          imgEl.src = getAssetUrl("lyrics.svg");
+          imgEl.src = lyricsIconUrl;
           imgEl.classList.remove("bytm-spinner");
         };
 
@@ -394,7 +400,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = getAssetUrl("delete.svg");
+    imgElem.src = deleteIconUrl;
 
     deleteBtnElem.appendChild(imgElem);
   }

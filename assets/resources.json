@@ -1,0 +1,10 @@
+{
+  "icon": "icon/icon.png",
+  "close": "close.png",
+  "delete": "delete.svg",
+  "error": "error.svg",
+  "lyrics": "lyrics.svg",
+  "spinner": "spinner.svg",
+  "github": "external/github.png",
+  "greasyfork": "external/greasyfork.png"
+}

@@ -22,47 +22,11 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
+const assetFolderPath = "./assets/";
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
-
-const header = `\
-// ==UserScript==
-// @name            ${pkg.userscriptName}
-// @homepageURL     ${pkg.homepage}#readme
-// @namespace       ${pkg.homepage}
-// @version         ${pkg.version}
-// @description     ${pkg.description}
-// @description:de  ${pkg["description:de"]}
-// @license         ${pkg.license}
-// @author          ${pkg.author.name}
-// @copyright       ${pkg.author.name} (${pkg.author.url})
-// @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
-// @match           https://music.youtube.com/*
-// @match           https://www.youtube.com/*
-// @run-at          document-start
-// @downloadURL     ${scriptUrl}
-// @updateURL       ${scriptUrl}
-// @connect         api.sv443.net
-// @grant           GM.getValue
-// @grant           GM.setValue
-// @grant           unsafeWindow
-// ==/UserScript==
-/*
- ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
- █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
- █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
- █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
-
-         Made with ❤️ by Sv443
- I welcome every contribution on GitHub!
-   https://github.com/Sv443/BetterYTM
-*/
-
-/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
-/* C&D this 🖕 */
-`;
 
 type BuildStats = {
   sizeKiB: number;
@@ -71,6 +35,48 @@ type BuildStats = {
 };
 
 (async () => {
+  const resourcesDirectives = await getResourceDirectives();
+
+  const header = `\
+  // ==UserScript==
+  // @name            ${pkg.userscriptName}
+  // @homepageURL     ${pkg.homepage}#readme
+  // @namespace       ${pkg.homepage}
+  // @version         ${pkg.version}
+  // @description     ${pkg.description}
+  // @description:de  ${pkg["description:de"]}
+  // @license         ${pkg.license}
+  // @author          ${pkg.author.name}
+  // @copyright       ${pkg.author.name} (${pkg.author.url})
+  // @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
+  // @match           https://music.youtube.com/*
+  // @match           https://www.youtube.com/*
+  // @run-at          document-start
+  // @downloadURL     ${scriptUrl}
+  // @updateURL       ${scriptUrl}
+  // @connect         api.sv443.net
+  // @grant           GM.getValue
+  // @grant           GM.setValue
+  // @grant           GM.getResourceUrl
+  // @grant           unsafeWindow
+  // @noframes\
+  ${resourcesDirectives ? "\n" + resourcesDirectives : ""}
+  // ==/UserScript==
+  /*
+  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+  █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+  █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+          Made with ❤️ by Sv443
+  I welcome every contribution on GitHub!
+    https://github.com/Sv443/BetterYTM
+  */
+
+  /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
+  /* C&D this 🖕 */
+  `;
+
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
     const lastCommitSha = await getLastCommitSha();
@@ -176,5 +182,22 @@ async function exists(path: string) {
   }
   catch(err) {
     return false;
+  }
+}
+
+/** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
+async function getResourceDirectives() {
+  try {
+    const directives: string[] = [];
+    const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
+    const resources = JSON.parse(resourcesFile) as Record<string, string>;
+
+    for(const [name, path] of Object.entries(resources))
+      directives.push(`// @resource        ${name} https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`);
+
+    return directives.join("\n");
+  }
+  catch(err) {
+    console.warn("No resource directives found:", err);
   }
 }
