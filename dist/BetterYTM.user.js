@@ -17,17 +17,27 @@
 // @connect         api.sv443.net
 // @grant           GM.getValue
 // @grant           GM.setValue
+// @grant           GM.getResourceUrl
 // @grant           unsafeWindow
+// @noframes
+// @resource        icon https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon.png
+// @resource        close https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/close.png
+// @resource        delete https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/delete.svg
+// @resource        error https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/error.svg
+// @resource        lyrics https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/lyrics.svg
+// @resource        spinner https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/spinner.svg
+// @resource        github https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource        greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
 // ==/UserScript==
 /*
- ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
- █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
- █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
- █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
-         Made with ❤️ by Sv443
- I welcome every contribution on GitHub!
-   https://github.com/Sv443/BetterYTM
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
 */
 
 /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
@@ -489,7 +499,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "92012cd", // assert as generic string instead of literal
+    lastCommit: "fe250f1", // assert as generic string instead of literal
 };
 
 
@@ -1042,52 +1052,55 @@ function improveLogo() {
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(".bytm-mod-logo", {
-        listener: (logoElem) => {
+        listener: (logoElem) => __awaiter(this, void 0, void 0, function* () {
             if (logoElem.classList.contains("bytm-logo-exchanged"))
                 return;
             logoExchanged = true;
             logoElem.classList.add("bytm-logo-exchanged");
+            const iconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("icon");
             const newLogo = document.createElement("img");
             newLogo.className = "bytm-mod-logo-img";
-            newLogo.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
+            newLogo.src = iconUrl;
             logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
-            document.head.querySelectorAll("link[rel=\"icon\"]").forEach(e => {
-                e.href = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
+            document.head.querySelectorAll("link[rel=\"icon\"]").forEach((e) => {
+                e.href = iconUrl;
             });
             setTimeout(() => {
                 logoElem.querySelectorAll(".bytm-mod-logo-ellipse").forEach(e => e.remove());
             }, 1000);
-        },
+        }),
     });
 }
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 function addConfigMenuOption(container) {
-    const cfgOptElem = document.createElement("a");
-    cfgOptElem.role = "button";
-    cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
-    cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
-    const cfgOptItemElem = document.createElement("div");
-    cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-    cfgOptItemElem.addEventListener("click", (e) => {
-        const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
-        settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
-        menuOpenAmt++;
-        if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
-        if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
-            exchangeLogo();
+    return __awaiter(this, void 0, void 0, function* () {
+        const cfgOptElem = document.createElement("a");
+        cfgOptElem.role = "button";
+        cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
+        cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
+        const cfgOptItemElem = document.createElement("div");
+        cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+        cfgOptItemElem.addEventListener("click", (e) => {
+            const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
+            settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
+            menuOpenAmt++;
+            if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+            if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                exchangeLogo();
+        });
+        const cfgOptIconElem = document.createElement("img");
+        cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
+        cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("icon");
+        const cfgOptTextElem = document.createElement("div");
+        cfgOptTextElem.className = "bytm-cfg-menu-option-text";
+        cfgOptTextElem.innerText = "BetterYTM Configuration";
+        cfgOptItemElem.appendChild(cfgOptIconElem);
+        cfgOptItemElem.appendChild(cfgOptTextElem);
+        cfgOptElem.appendChild(cfgOptItemElem);
+        container.appendChild(cfgOptElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
     });
-    const cfgOptIconElem = document.createElement("img");
-    cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-    cfgOptIconElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png");
-    const cfgOptTextElem = document.createElement("div");
-    cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-    cfgOptTextElem.innerText = "BetterYTM Configuration";
-    cfgOptItemElem.appendChild(cfgOptIconElem);
-    cfgOptItemElem.appendChild(cfgOptTextElem);
-    cfgOptElem.appendChild(cfgOptItemElem);
-    container.appendChild(cfgOptElem);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
 }
 //#MARKER remove upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
@@ -1207,8 +1220,10 @@ function addQueueButtons(queueItem) {
         const artist = artistEl.innerText;
         if (!song || !artist)
             return false;
+        const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("lyrics");
+        const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("delete");
         //#SECTION lyrics btn
-        const lyricsBtnElem = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
+        const lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
         {
             lyricsBtnElem.title = "Open this song's lyrics in a new tab";
             lyricsBtnElem.style.display = "inline-flex";
@@ -1226,12 +1241,12 @@ function addQueueButtons(queueItem) {
                     const imgEl = lyricsBtnElem.querySelector("img");
                     if (!cachedLyricsUrl) {
                         songInfo.setAttribute("data-bytm-loading", "");
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("spinner.svg");
+                        imgEl.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("spinner");
                         imgEl.classList.add("bytm-spinner");
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)(artistsSan, songSan);
                     const resetImgElem = () => {
-                        imgEl.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("lyrics.svg");
+                        imgEl.src = lyricsIconUrl;
                         imgEl.classList.remove("bytm-spinner");
                     };
                     if (!cachedLyricsUrl) {
@@ -1286,7 +1301,7 @@ function addQueueButtons(queueItem) {
             }));
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("delete.svg");
+            imgElem.src = deleteIconUrl;
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
@@ -1527,65 +1542,69 @@ function addMediaCtrlLyricsBtn() {
 // TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 function addActualMediaCtrlLyricsBtn(likeContainer) {
-    const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-    // run parallel without awaiting so the MutationObserver below can observe the title element in time
-    (() => __awaiter(this, void 0, void 0, function* () {
-        const gUrl = yield getCurrentLyricsUrl();
-        const linkElem = createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
-        linkElem.id = "betterytm-lyrics-button";
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Inserted lyrics button into media controls bar");
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
-    }))();
-    mcCurrentSongTitle = songTitleElem.title;
-    const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
-        var _b, e_1, _c, _d;
-        try {
-            for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b;) {
-                _d = mutations_1_1.value;
-                _a = false;
-                try {
-                    const mut = _d;
-                    const newTitle = mut.target.title;
-                    if (newTitle !== mcCurrentSongTitle && newTitle.length > 0) {
-                        const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                        if (!lyricsBtn)
-                            return;
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
-                        lyricsBtn.style.cursor = "wait";
-                        lyricsBtn.style.pointerEvents = "none";
-                        const imgElem = lyricsBtn.querySelector("img");
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("spinner.svg");
-                        imgElem.classList.add("bytm-spinner");
-                        mcCurrentSongTitle = newTitle;
-                        const url = yield getCurrentLyricsUrl(); // can take a second or two
-                        imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("lyrics.svg");
-                        imgElem.classList.remove("bytm-spinner");
-                        if (!url)
-                            continue;
-                        lyricsBtn.href = url;
-                        lyricsBtn.title = "Open the current song's lyrics in a new tab";
-                        lyricsBtn.style.cursor = "pointer";
-                        lyricsBtn.style.visibility = "initial";
-                        lyricsBtn.style.display = "inline-flex";
-                        lyricsBtn.style.pointerEvents = "initial";
+    return __awaiter(this, void 0, void 0, function* () {
+        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+        // run parallel without awaiting so the MutationObserver below can observe the title element in time
+        (() => __awaiter(this, void 0, void 0, function* () {
+            const gUrl = yield getCurrentLyricsUrl();
+            const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+            linkElem.id = "betterytm-lyrics-button";
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Inserted lyrics button into media controls bar");
+            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
+        }))();
+        mcCurrentSongTitle = songTitleElem.title;
+        const spinnerIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("spinner");
+        const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("lyrics");
+        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+            var _b, e_1, _c, _d;
+            try {
+                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b;) {
+                    _d = mutations_1_1.value;
+                    _a = false;
+                    try {
+                        const mut = _d;
+                        const newTitle = mut.target.title;
+                        if (newTitle !== mcCurrentSongTitle && newTitle.length > 0) {
+                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                            if (!lyricsBtn)
+                                return;
+                            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                            lyricsBtn.style.cursor = "wait";
+                            lyricsBtn.style.pointerEvents = "none";
+                            const imgElem = lyricsBtn.querySelector("img");
+                            imgElem.src = spinnerIconUrl;
+                            imgElem.classList.add("bytm-spinner");
+                            mcCurrentSongTitle = newTitle;
+                            const url = yield getCurrentLyricsUrl(); // can take a second or two
+                            imgElem.src = lyricsIconUrl;
+                            imgElem.classList.remove("bytm-spinner");
+                            if (!url)
+                                continue;
+                            lyricsBtn.href = url;
+                            lyricsBtn.title = "Open the current song's lyrics in a new tab";
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.visibility = "initial";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.pointerEvents = "initial";
+                        }
+                    }
+                    finally {
+                        _a = true;
                     }
                 }
-                finally {
-                    _a = true;
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
                 }
+                finally { if (e_1) throw e_1.error; }
             }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
-    }); };
-    // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
-    const obs = new MutationObserver(onMutation);
-    obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+        }); };
+        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+        const obs = new MutationObserver(onMutation);
+        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+    });
 }
 //#MARKER utils
 /** Removes everything in parentheses from the passed song name */
@@ -1678,21 +1697,23 @@ function getGeniusUrl(artist, song) {
 }
 /** Creates the base lyrics button element */
 function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-    const linkElem = document.createElement("a");
-    linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-    linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
-    if (geniusUrl)
-        linkElem.href = geniusUrl;
-    linkElem.role = "button";
-    linkElem.target = "_blank";
-    linkElem.rel = "noopener noreferrer";
-    linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-    linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-    const imgElem = document.createElement("img");
-    imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getAssetUrl)("lyrics.svg");
-    linkElem.appendChild(imgElem);
-    return linkElem;
+    return __awaiter(this, void 0, void 0, function* () {
+        const linkElem = document.createElement("a");
+        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+        linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
+        if (geniusUrl)
+            linkElem.href = geniusUrl;
+        linkElem.role = "button";
+        linkElem.target = "_blank";
+        linkElem.rel = "noopener noreferrer";
+        linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+        linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+        const imgElem = document.createElement("img");
+        imgElem.className = "bytm-generic-btn-img";
+        imgElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("lyrics");
+        linkElem.appendChild(imgElem);
+        return linkElem;
+    });
 }
 
 
@@ -1892,11 +1913,11 @@ function addMenu() {
             anchorElem.appendChild(imgElem);
             linksCont.appendChild(anchorElem);
         };
-        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("external/github.png"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
-        addLink((0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("external/greasyfork.png"), "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/xyz", `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "betterytm-menu-close";
-        closeElem.src = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getAssetUrl)("close.png");
+        closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
         closeElem.title = "Click to close the menu";
         closeElem.style.marginLeft = "50px";
         closeElem.style.width = "32px";
@@ -2115,8 +2136,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   dbg: function() { return /* binding */ dbg; },
 /* harmony export */   error: function() { return /* binding */ error; },
-/* harmony export */   getAssetUrl: function() { return /* binding */ getAssetUrl; },
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
+/* harmony export */   getResourceUrl: function() { return /* binding */ getResourceUrl; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   log: function() { return /* binding */ log; },
@@ -2301,9 +2322,9 @@ function getDomain() {
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
-/** Returns the URL of the asset hosted on GitHub at the specified relative `path` (starting at `{root}/assets/`) */
-function getAssetUrl(path) {
-    return `https://raw.githubusercontent.com/Sv443/BetterYTM/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}/assets/${path}`;
+/** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
+function getResourceUrl(name) {
+    return GM.getResourceUrl(name);
 }
 
 
@@ -2433,13 +2454,6 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-/** URLs of images to pre-cache so they can be displayed instantly */
-const preloadImgs = [
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("icon/icon.png"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("spinner.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("delete.svg"),
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getAssetUrl)("lyrics.svg"),
-];
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -2465,10 +2479,6 @@ function preInit() {
 }
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (domain === "ytm")
-            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.preloadImages)(preloadImgs, true)
-                .then(() => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Preloaded ${preloadImgs.length} ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("image", preloadImgs)}`))
-                .catch((e) => (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)(`Couldn't preload images: ${e}`));
         yield (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
@@ -2819,12 +2829,8 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
                 if (features.anchorImprovements)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
-                //#DEBUG
-                setInterval(() => {
-                    const selMap = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getSelectorMap)();
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.dbg)("selector map", selMap.size, selMap);
-                }, 500);
-                // initVolumeFeatures();
+                // TODO:
+                void _features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures;
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
