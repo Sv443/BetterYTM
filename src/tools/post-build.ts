@@ -38,44 +38,44 @@ type BuildStats = {
   const resourcesDirectives = await getResourceDirectives();
 
   const header = `\
-  // ==UserScript==
-  // @name            ${pkg.userscriptName}
-  // @homepageURL     ${pkg.homepage}#readme
-  // @namespace       ${pkg.homepage}
-  // @version         ${pkg.version}
-  // @description     ${pkg.description}
-  // @description:de  ${pkg["description:de"]}
-  // @license         ${pkg.license}
-  // @author          ${pkg.author.name}
-  // @copyright       ${pkg.author.name} (${pkg.author.url})
-  // @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
-  // @match           https://music.youtube.com/*
-  // @match           https://www.youtube.com/*
-  // @run-at          document-start
-  // @downloadURL     ${scriptUrl}
-  // @updateURL       ${scriptUrl}
-  // @connect         api.sv443.net
-  // @grant           GM.getValue
-  // @grant           GM.setValue
-  // @grant           GM.getResourceUrl
-  // @grant           unsafeWindow
-  // @noframes\
-  ${resourcesDirectives ? "\n" + resourcesDirectives : ""}
-  // ==/UserScript==
-  /*
-  ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
-  █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
-  █▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
-  █▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+// ==UserScript==
+// @name            ${pkg.userscriptName}
+// @homepageURL     ${pkg.homepage}#readme
+// @namespace       ${pkg.homepage}
+// @version         ${pkg.version}
+// @description     ${pkg.description}
+// @description:de  ${pkg["description:de"]}
+// @license         ${pkg.license}
+// @author          ${pkg.author.name}
+// @copyright       ${pkg.author.name} (${pkg.author.url})
+// @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon.png
+// @match           https://music.youtube.com/*
+// @match           https://www.youtube.com/*
+// @run-at          document-start
+// @downloadURL     ${scriptUrl}
+// @updateURL       ${scriptUrl}
+// @connect         api.sv443.net
+// @grant           GM.getValue
+// @grant           GM.setValue
+// @grant           GM.getResourceUrl
+// @grant           unsafeWindow
+// @noframes\
+${resourcesDirectives ? "\n" + resourcesDirectives : ""}
+// ==/UserScript==
+/*
+▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
 
-          Made with ❤️ by Sv443
-  I welcome every contribution on GitHub!
-    https://github.com/Sv443/BetterYTM
-  */
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
 
-  /* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
-  /* C&D this 🖕 */
-  `;
+/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+`;
 
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
