@@ -1,7 +1,7 @@
-import { addGlobalStyle, autoPlural, preloadImages, initOnSelector, onSelector, getSelectorMap } from "@sv443-network/userutils";
+import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/userutils";
 import { loadFeatureConf } from "./config";
 import { logLevel, scriptInfo } from "./constants";
-import { dbg, error, getAssetUrl, getDomain, log, setLogLevel } from "./utils";
+import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
   // layout
@@ -15,14 +15,6 @@ import {
   // menu
   initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
 } from "./features/index";
-
-/** URLs of images to pre-cache so they can be displayed instantly */
-const preloadImgs = [
-  getAssetUrl("icon/icon.png"),
-  getAssetUrl("spinner.svg"),
-  getAssetUrl("delete.svg"),
-  getAssetUrl("lyrics.svg"),
-];
 
 {
   // console watermark with sexy gradient
@@ -59,11 +51,6 @@ function preInit() {
 }
 
 async function init() {
-  if(domain === "ytm")
-    preloadImages(preloadImgs, true)
-      .then(() => log(`Preloaded ${preloadImgs.length} ${autoPlural("image", preloadImgs)}`))
-      .catch((e) => error(`Couldn't preload images: ${e}`));
-
   await preInitLayout();
 
   try {
@@ -124,13 +111,8 @@ async function onDomLoad() {
       if(features.anchorImprovements)
         addAnchorImprovements();
 
-      //#DEBUG
-      setInterval(() => {
-        const selMap = getSelectorMap();
-        dbg("selector map", selMap.size, selMap);
-      }, 500);
-
-      // initVolumeFeatures();
+      // TODO:
+      void initVolumeFeatures;
     }
 
     if(["ytm", "yt"].includes(domain)) {

@@ -3,7 +3,7 @@ import { defaultFeatures, getFeatures, saveFeatureConf, setDefaultFeatConf } fro
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { getAssetUrl, info, log } from "../../utils";
+import { getResourceUrl, info, log } from "../../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements
@@ -73,12 +73,12 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(getAssetUrl("external/github.png"), scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
-  addLink(getAssetUrl("external/greasyfork.png"), "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
+  addLink(await getResourceUrl("github"), scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
+  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";
-  closeElem.src = getAssetUrl("close.png");
+  closeElem.src = await getResourceUrl("close");
   closeElem.title = "Click to close the menu";
   closeElem.style.marginLeft = "50px";
   closeElem.style.width = "32px";
