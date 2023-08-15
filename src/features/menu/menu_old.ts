@@ -74,7 +74,7 @@ export async function addMenu() {
   };
 
   addLink(await getResourceUrl("github"), scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
-  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/xyz", `${scriptInfo.name} on GreasyFork`);
+  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/TODO", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "betterytm-menu-close";

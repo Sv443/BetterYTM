@@ -67,6 +67,7 @@
   "nodemonConfig": {
     "watch": [
       "src/**",
+      "assets/**",
       "webpack.config.js",
       ".env"
     ],

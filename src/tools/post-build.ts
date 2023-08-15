@@ -192,8 +192,10 @@ async function getResourceDirectives() {
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
 
-    for(const [name, path] of Object.entries(resources))
-      directives.push(`// @resource        ${name} https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`);
+    for(const [name, path] of Object.entries(resources)) {
+      const url = path.match(/^https?:\/\//) ? path : `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`;
+      directives.push(`// @resource        ${name} ${url}`);
+    }
 
     return directives.join("\n");
   }
