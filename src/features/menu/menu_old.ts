@@ -163,7 +163,8 @@ export async function addMenu() {
       const inputElemId = `betterytm-ftconf-${key}-input`;
 
       const ctrlElem = document.createElement("span");
-      ctrlElem.style.display = "inline-block";
+      ctrlElem.style.display = "inline-flex";
+      ctrlElem.style.alignItems = "center";
       ctrlElem.style.whiteSpace = "nowrap";
 
       const inputElem = document.createElement("input");
