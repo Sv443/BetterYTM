@@ -499,7 +499,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "bc43991", // assert as generic string instead of literal
+    lastCommit: "fb62267", // assert as generic string instead of literal
 };
 
 
@@ -784,7 +784,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -957,7 +957,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1481,7 +1481,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1833,7 +1833,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
@@ -1980,7 +1980,8 @@ function addMenu() {
                 }
                 const inputElemId = `betterytm-ftconf-${key}-input`;
                 const ctrlElem = document.createElement("span");
-                ctrlElem.style.display = "inline-block";
+                ctrlElem.style.display = "inline-flex";
+                ctrlElem.style.alignItems = "center";
                 ctrlElem.style.whiteSpace = "nowrap";
                 const inputElem = document.createElement("input");
                 inputElem.id = inputElemId;
@@ -2144,7 +2145,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 
@@ -2330,43 +2331,379 @@ function getResourceUrl(name) {
 
 /***/ }),
 
-/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
-/*!**************************************************************!*\
-  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
-  \**************************************************************/
+/***/ "../../svn/UserUtils/dist/index.mjs":
+/*!******************************************!*\
+  !*** ../../svn/UserUtils/dist/index.mjs ***!
+  \******************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addGlobalStyle: function() { return /* binding */ F; },
-/* harmony export */   addParent: function() { return /* binding */ R; },
-/* harmony export */   amplifyMedia: function() { return /* binding */ q; },
-/* harmony export */   autoPlural: function() { return /* binding */ z; },
-/* harmony export */   clamp: function() { return /* binding */ S; },
-/* harmony export */   debounce: function() { return /* binding */ D; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ J; },
-/* harmony export */   getSelectorMap: function() { return /* binding */ Z; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ O; },
-/* harmony export */   initOnSelector: function() { return /* binding */ Y; },
-/* harmony export */   insertAfter: function() { return /* binding */ j; },
-/* harmony export */   interceptEvent: function() { return /* binding */ L; },
-/* harmony export */   interceptWindowEvent: function() { return /* binding */ B; },
-/* harmony export */   mapRange: function() { return /* binding */ A; },
-/* harmony export */   onSelector: function() { return /* binding */ V; },
-/* harmony export */   openInNewTab: function() { return /* binding */ $; },
-/* harmony export */   pauseFor: function() { return /* binding */ U; },
-/* harmony export */   preloadImages: function() { return /* binding */ W; },
-/* harmony export */   randRange: function() { return /* binding */ d; },
-/* harmony export */   randomItem: function() { return /* binding */ H; },
-/* harmony export */   randomItemIndex: function() { return /* binding */ x; },
-/* harmony export */   randomizeArray: function() { return /* binding */ P; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ X; },
-/* harmony export */   takeRandomItem: function() { return /* binding */ I; }
+/* harmony export */   Config: function() { return /* binding */ Config; },
+/* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   addParent: function() { return /* binding */ addParent; },
+/* harmony export */   amplifyMedia: function() { return /* binding */ amplifyMedia; },
+/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
+/* harmony export */   clamp: function() { return /* binding */ clamp; },
+/* harmony export */   debounce: function() { return /* binding */ debounce; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
+/* harmony export */   getSelectorMap: function() { return /* binding */ getSelectorMap; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
+/* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
+/* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
+/* harmony export */   interceptEvent: function() { return /* binding */ interceptEvent; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ interceptWindowEvent; },
+/* harmony export */   mapRange: function() { return /* binding */ mapRange; },
+/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
+/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
+/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
+/* harmony export */   preloadImages: function() { return /* binding */ preloadImages; },
+/* harmony export */   randRange: function() { return /* binding */ randRange; },
+/* harmony export */   randomItem: function() { return /* binding */ randomItem; },
+/* harmony export */   randomItemIndex: function() { return /* binding */ randomItemIndex; },
+/* harmony export */   randomizeArray: function() { return /* binding */ randomizeArray; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
+/* harmony export */   takeRandomItem: function() { return /* binding */ takeRandomItem; }
 /* harmony export */ });
-var h=Object.defineProperty,y=Object.defineProperties;var g=Object.getOwnPropertyDescriptors;var p=Object.getOwnPropertySymbols;var w=Object.prototype.hasOwnProperty,v=Object.prototype.propertyIsEnumerable;var f=(t,e,n)=>e in t?h(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,c=(t,e)=>{for(var n in e||(e={}))w.call(e,n)&&f(t,n,e[n]);if(p)for(var n of p(e))v.call(e,n)&&f(t,n,e[n]);return t},b=(t,e)=>y(t,g(e));var T=(t,e,n)=>new Promise((r,o)=>{var i=s=>{try{a(n.next(s));}catch(m){o(m);}},u=s=>{try{a(n.throw(s));}catch(m){o(m);}},a=s=>s.done?r(s.value):Promise.resolve(s.value).then(i,u);a((n=n.apply(t,e)).next());});function S(t,e,n){return Math.max(Math.min(t,n),e)}function A(t,e,n,r,o){return Number(e)===0&&Number(r)===0?t*(o/n):(t-e)*((o-r)/(n-e))+r}function d(...t){let e,n;if(typeof t[0]=="number"&&typeof t[1]=="number")[e,n]=t;else if(typeof t[0]=="number"&&typeof t[1]!="number")e=0,n=t[0];else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof t[0]}" and "${typeof t[1]}"`);if(e=Number(e),n=Number(n),isNaN(e)||isNaN(n))throw new TypeError(`Parameters "min" and "max" can't be NaN`);if(e>n)throw new TypeError(`Parameter "min" can't be bigger than "max"`);return Math.floor(Math.random()*(n-e+1))+e}function H(t){return x(t)[0]}function x(t){if(t.length===0)return [void 0,void 0];let e=d(t.length-1);return [t[e],e]}function I(t){let[e,n]=x(t);if(n!==void 0)return t.splice(n,1),e}function P(t){let e=[...t];if(t.length===0)return t;for(let n=e.length-1;n>0;n--){let r=Math.floor(d(0,1e4)/1e4*(n+1));[e[n],e[r]]=[e[r],e[n]];}return e}function O(){try{return unsafeWindow}catch(t){return window}}function j(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function R(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function F(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function W(t,e=!1){let n=t.map(r=>new Promise((o,i)=>{let u=new Image;u.src=r,u.addEventListener("load",()=>o(u)),u.addEventListener("error",a=>e&&i(a));}));return Promise.allSettled(n)}function $(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function L(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(r){element.__proto__.addEventListener=function(...o){if(!(o[0]===e&&n()))return r.apply(this,o)};}(t.__proto__.addEventListener);}function B(t,e){return L(O(),t,e)}function q(t,e=1){let n=new(window.AudioContext||window.webkitAudioContext),r={mediaElement:t,amplify:o=>{r.gain.gain.value=o;},getAmpLevel:()=>r.gain.gain.value,context:n,source:n.createMediaElementSource(t),gain:n.createGain()};return r.source.connect(r.gain),r.gain.connect(n.destination),r.amplify(e),r}function z(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function U(t){return new Promise(e=>{setTimeout(e,t);})}function D(t,e=300){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>t.apply(this,r),e);}}function J(n){return T(this,arguments,function*(t,e={}){let{timeout:r=1e4}=e,o=new AbortController,i=setTimeout(()=>o.abort(),r),u=yield fetch(t,b(c({},e),{signal:o.signal}));return clearTimeout(i),u})}var l=new Map;function V(t,e){let n=[];l.has(t)&&(n=l.get(t)),n.push(e),l.set(t,n),E(t,n);}function X(t){return l.delete(t)}function E(t,e){let n=[];if(e.forEach((r,o)=>{try{let i=r.all?document.querySelectorAll(t):document.querySelector(t);(i!==null&&i instanceof NodeList&&i.length>0||i!==null)&&(r.listener(i),r.continuous||n.push(o));}catch(i){console.error(`Couldn't call listener for selector '${t}'`,i);}}),n.length>0){let r=e.filter((o,i)=>!n.includes(i));r.length===0?l.delete(t):l.set(t,r);}}function Y(t={}){new MutationObserver(()=>{for(let[n,r]of l.entries())E(n,r);}).observe(document.body,c({subtree:!0,childList:!0},t));}function Z(){return l}
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+// lib/math.ts
+function clamp(value, min, max) {
+  return Math.max(Math.min(value, max), min);
+}
+function mapRange(value, range_1_min, range_1_max, range_2_min, range_2_max) {
+  if (Number(range_1_min) === 0 && Number(range_2_min) === 0)
+    return value * (range_2_max / range_1_max);
+  return (value - range_1_min) * ((range_2_max - range_2_min) / (range_1_max - range_1_min)) + range_2_min;
+}
+function randRange(...args) {
+  let min, max;
+  if (typeof args[0] === "number" && typeof args[1] === "number") {
+    [min, max] = args;
+  } else if (typeof args[0] === "number" && typeof args[1] !== "number") {
+    min = 0;
+    max = args[0];
+  } else
+    throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
+  min = Number(min);
+  max = Number(max);
+  if (isNaN(min) || isNaN(max))
+    throw new TypeError(`Parameters "min" and "max" can't be NaN`);
+  if (min > max)
+    throw new TypeError(`Parameter "min" can't be bigger than "max"`);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// lib/array.ts
+function randomItem(array) {
+  return randomItemIndex(array)[0];
+}
+function randomItemIndex(array) {
+  if (array.length === 0)
+    return [void 0, void 0];
+  const idx = randRange(array.length - 1);
+  return [array[idx], idx];
+}
+function takeRandomItem(arr) {
+  const [itm, idx] = randomItemIndex(arr);
+  if (idx === void 0)
+    return void 0;
+  arr.splice(idx, 1);
+  return itm;
+}
+function randomizeArray(array) {
+  const retArray = [...array];
+  if (array.length === 0)
+    return array;
+  for (let i = retArray.length - 1; i > 0; i--) {
+    const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
+    [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
+  }
+  return retArray;
+}
+
+// lib/config.ts
+var Config = class {
+  /**
+   * Creates an instance of Config.
+   * @param id A unique ID for this configuration
+   * @param defaultData The default data to use if no data is saved yet. Until the data is loaded from persistent storage, this will be the data returned by `getData()`
+   * @param formatVersion An incremental version of the data format. If the format of the data is changed, this number should be incremented, in which case all necessary functions of the migrations dictionary will be run consecutively. Never decrement this number, but you may skip numbers if you need to for some reason.
+   * @param migrations A dictionary of functions that can be used to migrate data from older versions of the configuration to newer ones. The keys of the dictionary should be the format version that the functions can migrate to, from the previous whole integer value. The values should be functions that take the data in the old format and return the data in the new format. The functions will be run in order from the oldest to the newest version. If the current format version is not in the dictionary, no migrations will be run.
+   */
+  constructor(id, formatVersion, defaultData, migrations) {
+    __publicField(this, "id");
+    __publicField(this, "formatVersion");
+    __publicField(this, "defaultData");
+    __publicField(this, "migrations");
+    __publicField(this, "cachedData");
+    this.id = id;
+    this.formatVersion = formatVersion;
+    this.defaultData = this.cachedData = defaultData;
+    this.migrations = migrations;
+    this.loadData();
+  }
+  /** Loads the data saved in persistent storage into the in-memory cache and also returns it */
+  loadData() {
+    return __async(this, null, function* () {
+      try {
+        const gmData = yield GM.getValue(this.id, this.defaultData);
+        const gmFmtVer = yield GM.getValue(`_uufmtver-${this.id}`);
+        if (typeof gmData !== "string" || typeof gmFmtVer !== "number")
+          return void 0;
+        let parsed = JSON.parse(gmData);
+        if (this.formatVersion > gmFmtVer)
+          parsed = yield this.runMigrations(parsed, gmFmtVer);
+        return this.cachedData = typeof parsed === "object" ? parsed : void 0;
+      } catch (err) {
+        return void 0;
+      }
+    });
+  }
+  /** Returns the data from the in-memory cache. Use `loadData()` to get fresh data from persistent storage (usually not necessary). */
+  getData() {
+    return this.cachedData;
+  }
+  /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
+  setData(data) {
+    this.cachedData = data;
+    return new Promise((resolve) => __async(this, null, function* () {
+      yield GM.setValue(this.id, JSON.stringify(data));
+      yield GM.setValue(`_uufmtver-${this.id}`, this.formatVersion);
+      resolve();
+    }));
+  }
+  /** Runs all necessary migration functions consecutively */
+  runMigrations(oldData, oldFmtVer) {
+    return __async(this, null, function* () {
+      return new Promise((resolve) => __async(this, null, function* () {
+        if (!this.migrations)
+          return resolve(oldData);
+        let newData = oldData;
+        const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
+        for (const [fmtVer, migrationFunc] of sortedMigrations) {
+          const ver = Number(fmtVer);
+          if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
+            const migRes = migrationFunc(newData);
+            newData = migRes instanceof Promise ? yield migRes : migRes;
+            oldFmtVer = ver;
+          }
+        }
+        yield GM.setValue(`_uufmtver-${this.id}`, this.formatVersion);
+        resolve(newData);
+      }));
+    });
+  }
+};
+
+// lib/dom.ts
+function getUnsafeWindow() {
+  try {
+    return unsafeWindow;
+  } catch (e) {
+    return window;
+  }
+}
+function insertAfter(beforeElement, afterElement) {
+  var _a;
+  (_a = beforeElement.parentNode) == null ? void 0 : _a.insertBefore(afterElement, beforeElement.nextSibling);
+  return afterElement;
+}
+function addParent(element2, newParent) {
+  const oldParent = element2.parentNode;
+  if (!oldParent)
+    throw new Error("Element doesn't have a parent node");
+  oldParent.replaceChild(newParent, element2);
+  newParent.appendChild(element2);
+  return newParent;
+}
+function addGlobalStyle(style) {
+  const styleElem = document.createElement("style");
+  styleElem.innerHTML = style;
+  document.head.appendChild(styleElem);
+}
+function preloadImages(srcUrls, rejects = false) {
+  const promises = srcUrls.map((src) => new Promise((res, rej) => {
+    const image = new Image();
+    image.src = src;
+    image.addEventListener("load", () => res(image));
+    image.addEventListener("error", (evt) => rejects && rej(evt));
+  }));
+  return Promise.allSettled(promises);
+}
+function openInNewTab(href) {
+  const openElem = document.createElement("a");
+  Object.assign(openElem, {
+    className: "userutils-open-in-new-tab",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    href
+  });
+  openElem.style.display = "none";
+  document.body.appendChild(openElem);
+  openElem.click();
+  setTimeout(openElem.remove, 50);
+}
+function interceptEvent(eventObject, eventName, predicate) {
+  if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
+    Error.stackTraceLimit = 1e3;
+  }
+  (function(original) {
+    element.__proto__.addEventListener = function(...args) {
+      if (args[0] === eventName && predicate())
+        return;
+      else
+        return original.apply(this, args);
+    };
+  })(eventObject.__proto__.addEventListener);
+}
+function interceptWindowEvent(eventName, predicate) {
+  return interceptEvent(getUnsafeWindow(), eventName, predicate);
+}
+function amplifyMedia(mediaElement, multiplier = 1) {
+  const context = new (window.AudioContext || window.webkitAudioContext)();
+  const result = {
+    mediaElement,
+    amplify: (multiplier2) => {
+      result.gain.gain.value = multiplier2;
+    },
+    getAmpLevel: () => result.gain.gain.value,
+    context,
+    source: context.createMediaElementSource(mediaElement),
+    gain: context.createGain()
+  };
+  result.source.connect(result.gain);
+  result.gain.connect(context.destination);
+  result.amplify(multiplier);
+  return result;
+}
+
+// lib/misc.ts
+function autoPlural(word, num) {
+  if (Array.isArray(num) || num instanceof NodeList)
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
+}
+function pauseFor(time) {
+  return new Promise((res) => {
+    setTimeout(res, time);
+  });
+}
+function debounce(func, timeout = 300) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
+}
+function fetchAdvanced(_0) {
+  return __async(this, arguments, function* (url, options = {}) {
+    const { timeout = 1e4 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
+      signal: controller.signal
+    }));
+    clearTimeout(id);
+    return res;
+  });
+}
+
+// lib/onSelector.ts
+var selectorMap = /* @__PURE__ */ new Map();
+function onSelector(selector, options) {
+  let selectorMapItems = [];
+  if (selectorMap.has(selector))
+    selectorMapItems = selectorMap.get(selector);
+  selectorMapItems.push(options);
+  selectorMap.set(selector, selectorMapItems);
+  checkSelectorExists(selector, selectorMapItems);
+}
+function removeOnSelector(selector) {
+  return selectorMap.delete(selector);
+}
+function checkSelectorExists(selector, options) {
+  const deleteIndices = [];
+  options.forEach((option, i) => {
+    try {
+      const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
+      if (elements !== null && elements instanceof NodeList && elements.length > 0 || elements !== null) {
+        option.listener(elements);
+        if (!option.continuous)
+          deleteIndices.push(i);
+      }
+    } catch (err) {
+      console.error(`Couldn't call listener for selector '${selector}'`, err);
+    }
+  });
+  if (deleteIndices.length > 0) {
+    const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
+    if (newOptsArray.length === 0)
+      selectorMap.delete(selector);
+    else {
+      selectorMap.set(selector, newOptsArray);
+    }
+  }
+}
+function initOnSelector(options = {}) {
+  const observer = new MutationObserver(() => {
+    for (const [selector, options2] of selectorMap.entries())
+      checkSelectorExists(selector, options2);
+  });
+  observer.observe(document.body, __spreadValues({
+    subtree: true,
+    childList: true
+  }, options));
+}
+function getSelectorMap() {
+  return selectorMap;
+}
 
 
-
+//# sourceMappingURL=http://localhost:8710/out.js.map
+//# sourceMappingURL=http://localhost:8710/index.mjs.map
 
 /***/ })
 
@@ -2433,7 +2770,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -2457,7 +2794,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
-    const styleCommon = "color: #fff; font-size: 1.35em; padding-left: 6px; padding-right: 6px;";
+    const styleCommon = "color: #fff; font-size: 1.5em; padding-left: 6px; padding-right: 6px;";
     console.log();
     console.log(`%c${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name}%cv${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}%c\n\nBuild #${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.lastCommit} ─ ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
     console.log([
