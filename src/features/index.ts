@@ -92,6 +92,16 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  closeToastsTimeout: {
+    desc: "After how many seconds to close permanent toasts - 0 to only close them manually (default behavior)",
+    type: "number",
+    category: "layout",
+    min: 0,
+    max: 30,
+    step: 0.5,
+    default: 0,
+    unit: "s",
+  },
 
   //#SECTION lyrics
   geniusLyrics: {
@@ -100,4 +110,4 @@ export const featInfo = {
     category: "lyrics",
     default: true,
   },
-};
+} as const;
