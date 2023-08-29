@@ -499,7 +499,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "4e36d34", // assert as generic string instead of literal
+    lastCommit: "f7c8ce2", // assert as generic string instead of literal
 };
 
 
@@ -653,6 +653,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getGeniusUrl; },
 /* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsCacheEntry; },
 /* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
+/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
 /* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
 /* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
 /* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
@@ -758,6 +759,16 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+    },
+    closeToastsTimeout: {
+        desc: "After how many seconds to close permanent toasts - 0 to only close them manually (default behavior)",
+        type: "number",
+        category: "layout",
+        min: 0,
+        max: 30,
+        step: 0.5,
+        default: 0,
+        unit: "s",
     },
     //#SECTION lyrics
     geniusLyrics: {
@@ -933,10 +944,14 @@ function initBeforeUnloadHook() {
     (function (original) {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
-            if (!beforeUnloadEnabled && args[0] === "beforeunload")
-                return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Prevented beforeunload event listener from being called");
-            else
-                return original.apply(this, args);
+            const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
+            args[1] = function (...a) {
+                if (!beforeUnloadEnabled && args[0] === "beforeunload")
+                    return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Prevented beforeunload event listener from being called");
+                else
+                    return origListener.apply(this, a);
+            };
+            original.apply(this, args);
         };
         // @ts-ignore
     })(window.__proto__.addEventListener);
@@ -960,6 +975,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addAnchorImprovements: function() { return /* binding */ addAnchorImprovements; },
 /* harmony export */   addConfigMenuOption: function() { return /* binding */ addConfigMenuOption; },
 /* harmony export */   addWatermark: function() { return /* binding */ addWatermark; },
+/* harmony export */   initAutoCloseToasts: function() { return /* binding */ initAutoCloseToasts; },
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   initVolumeFeatures: function() { return /* binding */ initVolumeFeatures; },
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
@@ -1486,6 +1502,40 @@ function improveCarouselAnchors(itemsElement) {
     }
     return improvedElems;
 }
+//#MARKER auto close toasts
+/** Closes toasts after a set amount of time */
+function initAutoCloseToasts() {
+    try {
+        const animTimeout = 300;
+        const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-paper-toast#toast", {
+            all: true,
+            continuous: true,
+            listener: (toastElems) => {
+                for (const toastElem of toastElems) {
+                    if (!toastElem.hasAttribute("allow-click-through"))
+                        continue;
+                    if (toastElem.classList.contains("bytm-closing"))
+                        continue;
+                    toastElem.classList.add("bytm-closing");
+                    setTimeout(() => {
+                        toastElem.classList.remove("paper-toast-open");
+                        // wait for the transition to finish
+                        setTimeout(() => {
+                            var _a;
+                            toastElem.style.display = "none";
+                            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${closeTimeout + animTimeout}ms`);
+                        }, animTimeout);
+                    }, closeTimeout);
+                }
+            },
+        });
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Initialized automatic toast closing");
+    }
+    catch (err) {
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error in automatic toast closing:", err);
+    }
+}
 
 
 /***/ }),
@@ -1771,9 +1821,10 @@ __webpack_require__.r(__webpack_exports__);
 // - support for "custom widgets"
 // - debounce or save on button press to store new configuration
 // - much better scaling including no vw and vh units
+// - cleanup function per feature so a page reload is not always needed
 //#MARKER menu
 /**
- * These are the base selector values for the menu tabs
+ * The base selector values for the menu tabs
  * Header selector format: `#${baseValue}-header`
  * Content selector format: `#${baseValue}-content`
  */
@@ -1962,11 +2013,10 @@ function addMenu() {
         /** Gets called whenever the feature config is changed */
         const confChanged = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.debounce)((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.info)(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.info)(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = Object.assign({}, yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)());
             featConf[key] = newVal;
             yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatureConf)(featConf);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Saved feature config changes:\n", yield GM.getValue("betterytm-config"));
         }));
         const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
         for (const key in features) {
@@ -2020,7 +2070,7 @@ function addMenu() {
                 if (type === "number" && step)
                     inputElem.step = step;
                 // @ts-ignore
-                if (ftInfo.min && ftInfo.max) {
+                if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
                     // @ts-ignore
                     inputElem.min = ftInfo.min;
                     // @ts-ignore
@@ -2896,6 +2946,8 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
                 if (features.anchorImprovements)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
+                if (features.closeToastsTimeout > 0)
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initAutoCloseToasts)();
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
@@ -2904,7 +2956,7 @@ ytmusic-responsive-list-item-renderer .left-items {
             }
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General error while executing feature:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Feature error:", err);
         }
     });
 }
