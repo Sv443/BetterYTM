@@ -118,13 +118,13 @@ function exchangeLogo() {
 
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 export async function addConfigMenuOption(container: HTMLElement) {
-  const cfgOptElem = document.createElement("a");
+  const cfgOptElem = document.createElement("div");
   cfgOptElem.role = "button";
-  cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
-  cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
-
+  cfgOptElem.className = "bytm-cfg-menu-option";
+  
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
   cfgOptItemElem.addEventListener("click", (e) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
