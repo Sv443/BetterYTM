@@ -499,7 +499,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "fb62267", // assert as generic string instead of literal
+    lastCommit: "e172a74", // assert as generic string instead of literal
 };
 
 
@@ -735,16 +735,17 @@ const featInfo = {
         min: 50,
         max: 500,
         step: 5,
-        default: 160,
+        default: 150,
         unit: "px",
     },
     volumeSliderStep: {
-        desc: "Volume slider sensitivity - the smaller this number, the finer the volume control",
+        desc: "Volume sensitivity (by how little percent the volume slider can be changed)",
         type: "slider",
         category: "layout",
         min: 1,
-        max: 20,
+        max: 25,
         default: 2,
+        unit: "%",
     },
     watermarkEnabled: {
         desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name} watermark under the YTM logo`,
@@ -784,7 +785,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -865,6 +866,8 @@ function onKeyDown(evt) {
     }
 }
 //#MARKER site switch
+/** switch sites only if current video time is greater than this value */
+const videoTimeThreshold = 3;
 /** Initializes the site switch feature */
 function initSiteSwitch(domain) {
     document.addEventListener("keydown", (e) => {
@@ -875,7 +878,6 @@ function initSiteSwitch(domain) {
 }
 /** Switches to the other site (between YT and YTM) */
 function switchSite(newDomain) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (newDomain === "ytm" && !location.href.includes("/watch"))
@@ -889,12 +891,18 @@ function switchSite(newDomain) {
                 throw new Error(`Unrecognized domain '${newDomain}'`);
             disableBeforeUnload();
             const { pathname, search, hash } = new URL(location.href);
-            const vt = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
+            const vt = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getVideoTime)();
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Found video time of ${vt} seconds`);
             const cleanSearch = search.split("&")
                 .filter((param) => !param.match(/^\??t=/))
                 .join("&");
-            const newSearch = cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&t=${vt}` : `?t=${vt}`;
+            const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+                cleanSearch.includes("?")
+                    ? `${cleanSearch.startsWith("?")
+                        ? cleanSearch
+                        : "?" + cleanSearch}&t=${vt}`
+                    : `?t=${vt}`
+                : cleanSearch;
             const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
             location.assign(newUrl);
@@ -926,7 +934,7 @@ function initBeforeUnloadHook() {
         // @ts-ignore
         window.__proto__.addEventListener = function (...args) {
             if (!beforeUnloadEnabled && args[0] === "beforeunload")
-                return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Prevented beforeunload event listener from being called");
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Prevented beforeunload event listener from being called");
             else
                 return original.apply(this, args);
         };
@@ -957,7 +965,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1074,12 +1082,12 @@ function exchangeLogo() {
 /** Called whenever the menu exists to add a BYTM-Configuration button */
 function addConfigMenuOption(container) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cfgOptElem = document.createElement("a");
+        const cfgOptElem = document.createElement("div");
         cfgOptElem.role = "button";
-        cfgOptElem.className = "bytm-cfg-menu-option bytm-anchor";
-        cfgOptElem.ariaLabel = "Click to open BetterYTM's configuration menu";
+        cfgOptElem.className = "bytm-cfg-menu-option";
         const cfgOptItemElem = document.createElement("div");
         cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+        cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
         cfgOptItemElem.addEventListener("click", (e) => {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
@@ -1111,7 +1119,6 @@ function removeUpgradeTab() {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
         },
     });
-    // TODO:FIXME: doesn't work fsr
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-child(4)", {
         listener: (tabElemSmall) => {
             tabElemSmall.remove();
@@ -1121,6 +1128,7 @@ function removeUpgradeTab() {
 }
 //#MARKER volume slider
 function initVolumeFeatures() {
+    // not technically an input element but behaves pretty much the same
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-paper-slider#volume-slider", {
         listener: (sliderElem) => {
             const volSliderCont = document.createElement("div");
@@ -1129,36 +1137,58 @@ function initVolumeFeatures() {
             if (typeof features.volumeSliderSize === "number")
                 setVolSliderSize();
             if (features.volumeSliderLabel)
-                addVolumeSliderLabel();
-            setVolSliderStep();
+                addVolumeSliderLabel(sliderElem, volSliderCont);
+            setVolSliderStep(sliderElem);
         },
     });
 }
-const volSliderSelector = "tp-yt-paper-slider#volume-slider";
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel() {
-    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(volSliderSelector, {
-        listener: (sliderElem) => {
-            const labelElem = document.createElement("div");
-            labelElem.className = "bytm-vol-slider-label";
-            labelElem.innerText = `${sliderElem.value}%`;
-            sliderElem.addEventListener("change", () => {
-                const label = `${sliderElem.value}%`;
-                const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_8__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${sliderElem.step})` : "";
-                const labelFull = `Volume: ${label}${sensText}`;
-                sliderElem.setAttribute("title", labelFull); // TODO: probably needs to be on the parent
-                sliderElem.setAttribute("aria-valuetext", labelFull);
-                const labelElem2 = document.querySelector(".bytm-vol-slider-label");
-                if (labelElem2)
-                    labelElem2.innerText = label;
-            });
-            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#bytm-vol-slider-cont", {
-                listener: (volumeCont) => {
-                    volumeCont.appendChild(labelElem);
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added volume slider label", labelElem);
-                },
-            });
+function addVolumeSliderLabel(sliderElem, sliderCont) {
+    const labelElem = document.createElement("div");
+    labelElem.className = "bytm-vol-slider-label";
+    labelElem.innerText = `${sliderElem.value}%`;
+    // prevent video from minimizing
+    labelElem.addEventListener("click", (e) => e.stopPropagation());
+    const getLabelTexts = (slider) => {
+        const labelShort = `${slider.value}%`;
+        const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_8__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${slider.step}%)` : "";
+        const labelFull = `Volume: ${labelShort}${sensText}`;
+        return { labelShort, labelFull };
+    };
+    const { labelFull } = getLabelTexts(sliderElem);
+    sliderCont.setAttribute("title", labelFull);
+    sliderElem.setAttribute("title", labelFull);
+    sliderElem.setAttribute("aria-valuetext", labelFull);
+    const updateLabel = () => {
+        const { labelShort, labelFull } = getLabelTexts(sliderElem);
+        sliderCont.setAttribute("title", labelFull);
+        sliderElem.setAttribute("title", labelFull);
+        sliderElem.setAttribute("aria-valuetext", labelFull);
+        const labelElem2 = document.querySelector(".bytm-vol-slider-label");
+        if (labelElem2)
+            labelElem2.innerText = labelShort;
+    };
+    sliderElem.addEventListener("change", () => updateLabel());
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#bytm-vol-slider-cont", {
+        listener: (volumeCont) => {
+            volumeCont.appendChild(labelElem);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added volume slider label", labelElem);
         },
+    });
+    let lastSliderVal = Number(sliderElem.value);
+    // show label if hovering over slider or slider is focused
+    const sliderHoverObserver = new MutationObserver(() => {
+        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+            labelElem.classList.add("bytm-visible");
+        else if (labelElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+            labelElem.classList.remove("bytm-visible");
+        if (Number(sliderElem.value) !== lastSliderVal) {
+            lastSliderVal = Number(sliderElem.value);
+            updateLabel();
+        }
+    });
+    sliderHoverObserver.observe(sliderElem, {
+        attributes: true,
     });
 }
 /** Sets the volume slider to a set size */
@@ -1173,12 +1203,8 @@ function setVolSliderSize() {
 }`);
 }
 /** Sets the `step` attribute of the volume slider */
-function setVolSliderStep() {
-    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(volSliderSelector, {
-        listener: (sliderElem) => {
-            sliderElem.setAttribute("step", String(features.volumeSliderStep));
-        },
-    });
+function setVolSliderStep(sliderElem) {
+    sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 //#MARKER queue buttons
 function initQueueButtons() {
@@ -1481,7 +1507,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1833,7 +1859,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
@@ -1865,13 +1891,13 @@ function addMenu() {
     return __awaiter(this, void 0, void 0, function* () {
         //#SECTION backdrop & menu container
         const backgroundElem = document.createElement("div");
-        backgroundElem.id = "betterytm-menu-bg";
+        backgroundElem.id = "bytm-menu-bg";
         backgroundElem.title = "Click here to close the menu";
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             var _a;
-            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "betterytm-menu-bg")
+            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-menu-bg")
                 closeMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
@@ -1880,7 +1906,7 @@ function addMenu() {
         });
         const menuContainer = document.createElement("div");
         menuContainer.title = "";
-        menuContainer.id = "betterytm-menu";
+        menuContainer.id = "bytm-menu";
         menuContainer.style.borderRadius = "15px";
         menuContainer.style.display = "flex";
         menuContainer.style.flexDirection = "column";
@@ -1890,23 +1916,23 @@ function addMenu() {
         titleCont.style.padding = "8px 20px 15px 20px";
         titleCont.style.display = "flex";
         titleCont.style.justifyContent = "space-between";
-        titleCont.id = "betterytm-menu-titlecont";
+        titleCont.id = "bytm-menu-titlecont";
         const titleElem = document.createElement("h2");
-        titleElem.id = "betterytm-menu-title";
+        titleElem.id = "bytm-menu-title";
         titleElem.classList.add("bytm-no-select");
         titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
         const linksCont = document.createElement("div");
-        linksCont.id = "betterytm-menu-linkscont";
+        linksCont.id = "bytm-menu-linkscont";
         const addLink = (imgSrc, href, title) => {
             const anchorElem = document.createElement("a");
-            anchorElem.className = "betterytm-menu-link";
+            anchorElem.className = "bytm-menu-link";
             anchorElem.rel = "noopener noreferrer";
             anchorElem.target = "_blank";
             anchorElem.href = href;
             anchorElem.title = title;
             anchorElem.style.marginLeft = "10px";
             const imgElem = document.createElement("img");
-            imgElem.className = "betterytm-menu-img bytm-no-select";
+            imgElem.className = "bytm-menu-img bytm-no-select";
             imgElem.src = imgSrc;
             imgElem.style.width = "32px";
             imgElem.style.height = "32px";
@@ -1916,7 +1942,7 @@ function addMenu() {
         addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
         addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/TODO", `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
-        closeElem.id = "betterytm-menu-close";
+        closeElem.id = "bytm-menu-close";
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
         closeElem.title = "Click to close the menu";
         closeElem.style.marginLeft = "50px";
@@ -1928,7 +1954,7 @@ function addMenu() {
         titleCont.appendChild(linksCont);
         //#SECTION feature list
         const featuresCont = document.createElement("div");
-        featuresCont.id = "betterytm-menu-opts";
+        featuresCont.id = "bytm-menu-opts";
         featuresCont.style.display = "flex";
         featuresCont.style.flexDirection = "column";
         featuresCont.style.overflowY = "auto";
@@ -2008,7 +2034,7 @@ function addMenu() {
                 let labelElem;
                 if (type === "slider") {
                     labelElem = document.createElement("label");
-                    labelElem.classList.add("betterytm-ftconf-label");
+                    labelElem.classList.add("bytm-ftconf-label");
                     labelElem.style.marginRight = "20px";
                     labelElem.style.fontSize = "16px";
                     labelElem.htmlFor = inputElemId;
@@ -2020,7 +2046,7 @@ function addMenu() {
                 }
                 else if (type === "toggle") {
                     labelElem = document.createElement("label");
-                    labelElem.classList.add("betterytm-ftconf-label");
+                    labelElem.classList.add("bytm-ftconf-label");
                     labelElem.style.paddingLeft = "10px";
                     labelElem.style.paddingRight = "5px";
                     labelElem.style.fontSize = "16px";
@@ -2046,27 +2072,27 @@ function addMenu() {
         }
         //#SECTION footer
         const footerCont = document.createElement("div");
-        footerCont.id = "betterytm-menu-footer-cont";
+        footerCont.id = "bytm-menu-footer-cont";
         footerCont.style.display = "flex";
         footerCont.style.flexDirection = "row";
         footerCont.style.justifyContent = "space-between";
-        footerCont.style.padding = "10px 20px";
-        footerCont.style.marginTop = "20px";
+        footerCont.style.padding = "20px 20px 10px 20px";
+        footerCont.style.marginTop = "10px";
         footerCont.style.position = "sticky";
         footerCont.style.bottom = "0";
-        footerCont.style.backgroundColor = "var(--bytm-menu-bg)";
         const footerElem = document.createElement("div");
-        footerElem.id = "betterytm-menu-footer";
+        footerElem.id = "bytm-menu-footer";
         footerElem.style.fontSize = "17px";
         footerElem.style.textDecoration = "underline";
-        footerElem.innerText = "You need to reload the page to apply changes.";
+        footerElem.innerText = "You need to reload the page to apply changes";
         const reloadElem = document.createElement("button");
+        reloadElem.classList.add("bytm-btn");
         reloadElem.style.marginLeft = "20px";
         reloadElem.innerText = "Reload now";
         reloadElem.title = "Click to reload the page";
         reloadElem.addEventListener("click", () => location.reload());
         const resetElem = document.createElement("button");
-        resetElem.className = "bytm-cfg-reset-btn";
+        resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
         resetElem.title = "Click to reset all settings to their default value";
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
@@ -2081,7 +2107,7 @@ function addMenu() {
         featuresCont.appendChild(footerCont);
         //#SECTION finalize
         const menuBody = document.createElement("div");
-        menuBody.id = "betterytm-menu-body";
+        menuBody.id = "bytm-menu-body";
         menuBody.appendChild(titleCont);
         menuBody.appendChild(featuresCont);
         const versionCont = document.createElement("div");
@@ -2091,7 +2117,7 @@ function addMenu() {
         versionCont.style.marginTop = "10px";
         versionCont.style.marginBottom = "5px";
         const versionElem = document.createElement("span");
-        versionElem.id = "betterytm-menu-version";
+        versionElem.id = "bytm-menu-version";
         versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}`;
         versionCont.appendChild(versionElem);
         featuresCont.appendChild(versionCont);
@@ -2109,7 +2135,7 @@ function closeMenu(e) {
     isMenuOpen = false;
     (e === null || e === void 0 ? void 0 : e.bubbles) && e.stopPropagation();
     document.body.classList.remove("bytm-disable-scroll");
-    const menuBg = document.querySelector("#betterytm-menu-bg");
+    const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
@@ -2119,7 +2145,7 @@ function openMenu() {
         return;
     isMenuOpen = true;
     document.body.classList.add("bytm-disable-scroll");
-    const menuBg = document.querySelector("#betterytm-menu-bg");
+    const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
 }
@@ -2145,7 +2171,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 
@@ -2331,379 +2357,43 @@ function getResourceUrl(name) {
 
 /***/ }),
 
-/***/ "../../svn/UserUtils/dist/index.mjs":
-/*!******************************************!*\
-  !*** ../../svn/UserUtils/dist/index.mjs ***!
-  \******************************************/
+/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Config: function() { return /* binding */ Config; },
-/* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
-/* harmony export */   addParent: function() { return /* binding */ addParent; },
-/* harmony export */   amplifyMedia: function() { return /* binding */ amplifyMedia; },
-/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
-/* harmony export */   clamp: function() { return /* binding */ clamp; },
-/* harmony export */   debounce: function() { return /* binding */ debounce; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
-/* harmony export */   getSelectorMap: function() { return /* binding */ getSelectorMap; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
-/* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
-/* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
-/* harmony export */   interceptEvent: function() { return /* binding */ interceptEvent; },
-/* harmony export */   interceptWindowEvent: function() { return /* binding */ interceptWindowEvent; },
-/* harmony export */   mapRange: function() { return /* binding */ mapRange; },
-/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
-/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
-/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
-/* harmony export */   preloadImages: function() { return /* binding */ preloadImages; },
-/* harmony export */   randRange: function() { return /* binding */ randRange; },
-/* harmony export */   randomItem: function() { return /* binding */ randomItem; },
-/* harmony export */   randomItemIndex: function() { return /* binding */ randomItemIndex; },
-/* harmony export */   randomizeArray: function() { return /* binding */ randomizeArray; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
-/* harmony export */   takeRandomItem: function() { return /* binding */ takeRandomItem; }
+/* harmony export */   addGlobalStyle: function() { return /* binding */ F; },
+/* harmony export */   addParent: function() { return /* binding */ R; },
+/* harmony export */   amplifyMedia: function() { return /* binding */ q; },
+/* harmony export */   autoPlural: function() { return /* binding */ z; },
+/* harmony export */   clamp: function() { return /* binding */ S; },
+/* harmony export */   debounce: function() { return /* binding */ D; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ J; },
+/* harmony export */   getSelectorMap: function() { return /* binding */ Z; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ O; },
+/* harmony export */   initOnSelector: function() { return /* binding */ Y; },
+/* harmony export */   insertAfter: function() { return /* binding */ j; },
+/* harmony export */   interceptEvent: function() { return /* binding */ L; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ B; },
+/* harmony export */   mapRange: function() { return /* binding */ A; },
+/* harmony export */   onSelector: function() { return /* binding */ V; },
+/* harmony export */   openInNewTab: function() { return /* binding */ $; },
+/* harmony export */   pauseFor: function() { return /* binding */ U; },
+/* harmony export */   preloadImages: function() { return /* binding */ W; },
+/* harmony export */   randRange: function() { return /* binding */ d; },
+/* harmony export */   randomItem: function() { return /* binding */ H; },
+/* harmony export */   randomItemIndex: function() { return /* binding */ x; },
+/* harmony export */   randomizeArray: function() { return /* binding */ P; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ X; },
+/* harmony export */   takeRandomItem: function() { return /* binding */ I; }
 /* harmony export */ });
-var __defProp = Object.defineProperty;
-var __defProps = Object.defineProperties;
-var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
-
-// lib/math.ts
-function clamp(value, min, max) {
-  return Math.max(Math.min(value, max), min);
-}
-function mapRange(value, range_1_min, range_1_max, range_2_min, range_2_max) {
-  if (Number(range_1_min) === 0 && Number(range_2_min) === 0)
-    return value * (range_2_max / range_1_max);
-  return (value - range_1_min) * ((range_2_max - range_2_min) / (range_1_max - range_1_min)) + range_2_min;
-}
-function randRange(...args) {
-  let min, max;
-  if (typeof args[0] === "number" && typeof args[1] === "number") {
-    [min, max] = args;
-  } else if (typeof args[0] === "number" && typeof args[1] !== "number") {
-    min = 0;
-    max = args[0];
-  } else
-    throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
-  min = Number(min);
-  max = Number(max);
-  if (isNaN(min) || isNaN(max))
-    throw new TypeError(`Parameters "min" and "max" can't be NaN`);
-  if (min > max)
-    throw new TypeError(`Parameter "min" can't be bigger than "max"`);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// lib/array.ts
-function randomItem(array) {
-  return randomItemIndex(array)[0];
-}
-function randomItemIndex(array) {
-  if (array.length === 0)
-    return [void 0, void 0];
-  const idx = randRange(array.length - 1);
-  return [array[idx], idx];
-}
-function takeRandomItem(arr) {
-  const [itm, idx] = randomItemIndex(arr);
-  if (idx === void 0)
-    return void 0;
-  arr.splice(idx, 1);
-  return itm;
-}
-function randomizeArray(array) {
-  const retArray = [...array];
-  if (array.length === 0)
-    return array;
-  for (let i = retArray.length - 1; i > 0; i--) {
-    const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
-    [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
-  }
-  return retArray;
-}
-
-// lib/config.ts
-var Config = class {
-  /**
-   * Creates an instance of Config.
-   * @param id A unique ID for this configuration
-   * @param defaultData The default data to use if no data is saved yet. Until the data is loaded from persistent storage, this will be the data returned by `getData()`
-   * @param formatVersion An incremental version of the data format. If the format of the data is changed, this number should be incremented, in which case all necessary functions of the migrations dictionary will be run consecutively. Never decrement this number, but you may skip numbers if you need to for some reason.
-   * @param migrations A dictionary of functions that can be used to migrate data from older versions of the configuration to newer ones. The keys of the dictionary should be the format version that the functions can migrate to, from the previous whole integer value. The values should be functions that take the data in the old format and return the data in the new format. The functions will be run in order from the oldest to the newest version. If the current format version is not in the dictionary, no migrations will be run.
-   */
-  constructor(id, formatVersion, defaultData, migrations) {
-    __publicField(this, "id");
-    __publicField(this, "formatVersion");
-    __publicField(this, "defaultData");
-    __publicField(this, "migrations");
-    __publicField(this, "cachedData");
-    this.id = id;
-    this.formatVersion = formatVersion;
-    this.defaultData = this.cachedData = defaultData;
-    this.migrations = migrations;
-    this.loadData();
-  }
-  /** Loads the data saved in persistent storage into the in-memory cache and also returns it */
-  loadData() {
-    return __async(this, null, function* () {
-      try {
-        const gmData = yield GM.getValue(this.id, this.defaultData);
-        const gmFmtVer = yield GM.getValue(`_uufmtver-${this.id}`);
-        if (typeof gmData !== "string" || typeof gmFmtVer !== "number")
-          return void 0;
-        let parsed = JSON.parse(gmData);
-        if (this.formatVersion > gmFmtVer)
-          parsed = yield this.runMigrations(parsed, gmFmtVer);
-        return this.cachedData = typeof parsed === "object" ? parsed : void 0;
-      } catch (err) {
-        return void 0;
-      }
-    });
-  }
-  /** Returns the data from the in-memory cache. Use `loadData()` to get fresh data from persistent storage (usually not necessary). */
-  getData() {
-    return this.cachedData;
-  }
-  /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
-  setData(data) {
-    this.cachedData = data;
-    return new Promise((resolve) => __async(this, null, function* () {
-      yield GM.setValue(this.id, JSON.stringify(data));
-      yield GM.setValue(`_uufmtver-${this.id}`, this.formatVersion);
-      resolve();
-    }));
-  }
-  /** Runs all necessary migration functions consecutively */
-  runMigrations(oldData, oldFmtVer) {
-    return __async(this, null, function* () {
-      return new Promise((resolve) => __async(this, null, function* () {
-        if (!this.migrations)
-          return resolve(oldData);
-        let newData = oldData;
-        const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
-        for (const [fmtVer, migrationFunc] of sortedMigrations) {
-          const ver = Number(fmtVer);
-          if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
-            const migRes = migrationFunc(newData);
-            newData = migRes instanceof Promise ? yield migRes : migRes;
-            oldFmtVer = ver;
-          }
-        }
-        yield GM.setValue(`_uufmtver-${this.id}`, this.formatVersion);
-        resolve(newData);
-      }));
-    });
-  }
-};
-
-// lib/dom.ts
-function getUnsafeWindow() {
-  try {
-    return unsafeWindow;
-  } catch (e) {
-    return window;
-  }
-}
-function insertAfter(beforeElement, afterElement) {
-  var _a;
-  (_a = beforeElement.parentNode) == null ? void 0 : _a.insertBefore(afterElement, beforeElement.nextSibling);
-  return afterElement;
-}
-function addParent(element2, newParent) {
-  const oldParent = element2.parentNode;
-  if (!oldParent)
-    throw new Error("Element doesn't have a parent node");
-  oldParent.replaceChild(newParent, element2);
-  newParent.appendChild(element2);
-  return newParent;
-}
-function addGlobalStyle(style) {
-  const styleElem = document.createElement("style");
-  styleElem.innerHTML = style;
-  document.head.appendChild(styleElem);
-}
-function preloadImages(srcUrls, rejects = false) {
-  const promises = srcUrls.map((src) => new Promise((res, rej) => {
-    const image = new Image();
-    image.src = src;
-    image.addEventListener("load", () => res(image));
-    image.addEventListener("error", (evt) => rejects && rej(evt));
-  }));
-  return Promise.allSettled(promises);
-}
-function openInNewTab(href) {
-  const openElem = document.createElement("a");
-  Object.assign(openElem, {
-    className: "userutils-open-in-new-tab",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    href
-  });
-  openElem.style.display = "none";
-  document.body.appendChild(openElem);
-  openElem.click();
-  setTimeout(openElem.remove, 50);
-}
-function interceptEvent(eventObject, eventName, predicate) {
-  if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
-    Error.stackTraceLimit = 1e3;
-  }
-  (function(original) {
-    element.__proto__.addEventListener = function(...args) {
-      if (args[0] === eventName && predicate())
-        return;
-      else
-        return original.apply(this, args);
-    };
-  })(eventObject.__proto__.addEventListener);
-}
-function interceptWindowEvent(eventName, predicate) {
-  return interceptEvent(getUnsafeWindow(), eventName, predicate);
-}
-function amplifyMedia(mediaElement, multiplier = 1) {
-  const context = new (window.AudioContext || window.webkitAudioContext)();
-  const result = {
-    mediaElement,
-    amplify: (multiplier2) => {
-      result.gain.gain.value = multiplier2;
-    },
-    getAmpLevel: () => result.gain.gain.value,
-    context,
-    source: context.createMediaElementSource(mediaElement),
-    gain: context.createGain()
-  };
-  result.source.connect(result.gain);
-  result.gain.connect(context.destination);
-  result.amplify(multiplier);
-  return result;
-}
-
-// lib/misc.ts
-function autoPlural(word, num) {
-  if (Array.isArray(num) || num instanceof NodeList)
-    num = num.length;
-  return `${word}${num === 1 ? "" : "s"}`;
-}
-function pauseFor(time) {
-  return new Promise((res) => {
-    setTimeout(res, time);
-  });
-}
-function debounce(func, timeout = 300) {
-  let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), timeout);
-  };
-}
-function fetchAdvanced(_0) {
-  return __async(this, arguments, function* (url, options = {}) {
-    const { timeout = 1e4 } = options;
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
-      signal: controller.signal
-    }));
-    clearTimeout(id);
-    return res;
-  });
-}
-
-// lib/onSelector.ts
-var selectorMap = /* @__PURE__ */ new Map();
-function onSelector(selector, options) {
-  let selectorMapItems = [];
-  if (selectorMap.has(selector))
-    selectorMapItems = selectorMap.get(selector);
-  selectorMapItems.push(options);
-  selectorMap.set(selector, selectorMapItems);
-  checkSelectorExists(selector, selectorMapItems);
-}
-function removeOnSelector(selector) {
-  return selectorMap.delete(selector);
-}
-function checkSelectorExists(selector, options) {
-  const deleteIndices = [];
-  options.forEach((option, i) => {
-    try {
-      const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
-      if (elements !== null && elements instanceof NodeList && elements.length > 0 || elements !== null) {
-        option.listener(elements);
-        if (!option.continuous)
-          deleteIndices.push(i);
-      }
-    } catch (err) {
-      console.error(`Couldn't call listener for selector '${selector}'`, err);
-    }
-  });
-  if (deleteIndices.length > 0) {
-    const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
-    if (newOptsArray.length === 0)
-      selectorMap.delete(selector);
-    else {
-      selectorMap.set(selector, newOptsArray);
-    }
-  }
-}
-function initOnSelector(options = {}) {
-  const observer = new MutationObserver(() => {
-    for (const [selector, options2] of selectorMap.entries())
-      checkSelectorExists(selector, options2);
-  });
-  observer.observe(document.body, __spreadValues({
-    subtree: true,
-    childList: true
-  }, options));
-}
-function getSelectorMap() {
-  return selectorMap;
-}
+var h=Object.defineProperty,y=Object.defineProperties;var g=Object.getOwnPropertyDescriptors;var p=Object.getOwnPropertySymbols;var w=Object.prototype.hasOwnProperty,v=Object.prototype.propertyIsEnumerable;var f=(t,e,n)=>e in t?h(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,c=(t,e)=>{for(var n in e||(e={}))w.call(e,n)&&f(t,n,e[n]);if(p)for(var n of p(e))v.call(e,n)&&f(t,n,e[n]);return t},b=(t,e)=>y(t,g(e));var T=(t,e,n)=>new Promise((r,o)=>{var i=s=>{try{a(n.next(s));}catch(m){o(m);}},u=s=>{try{a(n.throw(s));}catch(m){o(m);}},a=s=>s.done?r(s.value):Promise.resolve(s.value).then(i,u);a((n=n.apply(t,e)).next());});function S(t,e,n){return Math.max(Math.min(t,n),e)}function A(t,e,n,r,o){return Number(e)===0&&Number(r)===0?t*(o/n):(t-e)*((o-r)/(n-e))+r}function d(...t){let e,n;if(typeof t[0]=="number"&&typeof t[1]=="number")[e,n]=t;else if(typeof t[0]=="number"&&typeof t[1]!="number")e=0,n=t[0];else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof t[0]}" and "${typeof t[1]}"`);if(e=Number(e),n=Number(n),isNaN(e)||isNaN(n))throw new TypeError(`Parameters "min" and "max" can't be NaN`);if(e>n)throw new TypeError(`Parameter "min" can't be bigger than "max"`);return Math.floor(Math.random()*(n-e+1))+e}function H(t){return x(t)[0]}function x(t){if(t.length===0)return [void 0,void 0];let e=d(t.length-1);return [t[e],e]}function I(t){let[e,n]=x(t);if(n!==void 0)return t.splice(n,1),e}function P(t){let e=[...t];if(t.length===0)return t;for(let n=e.length-1;n>0;n--){let r=Math.floor(d(0,1e4)/1e4*(n+1));[e[n],e[r]]=[e[r],e[n]];}return e}function O(){try{return unsafeWindow}catch(t){return window}}function j(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function R(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function F(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function W(t,e=!1){let n=t.map(r=>new Promise((o,i)=>{let u=new Image;u.src=r,u.addEventListener("load",()=>o(u)),u.addEventListener("error",a=>e&&i(a));}));return Promise.allSettled(n)}function $(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function L(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(r){element.__proto__.addEventListener=function(...o){if(!(o[0]===e&&n()))return r.apply(this,o)};}(t.__proto__.addEventListener);}function B(t,e){return L(O(),t,e)}function q(t,e=1){let n=new(window.AudioContext||window.webkitAudioContext),r={mediaElement:t,amplify:o=>{r.gain.gain.value=o;},getAmpLevel:()=>r.gain.gain.value,context:n,source:n.createMediaElementSource(t),gain:n.createGain()};return r.source.connect(r.gain),r.gain.connect(n.destination),r.amplify(e),r}function z(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function U(t){return new Promise(e=>{setTimeout(e,t);})}function D(t,e=300){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>t.apply(this,r),e);}}function J(n){return T(this,arguments,function*(t,e={}){let{timeout:r=1e4}=e,o=new AbortController,i=setTimeout(()=>o.abort(),r),u=yield fetch(t,b(c({},e),{signal:o.signal}));return clearTimeout(i),u})}var l=new Map;function V(t,e){let n=[];l.has(t)&&(n=l.get(t)),n.push(e),l.set(t,n),E(t,n);}function X(t){return l.delete(t)}function E(t,e){let n=[];if(e.forEach((r,o)=>{try{let i=r.all?document.querySelectorAll(t):document.querySelector(t);(i!==null&&i instanceof NodeList&&i.length>0||i!==null)&&(r.listener(i),r.continuous||n.push(o));}catch(i){console.error(`Couldn't call listener for selector '${t}'`,i);}}),n.length>0){let r=e.filter((o,i)=>!n.includes(i));r.length===0?l.delete(t):l.set(t,r);}}function Y(t={}){new MutationObserver(()=>{for(let[n,r]of l.entries())E(n,r);}).observe(document.body,c({subtree:!0,childList:!0},t));}function Z(){return l}
 
 
-//# sourceMappingURL=http://localhost:8710/out.js.map
-//# sourceMappingURL=http://localhost:8710/index.mjs.map
+
 
 /***/ })
 
@@ -2770,7 +2460,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -2844,7 +2534,7 @@ function onDomLoad() {
   --bytm-menu-bg: #212121;
 }
 
-#betterytm-menu-bg {
+#bytm-menu-bg {
   display: block;
   position: fixed;
   width: 100vw;
@@ -2855,7 +2545,7 @@ function onDomLoad() {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#betterytm-menu {
+#bytm-menu {
   display: inline-block;
   position: fixed;
   width: 50vw;
@@ -2868,35 +2558,40 @@ function onDomLoad() {
   background-color: var(--bytm-menu-bg);
 }
 
-#betterytm-menu-opts {
+#bytm-menu-opts {
   max-height: 70vh;
   overflow: auto;
 }
 
-#betterytm-menu-titlecont {
+#bytm-menu-titlecont {
   display: flex;
 }
 
-#betterytm-menu-title {
+#bytm-menu-title {
   font-size: 20px;
   margin-top: 5px;
   margin-bottom: 8px;
 }
 
-#betterytm-menu-linkscont {
+#bytm-menu-linkscont {
   display: flex;
 }
 
-.betterytm-menu-link {
+.bytm-menu-link {
   cursor: pointer;
   display: inline-block;
 }
 
-#betterytm-menu-close {
+#bytm-menu-close {
   cursor: pointer;
 }
 
-.betterytm-ftconf-label {
+#bytm-menu-footer-cont {
+  background: var(--bytm-menu-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 18%, var(--bytm-menu-bg) 100%);
+}
+
+.bytm-ftconf-label {
   user-select: none;
 }
 
@@ -2993,6 +2688,17 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+}
+
+/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+button.bytm-btn {
+  padding: revert;
+  border: revert;
+  outline: revert;
+  font: revert;
+  text-transform: revert;
+  color: revert;
+  background: revert;
 }
 
 /* #MARKER menu */
@@ -3097,6 +2803,28 @@ ytmusic-responsive-list-item-renderer .left-items {
   margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
 }
 
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+.bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  font-size: 14px;
+  padding: 8px 12px;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+.bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
 /*!******************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu.css ***!
   \******************************************************************************/
@@ -3166,8 +2894,7 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
                 if (features.anchorImprovements)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
-                // TODO:
-                void _features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures;
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
