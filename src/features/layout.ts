@@ -613,3 +613,42 @@ function improveCarouselAnchors(itemsElement: HTMLElement) {
 
   return improvedElems;
 }
+
+//#MARKER auto close toasts
+
+/** Closes toasts after a set amount of time */
+export function initAutoCloseToasts() {
+  try {
+    const animTimeout = 300;
+    const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
+
+    onSelector("tp-yt-paper-toast#toast", {
+      all: true,
+      continuous: true,
+      listener: (toastElems) => {
+        for(const toastElem of toastElems) {
+          if(!toastElem.hasAttribute("allow-click-through"))
+            continue;
+
+          if(toastElem.classList.contains("bytm-closing"))
+            continue;
+          toastElem.classList.add("bytm-closing");
+
+          setTimeout(() => {
+            toastElem.classList.remove("paper-toast-open");
+            // wait for the transition to finish
+            setTimeout(() => {
+              toastElem.style.display = "none";
+              log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${closeTimeout + animTimeout}ms`);
+            }, animTimeout);
+          }, closeTimeout);
+        }
+      },
+    });
+
+    log("Initialized automatic toast closing");
+  }
+  catch(err) {
+    error("Error in automatic toast closing:", err);
+  }
+}

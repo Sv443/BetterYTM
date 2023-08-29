@@ -7,7 +7,7 @@ import {
   // layout
   initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab,
-  initVolumeFeatures,
+  initVolumeFeatures, initAutoCloseToasts,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
@@ -111,6 +111,9 @@ async function onDomLoad() {
       if(features.anchorImprovements)
         addAnchorImprovements();
 
+      if(features.closeToastsTimeout > 0)
+        initAutoCloseToasts();
+
       initVolumeFeatures();
     }
 
@@ -120,7 +123,7 @@ async function onDomLoad() {
     }
   }
   catch(err) {
-    error("General error while executing feature:", err);
+    error("Feature error:", err);
   }
 }
 

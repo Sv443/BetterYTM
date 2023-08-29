@@ -42,6 +42,8 @@ export interface FeatureConfig {
   watermarkEnabled: boolean;
   /** Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
   queueButtons: boolean;
+  /** After how many seconds to close toasts */
+  closeToastsTimeout: number;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
