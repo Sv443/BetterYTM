@@ -111,8 +111,7 @@ async function onDomLoad() {
       if(features.anchorImprovements)
         addAnchorImprovements();
 
-      // TODO:
-      void initVolumeFeatures;
+      initVolumeFeatures();
     }
 
     if(["ytm", "yt"].includes(domain)) {
