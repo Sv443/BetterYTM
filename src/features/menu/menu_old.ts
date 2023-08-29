@@ -17,12 +17,12 @@ let isMenuOpen = false;
 export async function addMenu() {
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
-  backgroundElem.id = "betterytm-menu-bg";
+  backgroundElem.id = "bytm-menu-bg";
   backgroundElem.title = "Click here to close the menu";
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if(isMenuOpen && (e.target as HTMLElement)?.id === "betterytm-menu-bg")
+    if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-menu-bg")
       closeMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
@@ -32,7 +32,7 @@ export async function addMenu() {
 
   const menuContainer = document.createElement("div");
   menuContainer.title = "";
-  menuContainer.id = "betterytm-menu";
+  menuContainer.id = "bytm-menu";
   menuContainer.style.borderRadius = "15px";
   menuContainer.style.display = "flex";
   menuContainer.style.flexDirection = "column";
@@ -44,19 +44,19 @@ export async function addMenu() {
   titleCont.style.padding = "8px 20px 15px 20px";
   titleCont.style.display = "flex";
   titleCont.style.justifyContent = "space-between";
-  titleCont.id = "betterytm-menu-titlecont";
+  titleCont.id = "bytm-menu-titlecont";
 
   const titleElem = document.createElement("h2");
-  titleElem.id = "betterytm-menu-title";
+  titleElem.id = "bytm-menu-title";
   titleElem.classList.add("bytm-no-select");
   titleElem.innerText = `${scriptInfo.name} - Configuration`;
 
   const linksCont = document.createElement("div");
-  linksCont.id = "betterytm-menu-linkscont";
+  linksCont.id = "bytm-menu-linkscont";
 
   const addLink = (imgSrc: string, href: string, title: string) => {
     const anchorElem = document.createElement("a");
-    anchorElem.className = "betterytm-menu-link";
+    anchorElem.className = "bytm-menu-link";
     anchorElem.rel = "noopener noreferrer";
     anchorElem.target = "_blank";
     anchorElem.href = href;
@@ -64,7 +64,7 @@ export async function addMenu() {
     anchorElem.style.marginLeft = "10px";
         
     const imgElem = document.createElement("img");
-    imgElem.className = "betterytm-menu-img bytm-no-select";
+    imgElem.className = "bytm-menu-img bytm-no-select";
     imgElem.src = imgSrc;
     imgElem.style.width = "32px";
     imgElem.style.height = "32px";
@@ -77,7 +77,7 @@ export async function addMenu() {
   addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/TODO", `${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
-  closeElem.id = "betterytm-menu-close";
+  closeElem.id = "bytm-menu-close";
   closeElem.src = await getResourceUrl("close");
   closeElem.title = "Click to close the menu";
   closeElem.style.marginLeft = "50px";
@@ -93,7 +93,7 @@ export async function addMenu() {
 
   //#SECTION feature list
   const featuresCont = document.createElement("div");
-  featuresCont.id = "betterytm-menu-opts";
+  featuresCont.id = "bytm-menu-opts";
   featuresCont.style.display = "flex";
   featuresCont.style.flexDirection = "column";
   featuresCont.style.overflowY = "auto";
@@ -197,7 +197,7 @@ export async function addMenu() {
       let labelElem: HTMLLabelElement | undefined;
       if(type === "slider") {
         labelElem = document.createElement("label");
-        labelElem.classList.add("betterytm-ftconf-label");
+        labelElem.classList.add("bytm-ftconf-label");
         labelElem.style.marginRight = "20px";
         labelElem.style.fontSize = "16px";
         labelElem.htmlFor = inputElemId;
@@ -210,7 +210,7 @@ export async function addMenu() {
       }
       else if(type === "toggle") {
         labelElem = document.createElement("label");
-        labelElem.classList.add("betterytm-ftconf-label");
+        labelElem.classList.add("bytm-ftconf-label");
         labelElem.style.paddingLeft = "10px";
         labelElem.style.paddingRight = "5px";
         labelElem.style.fontSize = "16px";
@@ -242,30 +242,30 @@ export async function addMenu() {
 
   //#SECTION footer
   const footerCont = document.createElement("div");
-  footerCont.id = "betterytm-menu-footer-cont";
+  footerCont.id = "bytm-menu-footer-cont";
   footerCont.style.display = "flex";
   footerCont.style.flexDirection = "row";
   footerCont.style.justifyContent = "space-between";
-  footerCont.style.padding = "10px 20px";
-  footerCont.style.marginTop = "20px";
+  footerCont.style.padding = "20px 20px 10px 20px";
+  footerCont.style.marginTop = "10px";
   footerCont.style.position = "sticky";
   footerCont.style.bottom = "0";
-  footerCont.style.backgroundColor = "var(--bytm-menu-bg)";
 
   const footerElem = document.createElement("div");
-  footerElem.id = "betterytm-menu-footer";
+  footerElem.id = "bytm-menu-footer";
   footerElem.style.fontSize = "17px";
   footerElem.style.textDecoration = "underline";
-  footerElem.innerText = "You need to reload the page to apply changes.";
+  footerElem.innerText = "You need to reload the page to apply changes";
 
   const reloadElem = document.createElement("button");
+  reloadElem.classList.add("bytm-btn");
   reloadElem.style.marginLeft = "20px";
   reloadElem.innerText = "Reload now";
   reloadElem.title = "Click to reload the page";
   reloadElem.addEventListener("click", () => location.reload());
 
   const resetElem = document.createElement("button");
-  resetElem.className = "bytm-cfg-reset-btn";
+  resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
   resetElem.title = "Click to reset all settings to their default value";
   resetElem.innerText = "Reset";
   resetElem.addEventListener("click", async () => {
@@ -284,7 +284,7 @@ export async function addMenu() {
 
   //#SECTION finalize
   const menuBody = document.createElement("div");
-  menuBody.id = "betterytm-menu-body";
+  menuBody.id = "bytm-menu-body";
   menuBody.appendChild(titleCont);
   menuBody.appendChild(featuresCont);
 
@@ -296,7 +296,7 @@ export async function addMenu() {
   versionCont.style.marginBottom = "5px";
 
   const versionElem = document.createElement("span");
-  versionElem.id = "betterytm-menu-version";
+  versionElem.id = "bytm-menu-version";
   versionElem.innerText = `v${scriptInfo.version}`;
 
   versionCont.appendChild(versionElem);
@@ -321,7 +321,7 @@ export function closeMenu(e?: MouseEvent | KeyboardEvent) {
   e?.bubbles && e.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
-  const menuBg = document.querySelector("#betterytm-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
@@ -334,7 +334,7 @@ export function openMenu() {
   isMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
-  const menuBg = document.querySelector("#betterytm-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";

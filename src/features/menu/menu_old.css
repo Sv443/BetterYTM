@@ -2,7 +2,7 @@
   --bytm-menu-bg: #212121;
 }
 
-#betterytm-menu-bg {
+#bytm-menu-bg {
   display: block;
   position: fixed;
   width: 100vw;
@@ -13,7 +13,7 @@
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#betterytm-menu {
+#bytm-menu {
   display: inline-block;
   position: fixed;
   width: 50vw;
@@ -26,35 +26,40 @@
   background-color: var(--bytm-menu-bg);
 }
 
-#betterytm-menu-opts {
+#bytm-menu-opts {
   max-height: 70vh;
   overflow: auto;
 }
 
-#betterytm-menu-titlecont {
+#bytm-menu-titlecont {
   display: flex;
 }
 
-#betterytm-menu-title {
+#bytm-menu-title {
   font-size: 20px;
   margin-top: 5px;
   margin-bottom: 8px;
 }
 
-#betterytm-menu-linkscont {
+#bytm-menu-linkscont {
   display: flex;
 }
 
-.betterytm-menu-link {
+.bytm-menu-link {
   cursor: pointer;
   display: inline-block;
 }
 
-#betterytm-menu-close {
+#bytm-menu-close {
   cursor: pointer;
 }
 
-.betterytm-ftconf-label {
+#bytm-menu-footer-cont {
+  background: var(--bytm-menu-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 18%, var(--bytm-menu-bg) 100%);
+}
+
+.bytm-ftconf-label {
   user-select: none;
 }
 
