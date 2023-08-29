@@ -499,7 +499,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "e172a74", // assert as generic string instead of literal
+    lastCommit: "4e36d34", // assert as generic string instead of literal
 };
 
 
@@ -1341,6 +1341,7 @@ function addQueueButtons(queueItem) {
 //#MARKER better clickable stuff
 // TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
 // TODO: add to thumbnails in playlists (/playlist?list=$id)
+// TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
     //#SECTION carousel shelves
@@ -2812,8 +2813,9 @@ ytmusic-responsive-list-item-renderer .left-items {
 .bytm-vol-slider-label {
   opacity: 0.000001;
   position: absolute;
-  font-size: 14px;
-  padding: 8px 12px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 8px;
   top: 50%;
   left: 0;
   transform: translate(calc(-50% - 10px), -50%);
