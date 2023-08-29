@@ -79,6 +79,9 @@ function onKeyDown(evt: KeyboardEvent) {
 
 //#MARKER site switch
 
+/** switch sites only if current video time is greater than this value */
+const videoTimeThreshold = 3;
+
 /** Initializes the site switch feature */
 export function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
@@ -107,7 +110,7 @@ async function switchSite(newDomain: Domain) {
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const vt = await getVideoTime() ?? 0;
+    const vt = await getVideoTime();
 
     log(`Found video time of ${vt} seconds`);
 
@@ -115,7 +118,14 @@ async function switchSite(newDomain: Domain) {
       .filter((param) => !param.match(/^\??t=/))
       .join("&");
 
-    const newSearch = cleanSearch.includes("?") ? `${cleanSearch.startsWith("?") ? cleanSearch : "?" + cleanSearch}&t=${vt}` : `?t=${vt}`;
+    const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+      cleanSearch.includes("?")
+        ? `${cleanSearch.startsWith("?")
+          ? cleanSearch
+          : "?" + cleanSearch
+        }&t=${vt}`
+        : `?t=${vt}`
+      : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
     info(`Switching to domain '${newDomain}' at ${newUrl}`);
