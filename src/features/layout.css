@@ -198,3 +198,25 @@ ytmusic-responsive-list-item-renderer .left-items {
 .bytm-carousel-shelf-anchor {
   margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
 }
+
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+.bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  font-size: 14px;
+  padding: 8px 12px;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+.bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}

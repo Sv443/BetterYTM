@@ -163,7 +163,6 @@ export function removeUpgradeTab() {
       log("Removed large upgrade tab");
     },
   });
-  // TODO:FIXME: doesn't work fsr
   onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-child(4)", {
     listener: (tabElemSmall) => {
       tabElemSmall.remove();
@@ -175,7 +174,8 @@ export function removeUpgradeTab() {
 //#MARKER volume slider
 
 export function initVolumeFeatures() {
-  onSelector("tp-yt-paper-slider#volume-slider", {
+  // not technically an input element but behaves pretty much the same
+  onSelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
     listener: (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
@@ -186,43 +186,73 @@ export function initVolumeFeatures() {
         setVolSliderSize();
 
       if(features.volumeSliderLabel)
-        addVolumeSliderLabel();
+        addVolumeSliderLabel(sliderElem, volSliderCont);
 
-      setVolSliderStep();
+      setVolSliderStep(sliderElem);
     },
   });
 }
 
-const volSliderSelector = "tp-yt-paper-slider#volume-slider";
-
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel() {
-  onSelector<HTMLInputElement>(volSliderSelector, {
-    listener: (sliderElem) => {
-      const labelElem = document.createElement("div");
-      labelElem.className = "bytm-vol-slider-label";
-      labelElem.innerText = `${sliderElem.value}%`;
+function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderCont: HTMLDivElement) {
+  const labelElem = document.createElement("div");
+  labelElem.className = "bytm-vol-slider-label";
+  labelElem.innerText = `${sliderElem.value}%`;
 
-      sliderElem.addEventListener("change", () => {
-        const label = `${sliderElem.value}%`;
-        const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${sliderElem.step})` : "";
-        const labelFull = `Volume: ${label}${sensText}`;
+  // prevent video from minimizing
+  labelElem.addEventListener("click", (e) => e.stopPropagation());
 
-        sliderElem.setAttribute("title", labelFull); // TODO: probably needs to be on the parent
-        sliderElem.setAttribute("aria-valuetext", labelFull);
+  const getLabelTexts = (slider: HTMLInputElement) => {
+    const labelShort = `${slider.value}%`;
+    const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${slider.step}%)` : "";
+    const labelFull = `Volume: ${labelShort}${sensText}`;
 
-        const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
-        if(labelElem2)
-          labelElem2.innerText = label;
-      });
+    return { labelShort, labelFull };
+  };
 
-      onSelector("#bytm-vol-slider-cont", {
-        listener: (volumeCont) => {
-          volumeCont.appendChild(labelElem);
-          log("Added volume slider label", labelElem);
-        },
-      });
+  const { labelFull } = getLabelTexts(sliderElem);
+  sliderCont.setAttribute("title", labelFull);
+  sliderElem.setAttribute("title", labelFull);
+  sliderElem.setAttribute("aria-valuetext", labelFull);
+
+  const updateLabel = () => {
+    const { labelShort, labelFull } = getLabelTexts(sliderElem);
+
+    sliderCont.setAttribute("title", labelFull);
+    sliderElem.setAttribute("title", labelFull);
+    sliderElem.setAttribute("aria-valuetext", labelFull);
+
+    const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
+    if(labelElem2)
+      labelElem2.innerText = labelShort;
+  };
+
+  sliderElem.addEventListener("change", () => updateLabel());
+
+  onSelector("#bytm-vol-slider-cont", {
+    listener: (volumeCont) => {
+      volumeCont.appendChild(labelElem);
+      log("Added volume slider label", labelElem);
     },
+  });
+
+  let lastSliderVal = Number(sliderElem.value);
+
+  // show label if hovering over slider or slider is focused
+  const sliderHoverObserver = new MutationObserver(() => {
+    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+      labelElem.classList.add("bytm-visible");
+    else if(labelElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+      labelElem.classList.remove("bytm-visible");
+
+    if(Number(sliderElem.value) !== lastSliderVal) {
+      lastSliderVal = Number(sliderElem.value);
+      updateLabel();
+    }
+  });
+
+  sliderHoverObserver.observe(sliderElem, {
+    attributes: true,
   });
 }
 
@@ -241,12 +271,8 @@ function setVolSliderSize() {
 }
 
 /** Sets the `step` attribute of the volume slider */
-function setVolSliderStep() {
-  onSelector<HTMLInputElement>(volSliderSelector, {
-    listener: (sliderElem) => {
-      sliderElem.setAttribute("step", String(features.volumeSliderStep));
-    },
-  });
+function setVolSliderStep(sliderElem: HTMLInputElement) {
+  sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 
 //#MARKER queue buttons
@@ -296,7 +322,6 @@ async function addQueueButtons(queueItem: HTMLElement) {
   const artist = artistEl.innerText;
   if(!song || !artist)
     return false;
-
 
   const lyricsIconUrl = await getResourceUrl("lyrics");
   const deleteIconUrl = await getResourceUrl("delete");
