@@ -86,6 +86,17 @@ ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
   -webkit-user-select: none;
 }
 
+/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+button.bytm-btn {
+  padding: revert;
+  border: revert;
+  outline: revert;
+  font: revert;
+  text-transform: revert;
+  color: revert;
+  background: revert;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {
