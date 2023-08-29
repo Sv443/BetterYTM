@@ -101,15 +101,13 @@ export async function addMenu() {
   /** Gets called whenever the feature config is changed */
   const confChanged = debounce(async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
-    info(`Feature config changed, key '${key}' from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
+    info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
     const featConf = { ...await getFeatures() };
 
     featConf[key] = newVal as never;
 
     await saveFeatureConf(featConf);
-
-    log("Saved feature config changes:\n", await GM.getValue("betterytm-config"));
   });
 
   const features = await getFeatures();
@@ -178,7 +176,7 @@ export async function addMenu() {
         inputElem.step = step;
 
       // @ts-ignore
-      if(ftInfo.min && ftInfo.max) {
+      if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
         // @ts-ignore
         inputElem.min = ftInfo.min;
         // @ts-ignore

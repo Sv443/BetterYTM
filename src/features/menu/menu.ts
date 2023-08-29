@@ -8,11 +8,12 @@ import "./menu.css";
 // - support for "custom widgets"
 // - debounce or save on button press to store new configuration
 // - much better scaling including no vw and vh units
+// - cleanup function per feature so a page reload is not always needed
 
 //#MARKER menu
 
 /**
- * These are the base selector values for the menu tabs  
+ * The base selector values for the menu tabs  
  * Header selector format: `#${baseValue}-header`  
  * Content selector format: `#${baseValue}-content`
  */
