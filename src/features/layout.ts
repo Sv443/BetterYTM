@@ -445,6 +445,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
 // TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
 // TODO: add to thumbnails in playlists (/playlist?list=$id)
+// TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
