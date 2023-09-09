@@ -12,7 +12,7 @@ export type FeatInfoKeys = keyof typeof featInfo;
 export const featInfo = {
   //#SECTION input
   arrowKeySupport: {
-    desc: "Arrow keys skip forwards and backwards by 10 seconds",
+    desc: "Arrow keys to skip forwards and backwards by 10 seconds",
     type: "toggle",
     category: "input",
     default: true,
@@ -33,16 +33,16 @@ export const featInfo = {
       ctrl: false,
       meta: false,
     },
-    visible: false,
+    hidden: true,
   },
   disableBeforeUnloadPopup: {
-    desc: "Completely disable the popup that sometimes appears before leaving the site",
+    desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
     type: "toggle",
     category: "input",
     default: false,
   },
   anchorImprovements: {
-    desc: "Add link elements all over the page so stuff can be opened in a new tab easier",
+    desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
     type: "toggle",
     category: "input",
     default: true,
@@ -50,7 +50,7 @@ export const featInfo = {
 
   //#SECTION layout
   removeUpgradeTab: {
-    desc: "Remove the \"Upgrade\" / YT Music Premium tab",
+    desc: "Remove the Upgrade / Premium tab",
     type: "toggle",
     category: "layout",
     default: true,
@@ -62,7 +62,7 @@ export const featInfo = {
     default: true,
   },
   volumeSliderSize: {
-    desc: "Width of the volume slider in pixels",
+    desc: "The width of the volume slider in pixels",
     type: "number",
     category: "layout",
     min: 50,
@@ -72,7 +72,7 @@ export const featInfo = {
     unit: "px",
   },
   volumeSliderStep: {
-    desc: "Volume sensitivity (by how little percent the volume slider can be changed)",
+    desc: "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
     type: "slider",
     category: "layout",
     min: 1,
@@ -81,11 +81,12 @@ export const featInfo = {
     unit: "%",
   },
   watermarkEnabled: {
-    desc: `Show a ${scriptInfo.name} watermark under the YTM logo`,
+    desc: `Show a ${scriptInfo.name} watermark under the site logo that opens this config menu`,
     type: "toggle",
     category: "layout",
     default: true,
   },
+  // TODO(v1.1): Make each button configurable
   queueButtons: {
     desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
     type: "toggle",
@@ -93,7 +94,7 @@ export const featInfo = {
     default: true,
   },
   closeToastsTimeout: {
-    desc: "After how many seconds to close permanent toasts - 0 to only close them manually (default behavior)",
+    desc: "After how long to close permanent notifications - 0 to only close them manually (default behavior)",
     type: "number",
     category: "layout",
     min: 0,

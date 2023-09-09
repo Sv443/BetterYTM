@@ -116,7 +116,7 @@ export async function addMenu() {
     const ftInfo = featInfo[key as keyof typeof features];
 
     // @ts-ignore
-    if(!ftInfo || ftInfo.visible === false)
+    if(!ftInfo || ftInfo.hidden === true)
       continue;
 
     const { desc, type, default: ftDefault } = ftInfo;
