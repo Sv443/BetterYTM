@@ -1,5 +1,5 @@
 import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/userutils";
-import { loadFeatureConf } from "./config";
+import { getFeatures, initConfig } from "./config";
 import { logLevel, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
@@ -51,13 +51,17 @@ function preInit() {
 }
 
 async function init() {
-  await preInitLayout();
-
   try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
   }
   catch(err) {
     error("General Error:", err);
+  }
+  try {
+    preInitLayout(await initConfig());
+  }
+  catch(err) {
+    error("Error while initializing ConfigManager:", err);
   }
 
   try {
@@ -76,7 +80,7 @@ async function onDomLoad() {
 
   initOnSelector();
 
-  const features = await loadFeatureConf();
+  const features = getFeatures();
 
   log(`Initializing features for domain "${domain}"...`);
 

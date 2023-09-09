@@ -174,8 +174,6 @@ export function initBeforeUnloadHook() {
     // @ts-ignore
   })(window.__proto__.addEventListener);
 
-  getFeatures().then(feats => {
-    if(feats.disableBeforeUnloadPopup)
-      disableBeforeUnload();
-  });
+  if(getFeatures().disableBeforeUnloadPopup)
+    disableBeforeUnload();
 }
