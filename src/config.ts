@@ -1,73 +1,41 @@
+import { ConfigManager } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
-import { error, log } from "./utils";
+import { log } from "./utils";
 
-/** If this number is incremented, the features object needs to be migrated (TODO: migration not implemented yet) */
+/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 1;
 
-export const defaultFeatures = (Object.keys(featInfo) as (keyof typeof featInfo)[])
+export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
     acc[key] = featInfo[key].default as unknown as undefined;
     return acc;
   }, {}) as FeatureConfig;
 
-/** In-memory features object to save on a little bit of I/O */
-let featuresCache: FeatureConfig | undefined;
+const cfgMgr = new ConfigManager({
+  id: "bytm-config",
+  formatVersion,
+  defaultConfig,
+});
 
-/**
- * Returns the current FeatureConfig in memory or reads it from GM storage if undefined.  
- * Automatically applies defaults for non-existant keys
- * @param forceRead Set to true to force reading the config from GM storage
- */
-export async function getFeatures(forceRead = false) {
-  if(!featuresCache || forceRead)
-    featuresCache = await loadFeatureConf();
-  return featuresCache;
+/** Initializes the ConfigManager instance and loads persistent data into memory */
+export async function initConfig() {
+  const data = await cfgMgr.loadData();
+  log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
+  return data;
 }
 
-/** Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved */
-export async function loadFeatureConf(): Promise<FeatureConfig> {
-  const defConf = { ...defaultFeatures };
-
-  try {
-    const featureConf = await GM.getValue("betterytm-config") as string;
-
-    // empty object length is 2-3, so check for >3 to be sure
-    if(typeof featureConf !== "string" || featureConf.length <= 3) {
-      await setDefaultFeatConf();
-      return featuresCache = defConf;
-    }
-
-    return featuresCache = {
-      ...defConf,
-      ...(featureConf ? JSON.parse(featureConf) as FeatureConfig : {}),
-    };
-  }
-  catch(err) {
-    error("Error loading feature configuration, resetting to default:", err);
-    await setDefaultFeatConf();
-    return featuresCache = defConf;
-  }
+/** Returns the current feature config from the in-memory cache */
+export function getFeatures() {
+  return cfgMgr.getData();
 }
 
-/**
- * Saves the passed feature configuration persistently in GM storage and in the in-memory cache
- * @param featureConf
- */
-export function saveFeatureConf(featureConf: FeatureConfig) {
-  if(!featureConf || typeof featureConf != "object")
-    throw new TypeError("Feature config not provided or invalid");
- 
-  log("Saving new feature config:", featureConf);
-  featuresCache = { ...featureConf };
-
-  GM.setValue("betterytm-config-ver", formatVersion);
-  return GM.setValue("betterytm-config", JSON.stringify(featureConf));
+/** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
+export function saveFeatures(featureConf: FeatureConfig) {
+  return cfgMgr.setData(featureConf);
 }
 
-/** Resets the featuresCache synchronously and the persistent features storage asynchronously to their default values */
-export function setDefaultFeatConf() {
-  featuresCache = { ...defaultFeatures };
-  GM.setValue("betterytm-config-ver", formatVersion);
-  return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
+/** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
+export function setDefaultFeatures() {
+  return cfgMgr.saveDefaultData();
 }

@@ -2,7 +2,6 @@ import type { Event } from "@billjs/event-emitter";
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { getFeatures } from "../config";
 import { error, getResourceUrl, log } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
@@ -12,8 +11,8 @@ import { featInfo } from ".";
 
 let features: FeatureConfig;
 
-export async function preInitLayout() {
-  features = await getFeatures();
+export function preInitLayout(feats: FeatureConfig) {
+  features = feats;
 }
 
 //#MARKER BYTM-Config buttons

@@ -1,5 +1,5 @@
 import { debounce } from "@sv443-network/userutils";
-import { defaultFeatures, getFeatures, saveFeatureConf, setDefaultFeatConf } from "../../config";
+import { defaultConfig, getFeatures, saveFeatures, setDefaultFeatures } from "../../config";
 import { scriptInfo } from "../../constants";
 import { featInfo } from "../index";
 import { FeatureConfig } from "../../types";
@@ -99,18 +99,18 @@ export async function addMenu() {
   featuresCont.style.overflowY = "auto";
 
   /** Gets called whenever the feature config is changed */
-  const confChanged = debounce(async (key: keyof typeof defaultFeatures, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+  const confChanged = debounce(async (key: keyof typeof defaultConfig, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
-    const featConf = { ...await getFeatures() };
+    const featConf = { ...getFeatures() };
 
     featConf[key] = newVal as never;
 
-    await saveFeatureConf(featConf);
+    await saveFeatures(featConf);
   });
 
-  const features = await getFeatures();
+  const features = getFeatures();
 
   for(const key in features) {
     const ftInfo = featInfo[key as keyof typeof features];
@@ -267,10 +267,8 @@ export async function addMenu() {
   resetElem.title = "Click to reset all settings to their default value";
   resetElem.innerText = "Reset";
   resetElem.addEventListener("click", async () => {
-    if(confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
-      await setDefaultFeatConf();
-      location.reload();
-    }
+    if(confirm("Do you really want to reset all settings to their default value?\nAfterwards the page will need to be reloaded to apply changes."))
+      await setDefaultFeatures();
   });
 
   footerElem.appendChild(reloadElem);
