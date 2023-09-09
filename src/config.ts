@@ -1,7 +1,7 @@
 import { ConfigManager } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
-import { log } from "./utils";
+import { info, log } from "./utils";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 1;
@@ -32,10 +32,14 @@ export function getFeatures() {
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export function saveFeatures(featureConf: FeatureConfig) {
-  return cfgMgr.setData(featureConf);
+  const newData = cfgMgr.setData(featureConf);
+  info("Saved new feature config:", newData);
+  return newData;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export function setDefaultFeatures() {
-  return cfgMgr.saveDefaultData();
+  const defaultData = cfgMgr.saveDefaultData();
+  info("Reset feature config to its default value");
+  return defaultData;
 }
