@@ -388,14 +388,15 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   defaultFeatures: function() { return /* binding */ defaultFeatures; },
+/* harmony export */   defaultConfig: function() { return /* binding */ defaultConfig; },
 /* harmony export */   getFeatures: function() { return /* binding */ getFeatures; },
-/* harmony export */   loadFeatureConf: function() { return /* binding */ loadFeatureConf; },
-/* harmony export */   saveFeatureConf: function() { return /* binding */ saveFeatureConf; },
-/* harmony export */   setDefaultFeatConf: function() { return /* binding */ setDefaultFeatConf; }
+/* harmony export */   initConfig: function() { return /* binding */ initConfig; },
+/* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
+/* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -407,64 +408,44 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
-/** If this number is incremented, the features object needs to be migrated (TODO: migration not implemented yet) */
+
+/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 1;
-const defaultFeatures = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_0__.featInfo)
+const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
-    acc[key] = _features_index__WEBPACK_IMPORTED_MODULE_0__.featInfo[key].default;
+    acc[key] = _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo[key].default;
     return acc;
 }, {});
-/** In-memory features object to save on a little bit of I/O */
-let featuresCache;
-/**
- * Returns the current FeatureConfig in memory or reads it from GM storage if undefined.
- * Automatically applies defaults for non-existant keys
- * @param forceRead Set to true to force reading the config from GM storage
- */
-function getFeatures(forceRead = false) {
+const cfgMgr = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.ConfigManager({
+    id: "bytm-config",
+    formatVersion,
+    defaultConfig,
+});
+/** Initializes the ConfigManager instance and loads persistent data into memory */
+function initConfig() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!featuresCache || forceRead)
-            featuresCache = yield loadFeatureConf();
-        return featuresCache;
+        const data = yield cfgMgr.loadData();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
+        return data;
     });
 }
-/** Loads a feature configuration saved persistently, returns an empty object if no feature configuration was saved */
-function loadFeatureConf() {
+/** Returns the current feature config from the in-memory cache */
+function getFeatures() {
+    return cfgMgr.getData();
+}
+/** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
+function saveFeatures(featureConf) {
     return __awaiter(this, void 0, void 0, function* () {
-        const defConf = Object.assign({}, defaultFeatures);
-        try {
-            const featureConf = yield GM.getValue("betterytm-config");
-            // empty object length is 2-3, so check for >3 to be sure
-            if (typeof featureConf !== "string" || featureConf.length <= 3) {
-                yield setDefaultFeatConf();
-                return featuresCache = defConf;
-            }
-            return featuresCache = Object.assign(Object.assign({}, defConf), (featureConf ? JSON.parse(featureConf) : {}));
-        }
-        catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Error loading feature configuration, resetting to default:", err);
-            yield setDefaultFeatConf();
-            return featuresCache = defConf;
-        }
+        yield cfgMgr.setData(featureConf);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Saved new feature config:", featureConf);
     });
 }
-/**
- * Saves the passed feature configuration persistently in GM storage and in the in-memory cache
- * @param featureConf
- */
-function saveFeatureConf(featureConf) {
-    if (!featureConf || typeof featureConf != "object")
-        throw new TypeError("Feature config not provided or invalid");
-    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Saving new feature config:", featureConf);
-    featuresCache = Object.assign({}, featureConf);
-    GM.setValue("betterytm-config-ver", formatVersion);
-    return GM.setValue("betterytm-config", JSON.stringify(featureConf));
-}
-/** Resets the featuresCache synchronously and the persistent features storage asynchronously to their default values */
-function setDefaultFeatConf() {
-    featuresCache = Object.assign({}, defaultFeatures);
-    GM.setValue("betterytm-config-ver", formatVersion);
-    return GM.setValue("betterytm-config", JSON.stringify(defaultFeatures));
+/** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
+function setDefaultFeatures() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield cfgMgr.saveDefaultData();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Reset feature config to its default value");
+    });
 }
 
 
@@ -499,7 +480,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "f7c8ce2", // assert as generic string instead of literal
+    lastCommit: "291b209", // assert as generic string instead of literal
 };
 
 
@@ -681,7 +662,7 @@ __webpack_require__.r(__webpack_exports__);
 const featInfo = {
     //#SECTION input
     arrowKeySupport: {
-        desc: "Arrow keys skip forwards and backwards by 10 seconds",
+        desc: "Arrow keys to skip forwards and backwards by 10 seconds",
         type: "toggle",
         category: "input",
         default: true,
@@ -702,23 +683,23 @@ const featInfo = {
             ctrl: false,
             meta: false,
         },
-        visible: false,
+        hidden: true,
     },
     disableBeforeUnloadPopup: {
-        desc: "Completely disable the popup that sometimes appears before leaving the site",
+        desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
         type: "toggle",
         category: "input",
         default: false,
     },
     anchorImprovements: {
-        desc: "Add link elements all over the page so stuff can be opened in a new tab easier",
+        desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
         type: "toggle",
         category: "input",
         default: true,
     },
     //#SECTION layout
     removeUpgradeTab: {
-        desc: "Remove the \"Upgrade\" / YT Music Premium tab",
+        desc: "Remove the Upgrade / Premium tab",
         type: "toggle",
         category: "layout",
         default: true,
@@ -730,7 +711,7 @@ const featInfo = {
         default: true,
     },
     volumeSliderSize: {
-        desc: "Width of the volume slider in pixels",
+        desc: "The width of the volume slider in pixels",
         type: "number",
         category: "layout",
         min: 50,
@@ -740,7 +721,7 @@ const featInfo = {
         unit: "px",
     },
     volumeSliderStep: {
-        desc: "Volume sensitivity (by how little percent the volume slider can be changed)",
+        desc: "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
         type: "slider",
         category: "layout",
         min: 1,
@@ -749,11 +730,12 @@ const featInfo = {
         unit: "%",
     },
     watermarkEnabled: {
-        desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name} watermark under the YTM logo`,
+        desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name} watermark under the site logo that opens this config menu`,
         type: "toggle",
         category: "layout",
         default: true,
     },
+    // TODO(v1.1): Make each button configurable
     queueButtons: {
         desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
         type: "toggle",
@@ -761,7 +743,7 @@ const featInfo = {
         default: true,
     },
     closeToastsTimeout: {
-        desc: "After how many seconds to close permanent toasts - 0 to only close them manually (default behavior)",
+        desc: "After how long to close permanent notifications - 0 to only close them manually (default behavior)",
         type: "number",
         category: "layout",
         min: 0,
@@ -955,10 +937,8 @@ function initBeforeUnloadHook() {
         };
         // @ts-ignore
     })(window.__proto__.addEventListener);
-    (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)().then(feats => {
-        if (feats.disableBeforeUnloadPopup)
-            disableBeforeUnload();
-    });
+    if ((0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)().disableBeforeUnloadPopup)
+        disableBeforeUnload();
 }
 
 
@@ -983,13 +963,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../events */ "./src/events.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
-/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! . */ "./src/features/index.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! . */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1007,12 +986,9 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-
 let features;
-function preInitLayout() {
-    return __awaiter(this, void 0, void 0, function* () {
-        features = yield (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)();
-    });
+function preInitLayout(feats) {
+    features = feats;
 }
 //#MARKER BYTM-Config buttons
 let menuOpenAmt = 0, logoExchanged = false;
@@ -1030,7 +1006,7 @@ function addWatermark() {
         e.stopPropagation();
         menuOpenAmt++;
         if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
         if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
             exchangeLogo();
     });
@@ -1040,14 +1016,14 @@ function addWatermark() {
             e.stopPropagation();
             menuOpenAmt++;
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
         }
     });
     const logoElem = document.querySelector("#left-content");
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(logoElem, watermark);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added watermark element", watermark);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element", watermark);
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
 function improveLogo() {
@@ -1064,12 +1040,12 @@ function improveLogo() {
                         e.classList.add("bytm-mod-logo-ellipse");
                     });
                     (_a = logoElem.querySelector("path")) === null || _a === void 0 ? void 0 : _a.classList.add("bytm-mod-logo-path");
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Swapped logo to inline SVG");
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Swapped logo to inline SVG");
                 },
             });
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't improve logo due to an error:", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve logo due to an error:", err);
         }
     });
 }
@@ -1081,7 +1057,7 @@ function exchangeLogo() {
                 return;
             logoExchanged = true;
             logoElem.classList.add("bytm-logo-exchanged");
-            const iconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("icon");
+            const iconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("icon");
             const newLogo = document.createElement("img");
             newLogo.className = "bytm-mod-logo-img";
             newLogo.src = iconUrl;
@@ -1109,13 +1085,13 @@ function addConfigMenuOption(container) {
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
             menuOpenAmt++;
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
         });
         const cfgOptIconElem = document.createElement("img");
         cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-        cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("icon");
+        cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("icon");
         const cfgOptTextElem = document.createElement("div");
         cfgOptTextElem.className = "bytm-cfg-menu-option-text";
         cfgOptTextElem.innerText = "BetterYTM Configuration";
@@ -1123,7 +1099,7 @@ function addConfigMenuOption(container) {
         cfgOptItemElem.appendChild(cfgOptTextElem);
         cfgOptElem.appendChild(cfgOptItemElem);
         container.appendChild(cfgOptElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
     });
 }
 //#MARKER remove upgrade tab
@@ -1132,13 +1108,13 @@ function removeUpgradeTab() {
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", {
         listener: (tabElemLarge) => {
             tabElemLarge.remove();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed large upgrade tab");
         },
     });
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-child(4)", {
         listener: (tabElemSmall) => {
             tabElemSmall.remove();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed small upgrade tab");
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed small upgrade tab");
         },
     });
 }
@@ -1167,7 +1143,7 @@ function addVolumeSliderLabel(sliderElem, sliderCont) {
     labelElem.addEventListener("click", (e) => e.stopPropagation());
     const getLabelTexts = (slider) => {
         const labelShort = `${slider.value}%`;
-        const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_8__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${slider.step}%)` : "";
+        const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_7__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${slider.step}%)` : "";
         const labelFull = `Volume: ${labelShort}${sensText}`;
         return { labelShort, labelFull };
     };
@@ -1188,7 +1164,7 @@ function addVolumeSliderLabel(sliderElem, sliderCont) {
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#bytm-vol-slider-cont", {
         listener: (volumeCont) => {
             volumeCont.appendChild(labelElem);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added volume slider label", labelElem);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added volume slider label", labelElem);
         },
     });
     let lastSliderVal = Number(sliderElem.value);
@@ -1226,22 +1202,22 @@ function setVolSliderStep(sliderElem) {
 function initQueueButtons() {
     const addQueueBtns = (evt) => {
         let amt = 0;
-        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_4__.getEvtData)(evt).childNodes) {
+        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt).childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm);
                 amt++;
             }
         }
         if (amt > 0)
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added buttons to ${amt} new queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", amt)}`);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${amt} new queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", amt)}`);
     };
-    _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("queueChanged", addQueueBtns);
-    _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("autoplayQueueChanged", addQueueBtns);
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("queueChanged", addQueueBtns);
+    _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("autoplayQueueChanged", addQueueBtns);
     const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
     if (queueItems.length === 0)
         return;
     queueItems.forEach(itm => addQueueButtons(itm));
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added buttons to ${queueItems.length} existing queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", queueItems)}`);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing queue ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", queueItems)}`);
 }
 /**
  * Adds the buttons to each item in the current song queue.
@@ -1262,10 +1238,10 @@ function addQueueButtons(queueItem) {
         const artist = artistEl.innerText;
         if (!song || !artist)
             return false;
-        const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("lyrics");
-        const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("delete");
+        const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("lyrics");
+        const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("delete");
         //#SECTION lyrics btn
-        const lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
+        const lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
         {
             lyricsBtnElem.title = "Open this song's lyrics in a new tab";
             lyricsBtnElem.style.display = "inline-flex";
@@ -1274,19 +1250,19 @@ function addQueueButtons(queueItem) {
             lyricsBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 e.stopPropagation();
                 let lyricsUrl;
-                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeArtists)(artist);
-                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeSong)(song);
-                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getLyricsCacheEntry)(artistsSan, songSan);
+                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
+                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
+                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
                 if (cachedLyricsUrl)
                     lyricsUrl = cachedLyricsUrl;
                 else if (!songInfo.hasAttribute("data-bytm-loading")) {
                     const imgEl = lyricsBtnElem.querySelector("img");
                     if (!cachedLyricsUrl) {
                         songInfo.setAttribute("data-bytm-loading", "");
-                        imgEl.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("spinner");
+                        imgEl.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("spinner");
                         imgEl.classList.add("bytm-spinner");
                     }
-                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)(artistsSan, songSan);
+                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
                     const resetImgElem = () => {
                         imgEl.src = lyricsIconUrl;
                         imgEl.classList.remove("bytm-spinner");
@@ -1335,7 +1311,7 @@ function addQueueButtons(queueItem) {
                     removeFromQueueBtn.click();
                 }
                 catch (err) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't remove song from queue due to error:", err);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't remove song from queue due to error:", err);
                 }
                 finally {
                     queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
@@ -1370,7 +1346,7 @@ function addAnchorImprovements() {
                 const itemsElem = el.querySelector("ul#items");
                 if (itemsElem) {
                     const improvedElems = improveCarouselAnchors(itemsElem);
-                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", improvedElems)}`);
+                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", improvedElems)}`);
                 }
             }
         };
@@ -1382,8 +1358,8 @@ function addAnchorImprovements() {
             },
         });
         // every shelf that's loaded by scrolling:
-        _events__WEBPACK_IMPORTED_MODULE_4__.siteEvents.on("carouselShelvesChanged", (evt) => {
-            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_4__.getEvtData)(evt);
+        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
+            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
             void removedNodes;
             if (addedNodes.length > 0)
                 addedNodes.forEach(condCarouselImprovements);
@@ -1415,7 +1391,7 @@ function addAnchorImprovements() {
         });
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't improve carousel shelf anchors due to an error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't improve carousel shelf anchors due to an error:", err);
     }
     //#SECTION sidebar
     try {
@@ -1427,18 +1403,18 @@ function addAnchorImprovements() {
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
             listener: (sidebarCont) => {
                 const itemsAmt = addSidebarAnchors(sidebarCont);
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
             },
         });
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
             listener: (miniSidebarCont) => {
                 const itemsAmt = addSidebarAnchors(miniSidebarCont);
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
             },
         });
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add anchors to sidebar items due to an error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchors to sidebar items due to an error:", err);
     }
 }
 const sidebarPaths = [
@@ -1479,7 +1455,7 @@ function improveCarouselAnchors(itemsElement) {
             const thumbnailElem = listItem.querySelector(".left-items");
             const titleElem = listItem.querySelector(".title-column yt-formatted-string.title a");
             if (!thumbnailElem || !titleElem) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
                 continue;
             }
             const thumbnailAnchor = document.createElement("a");
@@ -1495,7 +1471,7 @@ function improveCarouselAnchors(itemsElement) {
         }
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add anchor improvements due to error:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
     }
     finally {
         itemsElement.classList.add("bytm-anchors-improved");
@@ -1524,16 +1500,16 @@ function initAutoCloseToasts() {
                         setTimeout(() => {
                             var _a;
                             toastElem.style.display = "none";
-                            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${closeTimeout + animTimeout}ms`);
+                            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${closeTimeout + animTimeout}ms`);
                         }, animTimeout);
                     }, closeTimeout);
                 }
             },
         });
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Initialized automatic toast closing");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Initialized automatic toast closing");
     }
     catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error in automatic toast closing:", err);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Error in automatic toast closing:", err);
     }
 }
 
@@ -2014,15 +1990,15 @@ function addMenu() {
         const confChanged = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.debounce)((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             (0,_utils__WEBPACK_IMPORTED_MODULE_4__.info)(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
-            const featConf = Object.assign({}, yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)());
+            const featConf = Object.assign({}, (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)());
             featConf[key] = newVal;
-            yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatureConf)(featConf);
+            yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(featConf);
         }));
-        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
+        const features = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
         for (const key in features) {
             const ftInfo = _index__WEBPACK_IMPORTED_MODULE_3__.featInfo[key];
             // @ts-ignore
-            if (!ftInfo || ftInfo.visible === false)
+            if (!ftInfo || ftInfo.hidden === true)
                 continue;
             const { desc, type, default: ftDefault } = ftInfo;
             // @ts-ignore
@@ -2147,10 +2123,8 @@ function addMenu() {
         resetElem.title = "Click to reset all settings to their default value";
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Do you really want to reset all settings to their default value?\nThe page will automatically reload if you proceed.")) {
-                yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatConf)();
-                location.reload();
-            }
+            if (confirm("Do you really want to reset all settings to their default value?\nAfterwards the page will need to be reloaded to apply changes."))
+                yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatures)();
         }));
         footerElem.appendChild(reloadElem);
         footerCont.appendChild(footerElem);
@@ -2416,32 +2390,33 @@ function getResourceUrl(name) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addGlobalStyle: function() { return /* binding */ F; },
-/* harmony export */   addParent: function() { return /* binding */ R; },
-/* harmony export */   amplifyMedia: function() { return /* binding */ q; },
-/* harmony export */   autoPlural: function() { return /* binding */ z; },
-/* harmony export */   clamp: function() { return /* binding */ S; },
-/* harmony export */   debounce: function() { return /* binding */ D; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ J; },
-/* harmony export */   getSelectorMap: function() { return /* binding */ Z; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ O; },
-/* harmony export */   initOnSelector: function() { return /* binding */ Y; },
-/* harmony export */   insertAfter: function() { return /* binding */ j; },
-/* harmony export */   interceptEvent: function() { return /* binding */ L; },
-/* harmony export */   interceptWindowEvent: function() { return /* binding */ B; },
-/* harmony export */   mapRange: function() { return /* binding */ A; },
-/* harmony export */   onSelector: function() { return /* binding */ V; },
-/* harmony export */   openInNewTab: function() { return /* binding */ $; },
-/* harmony export */   pauseFor: function() { return /* binding */ U; },
-/* harmony export */   preloadImages: function() { return /* binding */ W; },
-/* harmony export */   randRange: function() { return /* binding */ d; },
-/* harmony export */   randomItem: function() { return /* binding */ H; },
-/* harmony export */   randomItemIndex: function() { return /* binding */ x; },
-/* harmony export */   randomizeArray: function() { return /* binding */ P; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ X; },
-/* harmony export */   takeRandomItem: function() { return /* binding */ I; }
+/* harmony export */   ConfigManager: function() { return /* binding */ y; },
+/* harmony export */   addGlobalStyle: function() { return /* binding */ j; },
+/* harmony export */   addParent: function() { return /* binding */ _; },
+/* harmony export */   amplifyMedia: function() { return /* binding */ B; },
+/* harmony export */   autoPlural: function() { return /* binding */ K; },
+/* harmony export */   clamp: function() { return /* binding */ D; },
+/* harmony export */   debounce: function() { return /* binding */ U; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ Q; },
+/* harmony export */   getSelectorMap: function() { return /* binding */ ne; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ S; },
+/* harmony export */   initOnSelector: function() { return /* binding */ te; },
+/* harmony export */   insertAfter: function() { return /* binding */ R; },
+/* harmony export */   interceptEvent: function() { return /* binding */ N; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ W; },
+/* harmony export */   mapRange: function() { return /* binding */ L; },
+/* harmony export */   onSelector: function() { return /* binding */ Z; },
+/* harmony export */   openInNewTab: function() { return /* binding */ J; },
+/* harmony export */   pauseFor: function() { return /* binding */ z; },
+/* harmony export */   preloadImages: function() { return /* binding */ F; },
+/* harmony export */   randRange: function() { return /* binding */ g; },
+/* harmony export */   randomItem: function() { return /* binding */ V; },
+/* harmony export */   randomItemIndex: function() { return /* binding */ T; },
+/* harmony export */   randomizeArray: function() { return /* binding */ k; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ ee; },
+/* harmony export */   takeRandomItem: function() { return /* binding */ $; }
 /* harmony export */ });
-var h=Object.defineProperty,y=Object.defineProperties;var g=Object.getOwnPropertyDescriptors;var p=Object.getOwnPropertySymbols;var w=Object.prototype.hasOwnProperty,v=Object.prototype.propertyIsEnumerable;var f=(t,e,n)=>e in t?h(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,c=(t,e)=>{for(var n in e||(e={}))w.call(e,n)&&f(t,n,e[n]);if(p)for(var n of p(e))v.call(e,n)&&f(t,n,e[n]);return t},b=(t,e)=>y(t,g(e));var T=(t,e,n)=>new Promise((r,o)=>{var i=s=>{try{a(n.next(s));}catch(m){o(m);}},u=s=>{try{a(n.throw(s));}catch(m){o(m);}},a=s=>s.done?r(s.value):Promise.resolve(s.value).then(i,u);a((n=n.apply(t,e)).next());});function S(t,e,n){return Math.max(Math.min(t,n),e)}function A(t,e,n,r,o){return Number(e)===0&&Number(r)===0?t*(o/n):(t-e)*((o-r)/(n-e))+r}function d(...t){let e,n;if(typeof t[0]=="number"&&typeof t[1]=="number")[e,n]=t;else if(typeof t[0]=="number"&&typeof t[1]!="number")e=0,n=t[0];else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof t[0]}" and "${typeof t[1]}"`);if(e=Number(e),n=Number(n),isNaN(e)||isNaN(n))throw new TypeError(`Parameters "min" and "max" can't be NaN`);if(e>n)throw new TypeError(`Parameter "min" can't be bigger than "max"`);return Math.floor(Math.random()*(n-e+1))+e}function H(t){return x(t)[0]}function x(t){if(t.length===0)return [void 0,void 0];let e=d(t.length-1);return [t[e],e]}function I(t){let[e,n]=x(t);if(n!==void 0)return t.splice(n,1),e}function P(t){let e=[...t];if(t.length===0)return t;for(let n=e.length-1;n>0;n--){let r=Math.floor(d(0,1e4)/1e4*(n+1));[e[n],e[r]]=[e[r],e[n]];}return e}function O(){try{return unsafeWindow}catch(t){return window}}function j(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function R(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function F(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function W(t,e=!1){let n=t.map(r=>new Promise((o,i)=>{let u=new Image;u.src=r,u.addEventListener("load",()=>o(u)),u.addEventListener("error",a=>e&&i(a));}));return Promise.allSettled(n)}function $(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function L(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(r){element.__proto__.addEventListener=function(...o){if(!(o[0]===e&&n()))return r.apply(this,o)};}(t.__proto__.addEventListener);}function B(t,e){return L(O(),t,e)}function q(t,e=1){let n=new(window.AudioContext||window.webkitAudioContext),r={mediaElement:t,amplify:o=>{r.gain.gain.value=o;},getAmpLevel:()=>r.gain.gain.value,context:n,source:n.createMediaElementSource(t),gain:n.createGain()};return r.source.connect(r.gain),r.gain.connect(n.destination),r.amplify(e),r}function z(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function U(t){return new Promise(e=>{setTimeout(e,t);})}function D(t,e=300){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>t.apply(this,r),e);}}function J(n){return T(this,arguments,function*(t,e={}){let{timeout:r=1e4}=e,o=new AbortController,i=setTimeout(()=>o.abort(),r),u=yield fetch(t,b(c({},e),{signal:o.signal}));return clearTimeout(i),u})}var l=new Map;function V(t,e){let n=[];l.has(t)&&(n=l.get(t)),n.push(e),l.set(t,n),E(t,n);}function X(t){return l.delete(t)}function E(t,e){let n=[];if(e.forEach((r,o)=>{try{let i=r.all?document.querySelectorAll(t):document.querySelector(t);(i!==null&&i instanceof NodeList&&i.length>0||i!==null)&&(r.listener(i),r.continuous||n.push(o));}catch(i){console.error(`Couldn't call listener for selector '${t}'`,i);}}),n.length>0){let r=e.filter((o,i)=>!n.includes(i));r.length===0?l.delete(t):l.set(t,r);}}function Y(t={}){new MutationObserver(()=>{for(let[n,r]of l.entries())E(n,r);}).observe(document.body,c({subtree:!0,childList:!0},t));}function Z(){return l}
+var v=Object.defineProperty,x=Object.defineProperties;var w=Object.getOwnPropertyDescriptors;var h=Object.getOwnPropertySymbols;var M=Object.prototype.hasOwnProperty,O=Object.prototype.propertyIsEnumerable;var p=(t,e,n)=>e in t?v(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,f=(t,e)=>{for(var n in e||(e={}))M.call(e,n)&&p(t,n,e[n]);if(h)for(var n of h(e))O.call(e,n)&&p(t,n,e[n]);return t},b=(t,e)=>x(t,w(e));var m=(t,e,n)=>(p(t,typeof e!="symbol"?e+"":e,n),n);var l=(t,e,n)=>new Promise((r,i)=>{var o=s=>{try{u(n.next(s));}catch(c){i(c);}},a=s=>{try{u(n.throw(s));}catch(c){i(c);}},u=s=>s.done?r(s.value):Promise.resolve(s.value).then(o,a);u((n=n.apply(t,e)).next());});function D(t,e,n){return Math.max(Math.min(t,n),e)}function L(t,e,n,r,i){return Number(e)===0&&Number(r)===0?t*(i/n):(t-e)*((i-r)/(n-e))+r}function g(...t){let e,n;if(typeof t[0]=="number"&&typeof t[1]=="number")[e,n]=t;else if(typeof t[0]=="number"&&typeof t[1]!="number")e=0,n=t[0];else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof t[0]}" and "${typeof t[1]}"`);if(e=Number(e),n=Number(n),isNaN(e)||isNaN(n))throw new TypeError(`Parameters "min" and "max" can't be NaN`);if(e>n)throw new TypeError(`Parameter "min" can't be bigger than "max"`);return Math.floor(Math.random()*(n-e+1))+e}function V(t){return T(t)[0]}function T(t){if(t.length===0)return [void 0,void 0];let e=g(t.length-1);return [t[e],e]}function $(t){let[e,n]=T(t);if(n!==void 0)return t.splice(n,1),e}function k(t){let e=[...t];if(t.length===0)return t;for(let n=e.length-1;n>0;n--){let r=Math.floor(g(0,1e4)/1e4*(n+1));[e[n],e[r]]=[e[r],e[n]];}return e}var y=class{constructor(e){m(this,"id");m(this,"formatVersion");m(this,"defaultConfig");m(this,"cachedConfig");m(this,"migrations");this.id=e.id,this.formatVersion=e.formatVersion,this.defaultConfig=e.defaultConfig,this.cachedConfig=e.defaultConfig,this.migrations=e.migrations;}loadData(){return l(this,null,function*(){try{let e=yield GM.getValue(`_uucfg-${this.id}`,this.defaultConfig),n=Number(yield GM.getValue(`_uucfgver-${this.id}`));if(typeof e!="string")return yield this.saveDefaultData(),this.defaultConfig;isNaN(n)&&(yield GM.setValue(`_uucfgver-${this.id}`,n=this.formatVersion));let r=JSON.parse(e);return n<this.formatVersion&&this.migrations&&(r=yield this.runMigrations(r,n)),this.cachedConfig=typeof r=="object"?r:void 0}catch(e){return yield this.saveDefaultData(),this.defaultConfig}})}getData(){return this.deepCopy(this.cachedConfig)}setData(e){return this.cachedConfig=e,new Promise(n=>l(this,null,function*(){yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(e)),GM.setValue(`_uucfgver-${this.id}`,this.formatVersion)]),n();}))}saveDefaultData(){return l(this,null,function*(){return this.cachedConfig=this.defaultConfig,new Promise(e=>l(this,null,function*(){yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(this.defaultConfig)),GM.setValue(`_uucfgver-${this.id}`,this.formatVersion)]),e();}))})}deleteConfig(){return l(this,null,function*(){yield Promise.allSettled([GM.deleteValue(`_uucfg-${this.id}`),GM.deleteValue(`_uucfgver-${this.id}`)]);})}runMigrations(e,n){return l(this,null,function*(){if(!this.migrations)return e;let r=e,i=Object.entries(this.migrations).sort(([a],[u])=>Number(a)-Number(u)),o=n;for(let[a,u]of i){let s=Number(a);if(n<this.formatVersion&&n<s)try{let c=u(r);r=c instanceof Promise?yield c:c,o=n=s;}catch(c){console.error(`Error while running migration function for format version ${a}:`,c);}}return yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(r)),GM.setValue(`_uucfgver-${this.id}`,o)]),r})}deepCopy(e){return JSON.parse(JSON.stringify(e))}};function S(){try{return unsafeWindow}catch(t){return window}}function R(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function _(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function j(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function F(t,e=!1){let n=t.map(r=>new Promise((i,o)=>{let a=new Image;a.src=r,a.addEventListener("load",()=>i(a)),a.addEventListener("error",u=>e&&o(u));}));return Promise.allSettled(n)}function J(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function N(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(r){t.__proto__.addEventListener=function(...i){var a,u;let o=typeof i[1]=="function"?i[1]:(u=(a=i[1])==null?void 0:a.handleEvent)!=null?u:()=>{};i[1]=function(...s){if(!(i[0]===e&&n(Array.isArray(s)?s[0]:s)))return o.apply(this,s)},r.apply(this,i);};}(t.__proto__.addEventListener);}function W(t,e){return N(S(),t,e)}function B(t,e=1){let n=new(window.AudioContext||window.webkitAudioContext),r={mediaElement:t,amplify:i=>{r.gain.gain.value=i;},getAmpLevel:()=>r.gain.gain.value,context:n,source:n.createMediaElementSource(t),gain:n.createGain()};return r.source.connect(r.gain),r.gain.connect(n.destination),r.amplify(e),r}function K(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function z(t){return new Promise(e=>{setTimeout(()=>e(),t);})}function U(t,e=300){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>t.apply(this,r),e);}}function Q(n){return l(this,arguments,function*(t,e={}){let{timeout:r=1e4}=e,i=new AbortController,o=setTimeout(()=>i.abort(),r),a=yield fetch(t,b(f({},e),{signal:i.signal}));return clearTimeout(o),a})}var d=new Map;function Z(t,e){let n=[];d.has(t)&&(n=d.get(t)),n.push(e),d.set(t,n),E(t,n);}function ee(t){return d.delete(t)}function E(t,e){let n=[];if(e.forEach((r,i)=>{try{let o=r.all?document.querySelectorAll(t):document.querySelector(t);(o!==null&&o instanceof NodeList&&o.length>0||o!==null)&&(r.listener(o),r.continuous||n.push(i));}catch(o){console.error(`Couldn't call listener for selector '${t}'`,o);}}),n.length>0){let r=e.filter((i,o)=>!n.includes(o));r.length===0?d.delete(t):d.set(t,r);}}function te(t={}){new MutationObserver(()=>{for(let[n,r]of d.entries())E(n,r);}).observe(document.body,f({subtree:!0,childList:!0},t));}function ne(){return d}
 
 
 
@@ -2557,12 +2532,17 @@ function preInit() {
 }
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)();
         try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General Error:", err);
+        }
+        try {
+            (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)());
+        }
+        catch (err) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error while initializing ConfigManager:", err);
         }
         try {
             void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_5__.initMenu];
@@ -2922,7 +2902,7 @@ ytmusic-responsive-list-item-renderer .left-items {
 
 /*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.initOnSelector)();
-        const features = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.loadFeatureConf)();
+        const features = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
