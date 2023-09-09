@@ -31,15 +31,13 @@ export function getFeatures() {
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
-export function saveFeatures(featureConf: FeatureConfig) {
-  const newData = cfgMgr.setData(featureConf);
-  info("Saved new feature config:", newData);
-  return newData;
+export async function saveFeatures(featureConf: FeatureConfig) {
+  await cfgMgr.setData(featureConf);
+  info("Saved new feature config:", featureConf);
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
-export function setDefaultFeatures() {
-  const defaultData = cfgMgr.saveDefaultData();
+export async function setDefaultFeatures() {
+  await cfgMgr.saveDefaultData();
   info("Reset feature config to its default value");
-  return defaultData;
 }
