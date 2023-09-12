@@ -1,6 +1,6 @@
 <div style="text-align: center;" align="center">
 
-<h1><img src="./assets/icon/icon.png" /><br>BetterYTM</h1>
+<h2><img src="./assets/icon/icon_128.png" width="64" height="64" /><br>BetterYTM</h2>
 
 ### Configurable layout and UX improvements for YouTube Music
 
@@ -75,7 +75,7 @@ This project is based on my extensive template for making a userscript with Type
 | `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint |
 
 #### Extras:
-When using ViolentMonkey, after running the command `npm run watch`, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+When using ViolentMonkey, after running the command `npm run dev`, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
 This makes it so the userscript automatically updates when the code changes.  
 Note: the tab needs to stay open on Firefox or the script will not update itself.
 
@@ -90,7 +90,7 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
   
 Icons:  
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
-- For external icon attributions, see [`./assets/external/README.md`](assets/external/)
+- For external icon attributions, see [`assets/external/`](assets/external/README.md)
 
 <br><br>
 
