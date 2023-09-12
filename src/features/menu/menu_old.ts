@@ -71,8 +71,8 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("github"), scriptInfo.namespace, `${scriptInfo.name} on GitHub`);
-  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/TODO", `${scriptInfo.name} on GreasyFork`);
+  addLink(await getResourceUrl("github"), scriptInfo.namespace, `Open ${scriptInfo.name} on GitHub`);
+  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/TODO", `Open ${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "bytm-menu-close";
@@ -146,7 +146,7 @@ export async function addMenu() {
       const initialVal = val ?? ftDefault ?? undefined;
 
       const ftConfElem = document.createElement("div");
-      ftConfElem.classList.add("betterytm-ftconf-item");
+      ftConfElem.classList.add("bytm-ftitem");
 
       {
         const textElem = document.createElement("span");

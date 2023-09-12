@@ -82,7 +82,7 @@
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  padding: 6px;
+  padding: 5px;
   z-index: 1000;
   background-color: var(--bytm-menu-bg-highlight);
   border-radius: 50%;
@@ -100,7 +100,7 @@
   margin-top: 0;
 }
 
-.betterytm-ftconf-item {
+.bytm-ftitem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
