@@ -148,7 +148,7 @@ export function sanitizeArtists(artists: string) {
 export async function getCurrentLyricsUrl() {
   try {
     // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-    const isVideo = typeof document.querySelector("ytmusic-player")?.getAttribute("video-mode_") === "string";
+    const isVideo = typeof document.querySelector("ytmusic-player")?.hasAttribute("video-mode");
 
     const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLElement;
     const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child") as HTMLElement;
@@ -165,10 +165,10 @@ export async function getCurrentLyricsUrl() {
     const getGeniusUrlVideo = async () => {
       if(!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
         return await getGeniusUrl(artistName, songName);
+    
+      const { artist, song } = splitVideoTitle(songName);
 
-      const [artist, ...rest] = songName.split("-").map(v => v.trim());
-
-      return await getGeniusUrl(artist, rest.join(" "));
+      return await getGeniusUrl(artist, song);
     };
 
     // TODO: artist might need further splitting before comma or ampersand
@@ -246,4 +246,11 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.appendChild(imgElem);
 
   return linkElem;
+}
+
+/** Splits a video title that contains a hyphen into an artist and song */
+export function splitVideoTitle(title: string) {
+  const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+
+  return { artist, song: rest.join("-") };
 }
