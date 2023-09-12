@@ -1,14 +1,15 @@
-import { debounce } from "@sv443-network/userutils";
+import { debounce, pauseFor } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, saveFeatures, setDefaultFeatures } from "../../config";
 import { scriptInfo } from "../../constants";
-import { featInfo } from "../index";
+import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { getResourceUrl, info, log } from "../../utils";
+import { getResourceUrl, info, isScrollable, log } from "../../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements
 
 let isMenuOpen = false;
+let scrollIndicatorShown = true;
 
 /**
  * Adds an element to open the BetterYTM menu
@@ -41,13 +42,12 @@ export async function addMenu() {
 
   //#SECTION title bar
   const titleCont = document.createElement("div");
-  titleCont.style.padding = "8px 20px 15px 20px";
-  titleCont.style.display = "flex";
-  titleCont.style.justifyContent = "space-between";
   titleCont.id = "bytm-menu-titlecont";
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
+  titleElem.role = "heading";
+  titleElem.ariaLevel = "1";
   titleElem.innerText = `${scriptInfo.name} Configuration`;
 
   const linksCont = document.createElement("div");
@@ -60,7 +60,6 @@ export async function addMenu() {
     anchorElem.target = "_blank";
     anchorElem.href = href;
     anchorElem.title = title;
-    anchorElem.style.marginLeft = "10px";
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-menu-img";
@@ -109,144 +108,195 @@ export async function addMenu() {
     await saveFeatures(featConf);
   });
 
-  const features = getFeatures();
+  const featureCfg = getFeatures();
+  const featureCfgWithCategories = Object.entries(featInfo)
+    .reduce(
+      (acc, [key, { category }]) => {
+        if(!acc[category])
+          acc[category] = {} as Record<FeatInfoKey, unknown>;
+        acc[category][key as FeatInfoKey] = featureCfg[key as FeatInfoKey];
+        return acc;
+      },
+    {} as Record<FeatureCategory, Record<FeatInfoKey, unknown>>,
+    );
 
-  for(const key in features) {
-    const ftInfo = featInfo[key as keyof typeof features];
+  for(const category in featureCfgWithCategories) {
+    const featObj = featureCfgWithCategories[category as FeatureCategory];
 
-    // @ts-ignore
-    if(!ftInfo || ftInfo.hidden === true)
-      continue;
+    const catHeaderElem = document.createElement("h3");
+    catHeaderElem.classList.add("bytm-ftconf-category-header");
+    catHeaderElem.role = "heading";
+    catHeaderElem.ariaLevel = "2";
+    catHeaderElem.innerText = `${categoryNames[category as FeatureCategory]}:`;
+    featuresCont.appendChild(catHeaderElem);
 
-    const { desc, type, default: ftDefault } = ftInfo;
+    for(const featKey in featObj) {
+      const ftInfo = featInfo[featKey as keyof typeof featureCfg];
 
-    // @ts-ignore
-    const step = ftInfo?.step ?? undefined;
-    const val = features[key as keyof typeof features];
+      // @ts-ignore
+      if(!ftInfo || ftInfo.hidden === true)
+        continue;
 
-    const initialVal = val ?? ftDefault ?? undefined;
+      const { desc, type, default: ftDefault } = ftInfo;
 
-    const ftConfElem = document.createElement("div");
-    ftConfElem.id = `betterytm-ftconf-${key}`;
-    ftConfElem.style.display = "flex";
-    ftConfElem.style.flexDirection = "row";
-    ftConfElem.style.justifyContent = "space-between";
-    ftConfElem.style.padding = "8px 20px";
+      // @ts-ignore
+      const step = ftInfo?.step ?? undefined;
+      const val = featureCfg[featKey as keyof typeof featureCfg];
 
-    {
-      const textElem = document.createElement("span");
-      textElem.style.display = "inline-block";
-      textElem.style.fontSize = "15px";
-      textElem.innerText = desc;
+      const initialVal = val ?? ftDefault ?? undefined;
 
-      ftConfElem.appendChild(textElem);
-    }
+      const ftConfElem = document.createElement("div");
+      ftConfElem.classList.add("betterytm-ftconf-item");
 
-    {
-      let inputType = "text";
-      switch(type)
       {
-      case "toggle":
-        inputType = "checkbox";
-        break;
-      case "slider":
-        inputType = "range";
-        break;
-      case "number":
-        inputType = "number";
-        break;
+        const textElem = document.createElement("span");
+        textElem.style.display = "inline-block";
+        textElem.style.fontSize = "15px";
+        textElem.innerText = desc;
+
+        ftConfElem.appendChild(textElem);
       }
 
-      const inputElemId = `betterytm-ftconf-${key}-input`;
+      {
+        let inputType = "text";
+        switch(type)
+        {
+        case "toggle":
+          inputType = "checkbox";
+          break;
+        case "slider":
+          inputType = "range";
+          break;
+        case "number":
+          inputType = "number";
+          break;
+        }
 
-      const ctrlElem = document.createElement("span");
-      ctrlElem.style.display = "inline-flex";
-      ctrlElem.style.alignItems = "center";
-      ctrlElem.style.whiteSpace = "nowrap";
+        const inputElemId = `bytm-ftconf-${featKey}-input`;
 
-      const inputElem = document.createElement("input");
-      inputElem.id = inputElemId;
-      inputElem.type = inputType;
-      if(type === "toggle")
-        inputElem.style.marginLeft = "5px";
-      if(typeof initialVal !== "undefined")
-        inputElem.value = String(initialVal);
-      if(type === "number" && step)
-        inputElem.step = step;
+        const ctrlElem = document.createElement("span");
+        ctrlElem.style.display = "inline-flex";
+        ctrlElem.style.alignItems = "center";
+        ctrlElem.style.whiteSpace = "nowrap";
 
-      // @ts-ignore
-      if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-        // @ts-ignore
-        inputElem.min = ftInfo.min;
-        // @ts-ignore
-        inputElem.max = ftInfo.max;
-      }
-
-      if(type === "toggle" && typeof initialVal !== "undefined")
-        inputElem.checked = Boolean(initialVal);
-
-      // @ts-ignore
-      const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
-
-      const fmtVal = (v: unknown) => String(v).trim();
-      const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
-
-      let labelElem: HTMLLabelElement | undefined;
-      if(type === "slider") {
-        labelElem = document.createElement("label");
-        labelElem.classList.add("bytm-ftconf-label");
-        labelElem.style.marginRight = "20px";
-        labelElem.style.fontSize = "16px";
-        labelElem.htmlFor = inputElemId;
-        labelElem.innerText = fmtVal(initialVal) + unitTxt;
-
-        inputElem.addEventListener("input", () => {
-          if(labelElem)
-            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
-        });
-      }
-      else if(type === "toggle") {
-        labelElem = document.createElement("label");
-        labelElem.classList.add("bytm-ftconf-label");
-        labelElem.style.paddingLeft = "10px";
-        labelElem.style.paddingRight = "5px";
-        labelElem.style.fontSize = "16px";
-        labelElem.htmlFor = inputElemId;
-        labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
-
-        inputElem.addEventListener("input", () => {
-          if(labelElem)
-            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
-        });
-      }
-
-      inputElem.addEventListener("input", () => {
-        let v = Number(String(inputElem.value).trim());
-        if(isNaN(v))
-          v = Number(inputElem.value);
+        const inputElem = document.createElement("input");
+        inputElem.classList.add("bytm-ftconf-input");
+        inputElem.id = inputElemId;
+        inputElem.type = inputType;
+        if(type === "toggle")
+          inputElem.style.marginLeft = "5px";
         if(typeof initialVal !== "undefined")
-          confChanged(key as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
-      });
+          inputElem.value = String(initialVal);
+        if(type === "number" && step)
+          inputElem.step = step;
 
-      labelElem && ctrlElem.appendChild(labelElem);
-      ctrlElem.appendChild(inputElem);
+        // @ts-ignore
+        if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
+          // @ts-ignore
+          inputElem.min = ftInfo.min;
+          // @ts-ignore
+          inputElem.max = ftInfo.max;
+        }
 
-      ftConfElem.appendChild(ctrlElem);
+        if(type === "toggle" && typeof initialVal !== "undefined")
+          inputElem.checked = Boolean(initialVal);
+
+        // @ts-ignore
+        const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+
+        const fmtVal = (v: unknown) => String(v).trim();
+        const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
+
+        let labelElem: HTMLLabelElement | undefined;
+        if(type === "slider") {
+          labelElem = document.createElement("label");
+          labelElem.classList.add("bytm-ftconf-label");
+          labelElem.style.marginRight = "10px";
+          labelElem.style.fontSize = "16px";
+          labelElem.htmlFor = inputElemId;
+          labelElem.innerText = fmtVal(initialVal) + unitTxt;
+
+          inputElem.addEventListener("input", () => {
+            if(labelElem)
+              labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+          });
+        }
+        else if(type === "toggle") {
+          labelElem = document.createElement("label");
+          labelElem.classList.add("bytm-ftconf-label");
+          labelElem.style.paddingLeft = "10px";
+          labelElem.style.paddingRight = "5px";
+          labelElem.style.fontSize = "16px";
+          labelElem.htmlFor = inputElemId;
+          labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+
+          inputElem.addEventListener("input", () => {
+            if(labelElem)
+              labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+          });
+        }
+
+        inputElem.addEventListener("input", () => {
+          let v = Number(String(inputElem.value).trim());
+          if(isNaN(v))
+            v = Number(inputElem.value);
+          if(typeof initialVal !== "undefined")
+            confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
+        });
+
+        labelElem && ctrlElem.appendChild(labelElem);
+        ctrlElem.appendChild(inputElem);
+
+        ftConfElem.appendChild(ctrlElem);
+      }
+
+      featuresCont.appendChild(ftConfElem);
     }
-
-    featuresCont.appendChild(ftConfElem);
   }
+
+  //#SECTION scroll indicator
+  const scrollIndicator = document.createElement("img");
+  scrollIndicator.id = "bytm-menu-scroll-indicator";
+  scrollIndicator.role = "button";
+  scrollIndicator.title = "Click to scroll to the bottom";
+  scrollIndicator.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjQ4Ij4KICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNDU3LjMwOC03NzkuOTk5djUxMy42OTJMMjEyLjAwMS01MTEuOTk5bC0zMiAzMS45OTlMNDgwLTE4MC4wMDEgNzc5Ljk5OS00ODBsLTMyLTMxLjk5OS0yNDUuMzA3IDI0NS42OTJ2LTUxMy42OTJoLTQ1LjM4NFoiLz4KPC9zdmc+";
+  //#DEBUG scrollIndicatorElem.src = await getResourceUrl("arrow_down");
+  featuresCont.appendChild(scrollIndicator);
+
+  scrollIndicator.addEventListener("click", () => {
+    const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
+    bottomAnchor?.scrollIntoView({
+      behavior: "smooth",
+    });
+  });
+
+  featuresCont.addEventListener("scroll", async (evt: Event) => {
+    const scrollPos = (evt.target as HTMLDivElement)?.scrollTop ?? 0;
+    const scrollIndicator = document.querySelector<HTMLImageElement>("#bytm-menu-scroll-indicator");
+
+    if(!scrollIndicator)
+      return;
+
+    if(scrollPos > 10 && scrollIndicatorShown) {
+      scrollIndicatorShown = false;
+      scrollIndicator.classList.add("hidden");
+      await pauseFor(200);
+      scrollIndicator.style.visibility = "hidden";
+    }
+    else if(scrollPos <= 10 && !scrollIndicatorShown) {
+      scrollIndicatorShown = true;
+      scrollIndicator.style.visibility = "initial";
+      scrollIndicator.classList.remove("hidden");
+    }
+  });
+
+  const bottomAnchor = document.createElement("div");
+  bottomAnchor.id = "bytm-menu-bottom-anchor";
+  featuresCont.appendChild(bottomAnchor);
 
   //#SECTION footer
   const footerCont = document.createElement("div");
   footerCont.id = "bytm-menu-footer-cont";
-  footerCont.style.display = "flex";
-  footerCont.style.flexDirection = "row";
-  footerCont.style.justifyContent = "space-between";
-  footerCont.style.padding = "20px 20px 10px 20px";
-  footerCont.style.marginTop = "10px";
-  footerCont.style.position = "sticky";
-  footerCont.style.bottom = "0";
 
   const footerElem = document.createElement("div");
   footerElem.id = "bytm-menu-footer";
@@ -287,8 +337,7 @@ export async function addMenu() {
   versionCont.style.display = "flex";
   versionCont.style.justifyContent = "space-around";
   versionCont.style.fontSize = "1.15em";
-  versionCont.style.marginTop = "10px";
-  versionCont.style.marginBottom = "5px";
+  versionCont.style.marginTop = "5px";
 
   const versionElem = document.createElement("span");
   versionElem.id = "bytm-menu-version";
@@ -304,7 +353,7 @@ export async function addMenu() {
 
   document.body.appendChild(backgroundElem);
 
-  log("Added menu element:", backgroundElem);
+  log("Added menu element");
 }
 
 //#MARKER utilities
@@ -315,7 +364,7 @@ export function closeMenu(e?: MouseEvent | KeyboardEvent) {
   isMenuOpen = false;
   e?.bubbles && e.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
+  document.body.removeAttribute("no-y-overflow");
   const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";
@@ -328,9 +377,19 @@ export function openMenu() {
     return;
   isMenuOpen = true;
 
-  document.body.classList.add("bytm-disable-scroll");
+  document.body.setAttribute("no-y-overflow", "");
   const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
+
+  const featuresCont = document.querySelector<HTMLElement>("#bytm-menu-opts");
+  const scrollIndicator = document.querySelector<HTMLElement>("#bytm-menu-scroll-indicator");
+
+  // disable scroll indicator if container doesn't scroll
+  if(featuresCont && scrollIndicator && !isScrollable(featuresCont).vertical) {
+    scrollIndicatorShown = false;
+    scrollIndicator.classList.add("hidden");
+    scrollIndicator.style.visibility = "hidden";
+  }
 }

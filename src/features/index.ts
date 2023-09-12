@@ -6,48 +6,21 @@ export * from "./lyrics";
 export { initMenu } from "./menu/menu";
 export * from "./menu/menu_old";
 
-export type FeatInfoKeys = keyof typeof featInfo;
+/** Union of all feature keys */
+export type FeatInfoKey = keyof typeof featInfo;
+
+/** Union of all feature categories */
+export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
+
+/** Mapping of feature category identifiers to readable strings */
+export const categoryNames: Record<FeatureCategory, string> = {
+  input: "Input",
+  layout: "Layout",
+  lyrics: "Lyrics",
+} as const;
 
 /** Contains all possible features with their default values and other config */
 export const featInfo = {
-  //#SECTION input
-  arrowKeySupport: {
-    desc: "Arrow keys to skip forwards and backwards by 10 seconds",
-    type: "toggle",
-    category: "input",
-    default: true,
-  },
-  switchBetweenSites: {
-    desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
-    type: "toggle",
-    category: "input",
-    default: true,
-  },
-  switchSitesHotkey: {
-    desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
-    type: "hotkey",
-    category: "input",
-    default: {
-      key: "F9",
-      shift: false,
-      ctrl: false,
-      meta: false,
-    },
-    hidden: true,
-  },
-  disableBeforeUnloadPopup: {
-    desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
-    type: "toggle",
-    category: "input",
-    default: false,
-  },
-  anchorImprovements: {
-    desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
-    type: "toggle",
-    category: "input",
-    default: true,
-  },
-
   //#SECTION layout
   removeUpgradeTab: {
     desc: "Remove the Upgrade / Premium tab",
@@ -56,7 +29,7 @@ export const featInfo = {
     default: true,
   },
   volumeSliderLabel: {
-    desc: "Add a percentage label to the volume slider",
+    desc: "Add a percentage label next to the volume slider",
     type: "toggle",
     category: "layout",
     default: true,
@@ -102,6 +75,44 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
+  },
+
+  //#SECTION input
+  arrowKeySupport: {
+    desc: "Use arrow keys to skip forwards and backwards by 10 seconds",
+    type: "toggle",
+    category: "input",
+    default: true,
+  },
+  switchBetweenSites: {
+    desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
+    type: "toggle",
+    category: "input",
+    default: true,
+  },
+  switchSitesHotkey: {
+    desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
+    type: "hotkey",
+    category: "input",
+    default: {
+      key: "F9",
+      shift: false,
+      ctrl: false,
+      meta: false,
+    },
+    hidden: true,
+  },
+  disableBeforeUnloadPopup: {
+    desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
+    type: "toggle",
+    category: "input",
+    default: false,
+  },
+  anchorImprovements: {
+    desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+    type: "toggle",
+    category: "input",
+    default: true,
   },
 
   //#SECTION lyrics

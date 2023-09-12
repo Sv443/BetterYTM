@@ -1,6 +1,7 @@
 :root {
   --bytm-menu-width: calc(min(70vw, 1000px));
   --bytm-menu-bg: #212121;
+  --bytm-menu-bg-highlight: #111111;
 }
 
 #bytm-menu-bg {
@@ -28,27 +29,34 @@
 }
 
 #bytm-menu-opts {
+  position: relative;
   max-height: 70vh;
   overflow: auto;
 }
 
 #bytm-menu-titlecont {
   display: flex;
+  justify-content: space-between;
+  padding: 8px 20px 15px 20px;
+  margin-bottom: 5px;
+  background-color: var(--bytm-menu-bg);
 }
 
 #bytm-menu-title {
   font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 8px;
+  margin: 5px 0;
 }
 
 #bytm-menu-linkscont {
   display: flex;
+  align-items: center;
 }
 
 .bytm-menu-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
   cursor: pointer;
-  display: inline-block;
 }
 
 #bytm-menu-close {
@@ -56,14 +64,54 @@
 }
 
 #bytm-menu-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 32px 20px 8px 20px;
+  position: sticky;
+  bottom: 0;
   background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 18%, var(--bytm-menu-bg) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 25%, var(--bytm-menu-bg) 100%);
+}
+
+#bytm-menu-scroll-indicator {
+  position: sticky;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  z-index: 1000;
+  background-color: var(--bytm-menu-bg-highlight);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.betterytm-ftconf-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
 }
 
 .bytm-ftconf-label {
   user-select: none;
 }
 
-body.bytm-disable-scroll {
-  overflow-y: hidden !important;
+.bytm-ftconf-input[type=number] {
+  width: 100px;
 }
