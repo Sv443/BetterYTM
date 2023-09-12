@@ -481,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "59434ac", // assert as generic string instead of literal
+    lastCommit: "737adc9", // assert as generic string instead of literal
 };
 
 
@@ -1966,8 +1966,8 @@ function addMenu() {
             anchorElem.appendChild(imgElem);
             linksCont.appendChild(anchorElem);
         };
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/TODO", `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/TODO", `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "bytm-menu-close";
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
@@ -2020,7 +2020,7 @@ function addMenu() {
                 const val = featureCfg[featKey];
                 const initialVal = (_b = val !== null && val !== void 0 ? val : ftDefault) !== null && _b !== void 0 ? _b : undefined;
                 const ftConfElem = document.createElement("div");
-                ftConfElem.classList.add("betterytm-ftconf-item");
+                ftConfElem.classList.add("bytm-ftitem");
                 {
                     const textElem = document.createElement("span");
                     textElem.style.display = "inline-block";
@@ -2702,7 +2702,7 @@ function onDomLoad() {
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  padding: 6px;
+  padding: 5px;
   z-index: 1000;
   background-color: var(--bytm-menu-bg-highlight);
   border-radius: 50%;
@@ -2720,7 +2720,7 @@ function onDomLoad() {
   margin-top: 0;
 }
 
-.betterytm-ftconf-item {
+.bytm-ftitem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
