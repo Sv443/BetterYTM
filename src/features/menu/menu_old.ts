@@ -48,23 +48,22 @@ export async function addMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.classList.add("bytm-no-select");
-  titleElem.innerText = `${scriptInfo.name} - Configuration`;
+  titleElem.innerText = `${scriptInfo.name} Configuration`;
 
   const linksCont = document.createElement("div");
   linksCont.id = "bytm-menu-linkscont";
 
   const addLink = (imgSrc: string, href: string, title: string) => {
     const anchorElem = document.createElement("a");
-    anchorElem.className = "bytm-menu-link";
+    anchorElem.className = "bytm-menu-link bytm-no-select";
     anchorElem.rel = "noopener noreferrer";
     anchorElem.target = "_blank";
     anchorElem.href = href;
     anchorElem.title = title;
     anchorElem.style.marginLeft = "10px";
-        
+
     const imgElem = document.createElement("img");
-    imgElem.className = "bytm-menu-img bytm-no-select";
+    imgElem.className = "bytm-menu-img";
     imgElem.src = imgSrc;
     imgElem.style.width = "32px";
     imgElem.style.height = "32px";

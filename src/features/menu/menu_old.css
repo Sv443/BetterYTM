@@ -1,4 +1,5 @@
 :root {
+  --bytm-menu-width: calc(min(70vw, 1000px));
   --bytm-menu-bg: #212121;
 }
 
@@ -16,9 +17,9 @@
 #bytm-menu {
   display: inline-block;
   position: fixed;
-  width: 50vw;
+  width: var(--bytm-menu-width);
   height: auto;
-  left: 25vw;
+  left: calc((100vw - var(--bytm-menu-width)) / 2);
   top: 10vh;
   z-index: 16;
   padding: 10px 25px;
