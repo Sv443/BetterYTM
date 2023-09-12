@@ -481,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "c5345cd", // assert as generic string instead of literal
+    lastCommit: "4ee4ebf", // assert as generic string instead of literal
 };
 
 
@@ -972,8 +972,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
 /* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
-/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! . */ "./src/features/index.ts");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index */ "./src/features/index.ts");
+/* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1085,15 +1085,16 @@ function addConfigMenuOption(container) {
         const cfgOptItemElem = document.createElement("div");
         cfgOptItemElem.className = "bytm-cfg-menu-option-item";
         cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
-        cfgOptItemElem.addEventListener("click", (e) => {
+        cfgOptItemElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
             menuOpenAmt++;
+            yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(100);
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
                 (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
-        });
+        }));
         const cfgOptIconElem = document.createElement("img");
         cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
         cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("icon");
@@ -1110,13 +1111,13 @@ function addConfigMenuOption(container) {
 //#MARKER remove upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
-    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", {
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
         listener: (tabElemLarge) => {
             tabElemLarge.remove();
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed large upgrade tab");
         },
     });
-    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-child(4)", {
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
         listener: (tabElemSmall) => {
             tabElemSmall.remove();
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Removed small upgrade tab");
@@ -1148,7 +1149,7 @@ function addVolumeSliderLabel(sliderElem, sliderCont) {
     labelElem.addEventListener("click", (e) => e.stopPropagation());
     const getLabelTexts = (slider) => {
         const labelShort = `${slider.value}%`;
-        const sensText = features.volumeSliderStep !== ___WEBPACK_IMPORTED_MODULE_7__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${slider.step}%)` : "";
+        const sensText = features.volumeSliderStep !== _index__WEBPACK_IMPORTED_MODULE_6__.featInfo.volumeSliderStep["default"] ? ` (Sensitivity: ${slider.step}%)` : "";
         const labelFull = `Volume: ${labelShort}${sensText}`;
         return { labelShort, labelFull };
     };
@@ -1226,22 +1227,14 @@ function initQueueButtons() {
 /**
  * Adds the buttons to each item in the current song queue.
  * Also observes for changes to add new buttons to new items in the queue.
- * TODO:FIXME: deleting an element from the queue shifts the lyrics buttons
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 function addQueueButtons(queueItem) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         //#SECTION general queue item stuff
         const queueBtnsCont = document.createElement("div");
         queueBtnsCont.className = "bytm-queue-btn-container";
-        const songInfo = queueItem.querySelector(".song-info");
-        if (!songInfo)
-            return false;
-        const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
-        const song = songEl.innerText;
-        const artist = artistEl.innerText;
-        if (!song || !artist)
-            return false;
         const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("lyrics");
         const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("delete");
         //#SECTION lyrics btn
@@ -1253,6 +1246,14 @@ function addQueueButtons(queueItem) {
             lyricsBtnElem.style.pointerEvents = "initial";
             lyricsBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 e.stopPropagation();
+                const songInfo = queueItem.querySelector(".song-info");
+                if (!songInfo)
+                    return false;
+                const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
+                const song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
+                const artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
+                if (!song || !artist)
+                    return false;
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
                 const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
@@ -1307,15 +1308,14 @@ function addQueueButtons(queueItem) {
                     const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape button");
                     if (queuePopupCont)
                         queuePopupCont.setAttribute("data-bytm-hidden", "true");
-                    dotsBtnElem.click();
-                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(25);
-                    queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-                    if (!queuePopupCont.hasAttribute("data-bytm-hidden"))
-                        queuePopupCont.setAttribute("data-bytm-hidden", "true");
-                    // a little bit janky and unreliable but the only way afaik
-                    const removeFromQueueBtn = queuePopupCont.querySelector("tp-yt-paper-listbox *[role=option]:nth-child(7)");
+                    dotsBtnElem === null || dotsBtnElem === void 0 ? void 0 : dotsBtnElem.click();
                     yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(20);
-                    removeFromQueueBtn.click();
+                    queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+                    queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                    // a little bit janky and unreliable but the only way afaik
+                    const removeFromQueueBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(10);
+                    removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't remove song from queue due to error:", err);
@@ -1332,7 +1332,7 @@ function addQueueButtons(queueItem) {
         //#SECTION append elements to DOM
         queueBtnsCont.appendChild(lyricsBtnElem);
         queueBtnsCont.appendChild(deleteBtnElem);
-        songInfo.appendChild(queueBtnsCont);
+        (_a = queueItem.querySelector(".song-info")) === null || _a === void 0 ? void 0 : _a.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
         return true;
     });
@@ -2932,7 +2932,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
-  /* using a var() is not viable since the nesting changes the actual value of the variable */
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
 }
 
