@@ -181,7 +181,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
-  /* using a var() is not viable since the nesting changes the actual value of the variable */
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
 }
 

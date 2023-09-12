@@ -1,4 +1,4 @@
-import type { Event } from "@billjs/event-emitter";
+import type { Event as BillEvent } from "@billjs/event-emitter";
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
@@ -6,8 +6,8 @@ import { error, getResourceUrl, log } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
+import { featInfo } from "./index";
 import "./layout.css";
-import { featInfo } from ".";
 
 let features: FeatureConfig;
 
@@ -159,13 +159,13 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export function removeUpgradeTab() {
-  onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-child(4)", {
+  onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemLarge) => {
       tabElemLarge.remove();
       log("Removed large upgrade tab");
     },
   });
-  onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-child(4)", {
+  onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemSmall) => {
       tabElemSmall.remove();
       log("Removed small upgrade tab");
@@ -279,7 +279,7 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 //#MARKER queue buttons
 
 export function initQueueButtons() {
-  const addQueueBtns = (evt: Event) => {
+  const addQueueBtns = (evt: BillEvent) => {
     let amt = 0;
     for(const queueItm of getEvtData<HTMLElement>(evt).childNodes as NodeListOf<HTMLElement>) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
@@ -305,24 +305,13 @@ export function initQueueButtons() {
 
 /**
  * Adds the buttons to each item in the current song queue.  
- * Also observes for changes to add new buttons to new items in the queue.  
- * TODO:FIXME: deleting an element from the queue shifts the lyrics buttons
+ * Also observes for changes to add new buttons to new items in the queue.
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  */
 async function addQueueButtons(queueItem: HTMLElement) {
   //#SECTION general queue item stuff
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.className = "bytm-queue-btn-container";
-
-  const songInfo = queueItem.querySelector(".song-info") as HTMLElement;
-  if(!songInfo)
-    return false;
-
-  const [songEl, artistEl] = (songInfo.querySelectorAll("yt-formatted-string") as NodeListOf<HTMLElement>);
-  const song = songEl.innerText;
-  const artist = artistEl.innerText;
-  if(!song || !artist)
-    return false;
 
   const lyricsIconUrl = await getResourceUrl("lyrics");
   const deleteIconUrl = await getResourceUrl("delete");
@@ -338,10 +327,22 @@ async function addQueueButtons(queueItem: HTMLElement) {
     lyricsBtnElem.addEventListener("click", async (e) => {
       e.stopPropagation();
 
+      const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
+      if(!songInfo)
+        return false;
+
+      const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
+      const song = songEl?.innerText;
+      const artist = artistEl?.innerText;
+      if(!song || !artist)
+        return false;
+
       let lyricsUrl: string | undefined;
+
       const artistsSan = sanitizeArtists(artist);
       const songSan = sanitizeSong(song);
       const splitTitle = splitVideoTitle(songSan);
+
       const cachedLyricsUrl = songSan.includes("-")
         ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
         : getLyricsCacheEntry(artistsSan, songSan);
@@ -397,27 +398,26 @@ async function addQueueButtons(queueItem: HTMLElement) {
       e.stopPropagation();
 
       // container of the queue item popup menu - element gets reused for every queue item
-      let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown") as HTMLElement;
+      let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
       try {
         // three dots button to open the popup menu of a queue item
-        const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape button") as HTMLButtonElement;
+        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>("ytmusic-menu-renderer yt-button-shape button");
 
         if(queuePopupCont)
           queuePopupCont.setAttribute("data-bytm-hidden", "true");
 
-        dotsBtnElem.click();
-        await pauseFor(25);
-        queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown") as HTMLElement;
-
-        if(!queuePopupCont.hasAttribute("data-bytm-hidden"))
-          queuePopupCont.setAttribute("data-bytm-hidden", "true");
-
-        // a little bit janky and unreliable but the only way afaik
-        const removeFromQueueBtn = queuePopupCont.querySelector("tp-yt-paper-listbox *[role=option]:nth-child(7)") as HTMLElement;
-
+        dotsBtnElem?.click();
         await pauseFor(20);
 
-        removeFromQueueBtn.click();
+        queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+        queuePopupCont?.setAttribute("data-bytm-hidden", "true");
+
+        // a little bit janky and unreliable but the only way afaik
+        const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+
+        await pauseFor(10);
+
+        removeFromQueueBtn?.click();
       }
       catch(err) {
         error("Couldn't remove song from queue due to error:", err);
@@ -439,7 +439,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
   queueBtnsCont.appendChild(lyricsBtnElem);
   queueBtnsCont.appendChild(deleteBtnElem);
 
-  songInfo.appendChild(queueBtnsCont);
+  queueItem.querySelector<HTMLElement>(".song-info")?.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
 
   return true;
