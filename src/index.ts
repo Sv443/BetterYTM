@@ -13,7 +13,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption,
+  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, disableBeforeUnload,
 } from "./features/index";
 
 {
@@ -59,6 +59,9 @@ async function init() {
   }
   try {
     preInitLayout(await initConfig());
+
+    if(getFeatures().disableBeforeUnloadPopup)
+      disableBeforeUnload();
   }
   catch(err) {
     error("Error while initializing ConfigManager:", err);

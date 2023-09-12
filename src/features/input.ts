@@ -1,7 +1,6 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
-import { getFeatures } from "../config";
 
 //#MARKER arrow key skip
 
@@ -173,7 +172,4 @@ export function initBeforeUnloadHook() {
     };
     // @ts-ignore
   })(window.__proto__.addEventListener);
-
-  if(getFeatures().disableBeforeUnloadPopup)
-    disableBeforeUnload();
 }
