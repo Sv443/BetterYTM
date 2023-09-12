@@ -7,9 +7,6 @@ export type LogLevel = 0 | 1;
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
 
-/** Feature category to be used in the menu for grouping features */
-export type FeatureCategory = "input" | "layout" | "lyrics";
-
 /** Feature configuration */
 export interface FeatureConfig {
   //#SECTION input

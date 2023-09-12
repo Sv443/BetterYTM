@@ -57,7 +57,7 @@ export function addWatermark() {
   const logoElem = document.querySelector("#left-content") as HTMLElement;
   insertAfter(logoElem, watermark);
 
-  log("Added watermark element", watermark);
+  log("Added watermark element");
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
@@ -149,7 +149,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   container.appendChild(cfgOptElem);
 
-  log("Added BYTM-Configuration button to menu popover", cfgOptElem);
+  log("Added BYTM-Configuration button to menu popover");
 }
 
 //#MARKER remove upgrade tab
@@ -231,7 +231,6 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderCont: HTMLDivE
   onSelector("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
       volumeCont.appendChild(labelElem);
-      log("Added volume slider label", labelElem);
     },
   });
 
