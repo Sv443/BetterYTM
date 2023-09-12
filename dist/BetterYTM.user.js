@@ -481,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "8260317", // assert as generic string instead of literal
+    lastCommit: "6bf48d3", // assert as generic string instead of literal
 };
 
 
