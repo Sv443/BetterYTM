@@ -8,7 +8,7 @@
 // @license         MIT
 // @author          Sv443
 // @copyright       Sv443 (https://github.com/Sv443)
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon.png
+// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
 // @match           https://music.youtube.com/*
 // @match           https://www.youtube.com/*
 // @run-at          document-start
@@ -20,12 +20,13 @@
 // @grant           GM.getResourceUrl
 // @grant           unsafeWindow
 // @noframes
-// @resource        icon https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon.png
+// @resource        icon https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
 // @resource        close https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/close.png
 // @resource        delete https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/delete.svg
 // @resource        error https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/error.svg
 // @resource        lyrics https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/lyrics.svg
 // @resource        spinner https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/spinner.svg
+// @resource        arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/arrow_down.svg
 // @resource        github https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
 // @resource        greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
 // ==/UserScript==
@@ -480,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "291b209", // assert as generic string instead of literal
+    lastCommit: "59434ac", // assert as generic string instead of literal
 };
 
 
@@ -624,6 +625,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
+/* harmony export */   categoryNames: function() { return /* binding */ categoryNames; },
 /* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
 /* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
 /* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
@@ -658,45 +660,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+/** Mapping of feature category identifiers to readable strings */
+const categoryNames = {
+    input: "Input",
+    layout: "Layout",
+    lyrics: "Lyrics",
+};
 /** Contains all possible features with their default values and other config */
 const featInfo = {
-    //#SECTION input
-    arrowKeySupport: {
-        desc: "Arrow keys to skip forwards and backwards by 10 seconds",
-        type: "toggle",
-        category: "input",
-        default: true,
-    },
-    switchBetweenSites: {
-        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
-        type: "toggle",
-        category: "input",
-        default: true,
-    },
-    switchSitesHotkey: {
-        desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
-        type: "hotkey",
-        category: "input",
-        default: {
-            key: "F9",
-            shift: false,
-            ctrl: false,
-            meta: false,
-        },
-        hidden: true,
-    },
-    disableBeforeUnloadPopup: {
-        desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
-        type: "toggle",
-        category: "input",
-        default: false,
-    },
-    anchorImprovements: {
-        desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
-        type: "toggle",
-        category: "input",
-        default: true,
-    },
     //#SECTION layout
     removeUpgradeTab: {
         desc: "Remove the Upgrade / Premium tab",
@@ -705,7 +676,7 @@ const featInfo = {
         default: true,
     },
     volumeSliderLabel: {
-        desc: "Add a percentage label to the volume slider",
+        desc: "Add a percentage label next to the volume slider",
         type: "toggle",
         category: "layout",
         default: true,
@@ -743,7 +714,7 @@ const featInfo = {
         default: true,
     },
     closeToastsTimeout: {
-        desc: "After how long to close permanent notifications - 0 to only close them manually (default behavior)",
+        desc: "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
         type: "number",
         category: "layout",
         min: 0,
@@ -751,6 +722,43 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
+    },
+    //#SECTION input
+    arrowKeySupport: {
+        desc: "Use arrow keys to skip forwards and backwards by 10 seconds",
+        type: "toggle",
+        category: "input",
+        default: true,
+    },
+    switchBetweenSites: {
+        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
+        type: "toggle",
+        category: "input",
+        default: true,
+    },
+    switchSitesHotkey: {
+        desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
+        type: "hotkey",
+        category: "input",
+        default: {
+            key: "F9",
+            shift: false,
+            ctrl: false,
+            meta: false,
+        },
+        hidden: true,
+    },
+    disableBeforeUnloadPopup: {
+        desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
+        type: "toggle",
+        category: "input",
+        default: false,
+    },
+    anchorImprovements: {
+        desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+        type: "toggle",
+        category: "input",
+        default: true,
     },
     //#SECTION lyrics
     geniusLyrics: {
@@ -780,7 +788,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -790,7 +797,6 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-
 
 
 //#MARKER arrow key skip
@@ -937,8 +943,6 @@ function initBeforeUnloadHook() {
         };
         // @ts-ignore
     })(window.__proto__.addEventListener);
-    if ((0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)().disableBeforeUnloadPopup)
-        disableBeforeUnload();
 }
 
 
@@ -1023,7 +1027,7 @@ function addWatermark() {
     });
     const logoElem = document.querySelector("#left-content");
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(logoElem, watermark);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element", watermark);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added watermark element");
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
 function improveLogo() {
@@ -1099,7 +1103,7 @@ function addConfigMenuOption(container) {
         cfgOptItemElem.appendChild(cfgOptTextElem);
         cfgOptElem.appendChild(cfgOptItemElem);
         container.appendChild(cfgOptElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover", cfgOptElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added BYTM-Configuration button to menu popover");
     });
 }
 //#MARKER remove upgrade tab
@@ -1164,7 +1168,6 @@ function addVolumeSliderLabel(sliderElem, sliderCont) {
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#bytm-vol-slider-cont", {
         listener: (volumeCont) => {
             volumeCont.appendChild(labelElem);
-            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added volume slider label", labelElem);
         },
     });
     let lastSliderVal = Number(sliderElem.value);
@@ -1487,24 +1490,22 @@ function initAutoCloseToasts() {
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-paper-toast#toast", {
             all: true,
             continuous: true,
-            listener: (toastElems) => {
+            listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
+                var _a;
                 for (const toastElem of toastElems) {
                     if (!toastElem.hasAttribute("allow-click-through"))
                         continue;
                     if (toastElem.classList.contains("bytm-closing"))
                         continue;
                     toastElem.classList.add("bytm-closing");
-                    setTimeout(() => {
-                        toastElem.classList.remove("paper-toast-open");
-                        // wait for the transition to finish
-                        setTimeout(() => {
-                            var _a;
-                            toastElem.style.display = "none";
-                            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${closeTimeout + animTimeout}ms`);
-                        }, animTimeout);
-                    }, closeTimeout);
+                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(closeTimeout);
+                    toastElem.classList.remove("paper-toast-open");
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
+                    // wait for the transition to finish
+                    yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(animTimeout);
+                    toastElem.style.display = "none";
                 }
-            },
+            }),
         });
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Initialized automatic toast closing");
     }
@@ -1910,6 +1911,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 //#MARKER create menu elements
 let isMenuOpen = false;
+let scrollIndicatorShown = true;
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1941,26 +1943,23 @@ function addMenu() {
         menuContainer.style.justifyContent = "space-between";
         //#SECTION title bar
         const titleCont = document.createElement("div");
-        titleCont.style.padding = "8px 20px 15px 20px";
-        titleCont.style.display = "flex";
-        titleCont.style.justifyContent = "space-between";
         titleCont.id = "bytm-menu-titlecont";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.classList.add("bytm-no-select");
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
+        titleElem.role = "heading";
+        titleElem.ariaLevel = "1";
+        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} Configuration`;
         const linksCont = document.createElement("div");
         linksCont.id = "bytm-menu-linkscont";
         const addLink = (imgSrc, href, title) => {
             const anchorElem = document.createElement("a");
-            anchorElem.className = "bytm-menu-link";
+            anchorElem.className = "bytm-menu-link bytm-no-select";
             anchorElem.rel = "noopener noreferrer";
             anchorElem.target = "_blank";
             anchorElem.href = href;
             anchorElem.title = title;
-            anchorElem.style.marginLeft = "10px";
             const imgElem = document.createElement("img");
-            imgElem.className = "bytm-menu-img bytm-no-select";
+            imgElem.className = "bytm-menu-img";
             imgElem.src = imgSrc;
             imgElem.style.width = "32px";
             imgElem.style.height = "32px";
@@ -1994,119 +1993,160 @@ function addMenu() {
             featConf[key] = newVal;
             yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(featConf);
         }));
-        const features = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
-        for (const key in features) {
-            const ftInfo = _index__WEBPACK_IMPORTED_MODULE_3__.featInfo[key];
-            // @ts-ignore
-            if (!ftInfo || ftInfo.hidden === true)
-                continue;
-            const { desc, type, default: ftDefault } = ftInfo;
-            // @ts-ignore
-            const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
-            const val = features[key];
-            const initialVal = (_b = val !== null && val !== void 0 ? val : ftDefault) !== null && _b !== void 0 ? _b : undefined;
-            const ftConfElem = document.createElement("div");
-            ftConfElem.id = `betterytm-ftconf-${key}`;
-            ftConfElem.style.display = "flex";
-            ftConfElem.style.flexDirection = "row";
-            ftConfElem.style.justifyContent = "space-between";
-            ftConfElem.style.padding = "8px 20px";
-            {
-                const textElem = document.createElement("span");
-                textElem.style.display = "inline-block";
-                textElem.style.fontSize = "15px";
-                textElem.innerText = desc;
-                ftConfElem.appendChild(textElem);
-            }
-            {
-                let inputType = "text";
-                switch (type) {
-                    case "toggle":
-                        inputType = "checkbox";
-                        break;
-                    case "slider":
-                        inputType = "range";
-                        break;
-                    case "number":
-                        inputType = "number";
-                        break;
-                }
-                const inputElemId = `betterytm-ftconf-${key}-input`;
-                const ctrlElem = document.createElement("span");
-                ctrlElem.style.display = "inline-flex";
-                ctrlElem.style.alignItems = "center";
-                ctrlElem.style.whiteSpace = "nowrap";
-                const inputElem = document.createElement("input");
-                inputElem.id = inputElemId;
-                inputElem.type = inputType;
-                if (type === "toggle")
-                    inputElem.style.marginLeft = "5px";
-                if (typeof initialVal !== "undefined")
-                    inputElem.value = String(initialVal);
-                if (type === "number" && step)
-                    inputElem.step = step;
+        const featureCfg = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
+        const featureCfgWithCategories = Object.entries(_index__WEBPACK_IMPORTED_MODULE_3__.featInfo)
+            .reduce((acc, [key, { category }]) => {
+            if (!acc[category])
+                acc[category] = {};
+            acc[category][key] = featureCfg[key];
+            return acc;
+        }, {});
+        for (const category in featureCfgWithCategories) {
+            const featObj = featureCfgWithCategories[category];
+            const catHeaderElem = document.createElement("h3");
+            catHeaderElem.classList.add("bytm-ftconf-category-header");
+            catHeaderElem.role = "heading";
+            catHeaderElem.ariaLevel = "2";
+            catHeaderElem.innerText = `${_index__WEBPACK_IMPORTED_MODULE_3__.categoryNames[category]}:`;
+            featuresCont.appendChild(catHeaderElem);
+            for (const featKey in featObj) {
+                const ftInfo = _index__WEBPACK_IMPORTED_MODULE_3__.featInfo[featKey];
                 // @ts-ignore
-                if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-                    // @ts-ignore
-                    inputElem.min = ftInfo.min;
-                    // @ts-ignore
-                    inputElem.max = ftInfo.max;
-                }
-                if (type === "toggle" && typeof initialVal !== "undefined")
-                    inputElem.checked = Boolean(initialVal);
+                if (!ftInfo || ftInfo.hidden === true)
+                    continue;
+                const { desc, type, default: ftDefault } = ftInfo;
                 // @ts-ignore
-                const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
-                const fmtVal = (v) => String(v).trim();
-                const toggleLabelText = (toggled) => toggled ? "On" : "Off";
-                let labelElem;
-                if (type === "slider") {
-                    labelElem = document.createElement("label");
-                    labelElem.classList.add("bytm-ftconf-label");
-                    labelElem.style.marginRight = "20px";
-                    labelElem.style.fontSize = "16px";
-                    labelElem.htmlFor = inputElemId;
-                    labelElem.innerText = fmtVal(initialVal) + unitTxt;
-                    inputElem.addEventListener("input", () => {
-                        if (labelElem)
-                            labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
-                    });
+                const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
+                const val = featureCfg[featKey];
+                const initialVal = (_b = val !== null && val !== void 0 ? val : ftDefault) !== null && _b !== void 0 ? _b : undefined;
+                const ftConfElem = document.createElement("div");
+                ftConfElem.classList.add("betterytm-ftconf-item");
+                {
+                    const textElem = document.createElement("span");
+                    textElem.style.display = "inline-block";
+                    textElem.style.fontSize = "15px";
+                    textElem.innerText = desc;
+                    ftConfElem.appendChild(textElem);
                 }
-                else if (type === "toggle") {
-                    labelElem = document.createElement("label");
-                    labelElem.classList.add("bytm-ftconf-label");
-                    labelElem.style.paddingLeft = "10px";
-                    labelElem.style.paddingRight = "5px";
-                    labelElem.style.fontSize = "16px";
-                    labelElem.htmlFor = inputElemId;
-                    labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
-                    inputElem.addEventListener("input", () => {
-                        if (labelElem)
-                            labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
-                    });
-                }
-                inputElem.addEventListener("input", () => {
-                    let v = Number(String(inputElem.value).trim());
-                    if (isNaN(v))
-                        v = Number(inputElem.value);
+                {
+                    let inputType = "text";
+                    switch (type) {
+                        case "toggle":
+                            inputType = "checkbox";
+                            break;
+                        case "slider":
+                            inputType = "range";
+                            break;
+                        case "number":
+                            inputType = "number";
+                            break;
+                    }
+                    const inputElemId = `bytm-ftconf-${featKey}-input`;
+                    const ctrlElem = document.createElement("span");
+                    ctrlElem.style.display = "inline-flex";
+                    ctrlElem.style.alignItems = "center";
+                    ctrlElem.style.whiteSpace = "nowrap";
+                    const inputElem = document.createElement("input");
+                    inputElem.classList.add("bytm-ftconf-input");
+                    inputElem.id = inputElemId;
+                    inputElem.type = inputType;
+                    if (type === "toggle")
+                        inputElem.style.marginLeft = "5px";
                     if (typeof initialVal !== "undefined")
-                        confChanged(key, initialVal, (type !== "toggle" ? v : inputElem.checked));
-                });
-                labelElem && ctrlElem.appendChild(labelElem);
-                ctrlElem.appendChild(inputElem);
-                ftConfElem.appendChild(ctrlElem);
+                        inputElem.value = String(initialVal);
+                    if (type === "number" && step)
+                        inputElem.step = step;
+                    // @ts-ignore
+                    if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
+                        // @ts-ignore
+                        inputElem.min = ftInfo.min;
+                        // @ts-ignore
+                        inputElem.max = ftInfo.max;
+                    }
+                    if (type === "toggle" && typeof initialVal !== "undefined")
+                        inputElem.checked = Boolean(initialVal);
+                    // @ts-ignore
+                    const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+                    const fmtVal = (v) => String(v).trim();
+                    const toggleLabelText = (toggled) => toggled ? "On" : "Off";
+                    let labelElem;
+                    if (type === "slider") {
+                        labelElem = document.createElement("label");
+                        labelElem.classList.add("bytm-ftconf-label");
+                        labelElem.style.marginRight = "10px";
+                        labelElem.style.fontSize = "16px";
+                        labelElem.htmlFor = inputElemId;
+                        labelElem.innerText = fmtVal(initialVal) + unitTxt;
+                        inputElem.addEventListener("input", () => {
+                            if (labelElem)
+                                labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+                        });
+                    }
+                    else if (type === "toggle") {
+                        labelElem = document.createElement("label");
+                        labelElem.classList.add("bytm-ftconf-label");
+                        labelElem.style.paddingLeft = "10px";
+                        labelElem.style.paddingRight = "5px";
+                        labelElem.style.fontSize = "16px";
+                        labelElem.htmlFor = inputElemId;
+                        labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+                        inputElem.addEventListener("input", () => {
+                            if (labelElem)
+                                labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+                        });
+                    }
+                    inputElem.addEventListener("input", () => {
+                        let v = Number(String(inputElem.value).trim());
+                        if (isNaN(v))
+                            v = Number(inputElem.value);
+                        if (typeof initialVal !== "undefined")
+                            confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
+                    });
+                    labelElem && ctrlElem.appendChild(labelElem);
+                    ctrlElem.appendChild(inputElem);
+                    ftConfElem.appendChild(ctrlElem);
+                }
+                featuresCont.appendChild(ftConfElem);
             }
-            featuresCont.appendChild(ftConfElem);
         }
+        //#SECTION scroll indicator
+        const scrollIndicator = document.createElement("img");
+        scrollIndicator.id = "bytm-menu-scroll-indicator";
+        scrollIndicator.role = "button";
+        scrollIndicator.title = "Click to scroll to the bottom";
+        scrollIndicator.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjQ4Ij4KICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNDU3LjMwOC03NzkuOTk5djUxMy42OTJMMjEyLjAwMS01MTEuOTk5bC0zMiAzMS45OTlMNDgwLTE4MC4wMDEgNzc5Ljk5OS00ODBsLTMyLTMxLjk5OS0yNDUuMzA3IDI0NS42OTJ2LTUxMy42OTJoLTQ1LjM4NFoiLz4KPC9zdmc+";
+        //#DEBUG scrollIndicatorElem.src = await getResourceUrl("arrow_down");
+        featuresCont.appendChild(scrollIndicator);
+        scrollIndicator.addEventListener("click", () => {
+            const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
+            bottomAnchor === null || bottomAnchor === void 0 ? void 0 : bottomAnchor.scrollIntoView({
+                behavior: "smooth",
+            });
+        });
+        featuresCont.addEventListener("scroll", (evt) => __awaiter(this, void 0, void 0, function* () {
+            var _c, _d;
+            const scrollPos = (_d = (_c = evt.target) === null || _c === void 0 ? void 0 : _c.scrollTop) !== null && _d !== void 0 ? _d : 0;
+            const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
+            if (!scrollIndicator)
+                return;
+            if (scrollPos > 10 && scrollIndicatorShown) {
+                scrollIndicatorShown = false;
+                scrollIndicator.classList.add("hidden");
+                yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(200);
+                scrollIndicator.style.visibility = "hidden";
+            }
+            else if (scrollPos <= 10 && !scrollIndicatorShown) {
+                scrollIndicatorShown = true;
+                scrollIndicator.style.visibility = "initial";
+                scrollIndicator.classList.remove("hidden");
+            }
+        }));
+        const bottomAnchor = document.createElement("div");
+        bottomAnchor.id = "bytm-menu-bottom-anchor";
+        featuresCont.appendChild(bottomAnchor);
         //#SECTION footer
         const footerCont = document.createElement("div");
         footerCont.id = "bytm-menu-footer-cont";
-        footerCont.style.display = "flex";
-        footerCont.style.flexDirection = "row";
-        footerCont.style.justifyContent = "space-between";
-        footerCont.style.padding = "20px 20px 10px 20px";
-        footerCont.style.marginTop = "10px";
-        footerCont.style.position = "sticky";
-        footerCont.style.bottom = "0";
         const footerElem = document.createElement("div");
         footerElem.id = "bytm-menu-footer";
         footerElem.style.fontSize = "17px";
@@ -2139,8 +2179,7 @@ function addMenu() {
         versionCont.style.display = "flex";
         versionCont.style.justifyContent = "space-around";
         versionCont.style.fontSize = "1.15em";
-        versionCont.style.marginTop = "10px";
-        versionCont.style.marginBottom = "5px";
+        versionCont.style.marginTop = "5px";
         const versionElem = document.createElement("span");
         versionElem.id = "bytm-menu-version";
         versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}`;
@@ -2150,7 +2189,7 @@ function addMenu() {
         menuContainer.appendChild(versionCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Added menu element:", backgroundElem);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Added menu element");
     });
 }
 //#MARKER utilities
@@ -2159,7 +2198,7 @@ function closeMenu(e) {
         return;
     isMenuOpen = false;
     (e === null || e === void 0 ? void 0 : e.bubbles) && e.stopPropagation();
-    document.body.classList.remove("bytm-disable-scroll");
+    document.body.removeAttribute("no-y-overflow");
     const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
@@ -2169,10 +2208,18 @@ function openMenu() {
     if (isMenuOpen)
         return;
     isMenuOpen = true;
-    document.body.classList.add("bytm-disable-scroll");
+    document.body.setAttribute("no-y-overflow", "");
     const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
+    const featuresCont = document.querySelector("#bytm-menu-opts");
+    const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
+    // disable scroll indicator if container doesn't scroll
+    if (featuresCont && scrollIndicator && !(0,_utils__WEBPACK_IMPORTED_MODULE_4__.isScrollable)(featuresCont).vertical) {
+        scrollIndicatorShown = false;
+        scrollIndicator.classList.add("hidden");
+        scrollIndicator.style.visibility = "hidden";
+    }
 }
 
 
@@ -2192,6 +2239,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getResourceUrl: function() { return /* binding */ getResourceUrl; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
+/* harmony export */   isScrollable: function() { return /* binding */ isScrollable; },
 /* harmony export */   log: function() { return /* binding */ log; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
@@ -2366,10 +2414,9 @@ function ytForceShowVideoTime() {
  * @throws Throws if script runs on an unexpected website
  */
 function getDomain() {
-    const { hostname } = new URL(location.href);
-    if (hostname.includes("music.youtube"))
+    if (location.hostname.match(/^music\.youtube/))
         return "ytm";
-    else if (hostname.includes("youtube"))
+    else if (location.hostname.match(/youtube\./))
         return "yt";
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
@@ -2377,6 +2424,14 @@ function getDomain() {
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
 function getResourceUrl(name) {
     return GM.getResourceUrl(name);
+}
+/** Checks if an element is scrollable in the horizontal and vertical directions */
+function isScrollable(element) {
+    const { overflowX, overflowY } = getComputedStyle(element);
+    return {
+        vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
+        horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth,
+    };
 }
 
 
@@ -2540,6 +2595,8 @@ function init() {
         }
         try {
             (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)());
+            if ((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().disableBeforeUnloadPopup)
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.disableBeforeUnload)();
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error while initializing ConfigManager:", err);
@@ -2562,7 +2619,9 @@ function onDomLoad() {
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
   \**********************************************************************************/
 :root {
+  --bytm-menu-width: calc(min(70vw, 1000px));
   --bytm-menu-bg: #212121;
+  --bytm-menu-bg-highlight: #111111;
 }
 
 #bytm-menu-bg {
@@ -2579,9 +2638,9 @@ function onDomLoad() {
 #bytm-menu {
   display: inline-block;
   position: fixed;
-  width: 50vw;
+  width: var(--bytm-menu-width);
   height: auto;
-  left: 25vw;
+  left: calc((100vw - var(--bytm-menu-width)) / 2);
   top: 10vh;
   z-index: 16;
   padding: 10px 25px;
@@ -2590,27 +2649,34 @@ function onDomLoad() {
 }
 
 #bytm-menu-opts {
+  position: relative;
   max-height: 70vh;
   overflow: auto;
 }
 
 #bytm-menu-titlecont {
   display: flex;
+  justify-content: space-between;
+  padding: 8px 20px 15px 20px;
+  margin-bottom: 5px;
+  background-color: var(--bytm-menu-bg);
 }
 
 #bytm-menu-title {
   font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 8px;
+  margin: 5px 0;
 }
 
 #bytm-menu-linkscont {
   display: flex;
+  align-items: center;
 }
 
 .bytm-menu-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
   cursor: pointer;
-  display: inline-block;
 }
 
 #bytm-menu-close {
@@ -2618,16 +2684,56 @@ function onDomLoad() {
 }
 
 #bytm-menu-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 32px 20px 8px 20px;
+  position: sticky;
+  bottom: 0;
   background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 18%, var(--bytm-menu-bg) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 25%, var(--bytm-menu-bg) 100%);
+}
+
+#bytm-menu-scroll-indicator {
+  position: sticky;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  z-index: 1000;
+  background-color: var(--bytm-menu-bg-highlight);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.betterytm-ftconf-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
 }
 
 .bytm-ftconf-label {
   user-select: none;
 }
 
-body.bytm-disable-scroll {
-  overflow-y: hidden !important;
+.bytm-ftconf-input[type=number] {
+  width: 100px;
 }
 
 /*!***************************************************************************!*\
