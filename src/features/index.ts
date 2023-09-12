@@ -94,7 +94,7 @@ export const featInfo = {
     default: true,
   },
   closeToastsTimeout: {
-    desc: "After how long to close permanent notifications - 0 to only close them manually (default behavior)",
+    desc: "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
     type: "number",
     category: "layout",
     min: 0,

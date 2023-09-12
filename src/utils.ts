@@ -213,11 +213,9 @@ function ytForceShowVideoTime() {
  * @throws Throws if script runs on an unexpected website
  */
 export function getDomain(): Domain {
-  const { hostname } = new URL(location.href);
-
-  if(hostname.includes("music.youtube"))
+  if(location.hostname.match(/^music\.youtube/))
     return "ytm";
-  else if(hostname.includes("youtube"))
+  else if(location.hostname.match(/youtube\./))
     return "yt";
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");

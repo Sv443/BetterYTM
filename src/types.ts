@@ -42,7 +42,7 @@ export interface FeatureConfig {
   watermarkEnabled: boolean;
   /** Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
   queueButtons: boolean;
-  /** After how many seconds to close toasts */
+  /** After how many milliseconds to close permanent toasts */
   closeToastsTimeout: number;
 
   //#SECTION lyrics
