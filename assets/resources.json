@@ -1,10 +1,13 @@
 {
   "icon": "icon/icon_48.png",
   "close": "close.png",
+
   "delete": "delete.svg",
   "error": "error.svg",
   "lyrics": "lyrics.svg",
   "spinner": "spinner.svg",
+  "arrow_down": "arrow_down.svg",
+
   "github": "external/github.png",
   "greasyfork": "external/greasyfork.png"
 }
