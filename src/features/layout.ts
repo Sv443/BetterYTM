@@ -624,7 +624,7 @@ export function initAutoCloseToasts() {
     onSelector("tp-yt-paper-toast#toast", {
       all: true,
       continuous: true,
-      listener: (toastElems) => {
+      listener: async (toastElems) => {
         for(const toastElem of toastElems) {
           if(!toastElem.hasAttribute("allow-click-through"))
             continue;
@@ -633,14 +633,15 @@ export function initAutoCloseToasts() {
             continue;
           toastElem.classList.add("bytm-closing");
 
-          setTimeout(() => {
-            toastElem.classList.remove("paper-toast-open");
-            // wait for the transition to finish
-            setTimeout(() => {
-              toastElem.style.display = "none";
-              log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${closeTimeout + animTimeout}ms`);
-            }, animTimeout);
-          }, closeTimeout);
+          await pauseFor(closeTimeout);
+
+          toastElem.classList.remove("paper-toast-open");
+          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
+
+          // wait for the transition to finish
+          await pauseFor(animTimeout);
+
+          toastElem.style.display = "none";
         }
       },
     });
