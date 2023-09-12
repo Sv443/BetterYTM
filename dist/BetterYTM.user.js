@@ -481,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "7c50727", // assert as generic string instead of literal
+    lastCommit: "8260317", // assert as generic string instead of literal
 };
 
 
@@ -2947,8 +2947,6 @@ ytmusic-responsive-list-item-renderer .left-items {
   opacity: 0.000001;
   position: absolute;
   font-size: 15px;
-  font-weight: 500;
-  padding: 6px 8px;
   top: 50%;
   left: 0;
   transform: translate(calc(-50% - 10px), -50%);
