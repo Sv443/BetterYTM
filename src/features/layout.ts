@@ -124,10 +124,13 @@ export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
-  cfgOptItemElem.addEventListener("click", (e) => {
+  cfgOptItemElem.addEventListener("click", async (e) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
     menuOpenAmt++;
+
+    await pauseFor(100);
+
     if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
       openMenu();
     if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
