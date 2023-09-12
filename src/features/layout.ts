@@ -5,7 +5,7 @@ import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log } from "../utils";
 import { getEvtData, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
-import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry } from "./lyrics";
+import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import "./layout.css";
 import { featInfo } from ".";
 
@@ -338,7 +338,10 @@ async function addQueueButtons(queueItem: HTMLElement) {
       let lyricsUrl: string | undefined;
       const artistsSan = sanitizeArtists(artist);
       const songSan = sanitizeSong(song);
-      const cachedLyricsUrl = getLyricsCacheEntry(artistsSan, songSan);
+      const splitTitle = splitVideoTitle(songSan);
+      const cachedLyricsUrl = songSan.includes("-")
+        ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
+        : getLyricsCacheEntry(artistsSan, songSan);
 
       if(cachedLyricsUrl)
         lyricsUrl = cachedLyricsUrl;
@@ -368,7 +371,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
         if(!lyricsUrl) {
           resetImgElem();
           if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-            openInNewTab("https://genius.com/search");
+            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
           return;
         }
       }
