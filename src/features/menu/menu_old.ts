@@ -1,9 +1,9 @@
-import { debounce, pauseFor } from "@sv443-network/userutils";
+import { debounce, isScrollable, pauseFor } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, saveFeatures, setDefaultFeatures } from "../../config";
 import { scriptInfo } from "../../constants";
 import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../index";
 import { FeatureConfig } from "../../types";
-import { getResourceUrl, info, isScrollable, log } from "../../utils";
+import { getResourceUrl, info, log } from "../../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements

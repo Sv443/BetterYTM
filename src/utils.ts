@@ -225,12 +225,3 @@ export function getDomain(): Domain {
 export function getResourceUrl(name: keyof typeof resources) {
   return GM.getResourceUrl(name);
 }
-
-/** Checks if an element is scrollable in the horizontal and vertical directions */
-export function isScrollable(element: HTMLElement) {
-  const { overflowX, overflowY } = getComputedStyle(element);
-  return {
-    vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
-    horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth,
-  };
-}

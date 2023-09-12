@@ -115,5 +115,5 @@ async function initHomeObservers() {
     childList: true,
   });
 
-  observers = observers.concat([ shelfContainerObs ]);
+  observers.push(shelfContainerObs);
 }
