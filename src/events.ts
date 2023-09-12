@@ -92,7 +92,7 @@ async function initHomeObservers() {
     await new Promise<void>((res) => {
       interval = setInterval(() => {
         if(!document.querySelector("ytmusic-browse-response#browse-page")?.hasAttribute("hidden")) {
-          clearInterval(interval);
+          clearInterval(interval as unknown as number);
           res();
         }
       }, 50);
