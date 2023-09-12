@@ -209,8 +209,6 @@ ytmusic-responsive-list-item-renderer .left-items {
   opacity: 0.000001;
   position: absolute;
   font-size: 15px;
-  font-weight: 500;
-  padding: 6px 8px;
   top: 50%;
   left: 0;
   transform: translate(calc(-50% - 10px), -50%);
