@@ -481,7 +481,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "737adc9", // assert as generic string instead of literal
+    lastCommit: "c5345cd", // assert as generic string instead of literal
 };
 
 
@@ -646,7 +646,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
 /* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
 /* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeArtists; },
-/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; }
+/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; },
+/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.splitVideoTitle; }
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
@@ -1255,7 +1256,10 @@ function addQueueButtons(queueItem) {
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
                 const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
-                const cachedLyricsUrl = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
+                const splitTitle = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.splitVideoTitle)(songSan);
+                const cachedLyricsUrl = songSan.includes("-")
+                    ? (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(splitTitle.artist, splitTitle.song)
+                    : (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
                 if (cachedLyricsUrl)
                     lyricsUrl = cachedLyricsUrl;
                 else if (!songInfo.hasAttribute("data-bytm-loading")) {
@@ -1278,7 +1282,7 @@ function addQueueButtons(queueItem) {
                     if (!lyricsUrl) {
                         resetImgElem();
                         if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-                            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.openInNewTab)("https://genius.com/search");
+                            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.openInNewTab)(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
                         return;
                     }
                 }
@@ -1533,7 +1537,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getGeniusUrl: function() { return /* binding */ getGeniusUrl; },
 /* harmony export */   getLyricsCacheEntry: function() { return /* binding */ getLyricsCacheEntry; },
 /* harmony export */   sanitizeArtists: function() { return /* binding */ sanitizeArtists; },
-/* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; }
+/* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
+/* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1686,7 +1691,7 @@ function getCurrentLyricsUrl() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.getAttribute("video-mode_")) === "string";
+            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
             const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
             const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
             if (!songTitleElem || !songMetaElem || !songTitleElem.title)
@@ -1698,8 +1703,8 @@ function getCurrentLyricsUrl() {
             const getGeniusUrlVideo = () => __awaiter(this, void 0, void 0, function* () {
                 if (!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
                     return yield getGeniusUrl(artistName, songName);
-                const [artist, ...rest] = songName.split("-").map(v => v.trim());
-                return yield getGeniusUrl(artist, rest.join(" "));
+                const { artist, song } = splitVideoTitle(songName);
+                return yield getGeniusUrl(artist, song);
             });
             // TODO: artist might need further splitting before comma or ampersand
             const url = isVideo ? yield getGeniusUrlVideo() : yield getGeniusUrl(artistName, songName);
@@ -1768,6 +1773,11 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         linkElem.appendChild(imgElem);
         return linkElem;
     });
+}
+/** Splits a video title that contains a hyphen into an artist and song */
+function splitVideoTitle(title) {
+    const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+    return { artist, song: rest.join("-") };
 }
 
 
