@@ -53,5 +53,5 @@ export async function saveFeatures(featureConf: FeatureConfig) {
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export async function setDefaultFeatures() {
   await cfgMgr.saveDefaultData();
-  info("Reset feature config to its default value");
+  info("Reset feature config to its default values");
 }

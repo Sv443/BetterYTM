@@ -39,26 +39,26 @@ type BuildStats = {
 
   const header = `\
 // ==UserScript==
-// @name            ${pkg.userscriptName}
-// @homepageURL     ${pkg.homepage}#readme
-// @namespace       ${pkg.homepage}
-// @version         ${pkg.version}
-// @description     ${pkg.description}
-// @description:de  ${pkg["description:de"]}
-// @license         ${pkg.license}
-// @author          ${pkg.author.name}
-// @copyright       ${pkg.author.name} (${pkg.author.url})
-// @icon            https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon_48.png
-// @match           https://music.youtube.com/*
-// @match           https://www.youtube.com/*
-// @run-at          document-start
-// @downloadURL     ${scriptUrl}
-// @updateURL       ${scriptUrl}
-// @connect         api.sv443.net
-// @grant           GM.getValue
-// @grant           GM.setValue
-// @grant           GM.getResourceUrl
-// @grant           unsafeWindow
+// @name           ${pkg.userscriptName}
+// @homepageURL    ${pkg.homepage}#readme
+// @namespace      ${pkg.homepage}
+// @version        ${pkg.version}
+// @description    ${pkg.description}
+// @description:de ${pkg["description:de"]}
+// @license        ${pkg.license}
+// @author         ${pkg.author.name}
+// @copyright      ${pkg.author.name} (${pkg.author.url})
+// @icon           https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon_48.png
+// @match          https://music.youtube.com/*
+// @match          https://www.youtube.com/*
+// @run-at         document-start
+// @downloadURL    ${scriptUrl}
+// @updateURL      ${scriptUrl}
+// @connect        api.sv443.net
+// @grant          GM.getValue
+// @grant          GM.setValue
+// @grant          GM.getResourceUrl
+// @grant          unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}
 // ==/UserScript==
@@ -192,12 +192,18 @@ async function getResourceDirectives() {
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
 
-    for(const [name, path] of Object.entries(resources))
-      directives.push(`// @resource        ${name} ${
+    let longestName = 0;
+    for(const name of Object.keys(resources))
+      longestName = Math.max(longestName, name.length);
+
+    for(const [name, path] of Object.entries(resources)) {
+      const bufferSpace = " ".repeat(longestName - name.length);
+      directives.push(`// @resource       ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
           : `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`
       }`);
+    }
 
     return directives.join("\n");
   }

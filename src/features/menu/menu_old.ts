@@ -72,7 +72,8 @@ export async function addMenu() {
   };
 
   addLink(await getResourceUrl("github"), scriptInfo.namespace, `Open ${scriptInfo.name} on GitHub`);
-  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/TODO", `Open ${scriptInfo.name} on GreasyFork`);
+  // TODO:
+  // addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/users/184165-sv443", `Open ${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.id = "bytm-menu-close";
@@ -313,11 +314,14 @@ export async function addMenu() {
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
-  resetElem.title = "Click to reset all settings to their default value";
+  resetElem.title = "Click to reset all settings to their default values";
   resetElem.innerText = "Reset";
   resetElem.addEventListener("click", async () => {
-    if(confirm("Do you really want to reset all settings to their default value?\nAfterwards the page will need to be reloaded to apply changes."))
+    if(confirm("Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.")) {
       await setDefaultFeatures();
+      closeMenu();
+      location.reload();
+    }
   });
 
   footerElem.appendChild(reloadElem);
@@ -358,11 +362,12 @@ export async function addMenu() {
 
 //#MARKER utilities
 
-export function closeMenu(e?: MouseEvent | KeyboardEvent) {
+/** Closes the menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
   if(!isMenuOpen)
     return;
   isMenuOpen = false;
-  e?.bubbles && e.stopPropagation();
+  evt?.bubbles && evt.stopPropagation();
 
   document.body.removeAttribute("no-y-overflow");
   const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
@@ -371,7 +376,7 @@ export function closeMenu(e?: MouseEvent | KeyboardEvent) {
   menuBg.style.display = "none";
 }
 
-// function that opens the menu, it should do the inverse of closeMenu()
+/** Opens the menu if it is closed */
 export function openMenu() {
   if(isMenuOpen)
     return;
