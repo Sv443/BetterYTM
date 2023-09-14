@@ -395,7 +395,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -411,7 +411,15 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 1;
+const formatVersion = 2;
+const migrations = {
+    // 1 -> 2
+    2: (oldData) => {
+        const queueBtnsEnabled = Boolean(oldData.queueButtons);
+        delete oldData.queueButtons;
+        return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
+    },
+};
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
     acc[key] = _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo[key].default;
@@ -421,6 +429,7 @@ const cfgMgr = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.ConfigM
     id: "bytm-config",
     formatVersion,
     defaultConfig,
+    migrations,
 });
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 function initConfig() {
@@ -481,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "6bf48d3", // assert as generic string instead of literal
+    lastCommit: "1251d91", // assert as generic string instead of literal
 };
 
 
@@ -707,9 +716,8 @@ const featInfo = {
         category: "layout",
         default: true,
     },
-    // TODO(v1.1): Make each button configurable
-    queueButtons: {
-        desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
+    deleteFromQueueButton: {
+        desc: "Add a button to each song in the queue to quickly remove it",
         type: "toggle",
         category: "layout",
         default: true,
@@ -768,6 +776,12 @@ const featInfo = {
         category: "lyrics",
         default: true,
     },
+    lyricsQueueButton: {
+        desc: "Add a button to each song in the queue to quickly open its lyrics page",
+        type: "toggle",
+        category: "lyrics",
+        default: true,
+    }
 };
 
 
@@ -787,7 +801,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -966,7 +980,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
@@ -1238,8 +1252,9 @@ function addQueueButtons(queueItem) {
         const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("lyrics");
         const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("delete");
         //#SECTION lyrics btn
-        const lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
-        {
+        let lyricsBtnElem;
+        if (features.lyricsQueueButton) {
+            lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
             lyricsBtnElem.title = "Open this song's lyrics in a new tab";
             lyricsBtnElem.style.display = "inline-flex";
             lyricsBtnElem.style.visibility = "initial";
@@ -1248,12 +1263,12 @@ function addQueueButtons(queueItem) {
                 e.stopPropagation();
                 const songInfo = queueItem.querySelector(".song-info");
                 if (!songInfo)
-                    return false;
+                    return;
                 const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
                 const song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
                 const artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
                 if (!song || !artist)
-                    return false;
+                    return;
                 let lyricsUrl;
                 const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
                 const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
@@ -1291,8 +1306,9 @@ function addQueueButtons(queueItem) {
             }));
         }
         //#SECTION delete from queue btn
-        const deleteBtnElem = document.createElement("a");
-        {
+        let deleteBtnElem;
+        if (features.deleteFromQueueButton) {
+            deleteBtnElem = document.createElement("a");
             Object.assign(deleteBtnElem, {
                 title: "Remove this song from the queue",
                 className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
@@ -1330,11 +1346,10 @@ function addQueueButtons(queueItem) {
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
-        queueBtnsCont.appendChild(lyricsBtnElem);
-        queueBtnsCont.appendChild(deleteBtnElem);
+        lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
+        deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);
         (_a = queueItem.querySelector(".song-info")) === null || _a === void 0 ? void 0 : _a.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
-        return true;
     });
 }
 //#MARKER better clickable stuff
@@ -1540,7 +1555,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
 /* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1893,7 +1908,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
@@ -1953,7 +1968,7 @@ function addMenu() {
         titleElem.id = "bytm-menu-title";
         titleElem.role = "heading";
         titleElem.ariaLevel = "1";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} Configuration`;
+        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
         const linksCont = document.createElement("div");
         linksCont.id = "bytm-menu-linkscont";
         const addLink = (imgSrc, href, title) => {
@@ -2248,7 +2263,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 
@@ -2433,45 +2448,444 @@ function getResourceUrl(name) {
 
 /***/ }),
 
-/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
-/*!**************************************************************!*\
-  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
-  \**************************************************************/
+/***/ "../UserUtils/dist/index.mjs":
+/*!***********************************!*\
+  !*** ../UserUtils/dist/index.mjs ***!
+  \***********************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ConfigManager: function() { return /* binding */ y; },
-/* harmony export */   addGlobalStyle: function() { return /* binding */ W; },
-/* harmony export */   addParent: function() { return /* binding */ j; },
-/* harmony export */   amplifyMedia: function() { return /* binding */ q; },
-/* harmony export */   autoPlural: function() { return /* binding */ B; },
-/* harmony export */   clamp: function() { return /* binding */ D; },
-/* harmony export */   debounce: function() { return /* binding */ X; },
-/* harmony export */   fetchAdvanced: function() { return /* binding */ Y; },
-/* harmony export */   getSelectorMap: function() { return /* binding */ re; },
-/* harmony export */   getUnsafeWindow: function() { return /* binding */ S; },
-/* harmony export */   initOnSelector: function() { return /* binding */ ne; },
-/* harmony export */   insertAfter: function() { return /* binding */ _; },
-/* harmony export */   interceptEvent: function() { return /* binding */ C; },
-/* harmony export */   interceptWindowEvent: function() { return /* binding */ J; },
-/* harmony export */   isScrollable: function() { return /* binding */ K; },
-/* harmony export */   mapRange: function() { return /* binding */ L; },
-/* harmony export */   onSelector: function() { return /* binding */ ee; },
-/* harmony export */   openInNewTab: function() { return /* binding */ H; },
-/* harmony export */   pauseFor: function() { return /* binding */ U; },
-/* harmony export */   preloadImages: function() { return /* binding */ F; },
-/* harmony export */   randRange: function() { return /* binding */ g; },
-/* harmony export */   randomItem: function() { return /* binding */ V; },
-/* harmony export */   randomItemIndex: function() { return /* binding */ T; },
-/* harmony export */   randomizeArray: function() { return /* binding */ k; },
-/* harmony export */   removeOnSelector: function() { return /* binding */ te; },
-/* harmony export */   takeRandomItem: function() { return /* binding */ $; }
+/* harmony export */   ConfigManager: function() { return /* binding */ ConfigManager; },
+/* harmony export */   addGlobalStyle: function() { return /* binding */ addGlobalStyle; },
+/* harmony export */   addParent: function() { return /* binding */ addParent; },
+/* harmony export */   amplifyMedia: function() { return /* binding */ amplifyMedia; },
+/* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
+/* harmony export */   clamp: function() { return /* binding */ clamp; },
+/* harmony export */   debounce: function() { return /* binding */ debounce; },
+/* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
+/* harmony export */   getSelectorMap: function() { return /* binding */ getSelectorMap; },
+/* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
+/* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
+/* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
+/* harmony export */   interceptEvent: function() { return /* binding */ interceptEvent; },
+/* harmony export */   interceptWindowEvent: function() { return /* binding */ interceptWindowEvent; },
+/* harmony export */   isScrollable: function() { return /* binding */ isScrollable; },
+/* harmony export */   mapRange: function() { return /* binding */ mapRange; },
+/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
+/* harmony export */   openInNewTab: function() { return /* binding */ openInNewTab; },
+/* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
+/* harmony export */   preloadImages: function() { return /* binding */ preloadImages; },
+/* harmony export */   randRange: function() { return /* binding */ randRange; },
+/* harmony export */   randomItem: function() { return /* binding */ randomItem; },
+/* harmony export */   randomItemIndex: function() { return /* binding */ randomItemIndex; },
+/* harmony export */   randomizeArray: function() { return /* binding */ randomizeArray; },
+/* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
+/* harmony export */   takeRandomItem: function() { return /* binding */ takeRandomItem; }
 /* harmony export */ });
-var v=Object.defineProperty,x=Object.defineProperties;var w=Object.getOwnPropertyDescriptors;var h=Object.getOwnPropertySymbols;var O=Object.prototype.hasOwnProperty,M=Object.prototype.propertyIsEnumerable;var p=(t,e,n)=>e in t?v(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n,f=(t,e)=>{for(var n in e||(e={}))O.call(e,n)&&p(t,n,e[n]);if(h)for(var n of h(e))M.call(e,n)&&p(t,n,e[n]);return t},b=(t,e)=>x(t,w(e));var m=(t,e,n)=>(p(t,typeof e!="symbol"?e+"":e,n),n);var c=(t,e,n)=>new Promise((r,i)=>{var o=s=>{try{u(n.next(s));}catch(l){i(l);}},a=s=>{try{u(n.throw(s));}catch(l){i(l);}},u=s=>s.done?r(s.value):Promise.resolve(s.value).then(o,a);u((n=n.apply(t,e)).next());});function D(t,e,n){return Math.max(Math.min(t,n),e)}function L(t,e,n,r,i){return Number(e)===0&&Number(r)===0?t*(i/n):(t-e)*((i-r)/(n-e))+r}function g(...t){let e,n;if(typeof t[0]=="number"&&typeof t[1]=="number")[e,n]=t;else if(typeof t[0]=="number"&&typeof t[1]!="number")e=0,n=t[0];else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof t[0]}" and "${typeof t[1]}"`);if(e=Number(e),n=Number(n),isNaN(e)||isNaN(n))throw new TypeError(`Parameters "min" and "max" can't be NaN`);if(e>n)throw new TypeError(`Parameter "min" can't be bigger than "max"`);return Math.floor(Math.random()*(n-e+1))+e}function V(t){return T(t)[0]}function T(t){if(t.length===0)return [void 0,void 0];let e=g(t.length-1);return [t[e],e]}function $(t){let[e,n]=T(t);if(n!==void 0)return t.splice(n,1),e}function k(t){let e=[...t];if(t.length===0)return t;for(let n=e.length-1;n>0;n--){let r=Math.floor(g(0,1e4)/1e4*(n+1));[e[n],e[r]]=[e[r],e[n]];}return e}var y=class{constructor(e){m(this,"id");m(this,"formatVersion");m(this,"defaultConfig");m(this,"cachedConfig");m(this,"migrations");this.id=e.id,this.formatVersion=e.formatVersion,this.defaultConfig=e.defaultConfig,this.cachedConfig=e.defaultConfig,this.migrations=e.migrations;}loadData(){return c(this,null,function*(){try{let e=yield GM.getValue(`_uucfg-${this.id}`,this.defaultConfig),n=Number(yield GM.getValue(`_uucfgver-${this.id}`));if(typeof e!="string")return yield this.saveDefaultData(),this.defaultConfig;isNaN(n)&&(yield GM.setValue(`_uucfgver-${this.id}`,n=this.formatVersion));let r=JSON.parse(e);return n<this.formatVersion&&this.migrations&&(r=yield this.runMigrations(r,n)),this.cachedConfig=typeof r=="object"?r:void 0}catch(e){return yield this.saveDefaultData(),this.defaultConfig}})}getData(){return this.deepCopy(this.cachedConfig)}setData(e){return this.cachedConfig=e,new Promise(n=>c(this,null,function*(){yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(e)),GM.setValue(`_uucfgver-${this.id}`,this.formatVersion)]),n();}))}saveDefaultData(){return c(this,null,function*(){return this.cachedConfig=this.defaultConfig,new Promise(e=>c(this,null,function*(){yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(this.defaultConfig)),GM.setValue(`_uucfgver-${this.id}`,this.formatVersion)]),e();}))})}deleteConfig(){return c(this,null,function*(){yield Promise.allSettled([GM.deleteValue(`_uucfg-${this.id}`),GM.deleteValue(`_uucfgver-${this.id}`)]);})}runMigrations(e,n){return c(this,null,function*(){if(!this.migrations)return e;let r=e,i=Object.entries(this.migrations).sort(([a],[u])=>Number(a)-Number(u)),o=n;for(let[a,u]of i){let s=Number(a);if(n<this.formatVersion&&n<s)try{let l=u(r);r=l instanceof Promise?yield l:l,o=n=s;}catch(l){console.error(`Error while running migration function for format version ${a}:`,l);}}return yield Promise.allSettled([GM.setValue(`_uucfg-${this.id}`,JSON.stringify(r)),GM.setValue(`_uucfgver-${this.id}`,o)]),r})}deepCopy(e){return JSON.parse(JSON.stringify(e))}};function S(){try{return unsafeWindow}catch(t){return window}}function _(t,e){var n;return (n=t.parentNode)==null||n.insertBefore(e,t.nextSibling),e}function j(t,e){let n=t.parentNode;if(!n)throw new Error("Element doesn't have a parent node");return n.replaceChild(e,t),e.appendChild(t),e}function W(t){let e=document.createElement("style");e.innerHTML=t,document.head.appendChild(e);}function F(t,e=!1){let n=t.map(r=>new Promise((i,o)=>{let a=new Image;a.src=r,a.addEventListener("load",()=>i(a)),a.addEventListener("error",u=>e&&o(u));}));return Promise.allSettled(n)}function H(t){let e=document.createElement("a");Object.assign(e,{className:"userutils-open-in-new-tab",target:"_blank",rel:"noopener noreferrer",href:t}),e.style.display="none",document.body.appendChild(e),e.click(),setTimeout(e.remove,50);}function C(t,e,n){typeof Error.stackTraceLimit=="number"&&Error.stackTraceLimit<1e3&&(Error.stackTraceLimit=1e3),function(r){t.__proto__.addEventListener=function(...i){var a,u;let o=typeof i[1]=="function"?i[1]:(u=(a=i[1])==null?void 0:a.handleEvent)!=null?u:()=>{};i[1]=function(...s){if(!(i[0]===e&&n(Array.isArray(s)?s[0]:s)))return o.apply(this,s)},r.apply(this,i);};}(t.__proto__.addEventListener);}function J(t,e){return C(S(),t,e)}function q(t,e=1){let n=new(window.AudioContext||window.webkitAudioContext),r={mediaElement:t,amplify:i=>{r.gain.gain.value=i;},getAmpLevel:()=>r.gain.gain.value,context:n,source:n.createMediaElementSource(t),gain:n.createGain()};return r.source.connect(r.gain),r.gain.connect(n.destination),r.amplify(e),r}function K(t){let{overflowX:e,overflowY:n}=getComputedStyle(t);return {vertical:(n==="scroll"||n==="auto")&&t.scrollHeight>t.clientHeight,horizontal:(e==="scroll"||e==="auto")&&t.scrollWidth>t.clientWidth}}function B(t,e){return (Array.isArray(e)||e instanceof NodeList)&&(e=e.length),`${t}${e===1?"":"s"}`}function U(t){return new Promise(e=>{setTimeout(()=>e(),t);})}function X(t,e=300){let n;return function(...r){clearTimeout(n),n=setTimeout(()=>t.apply(this,r),e);}}function Y(n){return c(this,arguments,function*(t,e={}){let{timeout:r=1e4}=e,i=new AbortController,o=setTimeout(()=>i.abort(),r),a=yield fetch(t,b(f({},e),{signal:i.signal}));return clearTimeout(o),a})}var d=new Map;function ee(t,e){let n=[];d.has(t)&&(n=d.get(t)),n.push(e),d.set(t,n),E(t,n);}function te(t){return d.delete(t)}function E(t,e){let n=[];if(e.forEach((r,i)=>{try{let o=r.all?document.querySelectorAll(t):document.querySelector(t);(o!==null&&o instanceof NodeList&&o.length>0||o!==null)&&(r.listener(o),r.continuous||n.push(i));}catch(o){console.error(`Couldn't call listener for selector '${t}'`,o);}}),n.length>0){let r=e.filter((i,o)=>!n.includes(o));r.length===0?d.delete(t):d.set(t,r);}}function ne(t={}){new MutationObserver(()=>{for(let[n,r]of d.entries())E(n,r);}).observe(document.body,f({subtree:!0,childList:!0},t));}function re(){return d}
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+// lib/math.ts
+function clamp(value, min, max) {
+  return Math.max(Math.min(value, max), min);
+}
+function mapRange(value, range_1_min, range_1_max, range_2_min, range_2_max) {
+  if (Number(range_1_min) === 0 && Number(range_2_min) === 0)
+    return value * (range_2_max / range_1_max);
+  return (value - range_1_min) * ((range_2_max - range_2_min) / (range_1_max - range_1_min)) + range_2_min;
+}
+function randRange(...args) {
+  let min, max;
+  if (typeof args[0] === "number" && typeof args[1] === "number") {
+    [min, max] = args;
+  } else if (typeof args[0] === "number" && typeof args[1] !== "number") {
+    min = 0;
+    max = args[0];
+  } else
+    throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
+  min = Number(min);
+  max = Number(max);
+  if (isNaN(min) || isNaN(max))
+    throw new TypeError(`Parameters "min" and "max" can't be NaN`);
+  if (min > max)
+    throw new TypeError(`Parameter "min" can't be bigger than "max"`);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// lib/array.ts
+function randomItem(array) {
+  return randomItemIndex(array)[0];
+}
+function randomItemIndex(array) {
+  if (array.length === 0)
+    return [void 0, void 0];
+  const idx = randRange(array.length - 1);
+  return [array[idx], idx];
+}
+function takeRandomItem(arr) {
+  const [itm, idx] = randomItemIndex(arr);
+  if (idx === void 0)
+    return void 0;
+  arr.splice(idx, 1);
+  return itm;
+}
+function randomizeArray(array) {
+  const retArray = [...array];
+  if (array.length === 0)
+    return array;
+  for (let i = retArray.length - 1; i > 0; i--) {
+    const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
+    [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
+  }
+  return retArray;
+}
+
+// lib/config.ts
+var ConfigManager = class {
+  /**
+   * Creates an instance of ConfigManager to manage a user configuration that is cached in memory and persistently saved across sessions.  
+   * Supports migrating data from older versions of the configuration to newer ones and populating the cache with default data if no persistent data is found.  
+   *   
+   * ⚠️ Requires the directives `@grant GM.getValue` and `@grant GM.setValue`  
+   * ⚠️ Make sure to call `loadData()` at least once after creating an instance, or the returned data will be the same as `options.defaultConfig`
+   * 
+   * @template TData The type of the data that is saved in persistent storage (will be automatically inferred from `config.defaultConfig`) - this should also be the type of the data format associated with the current `options.formatVersion`
+   * @param options The options for this ConfigManager instance
+  */
+  constructor(options) {
+    __publicField(this, "id");
+    __publicField(this, "formatVersion");
+    __publicField(this, "defaultConfig");
+    __publicField(this, "cachedConfig");
+    __publicField(this, "migrations");
+    this.id = options.id;
+    this.formatVersion = options.formatVersion;
+    this.defaultConfig = options.defaultConfig;
+    this.cachedConfig = options.defaultConfig;
+    this.migrations = options.migrations;
+  }
+  /**
+   * Loads the data saved in persistent storage into the in-memory cache and also returns it.  
+   * Automatically populates persistent storage with default data if it doesn't contain any data yet.  
+   * Also runs all necessary migration functions if the data format has changed since the last time the data was saved.
+   */
+  loadData() {
+    return __async(this, null, function* () {
+      try {
+        const gmData = yield GM.getValue(`_uucfg-${this.id}`, this.defaultConfig);
+        let gmFmtVer = Number(yield GM.getValue(`_uucfgver-${this.id}`));
+        if (typeof gmData !== "string") {
+          yield this.saveDefaultData();
+          return this.defaultConfig;
+        }
+        if (isNaN(gmFmtVer))
+          yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
+        let parsed = JSON.parse(gmData);
+        if (gmFmtVer < this.formatVersion && this.migrations)
+          parsed = yield this.runMigrations(parsed, gmFmtVer);
+        return this.cachedConfig = typeof parsed === "object" ? parsed : void 0;
+      } catch (err) {
+        yield this.saveDefaultData();
+        return this.defaultConfig;
+      }
+    });
+  }
+  /** Returns a copy of the data from the in-memory cache. Use `loadData()` to get fresh data from persistent storage (usually not necessary since the cache should always exactly reflect persistent storage). */
+  getData() {
+    return this.deepCopy(this.cachedConfig);
+  }
+  /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
+  setData(data) {
+    this.cachedConfig = data;
+    return new Promise((resolve) => __async(this, null, function* () {
+      yield Promise.allSettled([
+        GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)),
+        GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
+      ]);
+      resolve();
+    }));
+  }
+  /** Saves the default configuration data passed in the constructor synchronously to the in-memory cache and asynchronously to persistent storage */
+  saveDefaultData() {
+    return __async(this, null, function* () {
+      this.cachedConfig = this.defaultConfig;
+      return new Promise((resolve) => __async(this, null, function* () {
+        yield Promise.allSettled([
+          GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)),
+          GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
+        ]);
+        resolve();
+      }));
+    });
+  }
+  /**
+   * Call this method to clear all persistently stored data associated with this ConfigManager instance.  
+   * The in-memory cache will be left untouched, so you may still access the data with `getData()`.  
+   * Calling `loadData()` or `setData()` after this method was called will recreate persistent storage with the cached or default data.  
+   *   
+   * ⚠️ This requires the additional directive `@grant GM.deleteValue`
+   */
+  deleteConfig() {
+    return __async(this, null, function* () {
+      yield Promise.allSettled([
+        GM.deleteValue(`_uucfg-${this.id}`),
+        GM.deleteValue(`_uucfgver-${this.id}`)
+      ]);
+    });
+  }
+  /** Runs all necessary migration functions consecutively - may be overwritten in a subclass */
+  runMigrations(oldData, oldFmtVer) {
+    return __async(this, null, function* () {
+      if (!this.migrations)
+        return oldData;
+      let newData = oldData;
+      const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
+      let lastFmtVer = oldFmtVer;
+      for (const [fmtVer, migrationFunc] of sortedMigrations) {
+        const ver = Number(fmtVer);
+        if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
+          try {
+            const migRes = migrationFunc(newData);
+            newData = migRes instanceof Promise ? yield migRes : migRes;
+            lastFmtVer = oldFmtVer = ver;
+          } catch (err) {
+            console.error(`Error while running migration function for format version ${fmtVer}:`, err);
+          }
+        }
+      }
+      yield Promise.allSettled([
+        GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)),
+        GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)
+      ]);
+      return newData;
+    });
+  }
+  /** Copies a JSON-compatible object and loses its internal references */
+  deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+};
+
+// lib/dom.ts
+function getUnsafeWindow() {
+  try {
+    return unsafeWindow;
+  } catch (e) {
+    return window;
+  }
+}
+function insertAfter(beforeElement, afterElement) {
+  var _a;
+  (_a = beforeElement.parentNode) == null ? void 0 : _a.insertBefore(afterElement, beforeElement.nextSibling);
+  return afterElement;
+}
+function addParent(element, newParent) {
+  const oldParent = element.parentNode;
+  if (!oldParent)
+    throw new Error("Element doesn't have a parent node");
+  oldParent.replaceChild(newParent, element);
+  newParent.appendChild(element);
+  return newParent;
+}
+function addGlobalStyle(style) {
+  const styleElem = document.createElement("style");
+  styleElem.innerHTML = style;
+  document.head.appendChild(styleElem);
+}
+function preloadImages(srcUrls, rejects = false) {
+  const promises = srcUrls.map((src) => new Promise((res, rej) => {
+    const image = new Image();
+    image.src = src;
+    image.addEventListener("load", () => res(image));
+    image.addEventListener("error", (evt) => rejects && rej(evt));
+  }));
+  return Promise.allSettled(promises);
+}
+function openInNewTab(href) {
+  const openElem = document.createElement("a");
+  Object.assign(openElem, {
+    className: "userutils-open-in-new-tab",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    href
+  });
+  openElem.style.display = "none";
+  document.body.appendChild(openElem);
+  openElem.click();
+  setTimeout(openElem.remove, 50);
+}
+function interceptEvent(eventObject, eventName, predicate) {
+  if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
+    Error.stackTraceLimit = 1e3;
+  }
+  (function(original) {
+    eventObject.__proto__.addEventListener = function(...args) {
+      var _a, _b;
+      const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
+      args[1] = function(...a) {
+        if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
+          return;
+        else
+          return origListener.apply(this, a);
+      };
+      original.apply(this, args);
+    };
+  })(eventObject.__proto__.addEventListener);
+}
+function interceptWindowEvent(eventName, predicate) {
+  return interceptEvent(getUnsafeWindow(), eventName, predicate);
+}
+function amplifyMedia(mediaElement, multiplier = 1) {
+  const context = new (window.AudioContext || window.webkitAudioContext)();
+  const result = {
+    mediaElement,
+    amplify: (multiplier2) => {
+      result.gain.gain.value = multiplier2;
+    },
+    getAmpLevel: () => result.gain.gain.value,
+    context,
+    source: context.createMediaElementSource(mediaElement),
+    gain: context.createGain()
+  };
+  result.source.connect(result.gain);
+  result.gain.connect(context.destination);
+  result.amplify(multiplier);
+  return result;
+}
+function isScrollable(element) {
+  const { overflowX, overflowY } = getComputedStyle(element);
+  return {
+    vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
+    horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
+  };
+}
+
+// lib/misc.ts
+function autoPlural(word, num) {
+  if (Array.isArray(num) || num instanceof NodeList)
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
+}
+function pauseFor(time) {
+  return new Promise((res) => {
+    setTimeout(() => res(), time);
+  });
+}
+function debounce(func, timeout = 300) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
+}
+function fetchAdvanced(_0) {
+  return __async(this, arguments, function* (url, options = {}) {
+    const { timeout = 1e4 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
+      signal: controller.signal
+    }));
+    clearTimeout(id);
+    return res;
+  });
+}
+
+// lib/onSelector.ts
+var selectorMap = /* @__PURE__ */ new Map();
+function onSelector(selector, options) {
+  let selectorMapItems = [];
+  if (selectorMap.has(selector))
+    selectorMapItems = selectorMap.get(selector);
+  selectorMapItems.push(options);
+  selectorMap.set(selector, selectorMapItems);
+  checkSelectorExists(selector, selectorMapItems);
+}
+function removeOnSelector(selector) {
+  return selectorMap.delete(selector);
+}
+function checkSelectorExists(selector, options) {
+  const deleteIndices = [];
+  options.forEach((option, i) => {
+    try {
+      const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
+      if (elements !== null && elements instanceof NodeList && elements.length > 0 || elements !== null) {
+        option.listener(elements);
+        if (!option.continuous)
+          deleteIndices.push(i);
+      }
+    } catch (err) {
+      console.error(`Couldn't call listener for selector '${selector}'`, err);
+    }
+  });
+  if (deleteIndices.length > 0) {
+    const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
+    if (newOptsArray.length === 0)
+      selectorMap.delete(selector);
+    else {
+      selectorMap.set(selector, newOptsArray);
+    }
+  }
+}
+function initOnSelector(options = {}) {
+  const observer = new MutationObserver(() => {
+    for (const [selector, options2] of selectorMap.entries())
+      checkSelectorExists(selector, options2);
+  });
+  observer.observe(document.body, __spreadValues({
+    subtree: true,
+    childList: true
+  }, options));
+}
+function getSelectorMap() {
+  return selectorMap;
+}
 
 
-
+//# sourceMappingURL=http://localhost:8710/out.js.map
+//# sourceMappingURL=http://localhost:8710/index.mjs.map
 
 /***/ })
 
@@ -2538,7 +2952,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -3023,7 +3437,7 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addWatermark)();
                 if (features.geniusLyrics)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMediaCtrlLyricsBtn)();
-                if (features.queueButtons)
+                if (features.deleteFromQueueButton || features.lyricsQueueButton)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
                 if (features.anchorImprovements)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
