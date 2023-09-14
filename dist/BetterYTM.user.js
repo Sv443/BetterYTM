@@ -395,7 +395,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "1251d91", // assert as generic string instead of literal
+    lastCommit: "90bf0c1", // assert as generic string instead of literal
 };
 
 
@@ -801,7 +801,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -980,7 +980,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
@@ -1555,7 +1555,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
 /* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1908,7 +1908,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
@@ -2263,7 +2263,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 
 
@@ -2448,10 +2448,10 @@ function getResourceUrl(name) {
 
 /***/ }),
 
-/***/ "../UserUtils/dist/index.mjs":
-/*!***********************************!*\
-  !*** ../UserUtils/dist/index.mjs ***!
-  \***********************************/
+/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2884,8 +2884,7 @@ function getSelectorMap() {
 }
 
 
-//# sourceMappingURL=http://localhost:8710/out.js.map
-//# sourceMappingURL=http://localhost:8710/index.mjs.map
+
 
 /***/ })
 
@@ -2952,7 +2951,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -3180,7 +3179,7 @@ function onDomLoad() {
 }
 
 .bytm-spinner {
-  animation: rotate 1.5s linear infinite;
+  animation: rotate 1.2s linear infinite;
 }
 
 @keyframes rotate {
