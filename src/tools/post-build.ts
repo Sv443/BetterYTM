@@ -113,8 +113,12 @@ I welcome every contribution on GitHub!
     const sizeKiB = Number((Buffer.byteLength(finalUserscript, "utf8") / 1024).toFixed(2));
 
     let buildStats: Partial<BuildStats> = {};
-    if(await exists(".build.json"))
-      buildStats = JSON.parse(String(await readFile(".build.json"))) as BuildStats;
+    if(await exists(".build.json")) {
+      try {
+        buildStats = JSON.parse(String(await readFile(".build.json"))) as BuildStats;
+      }
+      catch(e) { void e; }
+    }
 
     let sizeIndicator = "";
     if(buildStats.sizeKiB) {
