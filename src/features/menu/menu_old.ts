@@ -280,14 +280,12 @@ export async function addMenu() {
 
     if(scrollPos > 10 && scrollIndicatorShown) {
       scrollIndicatorShown = false;
-      scrollIndicator.classList.add("hidden");
+      scrollIndicator.classList.add("bytm-hidden");
       await pauseFor(200);
-      scrollIndicator.style.visibility = "hidden";
     }
     else if(scrollPos <= 10 && !scrollIndicatorShown) {
       scrollIndicatorShown = true;
-      scrollIndicator.style.visibility = "initial";
-      scrollIndicator.classList.remove("hidden");
+      scrollIndicator.classList.remove("bytm-hidden");
     }
   });
 
