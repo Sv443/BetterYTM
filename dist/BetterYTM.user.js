@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "51b44ff", // assert as generic string instead of literal
+    lastCommit: "2cb293b", // assert as generic string instead of literal
 };
 
 
@@ -1931,7 +1931,9 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 //#MARKER create menu elements
 let isMenuOpen = false;
-let scrollIndicatorShown = true;
+/** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
+const scrollIndicatorOffsetThreshold = 30;
+let scrollIndicatorEnabled = true;
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1955,19 +1957,17 @@ function addMenu() {
                 closeMenu(e);
         });
         const menuContainer = document.createElement("div");
-        menuContainer.title = "";
+        menuContainer.title = ""; // prevent bg title from propagating downwards
         menuContainer.id = "bytm-menu";
-        menuContainer.style.borderRadius = "15px";
-        menuContainer.style.display = "flex";
-        menuContainer.style.flexDirection = "column";
-        menuContainer.style.justifyContent = "space-between";
         //#SECTION title bar
+        const headerElem = document.createElement("div");
+        headerElem.id = "bytm-menu-header";
         const titleCont = document.createElement("div");
         titleCont.id = "bytm-menu-titlecont";
+        titleCont.role = "heading";
+        titleCont.ariaLevel = "1";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.role = "heading";
-        titleElem.ariaLevel = "1";
         titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
         const linksCont = document.createElement("div");
         linksCont.id = "bytm-menu-linkscont";
@@ -1993,13 +1993,11 @@ function addMenu() {
         closeElem.id = "bytm-menu-close";
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
         closeElem.title = "Click to close the menu";
-        closeElem.style.marginLeft = "50px";
-        closeElem.style.width = "32px";
-        closeElem.style.height = "32px";
         closeElem.addEventListener("click", closeMenu);
-        linksCont.appendChild(closeElem);
         titleCont.appendChild(titleElem);
         titleCont.appendChild(linksCont);
+        headerElem.appendChild(titleCont);
+        headerElem.appendChild(closeElem);
         //#SECTION feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
@@ -2133,10 +2131,9 @@ function addMenu() {
         //#SECTION scroll indicator
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
+        scrollIndicator.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("arrow_down");
         scrollIndicator.role = "button";
         scrollIndicator.title = "Click to scroll to the bottom";
-        scrollIndicator.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjQ4Ij4KICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNDU3LjMwOC03NzkuOTk5djUxMy42OTJMMjEyLjAwMS01MTEuOTk5bC0zMiAzMS45OTlMNDgwLTE4MC4wMDEgNzc5Ljk5OS00ODBsLTMyLTMxLjk5OS0yNDUuMzA3IDI0NS42OTJ2LTUxMy42OTJoLTQ1LjM4NFoiLz4KPC9zdmc+";
-        //#DEBUG scrollIndicatorElem.src = await getResourceUrl("arrow_down");
         featuresCont.appendChild(scrollIndicator);
         scrollIndicator.addEventListener("click", () => {
             const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
@@ -2144,24 +2141,19 @@ function addMenu() {
                 behavior: "smooth",
             });
         });
-        featuresCont.addEventListener("scroll", (evt) => __awaiter(this, void 0, void 0, function* () {
-            var _c, _d;
-            const scrollPos = (_d = (_c = evt.target) === null || _c === void 0 ? void 0 : _c.scrollTop) !== null && _d !== void 0 ? _d : 0;
+        featuresCont.addEventListener("scroll", (evt) => {
+            var _a, _b;
+            const scrollPos = (_b = (_a = evt.target) === null || _a === void 0 ? void 0 : _a.scrollTop) !== null && _b !== void 0 ? _b : 0;
             const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
             if (!scrollIndicator)
                 return;
-            if (scrollPos > 10 && scrollIndicatorShown) {
-                scrollIndicatorShown = false;
-                scrollIndicator.classList.add("hidden");
-                yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(200);
-                scrollIndicator.style.visibility = "hidden";
+            if (scrollIndicatorEnabled && scrollPos > scrollIndicatorOffsetThreshold && !scrollIndicator.classList.contains("bytm-hidden")) {
+                scrollIndicator.classList.add("bytm-hidden");
             }
-            else if (scrollPos <= 10 && !scrollIndicatorShown) {
-                scrollIndicatorShown = true;
-                scrollIndicator.style.visibility = "initial";
-                scrollIndicator.classList.remove("hidden");
+            else if (scrollIndicatorEnabled && scrollPos <= scrollIndicatorOffsetThreshold && scrollIndicator.classList.contains("bytm-hidden")) {
+                scrollIndicator.classList.remove("bytm-hidden");
             }
-        }));
+        });
         const bottomAnchor = document.createElement("div");
         bottomAnchor.id = "bytm-menu-bottom-anchor";
         featuresCont.appendChild(bottomAnchor);
@@ -2193,26 +2185,20 @@ function addMenu() {
         footerElem.appendChild(reloadElem);
         footerCont.appendChild(footerElem);
         footerCont.appendChild(resetElem);
-        featuresCont.appendChild(footerCont);
         //#SECTION finalize
-        const menuBody = document.createElement("div");
-        menuBody.id = "bytm-menu-body";
-        menuBody.appendChild(titleCont);
-        menuBody.appendChild(featuresCont);
+        menuContainer.appendChild(headerElem);
+        menuContainer.appendChild(featuresCont);
         const versionCont = document.createElement("div");
-        versionCont.style.display = "flex";
-        versionCont.style.justifyContent = "space-around";
-        versionCont.style.fontSize = "1.15em";
-        versionCont.style.marginTop = "5px";
+        versionCont.id = "bytm-menu-version-cont";
         const versionElem = document.createElement("span");
         versionElem.id = "bytm-menu-version";
         versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version}`;
         versionCont.appendChild(versionElem);
-        featuresCont.appendChild(versionCont);
-        menuContainer.appendChild(menuBody);
+        menuContainer.appendChild(footerCont);
         menuContainer.appendChild(versionCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
+        window.addEventListener("resize", (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.debounce)(checkToggleScrollIndicator, 150));
         (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Added menu element");
     });
 }
@@ -2223,7 +2209,7 @@ function closeMenu(evt) {
         return;
     isMenuOpen = false;
     (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    document.body.removeAttribute("no-y-overflow");
+    document.body.classList.remove("bytm-disable-scroll");
     const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
@@ -2233,17 +2219,29 @@ function openMenu() {
     if (isMenuOpen)
         return;
     isMenuOpen = true;
-    document.body.setAttribute("no-y-overflow", "");
+    document.body.classList.add("bytm-disable-scroll");
     const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
+    checkToggleScrollIndicator();
+}
+/** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
+function checkToggleScrollIndicator() {
     const featuresCont = document.querySelector("#bytm-menu-opts");
     const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
     // disable scroll indicator if container doesn't scroll
-    if (featuresCont && scrollIndicator && !(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.isScrollable)(featuresCont).vertical) {
-        scrollIndicatorShown = false;
-        scrollIndicator.classList.add("hidden");
-        scrollIndicator.style.visibility = "hidden";
+    if (featuresCont && scrollIndicator) {
+        const verticalScroll = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.isScrollable)(featuresCont).vertical;
+        /** If true, the indicator's threshold is under the available scrollable space and so it should be disabled */
+        const underThreshold = featuresCont.scrollHeight - featuresCont.clientHeight <= scrollIndicatorOffsetThreshold;
+        if (!underThreshold && verticalScroll && !scrollIndicatorEnabled) {
+            scrollIndicatorEnabled = true;
+            scrollIndicator.classList.remove("bytm-hidden");
+        }
+        if ((!verticalScroll && scrollIndicatorEnabled) || underThreshold) {
+            scrollIndicatorEnabled = false;
+            scrollIndicator.classList.add("bytm-hidden");
+        }
     }
 }
 
@@ -3002,17 +3000,20 @@ function onDomLoad() {
 `/*!**********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
   \**********************************************************************************/
-:root {
-  --bytm-menu-width: calc(min(70vw, 1000px));
-  --bytm-menu-bg: #212121;
-  --bytm-menu-bg-highlight: #111111;
+#bytm-menu-bg {
+  --bytm-menu-height-max: 750px;
+  --bytm-menu-width-max: 1000px;
+  --bytm-menu-bg: #333333;
+  --bytm-menu-bg-highlight: #1e1e1e;
+  --bytm-menu-separator-color: #797979;
+  --bytm-menu-border-radius: 15px;
 }
 
 #bytm-menu-bg {
   display: block;
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   z-index: 15;
@@ -3020,50 +3021,68 @@ function onDomLoad() {
 }
 
 #bytm-menu {
-  display: inline-block;
   position: fixed;
-  width: var(--bytm-menu-width);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  border-radius: var(--bytm-menu-border-radius);
   height: auto;
-  left: calc((100vw - var(--bytm-menu-width)) / 2);
-  top: 10vh;
+  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 16;
-  padding: 10px 25px;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }
 
 #bytm-menu-opts {
   position: relative;
-  max-height: 70vh;
   overflow: auto;
+  padding: 30px 0px;
+}
+
+#bytm-menu-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-menu-bg);
+  border: 1px solid var(--bytm-menu-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
 #bytm-menu-titlecont {
   display: flex;
-  justify-content: space-between;
-  padding: 8px 20px 15px 20px;
-  margin-bottom: 5px;
-  background-color: var(--bytm-menu-bg);
+  align-items: center;
 }
 
 #bytm-menu-title {
-  font-size: 20px;
-  margin: 5px 0;
+  display: inline-block;
+  font-size: 22px;
 }
 
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
+  margin-left: 32px;
 }
 
 .bytm-menu-link {
   display: inline-flex;
   align-items: center;
-  margin-left: 10px;
   cursor: pointer;
 }
 
+.bytm-menu-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
 #bytm-menu-close {
+  width: 32px;
+  height: 32px;
   cursor: pointer;
 }
 
@@ -3071,33 +3090,52 @@ function onDomLoad() {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 10px;
-  padding: 32px 20px 8px 20px;
-  position: sticky;
-  bottom: 0;
+  margin-top: 6px;
+  padding: 20px 20px 8px 20px;
   background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 25%, var(--bytm-menu-bg) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
+  border: 1px solid var(--bytm-menu-separator-color);
+  border-style: solid none none none;
+  pointer-events: none;
+}
+
+#bytm-menu-footer, .bytm-cfg-reset {
+  pointer-events: initial;
+}
+
+#bytm-menu-version-cont {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.15em;
+  padding-bottom: 8px;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
 #bytm-menu-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: 60px;
+  bottom: 0;
   left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  padding: 5px;
-  z-index: 1000;
+  z-index: 101;
   background-color: var(--bytm-menu-bg-highlight);
   border-radius: 50%;
   cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
 }
 
 .bytm-ftconf-category-header {
   font-size: 18px;
   margin-top: 32px;
   margin-bottom: 8px;
-  padding: 0 20px;
+  padding: 0px 20px;
 }
 
 .bytm-ftconf-category-header:first-of-type {
@@ -3124,6 +3162,10 @@ function onDomLoad() {
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
   \***************************************************************************/
 /* #MARKER misc */
+
+.bytm-disable-scroll {
+  overflow: hidden !important;
+}
 
 .bytm-generic-btn {
   display: inline-flex;
