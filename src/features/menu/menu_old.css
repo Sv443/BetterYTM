@@ -112,7 +112,7 @@
 #bytm-menu-scroll-indicator {
   --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: 0;
+  bottom: -30px;
   left: 50%;
   margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
   padding: var(--bytm-scroll-indicator-padding);

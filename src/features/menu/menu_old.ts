@@ -305,7 +305,10 @@ export async function addMenu() {
   reloadElem.style.marginLeft = "20px";
   reloadElem.innerText = "Reload now";
   reloadElem.title = "Click to reload the page";
-  reloadElem.addEventListener("click", () => location.reload());
+  reloadElem.addEventListener("click", () => {
+    closeMenu();
+    location.reload();
+  });
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
