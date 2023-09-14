@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "2cb293b", // assert as generic string instead of literal
+    lastCommit: "0493634", // assert as generic string instead of literal
 };
 
 
@@ -2170,7 +2170,10 @@ function addMenu() {
         reloadElem.style.marginLeft = "20px";
         reloadElem.innerText = "Reload now";
         reloadElem.title = "Click to reload the page";
-        reloadElem.addEventListener("click", () => location.reload());
+        reloadElem.addEventListener("click", () => {
+            closeMenu();
+            location.reload();
+        });
         const resetElem = document.createElement("button");
         resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
         resetElem.title = "Click to reset all settings to their default values";
@@ -2276,7 +2279,7 @@ let curLogLevel = 1;
 function setLogLevel(level) {
     curLogLevel = level;
 }
-/** Extracts the log level from the last item from spread arguments - returns 1 if the last item is not a number or too low or high */
+/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
@@ -3114,7 +3117,7 @@ function onDomLoad() {
 #bytm-menu-scroll-indicator {
   --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: 0;
+  bottom: -30px;
   left: 50%;
   margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
   padding: var(--bytm-scroll-indicator-padding);
