@@ -122,8 +122,8 @@ async function switchSite(newDomain: Domain) {
         ? `${cleanSearch.startsWith("?")
           ? cleanSearch
           : "?" + cleanSearch
-        }&t=${vt}`
-        : `?t=${vt}`
+        }&t=${vt - 1}`
+        : `?t=${vt - 1}`
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 

@@ -1,34 +1,34 @@
 // ==UserScript==
-// @name            BetterYTM
-// @homepageURL     https://github.com/Sv443/BetterYTM#readme
-// @namespace       https://github.com/Sv443/BetterYTM
-// @version         1.0.0
-// @description     Configurable layout and UX improvements for YouTube Music
-// @description:de  Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
-// @license         MIT
-// @author          Sv443
-// @copyright       Sv443 (https://github.com/Sv443)
-// @icon            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
-// @match           https://music.youtube.com/*
-// @match           https://www.youtube.com/*
-// @run-at          document-start
-// @downloadURL     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @updateURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @connect         api.sv443.net
-// @grant           GM.getValue
-// @grant           GM.setValue
-// @grant           GM.getResourceUrl
-// @grant           unsafeWindow
+// @name           BetterYTM
+// @homepageURL    https://github.com/Sv443/BetterYTM#readme
+// @namespace      https://github.com/Sv443/BetterYTM
+// @version        1.0.0
+// @description    Configurable layout and UX improvements for YouTube Music
+// @description:de Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
+// @license        MIT
+// @author         Sv443
+// @copyright      Sv443 (https://github.com/Sv443)
+// @icon           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
+// @match          https://music.youtube.com/*
+// @match          https://www.youtube.com/*
+// @run-at         document-start
+// @downloadURL    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @connect        api.sv443.net
+// @grant          GM.getValue
+// @grant          GM.setValue
+// @grant          GM.getResourceUrl
+// @grant          unsafeWindow
 // @noframes
-// @resource        icon https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
-// @resource        close https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/close.png
-// @resource        delete https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/delete.svg
-// @resource        error https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/error.svg
-// @resource        lyrics https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/lyrics.svg
-// @resource        spinner https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/spinner.svg
-// @resource        arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/arrow_down.svg
-// @resource        github https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource        greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource       icon       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
+// @resource       close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/close.png
+// @resource       delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/delete.svg
+// @resource       error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/error.svg
+// @resource       lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/lyrics.svg
+// @resource       spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/spinner.svg
+// @resource       arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/arrow_down.svg
+// @resource       github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource       greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -454,7 +454,7 @@ function saveFeatures(featureConf) {
 function setDefaultFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.saveDefaultData();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Reset feature config to its default value");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Reset feature config to its default values");
     });
 }
 
@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "90bf0c1", // assert as generic string instead of literal
+    lastCommit: "51b44ff", // assert as generic string instead of literal
 };
 
 
@@ -914,8 +914,8 @@ function switchSite(newDomain) {
                 cleanSearch.includes("?")
                     ? `${cleanSearch.startsWith("?")
                         ? cleanSearch
-                        : "?" + cleanSearch}&t=${vt}`
-                    : `?t=${vt}`
+                        : "?" + cleanSearch}&t=${vt - 1}`
+                    : `?t=${vt - 1}`
                 : cleanSearch;
             const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
@@ -1987,7 +1987,8 @@ function addMenu() {
             linksCont.appendChild(anchorElem);
         };
         addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/TODO", `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
+        // TODO:
+        // addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/users/184165-sv443", `Open ${scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
         closeElem.id = "bytm-menu-close";
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
@@ -2180,11 +2181,14 @@ function addMenu() {
         reloadElem.addEventListener("click", () => location.reload());
         const resetElem = document.createElement("button");
         resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
-        resetElem.title = "Click to reset all settings to their default value";
+        resetElem.title = "Click to reset all settings to their default values";
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Do you really want to reset all settings to their default value?\nAfterwards the page will need to be reloaded to apply changes."))
+            if (confirm("Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.")) {
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatures)();
+                closeMenu();
+                location.reload();
+            }
         }));
         footerElem.appendChild(reloadElem);
         footerCont.appendChild(footerElem);
@@ -2213,17 +2217,18 @@ function addMenu() {
     });
 }
 //#MARKER utilities
-function closeMenu(e) {
+/** Closes the menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeMenu(evt) {
     if (!isMenuOpen)
         return;
     isMenuOpen = false;
-    (e === null || e === void 0 ? void 0 : e.bubbles) && e.stopPropagation();
+    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
     document.body.removeAttribute("no-y-overflow");
     const menuBg = document.querySelector("#bytm-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
-// function that opens the menu, it should do the inverse of closeMenu()
+/** Opens the menu if it is closed */
 function openMenu() {
     if (isMenuOpen)
         return;
@@ -2326,15 +2331,15 @@ function getVideoTime() {
         const domain = getDomain();
         try {
             if (domain === "ytm") {
-                const pbEl = document.querySelector("#progress-bar");
-                return res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null);
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#progress-bar", {
+                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
+                });
             }
             else if (domain === "yt") {
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
                 ytForceShowVideoTime();
                 const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
-                const progElem = document.querySelector(pbSelector);
-                let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")) : -1;
+                let videoTime = -1;
                 const mut = new MutationObserver(() => {
                     // .observe() is only called when the element exists - no need to check for null
                     videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
@@ -2344,14 +2349,17 @@ function getVideoTime() {
                         attributes: true,
                         attributeFilter: ["aria-valuenow"],
                     });
-                    setTimeout(() => {
-                        res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
-                    }, 500);
+                    if (videoTime >= 0 && !isNaN(videoTime)) {
+                        res(videoTime);
+                        mut.disconnect();
+                    }
+                    else
+                        setTimeout(() => {
+                            res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+                            mut.disconnect();
+                        }, 500);
                 };
-                if (!progElem)
-                    return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(pbSelector, { listener: observe });
-                else
-                    return observe(progElem);
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(pbSelector, { listener: observe });
             }
         }
         catch (err) {
@@ -2393,40 +2401,6 @@ function ytForceShowVideoTime() {
 //     finalTime += Number(hrs) * 60 * 60;
 //   finalTime += Number(min) * 60 + Number(sec);
 //   return isNaN(finalTime) ? 0 : finalTime;
-// }
-// const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
-// /**
-//  * Calls the `listener` as soon as the `selector` exists in the DOM.  
-//  * Listeners are deleted as soon as they are called once.  
-//  * Multiple listeners with the same selector may be registered.
-//  */
-// export function onSelectorExists(selector: string, listener: (element: HTMLElement) => void) {
-//   const el = document.querySelector<HTMLElement>(selector);
-//   if(el)
-//     listener(el);
-//   else {
-//     if(selectorExistsMap.get(selector))
-//       selectorExistsMap.set(selector, [...selectorExistsMap.get(selector)!, listener]);
-//     else
-//       selectorExistsMap.set(selector, [listener]);
-//   }
-// }
-// /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
-// export function initSelectorExistsCheck() {
-//   const observer = new MutationObserver(() => {
-//     for(const [selector, listeners] of selectorExistsMap.entries()) {
-//       const el = document.querySelector<HTMLElement>(selector);
-//       if(el) {
-//         listeners.forEach(listener => listener(el));
-//         selectorExistsMap.delete(selector);
-//       }
-//     }
-//   });
-//   observer.observe(document.body, {
-//     subtree: true,
-//     childList: true,
-//   });
-//   log("Initialized \"selector exists\" MutationObserver");
 // }
 /**
  * Returns the current domain as a constant string representation
