@@ -48,7 +48,7 @@ export async function addMenu() {
   titleElem.id = "bytm-menu-title";
   titleElem.role = "heading";
   titleElem.ariaLevel = "1";
-  titleElem.innerText = `${scriptInfo.name} Configuration`;
+  titleElem.innerText = `${scriptInfo.name} - Configuration`;
 
   const linksCont = document.createElement("div");
   linksCont.id = "bytm-menu-linkscont";

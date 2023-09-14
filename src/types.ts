@@ -37,14 +37,14 @@ export interface FeatureConfig {
   volumeSliderStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
-  /** Add buttons while hovering over a song in a queue to quickly remove it or open its lyrics */
-  queueButtons: boolean;
+  /** Add a button to each song in the queue to quickly remove it */
+  deleteFromQueueButton: boolean;
   /** After how many milliseconds to close permanent toasts */
   closeToastsTimeout: number;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
-  // /** Add a button to each song in the queue to allow for quickly pre-opening lyrics pages of upcoming songs */
-  // geniusLyricsInQueue: boolean;
+  /** Add a button to each song in the queue to quickly open its lyrics page */
+  lyricsQueueButton: boolean;
 }

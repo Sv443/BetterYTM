@@ -112,7 +112,7 @@ async function onDomLoad() {
       if(features.geniusLyrics)
         addMediaCtrlLyricsBtn();
 
-      if(features.queueButtons)
+      if(features.deleteFromQueueButton || features.lyricsQueueButton)
         initQueueButtons();
 
       if(features.anchorImprovements)

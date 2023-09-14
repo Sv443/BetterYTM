@@ -317,8 +317,11 @@ async function addQueueButtons(queueItem: HTMLElement) {
   const deleteIconUrl = await getResourceUrl("delete");
 
   //#SECTION lyrics btn
-  const lyricsBtnElem = await createLyricsBtn(undefined, false);
-  {
+  let lyricsBtnElem: HTMLAnchorElement | undefined;
+
+  if(features.lyricsQueueButton) {
+    lyricsBtnElem = await createLyricsBtn(undefined, false);
+
     lyricsBtnElem.title = "Open this song's lyrics in a new tab";
     lyricsBtnElem.style.display = "inline-flex";
     lyricsBtnElem.style.visibility = "initial";
@@ -329,13 +332,13 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
       const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
       if(!songInfo)
-        return false;
+        return;
 
       const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
       const song = songEl?.innerText;
       const artist = artistEl?.innerText;
       if(!song || !artist)
-        return false;
+        return;
 
       let lyricsUrl: string | undefined;
 
@@ -350,7 +353,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
       if(cachedLyricsUrl)
         lyricsUrl = cachedLyricsUrl;
       else if(!songInfo.hasAttribute("data-bytm-loading")) {
-        const imgEl = lyricsBtnElem.querySelector("img") as HTMLImageElement;
+        const imgEl = lyricsBtnElem!.querySelector("img") as HTMLImageElement;
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
@@ -385,8 +388,10 @@ async function addQueueButtons(queueItem: HTMLElement) {
   }
 
   //#SECTION delete from queue btn
-  const deleteBtnElem = document.createElement("a");
-  {
+  let deleteBtnElem: HTMLAnchorElement | undefined;
+
+  if(features.deleteFromQueueButton) {
+    deleteBtnElem = document.createElement("a");
     Object.assign(deleteBtnElem, {
       title: "Remove this song from the queue",
       className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
@@ -436,13 +441,11 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
   //#SECTION append elements to DOM
 
-  queueBtnsCont.appendChild(lyricsBtnElem);
-  queueBtnsCont.appendChild(deleteBtnElem);
+  lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
+  deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);
 
   queueItem.querySelector<HTMLElement>(".song-info")?.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");
-
-  return true;
 }
 
 //#MARKER better clickable stuff
