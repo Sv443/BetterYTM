@@ -12,7 +12,7 @@ export function setLogLevel(level: LogLevel) {
   curLogLevel = level;
 }
 
-/** Extracts the log level from the last item from spread arguments - returns 1 if the last item is not a number or too low or high */
+/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args: unknown[]): number {
   const minLogLvl = 0, maxLogLvl = 1;
   if(typeof args.at(-1) === "number")
