@@ -1,5 +1,9 @@
 /* #MARKER misc */
 
+.bytm-disable-scroll {
+  overflow: hidden !important;
+}
+
 .bytm-generic-btn {
   display: inline-flex;
   align-items: center;

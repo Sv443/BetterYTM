@@ -1,4 +1,4 @@
-import { debounce, isScrollable, pauseFor } from "@sv443-network/userutils";
+import { debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, saveFeatures, setDefaultFeatures } from "../../config";
 import { scriptInfo } from "../../constants";
 import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../index";
@@ -9,7 +9,10 @@ import "./menu_old.css";
 //#MARKER create menu elements
 
 let isMenuOpen = false;
-let scrollIndicatorShown = true;
+
+/** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
+const scrollIndicatorOffsetThreshold = 30;
+let scrollIndicatorEnabled = true;
 
 /**
  * Adds an element to open the BetterYTM menu
@@ -32,22 +35,21 @@ export async function addMenu() {
   });
 
   const menuContainer = document.createElement("div");
-  menuContainer.title = "";
+  menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.id = "bytm-menu";
-  menuContainer.style.borderRadius = "15px";
-  menuContainer.style.display = "flex";
-  menuContainer.style.flexDirection = "column";
-  menuContainer.style.justifyContent = "space-between";
 
 
   //#SECTION title bar
+  const headerElem = document.createElement("div");
+  headerElem.id = "bytm-menu-header";
+
   const titleCont = document.createElement("div");
   titleCont.id = "bytm-menu-titlecont";
+  titleCont.role = "heading";
+  titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.role = "heading";
-  titleElem.ariaLevel = "1";
   titleElem.innerText = `${scriptInfo.name} - Configuration`;
 
   const linksCont = document.createElement("div");
@@ -79,15 +81,13 @@ export async function addMenu() {
   closeElem.id = "bytm-menu-close";
   closeElem.src = await getResourceUrl("close");
   closeElem.title = "Click to close the menu";
-  closeElem.style.marginLeft = "50px";
-  closeElem.style.width = "32px";
-  closeElem.style.height = "32px";
   closeElem.addEventListener("click", closeMenu);
-
-  linksCont.appendChild(closeElem);
 
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
+
+  headerElem.appendChild(titleCont);
+  headerElem.appendChild(closeElem);
 
 
   //#SECTION feature list
@@ -258,10 +258,10 @@ export async function addMenu() {
   //#SECTION scroll indicator
   const scrollIndicator = document.createElement("img");
   scrollIndicator.id = "bytm-menu-scroll-indicator";
+  scrollIndicator.src = await getResourceUrl("arrow_down");
   scrollIndicator.role = "button";
   scrollIndicator.title = "Click to scroll to the bottom";
-  scrollIndicator.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjQ4Ij4KICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNDU3LjMwOC03NzkuOTk5djUxMy42OTJMMjEyLjAwMS01MTEuOTk5bC0zMiAzMS45OTlMNDgwLTE4MC4wMDEgNzc5Ljk5OS00ODBsLTMyLTMxLjk5OS0yNDUuMzA3IDI0NS42OTJ2LTUxMy42OTJoLTQ1LjM4NFoiLz4KPC9zdmc+";
-  //#DEBUG scrollIndicatorElem.src = await getResourceUrl("arrow_down");
+
   featuresCont.appendChild(scrollIndicator);
 
   scrollIndicator.addEventListener("click", () => {
@@ -271,20 +271,17 @@ export async function addMenu() {
     });
   });
 
-  featuresCont.addEventListener("scroll", async (evt: Event) => {
+  featuresCont.addEventListener("scroll", (evt: Event) => {
     const scrollPos = (evt.target as HTMLDivElement)?.scrollTop ?? 0;
     const scrollIndicator = document.querySelector<HTMLImageElement>("#bytm-menu-scroll-indicator");
 
     if(!scrollIndicator)
       return;
 
-    if(scrollPos > 10 && scrollIndicatorShown) {
-      scrollIndicatorShown = false;
+    if(scrollIndicatorEnabled && scrollPos > scrollIndicatorOffsetThreshold && !scrollIndicator.classList.contains("bytm-hidden")) {
       scrollIndicator.classList.add("bytm-hidden");
-      await pauseFor(200);
     }
-    else if(scrollPos <= 10 && !scrollIndicatorShown) {
-      scrollIndicatorShown = true;
+    else if(scrollIndicatorEnabled && scrollPos <= scrollIndicatorOffsetThreshold && scrollIndicator.classList.contains("bytm-hidden")) {
       scrollIndicator.classList.remove("bytm-hidden");
     }
   });
@@ -326,34 +323,28 @@ export async function addMenu() {
   footerCont.appendChild(footerElem);
   footerCont.appendChild(resetElem);
 
-  featuresCont.appendChild(footerCont);
-
 
   //#SECTION finalize
-  const menuBody = document.createElement("div");
-  menuBody.id = "bytm-menu-body";
-  menuBody.appendChild(titleCont);
-  menuBody.appendChild(featuresCont);
+  menuContainer.appendChild(headerElem);
+  menuContainer.appendChild(featuresCont);
 
   const versionCont = document.createElement("div");
-  versionCont.style.display = "flex";
-  versionCont.style.justifyContent = "space-around";
-  versionCont.style.fontSize = "1.15em";
-  versionCont.style.marginTop = "5px";
+  versionCont.id = "bytm-menu-version-cont";
 
   const versionElem = document.createElement("span");
   versionElem.id = "bytm-menu-version";
   versionElem.innerText = `v${scriptInfo.version}`;
 
   versionCont.appendChild(versionElem);
-  featuresCont.appendChild(versionCont);
 
-  menuContainer.appendChild(menuBody);
+  menuContainer.appendChild(footerCont);
   menuContainer.appendChild(versionCont);
 
   backgroundElem.appendChild(menuContainer);
 
   document.body.appendChild(backgroundElem);
+
+  window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
 
   log("Added menu element");
 }
@@ -367,7 +358,7 @@ export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
   isMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.removeAttribute("no-y-overflow");
+  document.body.classList.remove("bytm-disable-scroll");
   const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";
@@ -380,19 +371,34 @@ export function openMenu() {
     return;
   isMenuOpen = true;
 
-  document.body.setAttribute("no-y-overflow", "");
+  document.body.classList.add("bytm-disable-scroll");
   const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
 
+  checkToggleScrollIndicator();
+}
+
+/** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
+function checkToggleScrollIndicator() {
   const featuresCont = document.querySelector<HTMLElement>("#bytm-menu-opts");
   const scrollIndicator = document.querySelector<HTMLElement>("#bytm-menu-scroll-indicator");
 
+  
   // disable scroll indicator if container doesn't scroll
-  if(featuresCont && scrollIndicator && !isScrollable(featuresCont).vertical) {
-    scrollIndicatorShown = false;
-    scrollIndicator.classList.add("hidden");
-    scrollIndicator.style.visibility = "hidden";
+  if(featuresCont && scrollIndicator) {
+    const verticalScroll = isScrollable(featuresCont).vertical;
+    /** If true, the indicator's threshold is under the available scrollable space and so it should be disabled */
+    const underThreshold = featuresCont.scrollHeight - featuresCont.clientHeight <= scrollIndicatorOffsetThreshold;
+
+    if(!underThreshold && verticalScroll && !scrollIndicatorEnabled) {
+      scrollIndicatorEnabled = true;
+      scrollIndicator.classList.remove("bytm-hidden");
+    }
+    if((!verticalScroll && scrollIndicatorEnabled) || underThreshold) {
+      scrollIndicatorEnabled = false;
+      scrollIndicator.classList.add("bytm-hidden");
+    }
   }
 }
