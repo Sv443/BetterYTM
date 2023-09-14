@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "0493634", // assert as generic string instead of literal
+    lastCommit: "b51480b", // assert as generic string instead of literal
 };
 
 
@@ -3117,7 +3117,7 @@ function onDomLoad() {
 #bytm-menu-scroll-indicator {
   --bytm-scroll-indicator-padding: 5px;
   position: sticky;
-  bottom: -30px;
+  bottom: -15px;
   left: 50%;
   margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
   padding: var(--bytm-scroll-indicator-padding);
