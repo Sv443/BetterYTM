@@ -59,9 +59,8 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
-  // TODO(v1.1): Make each button configurable
-  queueButtons: {
-    desc: "Add buttons to each song in the queue to quickly open their lyrics or remove them from the queue",
+  deleteFromQueueButton: {
+    desc: "Add a button to each song in the queue to quickly remove it",
     type: "toggle",
     category: "layout",
     default: true,
@@ -122,4 +121,10 @@ export const featInfo = {
     category: "lyrics",
     default: true,
   },
+  lyricsQueueButton: {
+    desc: "Add a button to each song in the queue to quickly open its lyrics page",
+    type: "toggle",
+    category: "lyrics",
+    default: true,
+  }
 } as const;

@@ -1,10 +1,23 @@
-import { ConfigManager } from "@sv443-network/userutils";
+import { ConfigManager, ConfigManagerOptions } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 1;
+const formatVersion = 2;
+
+const migrations: ConfigManagerOptions<typeof defaultConfig>["migrations"] = {
+  // 1 -> 2
+  2: (oldData: Record<string, unknown>) => {
+    const queueBtnsEnabled = Boolean(oldData.queueButtons);
+    delete oldData.queueButtons;
+    return {
+      ...oldData,
+      deleteFromQueueButton: queueBtnsEnabled,
+      lyricsQueueButton: queueBtnsEnabled,
+    };
+  },
+};
 
 export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
@@ -16,6 +29,7 @@ const cfgMgr = new ConfigManager({
   id: "bytm-config",
   formatVersion,
   defaultConfig,
+  migrations,
 });
 
 /** Initializes the ConfigManager instance and loads persistent data into memory */
