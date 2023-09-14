@@ -78,38 +78,41 @@ export function getVideoTime() {
 
     try {
       if(domain === "ytm") {
-        const pbEl = document.querySelector("#progress-bar") as HTMLProgressElement;
-        return res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null);
+        onSelector<HTMLProgressElement>("#progress-bar", {
+          listener: (pbEl) =>
+            res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
+        });
       }
       else if(domain === "yt") {
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
-
         ytForceShowVideoTime();
 
         const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
-        const progElem = document.querySelector<HTMLProgressElement>(pbSelector);
-        let videoTime = progElem ? Number(progElem.getAttribute("aria-valuenow")!) : -1;
+        let videoTime = -1;
 
         const mut = new MutationObserver(() => {
           // .observe() is only called when the element exists - no need to check for null
           videoTime = Number(document.querySelector<HTMLProgressElement>(pbSelector)!.getAttribute("aria-valuenow")!);
         });
 
-        const observe = (progElem: HTMLElement) => {
+        const observe = (progElem: HTMLProgressElement) => {
           mut.observe(progElem, {
             attributes: true,
             attributeFilter: ["aria-valuenow"],
           });
 
-          setTimeout(() => {
-            res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
-          }, 500);
+          if(videoTime >= 0 && !isNaN(videoTime)) {
+            res(videoTime);
+            mut.disconnect();
+          }
+          else
+            setTimeout(() => {
+              res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+              mut.disconnect();
+            }, 500);
         };
 
-        if(!progElem)
-          return onSelector(pbSelector, { listener: observe });
-        else
-          return observe(progElem);
+        onSelector<HTMLProgressElement>(pbSelector, { listener: observe });
       }
     }
     catch(err) {
@@ -166,46 +169,6 @@ function ytForceShowVideoTime() {
 //   finalTime += Number(min) * 60 + Number(sec);
 
 //   return isNaN(finalTime) ? 0 : finalTime;
-// }
-
-// const selectorExistsMap = new Map<string, Array<(element: HTMLElement) => void>>();
-
-// /**
-//  * Calls the `listener` as soon as the `selector` exists in the DOM.  
-//  * Listeners are deleted as soon as they are called once.  
-//  * Multiple listeners with the same selector may be registered.
-//  */
-// export function onSelectorExists(selector: string, listener: (element: HTMLElement) => void) {
-//   const el = document.querySelector<HTMLElement>(selector);
-
-//   if(el)
-//     listener(el);
-//   else {
-//     if(selectorExistsMap.get(selector))
-//       selectorExistsMap.set(selector, [...selectorExistsMap.get(selector)!, listener]);
-//     else
-//       selectorExistsMap.set(selector, [listener]);
-//   }
-// }
-
-// /** Initializes the MutationObserver responsible for checking selectors registered in `onSelectorExists()` */
-// export function initSelectorExistsCheck() {
-//   const observer = new MutationObserver(() => {
-//     for(const [selector, listeners] of selectorExistsMap.entries()) {
-//       const el = document.querySelector<HTMLElement>(selector);
-//       if(el) {
-//         listeners.forEach(listener => listener(el));
-//         selectorExistsMap.delete(selector);
-//       }
-//     }
-//   });
-
-//   observer.observe(document.body, {
-//     subtree: true,
-//     childList: true,
-//   });
-
-//   log("Initialized \"selector exists\" MutationObserver");
 // }
 
 /**
