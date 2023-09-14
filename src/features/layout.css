@@ -28,7 +28,7 @@
 }
 
 .bytm-spinner {
-  animation: rotate 1.5s linear infinite;
+  animation: rotate 1.2s linear infinite;
 }
 
 @keyframes rotate {
