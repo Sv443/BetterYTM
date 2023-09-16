@@ -46,277 +46,6 @@ I welcome every contribution on GitHub!
 
 /******/ var __webpack_modules__ = ({
 
-/***/ "./node_modules/@billjs/event-emitter/lib/index.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/@billjs/event-emitter/lib/index.js ***!
-  \*********************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-/**
- * A simple and lightweight EventEmitter by TypeScript for Node.js or Browsers.
- *
- * @author billjs
- * @see https://github.com/billjs/event-emitter
- * @license MIT(https://opensource.org/licenses/MIT)
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-/**
- * It's a class for managing events.
- * It can be extended to provide event functionality for other classes or object.
- *
- * @export
- * @class EventEmitter
- */
-var EventEmitter = /** @class */ (function () {
-    function EventEmitter() {
-        /**
-         * the all event handlers are added.
-         * it's a Map data structure(key-value), the key is event type, and the value is event handler.
-         *
-         * @memberof EventEmitter
-         */
-        this._eventHandlers = {};
-    }
-    /**
-     * event type validator.
-     *
-     * @param {string} type event type
-     * @returns {boolean}
-     * @memberof EventEmitter
-     */
-    EventEmitter.prototype.isValidType = function (type) {
-        return typeof type === 'string';
-    };
-    /**
-     * event handler validator.
-     *
-     * @param {EventHandler} handler event handler
-     * @returns {boolean}
-     * @memberof EventEmitter
-     */
-    EventEmitter.prototype.isValidHandler = function (handler) {
-        return typeof handler === 'function';
-    };
-    /**
-     * listen on a new event by type and handler.
-     * if listen on, the true is returned, otherwise the false.
-     * The handler will not be listen if it is a duplicate.
-     *
-     * @param {string} type event type, it must be a unique string.
-     * @param {EventHandler} handler event handler, when if the same handler is passed, listen it by only once.
-     * @returns {boolean}
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  emitter.on('change:name', evt => {
-     *    console.log(evt);
-     *  });
-     */
-    EventEmitter.prototype.on = function (type, handler) {
-        if (!type || !handler)
-            return false;
-        if (!this.isValidType(type))
-            return false;
-        if (!this.isValidHandler(handler))
-            return false;
-        var handlers = this._eventHandlers[type];
-        if (!handlers)
-            handlers = this._eventHandlers[type] = [];
-        // when the same handler is passed, listen it by only once.
-        if (handlers.indexOf(handler) >= 0)
-            return false;
-        handler._once = false;
-        handlers.push(handler);
-        return true;
-    };
-    /**
-     * listen on an once event by type and handler.
-     * when the event is fired, that will be listen off immediately and automatically.
-     * The handler will not be listen if it is a duplicate.
-     *
-     * @param {string} type event type, it must be a unique string.
-     * @param {EventHandler} handler event handler, when if the same handler is passed, listen it by only once.
-     * @returns {boolean}
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  emitter.once('change:name', evt => {
-     *    console.log(evt);
-     *  });
-     */
-    EventEmitter.prototype.once = function (type, handler) {
-        if (!type || !handler)
-            return false;
-        if (!this.isValidType(type))
-            return false;
-        if (!this.isValidHandler(handler))
-            return false;
-        var ret = this.on(type, handler);
-        if (ret) {
-            // set `_once` private property after listened,
-            // avoid to modify event handler that has been listened.
-            handler._once = true;
-        }
-        return ret;
-    };
-    /**
-     * listen off an event by type and handler.
-     * or listen off events by type, when if only type argument is passed.
-     * or listen off all events, when if no arguments are passed.
-     *
-     * @param {string} [type] event type
-     * @param {EventHandler} [handler] event handler
-     * @returns
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  // listen off the specified event
-     *  emitter.off('change:name', evt => {
-     *    console.log(evt);
-     *  });
-     *  // listen off events by type
-     *  emitter.off('change:name');
-     *  // listen off all events
-     *  emitter.off();
-     */
-    EventEmitter.prototype.off = function (type, handler) {
-        // listen off all events, when if no arguments are passed.
-        // it does samething as `offAll` method.
-        if (!type)
-            return this.offAll();
-        // listen off events by type, when if only type argument is passed.
-        if (!handler) {
-            this._eventHandlers[type] = [];
-            return;
-        }
-        if (!this.isValidType(type))
-            return;
-        if (!this.isValidHandler(handler))
-            return;
-        var handlers = this._eventHandlers[type];
-        if (!handlers || !handlers.length)
-            return;
-        // otherwise, listen off the specified event.
-        for (var i = 0; i < handlers.length; i++) {
-            var fn = handlers[i];
-            if (fn === handler) {
-                handlers.splice(i, 1);
-                break;
-            }
-        }
-    };
-    /**
-     * listen off all events, that means every event will be emptied.
-     *
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  emitter.offAll();
-     */
-    EventEmitter.prototype.offAll = function () {
-        this._eventHandlers = {};
-    };
-    /**
-     * fire the specified event, and you can to pass a data.
-     * When fired, every handler attached to that event will be executed.
-     * But, if it's an once event, listen off it immediately after called handler.
-     *
-     * @param {string} type event type
-     * @param {*} [data] event data
-     * @returns
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  emitter.fire('change:name', 'new name');
-     */
-    EventEmitter.prototype.fire = function (type, data) {
-        if (!type || !this.isValidType(type))
-            return;
-        var handlers = this._eventHandlers[type];
-        if (!handlers || !handlers.length)
-            return;
-        var event = this.createEvent(type, data);
-        for (var _i = 0, handlers_1 = handlers; _i < handlers_1.length; _i++) {
-            var handler = handlers_1[_i];
-            if (!this.isValidHandler(handler))
-                continue;
-            if (handler._once)
-                event.once = true;
-            // call event handler, and pass the event argument.
-            handler(event);
-            // if it's an once event, listen off it immediately after called handler.
-            if (event.once)
-                this.off(type, handler);
-        }
-    };
-    /**
-     * check whether the specified event has been listen on.
-     * or check whether the events by type has been listen on, when if only `type` argument is passed.
-     *
-     * @param {string} type event type
-     * @param {EventHandler} [handler] event handler, optional
-     * @returns {boolean}
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  const result = emitter.has('change:name');
-     */
-    EventEmitter.prototype.has = function (type, handler) {
-        if (!type || !this.isValidType(type))
-            return false;
-        var handlers = this._eventHandlers[type];
-        // if there are no any events, return false.
-        if (!handlers || !handlers.length)
-            return false;
-        // at lest one event, and no pass `handler` argument, then return true.
-        if (!handler || !this.isValidHandler(handler))
-            return true;
-        // otherwise, need to traverse the handlers.
-        return handlers.indexOf(handler) >= 0;
-    };
-    /**
-     * get the handlers for the specified event type.
-     *
-     * @param {string} type event type
-     * @returns {EventHandler[]}
-     * @memberof EventEmitter
-     * @example
-     *  const emitter = new EventEmitter();
-     *  const handlers = emitter.getHandlers('change:name');
-     *  console.log(handlers);
-     */
-    EventEmitter.prototype.getHandlers = function (type) {
-        if (!type || !this.isValidType(type))
-            return [];
-        return this._eventHandlers[type] || [];
-    };
-    /**
-     * create event object.
-     *
-     * @param {string} type event type
-     * @param {*} [data] event data
-     * @param {boolean} [once=false] is it an once event?
-     * @returns {Event}
-     * @memberof EventEmitter
-     */
-    EventEmitter.prototype.createEvent = function (type, data, once) {
-        if (once === void 0) { once = false; }
-        var event = { type: type, data: data, timestamp: Date.now(), once: once };
-        return event;
-    };
-    return EventEmitter;
-}());
-exports.EventEmitter = EventEmitter;
-/**
- * EventEmitter instance for global.
- * @type {EventEmitter}
- */
-exports.globalEvent = new EventEmitter();
-
-
-/***/ }),
-
 /***/ "./changelog.md":
 /*!**********************!*\
   !*** ./changelog.md ***!
@@ -411,7 +140,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 2;
+const formatVersion = 3;
 const migrations = {
     // 1 -> 2
     2: (oldData) => {
@@ -419,6 +148,8 @@ const migrations = {
         delete oldData.queueButtons;
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
+    // 2 -> 3
+    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -434,8 +165,11 @@ const cfgMgr = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.ConfigM
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 function initConfig() {
     return __awaiter(this, void 0, void 0, function* () {
+        const oldFmtVer = yield GM.getValue(`_uucfgver-${cfgMgr.id}`, -1);
         const data = yield cfgMgr.loadData();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
+        if (oldFmtVer !== cfgMgr.formatVersion)
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
         return data;
     });
 }
@@ -490,7 +224,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "53f8631", // assert as generic string instead of literal
+    lastCommit: "7fac054", // assert as generic string instead of literal
 };
 
 
@@ -504,13 +238,12 @@ const scriptInfo = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getEvtData: function() { return /* binding */ getEvtData; },
 /* harmony export */   initSiteEvents: function() { return /* binding */ initSiteEvents; },
 /* harmony export */   removeAllObservers: function() { return /* binding */ removeAllObservers; },
 /* harmony export */   siteEvents: function() { return /* binding */ siteEvents; }
 /* harmony export */ });
-/* harmony import */ var _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @billjs/event-emitter */ "./node_modules/@billjs/event-emitter/lib/index.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+/* harmony import */ var nanoevents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! nanoevents */ "./node_modules/nanoevents/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -523,16 +256,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 /** EventEmitter instance that is used to detect changes to the site */
-const siteEvents = new _billjs_event_emitter__WEBPACK_IMPORTED_MODULE_0__.EventEmitter();
-/**
- * Returns the data of an event from the `@billjs/event-emitter` library.
- * This function is used as a shorthand to extract the data and assert it with the type passed in `<T>`
- * @param evt Event object from the `.on()` or `.once()` method
- * @template T Type of the data passed by `.fire(type: string, data: T)`
- */
-function getEvtData(evt) {
-    return evt.data;
-}
+const siteEvents = (0,nanoevents__WEBPACK_IMPORTED_MODULE_1__.createNanoEvents)();
 let observers = [];
 /** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
 function removeAllObservers() {
@@ -550,8 +274,8 @@ function initSiteEvents() {
             // the queue container always exists so it doesn't need the extra init function
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    siteEvents.fire("queueChanged", target);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    siteEvents.emit("queueChanged", target);
                 }
             });
             // only observe added or removed elements
@@ -560,8 +284,8 @@ function initSiteEvents() {
             });
             const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    siteEvents.fire("autoplayQueueChanged", target);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    siteEvents.emit("autoplayQueueChanged", target);
                 }
             });
             autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents"), {
@@ -569,14 +293,14 @@ function initSiteEvents() {
             });
             //#SECTION home page observers
             initHomeObservers();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Successfully initialized SiteEvents observers");
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Successfully initialized SiteEvents observers");
             observers = observers.concat([
                 queueObs,
                 autoplayObs,
             ]);
         }
         catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)("Couldn't initialize SiteEvents observers due to an error:\n", err);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't initialize SiteEvents observers due to an error:\n", err);
         }
     });
 }
@@ -601,13 +325,13 @@ function initHomeObservers() {
                 }, 50);
             });
         }
-        siteEvents.fire("homePageLoaded");
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Initialized home page observers");
+        siteEvents.emit("homePageLoaded");
+        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Initialized home page observers");
         //#SECTION carousel shelves
         const shelfContainerObs = new MutationObserver(([{ addedNodes, removedNodes }]) => {
             if (addedNodes.length > 0 || removedNodes.length > 0) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-                siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
+                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
+                siteEvents.emit("carouselShelvesChanged", { addedNodes, removedNodes });
             }
         });
         shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer"), {
@@ -653,6 +377,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
 /* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu; },
 /* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
+/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
 /* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeArtists; },
 /* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; },
@@ -731,6 +456,12 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
+    },
+    removeShareTrackingParam: {
+        desc: "Remove the tracking parameter (&si=...) from links in the share popup",
+        type: "toggle",
+        category: "layout",
+        default: true,
     },
     //#SECTION input
     arrowKeySupport: {
@@ -978,6 +709,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   initVolumeFeatures: function() { return /* binding */ initVolumeFeatures; },
 /* harmony export */   preInitLayout: function() { return /* binding */ preInitLayout; },
+/* harmony export */   removeShareTrackingParam: function() { return /* binding */ removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
@@ -1221,7 +953,7 @@ function setVolSliderStep(sliderElem) {
 function initQueueButtons() {
     const addQueueBtns = (evt) => {
         let amt = 0;
-        for (const queueItm of (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt).childNodes) {
+        for (const queueItm of evt.childNodes) {
             if (!queueItm.classList.contains("bytm-has-queue-btns")) {
                 addQueueButtons(queueItm);
                 amt++;
@@ -1380,10 +1112,8 @@ function addAnchorImprovements() {
             },
         });
         // every shelf that's loaded by scrolling:
-        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", (evt) => {
-            const { addedNodes, removedNodes } = (0,_events__WEBPACK_IMPORTED_MODULE_3__.getEvtData)(evt);
-            void removedNodes;
-            if (addedNodes.length > 0)
+        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", ({ addedNodes }) => {
+            if (addedNodes && addedNodes.length > 0)
                 addedNodes.forEach(condCarouselImprovements);
         });
         // related tab in /watch
@@ -1531,6 +1261,26 @@ function initAutoCloseToasts() {
     catch (err) {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Error in automatic toast closing:", err);
     }
+}
+//#MARKER remove share tracking param
+/** Continuously removes the ?si tracking parameter from share URLs */
+function removeShareTrackingParam() {
+    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("yt-copy-link-renderer input#share-url", {
+        continuous: true,
+        listener: (inputElem) => {
+            try {
+                const url = new URL(inputElem.value);
+                if (!url.searchParams.has("si"))
+                    return;
+                url.searchParams.delete("si");
+                inputElem.value = String(url);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Removed tracking parameter from share link: ${url}`);
+            }
+            catch (err) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.warn)("Couldn't remove tracking parameter from share link due to error:", err);
+            }
+        },
+    });
 }
 
 
@@ -2611,7 +2361,7 @@ var ConfigManager = class {
   setData(data) {
     this.cachedConfig = data;
     return new Promise((resolve) => __async(this, null, function* () {
-      yield Promise.allSettled([
+      yield Promise.all([
         GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)),
         GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
       ]);
@@ -2623,7 +2373,7 @@ var ConfigManager = class {
     return __async(this, null, function* () {
       this.cachedConfig = this.defaultConfig;
       return new Promise((resolve) => __async(this, null, function* () {
-        yield Promise.allSettled([
+        yield Promise.all([
           GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)),
           GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
         ]);
@@ -2640,7 +2390,7 @@ var ConfigManager = class {
    */
   deleteConfig() {
     return __async(this, null, function* () {
-      yield Promise.allSettled([
+      yield Promise.all([
         GM.deleteValue(`_uucfg-${this.id}`),
         GM.deleteValue(`_uucfgver-${this.id}`)
       ]);
@@ -2666,7 +2416,7 @@ var ConfigManager = class {
           }
         }
       }
-      yield Promise.allSettled([
+      yield Promise.all([
         GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)),
         GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)
       ]);
@@ -2857,6 +2607,35 @@ function getSelectorMap() {
 
 
 
+/***/ }),
+
+/***/ "./node_modules/nanoevents/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/nanoevents/index.js ***!
+  \******************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createNanoEvents: function() { return /* binding */ createNanoEvents; }
+/* harmony export */ });
+let createNanoEvents = () => ({
+  emit(event, ...args) {
+    let callbacks = this.events[event] || []
+    for (let i = 0, length = callbacks.length; i < length; i++) {
+      callbacks[i](...args)
+    }
+  },
+  events: {},
+  on(event, cb) {
+    this.events[event]?.push(cb) || (this.events[event] = [cb])
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i)
+    }
+  }
+})
+
+
 /***/ })
 
 /******/ });
@@ -2954,7 +2733,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         "─ lots of ambition",
         `─ my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_5__.geniUrlBase}`,
         "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
-        "─ this tiny event listener library: https://github.com/billjs/event-emitter",
+        "─ this tiny event listener library: https://github.com/ai/nanoevents",
     ].join("\n"));
     console.log();
 }
@@ -3153,7 +2932,7 @@ function onDomLoad() {
 }
 
 .bytm-ftconf-input[type=number] {
-  width: 100px;
+  width: 75px;
 }
 
 /*!***************************************************************************!*\
@@ -3456,6 +3235,8 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
                 if (features.closeToastsTimeout > 0)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initAutoCloseToasts)();
+                if (features.removeShareTrackingParam)
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.removeShareTrackingParam)();
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
