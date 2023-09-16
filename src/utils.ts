@@ -29,7 +29,7 @@ const consPrefix = `[${scriptInfo.name}]`;
 const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
 
 /**
- * Logs string-compatible values to the console, as long as the log level is sufficient.  
+ * Logs all passed values to the console, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 export function log(...args: unknown[]): void {
@@ -38,7 +38,7 @@ export function log(...args: unknown[]): void {
 }
 
 /**
- * Logs string-compatible values to the console as info, as long as the log level is sufficient.  
+ * Logs all passed values to the console as info, as long as the log level is sufficient.  
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 export function info(...args: unknown[]): void {
@@ -46,21 +46,17 @@ export function info(...args: unknown[]): void {
     console.info(consPrefix, ...args);
 }
 
-/**
- * Logs string-compatible values to the console as a warning, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
- */
+/** Logs all passed values to the console as a warning, no matter the log level. */
 export function warn(...args: unknown[]): void {
-  if(curLogLevel <= getLogLevel(args))
-    console.warn(consPrefix, ...args);
+  console.warn(consPrefix, ...args);
 }
 
-/** Logs string-compatible values to the console as an error, no matter the log level. */
+/** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
 }
 
-/** Logs string-compatible values to the console, intended for debugging only */
+/** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);
 }
