@@ -29,6 +29,9 @@
 // @resource       arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/arrow_down.svg
 // @resource       github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
 // @resource       greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @grant          GM.deleteValue
+// @grant          GM.registerMenuCommand
+// @grant          GM.listValues
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -118,6 +121,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   clearConfig: function() { return /* binding */ clearConfig; },
 /* harmony export */   defaultConfig: function() { return /* binding */ defaultConfig; },
 /* harmony export */   getFeatures: function() { return /* binding */ getFeatures; },
 /* harmony export */   initConfig: function() { return /* binding */ initConfig; },
@@ -149,7 +153,7 @@ const migrations = {
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
     // 2 -> 3
-    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true })),
+    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -165,10 +169,12 @@ const cfgMgr = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.ConfigM
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 function initConfig() {
     return __awaiter(this, void 0, void 0, function* () {
-        const oldFmtVer = yield GM.getValue(`_uucfgver-${cfgMgr.id}`, -1);
+        const oldFmtVer = Number(yield GM.getValue(`_uucfgver-${cfgMgr.id}`, NaN));
         const data = yield cfgMgr.loadData();
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
-        if (oldFmtVer !== cfgMgr.formatVersion)
+        if (isNaN(oldFmtVer))
+            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Config data initialized with default values");
+        else if (oldFmtVer !== cfgMgr.formatVersion)
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
         return data;
     });
@@ -191,6 +197,13 @@ function setDefaultFeatures() {
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Reset feature config to its default values");
     });
 }
+/** Clears the feature config from the persistent storage */
+function clearConfig() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield cfgMgr.deleteConfig();
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Deleted config from persistent storage");
+    });
+}
 
 
 /***/ }),
@@ -211,9 +224,9 @@ __webpack_require__.r(__webpack_exports__);
 const modeRaw = "development";
 const branchRaw = "develop";
 /** The mode in which the script was built (production or development) */
-const mode = modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw;
+const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
-const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
+const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
 /**
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -224,7 +237,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "7fac054", // assert as generic string instead of literal
+    lastCommit: "41a5a2c", // assert as generic string instead of literal
 };
 
 
@@ -372,9 +385,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
 /* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
 /* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
+/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initNumKeysSkip; },
 /* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
 /* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initSiteSwitch; },
 /* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
+/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.isMenuOpen; },
 /* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu; },
 /* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
 /* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
@@ -401,7 +416,7 @@ const categoryNames = {
     layout: "Layout",
     lyrics: "Lyrics",
 };
-/** Contains all possible features with their default values and other config */
+/** Contains all possible features with their default values and other configuration */
 const featInfo = {
     //#SECTION layout
     removeUpgradeTab: {
@@ -477,6 +492,7 @@ const featInfo = {
         default: true,
     },
     switchSitesHotkey: {
+        hidden: true,
         desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
         type: "hotkey",
         category: "input",
@@ -486,16 +502,21 @@ const featInfo = {
             ctrl: false,
             meta: false,
         },
-        hidden: true,
     },
     disableBeforeUnloadPopup: {
-        desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
+        desc: "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
         type: "toggle",
         category: "input",
         default: false,
     },
     anchorImprovements: {
         desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+        type: "toggle",
+        category: "input",
+        default: true,
+    },
+    numKeysSkipToTime: {
+        desc: "Enable skipping to a specific time in the video by pressing a number key (0-9)",
         type: "toggle",
         category: "input",
         default: true,
@@ -512,7 +533,7 @@ const featInfo = {
         type: "toggle",
         category: "lyrics",
         default: true,
-    }
+    },
 };
 
 
@@ -530,10 +551,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   enableBeforeUnload: function() { return /* binding */ enableBeforeUnload; },
 /* harmony export */   initArrowKeySkip: function() { return /* binding */ initArrowKeySkip; },
 /* harmony export */   initBeforeUnloadHook: function() { return /* binding */ initBeforeUnloadHook; },
+/* harmony export */   initNumKeysSkip: function() { return /* binding */ initNumKeysSkip; },
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -545,70 +568,73 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
+
 //#MARKER arrow key skip
 function initArrowKeySkip() {
-    document.addEventListener("keydown", onKeyDown);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Added key press listener");
-}
-/** Called when the user presses any key, anywhere */
-function onKeyDown(evt) {
-    var _a, _b;
-    if (["ArrowLeft", "ArrowRight"].includes(evt.code)) {
+    document.addEventListener("keydown", (evt) => {
+        var _a, _b, _c;
+        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+            return;
         // discard the event when a (text) input is currently active, like when editing a playlist
         if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
-            return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Captured valid key but the current active element is <${document.activeElement.tagName.toLowerCase()}>, so the keypress is ignored`);
-        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Captured key '${evt.code}' in proxy listener`);
-        // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
-        const defaultProps = {
-            altKey: false,
-            ctrlKey: false,
-            metaKey: false,
-            shiftKey: false,
-            target: document.body,
-            currentTarget: document.body,
-            originalTarget: document.body,
-            explicitOriginalTarget: document.body,
-            srcElement: document.body,
-            type: "keydown",
-            bubbles: true,
-            cancelBubble: false,
-            cancelable: true,
-            isTrusted: true,
-            repeat: false,
-            // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-            view: (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
-        };
-        let invalidKey = false;
-        let keyProps = {};
-        switch (evt.code) {
-            case "ArrowLeft":
-                keyProps = {
-                    code: "KeyH",
-                    key: "h",
-                    keyCode: 72,
-                    which: 72,
-                };
-                break;
-            case "ArrowRight":
-                keyProps = {
-                    code: "KeyL",
-                    key: "l",
-                    keyCode: 76,
-                    which: 76,
-                };
-                break;
-            default:
-                invalidKey = true;
-                break;
-        }
-        if (!invalidKey) {
-            const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
-            document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
-        }
-        else
-            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.warn)(`Captured key '${evt.code}' has no defined behavior`);
+            return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
+        onArrowKeyPress(evt);
+    });
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Added arrow key press listener");
+}
+/** Called when the user presses any key, anywhere */
+function onArrowKeyPress(evt) {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Captured key '${evt.code}' in proxy listener`);
+    // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
+    const defaultProps = {
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        target: document.body,
+        currentTarget: document.body,
+        originalTarget: document.body,
+        explicitOriginalTarget: document.body,
+        srcElement: document.body,
+        type: "keydown",
+        bubbles: true,
+        cancelBubble: false,
+        cancelable: true,
+        isTrusted: true,
+        repeat: false,
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+        view: (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
+    };
+    let invalidKey = false;
+    let keyProps = {};
+    switch (evt.code) {
+        case "ArrowLeft":
+            keyProps = {
+                code: "KeyH",
+                key: "h",
+                keyCode: 72,
+                which: 72,
+            };
+            break;
+        case "ArrowRight":
+            keyProps = {
+                code: "KeyL",
+                key: "l",
+                keyCode: 76,
+                which: 76,
+            };
+            break;
+        default:
+            invalidKey = true;
+            break;
     }
+    if (!invalidKey) {
+        const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
+        document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
+    }
+    else
+        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.warn)(`Captured key '${evt.code}' has no defined behavior`);
 }
 //#MARKER site switch
 /** switch sites only if current video time is greater than this value */
@@ -689,6 +715,79 @@ function initBeforeUnloadHook() {
         };
         // @ts-ignore
     })(window.__proto__.addEventListener);
+}
+//#MARKER number keys skip to time
+/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
+function initNumKeysSkip() {
+    document.addEventListener("keydown", (e) => {
+        var _a, _b, _c, _d;
+        if (!e.key.trim().match(/^[0-9]$/))
+            return;
+        if (_menu_menu_old__WEBPACK_IMPORTED_MODULE_2__.isMenuOpen)
+            return;
+        // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
+        if (document.activeElement !== document.body
+            && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
+            && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
+            return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
+        skipToTimeKey(Number(e.key));
+    });
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Added number key press listener");
+}
+/** Emulates a click on the video progress bar at the position calculated from the passed time key (0-9) */
+function skipToTimeKey(key) {
+    const getX = (timeKey, maxWidth) => {
+        if (timeKey >= 10)
+            return maxWidth;
+        return Math.floor((maxWidth / 10) * timeKey);
+    };
+    /** Calculate offsets of the bounding client rect of the passed element - see https://stackoverflow.com/a/442474/11187044 */
+    const getOffsetRect = (elem) => {
+        let left = 0;
+        let top = 0;
+        const rect = elem.getBoundingClientRect();
+        while (elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
+            left += elem.offsetLeft - elem.scrollLeft;
+            top += elem.offsetTop - elem.scrollTop;
+            elem = elem.offsetParent;
+        }
+        return {
+            top,
+            left,
+            width: rect.width,
+            height: rect.height,
+        };
+    };
+    // not technically a progress element but behaves pretty much the same
+    const progressElem = document.querySelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar");
+    if (!progressElem)
+        return;
+    const rect = getOffsetRect(progressElem);
+    const x = getX(key, rect.width);
+    const y = rect.top - rect.height / 2;
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Skipping to time key ${key} (x offset: ${x}px of ${rect.width}px)`);
+    const evt = new MouseEvent("mousedown", {
+        clientX: x,
+        clientY: y,
+        // @ts-ignore
+        layerX: x,
+        layerY: rect.height / 2,
+        target: progressElem,
+        bubbles: true,
+        shiftKey: false,
+        ctrlKey: false,
+        altKey: false,
+        metaKey: false,
+        button: 0,
+        buttons: 1,
+        which: 1,
+        isTrusted: true,
+        offsetX: 0,
+        offsetY: 0,
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+        view: (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)(),
+    });
+    progressElem.dispatchEvent(evt);
 }
 
 
@@ -822,7 +921,7 @@ function exchangeLogo() {
         }),
     });
 }
-/** Called whenever the menu exists to add a BYTM-Configuration button */
+/** Called whenever the menu exists to add a BYTM-Configuration button to the user menu popover */
 function addConfigMenuOption(container) {
     return __awaiter(this, void 0, void 0, function* () {
         const cfgOptElem = document.createElement("div");
@@ -1084,7 +1183,7 @@ function addQueueButtons(queueItem) {
         queueItem.classList.add("bytm-has-queue-btns");
     });
 }
-//#MARKER better clickable stuff
+//#MARKER anchor improvements
 // TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
 // TODO: add to thumbnails in playlists (/playlist?list=$id)
 // TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
@@ -1656,6 +1755,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addMenu: function() { return /* binding */ addMenu; },
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
+/* harmony export */   isMenuOpen: function() { return /* binding */ isMenuOpen; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
@@ -2748,11 +2848,19 @@ function preInit() {
 function init() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            registerMenuCommands();
+        }
+        catch (e) {
+            void e;
+        }
+        // init DOM-dependant stuff like features
+        try {
             document.addEventListener("DOMContentLoaded", onDomLoad);
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General Error:", err);
         }
+        // init config
         try {
             (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)());
             if ((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().disableBeforeUnloadPopup)
@@ -2761,6 +2869,7 @@ function init() {
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error while initializing ConfigManager:", err);
         }
+        // init menu separately from features
         try {
             void ["TODO(v1.1):", _features_index__WEBPACK_IMPORTED_MODULE_5__.initMenu];
             // initMenu();
@@ -3237,6 +3346,8 @@ ytmusic-responsive-list-item-renderer .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initAutoCloseToasts)();
                 if (features.removeShareTrackingParam)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.removeShareTrackingParam)();
+                if (features.numKeysSkipToTime)
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initNumKeysSkip)();
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
@@ -3248,6 +3359,37 @@ ytmusic-responsive-list-item-renderer .left-items {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Feature error:", err);
         }
     });
+}
+function registerMenuCommands() {
+    if (_constants__WEBPACK_IMPORTED_MODULE_2__.mode === "development") {
+        GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to reset the configuration to its default values?\nThis will automatically reload the page.")) {
+                yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.clearConfig)();
+                location.reload();
+            }
+        }), "r");
+        GM.registerMenuCommand("List GM values", () => __awaiter(this, void 0, void 0, function* () {
+            alert("See console.");
+            const keys = yield GM.listValues();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("GM values:");
+            if (keys.length === 0)
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("  No values found.");
+            for (const key of keys)
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`  ${key} -> ${yield GM.getValue(key)}`);
+        }), "l");
+        GM.registerMenuCommand("Clear all GM values", () => __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Are you sure you want to clear all GM values?")) {
+                const keys = yield GM.listValues();
+                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Clearing GM values:");
+                if (keys.length === 0)
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("  No values found.");
+                for (const key of keys) {
+                    yield GM.deleteValue(key);
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`  Deleted ${key}`);
+                }
+            }
+        }), "c");
+    }
 }
 preInit();
 
