@@ -13,7 +13,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, disableBeforeUnload,
+  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, disableBeforeUnload, removeShareTrackingParam,
 } from "./features/index";
 
 {
@@ -33,7 +33,7 @@ import {
     "─ lots of ambition",
     `─ my song metadata API: ${geniUrlBase}`,
     "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
-    "─ this tiny event listener library: https://github.com/billjs/event-emitter",
+    "─ this tiny event listener library: https://github.com/ai/nanoevents",
   ].join("\n"));
   console.log();
 }
@@ -120,6 +120,9 @@ async function onDomLoad() {
 
       if(features.closeToastsTimeout > 0)
         initAutoCloseToasts();
+
+      if(features.removeShareTrackingParam)
+        removeShareTrackingParam();
 
       initVolumeFeatures();
     }

@@ -1,29 +1,19 @@
-import { Event as EventParam, EventEmitter, EventHandler } from "@billjs/event-emitter";
+import { createNanoEvents } from "nanoevents";
 import { error, info } from "./utils";
 
-interface SiteEvents extends EventEmitter {
+export interface SiteEventsMap {
   /** Emitted whenever child nodes are added to or removed from the song queue */
-  on(event: "queueChanged", listener: EventHandler): boolean;
+  queueChanged: (queueElement: HTMLElement) => void;
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
-  on(event: "autoplayQueueChanged", listener: EventHandler): boolean;
+  autoplayQueueChanged: (queueElement: HTMLElement) => void;
   /** Emitted whenever carousel shelf containers are added or removed from their parent container */
-  on(event: "carouselShelvesChanged", listener: EventHandler): boolean;
+  carouselShelvesChanged: (elementMutations: Record<"addedNodes" | "removedNodes", NodeListOf<HTMLElement> | null>) => void;
   /** Emitted once the home page is filled with content */
-  on(event: "homePageLoaded", listener: EventHandler): boolean;
+  homePageLoaded: () => void;
 }
 
 /** EventEmitter instance that is used to detect changes to the site */
-export const siteEvents = new EventEmitter() as SiteEvents;
-
-/**
- * Returns the data of an event from the `@billjs/event-emitter` library.
- * This function is used as a shorthand to extract the data and assert it with the type passed in `<T>`
- * @param evt Event object from the `.on()` or `.once()` method
- * @template T Type of the data passed by `.fire(type: string, data: T)`
- */
-export function getEvtData<T>(evt: EventParam): T {
-  return evt.data as T;
-}
+export const siteEvents = createNanoEvents<SiteEventsMap>();
 
 let observers: MutationObserver[] = [];
 
@@ -44,7 +34,7 @@ export async function initSiteEvents() {
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        siteEvents.fire("queueChanged", target);
+        siteEvents.emit("queueChanged", target as HTMLElement);
       }
     });
 
@@ -56,7 +46,7 @@ export async function initSiteEvents() {
     const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        siteEvents.fire("autoplayQueueChanged", target);
+        siteEvents.emit("autoplayQueueChanged", target as HTMLElement);
       }
     });
 
@@ -99,7 +89,7 @@ async function initHomeObservers() {
     });
   }
 
-  siteEvents.fire("homePageLoaded");
+  siteEvents.emit("homePageLoaded");
 
   info("Initialized home page observers");
 
@@ -107,7 +97,7 @@ async function initHomeObservers() {
   const shelfContainerObs = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
     if(addedNodes.length > 0 || removedNodes.length > 0) {
       info("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-      siteEvents.fire("carouselShelvesChanged", { addedNodes, removedNodes });
+      siteEvents.emit("carouselShelvesChanged", { addedNodes, removedNodes } as Record<"addedNodes" | "removedNodes", NodeListOf<HTMLElement> | null>);
     }
   });
 
