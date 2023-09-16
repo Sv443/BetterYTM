@@ -490,7 +490,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "b51480b", // assert as generic string instead of literal
+    lastCommit: "53f8631", // assert as generic string instead of literal
 };
 
 
@@ -2290,7 +2290,7 @@ function getLogLevel(args) {
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
 const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
 /**
- * Logs string-compatible values to the console, as long as the log level is sufficient.
+ * Logs all passed values to the console, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 function log(...args) {
@@ -2298,26 +2298,22 @@ function log(...args) {
         console.log(consPrefix, ...args);
 }
 /**
- * Logs string-compatible values to the console as info, as long as the log level is sufficient.
+ * Logs all passed values to the console as info, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
  */
 function info(...args) {
     if (curLogLevel <= getLogLevel(args))
         console.info(consPrefix, ...args);
 }
-/**
- * Logs string-compatible values to the console as a warning, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
- */
+/** Logs all passed values to the console as a warning, no matter the log level. */
 function warn(...args) {
-    if (curLogLevel <= getLogLevel(args))
-        console.warn(consPrefix, ...args);
+    console.warn(consPrefix, ...args);
 }
-/** Logs string-compatible values to the console as an error, no matter the log level. */
+/** Logs all passed values to the console as an error, no matter the log level. */
 function error(...args) {
     console.error(consPrefix, ...args);
 }
-/** Logs string-compatible values to the console, intended for debugging only */
+/** Logs all passed values to the console with a debug-specific prefix */
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
 }
@@ -2999,8 +2995,7 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(/* BetterYTM - global style */
-`/*!**********************************************************************************!*\
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!**********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
   \**********************************************************************************/
 #bytm-menu-bg {
