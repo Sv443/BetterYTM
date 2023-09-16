@@ -4,9 +4,9 @@ const modeRaw = "{{MODE}}";
 const branchRaw = "{{BRANCH}}";
 
 /** The mode in which the script was built (production or development) */
-export const mode = modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw;
+export const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw) as "production" | "development";
 /** The branch to use in various URLs that point to the GitHub repo */
-export const branch = branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw;
+export const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw) as "main" | "develop";
 
 /**
  * How much info should be logged to the devtools console  

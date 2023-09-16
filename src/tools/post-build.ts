@@ -34,6 +34,13 @@ type BuildStats = {
   timestamp: number;
 };
 
+/** Directives that are only added in dev mode */
+const devDirectives = mode === "development" ? `
+// @grant          GM.deleteValue
+// @grant          GM.registerMenuCommand
+// @grant          GM.listValues\
+` : undefined;
+
 (async () => {
   const resourcesDirectives = await getResourceDirectives();
 
@@ -60,7 +67,8 @@ type BuildStats = {
 // @grant          GM.getResourceUrl
 // @grant          unsafeWindow
 // @noframes\
-${resourcesDirectives ? "\n" + resourcesDirectives : ""}
+${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
+${devDirectives ?? ""}
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
