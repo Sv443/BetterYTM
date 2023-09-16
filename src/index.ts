@@ -1,6 +1,6 @@
 import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/userutils";
-import { getFeatures, initConfig } from "./config";
-import { logLevel, scriptInfo } from "./constants";
+import { clearConfig, getFeatures, initConfig } from "./config";
+import { logLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
@@ -8,12 +8,15 @@ import {
   initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab,
   initVolumeFeatures, initAutoCloseToasts,
+  removeShareTrackingParam,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
+  initArrowKeySkip, initSiteSwitch,
+  initBeforeUnloadHook, disableBeforeUnload,
+  addAnchorImprovements, initNumKeysSkip,
   // menu
-  initMenu, addMenu, initBeforeUnloadHook, addConfigMenuOption, disableBeforeUnload, removeShareTrackingParam,
+  initMenu, addMenu, addConfigMenuOption,
 } from "./features/index";
 
 {
@@ -52,11 +55,21 @@ function preInit() {
 
 async function init() {
   try {
+    registerMenuCommands();
+  }
+  catch(e) {
+    void e;
+  }
+
+  // init DOM-dependant stuff like features
+  try {
     document.addEventListener("DOMContentLoaded", onDomLoad);
   }
   catch(err) {
     error("General Error:", err);
   }
+
+  // init config
   try {
     preInitLayout(await initConfig());
 
@@ -67,6 +80,7 @@ async function init() {
     error("Error while initializing ConfigManager:", err);
   }
 
+  // init menu separately from features
   try {
     void ["TODO(v1.1):", initMenu];
     // initMenu();
@@ -124,6 +138,9 @@ async function onDomLoad() {
       if(features.removeShareTrackingParam)
         removeShareTrackingParam();
 
+      if(features.numKeysSkipToTime)
+        initNumKeysSkip();
+
       initVolumeFeatures();
     }
 
@@ -134,6 +151,40 @@ async function onDomLoad() {
   }
   catch(err) {
     error("Feature error:", err);
+  }
+}
+
+function registerMenuCommands() {
+  if(mode === "development") {
+    GM.registerMenuCommand("Reset config", async () => {
+      if(confirm("Are you sure you want to reset the configuration to its default values?\nThis will automatically reload the page.")) {
+        await clearConfig();
+        location.reload();
+      }
+    }, "r");
+
+    GM.registerMenuCommand("List GM values", async () => {
+      alert("See console.");
+      const keys = await GM.listValues();
+      log("GM values:");
+      if(keys.length === 0)
+        log("  No values found.");
+      for(const key of keys)
+        log(`  ${key} -> ${await GM.getValue(key)}`);
+    }, "l");
+
+    GM.registerMenuCommand("Clear all GM values", async () => {
+      if(confirm("Are you sure you want to clear all GM values?")) {
+        const keys = await GM.listValues();
+        log("Clearing GM values:");
+        if(keys.length === 0)
+          log("  No values found.");
+        for(const key of keys) {
+          await GM.deleteValue(key);
+          log(`  Deleted ${key}`);
+        }
+      }
+    }, "c");
   }
 }
 
