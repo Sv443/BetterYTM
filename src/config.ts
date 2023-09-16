@@ -1,12 +1,12 @@
-import { ConfigManager, ConfigManagerOptions } from "@sv443-network/userutils";
+import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 2;
+const formatVersion = 3;
 
-const migrations: ConfigManagerOptions<typeof defaultConfig>["migrations"] = {
+const migrations: ConfigMigrationsDict = {
   // 1 -> 2
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
@@ -17,6 +17,11 @@ const migrations: ConfigManagerOptions<typeof defaultConfig>["migrations"] = {
       lyricsQueueButton: queueBtnsEnabled,
     };
   },
+  // 2 -> 3
+  3: (oldData: Record<string, unknown>) => ({
+    ...oldData,
+    removeShareTrackingParam: true,
+  }),
 };
 
 export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])
@@ -34,8 +39,11 @@ const cfgMgr = new ConfigManager({
 
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 export async function initConfig() {
+  const oldFmtVer = await GM.getValue(`_uucfgver-${cfgMgr.id}`, -1);
   const data = await cfgMgr.loadData();
   log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
+  if(oldFmtVer !== cfgMgr.formatVersion)
+    info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
   return data;
 }
 

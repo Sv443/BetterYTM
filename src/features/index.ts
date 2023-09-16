@@ -75,6 +75,12 @@ export const featInfo = {
     default: 0,
     unit: "s",
   },
+  removeShareTrackingParam: {
+    desc: "Remove the tracking parameter (&si=...) from links in the share popup",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
 
   //#SECTION input
   arrowKeySupport: {

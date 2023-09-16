@@ -1,9 +1,8 @@
-import type { Event as BillEvent } from "@billjs/event-emitter";
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log } from "../utils";
-import { getEvtData, siteEvents } from "../events";
+import { error, getResourceUrl, log, warn } from "../utils";
+import { SiteEventsMap, siteEvents } from "../events";
 import { openMenu } from "./menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import { featInfo } from "./index";
@@ -279,9 +278,11 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 //#MARKER queue buttons
 
 export function initQueueButtons() {
-  const addQueueBtns = (evt: BillEvent) => {
+  const addQueueBtns = (
+    evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
+  ) => {
     let amt = 0;
-    for(const queueItm of getEvtData<HTMLElement>(evt).childNodes as NodeListOf<HTMLElement>) {
+    for(const queueItm of evt.childNodes as NodeListOf<HTMLElement>) {
       if(!queueItm.classList.contains("bytm-has-queue-btns")) {
         addQueueButtons(queueItm);
         amt++;
@@ -481,11 +482,8 @@ export function addAnchorImprovements() {
     });
 
     // every shelf that's loaded by scrolling:
-    siteEvents.on("carouselShelvesChanged", (evt) => {
-      const { addedNodes, removedNodes } = getEvtData<Record<"addedNodes" | "removedNodes", NodeListOf<HTMLElement>>>(evt);
-      void removedNodes;
-
-      if(addedNodes.length > 0)
+    siteEvents.on("carouselShelvesChanged", ({ addedNodes }) => {
+      if(addedNodes && addedNodes.length > 0)
         addedNodes.forEach(condCarouselImprovements);
     });
 
@@ -659,4 +657,27 @@ export function initAutoCloseToasts() {
   catch(err) {
     error("Error in automatic toast closing:", err);
   }
+}
+
+//#MARKER remove share tracking param
+
+/** Continuously removes the ?si tracking parameter from share URLs */
+export function removeShareTrackingParam() {
+  onSelector<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
+    continuous: true,
+    listener: (inputElem) => {
+      try {
+        const url = new URL(inputElem.value);
+        if(!url.searchParams.has("si"))
+          return;
+
+        url.searchParams.delete("si");
+        inputElem.value = String(url);
+        log(`Removed tracking parameter from share link: ${url}`);
+      }
+      catch(err) {
+        warn("Couldn't remove tracking parameter from share link due to error:", err);
+      }
+    },
+  });
 }

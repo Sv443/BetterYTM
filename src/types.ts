@@ -41,6 +41,8 @@ export interface FeatureConfig {
   deleteFromQueueButton: boolean;
   /** After how many milliseconds to close permanent toasts */
   closeToastsTimeout: number;
+  /** Remove the "si" tracking parameter from links in the share popup */
+  removeShareTrackingParam: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
