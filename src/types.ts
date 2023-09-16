@@ -43,6 +43,8 @@ export interface FeatureConfig {
   closeToastsTimeout: number;
   /** Remove the "si" tracking parameter from links in the share popup */
   removeShareTrackingParam: boolean;
+  /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
+  numKeysSkipToTime: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

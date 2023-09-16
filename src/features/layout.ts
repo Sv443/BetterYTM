@@ -114,7 +114,7 @@ function exchangeLogo() {
   });
 }
 
-/** Called whenever the menu exists to add a BYTM-Configuration button */
+/** Called whenever the menu exists to add a BYTM-Configuration button to the user menu popover */
 export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
   cfgOptElem.role = "button";
@@ -449,11 +449,13 @@ async function addQueueButtons(queueItem: HTMLElement) {
   queueItem.classList.add("bytm-has-queue-btns");
 }
 
-//#MARKER better clickable stuff
+//#MARKER anchor improvements
+
 
 // TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
 // TODO: add to thumbnails in playlists (/playlist?list=$id)
 // TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
+
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
