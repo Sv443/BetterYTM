@@ -8,7 +8,7 @@ import "./menu_old.css";
 
 //#MARKER create menu elements
 
-let isMenuOpen = false;
+export let isMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;

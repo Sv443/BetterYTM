@@ -19,7 +19,7 @@ export const categoryNames: Record<FeatureCategory, string> = {
   lyrics: "Lyrics",
 } as const;
 
-/** Contains all possible features with their default values and other config */
+/** Contains all possible features with their default values and other configuration */
 export const featInfo = {
   //#SECTION layout
   removeUpgradeTab: {
@@ -96,6 +96,7 @@ export const featInfo = {
     default: true,
   },
   switchSitesHotkey: {
+    hidden: true,
     desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
     type: "hotkey",
     category: "input",
@@ -105,16 +106,21 @@ export const featInfo = {
       ctrl: false,
       meta: false,
     },
-    hidden: true,
   },
   disableBeforeUnloadPopup: {
-    desc: "Disable the confirmation popup that sometimes appears when trying to leave the site",
+    desc: "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
     type: "toggle",
     category: "input",
     default: false,
   },
   anchorImprovements: {
     desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+    type: "toggle",
+    category: "input",
+    default: true,
+  },
+  numKeysSkipToTime: {
+    desc: "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     type: "toggle",
     category: "input",
     default: true,
@@ -132,5 +138,5 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-  }
+  },
 } as const;

@@ -21,6 +21,7 @@ const migrations: ConfigMigrationsDict = {
   3: (oldData: Record<string, unknown>) => ({
     ...oldData,
     removeShareTrackingParam: true,
+    numKeysSkipToTime: true,
   }),
 };
 
@@ -39,10 +40,12 @@ const cfgMgr = new ConfigManager({
 
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 export async function initConfig() {
-  const oldFmtVer = await GM.getValue(`_uucfgver-${cfgMgr.id}`, -1);
+  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgMgr.id}`, NaN));
   const data = await cfgMgr.loadData();
   log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
-  if(oldFmtVer !== cfgMgr.formatVersion)
+  if(isNaN(oldFmtVer))
+    info("Config data initialized with default values");
+  else if(oldFmtVer !== cfgMgr.formatVersion)
     info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
   return data;
 }
@@ -62,4 +65,10 @@ export async function saveFeatures(featureConf: FeatureConfig) {
 export async function setDefaultFeatures() {
   await cfgMgr.saveDefaultData();
   info("Reset feature config to its default values");
+}
+
+/** Clears the feature config from the persistent storage */
+export async function clearConfig() {
+  await cfgMgr.deleteConfig();
+  info("Deleted config from persistent storage");
 }
