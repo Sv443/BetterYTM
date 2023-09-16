@@ -2,8 +2,8 @@
 
 ### The problem with userscripts and SPAs:
 YTM is an SPA (single page application), meaning navigating to a different part of the site doesn't trigger the website, and by extension userscripts, to entirely reload like traditional redirects on MPAs (multi-page applications).  
-This means userscripts like BetterYTM rely on detecting changes in the DOM using something like the [MutationObserver API](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) (see `initSiteEvents()` in [`src/events.ts`](../events.ts)).  
-This causes a LOT of headaches (race conditions, detecting navigation, state consistency and more) but it's the only option as far as I'm aware.
+This means userscripts like BetterYTM rely on detecting changes in the DOM using something like the [MutationObserver API](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) (see `initSiteEvents()` in [`src/events.ts`](../events.ts)) and [the onSelector() function of my library UserUtils.](https://github.com/Sv443-Network/UserUtils#onselector)  
+This causes a LOT of headaches (race conditions, detecting navigation, state consistency, performance impacts and more) but it's the only option as far as I'm aware.
 
 <br>
 
@@ -12,13 +12,13 @@ YT and YTM kinda run on the same system. What I mean by that is that "YTM songs"
 The problem comes from "YT video songs" having wildly inconsistent titles. Usually (but not always!) the artist is actually the name of the uploader's channel and the actual song artist is included in the video title, separated from the song name by a hyphen. This makes fetching the lyrics URL consistently and with a tiny error margin basically impossible.  
   
 **Detecting the difference:**  
-For "YT video songs" the selector `ytmusic-player` has an attribute `video-mode_`, for "YTM songs" it doesn't exist.
+For "YT video songs" the selector `ytmusic-player` has an attribute `video-mode`, for "YTM songs" it doesn't exist.
 
 <br>
 
 ### Song thumbnails on YTM:
 The [difference between YT and YTM songs](#difference-between-yt-songs-and-ytm-songs) also extends to thumbnails. I've noticed "YT video songs" load their thumbs from `i.ytimg.com`, while "YTM songs" load theirs from `*.googleusercontent.com`  
-This is about the only reliable way I've found to discern the two without relying on subtle DOM differences like I had to do with the currently active song.
+This is about the only reliable way I've found to discern the two without having to rely on subtle DOM differences like I had to do with the currently active song.
 
 <br>
 
@@ -27,6 +27,6 @@ I've searched far and wide but haven't been able to locate any variable I could 
 So instead I have to entirely rely on the text that's displayed to the user, which might seem like it would be enough, but as mentioned in [difference between YT and YTM songs](#difference-between-yt-songs-and-ytm-songs), it's wildly inconsistent.
   
 **Edit:**  
-Apparently there's an API for telling the OS which song is playing so this might be a better spot to grab the song data from, at least for the currently playing song. As a fallback, reading the DOM could still be used.  
+Apparently there's an API for telling the OS which song is playing so this might be a better spot to grab the song data from, for the currently playing song. As a fallback, reading the DOM could still be used.  
 Whether it's worth it or not to implement this is another question.  
 [See issue #25](https://github.com/Sv443/BetterYTM/issues/25)
