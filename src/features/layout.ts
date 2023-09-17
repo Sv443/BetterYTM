@@ -264,7 +264,6 @@ function setVolSliderSize() {
     return;
 
   addGlobalStyle(`\
-/* BetterYTM - set volume slider size */
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
 }`);

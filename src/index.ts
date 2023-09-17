@@ -71,7 +71,8 @@ async function init() {
 
   // init config
   try {
-    preInitLayout(await initConfig());
+    const ftConfig = await initConfig();
+    preInitLayout(ftConfig);
 
     if(getFeatures().disableBeforeUnloadPopup)
       disableBeforeUnload();
