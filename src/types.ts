@@ -51,4 +51,8 @@ export interface FeatureConfig {
   geniusLyrics: boolean;
   /** Add a button to each song in the queue to quickly open its lyrics page */
   lyricsQueueButton: boolean;
+
+  //#SECTION misc
+  /** The console log level - 0 = Debug, 1 = Info */
+  logLevel: LogLevel;
 }

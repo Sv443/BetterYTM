@@ -167,7 +167,8 @@ export async function addMenu() {
       }
 
       {
-        let inputType = "text";
+        let inputType: string | undefined = "text";
+        let inputTag = "input";
         switch(type)
         {
         case "toggle":
@@ -179,6 +180,10 @@ export async function addMenu() {
         case "number":
           inputType = "number";
           break;
+        case "select":
+          inputTag = "select";
+          inputType = undefined;
+          break;
         }
 
         const inputElemId = `bytm-ftconf-${featKey}-input`;
@@ -188,10 +193,12 @@ export async function addMenu() {
         ctrlElem.style.alignItems = "center";
         ctrlElem.style.whiteSpace = "nowrap";
 
-        const inputElem = document.createElement("input");
+        const inputElem = document.createElement(inputTag) as HTMLInputElement;
         inputElem.classList.add("bytm-ftconf-input");
         inputElem.id = inputElemId;
-        inputElem.type = inputType;
+        if(inputType)
+          inputElem.type = inputType;
+
         if(type === "toggle")
           inputElem.style.marginLeft = "5px";
         if(typeof initialVal !== "undefined")
@@ -241,6 +248,16 @@ export async function addMenu() {
               labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
           });
         }
+        else if(type === "select") {
+          for(const { value, label } of ftInfo.options) {
+            const optionElem = document.createElement("option");
+            optionElem.value = String(value);
+            optionElem.innerText = label;
+            if(value === initialVal)
+              optionElem.selected = true;
+            inputElem.appendChild(optionElem);
+          }
+        }
 
         inputElem.addEventListener("input", () => {
           let v = Number(String(inputElem.value).trim());
@@ -263,6 +280,7 @@ export async function addMenu() {
     }
   }
 
+  //#SECTION set values of inputs on external change
   siteEvents.on("rebuildCfgMenu", (newConfig) => {
     for(const ftKey in featInfo) {
       const ftElem = document.querySelector<HTMLInputElement>(`#bytm-ftconf-${ftKey}-input`);
@@ -749,10 +767,10 @@ async function addImportMenu() {
 
       await saveFeatures(parsed.data);
 
-      siteEvents.emit("rebuildCfgMenu", parsed.data);
-
       if(confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
         return location.reload();
+
+      siteEvents.emit("rebuildCfgMenu", parsed.data);
 
       closeImportMenu();
       openMenu();

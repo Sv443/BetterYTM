@@ -12,7 +12,7 @@ export const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw) as "mai
  * How much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-export const logLevel: LogLevel = mode === "production" ? 1 : 0;
+export const defaultLogLevel: LogLevel = mode === "production" ? 1 : 0;
 
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 export const scriptInfo = {

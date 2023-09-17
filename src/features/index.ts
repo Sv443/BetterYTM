@@ -17,6 +17,7 @@ export const categoryNames: Record<FeatureCategory, string> = {
   input: "Input",
   layout: "Layout",
   lyrics: "Lyrics",
+  misc: "Other",
 } as const;
 
 /** Contains all possible features with their default values and other configuration */
@@ -138,5 +139,17 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
+  },
+
+  //#SECTION misc
+  logLevel: {
+    desc: "How much information to log to the console",
+    type: "select",
+    category: "misc",
+    options: [
+      { value: 0, label: "Debug (most)" },
+      { value: 1, label: "Info (only important)" },
+    ],
+    default: 1,
   },
 } as const;
