@@ -1,9 +1,11 @@
 import { debounce, isScrollable } from "@sv443-network/userutils";
-import { defaultConfig, getFeatures, saveFeatures, setDefaultFeatures } from "../config";
+import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../features/index";
+import { getResourceUrl, info, log, warn } from "../utils";
+import { formatVersion } from "../config";
+import { siteEvents } from "../events";
 import { FeatureConfig } from "../types";
-import { getResourceUrl, info, log } from "../utils";
 import "./menu_old.css";
 
 //#MARKER create menu elements
@@ -21,12 +23,13 @@ let scrollIndicatorEnabled = true;
 export async function addMenu() {
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
-  backgroundElem.id = "bytm-menu-bg";
+  backgroundElem.id = "bytm-cfg-menu-bg";
+  backgroundElem.classList.add("bytm-menu-bg");
   backgroundElem.title = "Click here to close the menu";
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-menu-bg")
+    if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
       closeMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
@@ -36,12 +39,13 @@ export async function addMenu() {
 
   const menuContainer = document.createElement("div");
   menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.id = "bytm-menu";
+  menuContainer.classList.add("bytm-menu");
+  menuContainer.id = "bytm-cfg-menu";
 
 
   //#SECTION title bar
   const headerElem = document.createElement("div");
-  headerElem.id = "bytm-menu-header";
+  headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
   titleCont.id = "bytm-menu-titlecont";
@@ -78,7 +82,7 @@ export async function addMenu() {
   // addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/users/184165-sv443", `Open ${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
-  closeElem.id = "bytm-menu-close";
+  closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
   closeElem.title = "Click to close the menu";
   closeElem.addEventListener("click", closeMenu);
@@ -120,6 +124,9 @@ export async function addMenu() {
       },
     {} as Record<FeatureCategory, Record<FeatInfoKey, unknown>>,
     );
+
+  const fmtVal = (v: unknown) => String(v).trim();
+  const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -205,9 +212,6 @@ export async function addMenu() {
         // @ts-ignore
         const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
 
-        const fmtVal = (v: unknown) => String(v).trim();
-        const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
-
         let labelElem: HTMLLabelElement | undefined;
         if(type === "slider") {
           labelElem = document.createElement("label");
@@ -245,7 +249,10 @@ export async function addMenu() {
             confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
         });
 
-        labelElem && ctrlElem.appendChild(labelElem);
+        if(labelElem) {
+          labelElem.id = `bytm-ftconf-${featKey}-label`;
+          ctrlElem.appendChild(labelElem);
+        }
         ctrlElem.appendChild(inputElem);
 
         ftConfElem.appendChild(ctrlElem);
@@ -254,6 +261,33 @@ export async function addMenu() {
       featuresCont.appendChild(ftConfElem);
     }
   }
+
+  siteEvents.on("configImported", (newConfig) => {
+    for(const ftKey in featInfo) {
+      const ftElem = document.querySelector<HTMLInputElement>(`#bytm-ftconf-${ftKey}-input`);
+      const labelElem = document.querySelector<HTMLLabelElement>(`#bytm-ftconf-${ftKey}-label`);
+      if(!ftElem)
+        continue;
+
+      const ftInfo = featInfo[ftKey as keyof typeof featInfo];
+      const value = newConfig[ftKey as keyof FeatureConfig];
+
+      if(ftInfo.type === "toggle")
+        ftElem.checked = Boolean(value);
+      else
+        ftElem.value = String(value);
+
+      if(!labelElem)
+        continue;
+        
+      // @ts-ignore
+      const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+      if(ftInfo.type === "slider")
+        labelElem.innerText = fmtVal(Number(value)) + unitTxt;
+      else if(ftInfo.type === "toggle")
+        labelElem.innerText = toggleLabelText(Boolean(value)) + unitTxt;
+    }
+  });
 
   //#SECTION scroll indicator
   const scrollIndicator = document.createElement("img");
@@ -302,7 +336,7 @@ export async function addMenu() {
 
   const reloadElem = document.createElement("button");
   reloadElem.classList.add("bytm-btn");
-  reloadElem.style.marginLeft = "20px";
+  reloadElem.style.marginLeft = "10px";
   reloadElem.innerText = "Reload now";
   reloadElem.title = "Click to reload the page";
   reloadElem.addEventListener("click", () => {
@@ -310,8 +344,10 @@ export async function addMenu() {
     location.reload();
   });
 
+  footerElem.appendChild(reloadElem);
+
   const resetElem = document.createElement("button");
-  resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
+  resetElem.classList.add("bytm-btn");
   resetElem.title = "Click to reset all settings to their default values";
   resetElem.innerText = "Reset";
   resetElem.addEventListener("click", async () => {
@@ -321,10 +357,31 @@ export async function addMenu() {
       location.reload();
     }
   });
+  const exportElem = document.createElement("button");
+  exportElem.classList.add("bytm-btn");
+  exportElem.title = "Click to export all settings";
+  exportElem.innerText = "Export config";
+  exportElem.addEventListener("click", async () => {
+    closeMenu();
+    openExportMenu();
+  });
+  const importElem = document.createElement("button");
+  importElem.classList.add("bytm-btn");
+  importElem.title = "Click to import settings you have previously exported";
+  importElem.innerText = "Import config";
+  importElem.addEventListener("click", async () => {
+    closeMenu();
+    openImportMenu();
+  });
 
-  footerElem.appendChild(reloadElem);
+  const buttonsCont = document.createElement("div");
+  buttonsCont.id = "bytm-menu-footer-buttons-cont";
+  buttonsCont.appendChild(exportElem);
+  buttonsCont.appendChild(importElem);
+  buttonsCont.appendChild(resetElem);
+
   footerCont.appendChild(footerElem);
-  footerCont.appendChild(resetElem);
+  footerCont.appendChild(buttonsCont);
 
 
   //#SECTION finalize
@@ -349,10 +406,11 @@ export async function addMenu() {
 
   window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
 
+  await addExportMenu();
+  await addImportMenu();
+
   log("Added menu element");
 }
-
-//#MARKER utilities
 
 /** Closes the menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
@@ -362,7 +420,7 @@ export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
-  const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector("#bytm-cfg-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
@@ -375,7 +433,7 @@ export function openMenu() {
   isMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
-  const menuBg = document.querySelector("#bytm-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector("#bytm-cfg-menu-bg") as HTMLElement;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
@@ -404,4 +462,328 @@ function checkToggleScrollIndicator() {
       scrollIndicator.classList.add("bytm-hidden");
     }
   }
+}
+
+//#MARKER export menu
+
+let isExportMenuOpen = false;
+let exportSelectedOnce = false;
+
+/** Adds a menu to copy the current configuration as JSON (hidden by default) */
+export async function addExportMenu() {
+  const menuBgElem = document.createElement("div");
+  menuBgElem.id = "bytm-export-menu-bg";
+  menuBgElem.classList.add("bytm-menu-bg");
+  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.style.visibility = "hidden";
+  menuBgElem.style.display = "none";
+  menuBgElem.addEventListener("click", (e) => {
+    if(isExportMenuOpen && (e.target as HTMLElement)?.id === "bytm-export-menu-bg") {
+      closeExportMenu(e);
+      openMenu();
+    }
+  });
+  document.body.addEventListener("keydown", (e) => {
+    if(isExportMenuOpen && e.key === "Escape") {
+      closeExportMenu(e);
+      openMenu();
+    }
+  });
+
+  const menuContainer = document.createElement("div");
+  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.classList.add("bytm-menu");
+  menuContainer.id = "bytm-cfg-menu";
+
+  //#SECTION title bar
+  const headerElem = document.createElement("div");
+  headerElem.classList.add("bytm-menu-header");
+
+  const titleCont = document.createElement("div");
+  titleCont.id = "bytm-menu-titlecont";
+  titleCont.role = "heading";
+  titleCont.ariaLevel = "1";
+
+  const titleElem = document.createElement("h2");
+  titleElem.id = "bytm-menu-title";
+  titleElem.innerText = `${scriptInfo.name} - Export Configuration`;
+
+  const closeElem = document.createElement("img");
+  closeElem.classList.add("bytm-menu-close");
+  closeElem.src = await getResourceUrl("close");
+  closeElem.title = "Click to close the menu";
+  closeElem.addEventListener("click", (e) => {
+    closeExportMenu(e);
+    openMenu();
+  });
+
+  titleCont.appendChild(titleElem);
+
+  headerElem.appendChild(titleCont);
+  headerElem.appendChild(closeElem);
+
+  //#SECTION body
+
+  const menuBodyElem = document.createElement("div");
+  menuBodyElem.classList.add("bytm-menu-body");
+
+  const textElem = document.createElement("div");
+  textElem.id = "bytm-export-menu-text";
+  textElem.innerText = "Copy the following text to export your configuration:";
+
+  const textAreaElem = document.createElement("textarea");
+  textAreaElem.id = "bytm-export-menu-textarea";
+  textAreaElem.readOnly = true;
+  textAreaElem.value = JSON.stringify({ formatVersion, data: getFeatures() });
+
+  textAreaElem.addEventListener("click", () => {
+    if(exportSelectedOnce)
+      return;
+    exportSelectedOnce = true;
+    textAreaElem.select();
+  });
+
+  siteEvents.on("configChanged", (data) => {
+    const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
+    if(textAreaElem)
+      textAreaElem.value = JSON.stringify({ formatVersion, data });
+  });
+
+  //#SECTION finalize
+
+  menuBodyElem.appendChild(textElem);
+  menuBodyElem.appendChild(textAreaElem);
+
+  menuContainer.appendChild(headerElem);
+  menuContainer.appendChild(menuBodyElem);
+  
+  menuBgElem.appendChild(menuContainer);
+
+  document.body.appendChild(menuBgElem);
+}
+
+/** Closes the export menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
+  if(!isExportMenuOpen)
+    return;
+  isExportMenuOpen = false;
+  evt?.bubbles && evt.stopPropagation();
+
+  document.body.classList.remove("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-export-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find export menu background element");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
+}
+
+/** Opens the export menu if it is closed */
+function openExportMenu() {
+  if(isExportMenuOpen)
+    return;
+  isExportMenuOpen = true;
+
+  document.body.classList.add("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-export-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find export menu background element");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
+}
+
+//#MARKER import menu
+
+let isImportMenuOpen = false;
+
+/** Adds a menu to import a configuration from JSON (hidden by default) */
+export async function addImportMenu() {
+  const menuBgElem = document.createElement("div");
+  menuBgElem.id = "bytm-import-menu-bg";
+  menuBgElem.classList.add("bytm-menu-bg");
+  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.style.visibility = "hidden";
+  menuBgElem.style.display = "none";
+  menuBgElem.addEventListener("click", (e) => {
+    if(isImportMenuOpen && (e.target as HTMLElement)?.id === "bytm-import-menu-bg") {
+      closeImportMenu(e);
+      openMenu();
+    }
+  });
+  document.body.addEventListener("keydown", (e) => {
+    if(isImportMenuOpen && e.key === "Escape") {
+      closeImportMenu(e);
+      openMenu();
+    }
+  });
+
+  const menuContainer = document.createElement("div");
+  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.classList.add("bytm-menu");
+  menuContainer.id = "bytm-cfg-menu";
+
+  //#SECTION title bar
+  const headerElem = document.createElement("div");
+  headerElem.classList.add("bytm-menu-header");
+
+  const titleCont = document.createElement("div");
+  titleCont.id = "bytm-menu-titlecont";
+  titleCont.role = "heading";
+  titleCont.ariaLevel = "1";
+
+  const titleElem = document.createElement("h2");
+  titleElem.id = "bytm-menu-title";
+  titleElem.innerText = `${scriptInfo.name} - Import Configuration`;
+
+  const closeElem = document.createElement("img");
+  closeElem.classList.add("bytm-menu-close");
+  closeElem.src = await getResourceUrl("close");
+  closeElem.title = "Click to close the menu";
+  closeElem.addEventListener("click", (e) => {
+    closeImportMenu(e);
+    openMenu();
+  });
+
+  titleCont.appendChild(titleElem);
+
+  headerElem.appendChild(titleCont);
+  headerElem.appendChild(closeElem);
+
+  //#SECTION body
+
+  const menuBodyElem = document.createElement("div");
+  menuBodyElem.classList.add("bytm-menu-body");
+
+  const textElem = document.createElement("div");
+  textElem.id = "bytm-import-menu-text";
+  textElem.innerText = "Paste the configuration you want to import into the field below, then click the import button";
+
+  const textAreaElem = document.createElement("textarea");
+  textAreaElem.id = "bytm-import-menu-textarea";
+
+  //#SECTION footer
+  const footerElem = document.createElement("div");
+  footerElem.classList.add("bytm-menu-footer-right");
+
+  const importBtnElem = document.createElement("button");
+  importBtnElem.classList.add("bytm-btn");
+  importBtnElem.innerText = "Import";
+  importBtnElem.title = "Click to import the configuration";
+
+  importBtnElem.addEventListener("click", async (evt) => {
+    evt?.bubbles && evt.stopPropagation();
+    const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-import-menu-textarea");
+    if(!textAreaElem)
+      return warn("Couldn't find import menu textarea element");
+    try {
+      const parsed = JSON.parse(textAreaElem.value.trim());
+      if(typeof parsed !== "object")
+        return alert("The imported data is not an object");
+      if(typeof parsed.formatVersion !== "number")
+        return alert("The imported data does not contain a format version");
+      if(typeof parsed.data !== "object")
+        return alert("The imported object does not contain any data");
+      if(parsed.formatVersion < formatVersion) {
+        let newData = JSON.parse(JSON.stringify(parsed.data));
+        const sortedMigrations = Object.entries(migrations)
+          .sort(([a], [b]) => Number(a) - Number(b));
+
+        let curFmtVer = Number(parsed.formatVersion);
+
+        for(const [fmtVer, migrationFunc] of sortedMigrations) {
+          const ver = Number(fmtVer);
+          if(curFmtVer < formatVersion && curFmtVer < ver) {
+            try {
+              const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+              newData = migRes instanceof Promise ? await migRes : migRes;
+              curFmtVer = ver;
+            }
+            catch(err) {
+              console.error(`Error while running migration function for format version ${fmtVer}:`, err);
+            }
+          }
+        }
+        parsed.formatVersion = curFmtVer;
+        parsed.data = newData;
+      }
+      else if(parsed.formatVersion !== formatVersion)
+        return alert(`The imported data is in an unsupported format version (expected ${formatVersion} or lower, got ${parsed.formatVersion})`);
+
+      await saveFeatures(parsed.data);
+
+      siteEvents.emit("configImported", parsed.data);
+
+      if(confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
+        return location.reload();
+
+      closeImportMenu();
+      openMenu();
+    }
+    catch(err) {
+      warn("Couldn't import configuration:", err);
+      alert("The imported data is not a valid configuration");
+    }
+  });
+
+  footerElem.appendChild(importBtnElem);
+
+  //#SECTION finalize
+
+  menuBodyElem.appendChild(textElem);
+  menuBodyElem.appendChild(textAreaElem);
+  menuBodyElem.appendChild(footerElem);
+
+  menuContainer.appendChild(headerElem);
+  menuContainer.appendChild(menuBodyElem);
+  
+  menuBgElem.appendChild(menuContainer);
+
+  document.body.appendChild(menuBgElem);
+}
+
+/** Closes the import menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeImportMenu(evt?: MouseEvent | KeyboardEvent) {
+  if(!isImportMenuOpen)
+    return;
+  isImportMenuOpen = false;
+  evt?.bubbles && evt.stopPropagation();
+
+  document.body.classList.remove("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-import-menu-bg");
+
+  const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-import-menu-textarea");
+  if(textAreaElem)
+    textAreaElem.value = "";
+
+  if(!menuBg)
+    return warn("Couldn't find import menu background element");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
+}
+
+/** Opens the import menu if it is closed */
+function openImportMenu() {
+  if(isImportMenuOpen)
+    return;
+  isImportMenuOpen = true;
+
+  document.body.classList.add("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-import-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find import menu background element");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
+}
+
+//#MARKER changelog menu
+
+/** TODO: Adds a changelog menu to the DOM (hidden by default) */
+export async function addChangelogMenu() {
+  void 0;
 }

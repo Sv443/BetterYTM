@@ -1,13 +1,21 @@
-#bytm-menu-bg {
-  --bytm-menu-height-max: 750px;
-  --bytm-menu-width-max: 1000px;
+.bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #1e1e1e;
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 15px;
 }
 
-#bytm-menu-bg {
+#bytm-cfg-menu-bg {
+  --bytm-menu-height-max: 750px;
+  --bytm-menu-width-max: 1000px;
+}
+
+#bytm-export-menu-bg, #bytm-import-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+.bytm-menu-bg {
   display: block;
   position: fixed;
   width: 100%;
@@ -18,7 +26,7 @@
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#bytm-menu {
+.bytm-menu {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -35,19 +43,23 @@
   background-color: var(--bytm-menu-bg);
 }
 
+.bytm-menu-body {
+  padding: 20px;
+}
+
 #bytm-menu-opts {
   position: relative;
   overflow: auto;
   padding: 30px 0px;
 }
 
-#bytm-menu-header {
+.bytm-menu-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
   padding: 15px 20px 15px 20px;
   background-color: var(--bytm-menu-bg);
-  border: 1px solid var(--bytm-menu-separator-color);
+  border: 2px solid var(--bytm-menu-separator-color);
   border-style: none none solid none;
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
@@ -78,7 +90,7 @@
   margin-right: 10px;
 }
 
-#bytm-menu-close {
+.bytm-menu-close {
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -92,13 +104,19 @@
   padding: 20px 20px 8px 20px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
-  border: 1px solid var(--bytm-menu-separator-color);
+  border: 2px solid var(--bytm-menu-separator-color);
   border-style: solid none none none;
-  pointer-events: none;
 }
 
-#bytm-menu-footer, .bytm-cfg-reset {
-  pointer-events: initial;
+#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-menu-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
 }
 
 #bytm-menu-version-cont {
@@ -154,4 +172,15 @@
 
 .bytm-ftconf-input[type=number] {
   width: 75px;
+}
+
+#bytm-export-menu-text, #bytm-import-menu-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
 }

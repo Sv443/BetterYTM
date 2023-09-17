@@ -17,6 +17,7 @@ import {
   addAnchorImprovements, initNumKeysSkip,
   // menu
   initMenu, addMenu, addConfigMenuOption,
+  addChangelogMenu,
 } from "./features/index";
 
 {
@@ -105,6 +106,8 @@ async function onDomLoad() {
     if(domain === "ytm") {
       try {
         addMenu(); // TODO(v1.1): remove
+
+        addChangelogMenu();
       }
       catch(err) {
         error("Couldn't add menu:", err);
