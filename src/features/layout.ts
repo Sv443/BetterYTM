@@ -451,72 +451,67 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
 //#MARKER anchor improvements
 
-
-// TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
-// TODO: add to thumbnails in playlists (/playlist?list=$id)
-// TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
-
-
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export function addAnchorImprovements() {
   //#SECTION carousel shelves
   try {
-    // home page
+    const preventDefault = (e: MouseEvent) => e.preventDefault();
 
-    /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
-    const condCarouselImprovements = (el: HTMLElement) => {
-      const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
-      if(listItemRenderer) {
-        const itemsElem = el.querySelector<HTMLElement>("ul#items");
-        if(itemsElem) {
-          const improvedElems = improveCarouselAnchors(itemsElem);
-          improvedElems > 0 && log(`Added anchor improvements to ${improvedElems} carousel shelf ${autoPlural("item", improvedElems)}`);
-        }
+    /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
+    const addListItemAnchors = (items: NodeListOf<HTMLElement>) => {
+      for(const item of items) {
+        if(item.classList.contains("bytm-anchor-improved"))
+          return;
+
+        item.classList.add("bytm-anchor-improved");
+
+        const thumbnailElem = item.querySelector<HTMLElement>(".left-items");
+        const titleElem = item.querySelector<HTMLAnchorElement>(".title-column .title a");
+
+        if(!thumbnailElem || !titleElem)
+          return;
+
+        const anchorElem = document.createElement("a");
+        anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
+        anchorElem.href = titleElem?.href ?? "#";
+        anchorElem.target = "_self";
+        anchorElem.role = "button";
+
+        anchorElem.addEventListener("click", preventDefault);
+
+        addParent(thumbnailElem, anchorElem);
       }
     };
 
-    // initial three shelves aren't included in the event fire
-    onSelector("ytmusic-carousel-shelf-renderer", {
-      listener: () => {
-        const carouselShelves = document.body.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
-        carouselShelves.forEach(condCarouselImprovements);
-      },
-    });
+    // home page
 
-    // every shelf that's loaded by scrolling:
-    siteEvents.on("carouselShelvesChanged", ({ addedNodes }) => {
-      if(addedNodes && addedNodes.length > 0)
-        addedNodes.forEach(condCarouselImprovements);
+    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+      continuous: true,
+      all: true,
+      listener: addListItemAnchors,
     });
 
     // related tab in /watch
 
-    // TODO: items are lazy-loaded so this needs to be done differently
-    // maybe the onSelectorExists feature can be expanded to conditionally support continuous checking & querySelectorAll
-    const relatedTabAnchorImprovements = (tabElem: HTMLElement) => {
-      const relatedCarouselShelves = tabElem?.querySelectorAll<HTMLElement>("ytmusic-carousel-shelf-renderer");
-      if(relatedCarouselShelves)
-        relatedCarouselShelves.forEach(condCarouselImprovements);
-    };
-
-    const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
-
-    onSelector("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", {
-      listener: (relatedTabContainer) => {
-        const relatedTabObserver = new MutationObserver(([ { addedNodes, removedNodes } ]) => {
-          if(addedNodes.length > 0 || removedNodes.length > 0)
-            relatedTabAnchorImprovements(document.querySelector<HTMLElement>(relatedTabContentsSelector)!);
-        });
-        relatedTabObserver.observe(relatedTabContainer, {
-          childList: true,
-        });
-      },
+    onSelector<HTMLElement>("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+      continuous: true,
+      all: true,
+      listener: addListItemAnchors,
     });
 
-    onSelector(relatedTabContentsSelector, {
-      listener: (relatedTabContents) => {
-        relatedTabAnchorImprovements(relatedTabContents);
-      },
+    // playlists
+
+    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+      continuous: true,
+      all: true,
+      listener: addListItemAnchors,
+    });
+
+    // generic shelves
+    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+      continuous: true,
+      all: true,
+      listener: addListItemAnchors,
     });
   }
   catch(err) {
@@ -575,50 +570,6 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
     addParent(item, anchorElem);
   });
-}
-
-/**
- * Actually adds the anchor improvements to carousel shelf items
- * @param itemsElement The container with the selector `ul#items` inside of each `ytmusic-carousel`
- */
-function improveCarouselAnchors(itemsElement: HTMLElement) {
-  if(itemsElement.classList.contains("bytm-anchors-improved"))
-    return 0;
-
-  let improvedElems = 0;
-  try {
-    const allListItems = itemsElement.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
-    for(const listItem of allListItems) {
-      const thumbnailElem = listItem.querySelector<HTMLElement>(".left-items");
-      const titleElem = listItem.querySelector<HTMLAnchorElement>(".title-column yt-formatted-string.title a");
-
-      if(!thumbnailElem || !titleElem) {
-        error("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
-        continue;
-      }
-
-      const thumbnailAnchor = document.createElement("a");
-      thumbnailAnchor.className = "bytm-carousel-shelf-anchor bytm-anchor";
-      thumbnailAnchor.href = titleElem.href;
-      thumbnailAnchor.target = "_self";
-      thumbnailAnchor.role = "button";
-
-      thumbnailAnchor.addEventListener("click", (e) => {
-        e.preventDefault();
-      });
-
-      addParent(thumbnailElem, thumbnailAnchor);
-      improvedElems++;
-    }
-  }
-  catch(err) {
-    error("Couldn't add anchor improvements due to error:", err);
-  }
-  finally {
-    itemsElement.classList.add("bytm-anchors-improved");
-  }
-
-  return improvedElems;
 }
 
 //#MARKER auto close toasts
