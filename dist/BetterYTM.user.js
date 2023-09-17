@@ -58,7 +58,7 @@ I welcome every contribution on GitHub!
 
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added &quot;remove from queue&quot; button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general (unfinished &amp; buggy)</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li>\n<li>Added an easter egg to the watermark and config menu option :)</li>\n</ul>\n</li>\n<li>Changes &amp; Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n";
+var code = "<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added &quot;remove from queue&quot; button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li>\n<li>Added an easter egg to the watermark and config menu option :)</li>\n</ul>\n</li>\n<li>Changes &amp; Fixes:<ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li>Added Features:<ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -245,7 +245,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "6a8b678", // assert as generic string instead of literal
+    lastCommit: "49fdd28", // assert as generic string instead of literal
 };
 
 
@@ -292,7 +292,7 @@ function initSiteEvents() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //#SECTION queue
-            // the queue container always exists so it doesn't need the extra init function
+            // the queue container always exists so it doesn't need an extra init function
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
@@ -313,7 +313,6 @@ function initSiteEvents() {
                 childList: true,
             });
             //#SECTION home page observers
-            initHomeObservers();
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Successfully initialized SiteEvents observers");
             observers = observers.concat([
                 queueObs,
@@ -323,42 +322,6 @@ function initSiteEvents() {
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_0__.error)("Couldn't initialize SiteEvents observers due to an error:\n", err);
         }
-    });
-}
-/**
- * The home page might not exist yet if the site was accessed through any path like /watch directly.
- * This function will keep waiting for when the home page exists, then create the necessary MutationObservers.
- */
-function initHomeObservers() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        let interval;
-        // hidden="" attribute is only present if the content of the page doesn't exist yet
-        // so this pauses execution until that attribute is removed
-        if ((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden")) {
-            yield new Promise((res) => {
-                interval = setInterval(() => {
-                    var _a;
-                    if (!((_a = document.querySelector("ytmusic-browse-response#browse-page")) === null || _a === void 0 ? void 0 : _a.hasAttribute("hidden"))) {
-                        clearInterval(interval);
-                        res();
-                    }
-                }, 50);
-            });
-        }
-        siteEvents.emit("homePageLoaded");
-        (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Initialized home page observers");
-        //#SECTION carousel shelves
-        const shelfContainerObs = new MutationObserver(([{ addedNodes, removedNodes }]) => {
-            if (addedNodes.length > 0 || removedNodes.length > 0) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_0__.info)("Detected carousel shelf container change - added nodes:", addedNodes.length, "- removed nodes:", removedNodes.length);
-                siteEvents.emit("carouselShelvesChanged", { addedNodes, removedNodes });
-            }
-        });
-        shelfContainerObs.observe(document.querySelector("#contents.ytmusic-section-list-renderer"), {
-            childList: true,
-        });
-        observers.push(shelfContainerObs);
     });
 }
 
@@ -518,7 +481,7 @@ const featInfo = {
         default: false,
     },
     anchorImprovements: {
-        desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+        desc: "Add and improve links all over the page so things can be opened in a new tab easier",
         type: "toggle",
         category: "input",
         default: true,
@@ -1193,61 +1156,54 @@ function addQueueButtons(queueItem) {
     });
 }
 //#MARKER anchor improvements
-// TODO: add to thumbnails in "songs" list on channel pages (/channel/$id)
-// TODO: add to thumbnails in playlists (/playlist?list=$id)
-// TODO:FIXME: only works for the first 7 items of each carousel shelf -> probably needs own mutation observer
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
     //#SECTION carousel shelves
     try {
-        // home page
-        /** Only adds anchor improvements for carousel shelves that contain the regular list-item-renderer, not the two-row-item-renderer */
-        const condCarouselImprovements = (el) => {
-            const listItemRenderer = el.querySelector("ytmusic-responsive-list-item-renderer");
-            if (listItemRenderer) {
-                const itemsElem = el.querySelector("ul#items");
-                if (itemsElem) {
-                    const improvedElems = improveCarouselAnchors(itemsElem);
-                    improvedElems > 0 && (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added anchor improvements to ${improvedElems} carousel shelf ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", improvedElems)}`);
-                }
+        const preventDefault = (e) => e.preventDefault();
+        /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
+        const addListItemAnchors = (items) => {
+            var _a;
+            for (const item of items) {
+                if (item.classList.contains("bytm-anchor-improved"))
+                    return;
+                item.classList.add("bytm-anchor-improved");
+                const thumbnailElem = item.querySelector(".left-items");
+                const titleElem = item.querySelector(".title-column .title a");
+                if (!thumbnailElem || !titleElem)
+                    return;
+                const anchorElem = document.createElement("a");
+                anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
+                anchorElem.href = (_a = titleElem === null || titleElem === void 0 ? void 0 : titleElem.href) !== null && _a !== void 0 ? _a : "#";
+                anchorElem.target = "_self";
+                anchorElem.role = "button";
+                anchorElem.addEventListener("click", preventDefault);
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(thumbnailElem, anchorElem);
             }
         };
-        // initial three shelves aren't included in the event fire
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-carousel-shelf-renderer", {
-            listener: () => {
-                const carouselShelves = document.body.querySelectorAll("ytmusic-carousel-shelf-renderer");
-                carouselShelves.forEach(condCarouselImprovements);
-            },
-        });
-        // every shelf that's loaded by scrolling:
-        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("carouselShelvesChanged", ({ addedNodes }) => {
-            if (addedNodes && addedNodes.length > 0)
-                addedNodes.forEach(condCarouselImprovements);
+        // home page
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            continuous: true,
+            all: true,
+            listener: addListItemAnchors,
         });
         // related tab in /watch
-        // TODO: items are lazy-loaded so this needs to be done differently
-        // maybe the onSelectorExists feature can be expanded to conditionally support continuous checking & querySelectorAll
-        const relatedTabAnchorImprovements = (tabElem) => {
-            const relatedCarouselShelves = tabElem === null || tabElem === void 0 ? void 0 : tabElem.querySelectorAll("ytmusic-carousel-shelf-renderer");
-            if (relatedCarouselShelves)
-                relatedCarouselShelves.forEach(condCarouselImprovements);
-        };
-        const relatedTabContentsSelector = "ytmusic-section-list-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] #contents";
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"]", {
-            listener: (relatedTabContainer) => {
-                const relatedTabObserver = new MutationObserver(([{ addedNodes, removedNodes }]) => {
-                    if (addedNodes.length > 0 || removedNodes.length > 0)
-                        relatedTabAnchorImprovements(document.querySelector(relatedTabContentsSelector));
-                });
-                relatedTabObserver.observe(relatedTabContainer, {
-                    childList: true,
-                });
-            },
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+            continuous: true,
+            all: true,
+            listener: addListItemAnchors,
         });
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(relatedTabContentsSelector, {
-            listener: (relatedTabContents) => {
-                relatedTabAnchorImprovements(relatedTabContents);
-            },
+        // playlists
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            continuous: true,
+            all: true,
+            listener: addListItemAnchors,
+        });
+        // generic shelves
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            continuous: true,
+            all: true,
+            listener: addListItemAnchors,
         });
     }
     catch (err) {
@@ -1300,43 +1256,6 @@ function improveSidebarAnchors(sidebarItems) {
         });
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(item, anchorElem);
     });
-}
-/**
- * Actually adds the anchor improvements to carousel shelf items
- * @param itemsElement The container with the selector `ul#items` inside of each `ytmusic-carousel`
- */
-function improveCarouselAnchors(itemsElement) {
-    if (itemsElement.classList.contains("bytm-anchors-improved"))
-        return 0;
-    let improvedElems = 0;
-    try {
-        const allListItems = itemsElement.querySelectorAll("ytmusic-responsive-list-item-renderer");
-        for (const listItem of allListItems) {
-            const thumbnailElem = listItem.querySelector(".left-items");
-            const titleElem = listItem.querySelector(".title-column yt-formatted-string.title a");
-            if (!thumbnailElem || !titleElem) {
-                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add carousel shelf anchor improvements because either the thumbnail or title element couldn't be found");
-                continue;
-            }
-            const thumbnailAnchor = document.createElement("a");
-            thumbnailAnchor.className = "bytm-carousel-shelf-anchor bytm-anchor";
-            thumbnailAnchor.href = titleElem.href;
-            thumbnailAnchor.target = "_self";
-            thumbnailAnchor.role = "button";
-            thumbnailAnchor.addEventListener("click", (e) => {
-                e.preventDefault();
-            });
-            (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(thumbnailElem, thumbnailAnchor);
-            improvedElems++;
-        }
-    }
-    catch (err) {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.error)("Couldn't add anchor improvements due to error:", err);
-    }
-    finally {
-        itemsElement.classList.add("bytm-anchors-improved");
-    }
-    return improvedElems;
 }
 //#MARKER auto close toasts
 /** Closes toasts after a set amount of time */
@@ -1466,7 +1385,7 @@ function addLyricsCacheEntry(artists, song, lyricsUrl) {
         lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
 }
 //#MARKER media control bar
-let mcCurrentSongTitle = "";
+let currentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
@@ -1484,9 +1403,10 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Inserted lyrics button into media controls bar");
             (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeContainer, linkElem);
         }))();
-        mcCurrentSongTitle = songTitleElem.title;
+        currentSongTitle = songTitleElem.title;
         const spinnerIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("spinner");
         const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("lyrics");
+        const errorIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)("error");
         const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
             var _b, e_1, _c, _d;
             try {
@@ -1495,22 +1415,25 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                     _a = false;
                     const mut = _d;
                     const newTitle = mut.target.title;
-                    if (newTitle !== mcCurrentSongTitle && newTitle.length > 0) {
+                    if (newTitle !== currentSongTitle && newTitle.length > 0) {
                         const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
                         if (!lyricsBtn)
                             return;
-                        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+                        (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
                         lyricsBtn.style.cursor = "wait";
                         lyricsBtn.style.pointerEvents = "none";
                         const imgElem = lyricsBtn.querySelector("img");
                         imgElem.src = spinnerIconUrl;
                         imgElem.classList.add("bytm-spinner");
-                        mcCurrentSongTitle = newTitle;
+                        currentSongTitle = newTitle;
                         const url = yield getCurrentLyricsUrl(); // can take a second or two
                         imgElem.src = lyricsIconUrl;
                         imgElem.classList.remove("bytm-spinner");
-                        if (!url)
+                        if (!url) {
+                            imgElem.src = errorIconUrl;
+                            imgElem.title = "Couldn't find lyrics URL";
                             continue;
+                        }
                         lyricsBtn.href = url;
                         lyricsBtn.title = "Open the current song's lyrics in a new tab";
                         lyricsBtn.style.cursor = "pointer";
@@ -1574,7 +1497,6 @@ function getCurrentLyricsUrl() {
                 const { artist, song } = splitVideoTitle(songName);
                 return yield getGeniusUrl(artist, song);
             });
-            // TODO: artist might need further splitting before comma or ampersand
             const url = isVideo ? yield getGeniusUrlVideo() : yield getGeniusUrl(artistName, songName);
             return url;
         }
@@ -2107,7 +2029,8 @@ function addMenu() {
         versionCont.id = "bytm-menu-version-cont";
         const versionElem = document.createElement("a");
         versionElem.id = "bytm-menu-version";
-        versionElem.title = `Version ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version} - Build ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.lastCommit}`;
+        versionElem.role = "button";
+        versionElem.title = `Version ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version} (build ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.lastCommit}) - click to open the changelog`;
         versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version} (${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.lastCommit})`;
         versionElem.addEventListener("click", (e) => {
             e.preventDefault();
@@ -2445,7 +2368,7 @@ function openImportMenu() {
 }
 //#MARKER changelog menu
 let isChangelogMenuOpen = false;
-/** TODO: Adds a changelog menu (hidden by default) */
+/** Adds a changelog menu (hidden by default) */
 function addChangelogMenu() {
     return __awaiter(this, void 0, void 0, function* () {
         const menuBgElem = document.createElement("div");
@@ -2498,6 +2421,7 @@ function addChangelogMenu() {
         menuBodyElem.classList.add("bytm-menu-body");
         const textElem = document.createElement("div");
         textElem.id = "bytm-changelog-menu-text";
+        textElem.classList.add("bytm-markdown-container");
         textElem.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_6__["default"];
         //#SECTION finalize
         menuBodyElem.appendChild(textElem);
@@ -2505,6 +2429,9 @@ function addChangelogMenu() {
         menuContainer.appendChild(menuBodyElem);
         menuBgElem.appendChild(menuContainer);
         document.body.appendChild(menuBgElem);
+        const anchors = document.querySelectorAll("#bytm-changelog-menu-text a");
+        for (const anchor of anchors)
+            anchor.target = "_blank";
     });
 }
 /** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
@@ -3528,30 +3455,51 @@ function onDomLoad() {
   font-size: 1.5em;
 }
 
-#bytm-changelog-menu-text a, #bytm-menu-version {
+/* Markdown stuff */
+
+.bytm-markdown-container a, #bytm-menu-version {
   color: #369bff;
   text-decoration: none;
   cursor: pointer;
 }
 
-#bytm-changelog-menu-text a:hover, #bytm-menu-version:hover {
+.bytm-markdown-container a:hover, #bytm-menu-version:hover {
   text-decoration: underline;
 }
 
-#bytm-changelog-menu-text h2 {
+.bytm-markdown-container kbd {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 9px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
   margin-bottom: 5px;
 }
 
-#bytm-changelog-menu-text h2:not(:first-of-type) {
+.bytm-markdown-container h2:not(:first-of-type) {
   margin-top: 20px;
 }
 
-#bytm-changelog-menu-text ul li::before {
+.bytm-markdown-container ul li::before {
   content: "• ";
   font-weight: bolder;
 }
 
-#bytm-changelog-menu-text ul li > ul li::before {
+.bytm-markdown-container ul li > ul li::before {
   white-space: pre;
   content: "    • ";
   font-weight: bolder;
@@ -3762,7 +3710,7 @@ ytmusic-responsive-list-item-renderer .left-items {
 }
 
 .bytm-carousel-shelf-anchor {
-  margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
+  margin-right: 16px;
 }
 
 /* #MARKER volume slider */
