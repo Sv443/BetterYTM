@@ -114,7 +114,7 @@ export const featInfo = {
     default: false,
   },
   anchorImprovements: {
-    desc: "TODO:FIXME: Add link elements all over the page so things can be opened in a new tab easier",
+    desc: "Add and improve links all over the page so things can be opened in a new tab easier",
     type: "toggle",
     category: "input",
     default: true,
