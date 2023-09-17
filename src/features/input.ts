@@ -1,7 +1,7 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
-import { isMenuOpen } from "./menu/menu_old";
+import { isMenuOpen } from "../menu/menu_old";
 
 //#MARKER arrow key skip
 
