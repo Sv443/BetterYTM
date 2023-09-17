@@ -395,7 +395,7 @@ export async function addMenu() {
   const versionElem = document.createElement("a");
   versionElem.id = "bytm-menu-version";
   versionElem.role = "button";
-  versionElem.title = `Version ${scriptInfo.version} - Build ${scriptInfo.lastCommit}`;
+  versionElem.title = `Version ${scriptInfo.version} (build ${scriptInfo.lastCommit}) - click to open the changelog`;
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.lastCommit})`;
 
   versionElem.addEventListener("click", (e) => {
@@ -881,6 +881,7 @@ async function addChangelogMenu() {
 
   const textElem = document.createElement("div");
   textElem.id = "bytm-changelog-menu-text";
+  textElem.classList.add("bytm-markdown-container");
   textElem.innerHTML = changelogContent;
 
   //#SECTION finalize

@@ -34,7 +34,7 @@ export function removeAllObservers() {
 export async function initSiteEvents() {
   try {
     //#SECTION queue
-    // the queue container always exists so it doesn't need the extra init function
+    // the queue container always exists so it doesn't need an extra init function
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);

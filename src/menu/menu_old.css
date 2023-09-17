@@ -205,30 +205,51 @@
   font-size: 1.5em;
 }
 
-#bytm-changelog-menu-text a, #bytm-menu-version {
+/* Markdown stuff */
+
+.bytm-markdown-container a, #bytm-menu-version {
   color: #369bff;
   text-decoration: none;
   cursor: pointer;
 }
 
-#bytm-changelog-menu-text a:hover, #bytm-menu-version:hover {
+.bytm-markdown-container a:hover, #bytm-menu-version:hover {
   text-decoration: underline;
 }
 
-#bytm-changelog-menu-text h2 {
+.bytm-markdown-container kbd {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 9px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
   margin-bottom: 5px;
 }
 
-#bytm-changelog-menu-text h2:not(:first-of-type) {
+.bytm-markdown-container h2:not(:first-of-type) {
   margin-top: 20px;
 }
 
-#bytm-changelog-menu-text ul li::before {
+.bytm-markdown-container ul li::before {
   content: "• ";
   font-weight: bolder;
 }
 
-#bytm-changelog-menu-text ul li > ul li::before {
+.bytm-markdown-container ul li > ul li::before {
   white-space: pre;
   content: "    • ";
   font-weight: bolder;

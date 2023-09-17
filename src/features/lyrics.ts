@@ -41,7 +41,7 @@ export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: st
 
 //#MARKER media control bar
 
-let mcCurrentSongTitle = "";
+let currentSongTitle = "";
 
 /** Adds a lyrics button to the media controls bar */
 export function addMediaCtrlLyricsBtn(): void {
@@ -65,7 +65,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
     insertAfter(likeContainer, linkElem);
   })();
 
-  mcCurrentSongTitle = songTitleElem.title;
+  currentSongTitle = songTitleElem.title;
 
   const spinnerIconUrl = await getResourceUrl("spinner");
   const lyricsIconUrl = await getResourceUrl("lyrics");
@@ -75,13 +75,13 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
     for await(const mut of mutations) {
       const newTitle = (mut.target as HTMLElement).title;
 
-      if(newTitle !== mcCurrentSongTitle && newTitle.length > 0) {
+      if(newTitle !== currentSongTitle && newTitle.length > 0) {
         const lyricsBtn = document.querySelector("#betterytm-lyrics-button") as HTMLAnchorElement;
 
         if(!lyricsBtn)
           return;
 
-        info(`Song title changed from '${mcCurrentSongTitle}' to '${newTitle}'`);
+        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
 
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";
@@ -90,7 +90,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         imgElem.src = spinnerIconUrl;
         imgElem.classList.add("bytm-spinner");
 
-        mcCurrentSongTitle = newTitle;
+        currentSongTitle = newTitle;
 
         const url = await getCurrentLyricsUrl(); // can take a second or two
 
