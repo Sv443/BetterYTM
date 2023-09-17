@@ -1,31 +1,38 @@
 <div style="text-align: center;" align="center">
 
-<h2><img src="./assets/icon/icon_128.png" width="64" height="64" /><br>BetterYTM</h2>
+<h1><img src="./assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Configurable layout and UX improvements for YouTube Music
 
+<b>
+
 [Features](#features) • [Installation](#installation) • [Development](#development) • [Attributions](#attributions) • [Disclaimers](#disclaimers)
 
+</b>
 </div>
 <br>
 
 ### Features:
-All of these features can be toggled and configured!
-- Input:
-  - Use arrow keys to skip forward or backward by 10 seconds
-  - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default) <!-- TODO(v1.1): make configurable -->
+All of these can be configured in the menu that can be found by clicking on your avatar.
 - Layout:
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
-  - Remove the premium tab in the sidebar
   - Set a custom size and step resolution for the volume slider
+  - Remove the premium tab in the sidebar
   - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
+  - Remove the tracking parameter from URLs in the share menu
+- Input:
+  - Use arrow keys to skip forward or backward by 10 seconds
+  - Press number keys to skip to a percentage of the currently playing song
+  - Switch between YouTube and YouTube Music on a video by pressing the hotkey F9 <!-- TODO(v1.1): make configurable -->
+  - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and more!
 
 <br>
 
-To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the settings menu.  
+To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the configuration menu.  
+Alternatively or if you disabled the watermark, you can open the menu by clicking on your avatar in the top right corner.  
 Note that the page needs to be reloaded for the changes to take effect.  
   
 My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
@@ -33,25 +40,29 @@ My work relies on donations, so if you like this userscript please consider [sup
 <br><br>
 
 ## Installation:
-**Requires a userscript manager browser extension. I recommend the following:**
-> Firefox: [ViolentMonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) or [TamperMonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)  
-> Chrome: [ViolentMonkey](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) or [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  
-> Edge: [ViolentMonkey](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE) or [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
+<b>
 
-<br>
+Requires a userscript manager browser extension.  
+I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)
+
+</b>
 
 Once you have the extension, click this button to install the userscript:  
   
-<!-- <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a> -->
 <a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a>
 
 <br>
 
-<sub>
+<sup>
 
 Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
 
-</sub>
+</sup>
+<sup>
+
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
+
+</sup>
 
 <br><br><br>
 
@@ -59,25 +70,7 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-#### Setting up the project for local development:
-1. Have Node.js, npm and Git installed
-2. Download and extract or clone this repo
-3. Open a terminal in the project root and run `npm i`
-4. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
-
-#### These are the CLI commands available after setting up the project:
-| Command | Description |
-| --- | --- |
-| `npm i` | Run once to install dependencies |
-| `npm run build-prod` | Builds the userscript for production (minified) |
-| `npm run build-dev` | Builds the userscript for development |
-| `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `src/tools/serve.ts` |
-| `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint |
-
-#### Extras:
-When using ViolentMonkey, after running the command `npm run dev`, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
-This makes it so the userscript automatically updates when the code changes.  
-Note: the tab needs to stay open on Firefox or the script will not update itself.
+**For information on how to contribute to this project, see [the contributing guide](./contributing.md)**
 
 <br><br>
 
@@ -95,9 +88,9 @@ Icons:
 <br><br>
 
 ### Disclaimers:
-- I am not affiliated with YouTube, Google, Alphabet, Genius, or anyone else.
-- I do not own any third party icons, I just re-host them here for better stability and availability.
-- I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site it currently runs on.
+- I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
+- I do not own any third party icons, I just re-host them [here](./assets/external/) for better stability and availability.
+- I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site the script runs on.
 - I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 
 <br><br><br><br>
