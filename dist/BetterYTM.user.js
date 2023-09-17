@@ -159,7 +159,7 @@ const migrations = {
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
     // 2 -> 3
-    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true })),
+    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, logLevel: 1 })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -225,7 +225,7 @@ function clearConfig() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   branch: function() { return /* binding */ branch; },
-/* harmony export */   logLevel: function() { return /* binding */ logLevel; },
+/* harmony export */   defaultLogLevel: function() { return /* binding */ defaultLogLevel; },
 /* harmony export */   mode: function() { return /* binding */ mode; },
 /* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; }
 /* harmony export */ });
@@ -239,13 +239,13 @@ const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-const logLevel = mode === "production" ? 1 : 0;
+const defaultLogLevel = mode === "production" ? 1 : 0;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "9e17b58", // assert as generic string instead of literal
+    lastCommit: "3106b2b", // assert as generic string instead of literal
 };
 
 
@@ -386,6 +386,7 @@ const categoryNames = {
     input: "Input",
     layout: "Layout",
     lyrics: "Lyrics",
+    misc: "Other",
 };
 /** Contains all possible features with their default values and other configuration */
 const featInfo = {
@@ -504,6 +505,17 @@ const featInfo = {
         type: "toggle",
         category: "lyrics",
         default: true,
+    },
+    //#SECTION misc
+    logLevel: {
+        desc: "How much information to log to the console",
+        type: "select",
+        category: "misc",
+        options: [
+            { value: 0, label: "Debug (most)" },
+            { value: 1, label: "Info (only important)" },
+        ],
+        default: 1,
     },
 };
 
@@ -1838,6 +1850,7 @@ function addMenu() {
                 }
                 {
                     let inputType = "text";
+                    let inputTag = "input";
                     switch (type) {
                         case "toggle":
                             inputType = "checkbox";
@@ -1848,16 +1861,21 @@ function addMenu() {
                         case "number":
                             inputType = "number";
                             break;
+                        case "select":
+                            inputTag = "select";
+                            inputType = undefined;
+                            break;
                     }
                     const inputElemId = `bytm-ftconf-${featKey}-input`;
                     const ctrlElem = document.createElement("span");
                     ctrlElem.style.display = "inline-flex";
                     ctrlElem.style.alignItems = "center";
                     ctrlElem.style.whiteSpace = "nowrap";
-                    const inputElem = document.createElement("input");
+                    const inputElem = document.createElement(inputTag);
                     inputElem.classList.add("bytm-ftconf-input");
                     inputElem.id = inputElemId;
-                    inputElem.type = inputType;
+                    if (inputType)
+                        inputElem.type = inputType;
                     if (type === "toggle")
                         inputElem.style.marginLeft = "5px";
                     if (typeof initialVal !== "undefined")
@@ -1901,6 +1919,16 @@ function addMenu() {
                                 labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
                         });
                     }
+                    else if (type === "select") {
+                        for (const { value, label } of ftInfo.options) {
+                            const optionElem = document.createElement("option");
+                            optionElem.value = String(value);
+                            optionElem.innerText = label;
+                            if (value === initialVal)
+                                optionElem.selected = true;
+                            inputElem.appendChild(optionElem);
+                        }
+                    }
                     inputElem.addEventListener("input", () => {
                         let v = Number(String(inputElem.value).trim());
                         if (isNaN(v))
@@ -1918,6 +1946,7 @@ function addMenu() {
                 featuresCont.appendChild(ftConfElem);
             }
         }
+        //#SECTION set values of inputs on external change
         _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("rebuildCfgMenu", (newConfig) => {
             for (const ftKey in _features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo) {
                 const ftElem = document.querySelector(`#bytm-ftconf-${ftKey}-input`);
@@ -2315,9 +2344,9 @@ function addImportMenu() {
                 else if (parsed.formatVersion !== _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion)
                     return alert(`The imported data is in an unsupported format version (expected ${_config__WEBPACK_IMPORTED_MODULE_1__.formatVersion} or lower, got ${parsed.formatVersion})`);
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(parsed.data);
-                _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.emit("rebuildCfgMenu", parsed.data);
                 if (confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
                     return location.reload();
+                _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.emit("rebuildCfgMenu", parsed.data);
                 closeImportMenu();
                 openMenu();
             }
@@ -3201,7 +3230,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_2__.logLevel);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_2__.defaultLogLevel);
     if (domain === "ytm")
         (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initBeforeUnloadHook)();
     init();
@@ -3224,6 +3253,7 @@ function init() {
         // init config
         try {
             const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().logLevel);
             (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(ftConfig);
             if ((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().disableBeforeUnloadPopup)
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.disableBeforeUnload)();
@@ -3844,21 +3874,21 @@ function registerMenuCommands() {
         GM.registerMenuCommand("List GM values", () => __awaiter(this, void 0, void 0, function* () {
             alert("See console.");
             const keys = yield GM.listValues();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("GM values:");
+            console.log("GM values:");
             if (keys.length === 0)
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("  No values found.");
+                console.log("  No values found.");
             for (const key of keys)
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`  ${key} -> ${yield GM.getValue(key)}`);
+                console.log(`  ${key} -> ${yield GM.getValue(key)}`);
         }), "l");
         GM.registerMenuCommand("Clear all GM values", () => __awaiter(this, void 0, void 0, function* () {
             if (confirm("Are you sure you want to clear all GM values?")) {
                 const keys = yield GM.listValues();
-                (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Clearing GM values:");
+                console.log("Clearing GM values:");
                 if (keys.length === 0)
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("  No values found.");
+                    console.log("  No values found.");
                 for (const key of keys) {
                     yield GM.deleteValue(key);
-                    (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`  Deleted ${key}`);
+                    console.log(`  Deleted ${key}`);
                 }
             }
         }), "c");
