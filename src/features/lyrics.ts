@@ -69,6 +69,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
   const spinnerIconUrl = await getResourceUrl("spinner");
   const lyricsIconUrl = await getResourceUrl("lyrics");
+  const errorIconUrl = await getResourceUrl("error");
 
   const onMutation = async (mutations: MutationRecord[]) => {
     for await(const mut of mutations) {
@@ -96,8 +97,11 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         imgElem.src = lyricsIconUrl;
         imgElem.classList.remove("bytm-spinner");
 
-        if(!url)
+        if(!url) {
+          imgElem.src = errorIconUrl;
+          imgElem.title = "Couldn't find lyrics URL";
           continue;
+        }
 
         lyricsBtn.href = url;
 
