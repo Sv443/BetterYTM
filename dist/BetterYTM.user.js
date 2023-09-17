@@ -63,10 +63,10 @@ var code = "<h1 id=\"betterytm-changelog\">BetterYTM Changelog</h1>\n<br>\n\n<h2
 
 /***/ }),
 
-/***/ "./src/features/menu/menu.html":
-/*!*************************************!*\
-  !*** ./src/features/menu/menu.html ***!
-  \*************************************/
+/***/ "./src/menu/menu.html":
+/*!****************************!*\
+  !*** ./src/menu/menu.html ***!
+  \****************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -89,10 +89,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/features/menu/menu.css":
-/*!************************************!*\
-  !*** ./src/features/menu/menu.css ***!
-  \************************************/
+/***/ "./src/menu/menu.css":
+/*!***************************!*\
+  !*** ./src/menu/menu.css ***!
+  \***************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -101,10 +101,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/features/menu/menu_old.css":
-/*!****************************************!*\
-  !*** ./src/features/menu/menu_old.css ***!
-  \****************************************/
+/***/ "./src/menu/menu_old.css":
+/*!*******************************!*\
+  !*** ./src/menu/menu_old.css ***!
+  \*******************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -123,14 +123,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   clearConfig: function() { return /* binding */ clearConfig; },
 /* harmony export */   defaultConfig: function() { return /* binding */ defaultConfig; },
+/* harmony export */   formatVersion: function() { return /* binding */ formatVersion; },
 /* harmony export */   getFeatures: function() { return /* binding */ getFeatures; },
 /* harmony export */   initConfig: function() { return /* binding */ initConfig; },
+/* harmony export */   migrations: function() { return /* binding */ migrations; },
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./events */ "./src/events.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -143,8 +146,10 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 /** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 3;
+/** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2
     2: (oldData) => {
@@ -187,6 +192,7 @@ function getFeatures() {
 function saveFeatures(featureConf) {
     return __awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.setData(featureConf);
+        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.emit("configChanged", cfgMgr.getData());
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Saved new feature config:", featureConf);
     });
 }
@@ -194,10 +200,11 @@ function saveFeatures(featureConf) {
 function setDefaultFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.saveDefaultData();
+        _events__WEBPACK_IMPORTED_MODULE_3__.siteEvents.emit("configChanged", cfgMgr.getData());
         (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Reset feature config to its default values");
     });
 }
-/** Clears the feature config from the persistent storage */
+/** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 function clearConfig() {
     return __awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.deleteConfig();
@@ -237,7 +244,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "000b6ae", // assert as generic string instead of literal
+    lastCommit: "c433064", // assert as generic string instead of literal
 };
 
 
@@ -366,7 +373,10 @@ function initHomeObservers() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
+/* harmony export */   addChangelogMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addChangelogMenu; },
 /* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
+/* harmony export */   addExportMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addExportMenu; },
+/* harmony export */   addImportMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addImportMenu; },
 /* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
@@ -402,8 +412,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
 /* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
 /* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu */ "./src/features/menu/menu.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 
 
 
@@ -556,7 +566,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -815,7 +825,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./menu/menu_old */ "./src/features/menu/menu_old.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index */ "./src/features/index.ts");
 /* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
@@ -1642,10 +1652,10 @@ function splitVideoTitle(title) {
 
 /***/ }),
 
-/***/ "./src/features/menu/menu.ts":
-/*!***********************************!*\
-  !*** ./src/features/menu/menu.ts ***!
-  \***********************************/
+/***/ "./src/menu/menu.ts":
+/*!**************************!*\
+  !*** ./src/menu/menu.ts ***!
+  \**************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1655,9 +1665,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; },
 /* harmony export */   setActiveTab: function() { return /* binding */ setActiveTab; }
 /* harmony export */ });
-/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../changelog.md */ "./changelog.md");
-/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu.html */ "./src/features/menu/menu.html");
-/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu.css */ "./src/features/menu/menu.css");
+/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../changelog.md */ "./changelog.md");
+/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu.html */ "./src/menu/menu.html");
+/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu.css */ "./src/menu/menu.css");
 
 
 
@@ -1745,25 +1755,29 @@ function initChangelogContent() {
 
 /***/ }),
 
-/***/ "./src/features/menu/menu_old.ts":
-/*!***************************************!*\
-  !*** ./src/features/menu/menu_old.ts ***!
-  \***************************************/
+/***/ "./src/menu/menu_old.ts":
+/*!******************************!*\
+  !*** ./src/menu/menu_old.ts ***!
+  \******************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addChangelogMenu: function() { return /* binding */ addChangelogMenu; },
+/* harmony export */   addExportMenu: function() { return /* binding */ addExportMenu; },
+/* harmony export */   addImportMenu: function() { return /* binding */ addImportMenu; },
 /* harmony export */   addMenu: function() { return /* binding */ addMenu; },
 /* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
 /* harmony export */   isMenuOpen: function() { return /* binding */ isMenuOpen; },
 /* harmony export */   openMenu: function() { return /* binding */ openMenu; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../config */ "./src/config.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants */ "./src/constants.ts");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../index */ "./src/features/index.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
-/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu_old.css */ "./src/features/menu/menu_old.css");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../features/index */ "./src/features/index.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../events */ "./src/events.ts");
+/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./menu_old.css */ "./src/menu/menu_old.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1773,6 +1787,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
 
 
 
@@ -1793,13 +1809,14 @@ function addMenu() {
     return __awaiter(this, void 0, void 0, function* () {
         //#SECTION backdrop & menu container
         const backgroundElem = document.createElement("div");
-        backgroundElem.id = "bytm-menu-bg";
+        backgroundElem.id = "bytm-cfg-menu-bg";
+        backgroundElem.classList.add("bytm-menu-bg");
         backgroundElem.title = "Click here to close the menu";
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
             var _a;
-            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-menu-bg")
+            if (isMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-cfg-menu-bg")
                 closeMenu(e);
         });
         document.body.addEventListener("keydown", (e) => {
@@ -1808,10 +1825,11 @@ function addMenu() {
         });
         const menuContainer = document.createElement("div");
         menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.id = "bytm-menu";
+        menuContainer.classList.add("bytm-menu");
+        menuContainer.id = "bytm-cfg-menu";
         //#SECTION title bar
         const headerElem = document.createElement("div");
-        headerElem.id = "bytm-menu-header";
+        headerElem.classList.add("bytm-menu-header");
         const titleCont = document.createElement("div");
         titleCont.id = "bytm-menu-titlecont";
         titleCont.role = "heading";
@@ -1840,7 +1858,7 @@ function addMenu() {
         // TODO:
         // addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/users/184165-sv443", `Open ${scriptInfo.name} on GreasyFork`);
         const closeElem = document.createElement("img");
-        closeElem.id = "bytm-menu-close";
+        closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
         closeElem.title = "Click to close the menu";
         closeElem.addEventListener("click", closeMenu);
@@ -1863,23 +1881,25 @@ function addMenu() {
             yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(featConf);
         }));
         const featureCfg = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
-        const featureCfgWithCategories = Object.entries(_index__WEBPACK_IMPORTED_MODULE_3__.featInfo)
+        const featureCfgWithCategories = Object.entries(_features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo)
             .reduce((acc, [key, { category }]) => {
             if (!acc[category])
                 acc[category] = {};
             acc[category][key] = featureCfg[key];
             return acc;
         }, {});
+        const fmtVal = (v) => String(v).trim();
+        const toggleLabelText = (toggled) => toggled ? "On" : "Off";
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const catHeaderElem = document.createElement("h3");
             catHeaderElem.classList.add("bytm-ftconf-category-header");
             catHeaderElem.role = "heading";
             catHeaderElem.ariaLevel = "2";
-            catHeaderElem.innerText = `${_index__WEBPACK_IMPORTED_MODULE_3__.categoryNames[category]}:`;
+            catHeaderElem.innerText = `${_features_index__WEBPACK_IMPORTED_MODULE_3__.categoryNames[category]}:`;
             featuresCont.appendChild(catHeaderElem);
             for (const featKey in featObj) {
-                const ftInfo = _index__WEBPACK_IMPORTED_MODULE_3__.featInfo[featKey];
+                const ftInfo = _features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo[featKey];
                 // @ts-ignore
                 if (!ftInfo || ftInfo.hidden === true)
                     continue;
@@ -1936,8 +1956,6 @@ function addMenu() {
                         inputElem.checked = Boolean(initialVal);
                     // @ts-ignore
                     const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
-                    const fmtVal = (v) => String(v).trim();
-                    const toggleLabelText = (toggled) => toggled ? "On" : "Off";
                     let labelElem;
                     if (type === "slider") {
                         labelElem = document.createElement("label");
@@ -1971,13 +1989,38 @@ function addMenu() {
                         if (typeof initialVal !== "undefined")
                             confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
                     });
-                    labelElem && ctrlElem.appendChild(labelElem);
+                    if (labelElem) {
+                        labelElem.id = `bytm-ftconf-${featKey}-label`;
+                        ctrlElem.appendChild(labelElem);
+                    }
                     ctrlElem.appendChild(inputElem);
                     ftConfElem.appendChild(ctrlElem);
                 }
                 featuresCont.appendChild(ftConfElem);
             }
         }
+        _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("configImported", (newConfig) => {
+            for (const ftKey in _features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo) {
+                const ftElem = document.querySelector(`#bytm-ftconf-${ftKey}-input`);
+                const labelElem = document.querySelector(`#bytm-ftconf-${ftKey}-label`);
+                if (!ftElem)
+                    continue;
+                const ftInfo = _features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo[ftKey];
+                const value = newConfig[ftKey];
+                if (ftInfo.type === "toggle")
+                    ftElem.checked = Boolean(value);
+                else
+                    ftElem.value = String(value);
+                if (!labelElem)
+                    continue;
+                // @ts-ignore
+                const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+                if (ftInfo.type === "slider")
+                    labelElem.innerText = fmtVal(Number(value)) + unitTxt;
+                else if (ftInfo.type === "toggle")
+                    labelElem.innerText = toggleLabelText(Boolean(value)) + unitTxt;
+            }
+        });
         //#SECTION scroll indicator
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
@@ -2017,15 +2060,16 @@ function addMenu() {
         footerElem.innerText = "You need to reload the page to apply changes";
         const reloadElem = document.createElement("button");
         reloadElem.classList.add("bytm-btn");
-        reloadElem.style.marginLeft = "20px";
+        reloadElem.style.marginLeft = "10px";
         reloadElem.innerText = "Reload now";
         reloadElem.title = "Click to reload the page";
         reloadElem.addEventListener("click", () => {
             closeMenu();
             location.reload();
         });
+        footerElem.appendChild(reloadElem);
         const resetElem = document.createElement("button");
-        resetElem.classList.add("bytm-cfg-reset-btn", "bytm-btn");
+        resetElem.classList.add("bytm-btn");
         resetElem.title = "Click to reset all settings to their default values";
         resetElem.innerText = "Reset";
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
@@ -2035,9 +2079,29 @@ function addMenu() {
                 location.reload();
             }
         }));
-        footerElem.appendChild(reloadElem);
+        const exportElem = document.createElement("button");
+        exportElem.classList.add("bytm-btn");
+        exportElem.title = "Click to export all settings";
+        exportElem.innerText = "Export config";
+        exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            closeMenu();
+            openExportMenu();
+        }));
+        const importElem = document.createElement("button");
+        importElem.classList.add("bytm-btn");
+        importElem.title = "Click to import settings you have previously exported";
+        importElem.innerText = "Import config";
+        importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            closeMenu();
+            openImportMenu();
+        }));
+        const buttonsCont = document.createElement("div");
+        buttonsCont.id = "bytm-menu-footer-buttons-cont";
+        buttonsCont.appendChild(exportElem);
+        buttonsCont.appendChild(importElem);
+        buttonsCont.appendChild(resetElem);
         footerCont.appendChild(footerElem);
-        footerCont.appendChild(resetElem);
+        footerCont.appendChild(buttonsCont);
         //#SECTION finalize
         menuContainer.appendChild(headerElem);
         menuContainer.appendChild(featuresCont);
@@ -2052,10 +2116,11 @@ function addMenu() {
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
         window.addEventListener("resize", (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.debounce)(checkToggleScrollIndicator, 150));
+        yield addExportMenu();
+        yield addImportMenu();
         (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Added menu element");
     });
 }
-//#MARKER utilities
 /** Closes the menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeMenu(evt) {
     if (!isMenuOpen)
@@ -2063,7 +2128,7 @@ function closeMenu(evt) {
     isMenuOpen = false;
     (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
     document.body.classList.remove("bytm-disable-scroll");
-    const menuBg = document.querySelector("#bytm-menu-bg");
+    const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
@@ -2073,7 +2138,7 @@ function openMenu() {
         return;
     isMenuOpen = true;
     document.body.classList.add("bytm-disable-scroll");
-    const menuBg = document.querySelector("#bytm-menu-bg");
+    const menuBg = document.querySelector("#bytm-cfg-menu-bg");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
     checkToggleScrollIndicator();
@@ -2096,6 +2161,269 @@ function checkToggleScrollIndicator() {
             scrollIndicator.classList.add("bytm-hidden");
         }
     }
+}
+//#MARKER export menu
+let isExportMenuOpen = false;
+let exportSelectedOnce = false;
+/** Adds a menu to copy the current configuration as JSON (hidden by default) */
+function addExportMenu() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const menuBgElem = document.createElement("div");
+        menuBgElem.id = "bytm-export-menu-bg";
+        menuBgElem.classList.add("bytm-menu-bg");
+        menuBgElem.title = "Click here to close the menu";
+        menuBgElem.style.visibility = "hidden";
+        menuBgElem.style.display = "none";
+        menuBgElem.addEventListener("click", (e) => {
+            var _a;
+            if (isExportMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-export-menu-bg") {
+                closeExportMenu(e);
+                openMenu();
+            }
+        });
+        document.body.addEventListener("keydown", (e) => {
+            if (isExportMenuOpen && e.key === "Escape") {
+                closeExportMenu(e);
+                openMenu();
+            }
+        });
+        const menuContainer = document.createElement("div");
+        menuContainer.title = ""; // prevent bg title from propagating downwards
+        menuContainer.classList.add("bytm-menu");
+        menuContainer.id = "bytm-cfg-menu";
+        //#SECTION title bar
+        const headerElem = document.createElement("div");
+        headerElem.classList.add("bytm-menu-header");
+        const titleCont = document.createElement("div");
+        titleCont.id = "bytm-menu-titlecont";
+        titleCont.role = "heading";
+        titleCont.ariaLevel = "1";
+        const titleElem = document.createElement("h2");
+        titleElem.id = "bytm-menu-title";
+        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Export Configuration`;
+        const closeElem = document.createElement("img");
+        closeElem.classList.add("bytm-menu-close");
+        closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
+        closeElem.title = "Click to close the menu";
+        closeElem.addEventListener("click", (e) => {
+            closeExportMenu(e);
+            openMenu();
+        });
+        titleCont.appendChild(titleElem);
+        headerElem.appendChild(titleCont);
+        headerElem.appendChild(closeElem);
+        //#SECTION body
+        const menuBodyElem = document.createElement("div");
+        menuBodyElem.classList.add("bytm-menu-body");
+        const textElem = document.createElement("div");
+        textElem.id = "bytm-export-menu-text";
+        textElem.innerText = "Copy the following text to export your configuration:";
+        const textAreaElem = document.createElement("textarea");
+        textAreaElem.id = "bytm-export-menu-textarea";
+        textAreaElem.readOnly = true;
+        textAreaElem.value = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data: (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)() });
+        textAreaElem.addEventListener("click", () => {
+            if (exportSelectedOnce)
+                return;
+            exportSelectedOnce = true;
+            textAreaElem.select();
+        });
+        _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("configChanged", (data) => {
+            const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
+            if (textAreaElem)
+                textAreaElem.value = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data });
+        });
+        //#SECTION finalize
+        menuBodyElem.appendChild(textElem);
+        menuBodyElem.appendChild(textAreaElem);
+        menuContainer.appendChild(headerElem);
+        menuContainer.appendChild(menuBodyElem);
+        menuBgElem.appendChild(menuContainer);
+        document.body.appendChild(menuBgElem);
+    });
+}
+/** Closes the export menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeExportMenu(evt) {
+    if (!isExportMenuOpen)
+        return;
+    isExportMenuOpen = false;
+    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+    document.body.classList.remove("bytm-disable-scroll");
+    const menuBg = document.querySelector("#bytm-export-menu-bg");
+    if (!menuBg)
+        return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find export menu background element");
+    menuBg.style.visibility = "hidden";
+    menuBg.style.display = "none";
+}
+/** Opens the export menu if it is closed */
+function openExportMenu() {
+    if (isExportMenuOpen)
+        return;
+    isExportMenuOpen = true;
+    document.body.classList.add("bytm-disable-scroll");
+    const menuBg = document.querySelector("#bytm-export-menu-bg");
+    if (!menuBg)
+        return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find export menu background element");
+    menuBg.style.visibility = "visible";
+    menuBg.style.display = "block";
+}
+//#MARKER import menu
+let isImportMenuOpen = false;
+/** Adds a menu to import a configuration from JSON (hidden by default) */
+function addImportMenu() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const menuBgElem = document.createElement("div");
+        menuBgElem.id = "bytm-import-menu-bg";
+        menuBgElem.classList.add("bytm-menu-bg");
+        menuBgElem.title = "Click here to close the menu";
+        menuBgElem.style.visibility = "hidden";
+        menuBgElem.style.display = "none";
+        menuBgElem.addEventListener("click", (e) => {
+            var _a;
+            if (isImportMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-import-menu-bg") {
+                closeImportMenu(e);
+                openMenu();
+            }
+        });
+        document.body.addEventListener("keydown", (e) => {
+            if (isImportMenuOpen && e.key === "Escape") {
+                closeImportMenu(e);
+                openMenu();
+            }
+        });
+        const menuContainer = document.createElement("div");
+        menuContainer.title = ""; // prevent bg title from propagating downwards
+        menuContainer.classList.add("bytm-menu");
+        menuContainer.id = "bytm-cfg-menu";
+        //#SECTION title bar
+        const headerElem = document.createElement("div");
+        headerElem.classList.add("bytm-menu-header");
+        const titleCont = document.createElement("div");
+        titleCont.id = "bytm-menu-titlecont";
+        titleCont.role = "heading";
+        titleCont.ariaLevel = "1";
+        const titleElem = document.createElement("h2");
+        titleElem.id = "bytm-menu-title";
+        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Import Configuration`;
+        const closeElem = document.createElement("img");
+        closeElem.classList.add("bytm-menu-close");
+        closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
+        closeElem.title = "Click to close the menu";
+        closeElem.addEventListener("click", (e) => {
+            closeImportMenu(e);
+            openMenu();
+        });
+        titleCont.appendChild(titleElem);
+        headerElem.appendChild(titleCont);
+        headerElem.appendChild(closeElem);
+        //#SECTION body
+        const menuBodyElem = document.createElement("div");
+        menuBodyElem.classList.add("bytm-menu-body");
+        const textElem = document.createElement("div");
+        textElem.id = "bytm-import-menu-text";
+        textElem.innerText = "Paste the configuration you want to import into the field below, then click the import button";
+        const textAreaElem = document.createElement("textarea");
+        textAreaElem.id = "bytm-import-menu-textarea";
+        //#SECTION footer
+        const footerElem = document.createElement("div");
+        footerElem.classList.add("bytm-menu-footer-right");
+        const importBtnElem = document.createElement("button");
+        importBtnElem.classList.add("bytm-btn");
+        importBtnElem.innerText = "Import";
+        importBtnElem.title = "Click to import the configuration";
+        importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
+            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+            const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
+            if (!textAreaElem)
+                return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find import menu textarea element");
+            try {
+                const parsed = JSON.parse(textAreaElem.value.trim());
+                if (typeof parsed !== "object")
+                    return alert("The imported data is not an object");
+                if (typeof parsed.formatVersion !== "number")
+                    return alert("The imported data does not contain a format version");
+                if (typeof parsed.data !== "object")
+                    return alert("The imported object does not contain any data");
+                if (parsed.formatVersion < _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion) {
+                    let newData = JSON.parse(JSON.stringify(parsed.data));
+                    const sortedMigrations = Object.entries(_config__WEBPACK_IMPORTED_MODULE_1__.migrations)
+                        .sort(([a], [b]) => Number(a) - Number(b));
+                    let curFmtVer = Number(parsed.formatVersion);
+                    for (const [fmtVer, migrationFunc] of sortedMigrations) {
+                        const ver = Number(fmtVer);
+                        if (curFmtVer < _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion && curFmtVer < ver) {
+                            try {
+                                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                                newData = migRes instanceof Promise ? yield migRes : migRes;
+                                curFmtVer = ver;
+                            }
+                            catch (err) {
+                                console.error(`Error while running migration function for format version ${fmtVer}:`, err);
+                            }
+                        }
+                    }
+                    parsed.formatVersion = curFmtVer;
+                    parsed.data = newData;
+                }
+                else if (parsed.formatVersion !== _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion)
+                    return alert(`The imported data is in an unsupported format version (expected ${_config__WEBPACK_IMPORTED_MODULE_1__.formatVersion} or lower, got ${parsed.formatVersion})`);
+                yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(parsed.data);
+                _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.emit("configImported", parsed.data);
+                if (confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
+                    return location.reload();
+                closeImportMenu();
+                openMenu();
+            }
+            catch (err) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't import configuration:", err);
+                alert("The imported data is not a valid configuration");
+            }
+        }));
+        footerElem.appendChild(importBtnElem);
+        //#SECTION finalize
+        menuBodyElem.appendChild(textElem);
+        menuBodyElem.appendChild(textAreaElem);
+        menuBodyElem.appendChild(footerElem);
+        menuContainer.appendChild(headerElem);
+        menuContainer.appendChild(menuBodyElem);
+        menuBgElem.appendChild(menuContainer);
+        document.body.appendChild(menuBgElem);
+    });
+}
+/** Closes the import menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeImportMenu(evt) {
+    if (!isImportMenuOpen)
+        return;
+    isImportMenuOpen = false;
+    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+    document.body.classList.remove("bytm-disable-scroll");
+    const menuBg = document.querySelector("#bytm-import-menu-bg");
+    const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
+    if (textAreaElem)
+        textAreaElem.value = "";
+    if (!menuBg)
+        return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find import menu background element");
+    menuBg.style.visibility = "hidden";
+    menuBg.style.display = "none";
+}
+/** Opens the import menu if it is closed */
+function openImportMenu() {
+    if (isImportMenuOpen)
+        return;
+    isImportMenuOpen = true;
+    document.body.classList.add("bytm-disable-scroll");
+    const menuBg = document.querySelector("#bytm-import-menu-bg");
+    if (!menuBg)
+        return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find import menu background element");
+    menuBg.style.visibility = "visible";
+    menuBg.style.display = "block";
+}
+//#MARKER changelog menu
+/** TODO: Adds a changelog menu to the DOM (hidden by default) */
+function addChangelogMenu() {
+    return __awaiter(this, void 0, void 0, function* () {
+        void 0;
+    });
 }
 
 
@@ -2883,19 +3211,27 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!**********************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu_old.css ***!
-  \**********************************************************************************/
-#bytm-menu-bg {
-  --bytm-menu-height-max: 750px;
-  --bytm-menu-width-max: 1000px;
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!*************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/menu_old.css ***!
+  \*************************************************************************/
+.bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #1e1e1e;
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 15px;
 }
 
-#bytm-menu-bg {
+#bytm-cfg-menu-bg {
+  --bytm-menu-height-max: 750px;
+  --bytm-menu-width-max: 1000px;
+}
+
+#bytm-export-menu-bg, #bytm-import-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+.bytm-menu-bg {
   display: block;
   position: fixed;
   width: 100%;
@@ -2906,7 +3242,7 @@ function onDomLoad() {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#bytm-menu {
+.bytm-menu {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -2923,19 +3259,23 @@ function onDomLoad() {
   background-color: var(--bytm-menu-bg);
 }
 
+.bytm-menu-body {
+  padding: 20px;
+}
+
 #bytm-menu-opts {
   position: relative;
   overflow: auto;
   padding: 30px 0px;
 }
 
-#bytm-menu-header {
+.bytm-menu-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
   padding: 15px 20px 15px 20px;
   background-color: var(--bytm-menu-bg);
-  border: 1px solid var(--bytm-menu-separator-color);
+  border: 2px solid var(--bytm-menu-separator-color);
   border-style: none none solid none;
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
@@ -2966,7 +3306,7 @@ function onDomLoad() {
   margin-right: 10px;
 }
 
-#bytm-menu-close {
+.bytm-menu-close {
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -2980,13 +3320,19 @@ function onDomLoad() {
   padding: 20px 20px 8px 20px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
-  border: 1px solid var(--bytm-menu-separator-color);
+  border: 2px solid var(--bytm-menu-separator-color);
   border-style: solid none none none;
-  pointer-events: none;
 }
 
-#bytm-menu-footer, .bytm-cfg-reset {
-  pointer-events: initial;
+#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-menu-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
 }
 
 #bytm-menu-version-cont {
@@ -3042,6 +3388,17 @@ function onDomLoad() {
 
 .bytm-ftconf-input[type=number] {
   width: 75px;
+}
+
+#bytm-export-menu-text, #bytm-import-menu-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
 }
 
 /*!***************************************************************************!*\
@@ -3273,9 +3630,9 @@ ytmusic-responsive-list-item-renderer .left-items {
   opacity: 1;
 }
 
-/*!******************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/menu/menu.css ***!
-  \******************************************************************************/
+/*!*********************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/menu.css ***!
+  \*********************************************************************/
 /* #bytm-menu-backdrop {
     display: none;
     flex-direction: column;
@@ -3324,6 +3681,7 @@ ytmusic-responsive-list-item-renderer .left-items {
             if (domain === "ytm") {
                 try {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMenu)(); // TODO(v1.1): remove
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addChangelogMenu)();
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
