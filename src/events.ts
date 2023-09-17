@@ -1,7 +1,15 @@
 import { createNanoEvents } from "nanoevents";
 import { error, info } from "./utils";
+import { FeatureConfig } from "./types";
 
 export interface SiteEventsMap {
+  // misc:
+  /** Emitted whenever the feature config is changed - initialization is not counted */
+  configChanged: (config: FeatureConfig) => void;
+  /** Emitted whenever a feature config was imported */
+  configImported: (config: FeatureConfig) => void;
+
+  // DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */
   queueChanged: (queueElement: HTMLElement) => void;
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */

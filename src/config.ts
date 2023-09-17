@@ -2,11 +2,12 @@ import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
+import { siteEvents } from "./events";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 3;
-
-const migrations: ConfigMigrationsDict = {
+export const formatVersion = 3;
+/** Config data format migration dictionary */
+export const migrations: ConfigMigrationsDict = {
   // 1 -> 2
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
@@ -58,16 +59,18 @@ export function getFeatures() {
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export async function saveFeatures(featureConf: FeatureConfig) {
   await cfgMgr.setData(featureConf);
+  siteEvents.emit("configChanged", cfgMgr.getData());
   info("Saved new feature config:", featureConf);
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export async function setDefaultFeatures() {
   await cfgMgr.saveDefaultData();
+  siteEvents.emit("configChanged", cfgMgr.getData());
   info("Reset feature config to its default values");
 }
 
-/** Clears the feature config from the persistent storage */
+/** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 export async function clearConfig() {
   await cfgMgr.deleteConfig();
   info("Deleted config from persistent storage");
