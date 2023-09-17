@@ -199,32 +199,33 @@ export function initNumKeysSkip() {
   log("Added number key press listener");
 }
 
+/** Returns the x position as a fraction of timeKey in maxWidth */
+function getX(timeKey: number, maxWidth: number) {
+  if(timeKey >= 10)
+    return maxWidth;
+  return Math.floor((maxWidth / 10) * timeKey);
+}
+
+/** Calculates DOM-relative offsets of the bounding client rect of the passed element - see https://stackoverflow.com/a/442474/11187044 */
+function getOffsetRect(elem: HTMLElement) {
+  let left = 0;
+  let top = 0;
+  const rect = elem.getBoundingClientRect();
+  while(elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
+    left += elem.offsetLeft - elem.scrollLeft;
+    top += elem.offsetTop - elem.scrollTop;
+    elem = elem.offsetParent as HTMLElement;
+  }
+  return {
+    top,
+    left,
+    width: rect.width,
+    height: rect.height,
+  };
+}
+
 /** Emulates a click on the video progress bar at the position calculated from the passed time key (0-9) */
 function skipToTimeKey(key: number) {
-  const getX = (timeKey: number, maxWidth: number) => {
-    if(timeKey >= 10)
-      return maxWidth;
-    return Math.floor((maxWidth / 10) * timeKey);
-  };
-
-  /** Calculate offsets of the bounding client rect of the passed element - see https://stackoverflow.com/a/442474/11187044 */
-  const getOffsetRect = (elem: HTMLElement) => {
-    let left = 0;
-    let top = 0;
-    const rect = elem.getBoundingClientRect();
-    while(elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
-      left += elem.offsetLeft - elem.scrollLeft;
-      top += elem.offsetTop - elem.scrollTop;
-      elem = elem.offsetParent as HTMLElement;
-    }
-    return {
-      top,
-      left,
-      width: rect.width,
-      height: rect.height,
-    };
-  };
-
   // not technically a progress element but behaves pretty much the same
   const progressElem = document.querySelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar");
   if(!progressElem)
@@ -239,10 +240,10 @@ function skipToTimeKey(key: number) {
 
   const evt = new MouseEvent("mousedown", {
     clientX: x,
-    clientY: y,
+    clientY: Math.round(y),
     // @ts-ignore
     layerX: x,
-    layerY: rect.height / 2,
+    layerY: Math.round(rect.height / 2),
     target: progressElem,
     bubbles: true,
     shiftKey: false,
