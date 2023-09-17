@@ -3,8 +3,8 @@ import { scriptInfo } from "../constants";
 export * from "./input";
 export * from "./layout";
 export * from "./lyrics";
-export { initMenu } from "./menu/menu";
-export * from "./menu/menu_old";
+export { initMenu } from "../menu/menu";
+export * from "../menu/menu_old";
 
 /** Union of all feature keys */
 export type FeatInfoKey = keyof typeof featInfo;

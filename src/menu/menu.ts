@@ -1,4 +1,4 @@
-import changelogContent from "../../../changelog.md";
+import changelogContent from "../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
 
