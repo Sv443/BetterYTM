@@ -1,6 +1,6 @@
 import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/userutils";
 import { clearConfig, getFeatures, initConfig } from "./config";
-import { logLevel, mode, scriptInfo } from "./constants";
+import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import {
@@ -45,7 +45,7 @@ const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-  setLogLevel(logLevel);
+  setLogLevel(defaultLogLevel);
 
   if(domain === "ytm")
     initBeforeUnloadHook();
@@ -72,6 +72,9 @@ async function init() {
   // init config
   try {
     const ftConfig = await initConfig();
+
+    setLogLevel(getFeatures().logLevel);
+
     preInitLayout(ftConfig);
 
     if(getFeatures().disableBeforeUnloadPopup)
@@ -167,22 +170,22 @@ function registerMenuCommands() {
     GM.registerMenuCommand("List GM values", async () => {
       alert("See console.");
       const keys = await GM.listValues();
-      log("GM values:");
+      console.log("GM values:");
       if(keys.length === 0)
-        log("  No values found.");
+        console.log("  No values found.");
       for(const key of keys)
-        log(`  ${key} -> ${await GM.getValue(key)}`);
+        console.log(`  ${key} -> ${await GM.getValue(key)}`);
     }, "l");
 
     GM.registerMenuCommand("Clear all GM values", async () => {
       if(confirm("Are you sure you want to clear all GM values?")) {
         const keys = await GM.listValues();
-        log("Clearing GM values:");
+        console.log("Clearing GM values:");
         if(keys.length === 0)
-          log("  No values found.");
+          console.log("  No values found.");
         for(const key of keys) {
           await GM.deleteValue(key);
-          log(`  Deleted ${key}`);
+          console.log(`  Deleted ${key}`);
         }
       }
     }, "c");

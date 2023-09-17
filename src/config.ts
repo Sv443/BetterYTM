@@ -23,6 +23,7 @@ export const migrations: ConfigMigrationsDict = {
     ...oldData,
     removeShareTrackingParam: true,
     numKeysSkipToTime: true,
+    logLevel: 1,
   }),
 };
 
