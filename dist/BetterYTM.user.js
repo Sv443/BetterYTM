@@ -245,7 +245,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "49fdd28", // assert as generic string instead of literal
+    lastCommit: "9e17b58", // assert as generic string instead of literal
 };
 
 
@@ -1011,7 +1011,6 @@ function setVolSliderSize() {
     if (typeof size !== "number" || isNaN(Number(size)))
         return;
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`\
-/* BetterYTM - set volume slider size */
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
 }`);
@@ -2409,7 +2408,7 @@ function addChangelogMenu() {
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
         closeElem.title = "Click to close the menu";
         closeElem.addEventListener("click", (e) => {
-            closeImportMenu(e);
+            closeChangelogMenu(e);
             openMenu();
         });
         titleCont.appendChild(titleElem);
@@ -3224,7 +3223,8 @@ function init() {
         }
         // init config
         try {
-            (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)());
+            const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
+            (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(ftConfig);
             if ((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().disableBeforeUnloadPopup)
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.disableBeforeUnload)();
         }
@@ -3448,11 +3448,12 @@ function onDomLoad() {
   resize: none;
 }
 
-#bytm-changelog-menu-text {
+.bytm-markdown-container {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   font-size: 1.5em;
+  line-height: 20px;
 }
 
 /* Markdown stuff */
@@ -3468,16 +3469,27 @@ function onDomLoad() {
 }
 
 .bytm-markdown-container kbd {
+  --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: bottom;
   padding: 4px;
   padding-top: 2px;
   font-size: 0.95em;
-  line-height: 9px;
+  line-height: 11px;
   background-color: #222;
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--easing), box-shadow 0.1s var(--easing);
+}
+
+.bytm-markdown-container kbd:active {
+  padding-bottom: 2px;
+  box-shadow: inset 0 0 0 #61666c;
+}
+
+.bytm-markdown-container kbd::selection {
+  background: rgba(0, 0, 0, 0);
 }
 
 .bytm-markdown-container code {
