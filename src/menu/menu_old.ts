@@ -820,7 +820,7 @@ function openImportMenu() {
 
 let isChangelogMenuOpen = false;
 
-/** TODO: Adds a changelog menu (hidden by default) */
+/** Adds a changelog menu (hidden by default) */
 async function addChangelogMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-changelog-menu-bg";

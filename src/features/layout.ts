@@ -508,6 +508,7 @@ export function addAnchorImprovements() {
     });
 
     // generic shelves
+
     onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,

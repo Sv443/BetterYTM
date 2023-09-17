@@ -171,8 +171,6 @@ export async function getCurrentLyricsUrl() {
       return await getGeniusUrl(artist, song);
     };
 
-    // TODO: artist might need further splitting before comma or ampersand
-
     const url = isVideo ? await getGeniusUrlVideo() : await getGeniusUrl(artistName, songName);
 
     return url;
