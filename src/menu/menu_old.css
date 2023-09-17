@@ -179,6 +179,11 @@
   margin-bottom: 15px;
 }
 
+.bytm-menu-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
 #bytm-export-menu-textarea, #bytm-import-menu-textarea {
   width: 100%;
   height: 150px;

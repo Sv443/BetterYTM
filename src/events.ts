@@ -6,8 +6,8 @@ export interface SiteEventsMap {
   // misc:
   /** Emitted whenever the feature config is changed - initialization is not counted */
   configChanged: (config: FeatureConfig) => void;
-  /** Emitted whenever a feature config was imported */
-  configImported: (config: FeatureConfig) => void;
+  /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
+  rebuildCfgMenu: (config: FeatureConfig) => void;
 
   // DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */

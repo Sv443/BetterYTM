@@ -65,6 +65,7 @@ const devDirectives = mode === "development" ? `
 // @grant          GM.getValue
 // @grant          GM.setValue
 // @grant          GM.getResourceUrl
+// @grant          GM.setClipboard
 // @grant          unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
