@@ -6,6 +6,7 @@ import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
 import { FeatureConfig } from "../types";
+import changelogContent from "../../changelog.md";
 import "./menu_old.css";
 
 //#MARKER create menu elements
@@ -391,10 +392,18 @@ export async function addMenu() {
   const versionCont = document.createElement("div");
   versionCont.id = "bytm-menu-version-cont";
 
-  const versionElem = document.createElement("span");
+  const versionElem = document.createElement("a");
   versionElem.id = "bytm-menu-version";
   versionElem.title = `Version ${scriptInfo.version} - Build ${scriptInfo.lastCommit}`;
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.lastCommit})`;
+
+  versionElem.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    closeMenu();
+    openChangelogMenu();
+  });
 
   versionCont.appendChild(versionElem);
 
@@ -407,6 +416,7 @@ export async function addMenu() {
 
   window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
 
+  await addChangelogMenu();
   await addExportMenu();
   await addImportMenu();
 
@@ -470,7 +480,7 @@ function checkToggleScrollIndicator() {
 let isExportMenuOpen = false;
 
 /** Adds a menu to copy the current configuration as JSON (hidden by default) */
-export async function addExportMenu() {
+async function addExportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-export-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
@@ -493,7 +503,7 @@ export async function addExportMenu() {
   const menuContainer = document.createElement("div");
   menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
-  menuContainer.id = "bytm-cfg-menu";
+  menuContainer.id = "bytm-export-menu";
 
   //#SECTION title bar
   const headerElem = document.createElement("div");
@@ -624,7 +634,7 @@ function openExportMenu() {
 let isImportMenuOpen = false;
 
 /** Adds a menu to import a configuration from JSON (hidden by default) */
-export async function addImportMenu() {
+async function addImportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-import-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
@@ -647,7 +657,7 @@ export async function addImportMenu() {
   const menuContainer = document.createElement("div");
   menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
-  menuContainer.id = "bytm-cfg-menu";
+  menuContainer.id = "bytm-import-menu";
 
   //#SECTION title bar
   const headerElem = document.createElement("div");
@@ -807,7 +817,112 @@ function openImportMenu() {
 
 //#MARKER changelog menu
 
-/** TODO: Adds a changelog menu to the DOM (hidden by default) */
-export async function addChangelogMenu() {
-  void 0;
+let isChangelogMenuOpen = false;
+
+/** TODO: Adds a changelog menu (hidden by default) */
+async function addChangelogMenu() {
+  const menuBgElem = document.createElement("div");
+  menuBgElem.id = "bytm-changelog-menu-bg";
+  menuBgElem.classList.add("bytm-menu-bg");
+  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.style.visibility = "hidden";
+  menuBgElem.style.display = "none";
+  menuBgElem.addEventListener("click", (e) => {
+    if(isChangelogMenuOpen && (e.target as HTMLElement)?.id === "bytm-changelog-menu-bg") {
+      closeChangelogMenu(e);
+      openMenu();
+    }
+  });
+  document.body.addEventListener("keydown", (e) => {
+    if(isChangelogMenuOpen && e.key === "Escape") {
+      closeChangelogMenu(e);
+      openMenu();
+    }
+  });
+
+  const menuContainer = document.createElement("div");
+  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.classList.add("bytm-menu");
+  menuContainer.id = "bytm-changelog-menu";
+
+  //#SECTION title bar
+  const headerElem = document.createElement("div");
+  headerElem.classList.add("bytm-menu-header");
+
+  const titleCont = document.createElement("div");
+  titleCont.id = "bytm-menu-titlecont";
+  titleCont.role = "heading";
+  titleCont.ariaLevel = "1";
+
+  const titleElem = document.createElement("h2");
+  titleElem.id = "bytm-menu-title";
+  titleElem.innerText = `${scriptInfo.name} - Changelog`;
+
+  const closeElem = document.createElement("img");
+  closeElem.classList.add("bytm-menu-close");
+  closeElem.src = await getResourceUrl("close");
+  closeElem.title = "Click to close the menu";
+  closeElem.addEventListener("click", (e) => {
+    closeImportMenu(e);
+    openMenu();
+  });
+
+  titleCont.appendChild(titleElem);
+
+  headerElem.appendChild(titleCont);
+  headerElem.appendChild(closeElem);
+
+  //#SECTION body
+
+  const menuBodyElem = document.createElement("div");
+  menuBodyElem.id = "bytm-changelog-menu-body";
+  menuBodyElem.classList.add("bytm-menu-body");
+
+  const textElem = document.createElement("div");
+  textElem.id = "bytm-changelog-menu-text";
+  textElem.innerHTML = changelogContent;
+
+  //#SECTION finalize
+
+  menuBodyElem.appendChild(textElem);
+
+  menuContainer.appendChild(headerElem);
+  menuContainer.appendChild(menuBodyElem);
+  
+  menuBgElem.appendChild(menuContainer);
+
+  document.body.appendChild(menuBgElem);
+}
+
+/** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
+  if(!isChangelogMenuOpen)
+    return;
+  isChangelogMenuOpen = false;
+  evt?.bubbles && evt.stopPropagation();
+
+  document.body.classList.remove("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find changelog menu background element");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
+}
+
+/** Opens the changelog menu if it is closed */
+function openChangelogMenu() {
+  if(isChangelogMenuOpen)
+    return;
+  isChangelogMenuOpen = true;
+
+  document.body.classList.add("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find changelog menu background element");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
 }
