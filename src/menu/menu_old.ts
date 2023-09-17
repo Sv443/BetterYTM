@@ -262,7 +262,7 @@ export async function addMenu() {
     }
   }
 
-  siteEvents.on("configImported", (newConfig) => {
+  siteEvents.on("rebuildCfgMenu", (newConfig) => {
     for(const ftKey in featInfo) {
       const ftElem = document.querySelector<HTMLInputElement>(`#bytm-ftconf-${ftKey}-input`);
       const labelElem = document.querySelector<HTMLLabelElement>(`#bytm-ftconf-${ftKey}-label`);
@@ -359,16 +359,16 @@ export async function addMenu() {
   });
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
-  exportElem.title = "Click to export all settings";
-  exportElem.innerText = "Export config";
+  exportElem.title = "Click to export your current configuration";
+  exportElem.innerText = "Export";
   exportElem.addEventListener("click", async () => {
     closeMenu();
     openExportMenu();
   });
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
-  importElem.title = "Click to import settings you have previously exported";
-  importElem.innerText = "Import config";
+  importElem.title = "Click to import a configuration you have previously exported";
+  importElem.innerText = "Import";
   importElem.addEventListener("click", async () => {
     closeMenu();
     openImportMenu();
@@ -393,7 +393,8 @@ export async function addMenu() {
 
   const versionElem = document.createElement("span");
   versionElem.id = "bytm-menu-version";
-  versionElem.innerText = `v${scriptInfo.version}`;
+  versionElem.title = `Version ${scriptInfo.version} - Build ${scriptInfo.lastCommit}`;
+  versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.lastCommit})`;
 
   versionCont.appendChild(versionElem);
 
@@ -467,7 +468,6 @@ function checkToggleScrollIndicator() {
 //#MARKER export menu
 
 let isExportMenuOpen = false;
-let exportSelectedOnce = false;
 
 /** Adds a menu to copy the current configuration as JSON (hidden by default) */
 export async function addExportMenu() {
@@ -536,23 +536,47 @@ export async function addExportMenu() {
   textAreaElem.readOnly = true;
   textAreaElem.value = JSON.stringify({ formatVersion, data: getFeatures() });
 
-  textAreaElem.addEventListener("click", () => {
-    if(exportSelectedOnce)
-      return;
-    exportSelectedOnce = true;
-    textAreaElem.select();
-  });
-
   siteEvents.on("configChanged", (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     if(textAreaElem)
       textAreaElem.value = JSON.stringify({ formatVersion, data });
   });
 
+  //#SECTION footer
+  const footerElem = document.createElement("div");
+  footerElem.classList.add("bytm-menu-footer-right");
+
+  const copyBtnElem = document.createElement("button");
+  copyBtnElem.classList.add("bytm-btn");
+  copyBtnElem.innerText = "Copy to clipboard";
+  copyBtnElem.title = "Click to copy the configuration to your clipboard";
+
+  const copiedTextElem = document.createElement("span");
+  copiedTextElem.classList.add("bytm-menu-footer-copied");
+  copiedTextElem.innerText = "Copied!";
+  copiedTextElem.style.display = "none";
+  
+  copyBtnElem.addEventListener("click", async (evt) => {
+    evt?.bubbles && evt.stopPropagation();
+    const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
+    if(textAreaElem) {
+      GM.setClipboard(textAreaElem.value);
+      copiedTextElem.style.display = "inline-block";
+      setTimeout(() => {
+        copiedTextElem.style.display = "none";
+      }, 3000);
+    }
+  });
+
+  // flex-direction is row-reverse
+  footerElem.appendChild(copyBtnElem);
+  footerElem.appendChild(copiedTextElem);
+
   //#SECTION finalize
 
   menuBodyElem.appendChild(textElem);
   menuBodyElem.appendChild(textAreaElem);
+  menuBodyElem.appendChild(footerElem);
 
   menuContainer.appendChild(headerElem);
   menuContainer.appendChild(menuBodyElem);
@@ -714,7 +738,7 @@ export async function addImportMenu() {
 
       await saveFeatures(parsed.data);
 
-      siteEvents.emit("configImported", parsed.data);
+      siteEvents.emit("rebuildCfgMenu", parsed.data);
 
       if(confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
         return location.reload();
