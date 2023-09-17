@@ -200,7 +200,7 @@ ytmusic-responsive-list-item-renderer .left-items {
 }
 
 .bytm-carousel-shelf-anchor {
-  margin: 0 var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) 0 0;
+  margin-right: 16px;
 }
 
 /* #MARKER volume slider */
