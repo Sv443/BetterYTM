@@ -198,11 +198,12 @@
   resize: none;
 }
 
-#bytm-changelog-menu-text {
+.bytm-markdown-container {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   font-size: 1.5em;
+  line-height: 20px;
 }
 
 /* Markdown stuff */
@@ -218,16 +219,27 @@
 }
 
 .bytm-markdown-container kbd {
+  --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: bottom;
   padding: 4px;
   padding-top: 2px;
   font-size: 0.95em;
-  line-height: 9px;
+  line-height: 11px;
   background-color: #222;
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--easing), box-shadow 0.1s var(--easing);
+}
+
+.bytm-markdown-container kbd:active {
+  padding-bottom: 2px;
+  box-shadow: inset 0 0 0 #61666c;
+}
+
+.bytm-markdown-container kbd::selection {
+  background: rgba(0, 0, 0, 0);
 }
 
 .bytm-markdown-container code {
