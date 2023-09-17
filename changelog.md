@@ -1,27 +1,24 @@
-# BetterYTM Changelog
-
-<br>
-
-## History:
-
-- **[v1.0.0](#100)**
-- [v0.2.0](#020)
-- [v0.1.0](#010)
-
----
-
-<br><br>
-
 ## 1.0.0
-TODO:
-- Added menu to configure features
-- New configurable features:
-  - Make volume slider bigger
-  - Choose step of volume slider for finer control
-  - Add lyrics button to each song in a playlist
-- Changes / Fixes:
+- Added Features:
+  - Added configuration menu to toggle and configure all features
+  - Added lyrics button to each song in the queue
+  - Added "remove from queue" button to each song in the queue
+  - Use number keys to skip to a specific point in the song
+  - Added feature to make volume slider bigger and volume control finer
+  - Added percentage label next to the volume slider & title on hover
+  - Improvements to link hitboxes & more links in general (unfinished & buggy)
+  - Permanent toast notifications can be automatically closed now
+  - Remove tracking parameter `&si=...` from links in the share menu
+  - Added an easter egg to the watermark and config menu option :)
+- Changes & Fixes:
   - Now the lyrics button will directly link to the lyrics (using my API [geniURL](https://github.com/Sv443/geniURL))
+  - Video time is now kept when switching site on regular YT too
+  - Fixed compatibility with the new site design
+  - A loading indicator is shown while the lyrics are loading
+  - Images are now smaller and cached by the userscript extension
+  - Song names with hyphens are now resolved better for lyrics lookup
   - Site switch with <kbd>F9</kbd> will now keep the video time
+  - Moved lots of utility code to my new library [UserUtils](https://github.com/Sv443-Network/UserUtils)
 
 <br>
 
