@@ -2,7 +2,7 @@
 
 <h1><img src="./assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
-### Configurable layout and UX improvements for YouTube Music
+### Lots of configurable layout and UX improvements for YouTube Music
 
 <b>
 
@@ -13,7 +13,7 @@
 <br>
 
 ### Features:
-All of these can be configured in the menu that can be found by clicking on your avatar.
+All of these can be toggled and configured in the configuration menu.
 - Layout:
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
@@ -31,9 +31,9 @@ All of these can be configured in the menu that can be found by clicking on your
 
 <br>
 
-To toggle features on or off, install the userscript, then click the "BetterYTM" text under the logo to open the configuration menu.  
-Alternatively or if you disabled the watermark, you can open the menu by clicking on your avatar in the top right corner.  
-Note that the page needs to be reloaded for the changes to take effect.  
+To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
+Alternatively or if you disabled the watermark, you can open it through the menu you get by clicking on your avatar in the top right corner.  
+Note that the page needs to be reloaded for changes to take effect.  
   
 My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
 
