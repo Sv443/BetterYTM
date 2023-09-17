@@ -864,7 +864,7 @@ async function addChangelogMenu() {
   closeElem.src = await getResourceUrl("close");
   closeElem.title = "Click to close the menu";
   closeElem.addEventListener("click", (e) => {
-    closeImportMenu(e);
+    closeChangelogMenu(e);
     openMenu();
   });
 
