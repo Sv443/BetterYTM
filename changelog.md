@@ -6,7 +6,7 @@
   - Use number keys to skip to a specific point in the song
   - Added feature to make volume slider bigger and volume control finer
   - Added percentage label next to the volume slider & title on hover
-  - Improvements to link hitboxes & more links in general (unfinished & buggy)
+  - Improvements to link hitboxes & more links in general
   - Permanent toast notifications can be automatically closed now
   - Remove tracking parameter `&si=...` from links in the share menu
   - Added an easter egg to the watermark and config menu option :)
