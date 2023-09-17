@@ -245,7 +245,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    lastCommit: "3106b2b", // assert as generic string instead of literal
+    lastCommit: "9aca99d", // assert as generic string instead of literal
 };
 
 
@@ -2515,8 +2515,13 @@ __webpack_require__.r(__webpack_exports__);
 
 //#SECTION logging
 let curLogLevel = 1;
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
+const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
+const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
 /** Sets the current log level. 0 = Debug, 1 = Info */
 function setLogLevel(level) {
+    if (curLogLevel !== level)
+        console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
     curLogLevel = level;
 }
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
@@ -2526,9 +2531,6 @@ function getLogLevel(args) {
         return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
     return 0;
 }
-/** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}]`;
-const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name}/#DEBUG]`;
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.
  * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.

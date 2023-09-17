@@ -7,8 +7,14 @@ import * as resources from "../assets/resources.json" assert { type: "json" };
 
 let curLogLevel: LogLevel = 1;
 
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
+const consPrefix = `[${scriptInfo.name}]`;
+const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+
 /** Sets the current log level. 0 = Debug, 1 = Info */
 export function setLogLevel(level: LogLevel) {
+  if(curLogLevel !== level)
+    console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
   curLogLevel = level;
 }
 
@@ -23,10 +29,6 @@ function getLogLevel(args: unknown[]): number {
     );
   return 0;
 }
-
-/** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${scriptInfo.name}]`;
-const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
 
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
