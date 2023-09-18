@@ -98,9 +98,6 @@ export async function addMenu() {
   //#SECTION feature list
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
-  featuresCont.style.display = "flex";
-  featuresCont.style.flexDirection = "column";
-  featuresCont.style.overflowY = "auto";
 
   /** Gets called whenever the feature config is changed */
   const confChanged = debounce(async (key: keyof typeof defaultConfig, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
@@ -158,9 +155,7 @@ export async function addMenu() {
       ftConfElem.classList.add("bytm-ftitem");
 
       {
-        const textElem = document.createElement("span");
-        textElem.style.display = "inline-block";
-        textElem.style.fontSize = "15px";
+        const textElem = document.createElement("div");
         textElem.innerText = desc;
 
         ftConfElem.appendChild(textElem);
@@ -189,9 +184,7 @@ export async function addMenu() {
         const inputElemId = `bytm-ftconf-${featKey}-input`;
 
         const ctrlElem = document.createElement("span");
-        ctrlElem.style.display = "inline-flex";
-        ctrlElem.style.alignItems = "center";
-        ctrlElem.style.whiteSpace = "nowrap";
+        ctrlElem.classList.add("bytm-ftconf-ctrl");
 
         const inputElem = document.createElement(inputTag) as HTMLInputElement;
         inputElem.classList.add("bytm-ftconf-input");
@@ -199,8 +192,6 @@ export async function addMenu() {
         if(inputType)
           inputElem.type = inputType;
 
-        if(type === "toggle")
-          inputElem.style.marginLeft = "5px";
         if(typeof initialVal !== "undefined")
           inputElem.value = String(initialVal);
         if(type === "number" && step)
@@ -223,9 +214,7 @@ export async function addMenu() {
         let labelElem: HTMLLabelElement | undefined;
         if(type === "slider") {
           labelElem = document.createElement("label");
-          labelElem.classList.add("bytm-ftconf-label");
-          labelElem.style.marginRight = "10px";
-          labelElem.style.fontSize = "16px";
+          labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
           labelElem.htmlFor = inputElemId;
           labelElem.innerText = fmtVal(initialVal) + unitTxt;
 
@@ -236,10 +225,7 @@ export async function addMenu() {
         }
         else if(type === "toggle") {
           labelElem = document.createElement("label");
-          labelElem.classList.add("bytm-ftconf-label");
-          labelElem.style.paddingLeft = "10px";
-          labelElem.style.paddingRight = "5px";
-          labelElem.style.fontSize = "16px";
+          labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
           labelElem.htmlFor = inputElemId;
           labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
 
@@ -348,9 +334,7 @@ export async function addMenu() {
   footerCont.id = "bytm-menu-footer-cont";
 
   const footerElem = document.createElement("div");
-  footerElem.id = "bytm-menu-footer";
-  footerElem.style.fontSize = "17px";
-  footerElem.style.textDecoration = "underline";
+  footerElem.classList.add("bytm-menu-footer");
   footerElem.innerText = "You need to reload the page to apply changes";
 
   const reloadElem = document.createElement("button");

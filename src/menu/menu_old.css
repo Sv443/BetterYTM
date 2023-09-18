@@ -52,9 +52,11 @@
 }
 
 #bytm-menu-opts {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: auto;
   padding: 30px 0px;
+  overflow-y: auto;
 }
 
 .bytm-menu-header {
@@ -98,6 +100,11 @@
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+
+.bytm-menu-footer {
+  font-size: 17px;
+  text-decoration: underline;
 }
 
 #bytm-menu-footer-cont {
@@ -167,15 +174,35 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font-size: 1.4em;
   padding: 8px 20px;
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .bytm-ftconf-label {
   user-select: none;
 }
 
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-toggle-label {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
 .bytm-ftconf-input[type=number] {
   width: 75px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
 }
 
 #bytm-export-menu-text, #bytm-import-menu-text {
