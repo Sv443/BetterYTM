@@ -82,7 +82,7 @@ I welcome every contribution on GitHub!
   https://github.com/Sv443/BetterYTM
 */
 
-/* Disclaimer: I am not affiliated with YouTube, Google, Alphabet, Genius or anyone else */
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 `;
 
