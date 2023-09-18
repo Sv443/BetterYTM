@@ -1,5 +1,5 @@
 import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log } from "../utils";
+import { error, getResourceUrl, info, log, warn } from "../utils";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -51,7 +51,10 @@ export function addMediaCtrlLyricsBtn(): void {
 // TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
-  const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLDivElement;
+  const songTitleElem = document.querySelector<HTMLDivElement>(".content-info-wrapper > yt-formatted-string");
+
+  if(!songTitleElem)
+    return warn("Couldn't find song title element");
 
   // run parallel without awaiting so the MutationObserver below can observe the title element in time
   (async () => {
@@ -76,7 +79,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
       const newTitle = (mut.target as HTMLElement).title;
 
       if(newTitle !== currentSongTitle && newTitle.length > 0) {
-        const lyricsBtn = document.querySelector("#betterytm-lyrics-button") as HTMLAnchorElement;
+        const lyricsBtn = document.querySelector<HTMLAnchorElement>("#betterytm-lyrics-button");
 
         if(!lyricsBtn)
           return;
@@ -154,8 +157,8 @@ export async function getCurrentLyricsUrl() {
     // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
     const isVideo = typeof document.querySelector("ytmusic-player")?.hasAttribute("video-mode");
 
-    const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string") as HTMLElement;
-    const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child") as HTMLElement;
+    const songTitleElem = document.querySelector<HTMLElement>(".content-info-wrapper > yt-formatted-string");
+    const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string:first-child");
 
     if(!songTitleElem || !songMetaElem || !songTitleElem.title)
       return undefined;

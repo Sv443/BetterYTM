@@ -53,8 +53,9 @@ export function addWatermark() {
     }
   });
 
-  const logoElem = document.querySelector("#left-content") as HTMLElement;
-  insertAfter(logoElem, watermark);
+  onSelector("ytmusic-nav-bar #left-content", {
+    listener: (logoElem) => insertAfter(logoElem, watermark),
+  });
 
   log("Added watermark element");
 }
@@ -353,7 +354,10 @@ async function addQueueButtons(queueItem: HTMLElement) {
       if(cachedLyricsUrl)
         lyricsUrl = cachedLyricsUrl;
       else if(!songInfo.hasAttribute("data-bytm-loading")) {
-        const imgEl = lyricsBtnElem!.querySelector("img") as HTMLImageElement;
+        const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement>("img");
+        if(!imgEl)
+          return;
+
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
