@@ -434,7 +434,10 @@ export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
-  const menuBg = document.querySelector("#bytm-cfg-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+
+  if(!menuBg)
+    return;
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
@@ -447,7 +450,10 @@ export function openMenu() {
   isMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
-  const menuBg = document.querySelector("#bytm-cfg-menu-bg") as HTMLElement;
+  const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+
+  if(!menuBg)
+    return;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
