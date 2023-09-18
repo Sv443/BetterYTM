@@ -115,7 +115,7 @@ function exchangeLogo() {
   });
 }
 
-/** Called whenever the menu exists to add a BYTM-Configuration button to the user menu popover */
+/** Called whenever the avatar popover menu exists to add a BYTM-Configuration button to the user menu popover */
 export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
   cfgOptElem.role = "button";
@@ -464,7 +464,7 @@ export function addAnchorImprovements() {
     const addListItemAnchors = (items: NodeListOf<HTMLElement>) => {
       for(const item of items) {
         if(item.classList.contains("bytm-anchor-improved"))
-          return;
+          continue;
 
         item.classList.add("bytm-anchor-improved");
 
@@ -472,7 +472,7 @@ export function addAnchorImprovements() {
         const titleElem = item.querySelector<HTMLAnchorElement>(".title-column .title a");
 
         if(!thumbnailElem || !titleElem)
-          return;
+          continue;
 
         const anchorElem = document.createElement("a");
         anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
@@ -637,4 +637,21 @@ export function removeShareTrackingParam() {
       }
     },
   });
+}
+
+//#MARKER fix margins
+
+export function fixSpacing() {
+  addGlobalStyle(`\
+ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
+  margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
+}
+
+ytmusic-carousel-shelf-renderer ytmusic-carousel {
+  --ytmusic-carousel-item-height: 60px !important;
+}
+
+/*ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer:nth-child(3n) {
+  margin-bottom: 0 !important;
+}*/`);
 }
