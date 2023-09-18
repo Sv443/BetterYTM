@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name           BetterYTM
-// @homepageURL    https://github.com/Sv443/BetterYTM#readme
 // @namespace      https://github.com/Sv443/BetterYTM
 // @version        1.0.0
 // @description    Configurable layout and UX improvements for YouTube Music
 // @description:de Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
+// @homepageURL    https://github.com/Sv443/BetterYTM#readme
+// @supportURL     https://github.com/Sv443/BetterYTM/issues
 // @license        MIT
 // @author         Sv443
 // @copyright      Sv443 (https://github.com/Sv443)
@@ -468,7 +469,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "e0d58c6", // assert as generic string instead of literal
+    buildNumber: "7b9d2d2", // assert as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -586,18 +587,6 @@ function ytForceShowVideoTime() {
         screenX, movementX: 5, movementY: 0 })));
     return true;
 }
-// /** Parses a video time string in the format `[hh:m]m:ss` to the equivalent number of seconds - returns 0 if input couldn't be parsed */
-// function parseVideoTime(videoTime: string) {
-//   const matches = /^((\d{1,2}):)?(\d{1,2}):(\d{2})$/.exec(videoTime);
-//   if(!matches)
-//     return 0;
-//   const [, , hrs, min, sec] = matches as unknown as [string, string | undefined, string | undefined, string, string];
-//   let finalTime = 0;
-//   if(hrs)
-//     finalTime += Number(hrs) * 60 * 60;
-//   finalTime += Number(min) * 60 + Number(sec);
-//   return isNaN(finalTime) ? 0 : finalTime;
-// }
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website

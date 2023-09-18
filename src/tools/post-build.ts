@@ -47,11 +47,12 @@ const devDirectives = mode === "development" ? `
   const header = `\
 // ==UserScript==
 // @name           ${pkg.userscriptName}
-// @homepageURL    ${pkg.homepage}
 // @namespace      ${pkg.homepage}
 // @version        ${pkg.version}
 // @description    ${pkg.description}
 // @description:de ${pkg["description:de"]}
+// @homepageURL    ${pkg.homepage}#readme
+// @supportURL     ${pkg.bugs.url}
 // @license        ${pkg.license}
 // @author         ${pkg.author.name}
 // @copyright      ${pkg.author.name} (${pkg.author.url})
