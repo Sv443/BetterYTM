@@ -24,16 +24,13 @@ const output = {
 
 /** @param {import("./src/types").WebpackEnv} env */
 const getConfig = (env) => {
+  const mode = env.mode ?? defaultMode;
+
   /** @type {import("webpack").Configuration} */
   const cfg = {
     entry: "./src/index.ts",
     output,
-    experiments: {
-      // userscripts are automatically wrapped in an IIFE by the browser extension,
-      // also all modern browsers support ESM so this can safely be enabled:
-      outputModule: true,
-    },
-    mode: env.mode ?? defaultMode,
+    mode,
     resolve: {
       extensions: [
         ".ts",
@@ -42,6 +39,23 @@ const getConfig = (env) => {
         ".md",
       ],
     },
+    experiments: {
+      // userscripts are automatically wrapped in an IIFE by the browser extension,
+      // also all modern browsers support ESM so this can safely be enabled:
+      outputModule: true,
+    },
+    optimization: {
+      moduleIds: "named",
+      // since sites like greasyfork don't allow minified userscripts:
+      minimize: false,
+      minimizer: [
+        `...`,
+        new CssMinimizerPlugin(),
+      ],
+    },
+    // enable sourcemaps if NODE_ENV === "development"
+    ...(mode === "development" ? { devtool: "source-map" } : {}),
+    ...(silent ? { stats: "errors-only", } : {}),
     module: {
       rules: [
         {
@@ -70,12 +84,6 @@ const getConfig = (env) => {
         },
       ],
     },
-    optimization: {
-      minimizer: [
-        `...`,
-        new CssMinimizerPlugin(),
-      ],
-    },
     plugins: [
       new MiniCssExtractPlugin({
         filename: "global.css",
@@ -84,7 +92,7 @@ const getConfig = (env) => {
         apply: (compiler) => {
           console.log("Running post-build script...\n");
           compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
-            exec(`npm run --silent post-build -- mode=${env.mode ?? defaultMode}`, (_err, stdout, stderr) => {
+            exec(`npm run --silent post-build -- mode=${mode}`, (_err, stdout, stderr) => {
               stdout && process.stdout.write(stdout);
               stderr && process.stderr.write(stderr);
             });
@@ -92,8 +100,6 @@ const getConfig = (env) => {
         },
       },
     ],
-    devtool: "source-map",
-    ...(silent ? { stats: "errors-only", } : {}),
   };
   return cfg;
 };

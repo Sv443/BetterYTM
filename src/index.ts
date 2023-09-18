@@ -16,7 +16,7 @@ import {
   initBeforeUnloadHook, disableBeforeUnload,
   addAnchorImprovements, initNumKeysSkip,
   // menu
-  initMenu, addMenu, addConfigMenuOption,
+  addMenu, addConfigMenuOption,
 } from "./features/index";
 
 {
@@ -86,7 +86,7 @@ async function init() {
 
   // init menu separately from features
   try {
-    void ["TODO(v1.1):", initMenu];
+    void "TODO(v1.1):";
     // initMenu();
   }
   catch(err) {
