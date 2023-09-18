@@ -47,7 +47,7 @@ const devDirectives = mode === "development" ? `
   const header = `\
 // ==UserScript==
 // @name           ${pkg.userscriptName}
-// @homepageURL    ${pkg.homepage}#readme
+// @homepageURL    ${pkg.homepage}
 // @namespace      ${pkg.homepage}
 // @version        ${pkg.version}
 // @description    ${pkg.description}
