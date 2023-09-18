@@ -649,9 +649,5 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-re
 
 ytmusic-carousel-shelf-renderer ytmusic-carousel {
   --ytmusic-carousel-item-height: 60px !important;
-}
-
-/*ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer:nth-child(3n) {
-  margin-bottom: 0 !important;
-}*/`);
+}`);
 }
