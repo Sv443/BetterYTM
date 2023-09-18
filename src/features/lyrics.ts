@@ -82,7 +82,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         const lyricsBtn = document.querySelector<HTMLAnchorElement>("#betterytm-lyrics-button");
 
         if(!lyricsBtn)
-          return;
+          continue;
 
         info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
 
@@ -101,16 +101,28 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         imgElem.classList.remove("bytm-spinner");
 
         if(!url) {
+          let artist, song;
+          if("mediaSession" in navigator && navigator.mediaSession.metadata) {
+            artist = navigator.mediaSession.metadata.artist;
+            song = navigator.mediaSession.metadata.title;
+          }
+          const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+
           imgElem.src = errorIconUrl;
-          imgElem.title = "Couldn't find lyrics URL";
+          imgElem.title = "Couldn't find lyrics URL - click to open the manual lyrics search";
+          lyricsBtn.style.cursor = "pointer";
+          lyricsBtn.style.pointerEvents = "all";
+          lyricsBtn.style.display = "inline-flex";
+          lyricsBtn.style.visibility = "visible";
+          lyricsBtn.href = `https://genius.com/search${query}`;
           continue;
         }
 
-        lyricsBtn.href = url;
+        lyricsBtn.href = url!;
 
         lyricsBtn.title = "Open the current song's lyrics in a new tab";
         lyricsBtn.style.cursor = "pointer";
-        lyricsBtn.style.visibility = "initial";
+        lyricsBtn.style.visibility = "visible";
         lyricsBtn.style.display = "inline-flex";
         lyricsBtn.style.pointerEvents = "initial";
       }
