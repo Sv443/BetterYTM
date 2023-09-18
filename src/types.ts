@@ -47,6 +47,8 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
+  /** Add a button to the queue to scroll to the currently playing song */
+  scrollToActiveSongBtn: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

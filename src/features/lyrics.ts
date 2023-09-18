@@ -118,7 +118,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
           continue;
         }
 
-        lyricsBtn.href = url!;
+        lyricsBtn.href = url;
 
         lyricsBtn.title = "Open the current song's lyrics in a new tab";
         lyricsBtn.style.cursor = "pointer";

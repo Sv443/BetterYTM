@@ -9,6 +9,7 @@ import {
   preInitLayout, removeUpgradeTab,
   initVolumeFeatures, initAutoCloseToasts,
   removeShareTrackingParam, fixSpacing,
+  addScrollToActiveBtn,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
@@ -147,6 +148,9 @@ async function onDomLoad() {
 
       if(features.fixSpacing)
         fixSpacing();
+
+      if(features.scrollToActiveSongBtn)
+        addScrollToActiveBtn();
 
       initVolumeFeatures();
     }

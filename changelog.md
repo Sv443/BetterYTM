@@ -10,6 +10,7 @@
   - Permanent toast notifications can be automatically closed now
   - Remove tracking parameter `&si=...` from links in the share menu
   - Fix spacing issues throughout the site
+  - Added a button to scroll to the currently active song
   - Added an easter egg to the watermark and config menu option :)
 - Changes & Fixes:
   - Now the lyrics button will directly link to the lyrics (using my API [geniURL](https://github.com/Sv443/geniURL))
