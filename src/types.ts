@@ -46,7 +46,7 @@ export interface FeatureConfig {
   /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
-  fixMargins: boolean;
+  fixSpacing: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
