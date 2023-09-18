@@ -19,6 +19,7 @@ All of these can be toggled and configured in the configuration menu.
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
   - Set a custom size and step resolution for the volume slider and show a percentage label next to it
   - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
+  - Quickly scroll to the currently active song in the queue by clicking a button
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
   - Remove the premium tab in the sidebar

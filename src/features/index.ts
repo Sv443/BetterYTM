@@ -88,6 +88,12 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  scrollToActiveSongBtn: {
+    desc: "Add a button to the queue to scroll to the currently playing song",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
 
   //#SECTION input
   arrowKeySupport: {

@@ -223,3 +223,33 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 .bytm-vol-slider-label.bytm-visible {
   opacity: 1;
 }
+
+/* #MARKER scroll to active */
+
+#bytm-scroll-to-active-btn-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  height: 100%;
+}
+
+#bytm-scroll-to-active-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#bytm-scroll-to-active-btn {
+  width: revert;
+  height: revert;
+}
+
+#bytm-scroll-to-active-btn .bytm-generic-btn-img {
+  padding: 4px;
+}

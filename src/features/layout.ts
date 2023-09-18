@@ -641,6 +641,7 @@ export function removeShareTrackingParam() {
 
 //#MARKER fix margins
 
+/** Applies global CSS to fix various spacings */
 export function fixSpacing() {
   addGlobalStyle(`\
 ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
@@ -650,4 +651,43 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-re
 ytmusic-carousel-shelf-renderer ytmusic-carousel {
   --ytmusic-carousel-item-height: 60px !important;
 }`);
+}
+
+/** Adds a button to the queue to scroll to the active song */
+export function addScrollToActiveBtn() {
+  onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+    listener: async (tabElem) => {
+      const containerElem = document.createElement("div");
+      containerElem.id = "bytm-scroll-to-active-btn-cont";
+
+      const linkElem = document.createElement("div");
+      linkElem.id = "bytm-scroll-to-active-btn";
+      linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+      linkElem.title = "Click to scroll to the currently playing song";
+      linkElem.role = "button";
+
+      const imgElem = document.createElement("img");
+      imgElem.className = "bytm-generic-btn-img";
+      imgElem.src = await getResourceUrl("skip_to");
+
+      linkElem.addEventListener("click", (e) => {
+        const activeItem = document.querySelector<HTMLElement>(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+        if(!activeItem)
+          return;
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        activeItem.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      });
+
+      linkElem.appendChild(imgElem);
+      containerElem.appendChild(linkElem);
+      tabElem.appendChild(containerElem);
+    },
+  });
 }

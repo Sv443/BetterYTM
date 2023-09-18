@@ -24,6 +24,7 @@ export const migrations: ConfigMigrationsDict = {
     removeShareTrackingParam: true,
     numKeysSkipToTime: true,
     fixSpacing: true,
+    scrollToActiveSongBtn: true,
     logLevel: 1,
   }),
 };
