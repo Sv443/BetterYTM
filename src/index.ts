@@ -8,7 +8,7 @@ import {
   initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab,
   initVolumeFeatures, initAutoCloseToasts,
-  removeShareTrackingParam,
+  removeShareTrackingParam, fixSpacing,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
@@ -144,6 +144,9 @@ async function onDomLoad() {
 
       if(features.numKeysSkipToTime)
         initNumKeysSkip();
+
+      if(features.fixSpacing)
+        fixSpacing();
 
       initVolumeFeatures();
     }

@@ -9,6 +9,7 @@
   - Improvements to link hitboxes & more links in general
   - Permanent toast notifications can be automatically closed now
   - Remove tracking parameter `&si=...` from links in the share menu
+  - Fix spacing issues throughout the site
   - Added an easter egg to the watermark and config menu option :)
 - Changes & Fixes:
   - Now the lyrics button will directly link to the lyrics (using my API [geniURL](https://github.com/Sv443/geniURL))

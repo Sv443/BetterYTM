@@ -82,6 +82,12 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  fixSpacing: {
+    desc: "Fix spacing issues in the layout",
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
 
   //#SECTION input
   arrowKeySupport: {
