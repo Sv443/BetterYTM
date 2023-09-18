@@ -295,11 +295,11 @@ export function initQueueButtons() {
   siteEvents.on("queueChanged", addQueueBtns);
   siteEvents.on("autoplayQueueChanged", addQueueBtns);
 
-  const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
+  const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
   if(queueItems.length === 0)
     return;
 
-  queueItems.forEach(itm => addQueueButtons(itm as HTMLElement));
+  queueItems.forEach(itm => addQueueButtons(itm));
 
   log(`Added buttons to ${queueItems.length} existing queue ${autoPlural("item", queueItems)}`);
 }
