@@ -397,8 +397,8 @@ export async function addMenu() {
   const versionElem = document.createElement("a");
   versionElem.id = "bytm-menu-version";
   versionElem.role = "button";
-  versionElem.title = `Version ${scriptInfo.version} (build ${scriptInfo.lastCommit}) - click to open the changelog`;
-  versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.lastCommit})`;
+  versionElem.title = `Version ${scriptInfo.version} (build ${scriptInfo.buildNumber}) - click to open the changelog`;
+  versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
 
   versionElem.addEventListener("click", (e) => {
     e.preventDefault();
