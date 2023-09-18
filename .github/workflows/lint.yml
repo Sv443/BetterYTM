@@ -3,6 +3,8 @@ name: "Lint BetterYTM"
 on:
   pull_request:
     branches: [main, develop]
+  push:
+    branches: [develop]
 
 jobs:
   lint:
