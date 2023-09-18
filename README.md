@@ -17,10 +17,11 @@ All of these can be toggled and configured in the configuration menu.
 - Layout:
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
-  - Set a custom size and step resolution for the volume slider
-  - Remove the premium tab in the sidebar
+  - Set a custom size and step resolution for the volume slider and show a percentage label next to it
   - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
   - Remove the tracking parameter from URLs in the share menu
+  - Automatically close permanent notifications
+  - Remove the premium tab in the sidebar
 - Input:
   - Use arrow keys to skip forward or backward by 10 seconds
   - Press number keys to skip to a percentage of the currently playing song
