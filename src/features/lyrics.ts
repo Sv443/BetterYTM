@@ -15,6 +15,7 @@ const threshold = 0.55;
 const geniUrlRatelimitTimeframe = 30;
 
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
+void thresholdParam; // TODO: remove once geniURL 1.4 is released
 
 //#MARKER cache
 
@@ -48,7 +49,6 @@ export function addMediaCtrlLyricsBtn(): void {
   onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 
-// TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector<HTMLDivElement>(".content-info-wrapper > yt-formatted-string");
@@ -210,7 +210,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
     }
 
     const startTs = Date.now();
-    const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
+    const fetchUrl = `${geniURLSearchTopUrl}?disableFuzzy&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
