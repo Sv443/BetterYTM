@@ -90,8 +90,8 @@ const getConfig = (env) => {
       }),
       {
         apply: (compiler) => {
-          console.log("Running post-build script...\n");
           compiler.hooks.afterEmit.tap("AfterEmitPlugin", () => {
+            console.log("Running post-build script...\n");
             exec(`npm run --silent post-build -- mode=${mode}`, (_err, stdout, stderr) => {
               stdout && process.stdout.write(stdout);
               stderr && process.stderr.write(stderr);

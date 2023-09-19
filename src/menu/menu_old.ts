@@ -80,6 +80,7 @@ export async function addMenu() {
 
   addLink(await getResourceUrl("github"), scriptInfo.namespace, `Open ${scriptInfo.name} on GitHub`);
   addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", `Open ${scriptInfo.name} on GreasyFork`);
+  addLink(await getResourceUrl("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", `Open ${scriptInfo.name} on OpenUserJS`);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");

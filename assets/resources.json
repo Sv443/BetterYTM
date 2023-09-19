@@ -10,5 +10,6 @@
   "skip_to": "skip_to.svg",
 
   "github": "external/github.png",
-  "greasyfork": "external/greasyfork.png"
+  "greasyfork": "external/greasyfork.png",
+  "openuserjs": "external/openuserjs.png"
 }

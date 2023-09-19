@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           BetterYTM
 // @namespace      https://github.com/Sv443/BetterYTM
-// @version        1.0.1
+// @version        1.0.2
 // @description    Configurable layout and UX improvements for YouTube Music
 // @description:de Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
 // @homepageURL    https://github.com/Sv443/BetterYTM#readme
@@ -32,6 +32,7 @@
 // @resource       skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/skip_to.svg
 // @resource       github     https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/github.png
 // @resource       greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/greasyfork.png
+// @resource       openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/openuserjs.png
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -469,7 +470,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "ea97e21", // assert as generic string instead of literal
+    buildNumber: "c8294c3", // assert as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -682,7 +683,7 @@ function initSiteEvents() {
 
 ;// CONCATENATED MODULE: ./changelog.md
 // Module
-var code = "<h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Added a greasyfork link to the configuration menu</li> </ul> </li> </ul> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
+var code = "<h2 id=\"102\">1.0.2</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to OpenUserJS!</li> <li>Added a OpenUserJS link to the configuration menu</li> </ul> </li> </ul> <br> <h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to GreasyFork!</li> <li>Added a GreasyFork link to the configuration menu</li> </ul> </li> </ul> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
 // Exports
 /* harmony default export */ var changelog = (code);
 ;// CONCATENATED MODULE: ./src/menu/menu_old.ts
@@ -753,6 +754,7 @@ function addMenu() {
         };
         addLink(yield getResourceUrl("github"), constants_scriptInfo.namespace, `Open ${constants_scriptInfo.name} on GitHub`);
         addLink(yield getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", `Open ${constants_scriptInfo.name} on GreasyFork`);
+        addLink(yield getResourceUrl("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", `Open ${constants_scriptInfo.name} on OpenUserJS`);
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield getResourceUrl("close");

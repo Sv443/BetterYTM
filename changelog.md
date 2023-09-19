@@ -1,6 +1,14 @@
+## 1.0.2
+- **Changes:**
+  - Script is now published to OpenUserJS!
+  - Added a OpenUserJS link to the configuration menu
+
+<br>
+
 ## 1.0.1
 - **Changes:**
-  - Added a greasyfork link to the configuration menu
+  - Script is now published to GreasyFork!
+  - Added a GreasyFork link to the configuration menu
 
 <br>
 
