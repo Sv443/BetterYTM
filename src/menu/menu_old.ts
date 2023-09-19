@@ -572,6 +572,7 @@ async function addExportMenu() {
   copyBtnElem.title = "Click to copy the configuration to your clipboard";
 
   const copiedTextElem = document.createElement("span");
+  copiedTextElem.id = "bytm-export-menu-copied-txt";
   copiedTextElem.classList.add("bytm-menu-footer-copied");
   copiedTextElem.innerText = "Copied!";
   copiedTextElem.style.display = "none";
@@ -582,7 +583,7 @@ async function addExportMenu() {
     if(textAreaElem) {
       GM.setClipboard(textAreaElem.value);
       copiedTextElem.style.display = "inline-block";
-      if(!copiedTxtTimeout) {
+      if(typeof copiedTxtTimeout !== "number") {
         copiedTxtTimeout = setTimeout(() => {
           copiedTextElem.style.display = "none";
           copiedTxtTimeout = undefined;
@@ -624,6 +625,12 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
+
+  const copiedTxt = document.querySelector<HTMLElement>("#bytm-export-menu-copied-txt");
+  if(copiedTxt) {
+    copiedTxt.style.display = "none";
+    typeof copiedTxtTimeout === "number" && clearTimeout(copiedTxtTimeout);
+  }
 }
 
 /** Opens the export menu if it is closed */
