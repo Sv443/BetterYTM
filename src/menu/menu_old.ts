@@ -629,7 +629,10 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
   const copiedTxt = document.querySelector<HTMLElement>("#bytm-export-menu-copied-txt");
   if(copiedTxt) {
     copiedTxt.style.display = "none";
-    typeof copiedTxtTimeout === "number" && clearTimeout(copiedTxtTimeout);
+    if(typeof copiedTxtTimeout === "number") {
+      clearTimeout(copiedTxtTimeout);
+      copiedTxtTimeout = undefined;
+    }
   }
 }
 
