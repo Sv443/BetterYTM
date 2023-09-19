@@ -1,12 +1,7 @@
-<div style="text-align: center;" align="center">
-
-<h1><img src="./assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
+<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and UX improvements for YouTube Music
 
-[**Features**](#features) • [**Installation**](#installation) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
-
-</div>
 <br>
 
 ### Features:
@@ -46,9 +41,7 @@ I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/fir
 
 </b>
 
-Once you have the extension, click this button to install the userscript:  
-  
-<a href="https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a>
+Once you have the extension, click the install button above!
 
 <br>
 
@@ -69,7 +62,7 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-**For information on how to contribute to this project, see [the contributing guide](./contributing.md)**
+**For information on how to contribute to this project, see [the contributing guide](https://github.com/Sv443/BetterYTM/tree/main/contributing.md)**
 
 <br><br>
 
@@ -88,17 +81,13 @@ Icons:
 
 ### Disclaimers:
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
-- I do not own any third party icons, I just re-host them [here](./assets/external/) for better stability and availability.
+- I do not own any third party icons, I just re-host them [here](https://github.com/Sv443/BetterYTM/tree/main/assets/external/) for better stability and availability.
 - I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site the script runs on.
 - I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 
 <br><br><br><br>
 
-<div align="center" style="text-align: center;">
-
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
 If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
   
-© 2022 Sv443 - [MIT license](./LICENSE.txt)
-
-</div>
+© 2022 Sv443 - [MIT license](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)
