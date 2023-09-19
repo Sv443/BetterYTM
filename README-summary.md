@@ -50,6 +50,7 @@ Once you have the extension, click the install button above!
 Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
 
 </sup>
+<br>
 <sup>
 
 To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
@@ -75,7 +76,7 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
   
 Icons:  
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
-- For external icon attributions, see [`assets/external/`](assets/external/README.md)
+- For external icon attributions, see [`assets/external/`](https://github.com/Sv443/BetterYTM/tree/main/assets/external/)
 
 <br><br>
 
