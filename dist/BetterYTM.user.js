@@ -469,7 +469,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "7b9d2d2", // assert as generic string instead of literal
+    buildNumber: "8d02f2a", // assert as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -1683,6 +1683,7 @@ const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
+void thresholdParam; // TODO: remove once geniURL 1.4 is released
 /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
@@ -1706,7 +1707,6 @@ let currentSongTitle = "";
 function addMediaCtrlLyricsBtn() {
     onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
-// TODO: add error.svg if the request fails
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 function addActualMediaCtrlLyricsBtn(likeContainer) {
     return lyrics_awaiter(this, void 0, void 0, function* () {
@@ -1845,7 +1845,7 @@ function getGeniusUrl(artist, song) {
                 return cacheEntry;
             }
             const startTs = Date.now();
-            const fetchUrl = `${geniURLSearchTopUrl}?artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}${thresholdParam}`;
+            const fetchUrl = `${geniURLSearchTopUrl}?disableFuzzy&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
             log(`Requesting URL from geniURL at '${fetchUrl}'`);
             const fetchRes = yield fetchAdvanced(fetchUrl);
             if (fetchRes.status === 429) {
