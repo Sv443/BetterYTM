@@ -18,7 +18,7 @@ All of these can be toggled and configured in the configuration menu.
 - Input:
   - Use arrow keys to skip forward or backward by 10 seconds
   - Press number keys to skip to a percentage of the currently playing song
-  - Switch between YouTube and YouTube Music on a video by pressing the hotkey F9 <!-- TODO(v1.1): make configurable -->
+  - Switch between YouTube and YouTube Music on a video by pressing the hotkey F9
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and more!
