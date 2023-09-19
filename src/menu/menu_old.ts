@@ -487,6 +487,7 @@ function checkToggleScrollIndicator() {
 //#MARKER export menu
 
 let isExportMenuOpen = false;
+let copiedTxtTimeout: number | undefined = undefined;
 
 /** Adds a menu to copy the current configuration as JSON (hidden by default) */
 async function addExportMenu() {
@@ -574,16 +575,19 @@ async function addExportMenu() {
   copiedTextElem.classList.add("bytm-menu-footer-copied");
   copiedTextElem.innerText = "Copied!";
   copiedTextElem.style.display = "none";
-  
+
   copyBtnElem.addEventListener("click", async (evt) => {
     evt?.bubbles && evt.stopPropagation();
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     if(textAreaElem) {
       GM.setClipboard(textAreaElem.value);
       copiedTextElem.style.display = "inline-block";
-      setTimeout(() => {
-        copiedTextElem.style.display = "none";
-      }, 3000);
+      if(!copiedTxtTimeout) {
+        copiedTxtTimeout = setTimeout(() => {
+          copiedTextElem.style.display = "none";
+          copiedTxtTimeout = undefined;
+        }, 3000) as unknown as number;
+      }
     }
   });
 
