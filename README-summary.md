@@ -72,7 +72,7 @@ This userscript depends on these runtime libraries:
 - [nanoevents](https://npmjs.org/package/nanoevents)
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
   
-For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
+For development dependencies, please refer to `devDependencies` in [`package.json`](https://github.com/Sv443/BetterYTM/tree/main/package.json)
   
 Icons:  
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
