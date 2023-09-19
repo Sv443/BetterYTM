@@ -1,5 +1,11 @@
+## 1.0.1
+- **Changes:**
+  - Added a greasyfork link to the configuration menu
+
+<br>
+
 ## 1.0.0
-- Added Features:
+- **Added Features:**
   - Added configuration menu to toggle and configure all features
   - Added lyrics button to each song in the queue
   - Added "remove from queue" button to each song in the queue
@@ -12,7 +18,7 @@
   - Fix spacing issues throughout the site
   - Added a button to scroll to the currently active song in the queue
   - Added an easter egg to the watermark and config menu option :)
-- Changes & Fixes:
+- **Changes & Fixes:**
   - Now the lyrics button will directly link to the lyrics (using my API [geniURL](https://github.com/Sv443/geniURL))
   - Video time is now kept when switching site on regular YT too
   - Fixed compatibility with the new site design
@@ -26,7 +32,7 @@
 
 ## 0.2.0
 
-- Added Features:
+- **Added Features:**
   - Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)
   - Search for song lyrics with new button in media controls
   - Remove "Upgrade to YTM Premium" tab

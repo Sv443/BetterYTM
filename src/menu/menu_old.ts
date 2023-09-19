@@ -79,8 +79,7 @@ export async function addMenu() {
   };
 
   addLink(await getResourceUrl("github"), scriptInfo.namespace, `Open ${scriptInfo.name} on GitHub`);
-  // TODO:
-  // addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/users/184165-sv443", `Open ${scriptInfo.name} on GreasyFork`);
+  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", `Open ${scriptInfo.name} on GreasyFork`);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
