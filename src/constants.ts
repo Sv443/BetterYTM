@@ -19,5 +19,5 @@ export const scriptInfo = {
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
-  buildNumber: "{{BUILD_NUMBER}}" as string, // assert as generic string instead of literal
+  buildNumber: "{{BUILD_NUMBER}}" as string, // asserted as generic string instead of literal
 };
