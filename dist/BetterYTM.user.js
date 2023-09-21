@@ -250,7 +250,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "14b5d27", // assert as generic string instead of literal
+    buildNumber: "8adac0a", // assert as generic string instead of literal
 };
 
 
@@ -870,7 +870,7 @@ function addWatermark() {
     watermark.id = "bytm-watermark";
     watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name;
-    watermark.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip");
+    watermark.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip", _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name);
     watermark.tabIndex = 1000;
     improveLogo();
     watermark.addEventListener("click", (e) => {
@@ -951,7 +951,7 @@ function addConfigMenuOption(container) {
         cfgOptElem.className = "bytm-cfg-menu-option";
         const cfgOptItemElem = document.createElement("div");
         cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-        cfgOptItemElem.ariaLabel = cfgOptItemElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip");
+        cfgOptItemElem.ariaLabel = cfgOptItemElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip", _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name);
         cfgOptItemElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
@@ -967,7 +967,7 @@ function addConfigMenuOption(container) {
         cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("logo");
         const cfgOptTextElem = document.createElement("div");
         cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-        cfgOptTextElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("config_menu_option");
+        cfgOptTextElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("config_menu_option", _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name);
         cfgOptItemElem.appendChild(cfgOptIconElem);
         cfgOptItemElem.appendChild(cfgOptTextElem);
         cfgOptElem.appendChild(cfgOptItemElem);
@@ -2016,9 +2016,9 @@ function addMenu() {
                         }
                     }
                     inputElem.addEventListener("input", () => {
-                        let v = Number(String(inputElem.value).trim());
-                        if (isNaN(v))
-                            v = Number(inputElem.value);
+                        let v = String(inputElem.value).trim();
+                        if (["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+                            v = Number(v);
                         if (typeof initialVal !== "undefined")
                             confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
                     });
@@ -2607,19 +2607,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   translations: function() { return /* binding */ translations; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
-/* harmony import */ var _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/translations/de-DE.json */ "./assets/translations/de-DE.json");
-/* harmony import */ var _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/translations/en-US.json */ "./assets/translations/en-US.json");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
+/* harmony import */ var _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/translations/de-DE.json */ "./assets/translations/de-DE.json");
+/* harmony import */ var _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/translations/en-US.json */ "./assets/translations/en-US.json");
+
 
 
 
 /** Mapping of language and locale code to translation file content */
 const langMapping = {
-    "de-DE": _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_1__,
-    "en-US": _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__,
+    "de-DE": _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_2__,
+    "en-US": _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__,
 };
 const translations = Object.entries(langMapping).reduce((a, [lang, tr]) => {
     // apply defaults from en-US in case of missing translations
-    a[lang] = Object.assign(Object.assign({}, _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__.translations), tr.translations);
+    a[lang] = Object.assign(Object.assign({}, _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__.translations), tr.translations);
     return a;
 }, {});
 const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
@@ -2635,6 +2637,7 @@ function initTranslations(language) {
     //   tr.addLanguage(lang, trans);
     _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.addLanguage(language, translations[language]);
     _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.setLanguage(language);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Initialized translations for language", language);
 }
 /** Sets the current language for translations */
 function setLanguage(language) {
@@ -3315,7 +3318,7 @@ let createNanoEvents = () => ({
   \****************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um die Änderungen zu übernehmen","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuelle Konfiguration","import":"Importieren","import_hint":"Füge die Konfiguration, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere eine Konfiguration, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Konfiguration, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Konfiguration wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Konfiguration in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen"}}');
+module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um Änderungen zu speichern","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuelle Konfiguration","import":"Importieren","import_hint":"Füge die Konfiguration, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere eine Konfiguration, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Konfiguration, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Konfiguration wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Konfiguration in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen"}}');
 
 /***/ }),
 
@@ -3440,6 +3443,7 @@ function preInit() {
     init();
 }
 function init() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             registerMenuCommands();
@@ -3452,7 +3456,7 @@ function init() {
                 domLoaded = true;
             });
             const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
-            (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)(ftConfig.language);
+            (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)((_a = ftConfig.language) !== null && _a !== void 0 ? _a : "en-US");
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(ftConfig.logLevel);
             (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.preInitLayout)(ftConfig);
             if (ftConfig.disableBeforeUnloadPopup)
