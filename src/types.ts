@@ -1,3 +1,5 @@
+import type { TrLang } from "./translations";
+
 /** Env object passed to webpack.config.js */
 export type WebpackEnv = Partial<Record<"mode", "production" | "development">> & Record<"WEBPACK_BUNDLE" | "WEBPACK_BUILD", boolean>;
 
@@ -57,6 +59,8 @@ export interface FeatureConfig {
   lyricsQueueButton: boolean;
 
   //#SECTION misc
+  /** The language to use for translations */
+  language: TrLang;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
 }

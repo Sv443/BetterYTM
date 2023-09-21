@@ -5,7 +5,7 @@ import { info, log } from "./utils";
 import { siteEvents } from "./events";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 3;
+export const formatVersion = 4;
 /** Config data format migration dictionary */
 export const migrations: ConfigMigrationsDict = {
   // 1 -> 2
@@ -26,6 +26,11 @@ export const migrations: ConfigMigrationsDict = {
     fixSpacing: true,
     scrollToActiveSongBtn: true,
     logLevel: 1,
+  }),
+  // 3 -> 4
+  4: (oldData: Record<string, unknown>) => ({
+    ...oldData,
+    language: "en-US",
   }),
 };
 

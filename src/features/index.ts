@@ -1,3 +1,4 @@
+import { trInfo } from "../translations";
 import { scriptInfo } from "../constants";
 
 export * from "./input";
@@ -19,6 +20,16 @@ export const categoryNames: Record<FeatureCategory, string> = {
   lyrics: "Lyrics",
   misc: "Other",
 } as const;
+
+type SelectOption = { value: number | string, label: string };
+
+const langOptions = Object.entries(trInfo).reduce((a, [lang, langInfo]) => {
+  return [...a, {
+    value: lang,
+    label: `${langInfo.name}`,
+  }];
+}, [] as SelectOption[])
+  .sort((a, b) => a.label.localeCompare(b.label));
 
 /** Contains all possible features with their default values and other configuration */
 export const featInfo = {
@@ -154,6 +165,13 @@ export const featInfo = {
   },
 
   //#SECTION misc
+  language: {
+    desc: "🌐 Language",
+    type: "select",
+    category: "misc",
+    options: langOptions,
+    default: "en-US",
+  },
   logLevel: {
     desc: "How much information to log to the console",
     type: "select",

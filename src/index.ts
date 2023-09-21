@@ -19,6 +19,7 @@ import {
   // menu
   addMenu, addConfigMenuOption,
 } from "./features/index";
+import { setLanguage } from "./translations";
 
 {
   // console watermark with sexy gradient
@@ -42,6 +43,7 @@ import {
   console.log();
 }
 
+let domLoaded = false;
 const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
@@ -62,27 +64,28 @@ async function init() {
     void e;
   }
 
-  // init DOM-dependant stuff like features
   try {
-    document.addEventListener("DOMContentLoaded", onDomLoad);
-  }
-  catch(err) {
-    error("General Error:", err);
-  }
+    document.addEventListener("DOMContentLoaded", () => {
+      domLoaded = true;
+    });
 
-  // init config
-  try {
     const ftConfig = await initConfig();
 
-    setLogLevel(getFeatures().logLevel);
+    setLanguage(ftConfig.language);
+    setLogLevel(ftConfig.logLevel);
 
     preInitLayout(ftConfig);
 
-    if(getFeatures().disableBeforeUnloadPopup)
+    if(ftConfig.disableBeforeUnloadPopup)
       disableBeforeUnload();
+
+    if(!domLoaded)
+      document.addEventListener("DOMContentLoaded", initFeatures);
+    else
+      initFeatures();
   }
   catch(err) {
-    error("Error while initializing ConfigManager:", err);
+    error("General Error:", err);
   }
 
   // init menu separately from features
@@ -96,7 +99,7 @@ async function init() {
 }
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
-async function onDomLoad() {
+async function initFeatures() {
   // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
   addGlobalStyle("{{GLOBAL_STYLE}}");
 
@@ -108,14 +111,20 @@ async function onDomLoad() {
 
   try {
     if(domain === "ytm") {
+      initSiteEvents();
+
+      if(!await GM.getValue("bytm-installed")) {
+        // open welcome page with language selector
+        // await showWelcomePage();
+      }
+      await GM.setValue("bytm-installed", Date.now());
+
       try {
         addMenu(); // TODO(v1.1): remove
       }
       catch(err) {
         error("Couldn't add menu:", err);
       }
-
-      initSiteEvents();
 
       onSelector("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
 
