@@ -25,7 +25,7 @@ export function addWatermark() {
   watermark.id = "bytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
-  watermark.title = t("open_menu_tooltip");
+  watermark.title = t("open_menu_tooltip", scriptInfo.name);
   watermark.tabIndex = 1000;
 
   improveLogo();
@@ -123,7 +123,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip");
+  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
   cfgOptItemElem.addEventListener("click", async (e) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
@@ -143,7 +143,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-  cfgOptTextElem.innerText = t("config_menu_option");
+  cfgOptTextElem.innerText = t("config_menu_option", scriptInfo.name);
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
   cfgOptItemElem.appendChild(cfgOptTextElem);

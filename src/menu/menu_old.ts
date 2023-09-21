@@ -247,9 +247,9 @@ export async function addMenu() {
         }
 
         inputElem.addEventListener("input", () => {
-          let v = Number(String(inputElem.value).trim());
-          if(isNaN(v))
-            v = Number(inputElem.value);
+          let v: string | number = String(inputElem.value).trim();
+          if(["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+            v = Number(v);
           if(typeof initialVal !== "undefined")
             confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
         });

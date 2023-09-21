@@ -1,4 +1,5 @@
 import { tr, Stringifiable } from "@sv443-network/userutils";
+import { log } from "./utils";
 
 import tr_deDE from "../assets/translations/de-DE.json" assert { type: "json" };
 import tr_enUS from "../assets/translations/en-US.json" assert { type: "json" };
@@ -35,6 +36,8 @@ export function initTranslations(language: TrLang) {
 
   tr.addLanguage(language, translations[language]);
   tr.setLanguage(language);
+
+  log("Initialized translations for language", language);
 }
 
 /** Sets the current language for translations */

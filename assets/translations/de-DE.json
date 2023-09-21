@@ -9,7 +9,7 @@
     "import_menu_title": "%1 - Einstellungen importieren",
     "open_menu_tooltip": "%1's Einstellungen öffnen",
     "close_menu_tooltip": "Klicke um das Menü zu schließen",
-    "reload_hint": "Du musst die Seite neu laden, um die Änderungen zu übernehmen",
+    "reload_hint": "Du musst die Seite neu laden, um Änderungen zu speichern",
     "reload_now": "Jetzt neu laden",
     "reload_tooltip": "Seite neu laden",
     "version_tooltip": "Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen",

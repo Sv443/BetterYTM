@@ -71,7 +71,7 @@ async function init() {
 
     const ftConfig = await initConfig();
 
-    initTranslations(ftConfig.language);
+    initTranslations(ftConfig.language ?? "en-US");
     setLogLevel(ftConfig.logLevel);
 
     preInitLayout(ftConfig);
