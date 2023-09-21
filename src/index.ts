@@ -3,6 +3,7 @@ import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
+import { initTranslations } from "./translations";
 import {
   // layout
   initQueueButtons, addWatermark,
@@ -19,7 +20,6 @@ import {
   // menu
   addMenu, addConfigMenuOption,
 } from "./features/index";
-import { setLanguage } from "./translations";
 
 {
   // console watermark with sexy gradient
@@ -71,7 +71,7 @@ async function init() {
 
     const ftConfig = await initConfig();
 
-    setLanguage(ftConfig.language);
+    initTranslations(ftConfig.language);
     setLogLevel(ftConfig.logLevel);
 
     preInitLayout(ftConfig);
@@ -107,7 +107,7 @@ async function initFeatures() {
 
   const features = getFeatures();
 
-  log(`Initializing features for domain "${domain}"...`);
+  log(`DOM loaded. Initializing features for domain "${domain}"...`);
 
   try {
     if(domain === "ytm") {
@@ -177,7 +177,7 @@ async function initFeatures() {
 function registerMenuCommands() {
   if(mode === "development") {
     GM.registerMenuCommand("Reset config", async () => {
-      if(confirm("Are you sure you want to reset the configuration to its default values?\nThis will automatically reload the page.")) {
+      if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
         await clearConfig();
         location.reload();
       }
@@ -193,8 +193,8 @@ function registerMenuCommands() {
         console.log(`  ${key} -> ${await GM.getValue(key)}`);
     }, "l");
 
-    GM.registerMenuCommand("Clear all GM values", async () => {
-      if(confirm("Are you sure you want to clear all GM values?")) {
+    GM.registerMenuCommand("Delete all GM values", async () => {
+      if(confirm("Clear all GM values?\nSee console for details.")) {
         const keys = await GM.listValues();
         console.log("Clearing GM values:");
         if(keys.length === 0)
@@ -204,7 +204,12 @@ function registerMenuCommands() {
           console.log(`  Deleted ${key}`);
         }
       }
-    }, "c");
+    }, "d");
+
+    GM.registerMenuCommand("Reset install timestamp", async () => {
+      await GM.deleteValue("bytm-installed");
+      console.log("Reset install time.");
+    }, "t");
   }
 }
 
