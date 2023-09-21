@@ -46,6 +46,8 @@
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
     "middle_click_open_tab": "Middle-click to open in a new tab",
+    "log_level_debug": "Debug (most)",
+    "log_level_info": "Info (only important)",
     "feature_category_input": "Input",
     "feature_category_layout": "Layout",
     "feature_category_lyrics": "Lyrics",

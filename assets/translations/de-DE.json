@@ -46,6 +46,8 @@
     "scroll_to_bottom": "Zum Ende der Wiedergabeliste scrollen",
     "volume_tooltip": "Lautstärke: %1% (Sensitivität: %2%)",
     "middle_click_open_tab": "Mittelklick um in einem neuen Tab zu öffnen",
+    "log_level_debug": "Debug (sehr viele)",
+    "log_level_info": "Info (nur wichtige)",
     "feature_category_input": "Eingabe",
     "feature_category_layout": "Layout",
     "feature_category_lyrics": "Songtexte",

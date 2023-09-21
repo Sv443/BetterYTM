@@ -1,4 +1,4 @@
-import { trInfo } from "../translations";
+import { t, trInfo } from "../translations";
 
 export * from "./input";
 export * from "./layout";
@@ -147,9 +147,9 @@ export const featInfo = {
   logLevel: {
     type: "select",
     category: "misc",
-    options: [
-      { value: 0, label: "Debug (most)" },
-      { value: 1, label: "Info (only important)" },
+    options: () => [
+      { value: 0, label: t("log_level_debug") },
+      { value: 1, label: t("log_level_info") },
     ],
     default: 1,
   },

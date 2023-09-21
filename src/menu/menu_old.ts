@@ -236,7 +236,10 @@ export async function addMenu() {
           });
         }
         else if(type === "select") {
-          for(const { value, label } of ftInfo.options) {
+          const ftOpts = typeof ftInfo.options === "function"
+            ? ftInfo.options()
+            : ftInfo.options;
+          for(const { value, label } of ftOpts) {
             const optionElem = document.createElement("option");
             optionElem.value = String(value);
             optionElem.innerText = label;
