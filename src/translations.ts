@@ -13,12 +13,13 @@ const langMapping = {
 export type TrLang = keyof typeof langMapping;
 export type TrInfo = Omit<typeof tr_enUS, "translations">;
 
-export const translations = Object.entries(langMapping).reduce<Record<TrLang, Record<string, string>>>((a, [lang, tr]) => {
-  a[lang as TrLang] = tr.translations;
+export const translations = Object.entries(langMapping).reduce((a, [lang, tr]) => {
+  // apply defaults from en-US in case of missing translations
+  a[lang as TrLang] = { ...tr_enUS.translations, ...tr.translations };
   return a;
 }, {} as Record<TrLang, Record<string, string>>);
 
-export const trInfo = Object.entries(langMapping).reduce<Record<TrLang, TrInfo>>((a, [lang, tr]) => {
+export const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
   const trInfo: TrInfo & Partial<{ translations: Record<string, string> }> = { ...tr };
   delete trInfo.translations;
   a[lang as TrLang] = trInfo;
@@ -27,11 +28,13 @@ export const trInfo = Object.entries(langMapping).reduce<Record<TrLang, TrInfo>>
 
 
 /** Initializes the translations */
-export function initTranslations(language?: TrLang) {
-  for(const [lang, trans] of Object.entries(translations))
-    tr.addLanguage(lang, trans);
+export function initTranslations(language: TrLang) {
+  // for when hot reloading is implemented:
+  // for(const [lang, trans] of Object.entries(translations))
+  //   tr.addLanguage(lang, trans);
 
-  tr.setLanguage(language ?? "en-US");
+  tr.addLanguage(language, translations[language]);
+  tr.setLanguage(language);
 }
 
 export function setLanguage(language: TrLang) {
