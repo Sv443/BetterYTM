@@ -51,3 +51,12 @@ type TFuncKey = keyof (typeof tr_enUS["translations"]) | "_";
 export function t(key: TFuncKey, ...values: Stringifiable[]) {
   return tr(key, ...values);
 }
+
+/** Returns the passed translation key with an added pluralization identifier based on the passed `num` */
+export function pl(key: string, num: number | unknown[] | NodeList) {
+  if(typeof num !== "number")
+    num = num.length;
+  const plNum = num === 1 ? "1" : "n";
+
+  return `${key}-${plNum}` as "_";
+}
