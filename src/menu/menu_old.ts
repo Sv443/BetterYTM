@@ -5,6 +5,7 @@ import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../featur
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
+import { t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
@@ -26,7 +27,7 @@ export async function addMenu() {
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
   backgroundElem.classList.add("bytm-menu-bg");
-  backgroundElem.title = "Click here to close the menu";
+  backgroundElem.title = t("close_menu_tooltip");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
@@ -55,7 +56,7 @@ export async function addMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.innerText = `${scriptInfo.name} - Configuration`;
+  titleElem.innerText = t("config_menu_title", scriptInfo.name);
 
   const linksCont = document.createElement("div");
   linksCont.id = "bytm-menu-linkscont";
@@ -78,14 +79,14 @@ export async function addMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("github"), scriptInfo.namespace, `Open ${scriptInfo.name} on GitHub`);
-  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", `Open ${scriptInfo.name} on GreasyFork`);
-  addLink(await getResourceUrl("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", `Open ${scriptInfo.name} on OpenUserJS`);
+  addLink(await getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name));
+  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", t("open_greasyfork", scriptInfo.name));
+  addLink(await getResourceUrl("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", t("open_openuserjs", scriptInfo.name));
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
-  closeElem.title = "Click to close the menu";
+  closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", closeMenu);
 
   titleCont.appendChild(titleElem);
@@ -299,7 +300,7 @@ export async function addMenu() {
   scrollIndicator.id = "bytm-menu-scroll-indicator";
   scrollIndicator.src = await getResourceUrl("arrow_down");
   scrollIndicator.role = "button";
-  scrollIndicator.title = "Click to scroll to the bottom";
+  scrollIndicator.title = t("scroll_to_bottom");
 
   featuresCont.appendChild(scrollIndicator);
 
@@ -335,13 +336,13 @@ export async function addMenu() {
 
   const footerElem = document.createElement("div");
   footerElem.classList.add("bytm-menu-footer");
-  footerElem.innerText = "You need to reload the page to apply changes";
+  footerElem.innerText = t("reload_hint");
 
   const reloadElem = document.createElement("button");
   reloadElem.classList.add("bytm-btn");
   reloadElem.style.marginLeft = "10px";
-  reloadElem.innerText = "Reload now";
-  reloadElem.title = "Click to reload the page";
+  reloadElem.innerText = t("reload_now");
+  reloadElem.title = t("reload_tooltip");
   reloadElem.addEventListener("click", () => {
     closeMenu();
     location.reload();
@@ -351,10 +352,10 @@ export async function addMenu() {
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-btn");
-  resetElem.title = "Click to reset all settings to their default values";
-  resetElem.innerText = "Reset";
+  resetElem.title = t("reset_tooltip");
+  resetElem.innerText = t("reset");
   resetElem.addEventListener("click", async () => {
-    if(confirm("Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.")) {
+    if(confirm(t("reset_confirm"))) {
       await setDefaultFeatures();
       closeMenu();
       location.reload();
@@ -362,16 +363,16 @@ export async function addMenu() {
   });
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
-  exportElem.title = "Click to export your current configuration";
-  exportElem.innerText = "Export";
+  exportElem.title = t("export_tooltip");
+  exportElem.innerText = t("export");
   exportElem.addEventListener("click", async () => {
     closeMenu();
     openExportMenu();
   });
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
-  importElem.title = "Click to import a configuration you have previously exported";
-  importElem.innerText = "Import";
+  importElem.title = t("import_tooltip");
+  importElem.innerText = t("import");
   importElem.addEventListener("click", async () => {
     closeMenu();
     openImportMenu();
@@ -397,7 +398,7 @@ export async function addMenu() {
   const versionElem = document.createElement("a");
   versionElem.id = "bytm-menu-version";
   versionElem.role = "button";
-  versionElem.title = `Version ${scriptInfo.version} (build ${scriptInfo.buildNumber}) - click to open the changelog`;
+  versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
 
   versionElem.addEventListener("click", (e) => {
@@ -465,7 +466,6 @@ export function openMenu() {
 function checkToggleScrollIndicator() {
   const featuresCont = document.querySelector<HTMLElement>("#bytm-menu-opts");
   const scrollIndicator = document.querySelector<HTMLElement>("#bytm-menu-scroll-indicator");
-
   
   // disable scroll indicator if container doesn't scroll
   if(featuresCont && scrollIndicator) {
@@ -494,7 +494,7 @@ async function addExportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-export-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -526,12 +526,12 @@ async function addExportMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.innerText = `${scriptInfo.name} - Export Configuration`;
+  titleElem.innerText = t("export_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
-  closeElem.title = "Click to close the menu";
+  closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeExportMenu(e);
     openMenu();
@@ -549,7 +549,7 @@ async function addExportMenu() {
 
   const textElem = document.createElement("div");
   textElem.id = "bytm-export-menu-text";
-  textElem.innerText = "Copy the following text to export your configuration:";
+  textElem.innerText = t("export_hint");
 
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-export-menu-textarea";
@@ -568,13 +568,13 @@ async function addExportMenu() {
 
   const copyBtnElem = document.createElement("button");
   copyBtnElem.classList.add("bytm-btn");
-  copyBtnElem.innerText = "Copy to clipboard";
-  copyBtnElem.title = "Click to copy the configuration to your clipboard";
+  copyBtnElem.innerText = t("copy_to_clipboard");
+  copyBtnElem.title = t("copy_config_tooltip");
 
   const copiedTextElem = document.createElement("span");
   copiedTextElem.id = "bytm-export-menu-copied-txt";
   copiedTextElem.classList.add("bytm-menu-footer-copied");
-  copiedTextElem.innerText = "Copied!";
+  copiedTextElem.innerText = t("copied_notice");
   copiedTextElem.style.display = "none";
 
   copyBtnElem.addEventListener("click", async (evt) => {
@@ -661,7 +661,7 @@ async function addImportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-import-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -693,12 +693,12 @@ async function addImportMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.innerText = `${scriptInfo.name} - Import Configuration`;
+  titleElem.innerText = t("import_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
-  closeElem.title = "Click to close the menu";
+  closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeImportMenu(e);
     openMenu();
@@ -716,7 +716,7 @@ async function addImportMenu() {
 
   const textElem = document.createElement("div");
   textElem.id = "bytm-import-menu-text";
-  textElem.innerText = "Paste the configuration you want to import into the field below, then click the import button";
+  textElem.innerText = t("import_hint");
 
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-import-menu-textarea";
@@ -727,8 +727,8 @@ async function addImportMenu() {
 
   const importBtnElem = document.createElement("button");
   importBtnElem.classList.add("bytm-btn");
-  importBtnElem.innerText = "Import";
-  importBtnElem.title = "Click to import the configuration";
+  importBtnElem.innerText = t("import");
+  importBtnElem.title = t("start_import_tooltip");
 
   importBtnElem.addEventListener("click", async (evt) => {
     evt?.bubbles && evt.stopPropagation();
@@ -738,11 +738,11 @@ async function addImportMenu() {
     try {
       const parsed = JSON.parse(textAreaElem.value.trim());
       if(typeof parsed !== "object")
-        return alert("The imported data is not an object");
+        return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
-        return alert("The imported data does not contain a format version");
+        return alert(t("import_error_no_format_version"));
       if(typeof parsed.data !== "object")
-        return alert("The imported object does not contain any data");
+        return alert(t("import_error_no_data"));
       if(parsed.formatVersion < formatVersion) {
         let newData = JSON.parse(JSON.stringify(parsed.data));
         const sortedMigrations = Object.entries(migrations)
@@ -767,11 +767,11 @@ async function addImportMenu() {
         parsed.data = newData;
       }
       else if(parsed.formatVersion !== formatVersion)
-        return alert(`The imported data is in an unsupported format version (expected ${formatVersion} or lower, got ${parsed.formatVersion})`);
+        return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
 
       await saveFeatures(parsed.data);
 
-      if(confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
+      if(confirm(t("import_success_confirm_reload")))
         return location.reload();
 
       siteEvents.emit("rebuildCfgMenu", parsed.data);
@@ -781,7 +781,7 @@ async function addImportMenu() {
     }
     catch(err) {
       warn("Couldn't import configuration:", err);
-      alert("The imported data is not a valid configuration");
+      alert(t("import_error_invalid"));
     }
   });
 
@@ -847,7 +847,7 @@ async function addChangelogMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-changelog-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = "Click here to close the menu";
+  menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -879,12 +879,12 @@ async function addChangelogMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-menu-title";
-  titleElem.innerText = `${scriptInfo.name} - Changelog`;
+  titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
-  closeElem.title = "Click to close the menu";
+  closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeChangelogMenu(e);
     openMenu();

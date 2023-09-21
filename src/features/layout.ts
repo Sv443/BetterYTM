@@ -3,9 +3,9 @@ import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../events";
+import { t } from "../translations";
 import { openMenu } from "../menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
-import { featInfo } from "./index";
 import "./layout.css";
 
 let features: FeatureConfig;
@@ -25,7 +25,7 @@ export function addWatermark() {
   watermark.id = "bytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
-  watermark.title = "Open menu";
+  watermark.title = t("open_menu_tooltip");
   watermark.tabIndex = 1000;
 
   improveLogo();
@@ -123,7 +123,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
+  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip");
   cfgOptItemElem.addEventListener("click", async (e) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
@@ -143,7 +143,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-  cfgOptTextElem.innerText = "BetterYTM Configuration";
+  cfgOptTextElem.innerText = t("config_menu_option");
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
   cfgOptItemElem.appendChild(cfgOptTextElem);
@@ -196,7 +196,7 @@ export function initVolumeFeatures() {
 }
 
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderCont: HTMLDivElement) {
+function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelElem = document.createElement("div");
   labelElem.className = "bytm-vol-slider-label";
   labelElem.innerText = `${sliderElem.value}%`;
@@ -205,28 +205,27 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderCont: HTMLDivE
   labelElem.addEventListener("click", (e) => e.stopPropagation());
 
   const getLabelTexts = (slider: HTMLInputElement) => {
-    const labelShort = `${slider.value}%`;
-    const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${slider.step}%)` : "";
-    const labelFull = `Volume: ${labelShort}${sensText}`;
+    const percentLabel = `${slider.value}%`;
+    const labelFull = t("volume_tooltip", percentLabel, slider.step);
 
-    return { labelShort, labelFull };
+    return { percentLabel, labelFull };
   };
 
   const { labelFull } = getLabelTexts(sliderElem);
-  sliderCont.setAttribute("title", labelFull);
+  sliderContainer.setAttribute("title", labelFull);
   sliderElem.setAttribute("title", labelFull);
   sliderElem.setAttribute("aria-valuetext", labelFull);
 
   const updateLabel = () => {
-    const { labelShort, labelFull } = getLabelTexts(sliderElem);
+    const { percentLabel, labelFull } = getLabelTexts(sliderElem);
 
-    sliderCont.setAttribute("title", labelFull);
+    sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
 
     const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
     if(labelElem2)
-      labelElem2.innerText = labelShort;
+      labelElem2.innerText = percentLabel;
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
@@ -323,7 +322,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(features.lyricsQueueButton) {
     lyricsBtnElem = await createLyricsBtn(undefined, false);
 
-    lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+    lyricsBtnElem.title = t("open_lyrics");
     lyricsBtnElem.style.display = "inline-flex";
     lyricsBtnElem.style.visibility = "initial";
     lyricsBtnElem.style.pointerEvents = "initial";
@@ -381,7 +380,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
         if(!lyricsUrl) {
           resetImgElem();
-          if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+          if(confirm(t("lyrics_not_found_confirm_open_search")))
             openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
           return;
         }
@@ -397,7 +396,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
   if(features.deleteFromQueueButton) {
     deleteBtnElem = document.createElement("a");
     Object.assign(deleteBtnElem, {
-      title: "Remove this song from the queue",
+      title: t("remove_from_queue"),
       className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
       role: "button",
     });
@@ -567,7 +566,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
     anchorElem.role = "button";
     anchorElem.target = "_self";
     anchorElem.href = sidebarPaths[i] ?? "#";
-    anchorElem.title = "Middle click to open in a new tab";
+    anchorElem.title = t("middle_click_open_tab");
     anchorElem.addEventListener("click", (e) => {
       e.preventDefault();
     });
@@ -663,7 +662,7 @@ export function addScrollToActiveBtn() {
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
       linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-      linkElem.title = "Click to scroll to the currently playing song";
+      linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
 
       const imgElem = document.createElement("img");

@@ -236,7 +236,7 @@ function skipToTimeKey(key: number) {
   const x = getX(key, rect.width);
   const y = rect.top - rect.height / 2;
 
-  log(`Skipping to time key ${key} (x offset: ${x}px of ${rect.width}px)`);
+  log(`Skipping to time key ${key} (x-offset: ${x}px of ${rect.width}px)`);
 
   const evt = new MouseEvent("mousedown", {
     clientX: x,

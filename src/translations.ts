@@ -37,6 +37,7 @@ export function initTranslations(language: TrLang) {
   tr.setLanguage(language);
 }
 
+/** Sets the current language for translations */
 export function setLanguage(language: TrLang) {
   tr.setLanguage(language);
 }

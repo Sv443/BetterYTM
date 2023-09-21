@@ -1,5 +1,6 @@
 import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, log, warn } from "../utils";
+import { t } from "../translations";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -109,7 +110,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
           const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
 
           imgElem.src = errorIconUrl;
-          imgElem.title = "Couldn't find lyrics URL - click to open the manual lyrics search";
+          imgElem.title = t("lyrics_not_found_click_open_search");
           lyricsBtn.style.cursor = "pointer";
           lyricsBtn.style.pointerEvents = "all";
           lyricsBtn.style.display = "inline-flex";
@@ -120,7 +121,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
         lyricsBtn.href = url;
 
-        lyricsBtn.title = "Open the current song's lyrics in a new tab";
+        lyricsBtn.title = t("open_current_lyrics");
         lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "visible";
         lyricsBtn.style.display = "inline-flex";
@@ -216,7 +217,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 
     const fetchRes = await fetchAdvanced(fetchUrl);
     if(fetchRes.status === 429) {
-      alert(`You are being rate limited.\nPlease wait ${fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
+      alert(t("lyrics_rate_limited", (fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe)));
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -247,7 +248,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-  linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
+  linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
   if(geniusUrl)
     linkElem.href = geniusUrl;
   linkElem.role = "button";
