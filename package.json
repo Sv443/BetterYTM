@@ -34,7 +34,7 @@
     "url": "https://github.com/Sv443/BetterYTM/issues"
   },
   "dependencies": {
-    "@sv443-network/userutils": "^1.1.2",
+    "@sv443-network/userutils": "^1.2.0",
     "nanoevents": "^8.0.0"
   },
   "devDependencies": {
