@@ -56,7 +56,7 @@ const devDirectives = mode === "development" ? `
 // @license        ${pkg.license}
 // @author         ${pkg.author.name}
 // @copyright      ${pkg.author.name} (${pkg.author.url})
-// @icon           https://raw.githubusercontent.com/${repo}/${branch}/assets/icon/icon_48.png
+// @icon           https://raw.githubusercontent.com/${repo}/${branch}/assets/logo/logo_48.png
 // @match          https://music.youtube.com/*
 // @match          https://www.youtube.com/*
 // @run-at         document-start

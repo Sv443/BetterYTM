@@ -96,7 +96,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl("icon");
+      const iconUrl = await getResourceUrl("logo");
 
       const newLogo = document.createElement("img");
       newLogo.className = "bytm-mod-logo-img";
@@ -139,7 +139,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-  cfgOptIconElem.src = await getResourceUrl("icon");
+  cfgOptIconElem.src = await getResourceUrl("logo");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
