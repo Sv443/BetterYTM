@@ -1,3 +1,7 @@
+## 1.1.0
+- **Added Features:**
+  - The userscript now has translations! (US-English and German for now) - to submit one, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
+
 ## 1.0.2
 - **Changes:**
   - Script is now published to OpenUserJS!
