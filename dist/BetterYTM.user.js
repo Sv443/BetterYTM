@@ -9,7 +9,7 @@
 // @license        MIT
 // @author         Sv443
 // @copyright      Sv443 (https://github.com/Sv443)
-// @icon           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
+// @icon           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
 // @match          https://music.youtube.com/*
 // @match          https://www.youtube.com/*
 // @run-at         document-start
@@ -22,14 +22,14 @@
 // @grant          GM.setClipboard
 // @grant          unsafeWindow
 // @noframes
-// @resource       icon       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icon/icon_48.png
-// @resource       close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/close.png
-// @resource       delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/delete.svg
-// @resource       error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/error.svg
-// @resource       lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/lyrics.svg
-// @resource       spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/spinner.svg
-// @resource       arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/arrow_down.svg
-// @resource       skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/skip_to.svg
+// @resource       logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource       close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource       delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource       error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource       lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource       spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource       arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource       skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
 // @resource       github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
 // @resource       greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
 // @resource       openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
@@ -61,7 +61,7 @@ I welcome every contribution on GitHub!
 
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added &quot;remove from queue&quot; button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li>\n</ul>\n</li>\n<li><strong>Changes &amp; Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n";
+var code = "<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript now has translations! (US-English and German for now) - to submit one, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md\">view this guide</a></li>\n</ul>\n</li>\n</ul>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added &quot;remove from queue&quot; button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li>\n</ul>\n</li>\n<li><strong>Changes &amp; Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove &quot;Upgrade to YTM Premium&quot; tab</li>\n</ul>\n</li>\n</ul>\n<br>\n\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -152,7 +152,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 3;
+const formatVersion = 4;
 /** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2
@@ -163,6 +163,8 @@ const migrations = {
     },
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
+    // 3 -> 4
+    4: (oldData) => (Object.assign(Object.assign({}, oldData), { language: "en-US" })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -248,7 +250,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "c100110", // assert as generic string instead of literal
+    buildNumber: "14b5d27", // assert as generic string instead of literal
 };
 
 
@@ -339,47 +341,49 @@ function initSiteEvents() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
-/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
-/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
-/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
-/* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
-/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addScrollToActiveBtn; },
-/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
+/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addAnchorImprovements; },
+/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addConfigMenuOption; },
+/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addLyricsCacheEntry; },
+/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn; },
+/* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.addMenu; },
+/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addScrollToActiveBtn; },
+/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addWatermark; },
 /* harmony export */   categoryNames: function() { return /* binding */ categoryNames; },
-/* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
-/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
-/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
-/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.enableBeforeUnload; },
+/* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.closeMenu; },
+/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.createLyricsBtn; },
+/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.disableBeforeUnload; },
+/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.enableBeforeUnload; },
 /* harmony export */   featInfo: function() { return /* binding */ featInfo; },
-/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.fixSpacing; },
-/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase; },
-/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getCurrentLyricsUrl; },
-/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getGeniusUrl; },
-/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsCacheEntry; },
-/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
-/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
-/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
-/* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
-/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initNumKeysSkip; },
-/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
-/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initSiteSwitch; },
-/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
-/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.isMenuOpen; },
-/* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu; },
-/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
-/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
-/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
-/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeArtists; },
-/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; },
-/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.splitVideoTitle; }
+/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.fixSpacing; },
+/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase; },
+/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getCurrentLyricsUrl; },
+/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getGeniusUrl; },
+/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getLyricsCacheEntry; },
+/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initArrowKeySkip; },
+/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initAutoCloseToasts; },
+/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initBeforeUnloadHook; },
+/* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_5__.initMenu; },
+/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initNumKeysSkip; },
+/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initQueueButtons; },
+/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initSiteSwitch; },
+/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initVolumeFeatures; },
+/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.isMenuOpen; },
+/* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.openMenu; },
+/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.preInitLayout; },
+/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeShareTrackingParam; },
+/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeUpgradeTab; },
+/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeArtists; },
+/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeSong; },
+/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
+/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
+
 
 
 
@@ -393,6 +397,13 @@ const categoryNames = {
     lyrics: "Lyrics",
     misc: "Other",
 };
+const langOptions = Object.entries(_translations__WEBPACK_IMPORTED_MODULE_0__.trInfo).reduce((a, [lang, langInfo]) => {
+    return [...a, {
+            value: lang,
+            label: `${langInfo.name}`,
+        }];
+}, [])
+    .sort((a, b) => a.label.localeCompare(b.label));
 /** Contains all possible features with their default values and other configuration */
 const featInfo = {
     //#SECTION layout
@@ -428,7 +439,7 @@ const featInfo = {
         unit: "%",
     },
     watermarkEnabled: {
-        desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_0__.scriptInfo.name} watermark under the site logo that opens this config menu`,
+        desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} watermark under the site logo that opens this config menu`,
         type: "toggle",
         category: "layout",
         default: true,
@@ -524,6 +535,13 @@ const featInfo = {
         default: true,
     },
     //#SECTION misc
+    language: {
+        desc: "🌐 Language",
+        type: "select",
+        category: "misc",
+        options: langOptions,
+        default: "en-US",
+    },
     logLevel: {
         desc: "How much information to log to the console",
         type: "select",
@@ -766,7 +784,7 @@ function skipToTimeKey(key) {
     const rect = getOffsetRect(progressElem);
     const x = getX(key, rect.width);
     const y = rect.top - rect.height / 2;
-    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Skipping to time key ${key} (x offset: ${x}px of ${rect.width}px)`);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Skipping to time key ${key} (x-offset: ${x}px of ${rect.width}px)`);
     const evt = new MouseEvent("mousedown", {
         clientX: x,
         clientY: Math.round(y),
@@ -818,9 +836,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../events */ "./src/events.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index */ "./src/features/index.ts");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
 /* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -852,14 +870,14 @@ function addWatermark() {
     watermark.id = "bytm-watermark";
     watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
     watermark.innerText = _constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name;
-    watermark.title = "Open menu";
+    watermark.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip");
     watermark.tabIndex = 1000;
     improveLogo();
     watermark.addEventListener("click", (e) => {
         e.stopPropagation();
         menuOpenAmt++;
         if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+            (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
         if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
             exchangeLogo();
     });
@@ -869,7 +887,7 @@ function addWatermark() {
             e.stopPropagation();
             menuOpenAmt++;
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
         }
@@ -911,7 +929,7 @@ function exchangeLogo() {
                 return;
             logoExchanged = true;
             logoElem.classList.add("bytm-logo-exchanged");
-            const iconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("icon");
+            const iconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("logo");
             const newLogo = document.createElement("img");
             newLogo.className = "bytm-mod-logo-img";
             newLogo.src = iconUrl;
@@ -933,23 +951,23 @@ function addConfigMenuOption(container) {
         cfgOptElem.className = "bytm-cfg-menu-option";
         const cfgOptItemElem = document.createElement("div");
         cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-        cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
+        cfgOptItemElem.ariaLabel = cfgOptItemElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_menu_tooltip");
         cfgOptItemElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
             menuOpenAmt++;
             yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.pauseFor)(100);
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_4__.openMenu)();
+                (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu)();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
         }));
         const cfgOptIconElem = document.createElement("img");
         cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-        cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("icon");
+        cfgOptIconElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("logo");
         const cfgOptTextElem = document.createElement("div");
         cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-        cfgOptTextElem.innerText = "BetterYTM Configuration";
+        cfgOptTextElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("config_menu_option");
         cfgOptItemElem.appendChild(cfgOptIconElem);
         cfgOptItemElem.appendChild(cfgOptTextElem);
         cfgOptElem.appendChild(cfgOptItemElem);
@@ -990,30 +1008,29 @@ function initVolumeFeatures() {
     });
 }
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem, sliderCont) {
+function addVolumeSliderLabel(sliderElem, sliderContainer) {
     const labelElem = document.createElement("div");
     labelElem.className = "bytm-vol-slider-label";
     labelElem.innerText = `${sliderElem.value}%`;
     // prevent video from minimizing
     labelElem.addEventListener("click", (e) => e.stopPropagation());
     const getLabelTexts = (slider) => {
-        const labelShort = `${slider.value}%`;
-        const sensText = features.volumeSliderStep !== _index__WEBPACK_IMPORTED_MODULE_6__.featInfo.volumeSliderStep.default ? ` (Sensitivity: ${slider.step}%)` : "";
-        const labelFull = `Volume: ${labelShort}${sensText}`;
-        return { labelShort, labelFull };
+        const percentLabel = `${slider.value}%`;
+        const labelFull = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("volume_tooltip", percentLabel, slider.step);
+        return { percentLabel, labelFull };
     };
     const { labelFull } = getLabelTexts(sliderElem);
-    sliderCont.setAttribute("title", labelFull);
+    sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
     const updateLabel = () => {
-        const { labelShort, labelFull } = getLabelTexts(sliderElem);
-        sliderCont.setAttribute("title", labelFull);
+        const { percentLabel, labelFull } = getLabelTexts(sliderElem);
+        sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
         const labelElem2 = document.querySelector(".bytm-vol-slider-label");
         if (labelElem2)
-            labelElem2.innerText = labelShort;
+            labelElem2.innerText = percentLabel;
     };
     sliderElem.addEventListener("change", () => updateLabel());
     (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("#bytm-vol-slider-cont", {
@@ -1088,8 +1105,8 @@ function addQueueButtons(queueItem) {
         //#SECTION lyrics btn
         let lyricsBtnElem;
         if (features.lyricsQueueButton) {
-            lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.createLyricsBtn)(undefined, false);
-            lyricsBtnElem.title = "Open this song's lyrics in a new tab";
+            lyricsBtnElem = yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.createLyricsBtn)(undefined, false);
+            lyricsBtnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("open_lyrics");
             lyricsBtnElem.style.display = "inline-flex";
             lyricsBtnElem.style.visibility = "initial";
             lyricsBtnElem.style.pointerEvents = "initial";
@@ -1104,12 +1121,12 @@ function addQueueButtons(queueItem) {
                 if (!song || !artist)
                     return;
                 let lyricsUrl;
-                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeArtists)(artist);
-                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.sanitizeSong)(song);
-                const splitTitle = (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.splitVideoTitle)(songSan);
+                const artistsSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeArtists)(artist);
+                const songSan = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.sanitizeSong)(song);
+                const splitTitle = (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.splitVideoTitle)(songSan);
                 const cachedLyricsUrl = songSan.includes("-")
-                    ? (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(splitTitle.artist, splitTitle.song)
-                    : (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getLyricsCacheEntry)(artistsSan, songSan);
+                    ? (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getLyricsCacheEntry)(splitTitle.artist, splitTitle.song)
+                    : (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getLyricsCacheEntry)(artistsSan, songSan);
                 if (cachedLyricsUrl)
                     lyricsUrl = cachedLyricsUrl;
                 else if (!songInfo.hasAttribute("data-bytm-loading")) {
@@ -1121,7 +1138,7 @@ function addQueueButtons(queueItem) {
                         imgEl.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("spinner");
                         imgEl.classList.add("bytm-spinner");
                     }
-                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_5__.getGeniusUrl)(artistsSan, songSan);
+                    lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield (0,_lyrics__WEBPACK_IMPORTED_MODULE_6__.getGeniusUrl)(artistsSan, songSan);
                     const resetImgElem = () => {
                         imgEl.src = lyricsIconUrl;
                         imgEl.classList.remove("bytm-spinner");
@@ -1133,7 +1150,7 @@ function addQueueButtons(queueItem) {
                     }
                     if (!lyricsUrl) {
                         resetImgElem();
-                        if (confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
+                        if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("lyrics_not_found_confirm_open_search")))
                             (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.openInNewTab)(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
                         return;
                     }
@@ -1146,7 +1163,7 @@ function addQueueButtons(queueItem) {
         if (features.deleteFromQueueButton) {
             deleteBtnElem = document.createElement("a");
             Object.assign(deleteBtnElem, {
-                title: "Remove this song from the queue",
+                title: (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("remove_from_queue"),
                 className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
                 role: "button",
             });
@@ -1283,7 +1300,7 @@ function improveSidebarAnchors(sidebarItems) {
         anchorElem.role = "button";
         anchorElem.target = "_self";
         anchorElem.href = (_a = sidebarPaths[i]) !== null && _a !== void 0 ? _a : "#";
-        anchorElem.title = "Middle click to open in a new tab";
+        anchorElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("middle_click_open_tab");
         anchorElem.addEventListener("click", (e) => {
             e.preventDefault();
         });
@@ -1363,7 +1380,7 @@ function addScrollToActiveBtn() {
             const linkElem = document.createElement("div");
             linkElem.id = "bytm-scroll-to-active-btn";
             linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-            linkElem.title = "Click to scroll to the currently playing song";
+            linkElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("scroll_to_playing");
             linkElem.role = "button";
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
@@ -1411,6 +1428,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1427,6 +1445,7 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
+
 
 
 /** Base URL of geniURL */
@@ -1516,7 +1535,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                             }
                             const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
                             imgElem.src = errorIconUrl;
-                            imgElem.title = "Couldn't find lyrics URL - click to open the manual lyrics search";
+                            imgElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("lyrics_not_found_click_open_search");
                             lyricsBtn.style.cursor = "pointer";
                             lyricsBtn.style.pointerEvents = "all";
                             lyricsBtn.style.display = "inline-flex";
@@ -1525,7 +1544,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                             continue;
                         }
                         lyricsBtn.href = url;
-                        lyricsBtn.title = "Open the current song's lyrics in a new tab";
+                        lyricsBtn.title = (0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("open_current_lyrics");
                         lyricsBtn.style.cursor = "pointer";
                         lyricsBtn.style.visibility = "visible";
                         lyricsBtn.style.display = "inline-flex";
@@ -1611,7 +1630,7 @@ function getGeniusUrl(artist, song) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const fetchRes = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
             if (fetchRes.status === 429) {
-                alert(`You are being rate limited.\nPlease wait ${(_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
+                alert((0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("lyrics_rate_limited", ((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe)));
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -1639,7 +1658,7 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     return __awaiter(this, void 0, void 0, function* () {
         const linkElem = document.createElement("a");
         linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-        linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
+        linkElem.title = geniusUrl ? (0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("open_lyrics") : (0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("lyrics_loading");
         if (geniusUrl)
             linkElem.href = geniusUrl;
         linkElem.role = "button";
@@ -1785,8 +1804,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../events */ "./src/events.ts");
-/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../changelog.md */ "./changelog.md");
-/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./menu_old.css */ "./src/menu/menu_old.css");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
+/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../changelog.md */ "./changelog.md");
+/* harmony import */ var _menu_old_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./menu_old.css */ "./src/menu/menu_old.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1796,6 +1816,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -1821,7 +1842,7 @@ function addMenu() {
         const backgroundElem = document.createElement("div");
         backgroundElem.id = "bytm-cfg-menu-bg";
         backgroundElem.classList.add("bytm-menu-bg");
-        backgroundElem.title = "Click here to close the menu";
+        backgroundElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
         backgroundElem.addEventListener("click", (e) => {
@@ -1846,7 +1867,7 @@ function addMenu() {
         titleCont.ariaLevel = "1";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Configuration`;
+        titleElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("config_menu_title", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name);
         const linksCont = document.createElement("div");
         linksCont.id = "bytm-menu-linkscont";
         const addLink = (imgSrc, href, title) => {
@@ -1864,13 +1885,13 @@ function addMenu() {
             anchorElem.appendChild(imgElem);
             linksCont.appendChild(anchorElem);
         };
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GitHub`);
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on GreasyFork`);
-        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", `Open ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} on OpenUserJS`);
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("github"), _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.namespace, (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("open_github", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name));
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("open_greasyfork", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name));
+        addLink(yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("open_openuserjs", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name));
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
-        closeElem.title = "Click to close the menu";
+        closeElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         closeElem.addEventListener("click", closeMenu);
         titleCont.appendChild(titleElem);
         titleCont.appendChild(linksCont);
@@ -2039,7 +2060,7 @@ function addMenu() {
         scrollIndicator.id = "bytm-menu-scroll-indicator";
         scrollIndicator.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("arrow_down");
         scrollIndicator.role = "button";
-        scrollIndicator.title = "Click to scroll to the bottom";
+        scrollIndicator.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("scroll_to_bottom");
         featuresCont.appendChild(scrollIndicator);
         scrollIndicator.addEventListener("click", () => {
             const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
@@ -2068,12 +2089,12 @@ function addMenu() {
         footerCont.id = "bytm-menu-footer-cont";
         const footerElem = document.createElement("div");
         footerElem.classList.add("bytm-menu-footer");
-        footerElem.innerText = "You need to reload the page to apply changes";
+        footerElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reload_hint");
         const reloadElem = document.createElement("button");
         reloadElem.classList.add("bytm-btn");
         reloadElem.style.marginLeft = "10px";
-        reloadElem.innerText = "Reload now";
-        reloadElem.title = "Click to reload the page";
+        reloadElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reload_now");
+        reloadElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reload_tooltip");
         reloadElem.addEventListener("click", () => {
             closeMenu();
             location.reload();
@@ -2081,10 +2102,10 @@ function addMenu() {
         footerElem.appendChild(reloadElem);
         const resetElem = document.createElement("button");
         resetElem.classList.add("bytm-btn");
-        resetElem.title = "Click to reset all settings to their default values";
-        resetElem.innerText = "Reset";
+        resetElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reset_tooltip");
+        resetElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reset");
         resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.")) {
+            if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reset_confirm"))) {
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatures)();
                 closeMenu();
                 location.reload();
@@ -2092,16 +2113,16 @@ function addMenu() {
         }));
         const exportElem = document.createElement("button");
         exportElem.classList.add("bytm-btn");
-        exportElem.title = "Click to export your current configuration";
-        exportElem.innerText = "Export";
+        exportElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("export_tooltip");
+        exportElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("export");
         exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
             closeMenu();
             openExportMenu();
         }));
         const importElem = document.createElement("button");
         importElem.classList.add("bytm-btn");
-        importElem.title = "Click to import a configuration you have previously exported";
-        importElem.innerText = "Import";
+        importElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_tooltip");
+        importElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import");
         importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
             closeMenu();
             openImportMenu();
@@ -2121,7 +2142,7 @@ function addMenu() {
         const versionElem = document.createElement("a");
         versionElem.id = "bytm-menu-version";
         versionElem.role = "button";
-        versionElem.title = `Version ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version} (build ${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.buildNumber}) - click to open the changelog`;
+        versionElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("version_tooltip", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version, _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.buildNumber);
         versionElem.innerText = `v${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version} (${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.buildNumber})`;
         versionElem.addEventListener("click", (e) => {
             e.preventDefault();
@@ -2195,7 +2216,7 @@ function addExportMenu() {
         const menuBgElem = document.createElement("div");
         menuBgElem.id = "bytm-export-menu-bg";
         menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.title = "Click here to close the menu";
+        menuBgElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         menuBgElem.style.visibility = "hidden";
         menuBgElem.style.display = "none";
         menuBgElem.addEventListener("click", (e) => {
@@ -2224,11 +2245,11 @@ function addExportMenu() {
         titleCont.ariaLevel = "1";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Export Configuration`;
+        titleElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("export_menu_title", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name);
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
-        closeElem.title = "Click to close the menu";
+        closeElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         closeElem.addEventListener("click", (e) => {
             closeExportMenu(e);
             openMenu();
@@ -2241,7 +2262,7 @@ function addExportMenu() {
         menuBodyElem.classList.add("bytm-menu-body");
         const textElem = document.createElement("div");
         textElem.id = "bytm-export-menu-text";
-        textElem.innerText = "Copy the following text to export your configuration:";
+        textElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("export_hint");
         const textAreaElem = document.createElement("textarea");
         textAreaElem.id = "bytm-export-menu-textarea";
         textAreaElem.readOnly = true;
@@ -2256,12 +2277,12 @@ function addExportMenu() {
         footerElem.classList.add("bytm-menu-footer-right");
         const copyBtnElem = document.createElement("button");
         copyBtnElem.classList.add("bytm-btn");
-        copyBtnElem.innerText = "Copy to clipboard";
-        copyBtnElem.title = "Click to copy the configuration to your clipboard";
+        copyBtnElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("copy_to_clipboard");
+        copyBtnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("copy_config_tooltip");
         const copiedTextElem = document.createElement("span");
         copiedTextElem.id = "bytm-export-menu-copied-txt";
         copiedTextElem.classList.add("bytm-menu-footer-copied");
-        copiedTextElem.innerText = "Copied!";
+        copiedTextElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("copied_notice");
         copiedTextElem.style.display = "none";
         copyBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
             (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
@@ -2331,7 +2352,7 @@ function addImportMenu() {
         const menuBgElem = document.createElement("div");
         menuBgElem.id = "bytm-import-menu-bg";
         menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.title = "Click here to close the menu";
+        menuBgElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         menuBgElem.style.visibility = "hidden";
         menuBgElem.style.display = "none";
         menuBgElem.addEventListener("click", (e) => {
@@ -2360,11 +2381,11 @@ function addImportMenu() {
         titleCont.ariaLevel = "1";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Import Configuration`;
+        titleElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_menu_title", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name);
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
-        closeElem.title = "Click to close the menu";
+        closeElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         closeElem.addEventListener("click", (e) => {
             closeImportMenu(e);
             openMenu();
@@ -2377,7 +2398,7 @@ function addImportMenu() {
         menuBodyElem.classList.add("bytm-menu-body");
         const textElem = document.createElement("div");
         textElem.id = "bytm-import-menu-text";
-        textElem.innerText = "Paste the configuration you want to import into the field below, then click the import button";
+        textElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_hint");
         const textAreaElem = document.createElement("textarea");
         textAreaElem.id = "bytm-import-menu-textarea";
         //#SECTION footer
@@ -2385,8 +2406,8 @@ function addImportMenu() {
         footerElem.classList.add("bytm-menu-footer-right");
         const importBtnElem = document.createElement("button");
         importBtnElem.classList.add("bytm-btn");
-        importBtnElem.innerText = "Import";
-        importBtnElem.title = "Click to import the configuration";
+        importBtnElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import");
+        importBtnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("start_import_tooltip");
         importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
             (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
             const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
@@ -2395,11 +2416,11 @@ function addImportMenu() {
             try {
                 const parsed = JSON.parse(textAreaElem.value.trim());
                 if (typeof parsed !== "object")
-                    return alert("The imported data is not an object");
+                    return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_invalid"));
                 if (typeof parsed.formatVersion !== "number")
-                    return alert("The imported data does not contain a format version");
+                    return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_no_format_version"));
                 if (typeof parsed.data !== "object")
-                    return alert("The imported object does not contain any data");
+                    return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_no_data"));
                 if (parsed.formatVersion < _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion) {
                     let newData = JSON.parse(JSON.stringify(parsed.data));
                     const sortedMigrations = Object.entries(_config__WEBPACK_IMPORTED_MODULE_1__.migrations)
@@ -2422,9 +2443,9 @@ function addImportMenu() {
                     parsed.data = newData;
                 }
                 else if (parsed.formatVersion !== _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion)
-                    return alert(`The imported data is in an unsupported format version (expected ${_config__WEBPACK_IMPORTED_MODULE_1__.formatVersion} or lower, got ${parsed.formatVersion})`);
+                    return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_wrong_format_version", _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, parsed.formatVersion));
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(parsed.data);
-                if (confirm("Successfully imported the configuration.\nDo you want to reload the page now to apply changes?"))
+                if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_success_confirm_reload")))
                     return location.reload();
                 _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.emit("rebuildCfgMenu", parsed.data);
                 closeImportMenu();
@@ -2432,7 +2453,7 @@ function addImportMenu() {
             }
             catch (err) {
                 (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't import configuration:", err);
-                alert("The imported data is not a valid configuration");
+                alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_invalid"));
             }
         }));
         footerElem.appendChild(importBtnElem);
@@ -2482,7 +2503,7 @@ function addChangelogMenu() {
         const menuBgElem = document.createElement("div");
         menuBgElem.id = "bytm-changelog-menu-bg";
         menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.title = "Click here to close the menu";
+        menuBgElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         menuBgElem.style.visibility = "hidden";
         menuBgElem.style.display = "none";
         menuBgElem.addEventListener("click", (e) => {
@@ -2511,11 +2532,11 @@ function addChangelogMenu() {
         titleCont.ariaLevel = "1";
         const titleElem = document.createElement("h2");
         titleElem.id = "bytm-menu-title";
-        titleElem.innerText = `${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name} - Changelog`;
+        titleElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("changelog_menu_title", _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name);
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.src = yield (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getResourceUrl)("close");
-        closeElem.title = "Click to close the menu";
+        closeElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("close_menu_tooltip");
         closeElem.addEventListener("click", (e) => {
             closeChangelogMenu(e);
             openMenu();
@@ -2530,7 +2551,7 @@ function addChangelogMenu() {
         const textElem = document.createElement("div");
         textElem.id = "bytm-changelog-menu-text";
         textElem.classList.add("bytm-markdown-container");
-        textElem.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_6__["default"];
+        textElem.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_7__["default"];
         //#SECTION finalize
         menuBodyElem.appendChild(textElem);
         menuContainer.appendChild(headerElem);
@@ -2566,6 +2587,62 @@ function openChangelogMenu() {
         return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find changelog menu background element");
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
+}
+
+
+/***/ }),
+
+/***/ "./src/translations.ts":
+/*!*****************************!*\
+  !*** ./src/translations.ts ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   initTranslations: function() { return /* binding */ initTranslations; },
+/* harmony export */   setLanguage: function() { return /* binding */ setLanguage; },
+/* harmony export */   t: function() { return /* binding */ t; },
+/* harmony export */   trInfo: function() { return /* binding */ trInfo; },
+/* harmony export */   translations: function() { return /* binding */ translations; }
+/* harmony export */ });
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
+/* harmony import */ var _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/translations/de-DE.json */ "./assets/translations/de-DE.json");
+/* harmony import */ var _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/translations/en-US.json */ "./assets/translations/en-US.json");
+
+
+
+/** Mapping of language and locale code to translation file content */
+const langMapping = {
+    "de-DE": _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_1__,
+    "en-US": _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__,
+};
+const translations = Object.entries(langMapping).reduce((a, [lang, tr]) => {
+    // apply defaults from en-US in case of missing translations
+    a[lang] = Object.assign(Object.assign({}, _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_2__.translations), tr.translations);
+    return a;
+}, {});
+const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
+    const trInfo = Object.assign({}, tr);
+    delete trInfo.translations;
+    a[lang] = trInfo;
+    return a;
+}, {});
+/** Initializes the translations */
+function initTranslations(language) {
+    // for when hot reloading is implemented:
+    // for(const [lang, trans] of Object.entries(translations))
+    //   tr.addLanguage(lang, trans);
+    _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.addLanguage(language, translations[language]);
+    _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.setLanguage(language);
+}
+/** Sets the current language for translations */
+function setLanguage(language) {
+    _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.setLanguage(language);
+}
+/** Returns the translated string for the given key, after optionally inserting values */
+function t(key, ...values) {
+    return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr)(key, ...values);
 }
 
 
@@ -2749,6 +2826,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
 /* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
+/* harmony export */   insertValues: function() { return /* binding */ insertValues; },
 /* harmony export */   interceptEvent: function() { return /* binding */ interceptEvent; },
 /* harmony export */   interceptWindowEvent: function() { return /* binding */ interceptWindowEvent; },
 /* harmony export */   isScrollable: function() { return /* binding */ isScrollable; },
@@ -2762,7 +2840,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   randomItemIndex: function() { return /* binding */ randomItemIndex; },
 /* harmony export */   randomizeArray: function() { return /* binding */ randomizeArray; },
 /* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; },
-/* harmony export */   takeRandomItem: function() { return /* binding */ takeRandomItem; }
+/* harmony export */   takeRandomItem: function() { return /* binding */ takeRandomItem; },
+/* harmony export */   tr: function() { return /* binding */ tr; }
 /* harmony export */ });
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
@@ -3113,6 +3192,13 @@ function fetchAdvanced(_0) {
     return res;
   });
 }
+function insertValues(str, ...values) {
+  return str.replace(/%\d/gm, (match) => {
+    var _a, _b;
+    const argIndex = Number(match.substring(1)) - 1;
+    return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
+  });
+}
 
 // lib/onSelector.ts
 var selectorMap = /* @__PURE__ */ new Map();
@@ -3164,6 +3250,31 @@ function getSelectorMap() {
   return selectorMap;
 }
 
+// lib/translation.ts
+var trans = {};
+var curLang;
+function tr(key, ...args) {
+  var _a;
+  if (!curLang)
+    return key;
+  const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
+  if (!trText)
+    return key;
+  if (args.length > 0 && trText.match(/%\d/)) {
+    return insertValues(trText, ...args);
+  }
+  return trText;
+}
+tr.addLanguage = (language, translations) => {
+  trans[language] = translations;
+};
+tr.setLanguage = (language) => {
+  curLang = language;
+};
+tr.getLanguage = () => {
+  return curLang;
+};
+
 
 
 
@@ -3195,6 +3306,26 @@ let createNanoEvents = () => ({
   }
 })
 
+
+/***/ }),
+
+/***/ "./assets/translations/de-DE.json":
+/*!****************************************!*\
+  !*** ./assets/translations/de-DE.json ***!
+  \****************************************/
+/***/ (function(module) {
+
+module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um die Änderungen zu übernehmen","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuelle Konfiguration","import":"Importieren","import_hint":"Füge die Konfiguration, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere eine Konfiguration, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Konfiguration, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Konfiguration wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Konfiguration in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen"}}');
+
+/***/ }),
+
+/***/ "./assets/translations/en-US.json":
+/*!****************************************!*\
+  !*** ./assets/translations/en-US.json ***!
+  \****************************************/
+/***/ (function(module) {
+
+module.exports = JSON.parse('{"name":"English (United States)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Configuration","config_menu_title":"%1 - Configuration","changelog_menu_title":"%1 - Changelog","export_menu_title":"%1 - Export Configuration","import_menu_title":"%1 - Import Configuration","open_menu_tooltip":"Open %1\'s configuration menu","close_menu_tooltip":"Close the menu","reload_hint":"You need to reload the page to apply any changes.","reload_now":"Reload now","reload_tooltip":"Reload the page","version_tooltip":"Version %1 (build %2) - click to open the changelog","export":"Export","export_hint":"Copy the following text to export your configuration:","export_tooltip":"Export your current configuration","import":"Import","import_hint":"Paste the configuration you want to import into the field below, then click the import button:","import_tooltip":"Import a configuration you have previously exported","start_import_tooltip":"Click to import the configuration you pasted above","import_error_invalid":"The imported data is invalid","import_error_no_format_version":"The imported data does not contain a format version","import_error_no_data":"The imported object does not contain any data","import_error_wrong_format_version":"The imported data is in an unsupported format version (expected %1 or lower but got %2)","import_success_confirm_reload":"Successfully imported the configuration.\\nDo you want to reload the page now to apply changes?","reset":"Reset","reset_tooltip":"Reset all settings to their default values","reset_confirm":"Do you really want to reset all settings to their default values?\\nThe page will be automatically reloaded.","copy_to_clipboard":"Copy to clipboard","copy_config_tooltip":"Copy the configuration to your clipboard","copied_notice":"Copied!","open_github":"Open %1 on GitHub","open_greasyfork":"Open %1 on GreasyFork","open_openuserjs":"Open %1 on OpenUserJS","open_current_lyrics":"Open the current song\'s lyrics in a new tab","open_lyrics":"Open this song\'s lyrics in a new tab","lyrics_loading":"Loading lyrics URL...","lyrics_rate_limited":"You are being rate limited.\\nPlease wait %1 seconds before requesting more lyrics.","lyrics_not_found_confirm_open_search":"Couldn\'t find a lyrics page for this song.\\nDo you want to open genius.com to manually search for it?","lyrics_not_found_click_open_search":"Couldn\'t find lyrics URL - click to open the manual lyrics search","remove_from_queue":"Remove this song from the queue","scroll_to_playing":"Scroll to the currently playing song","scroll_to_bottom":"Click to scroll to the bottom","volume_tooltip":"Volume: %1% (Sensitivity: %2%)","middle_click_open_tab":"Middle-click to open in a new tab"}}');
 
 /***/ })
 
@@ -3266,7 +3397,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./events */ "./src/events.ts");
-/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./translations */ "./src/translations.ts");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3282,6 +3414,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -3291,18 +3424,19 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
     console.log([
         "Powered by:",
         "─ lots of ambition",
-        `─ my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_5__.geniUrlBase}`,
+        `─ my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_6__.geniUrlBase}`,
         "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
         "─ this tiny event listener library: https://github.com/ai/nanoevents",
     ].join("\n"));
     console.log();
 }
+let domLoaded = false;
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_2__.defaultLogLevel);
     if (domain === "ytm")
-        (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initBeforeUnloadHook)();
+        (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initBeforeUnloadHook)();
     init();
 }
 function init() {
@@ -3313,23 +3447,23 @@ function init() {
         catch (e) {
             void e;
         }
-        // init DOM-dependant stuff like features
         try {
-            document.addEventListener("DOMContentLoaded", onDomLoad);
+            document.addEventListener("DOMContentLoaded", () => {
+                domLoaded = true;
+            });
+            const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
+            (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)(ftConfig.language);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(ftConfig.logLevel);
+            (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.preInitLayout)(ftConfig);
+            if (ftConfig.disableBeforeUnloadPopup)
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.disableBeforeUnload)();
+            if (!domLoaded)
+                document.addEventListener("DOMContentLoaded", initFeatures);
+            else
+                initFeatures();
         }
         catch (err) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("General Error:", err);
-        }
-        // init config
-        try {
-            const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().logLevel);
-            (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.preInitLayout)(ftConfig);
-            if ((0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().disableBeforeUnloadPopup)
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.disableBeforeUnload)();
-        }
-        catch (err) {
-            (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Error while initializing ConfigManager:", err);
         }
         // init menu separately from features
         try {
@@ -3342,7 +3476,7 @@ function init() {
     });
 }
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
-function onDomLoad() {
+function initFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!*************************************************************************!*\
@@ -3949,44 +4083,49 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 /*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.initOnSelector)();
         const features = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)();
-        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Initializing features for domain "${domain}"...`);
+        (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`DOM loaded. Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
+                (0,_events__WEBPACK_IMPORTED_MODULE_4__.initSiteEvents)();
+                if (!(yield GM.getValue("bytm-installed"))) {
+                    // open welcome page with language selector
+                    // await showWelcomePage();
+                }
+                yield GM.setValue("bytm-installed", Date.now());
                 try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMenu)(); // TODO(v1.1): remove
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addMenu)(); // TODO(v1.1): remove
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
                 }
-                (0,_events__WEBPACK_IMPORTED_MODULE_4__.initSiteEvents)();
-                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_5__.addConfigMenuOption });
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_6__.addConfigMenuOption });
                 if (features.arrowKeySupport)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initArrowKeySkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.removeUpgradeTab)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.removeUpgradeTab)();
                 if (features.watermarkEnabled)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addWatermark)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addWatermark)();
                 if (features.geniusLyrics)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addMediaCtrlLyricsBtn)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addMediaCtrlLyricsBtn)();
                 if (features.deleteFromQueueButton || features.lyricsQueueButton)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initQueueButtons)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initQueueButtons)();
                 if (features.anchorImprovements)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addAnchorImprovements)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addAnchorImprovements)();
                 if (features.closeToastsTimeout > 0)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initAutoCloseToasts)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initAutoCloseToasts)();
                 if (features.removeShareTrackingParam)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.removeShareTrackingParam)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.removeShareTrackingParam)();
                 if (features.numKeysSkipToTime)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initNumKeysSkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initNumKeysSkip)();
                 if (features.fixSpacing)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.fixSpacing)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.fixSpacing)();
                 if (features.scrollToActiveSongBtn)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.addScrollToActiveBtn)();
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initVolumeFeatures)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addScrollToActiveBtn)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_5__.initSiteSwitch)(domain);
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initSiteSwitch)(domain);
             }
         }
         catch (err) {
@@ -3997,7 +4136,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 function registerMenuCommands() {
     if (_constants__WEBPACK_IMPORTED_MODULE_2__.mode === "development") {
         GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Are you sure you want to reset the configuration to its default values?\nThis will automatically reload the page.")) {
+            if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.clearConfig)();
                 location.reload();
             }
@@ -4011,8 +4150,8 @@ function registerMenuCommands() {
             for (const key of keys)
                 console.log(`  ${key} -> ${yield GM.getValue(key)}`);
         }), "l");
-        GM.registerMenuCommand("Clear all GM values", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Are you sure you want to clear all GM values?")) {
+        GM.registerMenuCommand("Delete all GM values", () => __awaiter(this, void 0, void 0, function* () {
+            if (confirm("Clear all GM values?\nSee console for details.")) {
                 const keys = yield GM.listValues();
                 console.log("Clearing GM values:");
                 if (keys.length === 0)
@@ -4022,7 +4161,11 @@ function registerMenuCommands() {
                     console.log(`  Deleted ${key}`);
                 }
             }
-        }), "c");
+        }), "d");
+        GM.registerMenuCommand("Reset install timestamp", () => __awaiter(this, void 0, void 0, function* () {
+            yield GM.deleteValue("bytm-installed");
+            console.log("Reset install time.");
+        }), "t");
     }
 }
 preInit();
