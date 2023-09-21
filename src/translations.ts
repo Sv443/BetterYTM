@@ -45,7 +45,9 @@ export function setLanguage(language: TrLang) {
   tr.setLanguage(language);
 }
 
+type TFuncKey = keyof (typeof tr_enUS["translations"]) | "_";
+
 /** Returns the translated string for the given key, after optionally inserting values */
-export function t(key: keyof (typeof tr_enUS["translations"]), ...values: Stringifiable[]) {
+export function t(key: TFuncKey, ...values: Stringifiable[]) {
   return tr(key, ...values);
 }

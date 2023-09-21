@@ -1,7 +1,7 @@
 import { debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { scriptInfo } from "../constants";
-import { FeatureCategory, FeatInfoKey, categoryNames, featInfo } from "../features/index";
+import { FeatureCategory, FeatInfoKey, featInfo } from "../features/index";
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
@@ -134,7 +134,7 @@ export async function addMenu() {
     catHeaderElem.classList.add("bytm-ftconf-category-header");
     catHeaderElem.role = "heading";
     catHeaderElem.ariaLevel = "2";
-    catHeaderElem.innerText = `${categoryNames[category as FeatureCategory]}:`;
+    catHeaderElem.innerText = `${t(`feature_category_${category}` as "_")}:`;
     featuresCont.appendChild(catHeaderElem);
 
     for(const featKey in featObj) {
@@ -144,7 +144,7 @@ export async function addMenu() {
       if(!ftInfo || ftInfo.hidden === true)
         continue;
 
-      const { desc, type, default: ftDefault } = ftInfo;
+      const { type, default: ftDefault } = ftInfo;
 
       // @ts-ignore
       const step = ftInfo?.step ?? undefined;
@@ -157,7 +157,7 @@ export async function addMenu() {
 
       {
         const textElem = document.createElement("div");
-        textElem.innerText = desc;
+        textElem.innerText = t(`feature_desc_${featKey}` as "_");
 
         ftConfElem.appendChild(textElem);
       }
