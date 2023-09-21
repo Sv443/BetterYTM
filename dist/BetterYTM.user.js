@@ -250,7 +250,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "8adac0a", // assert as generic string instead of literal
+    buildNumber: "4911338", // asserted as generic string instead of literal
 };
 
 
@@ -341,62 +341,52 @@ function initSiteEvents() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addAnchorImprovements; },
-/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addConfigMenuOption; },
-/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addLyricsCacheEntry; },
-/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn; },
-/* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.addMenu; },
-/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addScrollToActiveBtn; },
-/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addWatermark; },
-/* harmony export */   categoryNames: function() { return /* binding */ categoryNames; },
-/* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.closeMenu; },
-/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.createLyricsBtn; },
-/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.disableBeforeUnload; },
-/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.enableBeforeUnload; },
+/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
+/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
+/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
+/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
+/* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
+/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addScrollToActiveBtn; },
+/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
+/* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
+/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
+/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
+/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.enableBeforeUnload; },
 /* harmony export */   featInfo: function() { return /* binding */ featInfo; },
-/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.fixSpacing; },
-/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase; },
-/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getCurrentLyricsUrl; },
-/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getGeniusUrl; },
-/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getLyricsCacheEntry; },
-/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initArrowKeySkip; },
-/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initAutoCloseToasts; },
-/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initBeforeUnloadHook; },
-/* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_5__.initMenu; },
-/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initNumKeysSkip; },
-/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initQueueButtons; },
-/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initSiteSwitch; },
-/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initVolumeFeatures; },
-/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.isMenuOpen; },
-/* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.openMenu; },
-/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.preInitLayout; },
-/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeShareTrackingParam; },
-/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeUpgradeTab; },
-/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeArtists; },
-/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeSong; },
-/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.splitVideoTitle; }
+/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.fixSpacing; },
+/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase; },
+/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getCurrentLyricsUrl; },
+/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getGeniusUrl; },
+/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsCacheEntry; },
+/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
+/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
+/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
+/* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
+/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initNumKeysSkip; },
+/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
+/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initSiteSwitch; },
+/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
+/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.isMenuOpen; },
+/* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu; },
+/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
+/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
+/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
+/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeArtists; },
+/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; },
+/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.splitVideoTitle; }
 /* harmony export */ });
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
-/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
+/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
+/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 
 
 
 
 
 
-
-/** Mapping of feature category identifiers to readable strings */
-const categoryNames = {
-    input: "Input",
-    layout: "Layout",
-    lyrics: "Lyrics",
-    misc: "Other",
-};
 const langOptions = Object.entries(_translations__WEBPACK_IMPORTED_MODULE_0__.trInfo).reduce((a, [lang, langInfo]) => {
     return [...a, {
             value: lang,
@@ -408,19 +398,16 @@ const langOptions = Object.entries(_translations__WEBPACK_IMPORTED_MODULE_0__.tr
 const featInfo = {
     //#SECTION layout
     removeUpgradeTab: {
-        desc: "Remove the Upgrade / Premium tab",
         type: "toggle",
         category: "layout",
         default: true,
     },
     volumeSliderLabel: {
-        desc: "Add a percentage label next to the volume slider",
         type: "toggle",
         category: "layout",
         default: true,
     },
     volumeSliderSize: {
-        desc: "The width of the volume slider in pixels",
         type: "number",
         category: "layout",
         min: 50,
@@ -430,7 +417,6 @@ const featInfo = {
         unit: "px",
     },
     volumeSliderStep: {
-        desc: "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
         type: "slider",
         category: "layout",
         min: 1,
@@ -439,19 +425,16 @@ const featInfo = {
         unit: "%",
     },
     watermarkEnabled: {
-        desc: `Show a ${_constants__WEBPACK_IMPORTED_MODULE_1__.scriptInfo.name} watermark under the site logo that opens this config menu`,
         type: "toggle",
         category: "layout",
         default: true,
     },
     deleteFromQueueButton: {
-        desc: "Add a button to each song in the queue to quickly remove it",
         type: "toggle",
         category: "layout",
         default: true,
     },
     closeToastsTimeout: {
-        desc: "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
         type: "number",
         category: "layout",
         min: 0,
@@ -461,39 +444,33 @@ const featInfo = {
         unit: "s",
     },
     removeShareTrackingParam: {
-        desc: "Remove the tracking parameter (&si=...) from links in the share popup",
         type: "toggle",
         category: "layout",
         default: true,
     },
     fixSpacing: {
-        desc: "Fix spacing issues in the layout",
         type: "toggle",
         category: "layout",
         default: true,
     },
     scrollToActiveSongBtn: {
-        desc: "Add a button to the queue to scroll to the currently playing song",
         type: "toggle",
         category: "layout",
         default: true,
     },
     //#SECTION input
     arrowKeySupport: {
-        desc: "Use arrow keys to skip forwards and backwards by 10 seconds",
         type: "toggle",
         category: "input",
         default: true,
     },
     switchBetweenSites: {
-        desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
         type: "toggle",
         category: "input",
         default: true,
     },
     switchSitesHotkey: {
         hidden: true,
-        desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
         type: "hotkey",
         category: "input",
         default: {
@@ -504,46 +481,39 @@ const featInfo = {
         },
     },
     disableBeforeUnloadPopup: {
-        desc: "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
         type: "toggle",
         category: "input",
         default: false,
     },
     anchorImprovements: {
-        desc: "Add and improve links all over the page so things can be opened in a new tab easier",
         type: "toggle",
         category: "input",
         default: true,
     },
     numKeysSkipToTime: {
-        desc: "Enable skipping to a specific time in the video by pressing a number key (0-9)",
         type: "toggle",
         category: "input",
         default: true,
     },
     //#SECTION lyrics
     geniusLyrics: {
-        desc: "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
         type: "toggle",
         category: "lyrics",
         default: true,
     },
     lyricsQueueButton: {
-        desc: "Add a button to each song in the queue to quickly open its lyrics page",
         type: "toggle",
         category: "lyrics",
         default: true,
     },
     //#SECTION misc
     language: {
-        desc: "🌐 Language",
         type: "select",
         category: "misc",
         options: langOptions,
         default: "en-US",
     },
     logLevel: {
-        desc: "How much information to log to the console",
         type: "select",
         category: "misc",
         options: [
@@ -1630,7 +1600,8 @@ function getGeniusUrl(artist, song) {
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Requesting URL from geniURL at '${fetchUrl}'`);
             const fetchRes = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
             if (fetchRes.status === 429) {
-                alert((0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("lyrics_rate_limited", ((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe)));
+                const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+                alert((0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)((0,_translations__WEBPACK_IMPORTED_MODULE_2__.pl)("lyrics_rate_limited", waitSeconds), waitSeconds));
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -1924,14 +1895,14 @@ function addMenu() {
             catHeaderElem.classList.add("bytm-ftconf-category-header");
             catHeaderElem.role = "heading";
             catHeaderElem.ariaLevel = "2";
-            catHeaderElem.innerText = `${_features_index__WEBPACK_IMPORTED_MODULE_3__.categoryNames[category]}:`;
+            catHeaderElem.innerText = `${(0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)(`feature_category_${category}`)}:`;
             featuresCont.appendChild(catHeaderElem);
             for (const featKey in featObj) {
                 const ftInfo = _features_index__WEBPACK_IMPORTED_MODULE_3__.featInfo[featKey];
                 // @ts-ignore
                 if (!ftInfo || ftInfo.hidden === true)
                     continue;
-                const { desc, type, default: ftDefault } = ftInfo;
+                const { type, default: ftDefault } = ftInfo;
                 // @ts-ignore
                 const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
                 const val = featureCfg[featKey];
@@ -1940,7 +1911,7 @@ function addMenu() {
                 ftConfElem.classList.add("bytm-ftitem");
                 {
                     const textElem = document.createElement("div");
-                    textElem.innerText = desc;
+                    textElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)(`feature_desc_${featKey}`);
                     ftConfElem.appendChild(textElem);
                 }
                 {
@@ -2601,6 +2572,7 @@ function openChangelogMenu() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   initTranslations: function() { return /* binding */ initTranslations; },
+/* harmony export */   pl: function() { return /* binding */ pl; },
 /* harmony export */   setLanguage: function() { return /* binding */ setLanguage; },
 /* harmony export */   t: function() { return /* binding */ t; },
 /* harmony export */   trInfo: function() { return /* binding */ trInfo; },
@@ -2646,6 +2618,13 @@ function setLanguage(language) {
 /** Returns the translated string for the given key, after optionally inserting values */
 function t(key, ...values) {
     return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr)(key, ...values);
+}
+/** Returns the passed translation key with an added pluralization identifier based on the passed `num` */
+function pl(key, num) {
+    if (typeof num !== "number")
+        num = num.length;
+    const plNum = num === 1 ? "1" : "n";
+    return `${key}-${plNum}`;
 }
 
 
@@ -3318,7 +3297,7 @@ let createNanoEvents = () => ({
   \****************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um Änderungen zu speichern","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuelle Konfiguration","import":"Importieren","import_hint":"Füge die Konfiguration, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere eine Konfiguration, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Konfiguration, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Konfiguration wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Konfiguration in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen"}}');
+module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um Änderungen zu speichern","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuellen Einstellungen","import":"Importieren","import_hint":"Füge die Einstellungen, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere Einstellungen, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Einstellungen, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Einstellungen wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Einstellungen in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited-1":"Du hast zu viele Anfragen gesendet.\\nBitte warte ein paar Sekunden, bevor du weitere Songtexte anforderst.","lyrics_rate_limited-n":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen","feature_category_input":"Eingabe","feature_category_layout":"Layout","feature_category_lyrics":"Songtexte","feature_category_misc":"Sonstiges","feature_desc_removeUpgradeTab":"Entferne den Upgrade / Premium Tab","feature_desc_volumeSliderLabel":"Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu","feature_desc_volumeSliderSize":"Die Breite des Lautstärkereglers in Pixeln","feature_desc_volumeSliderStep":"Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)","feature_desc_watermarkEnabled":"Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet","feature_desc_deleteFromQueueButton":"Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen","feature_desc_closeToastsTimeout":"Nach wie vielen Sekunden permanente Benachrichtigungen geschlossen werden sollen - 0 für manuelles Schließen","feature_desc_removeShareTrackingParam":"Entferne den Tracking-Parameter \\"&si\\" von URLs im \\"Teilen\\" Popup","feature_desc_fixSpacing":"Behebe Abstandprobleme im Layout","feature_desc_scrollToActiveSongBtn":"Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen","feature_desc_arrowKeySupport":"Benutze die Pfeiltasten um 10 Sekunden vor- oder zurückzuspulen","feature_desc_switchBetweenSites":"Füge F9 als Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln","feature_desc_switchSitesHotkey":"Welcher Hotkey muss gedrückt werden, um zwischen den Seiten zu wechseln?","feature_desc_disableBeforeUnloadPopup":"Verhindere das Erscheinen des Bestätigungs-Popup beim Verlassen der Seite, während ein Song läuft","feature_desc_anchorImprovements":"Links auf der Seite erstellen und verbessern, damit Dinge einfacher in einem neuen Tab geöffnet werden können","feature_desc_numKeysSkipToTime":"Das Drücken einer Zahlentaste (0-9) springt zu einer bestimmten Zeit im Video","feature_desc_geniusLyrics":"Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen","feature_desc_lyricsQueueButton":"Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen","feature_desc_language":"Sprache 🌐","feature_desc_logLevel":"Wie viele Informationen in der Konsole geloggt werden sollen"}}');
 
 /***/ }),
 
@@ -3328,7 +3307,7 @@ module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"]
   \****************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"English (United States)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Configuration","config_menu_title":"%1 - Configuration","changelog_menu_title":"%1 - Changelog","export_menu_title":"%1 - Export Configuration","import_menu_title":"%1 - Import Configuration","open_menu_tooltip":"Open %1\'s configuration menu","close_menu_tooltip":"Close the menu","reload_hint":"You need to reload the page to apply any changes.","reload_now":"Reload now","reload_tooltip":"Reload the page","version_tooltip":"Version %1 (build %2) - click to open the changelog","export":"Export","export_hint":"Copy the following text to export your configuration:","export_tooltip":"Export your current configuration","import":"Import","import_hint":"Paste the configuration you want to import into the field below, then click the import button:","import_tooltip":"Import a configuration you have previously exported","start_import_tooltip":"Click to import the configuration you pasted above","import_error_invalid":"The imported data is invalid","import_error_no_format_version":"The imported data does not contain a format version","import_error_no_data":"The imported object does not contain any data","import_error_wrong_format_version":"The imported data is in an unsupported format version (expected %1 or lower but got %2)","import_success_confirm_reload":"Successfully imported the configuration.\\nDo you want to reload the page now to apply changes?","reset":"Reset","reset_tooltip":"Reset all settings to their default values","reset_confirm":"Do you really want to reset all settings to their default values?\\nThe page will be automatically reloaded.","copy_to_clipboard":"Copy to clipboard","copy_config_tooltip":"Copy the configuration to your clipboard","copied_notice":"Copied!","open_github":"Open %1 on GitHub","open_greasyfork":"Open %1 on GreasyFork","open_openuserjs":"Open %1 on OpenUserJS","open_current_lyrics":"Open the current song\'s lyrics in a new tab","open_lyrics":"Open this song\'s lyrics in a new tab","lyrics_loading":"Loading lyrics URL...","lyrics_rate_limited":"You are being rate limited.\\nPlease wait %1 seconds before requesting more lyrics.","lyrics_not_found_confirm_open_search":"Couldn\'t find a lyrics page for this song.\\nDo you want to open genius.com to manually search for it?","lyrics_not_found_click_open_search":"Couldn\'t find lyrics URL - click to open the manual lyrics search","remove_from_queue":"Remove this song from the queue","scroll_to_playing":"Scroll to the currently playing song","scroll_to_bottom":"Click to scroll to the bottom","volume_tooltip":"Volume: %1% (Sensitivity: %2%)","middle_click_open_tab":"Middle-click to open in a new tab"}}');
+module.exports = JSON.parse('{"name":"English (United States)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Configuration","config_menu_title":"%1 - Configuration","changelog_menu_title":"%1 - Changelog","export_menu_title":"%1 - Export Configuration","import_menu_title":"%1 - Import Configuration","open_menu_tooltip":"Open %1\'s configuration menu","close_menu_tooltip":"Close the menu","reload_hint":"You need to reload the page to apply any changes.","reload_now":"Reload now","reload_tooltip":"Reload the page","version_tooltip":"Version %1 (build %2) - click to open the changelog","export":"Export","export_hint":"Copy the following text to export your configuration:","export_tooltip":"Export your current configuration","import":"Import","import_hint":"Paste the configuration you want to import into the field below, then click the import button:","import_tooltip":"Import a configuration you have previously exported","start_import_tooltip":"Click to import the configuration you pasted above","import_error_invalid":"The imported data is invalid","import_error_no_format_version":"The imported data does not contain a format version","import_error_no_data":"The imported object does not contain any data","import_error_wrong_format_version":"The imported data is in an unsupported format version (expected %1 or lower but got %2)","import_success_confirm_reload":"Successfully imported the configuration.\\nDo you want to reload the page now to apply changes?","reset":"Reset","reset_tooltip":"Reset all settings to their default values","reset_confirm":"Do you really want to reset all settings to their default values?\\nThe page will be automatically reloaded.","copy_to_clipboard":"Copy to clipboard","copy_config_tooltip":"Copy the configuration to your clipboard","copied_notice":"Copied!","open_github":"Open %1 on GitHub","open_greasyfork":"Open %1 on GreasyFork","open_openuserjs":"Open %1 on OpenUserJS","open_current_lyrics":"Open the current song\'s lyrics in a new tab","open_lyrics":"Open this song\'s lyrics in a new tab","lyrics_loading":"Loading lyrics URL...","lyrics_rate_limited-1":"You are being rate limited.\\nPlease wait a few seconds before requesting more lyrics.","lyrics_rate_limited-n":"You are being rate limited.\\nPlease wait %1 seconds before requesting more lyrics.","lyrics_not_found_confirm_open_search":"Couldn\'t find a lyrics page for this song.\\nDo you want to open genius.com to manually search for it?","lyrics_not_found_click_open_search":"Couldn\'t find lyrics URL - click to open the manual lyrics search","remove_from_queue":"Remove this song from the queue","scroll_to_playing":"Scroll to the currently playing song","scroll_to_bottom":"Click to scroll to the bottom","volume_tooltip":"Volume: %1% (Sensitivity: %2%)","middle_click_open_tab":"Middle-click to open in a new tab","feature_category_input":"Input","feature_category_layout":"Layout","feature_category_lyrics":"Lyrics","feature_category_misc":"Other","feature_desc_removeUpgradeTab":"Remove the Upgrade / Premium tab","feature_desc_volumeSliderLabel":"Add a percentage label next to the volume slider","feature_desc_volumeSliderSize":"The width of the volume slider in pixels","feature_desc_volumeSliderStep":"Volume slider sensitivity (by how little percent the volume can be changed at a time)","feature_desc_watermarkEnabled":"Show a watermark under the site logo that opens this config menu","feature_desc_deleteFromQueueButton":"Add a button to each song in the queue to quickly remove it","feature_desc_closeToastsTimeout":"After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)","feature_desc_removeShareTrackingParam":"Remove the tracking parameter \\"&si\\" from links in the share popup","feature_desc_fixSpacing":"Fix spacing issues in the layout","feature_desc_scrollToActiveSongBtn":"Add a button to the queue to scroll to the currently playing song","feature_desc_arrowKeySupport":"Use arrow keys to skip forwards and backwards by 10 seconds","feature_desc_switchBetweenSites":"Add F9 as a hotkey to switch between the YT and YTM sites on a video / song","feature_desc_switchSitesHotkey":"Which hotkey needs to be pressed to switch sites?","feature_desc_disableBeforeUnloadPopup":"Prevent the confirmation popup that appears when trying to leave the site while a song is playing","feature_desc_anchorImprovements":"Add and improve links all over the page so things can be opened in a new tab easier","feature_desc_numKeysSkipToTime":"Enable skipping to a specific time in the video by pressing a number key (0-9)","feature_desc_geniusLyrics":"Add a button to the media controls of the currently playing song to open its lyrics on genius.com","feature_desc_lyricsQueueButton":"Add a button to each song in the queue to quickly open its lyrics page","feature_desc_language":"Language 🌐","feature_desc_logLevel":"How much information to log to the console"}}');
 
 /***/ })
 
