@@ -67,36 +67,10 @@ var code = "<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong
 
 /***/ }),
 
-/***/ "./src/menu/menu.html":
-/*!****************************!*\
-  !*** ./src/menu/menu.html ***!
-  \****************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-// Module
-var code = "<dialog id=\"bytm-menu-dialog\">\n  <div id=\"bytm-menu-header-container\">\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-options-header\" data-active=\"true\">\n      <h3>Options</h3>\n    </div>\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-info-header\" data-active=\"false\">\n      <h3>Info</h3>\n    </div>\n    <div class=\"bytm-menu-header-option\" id=\"bytm-menu-tab-changelog-header\" data-active=\"false\">\n      <h3>Changelog</h3>\n    </div>\n  </div>\n  <div id=\"bytm-menu-body\">\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-options-content\" data-active=\"true\"></div>\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-info-content\" data-active=\"false\">\n      ayo info\n    </div>\n    <div class=\"bytm-menu-tab-content\" id=\"bytm-menu-tab-changelog-content\" data-active=\"false\"></div>\n  </div>\n</dialog>\n";
-// Exports
-/* harmony default export */ __webpack_exports__["default"] = (code);
-
-/***/ }),
-
 /***/ "./src/features/layout.css":
 /*!*********************************!*\
   !*** ./src/features/layout.css ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ "./src/menu/menu.css":
-/*!***************************!*\
-  !*** ./src/menu/menu.css ***!
-  \***************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -250,7 +224,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "369aa7d", // asserted as generic string instead of literal
+    buildNumber: "81aa561", // asserted as generic string instead of literal
 };
 
 
@@ -345,10 +319,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
 /* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
-/* harmony export */   addMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.addMenu; },
 /* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addScrollToActiveBtn; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
-/* harmony export */   closeMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.closeMenu; },
 /* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
 /* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
 /* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.enableBeforeUnload; },
@@ -362,13 +334,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
 /* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
 /* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
-/* harmony export */   initMenu: function() { return /* reexport safe */ _menu_menu__WEBPACK_IMPORTED_MODULE_4__.initMenu; },
 /* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initNumKeysSkip; },
 /* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
 /* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initSiteSwitch; },
 /* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
-/* harmony export */   isMenuOpen: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.isMenuOpen; },
-/* harmony export */   openMenu: function() { return /* reexport safe */ _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__.openMenu; },
 /* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
 /* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
@@ -380,10 +349,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
 /* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
 /* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
-/* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../menu/menu */ "./src/menu/menu.ts");
-/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
-
-
 
 
 
@@ -1654,109 +1619,6 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
 function splitVideoTitle(title) {
     const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
     return { artist, song: rest.join("-") };
-}
-
-
-/***/ }),
-
-/***/ "./src/menu/menu.ts":
-/*!**************************!*\
-  !*** ./src/menu/menu.ts ***!
-  \**************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   closeMenu: function() { return /* binding */ closeMenu; },
-/* harmony export */   initMenu: function() { return /* binding */ initMenu; },
-/* harmony export */   openMenu: function() { return /* binding */ openMenu; },
-/* harmony export */   setActiveTab: function() { return /* binding */ setActiveTab; }
-/* harmony export */ });
-/* harmony import */ var _changelog_md__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../changelog.md */ "./changelog.md");
-/* harmony import */ var _menu_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu.html */ "./src/menu/menu.html");
-/* harmony import */ var _menu_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./menu.css */ "./src/menu/menu.css");
-
-
-
-// REQUIREMENTS:
-// - modal using the <dialog> element
-// - sections with headers
-// - support for "custom widgets"
-// - debounce or save on button press to store new configuration
-// - much better scaling including no vw and vh units
-// - cleanup function per feature so a page reload is not always needed
-//#MARKER menu
-/**
- * The base selector values for the menu tabs
- * Header selector format: `#${baseValue}-header`
- * Content selector format: `#${baseValue}-content`
- */
-const tabsSelectors = {
-    options: "bytm-menu-tab-options",
-    info: "bytm-menu-tab-info",
-    changelog: "bytm-menu-tab-changelog",
-};
-/** Called from init(), before DOMContentLoaded is fired  */
-function initMenu() {
-    document.addEventListener("DOMContentLoaded", () => {
-        // create menu container
-        const menuContainer = document.createElement("div");
-        menuContainer.id = "bytm-menu-container";
-        // add menu html
-        menuContainer.innerHTML = _menu_html__WEBPACK_IMPORTED_MODULE_1__["default"];
-        document.body.appendChild(menuContainer);
-        initMenuContents();
-    });
-}
-function initMenuContents() {
-    var _a;
-    // hook events
-    for (const tab in tabsSelectors) {
-        const selector = tabsSelectors[tab];
-        (_a = document.querySelector(`#${selector}-header`)) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
-            setActiveTab(tab);
-        });
-    }
-    // init tab contents
-    initOptionsContent();
-    initInfoContent();
-    initChangelogContent();
-}
-/** Opens the specified tab */
-function setActiveTab(tab) {
-    const tabs = Object.assign({}, tabsSelectors);
-    delete tabs[tab];
-    // disable all but new active tab
-    for (const [, val] of Object.entries(tabs)) {
-        document.querySelector(`#${val}-header`).dataset.active = "false";
-        document.querySelector(`#${val}-content`).dataset.active = "false";
-    }
-    // enable new active tab
-    document.querySelector(`#${tabsSelectors[tab]}-header`).dataset.active = "true";
-    document.querySelector(`#${tabsSelectors[tab]}-content`).dataset.active = "true";
-}
-/** Opens the modal menu dialog */
-function openMenu() {
-    var _a;
-    (_a = document.querySelector("#bytm-menu-dialog")) === null || _a === void 0 ? void 0 : _a.showModal();
-}
-/** Closes the modal menu dialog */
-function closeMenu() {
-    var _a;
-    (_a = document.querySelector("#bytm-menu-dialog")) === null || _a === void 0 ? void 0 : _a.close();
-}
-//#MARKER menu tab contents
-function initOptionsContent() {
-    const tab = document.querySelector("#bytm-menu-tab-options-content");
-    void tab;
-}
-function initInfoContent() {
-    const tab = document.querySelector("#bytm-menu-tab-info-content");
-    void tab;
-}
-function initChangelogContent() {
-    const tab = document.querySelector("#bytm-menu-tab-changelog-content");
-    tab.innerHTML = _changelog_md__WEBPACK_IMPORTED_MODULE_0__["default"];
 }
 
 
@@ -3389,7 +3251,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./events */ "./src/events.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./translations */ "./src/translations.ts");
-/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./menu/menu_old */ "./src/menu/menu_old.ts");
+/* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3406,6 +3269,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -3415,7 +3279,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
     console.log([
         "Powered by:",
         "─ lots of ambition",
-        `─ my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_6__.geniUrlBase}`,
+        `─ my song metadata API: ${_features_index__WEBPACK_IMPORTED_MODULE_7__.geniUrlBase}`,
         "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
         "─ this tiny event listener library: https://github.com/ai/nanoevents",
     ].join("\n"));
@@ -3427,7 +3291,7 @@ const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getDomain)();
 function preInit() {
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_2__.defaultLogLevel);
     if (domain === "ytm")
-        (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initBeforeUnloadHook)();
+        (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initBeforeUnloadHook)();
     init();
 }
 function init() {
@@ -3446,9 +3310,9 @@ function init() {
             const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
             (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)((_a = ftConfig.language) !== null && _a !== void 0 ? _a : "en-US");
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(ftConfig.logLevel);
-            (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.preInitLayout)(ftConfig);
+            (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.preInitLayout)(ftConfig);
             if (ftConfig.disableBeforeUnloadPopup)
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.disableBeforeUnload)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.disableBeforeUnload)();
             if (!domLoaded)
                 document.addEventListener("DOMContentLoaded", initFeatures);
             else
@@ -4030,48 +3894,6 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   padding: 4px;
 }
 
-/*!*********************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/menu.css ***!
-  \*********************************************************************/
-/* #bytm-menu-backdrop {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#bytm-menu-backdrop[data-menu-open="true"] {
-    display: flex;
-} */
-
-#bytm-menu-header-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-color: #ffffff;
-    border-style: none solid none none;
-}
-
-.bytm-menu-header-option {
-    display: "flex";
-    justify-content: center;
-    align-items: center;
-    border-color: #ffffff;
-    border-style: solid none solid none;
-}
-
-#bytm-menu-header-option h3 {
-    margin: 0;
-}
-
-.bytm-menu-tab[data-active="true"] {
-    display: none;
-}
-
-.bytm-menu-tab[data-active="false"] {
-    display: none;
-}
-
 
 /*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.initOnSelector)();
@@ -4086,39 +3908,39 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
                 }
                 yield GM.setValue("bytm-installed", Date.now());
                 try {
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addMenu)(); // TODO(v1.1): remove
+                    (0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_6__.addMenu)(); // TODO(v1.1): remove
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
                 }
-                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_6__.addConfigMenuOption });
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_7__.addConfigMenuOption });
                 if (features.arrowKeySupport)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initArrowKeySkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initArrowKeySkip)();
                 if (features.removeUpgradeTab)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.removeUpgradeTab)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.removeUpgradeTab)();
                 if (features.watermarkEnabled)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addWatermark)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addWatermark)();
                 if (features.geniusLyrics)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addMediaCtrlLyricsBtn)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addMediaCtrlLyricsBtn)();
                 if (features.deleteFromQueueButton || features.lyricsQueueButton)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initQueueButtons)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initQueueButtons)();
                 if (features.anchorImprovements)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addAnchorImprovements)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addAnchorImprovements)();
                 if (features.closeToastsTimeout > 0)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initAutoCloseToasts)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initAutoCloseToasts)();
                 if (features.removeShareTrackingParam)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.removeShareTrackingParam)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.removeShareTrackingParam)();
                 if (features.numKeysSkipToTime)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initNumKeysSkip)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initNumKeysSkip)();
                 if (features.fixSpacing)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.fixSpacing)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.fixSpacing)();
                 if (features.scrollToActiveSongBtn)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.addScrollToActiveBtn)();
-                (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initVolumeFeatures)();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addScrollToActiveBtn)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
-                    (0,_features_index__WEBPACK_IMPORTED_MODULE_6__.initSiteSwitch)(domain);
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initSiteSwitch)(domain);
             }
         }
         catch (err) {
