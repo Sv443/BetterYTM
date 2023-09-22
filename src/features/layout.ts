@@ -16,7 +16,7 @@ export function preInitLayout(feats: FeatureConfig) {
 
 //#MARKER BYTM-Config buttons
 
-let menuOpenAmt = 0, logoExchanged = false;
+let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
 
 /** Adds a watermark beneath the logo */
 export function addWatermark() {
@@ -61,11 +61,15 @@ export function addWatermark() {
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
-async function improveLogo() {
+export async function improveLogo() {
   try {
+    if(improveLogoCalled)
+      return;
+    improveLogoCalled = true;
+
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
-    
+
     onSelector("ytmusic-logo a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
@@ -151,6 +155,8 @@ export async function addConfigMenuOption(container: HTMLElement) {
   cfgOptElem.appendChild(cfgOptItemElem);
 
   container.appendChild(cfgOptElem);
+
+  improveLogo();
 
   log("Added BYTM-Configuration button to menu popover");
 }
