@@ -48,6 +48,8 @@
     "middle_click_open_tab": "Mittelklick um in einem neuen Tab zu öffnen",
     "log_level_debug": "Debug (sehr viele)",
     "log_level_info": "Info (nur wichtige)",
+    "switch_on": "An",
+    "switch_off": "Aus",
     "feature_category_input": "Eingabe",
     "feature_category_layout": "Layout",
     "feature_category_lyrics": "Songtexte",

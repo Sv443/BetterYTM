@@ -125,7 +125,7 @@ export async function addMenu() {
     );
 
   const fmtVal = (v: unknown) => String(v).trim();
-  const toggleLabelText = (toggled: boolean) => toggled ? "On" : "Off";
+  const toggleLabelText = (toggled: boolean) => toggled ? t("switch_on") : t("switch_off");
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];

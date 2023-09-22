@@ -182,6 +182,7 @@
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
+  margin-left: 10px;
 }
 
 .bytm-ftconf-label {
@@ -280,7 +281,7 @@
 }
 
 .bytm-markdown-container h2:not(:first-of-type) {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .bytm-markdown-container ul li::before {
