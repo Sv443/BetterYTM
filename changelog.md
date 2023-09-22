@@ -1,6 +1,8 @@
 ## 1.1.0
 - **Added Features:**
-  - The userscript now has translations! (US-English and German for now) - to submit one, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md)
+  - The userscript now has support for translations! (US-English and German for now) - to submit one, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
+
+<br>
 
 ## 1.0.2
 - **Changes:**
