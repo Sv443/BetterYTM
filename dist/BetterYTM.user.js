@@ -224,7 +224,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "cbfd22c", // asserted as generic string instead of literal
+    buildNumber: "8956b84", // asserted as generic string instead of literal
 };
 
 
@@ -3350,7 +3350,8 @@ function initFeatures() {
   \*************************************************************************/
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-menu-bg-highlight: #1e1e1e;
+  --bytm-menu-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.6);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
 }
@@ -3499,7 +3500,7 @@ function initFeatures() {
   width: 32px;
   height: 32px;
   z-index: 101;
-  background-color: var(--bytm-menu-bg-highlight);
+  background-color: var(--bytm-scroll-indicator-bg);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -3526,6 +3527,11 @@ function initFeatures() {
   align-items: center;
   font-size: 1.4em;
   padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-ftitem:hover {
+  background-color: var(--bytm-menu-bg-highlight);
 }
 
 .bytm-ftconf-ctrl {
