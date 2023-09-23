@@ -4,7 +4,7 @@ import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../events";
 import { t } from "../translations";
-import { openMenu } from "../menu/menu_old";
+import { openCfgMenu } from "../menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import "./layout.css";
 
@@ -35,7 +35,7 @@ export function addWatermark() {
     menuOpenAmt++;
 
     if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-      openMenu();
+      openCfgMenu();
     if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
       exchangeLogo();
   });
@@ -47,7 +47,7 @@ export function addWatermark() {
       menuOpenAmt++;
 
       if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-        openMenu();
+        openCfgMenu();
       if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
         exchangeLogo();
     }
@@ -136,7 +136,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
     await pauseFor(100);
 
     if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-      openMenu();
+      openCfgMenu();
     if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
       exchangeLogo();
   });

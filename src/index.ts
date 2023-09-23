@@ -4,7 +4,7 @@ import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import { initTranslations } from "./translations";
-import { addMenu } from "./menu/menu_old";
+import { addCfgMenu } from "./menu/menu_old";
 import {
   // layout
   initQueueButtons, addWatermark,
@@ -121,7 +121,7 @@ async function initFeatures() {
       await GM.setValue("bytm-installed", Date.now());
 
       try {
-        addMenu(); // TODO(v1.1): remove
+        addCfgMenu(); // TODO(v1.1): remove
       }
       catch(err) {
         error("Couldn't add menu:", err);

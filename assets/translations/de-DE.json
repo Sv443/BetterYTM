@@ -48,8 +48,9 @@
     "middle_click_open_tab": "Mittelklick um in einem neuen Tab zu öffnen",
     "log_level_debug": "Debug (sehr viele)",
     "log_level_info": "Info (nur wichtige)",
-    "switch_on": "An",
-    "switch_off": "Aus",
+    "toggled_on": "An",
+    "toggled_off": "Aus",
+    "lang_changed_prompt_reload": "Die Sprache wurde geändert.\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?",
     "feature_category_input": "Eingabe",
     "feature_category_layout": "Layout",
     "feature_category_lyrics": "Songtexte",
@@ -62,7 +63,7 @@
     "feature_desc_deleteFromQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen",
     "feature_desc_closeToastsTimeout": "Nach wie vielen Sekunden permanente Benachrichtigungen geschlossen werden sollen - 0 für manuelles Schließen",
     "feature_desc_removeShareTrackingParam": "Entferne den Tracking-Parameter \"&si\" von URLs im \"Teilen\" Popup",
-    "feature_desc_fixSpacing": "Behebe Abstandprobleme im Layout",
+    "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",
     "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen",
     "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um 10 Sekunden vor- oder zurückzuspulen",
     "feature_desc_switchBetweenSites": "Füge F9 als Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln",
@@ -73,6 +74,6 @@
     "feature_desc_geniusLyrics": "Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen",
     "feature_desc_lyricsQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen",
     "feature_desc_language": "Sprache 🌐",
-    "feature_desc_logLevel": "Wie viele Informationen in der Konsole geloggt werden sollen"
+    "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?"
   }
 }

@@ -30,11 +30,9 @@ export const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
 
 /** Initializes the translations */
 export function initTranslations(language: TrLang) {
-  // for when hot reloading is implemented:
-  // for(const [lang, trans] of Object.entries(translations))
-  //   tr.addLanguage(lang, trans);
+  for(const [lang, trans] of Object.entries(translations))
+    tr.addLanguage(lang, trans);
 
-  tr.addLanguage(language, translations[language]);
   tr.setLanguage(language);
 
   log("Initialized translations for language", language);

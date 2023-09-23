@@ -5,24 +5,27 @@ import { FeatureCategory, FeatInfoKey, featInfo } from "../features/index";
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
-import { t } from "../translations";
+import { setLanguage, t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
 
 //#MARKER create menu elements
 
-export let isMenuOpen = false;
+export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
+let lastLang: string | undefined;
 
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
-export async function addMenu() {
+export async function addCfgMenu() {
+  lastLang = getFeatures().language;
+
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
@@ -31,12 +34,12 @@ export async function addMenu() {
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
-    if(isMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
-      closeMenu(e);
+    if(isCfgMenuOpen && (e.target as HTMLElement)?.id === "bytm-cfg-menu-bg")
+      closeCfgMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
-    if(isMenuOpen && e.key === "Escape")
-      closeMenu(e);
+    if(isCfgMenuOpen && e.key === "Escape")
+      closeCfgMenu(e);
   });
 
   const menuContainer = document.createElement("div");
@@ -87,7 +90,7 @@ export async function addMenu() {
   closeElem.classList.add("bytm-menu-close");
   closeElem.src = await getResourceUrl("close");
   closeElem.title = t("close_menu_tooltip");
-  closeElem.addEventListener("click", closeMenu);
+  closeElem.addEventListener("click", closeCfgMenu);
 
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
@@ -110,6 +113,18 @@ export async function addMenu() {
     featConf[key] = newVal as never;
 
     await saveFeatures(featConf);
+
+    if(lastLang !== featConf.language) {
+      const oldText = t("lang_changed_prompt_reload");
+      lastLang = featConf.language;
+      setLanguage(featConf.language);
+      const newText = t("lang_changed_prompt_reload");
+
+      if(confirm(`${newText}\n\n${oldText}`)) {
+        closeCfgMenu();
+        location.reload();
+      }
+    }
   });
 
   const featureCfg = getFeatures();
@@ -125,7 +140,7 @@ export async function addMenu() {
     );
 
   const fmtVal = (v: unknown) => String(v).trim();
-  const toggleLabelText = (toggled: boolean) => toggled ? t("switch_on") : t("switch_off");
+  const toggleLabelText = (toggled: boolean) => toggled ? t("toggled_on") : t("toggled_off");
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -347,7 +362,7 @@ export async function addMenu() {
   reloadElem.innerText = t("reload_now");
   reloadElem.title = t("reload_tooltip");
   reloadElem.addEventListener("click", () => {
-    closeMenu();
+    closeCfgMenu();
     location.reload();
   });
 
@@ -360,7 +375,7 @@ export async function addMenu() {
   resetElem.addEventListener("click", async () => {
     if(confirm(t("reset_confirm"))) {
       await setDefaultFeatures();
-      closeMenu();
+      closeCfgMenu();
       location.reload();
     }
   });
@@ -369,7 +384,7 @@ export async function addMenu() {
   exportElem.title = t("export_tooltip");
   exportElem.innerText = t("export");
   exportElem.addEventListener("click", async () => {
-    closeMenu();
+    closeCfgMenu();
     openExportMenu();
   });
   const importElem = document.createElement("button");
@@ -377,7 +392,7 @@ export async function addMenu() {
   importElem.title = t("import_tooltip");
   importElem.innerText = t("import");
   importElem.addEventListener("click", async () => {
-    closeMenu();
+    closeCfgMenu();
     openImportMenu();
   });
 
@@ -408,7 +423,7 @@ export async function addMenu() {
     e.preventDefault();
     e.stopPropagation();
 
-    closeMenu();
+    closeCfgMenu();
     openChangelogMenu();
   });
 
@@ -430,11 +445,11 @@ export async function addMenu() {
   log("Added menu element");
 }
 
-/** Closes the menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
-  if(!isMenuOpen)
+/** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
+export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
+  if(!isCfgMenuOpen)
     return;
-  isMenuOpen = false;
+  isCfgMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
@@ -447,11 +462,11 @@ export function closeMenu(evt?: MouseEvent | KeyboardEvent) {
   menuBg.style.display = "none";
 }
 
-/** Opens the menu if it is closed */
-export function openMenu() {
-  if(isMenuOpen)
+/** Opens the config menu if it is closed */
+export function openCfgMenu() {
+  if(isCfgMenuOpen)
     return;
-  isMenuOpen = true;
+  isCfgMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
@@ -503,13 +518,13 @@ async function addExportMenu() {
   menuBgElem.addEventListener("click", (e) => {
     if(isExportMenuOpen && (e.target as HTMLElement)?.id === "bytm-export-menu-bg") {
       closeExportMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
   document.body.addEventListener("keydown", (e) => {
     if(isExportMenuOpen && e.key === "Escape") {
       closeExportMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
 
@@ -537,7 +552,7 @@ async function addExportMenu() {
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeExportMenu(e);
-    openMenu();
+    openCfgMenu();
   });
 
   titleCont.appendChild(titleElem);
@@ -670,13 +685,13 @@ async function addImportMenu() {
   menuBgElem.addEventListener("click", (e) => {
     if(isImportMenuOpen && (e.target as HTMLElement)?.id === "bytm-import-menu-bg") {
       closeImportMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
   document.body.addEventListener("keydown", (e) => {
     if(isImportMenuOpen && e.key === "Escape") {
       closeImportMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
 
@@ -704,7 +719,7 @@ async function addImportMenu() {
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeImportMenu(e);
-    openMenu();
+    openCfgMenu();
   });
 
   titleCont.appendChild(titleElem);
@@ -780,7 +795,7 @@ async function addImportMenu() {
       siteEvents.emit("rebuildCfgMenu", parsed.data);
 
       closeImportMenu();
-      openMenu();
+      openCfgMenu();
     }
     catch(err) {
       warn("Couldn't import configuration:", err);
@@ -856,13 +871,13 @@ async function addChangelogMenu() {
   menuBgElem.addEventListener("click", (e) => {
     if(isChangelogMenuOpen && (e.target as HTMLElement)?.id === "bytm-changelog-menu-bg") {
       closeChangelogMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
   document.body.addEventListener("keydown", (e) => {
     if(isChangelogMenuOpen && e.key === "Escape") {
       closeChangelogMenu(e);
-      openMenu();
+      openCfgMenu();
     }
   });
 
@@ -890,7 +905,7 @@ async function addChangelogMenu() {
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeChangelogMenu(e);
-    openMenu();
+    openCfgMenu();
   });
 
   titleCont.appendChild(titleElem);

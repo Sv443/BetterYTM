@@ -1,7 +1,7 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn } from "../utils";
 import type { Domain } from "../types";
-import { isMenuOpen } from "../menu/menu_old";
+import { isCfgMenuOpen } from "../menu/menu_old";
 
 //#MARKER arrow key skip
 
@@ -184,7 +184,7 @@ export function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
     if(!e.key.trim().match(/^[0-9]$/))
       return;
-    if(isMenuOpen)
+    if(isCfgMenuOpen)
       return;
     // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
     if(

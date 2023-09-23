@@ -2,6 +2,7 @@
 - **Added Features:**
   - The userscript now has support for translations! (US-English and German for now) - to submit one, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
 
+<div class="split"></div>
 <br>
 
 ## 1.0.2
@@ -9,6 +10,7 @@
   - Script is now published to OpenUserJS!
   - Added a OpenUserJS link to the configuration menu
 
+<div class="split"></div>
 <br>
 
 ## 1.0.1
@@ -16,6 +18,7 @@
   - Script is now published to GreasyFork!
   - Added a GreasyFork link to the configuration menu
 
+<div class="split"></div>
 <br>
 
 ## 1.0.0
@@ -42,6 +45,7 @@
   - Site switch with <kbd>F9</kbd> will now keep the video time
   - Moved lots of utility code to my new library [UserUtils](https://github.com/Sv443-Network/UserUtils)
 
+<div class="split"></div>
 <br>
 
 ## 0.2.0
@@ -51,6 +55,7 @@
   - Search for song lyrics with new button in media controls
   - Remove "Upgrade to YTM Premium" tab
 
+<div class="split"></div>
 <br>
 
 ## 0.1.0
