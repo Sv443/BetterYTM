@@ -25,7 +25,10 @@ let initLocale: string | undefined;
  */
 export async function addCfgMenu() {
   initLocale = getFeatures().locale;
+
   const initLangReloadText = t("lang_changed_prompt_reload");
+  const toggled_on = t("toggled_on");
+  const toggled_off = t("toggled_off");
 
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
@@ -141,7 +144,7 @@ export async function addCfgMenu() {
     );
 
   const fmtVal = (v: unknown) => String(v).trim();
-  const toggleLabelText = (toggled: boolean) => toggled ? t("toggled_on") : t("toggled_off");
+  const toggleLabelText = (toggled: boolean) => toggled ? toggled_on : toggled_off;
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
