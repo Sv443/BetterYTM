@@ -112,7 +112,7 @@ export async function addCfgMenu() {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
-    const featConf = { ...getFeatures() };
+    const featConf = JSON.parse(JSON.stringify(getFeatures()));
 
     featConf[key] = newVal as never;
 

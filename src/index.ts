@@ -79,7 +79,7 @@ async function init() {
 
     preInitLayout(ftConfig);
 
-    if(ftConfig.disableBeforeUnloadPopup)
+    if(ftConfig.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
 
     if(!domLoaded)
