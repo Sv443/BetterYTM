@@ -6,19 +6,18 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 <br><br>
 
 ### Submitting translations:
-1. Copy the contents of the default translation file [`assets/translations/en-US.json`](./assets/translations/en-US.json)
-2. Replace the `en-US` part of the file name with the language code and locale code of the language you want to translate to
-3. Change the metadata at the top of the file
-4. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n.
-5. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites
-6. If you want to submit a pull request with the translated file:
-    1. Create a file in the folder [`assets/translations/`](./assets/translations/) with the format `langCode-localeCode.json`
-    2. Insert your translated version of the original file
-    3. Create the mapping in `src/translations.ts` at the top of the file
-    4. Translate the description in `package.json` by following the same format as the other translation(s)
-    5. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by also following the same format as the other translation(s)
-    6. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
-7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
+1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
+2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
+3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n.
+4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites
+5. If you want to submit a pull request with the translated file:
+  1. Create a file in the folder [`assets/translations/`](./assets/translations/) with the format `langCode-localeCode.json`
+  2. Insert your translated version of the original file
+  3. Create the mapping in `assets/languages.json` (please make sure it's alphabetically ordered)
+  4. Translate the description in `package.json` by following the same format as the other translation(s)
+  5. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by also following the same format as the other translation(s)
+  6. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
+6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
   Make sure you also translate the `description` inside of `package.json` for me
 
 <br><br><br>

@@ -3,7 +3,7 @@ import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
-import { initTranslations } from "./translations";
+import { initTranslations, setLanguage } from "./translations";
 import { addCfgMenu } from "./menu/menu_old";
 import {
   // layout
@@ -72,7 +72,9 @@ async function init() {
 
     const ftConfig = await initConfig();
 
-    initTranslations(ftConfig.language ?? "en-US");
+    await initTranslations(ftConfig.locale ?? "en_US");
+    setLanguage(ftConfig.locale ?? "en_US");
+
     setLogLevel(ftConfig.logLevel);
 
     preInitLayout(ftConfig);
@@ -180,6 +182,7 @@ function registerMenuCommands() {
     GM.registerMenuCommand("Reset config", async () => {
       if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
         await clearConfig();
+        disableBeforeUnload();
         location.reload();
       }
     }, "r");

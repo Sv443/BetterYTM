@@ -1,0 +1,34 @@
+{
+  "de_DE": {
+    "name": "Deutsch (Deutschland)",
+    "authors": ["Sv443"]
+  },
+  "en_US": {
+    "name": "English (United States)",
+    "authors": ["Sv443"]
+  },
+  "es_ES": {
+    "name": "Español (España)",
+    "authors": ["Sv443"]
+  },
+  "fr_FR": {
+    "name": "Français (France)",
+    "authors": ["Sv443"]
+  },
+  "hi_IN": {
+    "name": "हिंदी (भारत)",
+    "authors": ["Sv443"]
+  },
+  "ja_JA": {
+    "name": "日本語 (日本)",
+    "authors": ["Sv443"]
+  },
+  "pt_BR": {
+    "name": "Português (Brasil)",
+    "authors": ["Sv443"]
+  },
+  "zh_CN": {
+    "name": "中文（简体，中华人民共和国）",
+    "authors": ["Sv443"]
+  }
+}

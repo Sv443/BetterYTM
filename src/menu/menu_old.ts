@@ -1,11 +1,11 @@
 import { debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { scriptInfo } from "../constants";
-import { FeatureCategory, FeatInfoKey, featInfo } from "../features/index";
+import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
-import { setLanguage, t } from "../translations";
+import { initTranslations, setLanguage, t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
@@ -17,14 +17,15 @@ export let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
-let lastLang: string | undefined;
+let initLocale: string | undefined;
 
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 export async function addCfgMenu() {
-  lastLang = getFeatures().language;
+  initLocale = getFeatures().locale;
+  const initLangReloadText = t("lang_changed_prompt_reload");
 
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
@@ -114,14 +115,14 @@ export async function addCfgMenu() {
 
     await saveFeatures(featConf);
 
-    if(lastLang !== featConf.language) {
-      const oldText = t("lang_changed_prompt_reload");
-      lastLang = featConf.language;
-      setLanguage(featConf.language);
+    if(initLocale !== featConf.locale) {
+      await initTranslations(featConf.locale);
+      setLanguage(featConf.locale);
       const newText = t("lang_changed_prompt_reload");
 
-      if(confirm(`${newText}\n\n${oldText}`)) {
+      if(confirm(`${newText}\n\n────────────────────────────────\n\n${initLangReloadText}`)) {
         closeCfgMenu();
+        disableBeforeUnload();
         location.reload();
       }
     }
@@ -171,7 +172,7 @@ export async function addCfgMenu() {
       ftConfElem.classList.add("bytm-ftitem");
 
       {
-        const textElem = document.createElement("div");
+        const textElem = document.createElement("span");
         textElem.innerText = t(`feature_desc_${featKey}` as "_");
 
         ftConfElem.appendChild(textElem);
@@ -363,6 +364,7 @@ export async function addCfgMenu() {
   reloadElem.title = t("reload_tooltip");
   reloadElem.addEventListener("click", () => {
     closeCfgMenu();
+    disableBeforeUnload();
     location.reload();
   });
 
@@ -376,6 +378,7 @@ export async function addCfgMenu() {
     if(confirm(t("reset_confirm"))) {
       await setDefaultFeatures();
       closeCfgMenu();
+      disableBeforeUnload();
       location.reload();
     }
   });
@@ -789,8 +792,10 @@ async function addImportMenu() {
 
       await saveFeatures(parsed.data);
 
-      if(confirm(t("import_success_confirm_reload")))
+      if(confirm(t("import_success_confirm_reload"))) {
+        disableBeforeUnload();
         return location.reload();
+      }
 
       siteEvents.emit("rebuildCfgMenu", parsed.data);
 

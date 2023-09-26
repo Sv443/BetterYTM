@@ -167,6 +167,6 @@ export function getDomain(): Domain {
 }
 
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
-export function getResourceUrl(name: keyof typeof resources) {
+export function getResourceUrl(name: keyof typeof resources | "_") {
   return GM.getResourceUrl(name);
 }

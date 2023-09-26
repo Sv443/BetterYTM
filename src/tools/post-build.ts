@@ -3,6 +3,7 @@ import { dirname, join, relative } from "path";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
 import dotenv from "dotenv";
+import langMapping from "../../assets/languages.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
@@ -205,6 +206,9 @@ async function getResourceDirectives() {
     const directives: string[] = [];
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
+
+    for(const [locale] of Object.entries(langMapping))
+      resources[`tr-${locale}`] = `translations/${locale}.json`;
 
     let longestName = 0;
     for(const name of Object.keys(resources))

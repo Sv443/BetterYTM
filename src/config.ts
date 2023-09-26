@@ -30,7 +30,7 @@ export const migrations: ConfigMigrationsDict = {
   // 3 -> 4
   4: (oldData: Record<string, unknown>) => ({
     ...oldData,
-    language: "en-US",
+    locale: "en_US",
   }),
 };
 

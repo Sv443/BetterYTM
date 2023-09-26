@@ -1,49 +1,42 @@
 import { tr, Stringifiable } from "@sv443-network/userutils";
-import { log } from "./utils";
+import { error, getResourceUrl, log } from "./utils";
+import langMapping from "../assets/languages.json" assert { type: "json" };
+import type tr_enUS from "../assets/translations/en_US.json";
 
-import tr_deDE from "../assets/translations/de-DE.json" assert { type: "json" };
-import tr_enUS from "../assets/translations/en-US.json" assert { type: "json" };
+export type TrLocale = keyof typeof langMapping;
+export type TrInfo = (typeof langMapping)["en_US"];
+type TFuncKey = keyof (typeof tr_enUS["translations"]) | "_";
 
-/** Mapping of language and locale code to translation file content */
-const langMapping = {
-  "de-DE": tr_deDE,
-  "en-US": tr_enUS,
-};
-
-
-export type TrLang = keyof typeof langMapping;
-export type TrInfo = Omit<typeof tr_enUS, "translations">;
-
-export const translations = Object.entries(langMapping).reduce((a, [lang, tr]) => {
-  // apply defaults from en-US in case of missing translations
-  a[lang as TrLang] = { ...tr_enUS.translations, ...tr.translations };
-  return a;
-}, {} as Record<TrLang, Record<string, string>>);
-
-export const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
-  const trInfo: TrInfo & Partial<{ translations: Record<string, string> }> = { ...tr };
-  delete trInfo.translations;
-  a[lang as TrLang] = trInfo;
-  return a;
-}, {} as Record<TrLang, TrInfo>);
-
+const initializedLocales = new Set<TrLocale>();
 
 /** Initializes the translations */
-export function initTranslations(language: TrLang) {
-  for(const [lang, trans] of Object.entries(translations))
-    tr.addLanguage(lang, trans);
+export async function initTranslations(locale: TrLocale) {
+  if(initializedLocales.has(locale))
+    return;
 
-  tr.setLanguage(language);
+  try {
+    // for(const [locale] of Object.entries(langMapping)) {
+    //   const trans = await (await fetch(await getResourceUrl(`tr-${locale}` as "_"))).json();
+    //   tr.addLanguage(locale, trans);
+    // }
 
-  log("Initialized translations for language", language);
+    const transUrl = await getResourceUrl(`tr-${locale}` as "_");
+    const transFile = await (await fetch(transUrl)).json();
+    tr.addLanguage(locale, transFile.translations);
+
+    log(`Loaded translations for locale '${locale}'`);
+  }
+  catch(err) {
+    const errStr = `Couldn't load translations for locale '${locale}'`;
+    error(errStr, err);
+    throw new Error(errStr);
+  }
 }
 
 /** Sets the current language for translations */
-export function setLanguage(language: TrLang) {
+export function setLanguage(language: TrLocale) {
   tr.setLanguage(language);
 }
-
-type TFuncKey = keyof (typeof tr_enUS["translations"]) | "_";
 
 /** Returns the translated string for the given key, after optionally inserting values */
 export function t(key: TFuncKey, ...values: Stringifiable[]) {

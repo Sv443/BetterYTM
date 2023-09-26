@@ -1,4 +1,5 @@
-import { t, trInfo } from "../translations";
+import langMapping from "../../assets/languages.json" assert { type: "json" };
+import { t } from "../translations";
 
 export * from "./input";
 export * from "./layout";
@@ -12,9 +13,9 @@ export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
 
 type SelectOption = { value: number | string, label: string };
 
-const langOptions = Object.entries(trInfo).reduce((a, [lang, langInfo]) => {
+const localeOptions = Object.entries(langMapping).reduce((a, [locale, langInfo]) => {
   return [...a, {
-    value: lang,
+    value: locale,
     label: `${langInfo.name}`,
   }];
 }, [] as SelectOption[])
@@ -136,11 +137,11 @@ export const featInfo = {
   },
 
   //#SECTION misc
-  language: {
+  locale: {
     type: "select",
     category: "misc",
-    options: langOptions,
-    default: "en-US",
+    options: localeOptions,
+    default: "en_US",
   },
   logLevel: {
     type: "select",
