@@ -30,8 +30,12 @@ app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
 // });
 
 // serves everything from `webpackConfig.output.path` (`dist/` by default)
-app.use(express.static(
+app.use("/", express.static(
   resolve(fileURLToPath(import.meta.url), "../../", webpackCfgOutput.path)
+));
+
+app.use("/assets", express.static(
+  resolve(fileURLToPath(import.meta.url), "../../../assets/")
 ));
 
 app.listen(devServerPort, "0.0.0.0", () => {

@@ -58,7 +58,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              https://raw.githubusercontent.com/${repo}/${branch}/assets/logo/logo_48.png
+// @icon              ${getResourceUrl("logo/logo_48.png")}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -220,7 +220,7 @@ async function getResourceDirectives() {
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`
+          : getResourceUrl(path)
       }`);
     }
 
@@ -231,6 +231,7 @@ async function getResourceDirectives() {
   }
 }
 
+/** Returns the @description directive block for each defined locale in `assets/languages.json` */
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
@@ -245,4 +246,11 @@ function getLocalizedDescriptions() {
   catch(err) {
     console.warn("No localized descriptions found:", err);
   }
+}
+
+/** Returns the full URL for a given relative asset/resource path, based on the current mode */
+function getResourceUrl(relativePath: string) {
+  return mode === "development"
+    ? `http://localhost:${devServerPort}/assets/${relativePath}`
+    : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
 }
