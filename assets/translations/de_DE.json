@@ -1,6 +1,4 @@
 {
-  "name": "Deutsch (Deutschland)",
-  "authors": [ "Sv443" ],
   "translations": {
     "config_menu_option": "%1 Einstellungen",
     "config_menu_title": "%1 - Einstellungen",

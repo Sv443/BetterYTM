@@ -1,6 +1,4 @@
 {
-  "name": "English (United States)",
-  "authors": [ "Sv443" ],
   "translations": {
     "config_menu_option": "%1 Configuration",
     "config_menu_title": "%1 - Configuration",
