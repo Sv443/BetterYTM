@@ -1,34 +1,42 @@
 {
   "de_DE": {
     "name": "Deutsch (Deutschland)",
+    "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungsverbesserungen für YouTube Music",
     "authors": ["Sv443"]
   },
   "en_US": {
     "name": "English (United States)",
+    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
     "authors": ["Sv443"]
   },
   "es_ES": {
     "name": "Español (España)",
+    "userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music",
     "authors": ["Sv443"]
   },
   "fr_FR": {
     "name": "Français (France)",
+    "userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music",
     "authors": ["Sv443"]
   },
   "hi_IN": {
     "name": "हिंदी (भारत)",
+    "userscriptDesc": "YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
     "authors": ["Sv443"]
   },
   "ja_JA": {
     "name": "日本語 (日本)",
+    "userscriptDesc": "YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
     "authors": ["Sv443"]
   },
   "pt_BR": {
     "name": "Português (Brasil)",
+    "userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music",
     "authors": ["Sv443"]
   },
   "zh_CN": {
-    "name": "中文（简体，中华人民共和国）",
+    "name": "中文（简化，中国）",
+    "userscriptDesc": "可配置的布局和YouTube Music的用户体验改进",
     "authors": ["Sv443"]
   }
 }

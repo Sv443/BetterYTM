@@ -37,38 +37,39 @@ type BuildStats = {
 
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `
-// @grant          GM.deleteValue
-// @grant          GM.registerMenuCommand
-// @grant          GM.listValues\
+// @grant             GM.deleteValue
+// @grant             GM.registerMenuCommand
+// @grant             GM.listValues\
 ` : undefined;
 
 (async () => {
   const resourcesDirectives = await getResourceDirectives();
+  const localizedDescriptions = getLocalizedDescriptions();
 
   const header = `\
 // ==UserScript==
-// @name           ${pkg.userscriptName}
-// @namespace      ${pkg.homepage}
-// @version        ${pkg.version}
-// @description    ${pkg.description}
-// @description:de ${pkg["description:de"]}
-// @homepageURL    ${pkg.homepage}#readme
-// @supportURL     ${pkg.bugs.url}
-// @license        ${pkg.license}
-// @author         ${pkg.author.name}
-// @copyright      ${pkg.author.name} (${pkg.author.url})
-// @icon           https://raw.githubusercontent.com/${repo}/${branch}/assets/logo/logo_48.png
-// @match          https://music.youtube.com/*
-// @match          https://www.youtube.com/*
-// @run-at         document-start
-// @downloadURL    ${scriptUrl}
-// @updateURL      ${scriptUrl}
-// @connect        api.sv443.net
-// @grant          GM.getValue
-// @grant          GM.setValue
-// @grant          GM.getResourceUrl
-// @grant          GM.setClipboard
-// @grant          unsafeWindow
+// @name              ${pkg.userscriptName}
+// @namespace         ${pkg.homepage}
+// @version           ${pkg.version}
+// @description       ${pkg.description}\
+${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
+// @homepageURL       ${pkg.homepage}#readme
+// @supportURL        ${pkg.bugs.url}
+// @license           ${pkg.license}
+// @author            ${pkg.author.name}
+// @copyright         ${pkg.author.name} (${pkg.author.url})
+// @icon              https://raw.githubusercontent.com/${repo}/${branch}/assets/logo/logo_48.png
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @downloadURL       ${scriptUrl}
+// @updateURL         ${scriptUrl}
+// @connect           api.sv443.net
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${devDirectives ?? ""}
@@ -216,7 +217,7 @@ async function getResourceDirectives() {
 
     for(const [name, path] of Object.entries(resources)) {
       const bufferSpace = " ".repeat(longestName - name.length);
-      directives.push(`// @resource       ${name}${bufferSpace} ${
+      directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
           : `https://raw.githubusercontent.com/Sv443/BetterYTM/${branch}/assets/${path}`
@@ -227,5 +228,21 @@ async function getResourceDirectives() {
   }
   catch(err) {
     console.warn("No resource directives found:", err);
+  }
+}
+
+function getLocalizedDescriptions() {
+  try {
+    const descriptions: string[] = [];
+    for(const [locale, { userscriptDesc }] of Object.entries(langMapping)) {
+      let loc = locale.replace(/_/, "-");
+      if(loc.length < 5)
+        loc += " ".repeat(5 - loc.length);
+      descriptions.push(`// @description:${loc} ${userscriptDesc}`);
+    }
+    return descriptions.join("\n") + "\n";
+  }
+  catch(err) {
+    console.warn("No localized descriptions found:", err);
   }
 }

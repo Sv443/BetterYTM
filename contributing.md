@@ -14,9 +14,8 @@ If you have any questions or need help, feel free to contact me, [see my homepag
   1. Create a file in the folder [`assets/translations/`](./assets/translations/) with the format `langCode-localeCode.json`
   2. Insert your translated version of the original file
   3. Create the mapping in `assets/languages.json` (please make sure it's alphabetically ordered)
-  4. Translate the description in `package.json` by following the same format as the other translation(s)
-  5. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by also following the same format as the other translation(s)
-  6. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
+  4. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by following the same format as the other translation(s)
+  5. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
 6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
   Make sure you also translate the `description` inside of `package.json` for me
 
