@@ -1,41 +1,56 @@
 // ==UserScript==
-// @name           BetterYTM
-// @namespace      https://github.com/Sv443/BetterYTM
-// @version        1.1.0
-// @description    Configurable layout and UX improvements for YouTube Music
-// @description:de Konfigurierbares Layout und UX-Verbesserungen für YouTube Music
-// @homepageURL    https://github.com/Sv443/BetterYTM#readme
-// @supportURL     https://github.com/Sv443/BetterYTM/issues
-// @license        MIT
-// @author         Sv443
-// @copyright      Sv443 (https://github.com/Sv443)
-// @icon           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @match          https://music.youtube.com/*
-// @match          https://www.youtube.com/*
-// @run-at         document-start
-// @downloadURL    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @updateURL      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @connect        api.sv443.net
-// @grant          GM.getValue
-// @grant          GM.setValue
-// @grant          GM.getResourceUrl
-// @grant          GM.setClipboard
-// @grant          unsafeWindow
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           1.1.0
+// @description       Configurable layout and user experience improvements for YouTube Music
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungsverbesserungen für YouTube Music
+// @description:en-US Configurable layout and user experience improvements for YouTube Music
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music
+// @description:hi-IN YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार
+// @description:ja-JA YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music
+// @description:zh-CN 可配置的布局和YouTube Music的用户体验改进
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           MIT
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @connect           api.sv443.net
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             unsafeWindow
 // @noframes
-// @resource       logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource       close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource       delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource       error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource       lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource       spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource       arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource       skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource       github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource       greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource       openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @grant          GM.deleteValue
-// @grant          GM.registerMenuCommand
-// @grant          GM.listValues
+// @resource          logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          tr-de_DE   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          tr-en_US   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          tr-es_ES   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          tr-fr_FR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          tr-hi_IN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          tr-ja_JA   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          tr-pt_BR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          tr-zh_CN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @grant             GM.deleteValue
+// @grant             GM.registerMenuCommand
+// @grant             GM.listValues
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -138,7 +153,7 @@ const migrations = {
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
     // 3 -> 4
-    4: (oldData) => (Object.assign(Object.assign({}, oldData), { language: "en-US" })),
+    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US" })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -224,7 +239,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "8956b84", // asserted as generic string instead of literal
+    buildNumber: "53b2865", // asserted as generic string instead of literal
 };
 
 
@@ -315,47 +330,49 @@ function initSiteEvents() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addAnchorImprovements; },
-/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addConfigMenuOption; },
-/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addLyricsCacheEntry; },
-/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.addMediaCtrlLyricsBtn; },
-/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addScrollToActiveBtn; },
-/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.addWatermark; },
-/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.createLyricsBtn; },
-/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.disableBeforeUnload; },
-/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.enableBeforeUnload; },
+/* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addAnchorImprovements; },
+/* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addConfigMenuOption; },
+/* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addLyricsCacheEntry; },
+/* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn; },
+/* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addScrollToActiveBtn; },
+/* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addWatermark; },
+/* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.createLyricsBtn; },
+/* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.disableBeforeUnload; },
+/* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.enableBeforeUnload; },
 /* harmony export */   featInfo: function() { return /* binding */ featInfo; },
-/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.fixSpacing; },
-/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.geniUrlBase; },
-/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getCurrentLyricsUrl; },
-/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getGeniusUrl; },
-/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.getLyricsCacheEntry; },
-/* harmony export */   improveLogo: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.improveLogo; },
-/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initArrowKeySkip; },
-/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initAutoCloseToasts; },
-/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initBeforeUnloadHook; },
-/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initNumKeysSkip; },
-/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initQueueButtons; },
-/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_1__.initSiteSwitch; },
-/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.initVolumeFeatures; },
-/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.preInitLayout; },
-/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeShareTrackingParam; },
-/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_2__.removeUpgradeTab; },
-/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeArtists; },
-/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.sanitizeSong; },
-/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_3__.splitVideoTitle; }
+/* harmony export */   fixSpacing: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.fixSpacing; },
+/* harmony export */   geniUrlBase: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.geniUrlBase; },
+/* harmony export */   getCurrentLyricsUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getCurrentLyricsUrl; },
+/* harmony export */   getGeniusUrl: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getGeniusUrl; },
+/* harmony export */   getLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.getLyricsCacheEntry; },
+/* harmony export */   improveLogo: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.improveLogo; },
+/* harmony export */   initArrowKeySkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initArrowKeySkip; },
+/* harmony export */   initAutoCloseToasts: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initAutoCloseToasts; },
+/* harmony export */   initBeforeUnloadHook: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initBeforeUnloadHook; },
+/* harmony export */   initNumKeysSkip: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initNumKeysSkip; },
+/* harmony export */   initQueueButtons: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initQueueButtons; },
+/* harmony export */   initSiteSwitch: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.initSiteSwitch; },
+/* harmony export */   initVolumeFeatures: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.initVolumeFeatures; },
+/* harmony export */   preInitLayout: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.preInitLayout; },
+/* harmony export */   removeShareTrackingParam: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeShareTrackingParam; },
+/* harmony export */   removeUpgradeTab: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.removeUpgradeTab; },
+/* harmony export */   sanitizeArtists: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeArtists; },
+/* harmony export */   sanitizeSong: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.sanitizeSong; },
+/* harmony export */   splitVideoTitle: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
-/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
-/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
-/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
+/* harmony import */ var _assets_languages_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../assets/languages.json */ "./assets/languages.json");
+/* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
+/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./input */ "./src/features/input.ts");
+/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./layout */ "./src/features/layout.ts");
+/* harmony import */ var _lyrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lyrics */ "./src/features/lyrics.ts");
 
 
 
 
-const langOptions = Object.entries(_translations__WEBPACK_IMPORTED_MODULE_0__.trInfo).reduce((a, [lang, langInfo]) => {
+
+const localeOptions = Object.entries(_assets_languages_json__WEBPACK_IMPORTED_MODULE_0__).reduce((a, [locale, langInfo]) => {
     return [...a, {
-            value: lang,
+            value: locale,
             label: `${langInfo.name}`,
         }];
 }, [])
@@ -473,18 +490,18 @@ const featInfo = {
         default: true,
     },
     //#SECTION misc
-    language: {
+    locale: {
         type: "select",
         category: "misc",
-        options: langOptions,
-        default: "en-US",
+        options: localeOptions,
+        default: "en_US",
     },
     logLevel: {
         type: "select",
         category: "misc",
         options: () => [
-            { value: 0, label: (0,_translations__WEBPACK_IMPORTED_MODULE_0__.t)("log_level_debug") },
-            { value: 1, label: (0,_translations__WEBPACK_IMPORTED_MODULE_0__.t)("log_level_info") },
+            { value: 0, label: (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("log_level_debug") },
+            { value: 1, label: (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("log_level_info") },
         ],
         default: 1,
     },
@@ -660,8 +677,10 @@ function initBeforeUnloadHook() {
         window.__proto__.addEventListener = function (...args) {
             const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
             args[1] = function (...a) {
-                if (!beforeUnloadEnabled && args[0] === "beforeunload")
-                    return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Prevented beforeunload event listener from being called");
+                if (!beforeUnloadEnabled && args[0] === "beforeunload") {
+                    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Prevented beforeunload event listener from being called");
+                    return false;
+                }
                 else
                     return origListener.apply(this, a);
             };
@@ -1670,7 +1689,7 @@ let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
-let lastLang;
+let initLocale;
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1678,7 +1697,10 @@ let lastLang;
 function addCfgMenu() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
-        lastLang = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().language;
+        initLocale = (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)().locale;
+        const initLangReloadText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("lang_changed_prompt_reload");
+        const toggled_on = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("toggled_on");
+        const toggled_off = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("toggled_off");
         //#SECTION backdrop & menu container
         const backgroundElem = document.createElement("div");
         backgroundElem.id = "bytm-cfg-menu-bg";
@@ -1748,13 +1770,13 @@ function addCfgMenu() {
             const featConf = Object.assign({}, (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)());
             featConf[key] = newVal;
             yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(featConf);
-            if (lastLang !== featConf.language) {
-                const oldText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("lang_changed_prompt_reload");
-                lastLang = featConf.language;
-                (0,_translations__WEBPACK_IMPORTED_MODULE_6__.setLanguage)(featConf.language);
+            if (initLocale !== featConf.locale) {
+                yield (0,_translations__WEBPACK_IMPORTED_MODULE_6__.initTranslations)(featConf.locale);
+                (0,_translations__WEBPACK_IMPORTED_MODULE_6__.setLanguage)(featConf.locale);
                 const newText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("lang_changed_prompt_reload");
-                if (confirm(`${newText}\n\n${oldText}`)) {
+                if (confirm(`${newText}\n\n────────────────────────────────\n\n${initLangReloadText}`)) {
                     closeCfgMenu();
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.disableBeforeUnload)();
                     location.reload();
                 }
             }
@@ -1768,7 +1790,7 @@ function addCfgMenu() {
             return acc;
         }, {});
         const fmtVal = (v) => String(v).trim();
-        const toggleLabelText = (toggled) => toggled ? (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("toggled_on") : (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("toggled_off");
+        const toggleLabelText = (toggled) => toggled ? toggled_on : toggled_off;
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const catHeaderElem = document.createElement("h3");
@@ -1790,7 +1812,7 @@ function addCfgMenu() {
                 const ftConfElem = document.createElement("div");
                 ftConfElem.classList.add("bytm-ftitem");
                 {
-                    const textElem = document.createElement("div");
+                    const textElem = document.createElement("span");
                     textElem.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)(`feature_desc_${featKey}`);
                     ftConfElem.appendChild(textElem);
                 }
@@ -1951,6 +1973,7 @@ function addCfgMenu() {
         reloadElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reload_tooltip");
         reloadElem.addEventListener("click", () => {
             closeCfgMenu();
+            (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.disableBeforeUnload)();
             location.reload();
         });
         footerElem.appendChild(reloadElem);
@@ -1962,6 +1985,7 @@ function addCfgMenu() {
             if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("reset_confirm"))) {
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.setDefaultFeatures)();
                 closeCfgMenu();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.disableBeforeUnload)();
                 location.reload();
             }
         }));
@@ -2299,8 +2323,10 @@ function addImportMenu() {
                 else if (parsed.formatVersion !== _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion)
                     return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_wrong_format_version", _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, parsed.formatVersion));
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.saveFeatures)(parsed.data);
-                if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_success_confirm_reload")))
+                if (confirm((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_success_confirm_reload"))) {
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_3__.disableBeforeUnload)();
                     return location.reload();
+                }
                 _events__WEBPACK_IMPORTED_MODULE_5__.siteEvents.emit("rebuildCfgMenu", parsed.data);
                 closeImportMenu();
                 openCfgMenu();
@@ -2457,40 +2483,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initTranslations: function() { return /* binding */ initTranslations; },
 /* harmony export */   pl: function() { return /* binding */ pl; },
 /* harmony export */   setLanguage: function() { return /* binding */ setLanguage; },
-/* harmony export */   t: function() { return /* binding */ t; },
-/* harmony export */   trInfo: function() { return /* binding */ trInfo; },
-/* harmony export */   translations: function() { return /* binding */ translations; }
+/* harmony export */   t: function() { return /* binding */ t; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
-/* harmony import */ var _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/translations/de-DE.json */ "./assets/translations/de-DE.json");
-/* harmony import */ var _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/translations/en-US.json */ "./assets/translations/en-US.json");
-
-
-
-
-/** Mapping of language and locale code to translation file content */
-const langMapping = {
-    "de-DE": _assets_translations_de_DE_json__WEBPACK_IMPORTED_MODULE_2__,
-    "en-US": _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__,
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-const translations = Object.entries(langMapping).reduce((a, [lang, tr]) => {
-    // apply defaults from en-US in case of missing translations
-    a[lang] = Object.assign(Object.assign({}, _assets_translations_en_US_json__WEBPACK_IMPORTED_MODULE_3__.translations), tr.translations);
-    return a;
-}, {});
-const trInfo = Object.entries(langMapping).reduce((a, [lang, tr]) => {
-    const trInfo = Object.assign({}, tr);
-    delete trInfo.translations;
-    a[lang] = trInfo;
-    return a;
-}, {});
+
+
+const initializedLocales = new Set();
 /** Initializes the translations */
-function initTranslations(language) {
-    for (const [lang, trans] of Object.entries(translations))
-        _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.addLanguage(lang, trans);
-    _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.setLanguage(language);
-    (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)("Initialized translations for language", language);
+function initTranslations(locale) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (initializedLocales.has(locale))
+            return;
+        try {
+            // for(const [locale] of Object.entries(langMapping)) {
+            //   const trans = await (await fetch(await getResourceUrl(`tr-${locale}` as "_"))).json();
+            //   tr.addLanguage(locale, trans);
+            // }
+            const transUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)(`tr-${locale}`);
+            const transFile = yield (yield fetch(transUrl)).json();
+            _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.addLanguage(locale, transFile.translations);
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Loaded translations for locale '${locale}'`);
+        }
+        catch (err) {
+            const errStr = `Couldn't load translations for locale '${locale}'`;
+            (0,_utils__WEBPACK_IMPORTED_MODULE_1__.error)(errStr, err);
+            throw new Error(errStr);
+        }
+    });
 }
 /** Sets the current language for translations */
 function setLanguage(language) {
@@ -3172,23 +3201,13 @@ let createNanoEvents = () => ({
 
 /***/ }),
 
-/***/ "./assets/translations/de-DE.json":
-/*!****************************************!*\
-  !*** ./assets/translations/de-DE.json ***!
-  \****************************************/
+/***/ "./assets/languages.json":
+/*!*******************************!*\
+  !*** ./assets/languages.json ***!
+  \*******************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"Deutsch (Deutschland)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Einstellungen","config_menu_title":"%1 - Einstellungen","changelog_menu_title":"%1 - Änderungsprotokoll","export_menu_title":"%1 - Einstellungen exportieren","import_menu_title":"%1 - Einstellungen importieren","open_menu_tooltip":"%1\'s Einstellungen öffnen","close_menu_tooltip":"Klicke um das Menü zu schließen","reload_hint":"Du musst die Seite neu laden, um Änderungen zu speichern","reload_now":"Jetzt neu laden","reload_tooltip":"Seite neu laden","version_tooltip":"Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen","export":"Exportieren","export_hint":"Kopiere den folgenden Text um deine Einstellungen zu exportieren:","export_tooltip":"Exportiere deine aktuellen Einstellungen","import":"Importieren","import_hint":"Füge die Einstellungen, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:","import_tooltip":"Importiere Einstellungen, die du zuvor exportiert hast","start_import_tooltip":"Klicke um die Einstellungen, die du oben eingefügt hast, zu importieren","import_error_invalid":"Die importierten Daten sind ungültig","import_error_no_format_version":"Die importierten Daten enthalten keine Format-Version","import_error_no_data":"Das importierte Objekt enthält keine Daten","import_error_wrong_format_version":"Die importierten Daten haben eine nicht unterstützte Format-Version (%1 oder niedriger erwartet, aber %2 erhalten)","import_success_confirm_reload":"Die Einstellungen wurde erfolgreich importiert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","reset":"Zurücksetzen","reset_tooltip":"Alle Einstellungen auf ihre Standardwerte zurücksetzen","reset_confirm":"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\\nDie Seite wird automatisch neu geladen.","copy_to_clipboard":"In die Zwischenablage kopieren","copy_config_tooltip":"Kopiere die Einstellungen in die Zwischenablage","copied_notice":"Kopiert!","open_github":"Öffne %1 auf GitHub","open_greasyfork":"Öffne %1 auf GreasyFork","open_openuserjs":"Öffne %1 auf OpenUserJS","open_current_lyrics":"Öffne den Songtext vom aktuellen Song in einem neuen Tab","open_lyrics":"Öffne den Songtext in einem neuen Tab","lyrics_loading":"Songtext-URL wird geladen...","lyrics_rate_limited-1":"Du hast zu viele Anfragen gesendet.\\nBitte warte ein paar Sekunden, bevor du weitere Songtexte anforderst.","lyrics_rate_limited-n":"Du hast zu viele Anfragen gesendet.\\nBitte warte %1 Sekunden, bevor du weitere Songtexte anforderst.","lyrics_not_found_confirm_open_search":"Für diesen Song konnte kein Songtext gefunden werden.\\nMöchtest du genius.com öffnen, um manuell danach zu suchen?","lyrics_not_found_click_open_search":"Es konnte kein Songtext gefunden werden - klicke um die manuelle Suche zu öffnen","remove_from_queue":"Aus der Wiedergabeliste entfernen","scroll_to_playing":"Zum aktiven Song scrollen","scroll_to_bottom":"Zum Ende der Wiedergabeliste scrollen","volume_tooltip":"Lautstärke: %1% (Sensitivität: %2%)","middle_click_open_tab":"Mittelklick um in einem neuen Tab zu öffnen","log_level_debug":"Debug (sehr viele)","log_level_info":"Info (nur wichtige)","toggled_on":"An","toggled_off":"Aus","lang_changed_prompt_reload":"Die Sprache wurde geändert.\\nMöchtest du die Seite jetzt neu laden, um die Änderungen zu übernehmen?","feature_category_input":"Eingabe","feature_category_layout":"Layout","feature_category_lyrics":"Songtexte","feature_category_misc":"Sonstiges","feature_desc_removeUpgradeTab":"Entferne den Upgrade / Premium Tab","feature_desc_volumeSliderLabel":"Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu","feature_desc_volumeSliderSize":"Die Breite des Lautstärkereglers in Pixeln","feature_desc_volumeSliderStep":"Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)","feature_desc_watermarkEnabled":"Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet","feature_desc_deleteFromQueueButton":"Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen","feature_desc_closeToastsTimeout":"Nach wie vielen Sekunden permanente Benachrichtigungen geschlossen werden sollen - 0 für manuelles Schließen","feature_desc_removeShareTrackingParam":"Entferne den Tracking-Parameter \\"&si\\" von URLs im \\"Teilen\\" Popup","feature_desc_fixSpacing":"Behebe diverse Abstandprobleme im Layout","feature_desc_scrollToActiveSongBtn":"Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen","feature_desc_arrowKeySupport":"Benutze die Pfeiltasten um 10 Sekunden vor- oder zurückzuspulen","feature_desc_switchBetweenSites":"Füge F9 als Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln","feature_desc_switchSitesHotkey":"Welcher Hotkey muss gedrückt werden, um zwischen den Seiten zu wechseln?","feature_desc_disableBeforeUnloadPopup":"Verhindere das Erscheinen des Bestätigungs-Popup beim Verlassen der Seite, während ein Song läuft","feature_desc_anchorImprovements":"Links auf der Seite erstellen und verbessern, damit Dinge einfacher in einem neuen Tab geöffnet werden können","feature_desc_numKeysSkipToTime":"Das Drücken einer Zahlentaste (0-9) springt zu einer bestimmten Zeit im Video","feature_desc_geniusLyrics":"Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen","feature_desc_lyricsQueueButton":"Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen","feature_desc_language":"Sprache 🌐","feature_desc_logLevel":"Wie viele Informationen sollen in der Konsole geloggt werden?"}}');
-
-/***/ }),
-
-/***/ "./assets/translations/en-US.json":
-/*!****************************************!*\
-  !*** ./assets/translations/en-US.json ***!
-  \****************************************/
-/***/ (function(module) {
-
-module.exports = JSON.parse('{"name":"English (United States)","authors":["Sv443"],"translations":{"config_menu_option":"%1 Configuration","config_menu_title":"%1 - Configuration","changelog_menu_title":"%1 - Changelog","export_menu_title":"%1 - Export Configuration","import_menu_title":"%1 - Import Configuration","open_menu_tooltip":"Open %1\'s configuration menu","close_menu_tooltip":"Close the menu","reload_hint":"You need to reload the page to apply any changes.","reload_now":"Reload now","reload_tooltip":"Reload the page","version_tooltip":"Version %1 (build %2) - click to open the changelog","export":"Export","export_hint":"Copy the following text to export your configuration:","export_tooltip":"Export your current configuration","import":"Import","import_hint":"Paste the configuration you want to import into the field below, then click the import button:","import_tooltip":"Import a configuration you have previously exported","start_import_tooltip":"Click to import the configuration you pasted above","import_error_invalid":"The imported data is invalid","import_error_no_format_version":"The imported data does not contain a format version","import_error_no_data":"The imported object does not contain any data","import_error_wrong_format_version":"The imported data is in an unsupported format version (expected %1 or lower but got %2)","import_success_confirm_reload":"Successfully imported the configuration.\\nDo you want to reload the page now to apply changes?","reset":"Reset","reset_tooltip":"Reset all settings to their default values","reset_confirm":"Do you really want to reset all settings to their default values?\\nThe page will be automatically reloaded.","copy_to_clipboard":"Copy to clipboard","copy_config_tooltip":"Copy the configuration to your clipboard","copied_notice":"Copied!","open_github":"Open %1 on GitHub","open_greasyfork":"Open %1 on GreasyFork","open_openuserjs":"Open %1 on OpenUserJS","open_current_lyrics":"Open the current song\'s lyrics in a new tab","open_lyrics":"Open this song\'s lyrics in a new tab","lyrics_loading":"Loading lyrics URL...","lyrics_rate_limited-1":"You are being rate limited.\\nPlease wait a few seconds before requesting more lyrics.","lyrics_rate_limited-n":"You are being rate limited.\\nPlease wait %1 seconds before requesting more lyrics.","lyrics_not_found_confirm_open_search":"Couldn\'t find a lyrics page for this song.\\nDo you want to open genius.com to manually search for it?","lyrics_not_found_click_open_search":"Couldn\'t find lyrics URL - click to open the manual lyrics search","remove_from_queue":"Remove this song from the queue","scroll_to_playing":"Scroll to the currently playing song","scroll_to_bottom":"Click to scroll to the bottom","volume_tooltip":"Volume: %1% (Sensitivity: %2%)","middle_click_open_tab":"Middle-click to open in a new tab","log_level_debug":"Debug (most)","log_level_info":"Info (only important)","toggled_on":"On","toggled_off":"Off","lang_changed_prompt_reload":"The language was changed.\\nDo you want to reload the page now to apply changes?","feature_category_input":"Input","feature_category_layout":"Layout","feature_category_lyrics":"Lyrics","feature_category_misc":"Other","feature_desc_removeUpgradeTab":"Remove the Upgrade / Premium tab","feature_desc_volumeSliderLabel":"Add a percentage label next to the volume slider","feature_desc_volumeSliderSize":"The width of the volume slider in pixels","feature_desc_volumeSliderStep":"Volume slider sensitivity (by how little percent the volume can be changed at a time)","feature_desc_watermarkEnabled":"Show a watermark under the site logo that opens this config menu","feature_desc_deleteFromQueueButton":"Add a button to each song in the queue to quickly remove it","feature_desc_closeToastsTimeout":"After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)","feature_desc_removeShareTrackingParam":"Remove the tracking parameter \\"&si\\" from links in the share popup","feature_desc_fixSpacing":"Fix spacing issues in the layout","feature_desc_scrollToActiveSongBtn":"Add a button to the queue to scroll to the currently playing song","feature_desc_arrowKeySupport":"Use arrow keys to skip forwards and backwards by 10 seconds","feature_desc_switchBetweenSites":"Add F9 as a hotkey to switch between the YT and YTM sites on a video / song","feature_desc_switchSitesHotkey":"Which hotkey needs to be pressed to switch sites?","feature_desc_disableBeforeUnloadPopup":"Prevent the confirmation popup that appears when trying to leave the site while a song is playing","feature_desc_anchorImprovements":"Add and improve links all over the page so things can be opened in a new tab easier","feature_desc_numKeysSkipToTime":"Enable skipping to a specific time in the video by pressing a number key (0-9)","feature_desc_geniusLyrics":"Add a button to the media controls of the currently playing song to open its lyrics on genius.com","feature_desc_lyricsQueueButton":"Add a button to each song in the queue to quickly open its lyrics page","feature_desc_language":"Language 🌐","feature_desc_logLevel":"How much information to log to the console"}}');
+module.exports = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungsverbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
 
 /***/ })
 
@@ -3305,7 +3324,7 @@ function preInit() {
     init();
 }
 function init() {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             registerMenuCommands();
@@ -3318,7 +3337,8 @@ function init() {
                 domLoaded = true;
             });
             const ftConfig = yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.initConfig)();
-            (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)((_a = ftConfig.language) !== null && _a !== void 0 ? _a : "en-US");
+            yield (0,_translations__WEBPACK_IMPORTED_MODULE_5__.initTranslations)((_a = ftConfig.locale) !== null && _a !== void 0 ? _a : "en_US");
+            (0,_translations__WEBPACK_IMPORTED_MODULE_5__.setLanguage)((_b = ftConfig.locale) !== null && _b !== void 0 ? _b : "en_US");
             (0,_utils__WEBPACK_IMPORTED_MODULE_3__.setLogLevel)(ftConfig.logLevel);
             (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.preInitLayout)(ftConfig);
             if (ftConfig.disableBeforeUnloadPopup)
@@ -3969,6 +3989,7 @@ function registerMenuCommands() {
         GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
             if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
                 yield (0,_config__WEBPACK_IMPORTED_MODULE_1__.clearConfig)();
+                (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.disableBeforeUnload)();
                 location.reload();
             }
         }), "r");
