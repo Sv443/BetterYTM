@@ -71,7 +71,7 @@
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
     "feature_desc_lyricsQueueButton": "Add a button to each song in the queue to quickly open its lyrics page",
-    "feature_desc_language": "Language 🌐",
+    "feature_desc_locale": "Language 🌐",
     "feature_desc_logLevel": "How much information to log to the console"
   }
 }

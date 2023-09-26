@@ -71,7 +71,7 @@
     "feature_desc_numKeysSkipToTime": "Das Drücken einer Zahlentaste (0-9) springt zu einer bestimmten Zeit im Video",
     "feature_desc_geniusLyrics": "Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen",
     "feature_desc_lyricsQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen",
-    "feature_desc_language": "Sprache 🌐",
+    "feature_desc_locale": "Sprache 🌐",
     "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?"
   }
 }

@@ -71,7 +71,7 @@
     "feature_desc_numKeysSkipToTime": "Ative a capacidade de pular para um horário específico no vídeo pressionando uma tecla numérica (0-9)",
     "feature_desc_geniusLyrics": "Adicione um botão aos controles de mídia da música que está tocando atualmente para abrir suas letras em genius.com",
     "feature_desc_lyricsQueueButton": "Adicione um botão a cada música na fila para abrir rapidamente sua página de letras",
-    "feature_desc_language": "Idioma 🌐",
+    "feature_desc_locale": "Idioma 🌐",
     "feature_desc_logLevel": "Quanta informação registrar no console"
   }
 }

@@ -71,7 +71,7 @@
     "feature_desc_numKeysSkipToTime": "数字キー (0-9) を押して特定の時間にスキップする",
     "feature_desc_geniusLyrics": "現在再生中の曲のメディアコントロールにボタンを追加して、genius.com で歌詞を開く",
     "feature_desc_lyricsQueueButton": "キュー内の各曲にボタンを追加して、すばやく歌詞ページを開く",
-    "feature_desc_language": "言語 🌐",
+    "feature_desc_locale": "言語 🌐",
     "feature_desc_logLevel": "ログレベル"
   }
 }

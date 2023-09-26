@@ -71,7 +71,7 @@
     "feature_desc_numKeysSkipToTime": "Habilitar el salto a un momento específico en el video presionando una tecla numérica (0-9)",
     "feature_desc_geniusLyrics": "Agregue un botón a los controles multimedia de la canción que se está reproduciendo actualmente para abrir sus letras en genius.com",
     "feature_desc_lyricsQueueButton": "Agregue un botón a cada canción en la cola para abrir rápidamente su página de letras",
-    "feature_desc_language": "Idioma 🌐",
+    "feature_desc_locale": "Idioma 🌐",
     "feature_desc_logLevel": "Cuánta información registrar en la consola"
   }
 }
