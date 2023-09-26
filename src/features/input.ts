@@ -166,8 +166,10 @@ export function initBeforeUnloadHook() {
     window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
       const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
       args[1] = function(...a) {
-        if(!beforeUnloadEnabled && args[0] === "beforeunload")
-          return info("Prevented beforeunload event listener from being called");
+        if(!beforeUnloadEnabled && args[0] === "beforeunload") {
+          info("Prevented beforeunload event listener from being called");
+          return false;
+        }
         else
           return origListener.apply(this, a);
       };
