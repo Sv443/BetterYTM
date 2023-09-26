@@ -1,7 +1,7 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, warn } from "../utils";
+import { error, getResourceUrl, info, log, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../events";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
@@ -695,4 +695,76 @@ export function addScrollToActiveBtn() {
       tabElem.appendChild(containerElem);
     },
   });
+}
+
+//#MARKER boost gain button
+
+const gainBoostMultiplier = 2.0;
+let gainBoosted = false;
+
+/** Adds a button to the media controls to boost the current song's gain */
+export async function addBoostGainButton() {
+  const boltFilledSrc = await getResourceUrl("bolt_filled");
+  const boltOutlinedSrc = await getResourceUrl("bolt_outlined");
+
+  const btnElem = await createMediaCtrlBtn(boltOutlinedSrc);
+  btnElem.id = "bytm-boost-gain-btn";
+  btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+
+  let amplify: ReturnType<typeof amplifyMedia>["amplify"] | undefined;
+
+  btnElem.addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const btnElem = document.querySelector<HTMLElement>("#bytm-boost-gain-btn");
+    const videoElem = document.querySelector<HTMLVideoElement>("ytmusic-player video");
+    const imgElem = btnElem?.querySelector<HTMLImageElement>("img");
+
+    if(!videoElem || !imgElem || !btnElem)
+      return;
+
+    if(!gainBoosted) {
+      gainBoosted = true;
+      if(amplify)
+        amplify(gainBoostMultiplier);
+      else
+        amplify = amplifyMedia(videoElem, gainBoostMultiplier).amplify;
+      imgElem.src = boltFilledSrc;
+      btnElem.title = t("boost_gain_disable_tooltip");
+      info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
+    }
+    else {
+      gainBoosted = false;
+      amplify!(1.0);
+      imgElem.src = boltOutlinedSrc;
+      btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+      info("Disabled gain boost");
+    }
+  });
+
+  onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+    listener: (likeCont) => {
+      insertAfter(likeCont, btnElem);
+      log("Added gain booster button");
+    },
+  });
+}
+
+/** Creates a base media control button element */
+export async function createMediaCtrlBtn(imgSrc?: string) {
+  const linkElem = document.createElement("span");
+  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+  linkElem.role = "button";
+  linkElem.style.visibility = "initial";
+  linkElem.style.display = "inline-flex";
+
+  const imgElem = document.createElement("img");
+  imgElem.classList.add("bytm-generic-btn-img");
+  if(imgSrc)
+    imgElem.src = imgSrc;
+
+  linkElem.appendChild(imgElem);
+
+  return linkElem;
 }

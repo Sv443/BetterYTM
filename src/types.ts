@@ -51,6 +51,8 @@ export interface FeatureConfig {
   fixSpacing: boolean;
   /** Add a button to the queue to scroll to the currently playing song */
   scrollToActiveSongBtn: boolean;
+  /** Add a button to the media controls to boost the current song's gain */
+  boostGain: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

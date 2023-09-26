@@ -20,6 +20,7 @@ import {
   addAnchorImprovements, initNumKeysSkip,
   // menu
   addConfigMenuOption,
+  addBoostGainButton,
 } from "./features/index";
 
 {
@@ -163,6 +164,9 @@ async function initFeatures() {
 
       if(features.scrollToActiveSongBtn)
         addScrollToActiveBtn();
+
+      if(features.boostGain)
+        addBoostGainButton();
 
       initVolumeFeatures();
     }

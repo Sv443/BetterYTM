@@ -85,6 +85,11 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  boostGain: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+  },
 
   //#SECTION input
   arrowKeySupport: {

@@ -31,6 +31,7 @@ export const migrations: ConfigMigrationsDict = {
   4: (oldData: Record<string, unknown>) => ({
     ...oldData,
     locale: "en_US",
+    boostGain: true,
   }),
 };
 
