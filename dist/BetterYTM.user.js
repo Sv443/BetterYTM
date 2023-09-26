@@ -29,25 +29,27 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          tr-de_DE   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          tr-en_US   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          tr-es_ES   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          tr-fr_FR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          tr-hi_IN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          tr-ja_JA   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          tr-pt_BR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          tr-zh_CN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          logo          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          close         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          delete        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          error         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          lyrics        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          spinner       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          arrow_down    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          skip_to       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          bolt_outlined https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/bolt_outlined.svg
+// @resource          bolt_filled   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/bolt_filled.svg
+// @resource          github        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          greasyfork    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          openuserjs    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          tr-de_DE      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          tr-en_US      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          tr-es_ES      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          tr-fr_FR      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          tr-hi_IN      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          tr-ja_JA      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          tr-pt_BR      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          tr-zh_CN      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // @grant             GM.deleteValue
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
@@ -153,7 +155,7 @@ const migrations = {
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
     // 3 -> 4
-    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US" })),
+    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true })),
 };
 const defaultConfig = Object.keys(_features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo)
     .reduce((acc, key) => {
@@ -239,7 +241,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "1ccb435", // asserted as generic string instead of literal
+    buildNumber: "9ae0c6d", // asserted as generic string instead of literal
 };
 
 
@@ -331,12 +333,14 @@ function initSiteEvents() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addAnchorImprovements; },
+/* harmony export */   addBoostGainButton: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addBoostGainButton; },
 /* harmony export */   addConfigMenuOption: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addConfigMenuOption; },
 /* harmony export */   addLyricsCacheEntry: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addLyricsCacheEntry; },
 /* harmony export */   addMediaCtrlLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.addMediaCtrlLyricsBtn; },
 /* harmony export */   addScrollToActiveBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addScrollToActiveBtn; },
 /* harmony export */   addWatermark: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.addWatermark; },
 /* harmony export */   createLyricsBtn: function() { return /* reexport safe */ _lyrics__WEBPACK_IMPORTED_MODULE_4__.createLyricsBtn; },
+/* harmony export */   createMediaCtrlBtn: function() { return /* reexport safe */ _layout__WEBPACK_IMPORTED_MODULE_3__.createMediaCtrlBtn; },
 /* harmony export */   disableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.disableBeforeUnload; },
 /* harmony export */   enableBeforeUnload: function() { return /* reexport safe */ _input__WEBPACK_IMPORTED_MODULE_2__.enableBeforeUnload; },
 /* harmony export */   featInfo: function() { return /* binding */ featInfo; },
@@ -437,6 +441,11 @@ const featInfo = {
         default: true,
     },
     scrollToActiveSongBtn: {
+        type: "toggle",
+        category: "layout",
+        default: true,
+    },
+    boostGain: {
         type: "toggle",
         category: "layout",
         default: true,
@@ -776,9 +785,11 @@ function skipToTimeKey(key) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addAnchorImprovements: function() { return /* binding */ addAnchorImprovements; },
+/* harmony export */   addBoostGainButton: function() { return /* binding */ addBoostGainButton; },
 /* harmony export */   addConfigMenuOption: function() { return /* binding */ addConfigMenuOption; },
 /* harmony export */   addScrollToActiveBtn: function() { return /* binding */ addScrollToActiveBtn; },
 /* harmony export */   addWatermark: function() { return /* binding */ addWatermark; },
+/* harmony export */   createMediaCtrlBtn: function() { return /* binding */ createMediaCtrlBtn; },
 /* harmony export */   fixSpacing: function() { return /* binding */ fixSpacing; },
 /* harmony export */   improveLogo: function() { return /* binding */ improveLogo; },
 /* harmony export */   initAutoCloseToasts: function() { return /* binding */ initAutoCloseToasts; },
@@ -1361,6 +1372,68 @@ function addScrollToActiveBtn() {
             containerElem.appendChild(linkElem);
             tabElem.appendChild(containerElem);
         }),
+    });
+}
+//#MARKER boost gain button
+const gainBoostMultiplier = 2.0;
+let gainBoosted = false;
+/** Adds a button to the media controls to boost the current song's gain */
+function addBoostGainButton() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const boltFilledSrc = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("bolt_filled");
+        const boltOutlinedSrc = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("bolt_outlined");
+        const btnElem = yield createMediaCtrlBtn(boltOutlinedSrc);
+        btnElem.id = "bytm-boost-gain-btn";
+        btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+        let amplify;
+        btnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const btnElem = document.querySelector("#bytm-boost-gain-btn");
+            const videoElem = document.querySelector("ytmusic-player video");
+            const imgElem = btnElem === null || btnElem === void 0 ? void 0 : btnElem.querySelector("img");
+            if (!videoElem || !imgElem || !btnElem)
+                return;
+            if (!gainBoosted) {
+                gainBoosted = true;
+                if (amplify)
+                    amplify(gainBoostMultiplier);
+                else
+                    amplify = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.amplifyMedia)(videoElem, gainBoostMultiplier).amplify;
+                imgElem.src = boltFilledSrc;
+                btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_disable_tooltip");
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
+            }
+            else {
+                gainBoosted = false;
+                amplify(1.0);
+                imgElem.src = boltOutlinedSrc;
+                btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)("Disabled gain boost");
+            }
+        }));
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.onSelector)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+            listener: (likeCont) => {
+                (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeCont, btnElem);
+                (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Added gain booster button");
+            },
+        });
+    });
+}
+/** Creates a base media control button element */
+function createMediaCtrlBtn(imgSrc) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const linkElem = document.createElement("span");
+        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+        linkElem.role = "button";
+        linkElem.style.visibility = "initial";
+        linkElem.style.display = "inline-flex";
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        if (imgSrc)
+            imgElem.src = imgSrc;
+        linkElem.appendChild(imgElem);
+        return linkElem;
     });
 }
 
@@ -3972,6 +4045,8 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.fixSpacing)();
                 if (features.scrollToActiveSongBtn)
                     (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addScrollToActiveBtn)();
+                if (features.boostGain)
+                    (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.addBoostGainButton)();
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_7__.initVolumeFeatures)();
             }
             if (["ytm", "yt"].includes(domain)) {
