@@ -204,34 +204,30 @@ export function initVolumeFeatures() {
 /** Adds a percentage label to the volume slider and tooltip */
 function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelElem = document.createElement("div");
-  labelElem.className = "bytm-vol-slider-label";
+  labelElem.id = "bytm-vol-slider-label";
   labelElem.innerText = `${sliderElem.value}%`;
 
   // prevent video from minimizing
   labelElem.addEventListener("click", (e) => e.stopPropagation());
 
-  const getLabelTexts = (slider: HTMLInputElement) => {
-    const percentLabel = `${slider.value}%`;
-    const labelFull = t("volume_tooltip", percentLabel, slider.step);
+  const getLabelText = (slider: HTMLInputElement) =>
+    t("volume_tooltip", slider.value, slider.step);
 
-    return { percentLabel, labelFull };
-  };
-
-  const { labelFull } = getLabelTexts(sliderElem);
+  const labelFull = getLabelText(sliderElem);
   sliderContainer.setAttribute("title", labelFull);
   sliderElem.setAttribute("title", labelFull);
   sliderElem.setAttribute("aria-valuetext", labelFull);
 
   const updateLabel = () => {
-    const { percentLabel, labelFull } = getLabelTexts(sliderElem);
+    const labelFull = getLabelText(sliderElem);
 
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
 
-    const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
+    const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label");
     if(labelElem2)
-      labelElem2.innerText = percentLabel;
+      labelElem2.innerText = `${sliderElem.value}%`;
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
@@ -699,15 +695,15 @@ export function addScrollToActiveBtn() {
 
 //#MARKER boost gain button
 
-const gainBoostMultiplier = 2.0;
+const gainBoostMultiplier = 1.5;
 let gainBoosted = false;
 
 /** Adds a button to the media controls to boost the current song's gain */
 export async function addBoostGainButton() {
-  const boltFilledSrc = await getResourceUrl("bolt_filled");
-  const boltOutlinedSrc = await getResourceUrl("bolt_outlined");
+  const iconSrcOn = await getResourceUrl("volume_boost_on");
+  const iconSrcOff = await getResourceUrl("volume_boost_off");
 
-  const btnElem = await createMediaCtrlBtn(boltOutlinedSrc);
+  const btnElem = await createMediaCtrlBtn(iconSrcOff);
   btnElem.id = "bytm-boost-gain-btn";
   btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
 
@@ -730,14 +726,14 @@ export async function addBoostGainButton() {
         amplify(gainBoostMultiplier);
       else
         amplify = amplifyMedia(videoElem, gainBoostMultiplier).amplify;
-      imgElem.src = boltFilledSrc;
+      imgElem.src = iconSrcOn;
       btnElem.title = t("boost_gain_disable_tooltip");
       info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
     }
     else {
       gainBoosted = false;
       amplify!(1.0);
-      imgElem.src = boltOutlinedSrc;
+      imgElem.src = iconSrcOff;
       btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
       info("Disabled gain boost");
     }

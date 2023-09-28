@@ -209,7 +209,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   position: relative;
 }
 
-.bytm-vol-slider-label {
+#bytm-vol-slider-label {
   opacity: 0.000001;
   position: absolute;
   font-size: 15px;
@@ -220,7 +220,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   transition: opacity 0.2s ease;
 }
 
-.bytm-vol-slider-label.bytm-visible {
+#bytm-vol-slider-label.bytm-visible {
   opacity: 1;
 }
 

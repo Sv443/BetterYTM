@@ -11,7 +11,7 @@ import {
   preInitLayout, removeUpgradeTab,
   initVolumeFeatures, initAutoCloseToasts,
   removeShareTrackingParam, fixSpacing,
-  addScrollToActiveBtn,
+  addScrollToActiveBtn, addBoostGainButton,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
@@ -20,7 +20,6 @@ import {
   addAnchorImprovements, initNumKeysSkip,
   // menu
   addConfigMenuOption,
-  addBoostGainButton,
 } from "./features/index";
 
 {
