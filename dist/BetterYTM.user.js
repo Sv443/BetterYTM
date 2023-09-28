@@ -29,27 +29,27 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
-// @resource          close         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/close.png
-// @resource          delete        https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/delete.svg
-// @resource          error         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/error.svg
-// @resource          lyrics        https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/lyrics.svg
-// @resource          spinner       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/spinner.svg
-// @resource          arrow_down    https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/arrow_down.svg
-// @resource          skip_to       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/skip_to.svg
-// @resource          bolt_outlined https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/bolt_outlined.svg
-// @resource          bolt_filled   https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/bolt_filled.svg
-// @resource          github        https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/github.png
-// @resource          greasyfork    https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/greasyfork.png
-// @resource          openuserjs    https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/openuserjs.png
-// @resource          tr-de_DE      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/de_DE.json
-// @resource          tr-en_US      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_US.json
-// @resource          tr-es_ES      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/es_ES.json
-// @resource          tr-fr_FR      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/fr_FR.json
-// @resource          tr-hi_IN      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/hi_IN.json
-// @resource          tr-ja_JA      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/ja_JA.json
-// @resource          tr-pt_BR      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/pt_BR.json
-// @resource          tr-zh_CN      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/zh_CN.json
+// @resource          logo             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
+// @resource          close            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/close.png
+// @resource          delete           https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/delete.svg
+// @resource          error            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/error.svg
+// @resource          lyrics           https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/lyrics.svg
+// @resource          spinner          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/spinner.svg
+// @resource          arrow_down       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/arrow_down.svg
+// @resource          skip_to          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/skip_to.svg
+// @resource          volume_boost_off https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/volume_boost_off.svg
+// @resource          volume_boost_on  https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/volume_boost_on.svg
+// @resource          github           https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/github.png
+// @resource          greasyfork       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/greasyfork.png
+// @resource          openuserjs       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/openuserjs.png
+// @resource          tr-de_DE         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/de_DE.json
+// @resource          tr-en_US         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_US.json
+// @resource          tr-es_ES         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/es_ES.json
+// @resource          tr-fr_FR         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/fr_FR.json
+// @resource          tr-hi_IN         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/hi_IN.json
+// @resource          tr-ja_JA         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/ja_JA.json
+// @resource          tr-pt_BR         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/pt_BR.json
+// @resource          tr-zh_CN         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/zh_CN.json
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -521,7 +521,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "5f0146d", // asserted as generic string instead of literal
+    buildNumber: "de2f223", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -2212,27 +2212,23 @@ function initVolumeFeatures() {
 /** Adds a percentage label to the volume slider and tooltip */
 function addVolumeSliderLabel(sliderElem, sliderContainer) {
     const labelElem = document.createElement("div");
-    labelElem.className = "bytm-vol-slider-label";
+    labelElem.id = "bytm-vol-slider-label";
     labelElem.innerText = `${sliderElem.value}%`;
     // prevent video from minimizing
     labelElem.addEventListener("click", (e) => e.stopPropagation());
-    const getLabelTexts = (slider) => {
-        const percentLabel = `${slider.value}%`;
-        const labelFull = t("volume_tooltip", percentLabel, slider.step);
-        return { percentLabel, labelFull };
-    };
-    const { labelFull } = getLabelTexts(sliderElem);
+    const getLabelText = (slider) => t("volume_tooltip", slider.value, slider.step);
+    const labelFull = getLabelText(sliderElem);
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
     const updateLabel = () => {
-        const { percentLabel, labelFull } = getLabelTexts(sliderElem);
+        const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
-        const labelElem2 = document.querySelector(".bytm-vol-slider-label");
+        const labelElem2 = document.querySelector("#bytm-vol-slider-label");
         if (labelElem2)
-            labelElem2.innerText = percentLabel;
+            labelElem2.innerText = `${sliderElem.value}%`;
     };
     sliderElem.addEventListener("change", () => updateLabel());
     onSelector("#bytm-vol-slider-cont", {
@@ -2594,14 +2590,14 @@ function addScrollToActiveBtn() {
         }),
     });
 }
-const gainBoostMultiplier = 2.0;
+const gainBoostMultiplier = 1.5;
 let gainBoosted = false;
 /** Adds a button to the media controls to boost the current song's gain */
 function addBoostGainButton() {
     return layout_awaiter(this, void 0, void 0, function* () {
-        const boltFilledSrc = yield getResourceUrl("bolt_filled");
-        const boltOutlinedSrc = yield getResourceUrl("bolt_outlined");
-        const btnElem = yield createMediaCtrlBtn(boltOutlinedSrc);
+        const iconSrcOn = yield getResourceUrl("volume_boost_on");
+        const iconSrcOff = yield getResourceUrl("volume_boost_off");
+        const btnElem = yield createMediaCtrlBtn(iconSrcOff);
         btnElem.id = "bytm-boost-gain-btn";
         btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
         let amplify;
@@ -2619,14 +2615,14 @@ function addBoostGainButton() {
                     amplify(gainBoostMultiplier);
                 else
                     amplify = amplifyMedia(videoElem, gainBoostMultiplier).amplify;
-                imgElem.src = boltFilledSrc;
+                imgElem.src = iconSrcOn;
                 btnElem.title = t("boost_gain_disable_tooltip");
                 utils_info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
             }
             else {
                 gainBoosted = false;
                 amplify(1.0);
-                imgElem.src = boltOutlinedSrc;
+                imgElem.src = iconSrcOff;
                 btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
                 utils_info("Disabled gain boost");
             }
@@ -3467,7 +3463,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   position: relative;
 }
 
-.bytm-vol-slider-label {
+#bytm-vol-slider-label {
   opacity: 0.000001;
   position: absolute;
   font-size: 15px;
@@ -3478,7 +3474,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   transition: opacity 0.2s ease;
 }
 
-.bytm-vol-slider-label.bytm-visible {
+#bytm-vol-slider-label.bytm-visible {
   opacity: 1;
 }
 
