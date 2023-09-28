@@ -66,6 +66,7 @@
     "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",
     "feature_desc_scrollToActiveSongBtn": "キューに現在再生中の曲までスクロールするボタンを追加する",
     "feature_desc_boostGain": "現在再生中の曲のメディアコントロールにボタンを追加して、音量を 100% 以上にブーストする",
+    "feature_desc_rememberSongTime": "リロードまたはタブの復元時に最後の曲の時間を記憶する",
     "feature_desc_arrowKeySupport": "矢印キーを使用して 10 秒前後にスキップする",
     "feature_desc_switchBetweenSites": "F9 をホットキーとして追加して、ビデオ / 曲の YT と YTM サイトを切り替える",
     "feature_desc_switchSitesHotkey": "サイトを切り替えるために押す必要があるホットキーはどれですか？",

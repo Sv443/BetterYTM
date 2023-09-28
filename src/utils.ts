@@ -76,7 +76,7 @@ export function getVideoTime() {
 
     try {
       if(domain === "ytm") {
-        onSelector<HTMLProgressElement>("#progress-bar", {
+        onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
             res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
         });
@@ -152,6 +152,8 @@ function ytForceShowVideoTime() {
 
   return true;
 }
+
+//#SECTION misc
 
 /**
  * Returns the current domain as a constant string representation

@@ -66,6 +66,7 @@
     "feature_desc_fixSpacing": "लेआउट में स्पेसिंग समस्याओं को ठीक करें",
     "feature_desc_scrollToActiveSongBtn": "कतार में एक बटन जो वर्तमान में चल रहे गीत पर स्क्रॉल करता है",
     "feature_desc_boostGain": "वर्तमान में चल रहे गीत के मीडिया नियंत्रणों में एक बटन जो इसके वॉल्यूम को 100% से आगे बढ़ाता है",
+    "feature_desc_rememberSongTime": "टैब को फिर से लोड करने या बहाल करने पर अंतिम गीत का समय याद रखें",
     "feature_desc_arrowKeySupport": "10 सेकंड आगे और पीछे छोड़ने के लिए तीर कुंजियों का उपयोग करें",
     "feature_desc_switchBetweenSites": "एक वीडियो / गीत पर YT और YTM साइटों के बीच स्विच करने के लिए F9 को एक हॉटकी के रूप में जोड़ें",
     "feature_desc_switchSitesHotkey": "साइटों को स्विच करने के लिए कौन सी हॉटकी दबानी चाहिए?",

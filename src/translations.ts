@@ -1,5 +1,5 @@
 import { tr, Stringifiable } from "@sv443-network/userutils";
-import { error, getResourceUrl, log } from "./utils";
+import { error, getResourceUrl, info } from "./utils";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import type tr_enUS from "../assets/translations/en_US.json";
 
@@ -15,16 +15,11 @@ export async function initTranslations(locale: TrLocale) {
     return;
 
   try {
-    // for(const [locale] of Object.entries(langMapping)) {
-    //   const trans = await (await fetch(await getResourceUrl(`tr-${locale}` as "_"))).json();
-    //   tr.addLanguage(locale, trans);
-    // }
-
     const transUrl = await getResourceUrl(`tr-${locale}` as "_");
     const transFile = await (await fetch(transUrl)).json();
     tr.addLanguage(locale, transFile.translations);
 
-    log(`Loaded translations for locale '${locale}'`);
+    info(`Loaded translations for locale '${locale}'`);
   }
   catch(err) {
     const errStr = `Couldn't load translations for locale '${locale}'`;

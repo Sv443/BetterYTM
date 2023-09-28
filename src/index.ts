@@ -12,6 +12,7 @@ import {
   initVolumeFeatures, initAutoCloseToasts,
   removeShareTrackingParam, fixSpacing,
   addScrollToActiveBtn, addBoostGainButton,
+  initRememberSongTime,
   // lyrics
   addMediaCtrlLyricsBtn, geniUrlBase,
   // input
@@ -70,22 +71,25 @@ async function init() {
       domLoaded = true;
     });
 
-    const ftConfig = await initConfig();
+    const features = await initConfig();
 
-    await initTranslations(ftConfig.locale ?? "en_US");
-    setLocale(ftConfig.locale ?? "en_US");
+    await initTranslations(features.locale ?? "en_US");
+    setLocale(features.locale ?? "en_US");
 
-    setLogLevel(ftConfig.logLevel);
+    setLogLevel(features.logLevel);
 
-    preInitLayout(ftConfig);
+    preInitLayout(features);
 
-    if(ftConfig.disableBeforeUnloadPopup && domain === "ytm")
+    if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
 
     if(!domLoaded)
       document.addEventListener("DOMContentLoaded", initFeatures);
     else
       initFeatures();
+
+    if(features.rememberSongTime)
+      initRememberSongTime();
   }
   catch(err) {
     error("General Error:", err);

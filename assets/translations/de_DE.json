@@ -66,6 +66,7 @@
     "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",
     "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen",
     "feature_desc_boostGain": "Füge einen Knopf zu den Mediensteuerelementen des aktuell spielenden Songs hinzu, um die Lautstärke über 100% zu boosten",
+    "feature_desc_rememberSongTime": "Stelle die Zeit des letzten Songs wieder her, wenn die Seite neu geladen oder wiederhergestellt wird",
     "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um 10 Sekunden vor- oder zurückzuspulen",
     "feature_desc_switchBetweenSites": "Füge F9 als Hotkey hinzu, um zwischen den YT und YTM Seiten zu wechseln",
     "feature_desc_switchSitesHotkey": "Welcher Hotkey muss gedrückt werden, um zwischen den Seiten zu wechseln?",

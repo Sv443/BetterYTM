@@ -764,3 +764,69 @@ export async function createMediaCtrlBtn(imgSrc?: string) {
 
   return linkElem;
 }
+
+//#MARKER remember song time
+
+const rememberSongTimeout = 1000 * 60 * 1;
+let curSongId: string | undefined;
+
+/** Remembers the time of the last played song and resumes playback from that time */
+export async function initRememberSongTime() {
+  log("Initialized song time remembering");
+
+  const params = new URL(location.href).searchParams;
+  curSongId = params.get("v")!;
+
+  if(location.pathname.startsWith("/watch") && await GM.getValue("bytm-rem-song-id", null) === curSongId) {
+    const songTime = Number(await GM.getValue("bytm-rem-song-time", 0));
+    const songTimestamp = Number(await GM.getValue("bytm-rem-song-timestamp", 0));
+    if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
+      const newUrl = new URL(location.href);
+      newUrl.searchParams.set("t", String(Math.max(songTime - 1, 0)));
+      await deletePersistentSongTimeValues();
+      return location.replace(newUrl);
+    }
+  }
+
+  GM.getValue("bytm-rem-song-timestamp").then(async (ts) => {
+    const time = Number(ts);
+    if(Date.now() - time < rememberSongTimeout)
+      await deletePersistentSongTimeValues();
+  });
+
+  onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+    listener: (progressElem) => {
+      const progressObserver = new MutationObserver(async () => {
+        const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
+        const newSongId = new URL(location.href).searchParams.get("v");
+
+        GM.setValue("bytm-rem-song-timestamp", Date.now());
+        GM.setValue("bytm-rem-song-time", songTime);
+
+        GM.getValue("bytm-rem-song-id").then((storedId) => {
+          if(!storedId && newSongId) {
+            console.log("cond saving");
+            GM.setValue("bytm-rem-song-id", newSongId);
+          }
+        });
+
+        if(newSongId === curSongId || !newSongId)
+          return;
+
+        GM.setValue("bytm-rem-song-id", curSongId = newSongId);
+      });
+
+      progressObserver.observe(progressElem, {
+        attributes: true,
+      });
+    },
+  });
+}
+
+function deletePersistentSongTimeValues() {
+  return Promise.all([
+    GM.deleteValue("bytm-rem-song-id"),
+    GM.deleteValue("bytm-rem-song-time"),
+    GM.deleteValue("bytm-rem-song-timestamp"),
+  ]);
+}

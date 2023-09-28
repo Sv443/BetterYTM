@@ -1,7 +1,7 @@
-import { access, readFile, writeFile, constants as fsconstants } from "fs/promises";
-import { dirname, join, relative } from "path";
-import { fileURLToPath } from "url";
-import { exec } from "child_process";
+import { access, readFile, writeFile, constants as fsconstants } from "node:fs/promises";
+import { dirname, join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
+import { exec } from "node:child_process";
 import dotenv from "dotenv";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
@@ -39,7 +39,6 @@ type BuildStats = {
 
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `
-// @grant             GM.deleteValue
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues\
 ` : undefined;
@@ -69,6 +68,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @connect           api.sv443.net
 // @grant             GM.getValue
 // @grant             GM.setValue
+// @grant             GM.deleteValue
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             unsafeWindow

@@ -66,6 +66,7 @@
     "feature_desc_fixSpacing": "Corrigir problemas de espaçamento no layout",
     "feature_desc_scrollToActiveSongBtn": "Adicionar um botão à fila para rolar até a música que está tocando atualmente",
     "feature_desc_boostGain": "Adicione um botão aos controles de mídia da música que está tocando atualmente para aumentar seu volume além de 100%",
+    "feature_desc_rememberSongTime": "Lembre-se do tempo da última música ao recarregar ou restaurar a guia",
     "feature_desc_arrowKeySupport": "Use as teclas de seta para pular para frente e para trás em 10 segundos",
     "feature_desc_switchBetweenSites": "Adicione F9 como um atalho para alternar entre os sites YT e YTM em um vídeo / música",
     "feature_desc_switchSitesHotkey": "Qual tecla de atalho precisa ser pressionada para alternar entre os sites?",

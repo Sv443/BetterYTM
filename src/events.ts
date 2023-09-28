@@ -58,8 +58,6 @@ export async function initSiteEvents() {
       childList: true,
     });
 
-    //#SECTION home page observers
-
     info("Successfully initialized SiteEvents observers");
 
     observers = observers.concat([

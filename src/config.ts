@@ -32,6 +32,7 @@ export const migrations: ConfigMigrationsDict = {
     ...oldData,
     locale: "en_US",
     boostGain: true,
+    rememberSongTime: false,
   }),
 };
 

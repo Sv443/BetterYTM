@@ -66,6 +66,7 @@
     "feature_desc_fixSpacing": "Solucionar problemas de espaciado en el diseño",
     "feature_desc_scrollToActiveSongBtn": "Agregue un botón a la cola para desplazarse hasta la canción que se está reproduciendo actualmente",
     "feature_desc_boostGain": "Agregue un botón a los controles multimedia de la canción que se está reproduciendo actualmente para aumentar su volumen más allá del 100%",
+    "feature_desc_rememberSongTime": "Recuerde el tiempo de la última canción al volver a cargar o restaurar la pestaña",
     "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás 10 segundos",
     "feature_desc_switchBetweenSites": "Agregue F9 como una tecla de acceso rápido para cambiar entre los sitios YT y YTM en un video / canción",
     "feature_desc_switchSitesHotkey": "¿Qué tecla de acceso rápido debe presionarse para cambiar de sitio?",
