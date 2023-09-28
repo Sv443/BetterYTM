@@ -3,7 +3,7 @@ import { dirname, join, relative } from "path";
 import { fileURLToPath } from "url";
 import { exec } from "child_process";
 import dotenv from "dotenv";
-import langMapping from "../../assets/languages.json" assert { type: "json" };
+import langMapping from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
@@ -231,7 +231,7 @@ async function getResourceDirectives() {
   }
 }
 
-/** Returns the @description directive block for each defined locale in `assets/languages.json` */
+/** Returns the @description directive block for each defined locale in `assets/locales.json` */
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];

@@ -1,6 +1,6 @@
 import { tr, Stringifiable } from "@sv443-network/userutils";
 import { error, getResourceUrl, log } from "./utils";
-import langMapping from "../assets/languages.json" assert { type: "json" };
+import langMapping from "../assets/locales.json" assert { type: "json" };
 import type tr_enUS from "../assets/translations/en_US.json";
 
 export type TrLocale = keyof typeof langMapping;
@@ -34,8 +34,13 @@ export async function initTranslations(locale: TrLocale) {
 }
 
 /** Sets the current language for translations */
-export function setLanguage(language: TrLocale) {
+export function setLocale(language: TrLocale) {
   tr.setLanguage(language);
+}
+
+/** Returns the currently set language */
+export function getLocale() {
+  return tr.getLanguage() as TrLocale;
 }
 
 /** Returns the translated string for the given key, after optionally inserting values */

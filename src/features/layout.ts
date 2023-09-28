@@ -211,7 +211,7 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTM
   labelElem.addEventListener("click", (e) => e.stopPropagation());
 
   const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, slider.step);
+    t("volume_tooltip", slider.value, features.volumeSliderStep ?? slider.step);
 
   const labelFull = getLabelText(sliderElem);
   sliderContainer.setAttribute("title", labelFull);

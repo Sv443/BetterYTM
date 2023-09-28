@@ -3,7 +3,7 @@ import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
-import { initTranslations, setLanguage } from "./translations";
+import { initTranslations, setLocale } from "./translations";
 import { addCfgMenu } from "./menu/menu_old";
 import {
   // layout
@@ -73,7 +73,7 @@ async function init() {
     const ftConfig = await initConfig();
 
     await initTranslations(ftConfig.locale ?? "en_US");
-    setLanguage(ftConfig.locale ?? "en_US");
+    setLocale(ftConfig.locale ?? "en_US");
 
     setLogLevel(ftConfig.logLevel);
 

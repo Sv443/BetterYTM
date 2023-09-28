@@ -5,7 +5,7 @@ import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { siteEvents } from "../events";
-import { initTranslations, setLanguage, t } from "../translations";
+import { getLocale, initTranslations, setLocale, t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
@@ -120,7 +120,7 @@ export async function addCfgMenu() {
 
     if(initLocale !== featConf.locale) {
       await initTranslations(featConf.locale);
-      setLanguage(featConf.locale);
+      setLocale(featConf.locale);
       const newText = t("lang_changed_prompt_reload");
 
       if(confirm(`${newText}\n\n────────────────────────────────\n\n${initLangReloadText}`)) {
@@ -129,6 +129,8 @@ export async function addCfgMenu() {
         location.reload();
       }
     }
+    else if(getLocale() !== featConf.locale)
+      setLocale(featConf.locale);
   });
 
   const featureCfg = getFeatures();

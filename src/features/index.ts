@@ -1,4 +1,4 @@
-import langMapping from "../../assets/languages.json" assert { type: "json" };
+import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { t } from "../translations";
 
 export * from "./input";
