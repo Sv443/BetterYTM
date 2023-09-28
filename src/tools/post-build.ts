@@ -9,6 +9,8 @@ import pkg from "../../package.json" assert { type: "json" };
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
 
+const buildTs = Date.now();
+
 const { env, exit } = process;
 dotenv.config();
 
@@ -146,7 +148,7 @@ I welcome every contribution on GitHub!
     const buildStatsNew: BuildStats = {
       sizeKiB,
       mode,
-      timestamp: Date.now(),
+      timestamp: buildTs,
     };
     await writeFile(".build.json", JSON.stringify(buildStatsNew));
 
@@ -244,13 +246,13 @@ function getLocalizedDescriptions() {
     return descriptions.join("\n") + "\n";
   }
   catch(err) {
-    console.warn("No localized descriptions found:", err);
+    console.warn("\x1b[33mNo localized descriptions found:\x1b[0m", err);
   }
 }
 
 /** Returns the full URL for a given relative asset/resource path, based on the current mode */
 function getResourceUrl(relativePath: string) {
   return mode === "development"
-    ? `http://localhost:${devServerPort}/assets/${relativePath}`
+    ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildTs}`
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
 }
