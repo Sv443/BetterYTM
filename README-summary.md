@@ -43,7 +43,7 @@ I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/fir
 
 </b>
 
-Once you have the extension, click the install button above!
+Once you have the extension, click the install button at the top of this page!
 
 <br>
 
