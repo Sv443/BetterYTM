@@ -25,6 +25,7 @@
 // @connect           api.sv443.net
 // @grant             GM.getValue
 // @grant             GM.setValue
+// @grant             GM.deleteValue
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
@@ -502,8 +503,8 @@ tr.getLanguage = () => {
 
 
 
-;// CONCATENATED MODULE: ./assets/languages.json
-var languages_namespaceObject = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
+;// CONCATENATED MODULE: ./assets/locales.json
+var locales_namespaceObject = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
 ;// CONCATENATED MODULE: ./src/constants.ts
 const modeRaw = "production";
 const branchRaw = "main";
@@ -521,7 +522,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "de2f223", // asserted as generic string instead of literal
+    buildNumber: "7ebea45", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -580,7 +581,7 @@ function getVideoTime() {
         const domain = getDomain();
         try {
             if (domain === "ytm") {
-                onSelector("#progress-bar", {
+                onSelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
                     listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
                 });
             }
@@ -675,14 +676,10 @@ function initTranslations(locale) {
         if (initializedLocales.has(locale))
             return;
         try {
-            // for(const [locale] of Object.entries(langMapping)) {
-            //   const trans = await (await fetch(await getResourceUrl(`tr-${locale}` as "_"))).json();
-            //   tr.addLanguage(locale, trans);
-            // }
             const transUrl = yield getResourceUrl(`tr-${locale}`);
             const transFile = yield (yield fetch(transUrl)).json();
             tr.addLanguage(locale, transFile.translations);
-            log(`Loaded translations for locale '${locale}'`);
+            utils_info(`Loaded translations for locale '${locale}'`);
         }
         catch (err) {
             const errStr = `Couldn't load translations for locale '${locale}'`;
@@ -692,8 +689,12 @@ function initTranslations(locale) {
     });
 }
 /** Sets the current language for translations */
-function setLanguage(language) {
+function setLocale(language) {
     tr.setLanguage(language);
+}
+/** Returns the currently set language */
+function getLocale() {
+    return tr.getLanguage();
 }
 /** Returns the translated string for the given key, after optionally inserting values */
 function t(key, ...values) {
@@ -882,7 +883,7 @@ function addCfgMenu() {
             yield saveFeatures(featConf);
             if (initLocale !== featConf.locale) {
                 yield initTranslations(featConf.locale);
-                setLanguage(featConf.locale);
+                setLocale(featConf.locale);
                 const newText = t("lang_changed_prompt_reload");
                 if (confirm(`${newText}\n\n────────────────────────────────\n\n${initLangReloadText}`)) {
                     closeCfgMenu();
@@ -890,6 +891,8 @@ function addCfgMenu() {
                     location.reload();
                 }
             }
+            else if (getLocale() !== featConf.locale)
+                setLocale(featConf.locale);
         }));
         const featureCfg = getFeatures();
         const featureCfgWithCategories = Object.entries(featInfo)
@@ -2216,7 +2219,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
     labelElem.innerText = `${sliderElem.value}%`;
     // prevent video from minimizing
     labelElem.addEventListener("click", (e) => e.stopPropagation());
-    const getLabelText = (slider) => t("volume_tooltip", slider.value, slider.step);
+    const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
     const labelFull = getLabelText(sliderElem);
     sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
@@ -2651,6 +2654,60 @@ function createMediaCtrlBtn(imgSrc) {
         return linkElem;
     });
 }
+const rememberSongTimeout = 1000 * 60 * 1;
+let curSongId;
+/** Remembers the time of the last played song and resumes playback from that time */
+function initRememberSongTime() {
+    return layout_awaiter(this, void 0, void 0, function* () {
+        log("Initialized song time remembering");
+        const params = new URL(location.href).searchParams;
+        curSongId = params.get("v");
+        if (location.pathname.startsWith("/watch") && (yield GM.getValue("bytm-rem-song-id", null)) === curSongId) {
+            const songTime = Number(yield GM.getValue("bytm-rem-song-time", 0));
+            const songTimestamp = Number(yield GM.getValue("bytm-rem-song-timestamp", 0));
+            if (songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
+                const newUrl = new URL(location.href);
+                newUrl.searchParams.set("t", String(Math.max(songTime - 1, 0)));
+                yield deletePersistentSongTimeValues();
+                return location.replace(newUrl);
+            }
+        }
+        GM.getValue("bytm-rem-song-timestamp").then((ts) => layout_awaiter(this, void 0, void 0, function* () {
+            const time = Number(ts);
+            if (Date.now() - time < rememberSongTimeout)
+                yield deletePersistentSongTimeValues();
+        }));
+        onSelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+            listener: (progressElem) => {
+                const progressObserver = new MutationObserver(() => layout_awaiter(this, void 0, void 0, function* () {
+                    const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
+                    const newSongId = new URL(location.href).searchParams.get("v");
+                    GM.setValue("bytm-rem-song-timestamp", Date.now());
+                    GM.setValue("bytm-rem-song-time", songTime);
+                    GM.getValue("bytm-rem-song-id").then((storedId) => {
+                        if (!storedId && newSongId) {
+                            console.log("cond saving");
+                            GM.setValue("bytm-rem-song-id", newSongId);
+                        }
+                    });
+                    if (newSongId === curSongId || !newSongId)
+                        return;
+                    GM.setValue("bytm-rem-song-id", curSongId = newSongId);
+                }));
+                progressObserver.observe(progressElem, {
+                    attributes: true,
+                });
+            },
+        });
+    });
+}
+function deletePersistentSongTimeValues() {
+    return Promise.all([
+        GM.deleteValue("bytm-rem-song-id"),
+        GM.deleteValue("bytm-rem-song-time"),
+        GM.deleteValue("bytm-rem-song-timestamp"),
+    ]);
+}
 
 ;// CONCATENATED MODULE: ./src/features/index.ts
 
@@ -2658,7 +2715,7 @@ function createMediaCtrlBtn(imgSrc) {
 
 
 
-const localeOptions = Object.entries(languages_namespaceObject).reduce((a, [locale, langInfo]) => {
+const localeOptions = Object.entries(locales_namespaceObject).reduce((a, [locale, langInfo]) => {
     return [...a, {
             value: locale,
             label: `${langInfo.name}`,
@@ -2729,6 +2786,11 @@ const featInfo = {
         default: true,
     },
     boostGain: {
+        type: "toggle",
+        category: "layout",
+        default: true,
+    },
+    rememberSongTime: {
         type: "toggle",
         category: "layout",
         default: true,
@@ -2823,7 +2885,7 @@ const migrations = {
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
     // 3 -> 4
-    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true })),
+    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true, rememberSongTime: false })),
 };
 const defaultConfig = Object.keys(featInfo)
     .reduce((acc, key) => {
@@ -2932,17 +2994,19 @@ function init() {
             document.addEventListener("DOMContentLoaded", () => {
                 domLoaded = true;
             });
-            const ftConfig = yield initConfig();
-            yield initTranslations((_a = ftConfig.locale) !== null && _a !== void 0 ? _a : "en_US");
-            setLanguage((_b = ftConfig.locale) !== null && _b !== void 0 ? _b : "en_US");
-            setLogLevel(ftConfig.logLevel);
-            preInitLayout(ftConfig);
-            if (ftConfig.disableBeforeUnloadPopup && domain === "ytm")
+            const features = yield initConfig();
+            yield initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en_US");
+            setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
+            setLogLevel(features.logLevel);
+            preInitLayout(features);
+            if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
             if (!domLoaded)
                 document.addEventListener("DOMContentLoaded", initFeatures);
             else
                 initFeatures();
+            if (features.rememberSongTime)
+                initRememberSongTime();
         }
         catch (err) {
             error("General Error:", err);
