@@ -8,8 +8,8 @@
   "spinner": "icons/spinner.svg",
   "arrow_down": "icons/arrow_down.svg",
   "skip_to": "icons/skip_to.svg",
-  "bolt_outlined": "icons/bolt_outlined.svg",
-  "bolt_filled": "icons/bolt_filled.svg",
+  "volume_boost_off": "icons/volume_boost_off.svg",
+  "volume_boost_on": "icons/volume_boost_on.svg",
 
   "github": "external/github.png",
   "greasyfork": "external/greasyfork.png",
