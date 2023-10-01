@@ -363,22 +363,52 @@ function interceptEvent(eventObject, eventName, predicate) {
 function interceptWindowEvent(eventName, predicate) {
   return interceptEvent(getUnsafeWindow(), eventName, predicate);
 }
-function amplifyMedia(mediaElement, multiplier = 1) {
+function amplifyMedia(mediaElement, initialMultiplier = 1) {
   const context = new (window.AudioContext || window.webkitAudioContext)();
-  const result = {
-    mediaElement,
-    amplify: (multiplier2) => {
-      result.gain.gain.value = multiplier2;
+  const props = {
+    /** Sets the gain multiplier */
+    setGain(multiplier) {
+      props.gainNode.gain.setValueAtTime(multiplier, props.context.currentTime);
     },
-    getAmpLevel: () => result.gain.gain.value,
+    /** Returns the current gain multiplier */
+    getGain() {
+      return props.gainNode.gain.value;
+    },
+    /** Enable the amplification for the first time or if it was disabled before */
+    enable() {
+      props.source.connect(props.limiterNode);
+      props.limiterNode.connect(props.gainNode);
+      props.gainNode.connect(props.context.destination);
+    },
+    /** Disable the amplification */
+    disable() {
+      props.source.disconnect(props.limiterNode);
+      props.limiterNode.disconnect(props.gainNode);
+      props.gainNode.disconnect(props.context.destination);
+      props.source.connect(props.context.destination);
+    },
+    /**
+     * Set the options of the [limiter / DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode/DynamicsCompressorNode#options)  
+     * The default is `{ threshold: -2, knee: 40, ratio: 12, attack: 0.003, release: 0.25 }`
+     */
+    setLimiterOptions(options) {
+      for (const [key, val] of Object.entries(options))
+        props.limiterNode[key].setValueAtTime(val, props.context.currentTime);
+    },
     context,
     source: context.createMediaElementSource(mediaElement),
-    gain: context.createGain()
+    gainNode: context.createGain(),
+    limiterNode: context.createDynamicsCompressor()
   };
-  result.source.connect(result.gain);
-  result.gain.connect(context.destination);
-  result.amplify(multiplier);
-  return result;
+  props.setLimiterOptions({
+    threshold: -2,
+    knee: 40,
+    ratio: 12,
+    attack: 3e-3,
+    release: 0.25
+  });
+  props.setGain(initialMultiplier);
+  return props;
 }
 function isScrollable(element) {
   const { overflowX, overflowY } = getComputedStyle(element);
@@ -522,7 +552,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "7ebea45", // asserted as generic string instead of literal
+    buildNumber: "70bec7b", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./src/utils.ts
@@ -2593,7 +2623,7 @@ function addScrollToActiveBtn() {
         }),
     });
 }
-const gainBoostMultiplier = 1.5;
+const gainBoostMultiplier = 3.0;
 let gainBoosted = false;
 /** Adds a button to the media controls to boost the current song's gain */
 function addBoostGainButton() {
@@ -2603,7 +2633,7 @@ function addBoostGainButton() {
         const btnElem = yield createMediaCtrlBtn(iconSrcOff);
         btnElem.id = "bytm-boost-gain-btn";
         btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
-        let amplify;
+        let amp;
         btnElem.addEventListener("click", (e) => layout_awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -2614,17 +2644,24 @@ function addBoostGainButton() {
                 return;
             if (!gainBoosted) {
                 gainBoosted = true;
-                if (amplify)
-                    amplify(gainBoostMultiplier);
-                else
-                    amplify = amplifyMedia(videoElem, gainBoostMultiplier).amplify;
+                if (amp)
+                    amp.enable();
+                else {
+                    amp = amplifyMedia(videoElem, gainBoostMultiplier);
+                    amp.enable();
+                    // allow changing limiter options through the console if script was built in development mode
+                    if (mode === "development") {
+                        // @ts-ignore
+                        getUnsafeWindow().setLimiterOptions = amp.setLimiterOptions;
+                    }
+                }
                 imgElem.src = iconSrcOn;
                 btnElem.title = t("boost_gain_disable_tooltip");
                 utils_info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
             }
             else {
                 gainBoosted = false;
-                amplify(1.0);
+                amp.disable();
                 imgElem.src = iconSrcOff;
                 btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
                 utils_info("Disabled gain boost");
