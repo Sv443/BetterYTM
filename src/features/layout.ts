@@ -1,6 +1,6 @@
-import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, onSelector, openInNewTab, pauseFor, AmplifyMediaResult } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
-import { scriptInfo } from "../constants";
+import { mode, scriptInfo } from "../constants";
 import { error, getResourceUrl, info, log, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../events";
 import { t } from "../translations";
@@ -695,7 +695,7 @@ export function addScrollToActiveBtn() {
 
 //#MARKER boost gain button
 
-const gainBoostMultiplier = 1.5;
+const gainBoostMultiplier = 3.0;
 let gainBoosted = false;
 
 /** Adds a button to the media controls to boost the current song's gain */
@@ -707,7 +707,7 @@ export async function addBoostGainButton() {
   btnElem.id = "bytm-boost-gain-btn";
   btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
 
-  let amplify: ReturnType<typeof amplifyMedia>["amplify"] | undefined;
+  let amp: AmplifyMediaResult | undefined;
 
   btnElem.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -722,17 +722,24 @@ export async function addBoostGainButton() {
 
     if(!gainBoosted) {
       gainBoosted = true;
-      if(amplify)
-        amplify(gainBoostMultiplier);
-      else
-        amplify = amplifyMedia(videoElem, gainBoostMultiplier).amplify;
+      if(amp)
+        amp.enable();
+      else {
+        amp = amplifyMedia(videoElem, gainBoostMultiplier);
+        amp.enable();
+        // allow changing limiter options through the console if script was built in development mode
+        if(mode === "development") {
+          // @ts-ignore
+          getUnsafeWindow().setLimiterOptions = amp.setLimiterOptions;
+        }
+      }
       imgElem.src = iconSrcOn;
       btnElem.title = t("boost_gain_disable_tooltip");
       info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
     }
     else {
       gainBoosted = false;
-      amplify!(1.0);
+      amp!.disable();
       imgElem.src = iconSrcOff;
       btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
       info("Disabled gain boost");
