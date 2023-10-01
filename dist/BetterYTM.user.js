@@ -533,8 +533,6 @@ tr.getLanguage = () => {
 
 
 
-;// CONCATENATED MODULE: ./assets/locales.json
-var locales_namespaceObject = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
 ;// CONCATENATED MODULE: ./src/constants.ts
 const modeRaw = "production";
 const branchRaw = "main";
@@ -552,9 +550,11 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "70bec7b", // asserted as generic string instead of literal
+    buildNumber: "3e8bb10", // asserted as generic string instead of literal
 };
 
+;// CONCATENATED MODULE: ./assets/locales.json
+var locales_namespaceObject = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
 ;// CONCATENATED MODULE: ./src/utils.ts
 let curLogLevel = 1;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -686,6 +686,26 @@ function getDomain() {
 function getResourceUrl(name) {
     return GM.getResourceUrl(name);
 }
+/**
+ * Returns the preferred locale of the user, provided it is supported by the userscript.
+ * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+ */
+function getPreferredLocale() {
+    if (Object.entries(locales_namespaceObject).find(([key]) => key === navigator.language))
+        return navigator.language;
+    for (const loc of navigator.languages) {
+        if (Object.entries(locales_namespaceObject).find(([key]) => key === loc))
+            return loc;
+    }
+    // if navigator.languages has entries that aren't locale codes in the format xx_XX
+    if (navigator.languages.some(lang => lang.match(/^\w{2}$/))) {
+        for (const lang of navigator.languages) {
+            if (Object.entries(locales_namespaceObject).find(([key]) => key.startsWith(lang)))
+                return lang;
+        }
+    }
+    return "en_US";
+}
 
 ;// CONCATENATED MODULE: ./src/translations.ts
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -816,7 +836,7 @@ function initSiteEvents() {
 
 ;// CONCATENATED MODULE: ./changelog.md
 // Module
-var code = "<h2 id=\"110\">1.1.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>The userscript is now available in 8 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"102\">1.0.2</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to OpenUserJS!</li> <li>Added a OpenUserJS link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to GreasyFork!</li> <li>Added a GreasyFork link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
+var code = "<h2 id=\"110\">1.1.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>The userscript is now available in 8 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li> <li>Added an audio amplification button to the media controls</li> <li>Added feature to restore the song time when reloading or restoring the tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"102\">1.0.2</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to OpenUserJS!</li> <li>Added a OpenUserJS link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to GreasyFork!</li> <li>Added a GreasyFork link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
 // Exports
 /* harmony default export */ var changelog = (code);
 ;// CONCATENATED MODULE: ./src/menu/menu_old.ts
@@ -2752,6 +2772,7 @@ function deletePersistentSongTimeValues() {
 
 
 
+
 const localeOptions = Object.entries(locales_namespaceObject).reduce((a, [locale, langInfo]) => {
     return [...a, {
             value: locale,
@@ -2882,7 +2903,7 @@ const featInfo = {
         type: "select",
         category: "misc",
         options: localeOptions,
-        default: "en_US",
+        default: getPreferredLocale(),
     },
     logLevel: {
         type: "select",
