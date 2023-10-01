@@ -1,4 +1,6 @@
 import type { TrLocale } from "./translations";
+import type resources from "../assets/resources.json";
+import type langMapping from "../assets/locales.json";
 
 /** Env object passed to webpack.config.js */
 export type WebpackEnv = Partial<{
@@ -10,6 +12,9 @@ export type LogLevel = 0 | 1;
 
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
+
+/** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
+export type ResourceKey = keyof typeof resources | `tr-${keyof typeof langMapping}` | "changelog";
 
 /** Feature configuration */
 export interface FeatureConfig {

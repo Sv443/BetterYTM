@@ -1,7 +1,6 @@
 import { clamp, getUnsafeWindow, onSelector } from "@sv443-network/userutils";
 import { scriptInfo } from "./constants";
-import type { Domain, LogLevel } from "./types";
-import * as resources from "../assets/resources.json" assert { type: "json" };
+import type { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import { TrLocale } from "./translations";
 
@@ -171,7 +170,7 @@ export function getDomain(): Domain {
 }
 
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
-export function getResourceUrl(name: keyof typeof resources | "_") {
+export function getResourceUrl(name: ResourceKey | "_") {
   return GM.getResourceUrl(name);
 }
 
