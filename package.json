@@ -68,9 +68,10 @@
       "src/**",
       "assets/**",
       "webpack.config.js",
-      ".env"
+      ".env",
+      "changelog.md"
     ],
-    "ext": "ts,js,json,html,css",
+    "ext": "ts,js,json,html,css,svg,png",
     "ignore": [
       "dist/*",
       "dev/*"
