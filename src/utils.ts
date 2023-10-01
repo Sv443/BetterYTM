@@ -2,6 +2,8 @@ import { clamp, getUnsafeWindow, onSelector } from "@sv443-network/userutils";
 import { scriptInfo } from "./constants";
 import type { Domain, LogLevel } from "./types";
 import * as resources from "../assets/resources.json" assert { type: "json" };
+import langMapping from "../assets/locales.json" assert { type: "json" };
+import { TrLocale } from "./translations";
 
 //#SECTION logging
 
@@ -171,4 +173,28 @@ export function getDomain(): Domain {
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
 export function getResourceUrl(name: keyof typeof resources | "_") {
   return GM.getResourceUrl(name);
+}
+
+/**
+ * Returns the preferred locale of the user, provided it is supported by the userscript.  
+ * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+ */
+export function getPreferredLocale(): TrLocale {
+  if(Object.entries(langMapping).find(([key]) => key === navigator.language))
+    return navigator.language as TrLocale;
+
+  for(const loc of navigator.languages) {
+    if(Object.entries(langMapping).find(([key]) => key === loc))
+      return loc as TrLocale;
+  }
+
+  // if navigator.languages has entries that aren't locale codes in the format xx_XX
+  if(navigator.languages.some(lang => lang.match(/^\w{2}$/))) {
+    for(const lang of navigator.languages) {
+      if(Object.entries(langMapping).find(([key]) => key.startsWith(lang)))
+        return lang as TrLocale;
+    }
+  }
+
+  return "en_US";
 }

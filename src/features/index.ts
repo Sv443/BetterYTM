@@ -1,5 +1,6 @@
-import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { t } from "../translations";
+import { getPreferredLocale } from "../utils";
+import langMapping from "../../assets/locales.json" assert { type: "json" };
 
 export * from "./input";
 export * from "./layout";
@@ -20,6 +21,8 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, langInfo])
   }];
 }, [] as SelectOption[])
   .sort((a, b) => a.label.localeCompare(b.label));
+
+//#MARKER features
 
 /** Contains all possible features with their default values and other configuration */
 export const featInfo = {
@@ -151,7 +154,7 @@ export const featInfo = {
     type: "select",
     category: "misc",
     options: localeOptions,
-    default: "en_US",
+    default: getPreferredLocale(),
   },
   logLevel: {
     type: "select",
