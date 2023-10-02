@@ -59,8 +59,9 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 
 ### Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events that allows other userscripts to piggy-back off and benefit from the features of BetterYTM.  
-
-There are two ways to interact, static and dynamic:  
+If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please contact me [(see my homepage)](https://sv443.net/)  
+  
+There are two ways to interact with BetterYTM, static and dynamic:  
 - Static interaction is done through the global `BYTM` object, which is available on the `window` object.  
   This is pretty much reserved for read-only properties that tell you more about how BetterYTM is currently being run.  
   You can find all properties that are available and their types in the `declare global` block of [`src/types.ts`](src/types.ts)
@@ -69,8 +70,8 @@ There are two ways to interact, static and dynamic:
   You can find all events that are available and their types in [`src/interface.ts`](src/interface.ts)  
     
   Additionally BetterYTM has an internal system called SiteEvents. They are dispatched using the format `bytm:siteEvent:eventName`  
-  You may find all SiteEvents that are available and their types in [`src/events.ts`](src/events.ts)  
-  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/events.ts`](src/events.ts)
+  You may find all SiteEvents that are available and their types in [`src/siteEvents.ts`](src/siteEvents.ts)  
+  Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts)
 
 <details><summary><h4>Static interaction example - click to expand</h4></summary>
 
