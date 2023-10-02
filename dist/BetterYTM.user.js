@@ -550,11 +550,35 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "a2cda99", // asserted as generic string instead of literal
+    buildNumber: "b21450e", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./assets/locales.json
 var locales_namespaceObject = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscriptDesc":"Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music","authors":["Sv443"]},"en_US":{"name":"English (United States)","userscriptDesc":"Configurable layout and user experience improvements for YouTube Music","authors":["Sv443"]},"es_ES":{"name":"Español (España)","userscriptDesc":"Mejoras de diseño y experiencia de usuario configurables para YouTube Music","authors":["Sv443"]},"fr_FR":{"name":"Français (France)","userscriptDesc":"Améliorations de la mise en page et de l\'expérience utilisateur configurables pour YouTube Music","authors":["Sv443"]},"hi_IN":{"name":"हिंदी (भारत)","userscriptDesc":"YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार","authors":["Sv443"]},"ja_JA":{"name":"日本語 (日本)","userscriptDesc":"YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする","authors":["Sv443"]},"pt_BR":{"name":"Português (Brasil)","userscriptDesc":"Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music","authors":["Sv443"]},"zh_CN":{"name":"中文（简化，中国）","userscriptDesc":"可配置的布局和YouTube Music的用户体验改进","authors":["Sv443"]}}');
+;// CONCATENATED MODULE: ./src/interface.ts
+
+
+
+/** Initializes the BYTM interface */
+function initInterface() {
+    const props = Object.assign({ mode: mode,
+        branch: branch }, constants_scriptInfo);
+    for (const [key, value] of Object.entries(props))
+        setGlobalProp(key, value);
+    log("Initialized BYTM interface");
+}
+/** Sets a global property on the window.BYTM object */
+function setGlobalProp(key, value) {
+    const win = getUnsafeWindow();
+    if (!win.BYTM)
+        return;
+    win.BYTM[key] = value;
+}
+/** Emits an event on the BYTM interface */
+function emitInterface(type, ...data) {
+    window.dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+}
+
 ;// CONCATENATED MODULE: ./src/utils.ts
 let curLogLevel = 1;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
@@ -565,6 +589,7 @@ function setLogLevel(level) {
     if (curLogLevel !== level)
         console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
     curLogLevel = level;
+    setGlobalProp("logLevel", level);
 }
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args) {
@@ -719,6 +744,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
+
 const initializedLocales = new Set();
 /** Initializes the translations */
 function initTranslations(locale) {
@@ -739,8 +765,9 @@ function initTranslations(locale) {
     });
 }
 /** Sets the current language for translations */
-function setLocale(language) {
-    tr.setLanguage(language);
+function setLocale(locale) {
+    tr.setLanguage(locale);
+    setGlobalProp("locale", locale);
 }
 /** Returns the currently set language */
 function getLocale() {
@@ -775,8 +802,8 @@ let createNanoEvents = () => ({
   }
 })
 
-;// CONCATENATED MODULE: ./src/events.ts
-var events_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+;// CONCATENATED MODULE: ./src/siteEvents.ts
+var siteEvents_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -785,6 +812,7 @@ var events_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 /** EventEmitter instance that is used to detect changes to the site */
@@ -800,13 +828,13 @@ function removeAllObservers() {
 }
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 function initSiteEvents() {
-    return events_awaiter(this, void 0, void 0, function* () {
+    return siteEvents_awaiter(this, void 0, void 0, function* () {
         try {
             // the queue container always exists so it doesn't need an extra init function
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     utils_info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    siteEvents.emit("queueChanged", target);
+                    emitSiteEvent("queueChanged", target);
                 }
             });
             // only observe added or removed elements
@@ -816,7 +844,7 @@ function initSiteEvents() {
             const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
                     utils_info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    siteEvents.emit("autoplayQueueChanged", target);
+                    emitSiteEvent("autoplayQueueChanged", target);
                 }
             });
             autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents"), {
@@ -832,6 +860,11 @@ function initSiteEvents() {
             error("Couldn't initialize SiteEvents observers due to an error:\n", err);
         }
     });
+}
+/** Emits a site event with the given key and arguments */
+function emitSiteEvent(key, ...args) {
+    siteEvents.emit(key, ...args);
+    emitInterface(`bytm:siteEvent:${key}`, args);
 }
 
 ;// CONCATENATED MODULE: ./changelog.md
@@ -1477,7 +1510,7 @@ function addImportMenu() {
                     disableBeforeUnload();
                     return location.reload();
                 }
-                siteEvents.emit("rebuildCfgMenu", parsed.data);
+                emitSiteEvent("rebuildCfgMenu", parsed.data);
                 closeImportMenu();
                 openCfgMenu();
             }
@@ -1625,16 +1658,18 @@ var input_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
     });
 };
 function initArrowKeySkip() {
-    document.addEventListener("keydown", (evt) => {
-        var _a, _b, _c;
-        if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
-            return;
-        // discard the event when a (text) input is currently active, like when editing a playlist
-        if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
-            return utils_info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
-        onArrowKeyPress(evt);
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (evt) => {
+            var _a, _b, _c;
+            if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+                return;
+            // discard the event when a (text) input is currently active, like when editing a playlist
+            if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
+                return utils_info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
+            onArrowKeyPress(evt);
+        });
+        log("Added arrow key press listener");
     });
-    log("Added arrow key press listener");
 }
 /** Called when the user presses any key, anywhere */
 function onArrowKeyPress(evt) {
@@ -1694,11 +1729,13 @@ function onArrowKeyPress(evt) {
 const videoTimeThreshold = 3;
 /** Initializes the site switch feature */
 function initSiteSwitch(domain) {
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "F9")
-            switchSite(domain === "yt" ? "ytm" : "yt");
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "F9")
+                switchSite(domain === "yt" ? "ytm" : "yt");
+        });
+        log("Initialized site switch listener");
     });
-    log("Initialized site switch listener");
 }
 /** Switches to the other site (between YT and YTM) */
 function switchSite(newDomain) {
@@ -1752,40 +1789,44 @@ function enableBeforeUnload() {
  * event listeners before they can be called by the site.
  */
 function initBeforeUnloadHook() {
-    Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-    (function (original) {
-        // @ts-ignore
-        window.__proto__.addEventListener = function (...args) {
-            const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-            args[1] = function (...a) {
-                if (!beforeUnloadEnabled && args[0] === "beforeunload") {
-                    utils_info("Prevented beforeunload event listener from being called");
-                    return false;
-                }
-                else
-                    return origListener.apply(this, a);
+    return input_awaiter(this, void 0, void 0, function* () {
+        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
+        (function (original) {
+            // @ts-ignore
+            window.__proto__.addEventListener = function (...args) {
+                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
+                args[1] = function (...a) {
+                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
+                        utils_info("Prevented beforeunload event listener from being called");
+                        return false;
+                    }
+                    else
+                        return origListener.apply(this, a);
+                };
+                original.apply(this, args);
             };
-            original.apply(this, args);
-        };
-        // @ts-ignore
-    })(window.__proto__.addEventListener);
+            // @ts-ignore
+        })(window.__proto__.addEventListener);
+    });
 }
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 function initNumKeysSkip() {
-    document.addEventListener("keydown", (e) => {
-        var _a, _b, _c, _d;
-        if (!e.key.trim().match(/^[0-9]$/))
-            return;
-        if (isCfgMenuOpen)
-            return;
-        // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
-        if (document.activeElement !== document.body
-            && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
-            && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
-            return utils_info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
-        skipToTimeKey(Number(e.key));
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (e) => {
+            var _a, _b, _c, _d;
+            if (!e.key.trim().match(/^[0-9]$/))
+                return;
+            if (isCfgMenuOpen)
+                return;
+            // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
+            if (document.activeElement !== document.body
+                && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
+                && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
+                return utils_info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
+            skipToTimeKey(Number(e.key));
+        });
+        log("Added number key press listener");
     });
-    log("Added number key press listener");
 }
 /** Returns the x position as a fraction of timeKey in maxWidth */
 function getX(timeKey, maxWidth) {
@@ -1864,6 +1905,7 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
 
 
 
+
 /** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
@@ -1899,7 +1941,9 @@ function addLyricsCacheEntry(artists, song, lyricsUrl) {
 let currentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
-    onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+    return lyrics_awaiter(this, void 0, void 0, function* () {
+        onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+    });
 }
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
 function addActualMediaCtrlLyricsBtn(likeContainer) {
@@ -2006,20 +2050,29 @@ function getCurrentLyricsUrl() {
             // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
             const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
             const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string:first-child");
-            if (!songTitleElem || !songMetaElem || !songTitleElem.title)
+            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
+            if (!songTitleElem || !songMetaElem)
                 return undefined;
             const songNameRaw = songTitleElem.title;
-            const songName = sanitizeSong(songNameRaw);
-            const artistName = sanitizeArtists(songMetaElem.title);
-            /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
-            const getGeniusUrlVideo = () => lyrics_awaiter(this, void 0, void 0, function* () {
-                if (!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                    return yield getGeniusUrl(artistName, songName);
-                const { artist, song } = splitVideoTitle(songName);
-                return yield getGeniusUrl(artist, song);
-            });
-            const url = isVideo ? yield getGeniusUrlVideo() : yield getGeniusUrl(artistName, songName);
+            let songName = songNameRaw;
+            let artistName = songMetaElem.innerText;
+            if (isVideo) {
+                // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                if (songName.includes("-")) {
+                    const split = splitVideoTitle(songName);
+                    songName = split.song;
+                    artistName = split.artist;
+                }
+            }
+            const url = yield getGeniusUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+            if (url) {
+                emitInterface("bytm:lyricsLoaded", {
+                    type: "current",
+                    artists: artistName,
+                    title: songName,
+                    url,
+                });
+            }
             return url;
         }
         catch (err) {
@@ -2111,6 +2164,7 @@ var layout_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
 
 
 
+
 let features;
 function preInitLayout(feats) {
     features = feats;
@@ -2118,37 +2172,39 @@ function preInitLayout(feats) {
 let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
 function addWatermark() {
-    const watermark = document.createElement("a");
-    watermark.role = "button";
-    watermark.id = "bytm-watermark";
-    watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
-    watermark.innerText = constants_scriptInfo.name;
-    watermark.title = t("open_menu_tooltip", constants_scriptInfo.name);
-    watermark.tabIndex = 1000;
-    improveLogo();
-    watermark.addEventListener("click", (e) => {
-        e.stopPropagation();
-        menuOpenAmt++;
-        if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-            openCfgMenu();
-        if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
-            exchangeLogo();
-    });
-    // when using the tab key to navigate
-    watermark.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
+    return layout_awaiter(this, void 0, void 0, function* () {
+        const watermark = document.createElement("a");
+        watermark.role = "button";
+        watermark.id = "bytm-watermark";
+        watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
+        watermark.innerText = constants_scriptInfo.name;
+        watermark.title = t("open_menu_tooltip", constants_scriptInfo.name);
+        watermark.tabIndex = 1000;
+        improveLogo();
+        watermark.addEventListener("click", (e) => {
             e.stopPropagation();
             menuOpenAmt++;
             if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
                 openCfgMenu();
             if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
                 exchangeLogo();
-        }
+        });
+        // when using the tab key to navigate
+        watermark.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.stopPropagation();
+                menuOpenAmt++;
+                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                    openCfgMenu();
+                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                    exchangeLogo();
+            }
+        });
+        onSelector("ytmusic-nav-bar #left-content", {
+            listener: (logoElem) => insertAfter(logoElem, watermark),
+        });
+        log("Added watermark element");
     });
-    onSelector("ytmusic-nav-bar #left-content", {
-        listener: (logoElem) => insertAfter(logoElem, watermark),
-    });
-    log("Added watermark element");
 }
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
 function improveLogo() {
@@ -2234,32 +2290,36 @@ function addConfigMenuOption(container) {
 }
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
-    onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-        listener: (tabElemLarge) => {
-            tabElemLarge.remove();
-            log("Removed large upgrade tab");
-        },
-    });
-    onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-        listener: (tabElemSmall) => {
-            tabElemSmall.remove();
-            log("Removed small upgrade tab");
-        },
+    return layout_awaiter(this, void 0, void 0, function* () {
+        onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+            listener: (tabElemLarge) => {
+                tabElemLarge.remove();
+                log("Removed large upgrade tab");
+            },
+        });
+        onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+            listener: (tabElemSmall) => {
+                tabElemSmall.remove();
+                log("Removed small upgrade tab");
+            },
+        });
     });
 }
 function initVolumeFeatures() {
-    // not technically an input element but behaves pretty much the same
-    onSelector("tp-yt-paper-slider#volume-slider", {
-        listener: (sliderElem) => {
-            const volSliderCont = document.createElement("div");
-            volSliderCont.id = "bytm-vol-slider-cont";
-            addParent(sliderElem, volSliderCont);
-            if (typeof features.volumeSliderSize === "number")
-                setVolSliderSize();
-            if (features.volumeSliderLabel)
-                addVolumeSliderLabel(sliderElem, volSliderCont);
-            setVolSliderStep(sliderElem);
-        },
+    return layout_awaiter(this, void 0, void 0, function* () {
+        // not technically an input element but behaves pretty much the same
+        onSelector("tp-yt-paper-slider#volume-slider", {
+            listener: (sliderElem) => {
+                const volSliderCont = document.createElement("div");
+                volSliderCont.id = "bytm-vol-slider-cont";
+                addParent(sliderElem, volSliderCont);
+                if (typeof features.volumeSliderSize === "number")
+                    setVolSliderSize();
+                if (features.volumeSliderLabel)
+                    addVolumeSliderLabel(sliderElem, volSliderCont);
+                setVolSliderStep(sliderElem);
+            },
+        });
     });
 }
 /** Adds a percentage label to the volume slider and tooltip */
@@ -2320,24 +2380,26 @@ function setVolSliderStep(sliderElem) {
     sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 function initQueueButtons() {
-    const addQueueBtns = (evt) => {
-        let amt = 0;
-        for (const queueItm of evt.childNodes) {
-            if (!queueItm.classList.contains("bytm-has-queue-btns")) {
-                addQueueButtons(queueItm);
-                amt++;
+    return layout_awaiter(this, void 0, void 0, function* () {
+        const addQueueBtns = (evt) => {
+            let amt = 0;
+            for (const queueItm of evt.childNodes) {
+                if (!queueItm.classList.contains("bytm-has-queue-btns")) {
+                    addQueueButtons(queueItm);
+                    amt++;
+                }
             }
-        }
-        if (amt > 0)
-            log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
-    };
-    siteEvents.on("queueChanged", addQueueBtns);
-    siteEvents.on("autoplayQueueChanged", addQueueBtns);
-    const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
-    if (queueItems.length === 0)
-        return;
-    queueItems.forEach(itm => addQueueButtons(itm));
-    log(`Added buttons to ${queueItems.length} existing queue ${autoPlural("item", queueItems)}`);
+            if (amt > 0)
+                log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
+        };
+        siteEvents.on("queueChanged", addQueueBtns);
+        siteEvents.on("autoplayQueueChanged", addQueueBtns);
+        const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
+        if (queueItems.length === 0)
+            return;
+        queueItems.forEach(itm => addQueueButtons(itm));
+        log(`Added buttons to ${queueItems.length} existing queue ${autoPlural("item", queueItems)}`);
+    });
 }
 /**
  * Adds the buttons to each item in the current song queue.
@@ -2387,6 +2449,14 @@ function addQueueButtons(queueItem) {
                         imgEl.classList.add("bytm-spinner");
                     }
                     lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield getGeniusUrl(artistsSan, songSan);
+                    if (lyricsUrl) {
+                        emitInterface("bytm:lyricsLoaded", {
+                            type: "queue",
+                            artists: artist,
+                            title: song,
+                            url: lyricsUrl,
+                        });
+                    }
                     const resetImgElem = () => {
                         imgEl.src = lyricsIconUrl;
                         imgEl.classList.remove("bytm-spinner");
@@ -2453,78 +2523,80 @@ function addQueueButtons(queueItem) {
 }
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
-    try {
-        const preventDefault = (e) => e.preventDefault();
-        /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
-        const addListItemAnchors = (items) => {
-            var _a;
-            for (const item of items) {
-                if (item.classList.contains("bytm-anchor-improved"))
-                    continue;
-                item.classList.add("bytm-anchor-improved");
-                const thumbnailElem = item.querySelector(".left-items");
-                const titleElem = item.querySelector(".title-column .title a");
-                if (!thumbnailElem || !titleElem)
-                    continue;
-                const anchorElem = document.createElement("a");
-                anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
-                anchorElem.href = (_a = titleElem === null || titleElem === void 0 ? void 0 : titleElem.href) !== null && _a !== void 0 ? _a : "#";
-                anchorElem.target = "_self";
-                anchorElem.role = "button";
-                anchorElem.addEventListener("click", preventDefault);
-                addParent(thumbnailElem, anchorElem);
-            }
-        };
-        // home page
-        onSelector("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
-            continuous: true,
-            all: true,
-            listener: addListItemAnchors,
-        });
-        // related tab in /watch
-        onSelector("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
-            continuous: true,
-            all: true,
-            listener: addListItemAnchors,
-        });
-        // playlists
-        onSelector("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
-            continuous: true,
-            all: true,
-            listener: addListItemAnchors,
-        });
-        // generic shelves
-        onSelector("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
-            continuous: true,
-            all: true,
-            listener: addListItemAnchors,
-        });
-    }
-    catch (err) {
-        error("Couldn't improve carousel shelf anchors due to an error:", err);
-    }
-    try {
-        const addSidebarAnchors = (sidebarCont) => {
-            const items = sidebarCont.parentNode.querySelectorAll("ytmusic-guide-entry-renderer tp-yt-paper-item");
-            improveSidebarAnchors(items);
-            return items.length;
-        };
-        onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
-            listener: (sidebarCont) => {
-                const itemsAmt = addSidebarAnchors(sidebarCont);
-                log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
-            },
-        });
-        onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
-            listener: (miniSidebarCont) => {
-                const itemsAmt = addSidebarAnchors(miniSidebarCont);
-                log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
-            },
-        });
-    }
-    catch (err) {
-        error("Couldn't add anchors to sidebar items due to an error:", err);
-    }
+    return layout_awaiter(this, void 0, void 0, function* () {
+        try {
+            const preventDefault = (e) => e.preventDefault();
+            /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
+            const addListItemAnchors = (items) => {
+                var _a;
+                for (const item of items) {
+                    if (item.classList.contains("bytm-anchor-improved"))
+                        continue;
+                    item.classList.add("bytm-anchor-improved");
+                    const thumbnailElem = item.querySelector(".left-items");
+                    const titleElem = item.querySelector(".title-column .title a");
+                    if (!thumbnailElem || !titleElem)
+                        continue;
+                    const anchorElem = document.createElement("a");
+                    anchorElem.classList.add("bytm-anchor", "bytm-carousel-shelf-anchor");
+                    anchorElem.href = (_a = titleElem === null || titleElem === void 0 ? void 0 : titleElem.href) !== null && _a !== void 0 ? _a : "#";
+                    anchorElem.target = "_self";
+                    anchorElem.role = "button";
+                    anchorElem.addEventListener("click", preventDefault);
+                    addParent(thumbnailElem, anchorElem);
+                }
+            };
+            // home page
+            onSelector("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+                continuous: true,
+                all: true,
+                listener: addListItemAnchors,
+            });
+            // related tab in /watch
+            onSelector("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+                continuous: true,
+                all: true,
+                listener: addListItemAnchors,
+            });
+            // playlists
+            onSelector("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+                continuous: true,
+                all: true,
+                listener: addListItemAnchors,
+            });
+            // generic shelves
+            onSelector("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+                continuous: true,
+                all: true,
+                listener: addListItemAnchors,
+            });
+        }
+        catch (err) {
+            error("Couldn't improve carousel shelf anchors due to an error:", err);
+        }
+        try {
+            const addSidebarAnchors = (sidebarCont) => {
+                const items = sidebarCont.parentNode.querySelectorAll("ytmusic-guide-entry-renderer tp-yt-paper-item");
+                improveSidebarAnchors(items);
+                return items.length;
+            };
+            onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+                listener: (sidebarCont) => {
+                    const itemsAmt = addSidebarAnchors(sidebarCont);
+                    log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
+                },
+            });
+            onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+                listener: (miniSidebarCont) => {
+                    const itemsAmt = addSidebarAnchors(miniSidebarCont);
+                    log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+                },
+            });
+        }
+        catch (err) {
+            error("Couldn't add anchors to sidebar items due to an error:", err);
+        }
+    });
 }
 const sidebarPaths = [
     "/",
@@ -2552,57 +2624,62 @@ function improveSidebarAnchors(sidebarItems) {
 }
 /** Closes toasts after a set amount of time */
 function initAutoCloseToasts() {
-    try {
-        const animTimeout = 300;
-        const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-        onSelector("tp-yt-paper-toast#toast", {
-            all: true,
-            continuous: true,
-            listener: (toastElems) => layout_awaiter(this, void 0, void 0, function* () {
-                var _a;
-                for (const toastElem of toastElems) {
-                    if (!toastElem.hasAttribute("allow-click-through"))
-                        continue;
-                    if (toastElem.classList.contains("bytm-closing"))
-                        continue;
-                    toastElem.classList.add("bytm-closing");
-                    yield pauseFor(closeTimeout);
-                    toastElem.classList.remove("paper-toast-open");
-                    log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
-                    // wait for the transition to finish
-                    yield pauseFor(animTimeout);
-                    toastElem.style.display = "none";
-                }
-            }),
-        });
-        log("Initialized automatic toast closing");
-    }
-    catch (err) {
-        error("Error in automatic toast closing:", err);
-    }
+    return layout_awaiter(this, void 0, void 0, function* () {
+        try {
+            const animTimeout = 300;
+            const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
+            onSelector("tp-yt-paper-toast#toast", {
+                all: true,
+                continuous: true,
+                listener: (toastElems) => layout_awaiter(this, void 0, void 0, function* () {
+                    var _a;
+                    for (const toastElem of toastElems) {
+                        if (!toastElem.hasAttribute("allow-click-through"))
+                            continue;
+                        if (toastElem.classList.contains("bytm-closing"))
+                            continue;
+                        toastElem.classList.add("bytm-closing");
+                        yield pauseFor(closeTimeout);
+                        toastElem.classList.remove("paper-toast-open");
+                        log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
+                        // wait for the transition to finish
+                        yield pauseFor(animTimeout);
+                        toastElem.style.display = "none";
+                    }
+                }),
+            });
+            log("Initialized automatic toast closing");
+        }
+        catch (err) {
+            error("Error in automatic toast closing:", err);
+        }
+    });
 }
 /** Continuously removes the ?si tracking parameter from share URLs */
 function removeShareTrackingParam() {
-    onSelector("yt-copy-link-renderer input#share-url", {
-        continuous: true,
-        listener: (inputElem) => {
-            try {
-                const url = new URL(inputElem.value);
-                if (!url.searchParams.has("si"))
-                    return;
-                url.searchParams.delete("si");
-                inputElem.value = String(url);
-                log(`Removed tracking parameter from share link: ${url}`);
-            }
-            catch (err) {
-                warn("Couldn't remove tracking parameter from share link due to error:", err);
-            }
-        },
+    return layout_awaiter(this, void 0, void 0, function* () {
+        onSelector("yt-copy-link-renderer input#share-url", {
+            continuous: true,
+            listener: (inputElem) => {
+                try {
+                    const url = new URL(inputElem.value);
+                    if (!url.searchParams.has("si"))
+                        return;
+                    url.searchParams.delete("si");
+                    inputElem.value = String(url);
+                    log(`Removed tracking parameter from share link: ${url}`);
+                }
+                catch (err) {
+                    warn("Couldn't remove tracking parameter from share link due to error:", err);
+                }
+            },
+        });
     });
 }
 /** Applies global CSS to fix various spacings */
 function fixSpacing() {
-    addGlobalStyle(`\
+    return layout_awaiter(this, void 0, void 0, function* () {
+        addGlobalStyle(`\
 ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
   margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
 }
@@ -2610,37 +2687,40 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-re
 ytmusic-carousel-shelf-renderer ytmusic-carousel {
   --ytmusic-carousel-item-height: 60px !important;
 }`);
+    });
 }
 /** Adds a button to the queue to scroll to the active song */
 function addScrollToActiveBtn() {
-    onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
-        listener: (tabElem) => layout_awaiter(this, void 0, void 0, function* () {
-            const containerElem = document.createElement("div");
-            containerElem.id = "bytm-scroll-to-active-btn-cont";
-            const linkElem = document.createElement("div");
-            linkElem.id = "bytm-scroll-to-active-btn";
-            linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-            linkElem.title = t("scroll_to_playing");
-            linkElem.role = "button";
-            const imgElem = document.createElement("img");
-            imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = yield getResourceUrl("skip_to");
-            linkElem.addEventListener("click", (e) => {
-                const activeItem = document.querySelector(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-                if (!activeItem)
-                    return;
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                activeItem.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                    inline: "center",
+    return layout_awaiter(this, void 0, void 0, function* () {
+        onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+            listener: (tabElem) => layout_awaiter(this, void 0, void 0, function* () {
+                const containerElem = document.createElement("div");
+                containerElem.id = "bytm-scroll-to-active-btn-cont";
+                const linkElem = document.createElement("div");
+                linkElem.id = "bytm-scroll-to-active-btn";
+                linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+                linkElem.title = t("scroll_to_playing");
+                linkElem.role = "button";
+                const imgElem = document.createElement("img");
+                imgElem.className = "bytm-generic-btn-img";
+                imgElem.src = yield getResourceUrl("skip_to");
+                linkElem.addEventListener("click", (e) => {
+                    const activeItem = document.querySelector(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+                    if (!activeItem)
+                        return;
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    activeItem.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                        inline: "center",
+                    });
                 });
-            });
-            linkElem.appendChild(imgElem);
-            containerElem.appendChild(linkElem);
-            tabElem.appendChild(containerElem);
-        }),
+                linkElem.appendChild(imgElem);
+                containerElem.appendChild(linkElem);
+                tabElem.appendChild(containerElem);
+            }),
+        });
     });
 }
 const gainBoostMultiplier = 3.0;
@@ -2977,7 +3057,7 @@ function getFeatures() {
 function saveFeatures(featureConf) {
     return config_awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.setData(featureConf);
-        siteEvents.emit("configChanged", cfgMgr.getData());
+        emitSiteEvent("configChanged", cfgMgr.getData());
         utils_info("Saved new feature config:", featureConf);
     });
 }
@@ -2985,7 +3065,7 @@ function saveFeatures(featureConf) {
 function setDefaultFeatures() {
     return config_awaiter(this, void 0, void 0, function* () {
         yield cfgMgr.saveDefaultData();
-        siteEvents.emit("configChanged", cfgMgr.getData());
+        emitSiteEvent("configChanged", cfgMgr.getData());
         utils_info("Reset feature config to its default values");
     });
 }
@@ -3015,6 +3095,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
 
 
 
+
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -3034,6 +3115,7 @@ let domLoaded = false;
 const domain = getDomain();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
+    initInterface();
     setLogLevel(defaultLogLevel);
     if (domain === "ytm")
         initBeforeUnloadHook();
@@ -3631,52 +3713,56 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 `);
         initOnSelector();
         const features = getFeatures();
+        const ftInit = [];
         log(`DOM loaded. Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
-                initSiteEvents();
+                ftInit.push(initSiteEvents());
                 if (!(yield GM.getValue("bytm-installed"))) {
                     // open welcome page with language selector
                     // await showWelcomePage();
                 }
                 yield GM.setValue("bytm-installed", Date.now());
                 try {
-                    addCfgMenu(); // TODO(v1.1): remove
+                    ftInit.push(addCfgMenu()); // TODO(v1.1): remove
                 }
                 catch (err) {
                     error("Couldn't add menu:", err);
                 }
                 onSelector("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
                 if (features.arrowKeySupport)
-                    initArrowKeySkip();
+                    ftInit.push(initArrowKeySkip());
                 if (features.removeUpgradeTab)
-                    removeUpgradeTab();
+                    ftInit.push(removeUpgradeTab());
                 if (features.watermarkEnabled)
-                    addWatermark();
+                    ftInit.push(addWatermark());
                 if (features.geniusLyrics)
-                    addMediaCtrlLyricsBtn();
+                    ftInit.push(addMediaCtrlLyricsBtn());
                 if (features.deleteFromQueueButton || features.lyricsQueueButton)
-                    initQueueButtons();
+                    ftInit.push(initQueueButtons());
                 if (features.anchorImprovements)
-                    addAnchorImprovements();
+                    ftInit.push(addAnchorImprovements());
                 if (features.closeToastsTimeout > 0)
-                    initAutoCloseToasts();
+                    ftInit.push(initAutoCloseToasts());
                 if (features.removeShareTrackingParam)
-                    removeShareTrackingParam();
+                    ftInit.push(removeShareTrackingParam());
                 if (features.numKeysSkipToTime)
-                    initNumKeysSkip();
+                    ftInit.push(initNumKeysSkip());
                 if (features.fixSpacing)
-                    fixSpacing();
+                    ftInit.push(fixSpacing());
                 if (features.scrollToActiveSongBtn)
-                    addScrollToActiveBtn();
+                    ftInit.push(addScrollToActiveBtn());
                 if (features.boostGain)
-                    addBoostGainButton();
-                initVolumeFeatures();
+                    ftInit.push(addBoostGainButton());
+                ftInit.push(initVolumeFeatures());
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
-                    initSiteSwitch(domain);
+                    ftInit.push(initSiteSwitch(domain));
             }
+            Promise.all(ftInit).then(() => {
+                emitInterface("bytm:ready");
+            });
         }
         catch (err) {
             error("Feature error:", err);
