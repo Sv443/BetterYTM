@@ -3,6 +3,7 @@ import { scriptInfo } from "./constants";
 import type { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import { TrLocale } from "./translations";
+import { setGlobalProp } from "./interface";
 
 //#SECTION logging
 
@@ -17,6 +18,7 @@ export function setLogLevel(level: LogLevel) {
   if(curLogLevel !== level)
     console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
   curLogLevel = level;
+  setGlobalProp("logLevel", level);
 }
 
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */

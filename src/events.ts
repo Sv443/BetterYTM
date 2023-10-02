@@ -1,6 +1,7 @@
 import { createNanoEvents } from "nanoevents";
 import { error, info } from "./utils";
 import { FeatureConfig } from "./types";
+import { emitInterface } from "./interface";
 
 export interface SiteEventsMap {
   // misc:
@@ -38,7 +39,7 @@ export async function initSiteEvents() {
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        siteEvents.emit("queueChanged", target as HTMLElement);
+        emitSiteEvent("queueChanged", target as HTMLElement);
       }
     });
 
@@ -50,7 +51,7 @@ export async function initSiteEvents() {
     const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
         info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        siteEvents.emit("autoplayQueueChanged", target as HTMLElement);
+        emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
       }
     });
 
@@ -68,4 +69,10 @@ export async function initSiteEvents() {
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
   }
+}
+
+/** Emits a site event with the given key and arguments */
+export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
+  siteEvents.emit(key, ...args);
+  emitInterface(`bytm:siteEvent:${key}` as "_", args as unknown as undefined);
 }

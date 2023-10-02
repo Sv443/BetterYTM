@@ -4,7 +4,7 @@ import { scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
-import { siteEvents } from "../events";
+import { emitSiteEvent, siteEvents } from "../events";
 import { getLocale, initTranslations, setLocale, t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
@@ -802,7 +802,7 @@ async function addImportMenu() {
         return location.reload();
       }
 
-      siteEvents.emit("rebuildCfgMenu", parsed.data);
+      emitSiteEvent("rebuildCfgMenu", parsed.data);
 
       closeImportMenu();
       openCfgMenu();

@@ -4,6 +4,7 @@ import { mode, scriptInfo } from "../constants";
 import { error, getResourceUrl, info, log, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../events";
 import { t } from "../translations";
+import { emitInterface } from "../interface";
 import { openCfgMenu } from "../menu/menu_old";
 import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import "./layout.css";
@@ -19,7 +20,7 @@ export function preInitLayout(feats: FeatureConfig) {
 let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
 
 /** Adds a watermark beneath the logo */
-export function addWatermark() {
+export async function addWatermark() {
   const watermark = document.createElement("a");
   watermark.role = "button";
   watermark.id = "bytm-watermark";
@@ -164,7 +165,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 //#MARKER remove upgrade tab
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
-export function removeUpgradeTab() {
+export async function removeUpgradeTab() {
   onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemLarge) => {
       tabElemLarge.remove();
@@ -181,7 +182,7 @@ export function removeUpgradeTab() {
 
 //#MARKER volume slider
 
-export function initVolumeFeatures() {
+export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
   onSelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
     listener: (sliderElem) => {
@@ -278,7 +279,7 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 
 //#MARKER queue buttons
 
-export function initQueueButtons() {
+export async function initQueueButtons() {
   const addQueueBtns = (
     evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
   ) => {
@@ -368,6 +369,15 @@ async function addQueueButtons(queueItem: HTMLElement) {
 
         lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
 
+        if(lyricsUrl) {
+          emitInterface("bytm:lyricsLoaded", {
+            type: "queue",
+            artists: artist,
+            title: song,
+            url: lyricsUrl,
+          });
+        }
+
         const resetImgElem = () => {
           imgEl.src = lyricsIconUrl;
           imgEl.classList.remove("bytm-spinner");
@@ -456,7 +466,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
 //#MARKER anchor improvements
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
-export function addAnchorImprovements() {
+export async function addAnchorImprovements() {
   //#SECTION carousel shelves
   try {
     const preventDefault = (e: MouseEvent) => e.preventDefault();
@@ -580,7 +590,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 //#MARKER auto close toasts
 
 /** Closes toasts after a set amount of time */
-export function initAutoCloseToasts() {
+export async function initAutoCloseToasts() {
   try {
     const animTimeout = 300;
     const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
@@ -620,7 +630,7 @@ export function initAutoCloseToasts() {
 //#MARKER remove share tracking param
 
 /** Continuously removes the ?si tracking parameter from share URLs */
-export function removeShareTrackingParam() {
+export async function removeShareTrackingParam() {
   onSelector<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
     continuous: true,
     listener: (inputElem) => {
@@ -643,7 +653,7 @@ export function removeShareTrackingParam() {
 //#MARKER fix margins
 
 /** Applies global CSS to fix various spacings */
-export function fixSpacing() {
+export async function fixSpacing() {
   addGlobalStyle(`\
 ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
   margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
@@ -655,7 +665,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 }
 
 /** Adds a button to the queue to scroll to the active song */
-export function addScrollToActiveBtn() {
+export async function addScrollToActiveBtn() {
   onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
     listener: async (tabElem) => {
       const containerElem = document.createElement("div");

@@ -2,7 +2,7 @@ import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
-import { siteEvents } from "./events";
+import { emitSiteEvent } from "./events";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 4;
@@ -69,14 +69,14 @@ export function getFeatures() {
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export async function saveFeatures(featureConf: FeatureConfig) {
   await cfgMgr.setData(featureConf);
-  siteEvents.emit("configChanged", cfgMgr.getData());
+  emitSiteEvent("configChanged", cfgMgr.getData());
   info("Saved new feature config:", featureConf);
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export async function setDefaultFeatures() {
   await cfgMgr.saveDefaultData();
-  siteEvents.emit("configChanged", cfgMgr.getData());
+  emitSiteEvent("configChanged", cfgMgr.getData());
   info("Reset feature config to its default values");
 }
 

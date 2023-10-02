@@ -5,7 +5,7 @@ import { isCfgMenuOpen } from "../menu/menu_old";
 
 //#MARKER arrow key skip
 
-export function initArrowKeySkip() {
+export async function initArrowKeySkip() {
   document.addEventListener("keydown", (evt) => {
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
@@ -85,7 +85,7 @@ function onArrowKeyPress(evt: KeyboardEvent) {
 const videoTimeThreshold = 3;
 
 /** Initializes the site switch feature */
-export function initSiteSwitch(domain: Domain) {
+export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
     if(e.key === "F9")
       switchSite(domain === "yt" ? "ytm" : "yt");
@@ -158,7 +158,7 @@ export function enableBeforeUnload() {
  * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` 
  * event listeners before they can be called by the site.
  */
-export function initBeforeUnloadHook() {
+export async function initBeforeUnloadHook() {
   Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
 
   (function(original: typeof window.addEventListener) {
@@ -182,7 +182,7 @@ export function initBeforeUnloadHook() {
 //#MARKER number keys skip to time
 
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
-export function initNumKeysSkip() {
+export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
     if(!e.key.trim().match(/^[0-9]$/))
       return;

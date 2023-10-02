@@ -1,6 +1,7 @@
 import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, log, warn } from "../utils";
 import { pl, t } from "../translations";
+import { emitInterface } from "../interface";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -46,7 +47,7 @@ export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: st
 let currentSongTitle = "";
 
 /** Adds a lyrics button to the media controls bar */
-export function addMediaCtrlLyricsBtn(): void {
+export async function addMediaCtrlLyricsBtn() {
   onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 
@@ -177,21 +178,28 @@ export async function getCurrentLyricsUrl() {
       return undefined;
 
     const songNameRaw = songTitleElem.title;
-    const songName = sanitizeSong(songNameRaw);
+    let songName = songNameRaw;
+    let artistName = songMetaElem.title;
 
-    const artistName = sanitizeArtists(songMetaElem.title);
+    if(isVideo) {
+      // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+      if(songName.includes("-")) {
+        const split = splitVideoTitle(songName);
+        songName = split.song;
+        artistName = split.artist;
+      }
+    }
 
-    /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
-    const getGeniusUrlVideo = async () => {
-      if(!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-        return await getGeniusUrl(artistName, songName);
-    
-      const { artist, song } = splitVideoTitle(songName);
+    const url = await getGeniusUrl(sanitizeArtists(artistName), sanitizeSong(songName));
 
-      return await getGeniusUrl(artist, song);
-    };
-
-    const url = isVideo ? await getGeniusUrlVideo() : await getGeniusUrl(artistName, songName);
+    if(url) {
+      emitInterface("bytm:lyricsLoaded", {
+        type: "current",
+        artists: artistName,
+        title: songName,
+        url,
+      });
+    }
 
     return url;
   }

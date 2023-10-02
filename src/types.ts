@@ -1,4 +1,6 @@
 import type { TrLocale } from "./translations";
+import type * as consts from "./constants";
+import type { scriptInfo } from "./constants";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
 
@@ -15,6 +17,18 @@ export type Domain = "yt" | "ytm";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources | `tr-${keyof typeof langMapping}` | "changelog";
+
+declare global {
+  interface Window {
+    BYTM: {
+      [key: string]: unknown;
+      locale: TrLocale;
+      logLevel: LogLevel;
+    }
+    & typeof scriptInfo
+    & Pick<typeof consts, "mode" | "branch">;
+  }
+}
 
 /** Feature configuration */
 export interface FeatureConfig {

@@ -4,6 +4,7 @@ import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./events";
 import { initTranslations, setLocale } from "./translations";
+import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";
 import {
   // layout
@@ -50,6 +51,7 @@ const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
+  initInterface();
   setLogLevel(defaultLogLevel);
 
   if(domain === "ytm")
@@ -57,6 +59,13 @@ function preInit() {
 
   init();
 }
+
+["bytm:ready", "bytm:lyricsLoaded", "bytm:siteEvent:queueChanged"].forEach((type) => {
+  window.addEventListener(type, (event) => {
+    const evt = event as CustomEvent;
+    log(`>> evt '${type}:`, evt.detail);
+  });
+});
 
 async function init() {
   try {
@@ -113,12 +122,13 @@ async function initFeatures() {
   initOnSelector();
 
   const features = getFeatures();
+  const ftInit = [] as Promise<void>[];
 
   log(`DOM loaded. Initializing features for domain "${domain}"...`);
 
   try {
     if(domain === "ytm") {
-      initSiteEvents();
+      ftInit.push(initSiteEvents());
 
       if(!await GM.getValue("bytm-installed")) {
         // open welcome page with language selector
@@ -127,7 +137,7 @@ async function initFeatures() {
       await GM.setValue("bytm-installed", Date.now());
 
       try {
-        addCfgMenu(); // TODO(v1.1): remove
+        ftInit.push(addCfgMenu()); // TODO(v1.1): remove
       }
       catch(err) {
         error("Couldn't add menu:", err);
@@ -136,48 +146,52 @@ async function initFeatures() {
       onSelector("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
 
       if(features.arrowKeySupport)
-        initArrowKeySkip();
+        ftInit.push(initArrowKeySkip());
 
       if(features.removeUpgradeTab)
-        removeUpgradeTab();
+        ftInit.push(removeUpgradeTab());
 
       if(features.watermarkEnabled)
-        addWatermark();
+        ftInit.push(addWatermark());
 
       if(features.geniusLyrics)
-        addMediaCtrlLyricsBtn();
+        ftInit.push(addMediaCtrlLyricsBtn());
 
       if(features.deleteFromQueueButton || features.lyricsQueueButton)
-        initQueueButtons();
+        ftInit.push(initQueueButtons());
 
       if(features.anchorImprovements)
-        addAnchorImprovements();
+        ftInit.push(addAnchorImprovements());
 
       if(features.closeToastsTimeout > 0)
-        initAutoCloseToasts();
+        ftInit.push(initAutoCloseToasts());
 
       if(features.removeShareTrackingParam)
-        removeShareTrackingParam();
+        ftInit.push(removeShareTrackingParam());
 
       if(features.numKeysSkipToTime)
-        initNumKeysSkip();
+        ftInit.push(initNumKeysSkip());
 
       if(features.fixSpacing)
-        fixSpacing();
+        ftInit.push(fixSpacing());
 
       if(features.scrollToActiveSongBtn)
-        addScrollToActiveBtn();
+        ftInit.push(addScrollToActiveBtn());
 
       if(features.boostGain)
-        addBoostGainButton();
+        ftInit.push(addBoostGainButton());
 
-      initVolumeFeatures();
+      ftInit.push(initVolumeFeatures());
     }
 
     if(["ytm", "yt"].includes(domain)) {
       if(features.switchBetweenSites)
-        initSiteSwitch(domain);
+        ftInit.push(initSiteSwitch(domain));
     }
+
+    Promise.all(ftInit).then(() => {
+      emitInterface("bytm:ready");
+    });
   }
   catch(err) {
     error("Feature error:", err);
