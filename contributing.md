@@ -58,7 +58,7 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 <br><br><br>
 
 ### Developing a plugin that interfaces with BetterYTM:
-BetterYTM has a built-in interface based on events that allows other userscripts to piggy-back off and benefit from the features of BetterYTM.  
+BetterYTM has a built-in interface based on events that allows other userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please contact me [(see my homepage)](https://sv443.net/)  
   
 There are two ways to interact with BetterYTM, static and dynamic:  
