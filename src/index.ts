@@ -60,13 +60,6 @@ function preInit() {
   init();
 }
 
-["bytm:ready", "bytm:lyricsLoaded", "bytm:siteEvent:queueChanged"].forEach((type) => {
-  window.addEventListener(type, (event) => {
-    const evt = event as CustomEvent;
-    log(`>> evt '${type}:`, evt.detail);
-  });
-});
-
 async function init() {
   try {
     registerMenuCommands();
