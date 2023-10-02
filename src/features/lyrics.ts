@@ -172,14 +172,14 @@ export async function getCurrentLyricsUrl() {
     const isVideo = typeof document.querySelector("ytmusic-player")?.hasAttribute("video-mode");
 
     const songTitleElem = document.querySelector<HTMLElement>(".content-info-wrapper > yt-formatted-string");
-    const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string:first-child");
+    const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string :first-child");
 
-    if(!songTitleElem || !songMetaElem || !songTitleElem.title)
+    if(!songTitleElem || !songMetaElem)
       return undefined;
 
     const songNameRaw = songTitleElem.title;
     let songName = songNameRaw;
-    let artistName = songMetaElem.title;
+    let artistName = songMetaElem.innerText;
 
     if(isVideo) {
       // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
