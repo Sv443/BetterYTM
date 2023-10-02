@@ -2,7 +2,7 @@ import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
-import { emitSiteEvent } from "./events";
+import { emitSiteEvent } from "./siteEvents";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 4;

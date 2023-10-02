@@ -2,7 +2,7 @@ import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/useru
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
-import { initSiteEvents } from "./events";
+import { initSiteEvents } from "./siteEvents";
 import { initTranslations, setLocale } from "./translations";
 import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";

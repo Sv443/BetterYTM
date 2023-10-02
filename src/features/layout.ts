@@ -2,7 +2,7 @@ import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, get
 import type { FeatureConfig } from "../types";
 import { mode, scriptInfo } from "../constants";
 import { error, getResourceUrl, info, log, warn } from "../utils";
-import { SiteEventsMap, siteEvents } from "../events";
+import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { t } from "../translations";
 import { emitInterface } from "../interface";
 import { openCfgMenu } from "../menu/menu_old";

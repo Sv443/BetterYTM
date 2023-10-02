@@ -4,7 +4,7 @@ import { scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
 import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
-import { emitSiteEvent, siteEvents } from "../events";
+import { emitSiteEvent, siteEvents } from "../siteEvents";
 import { getLocale, initTranslations, setLocale, t } from "../translations";
 import { FeatureConfig } from "../types";
 import changelogContent from "../../changelog.md";
