@@ -11,7 +11,7 @@ export interface InterfaceEvents {
   /** Fired whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
 
-  // additionally fires all events from `src/events.ts`
+  // additionally fires all events from `src/siteEvents.ts`
   // in this format: `bytm:siteEvent:${eventName}`
 }
 
