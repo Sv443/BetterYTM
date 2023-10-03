@@ -55,9 +55,11 @@ async function run() {
 
     const sym = trKeys === origKeys ? "✅" : "🚫";
 
+    const keysCol = locale === "en_US" ? `${origKeys} (default locale)` : `${sym} \`${trKeys}/${origKeys}\` (${percent}%)`;
+
     const baseTr = trFiles[locale as TrLocale]?.base;
 
-    tableLines.push(`| \`${locale}\` | ${sym} ${trKeys}/${origKeys} (${percent}%) | ${baseTr ? `\`${baseTr}\`` : "-"} |`);
+    tableLines.push(`| \`${locale}\` | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : "─"} |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
