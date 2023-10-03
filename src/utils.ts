@@ -68,6 +68,9 @@ export function dbg(...args: unknown[]): void {
 
 //#SECTION video time
 
+const ytmVidSelector = "ytmusic-player video";
+const ytVidSelector = "#content ytd-player video";
+
 /**
  * Returns the current video time in seconds  
  * Dispatches mouse movement events in case the video time can't be estimated
@@ -79,12 +82,20 @@ export function getVideoTime() {
 
     try {
       if(domain === "ytm") {
+        const vidElem = document.querySelector<HTMLVideoElement>(ytmVidSelector);
+        if(vidElem)
+          return res(vidElem.currentTime);
+
         onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
             res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
         });
       }
       else if(domain === "yt") {
+        const vidElem = document.querySelector<HTMLVideoElement>(ytVidSelector);
+        if(vidElem)
+          return res(vidElem.currentTime);
+
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();
 
