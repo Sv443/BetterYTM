@@ -5,6 +5,8 @@
     "target": "ES2016",
     "outDir": "dist/out",
     "lib": [
+      "ES5",
+      "ES6",
       "DOM",
       "DOM.Iterable"
     ],

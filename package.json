@@ -14,6 +14,7 @@
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "dev": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
+    "tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
   },
   "engines": {

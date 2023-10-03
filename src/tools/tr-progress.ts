@@ -1,0 +1,58 @@
+import { readFile, writeFile } from "fs/promises";
+import { join, relative, resolve } from "path";
+import { fileURLToPath } from "url";
+import { autoPlural, mapRange } from "@sv443-network/userutils";
+import locales from "../../assets/locales.json" assert { type: "json" };
+import type { TrLocale } from "../translations";
+
+const { exit } = process;
+
+const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
+const trDir = join(rootDir, "assets/translations/");
+
+async function run() {
+  console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
+
+  const translations = {} as Record<TrLocale, Record<string, string>>;
+  for(const locale of Object.keys(locales) as TrLocale[]) {
+    const trFile = join(trDir, `${locale}.json`);
+    const tr = JSON.parse(await readFile(trFile, "utf-8")) as { translations: Record<string, string> };
+    translations[locale] = tr.translations;
+  }
+
+  const trs = Object.keys(translations);
+  console.log(`Found ${trs.length} ${autoPlural("locale", trs)}:`, trs.join(", "));
+
+  const { en_US, ...restLocs } = translations;
+  const progress = {} as Record<TrLocale, number>;
+  const tableLines: string[] = [];
+
+  for(const [locale, translations] of Object.entries(restLocs)) {
+    for(const [k] of Object.entries(en_US)) {
+      if(translations[k]) {
+        if(!progress[locale as TrLocale])
+          progress[locale as TrLocale] = 0;
+        progress[locale as TrLocale] += 1;
+      }
+    }
+
+    const trKeys = progress[locale as TrLocale];
+    const origKeys = Object.keys(en_US).length;
+    const percent = mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1);
+
+    const sym = trKeys === origKeys ? "✅" : "⚠️";
+
+    tableLines.push(`| ${sym} \`${locale}\` | ${trKeys}/${origKeys} (${percent}%) |`);
+    console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)`);
+  }
+
+  let templateCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
+  templateCont = templateCont.replace(/<!--{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"));
+  await writeFile(join(trDir, "README.md"), templateCont);
+
+  console.log(`\n\x1b[32mFinished updating translation progress\x1b[0m - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
+
+  setImmediate(() => exit(0));
+}
+
+run();

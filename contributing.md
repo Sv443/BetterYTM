@@ -15,6 +15,11 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 <br><br>
 
 ### Submitting translations:
+Thank you so much for your interest in translating BetterYTM!  
+Before submitting a translation, please check on [this document](./assets/translations/README.md) if the language you want to translate to has already been translated and how many strings are still missing.  
+If a language is already fully translated but you are interested in improving the translations, you can just follow the same steps as below.  
+  
+If you want to submit or edit a translation, please follow these steps:  
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n.
@@ -26,7 +31,7 @@ If you have any questions or need help, feel free to contact me, [see my homepag
   4. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by following the same format as the other translation(s)
   5. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
 6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
-  Make sure you also translate the `description` inside of `package.json` for me
+  Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
 
 <br><br><br>
 
@@ -47,6 +52,7 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 | `npm run build-dev` | Builds the userscript for development |
 | `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `.env` and `src/tools/serve.ts` |
 | `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't actually verify the functionality of the script though! |
+| `npm run tr-progress` | Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md` |
 
 <br>
 
