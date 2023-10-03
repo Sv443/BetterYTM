@@ -1,4 +1,4 @@
-import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
+import { clamp } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, ytmVideoSelector } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
@@ -112,71 +112,15 @@ export async function initNumKeysSkip() {
     )
       return info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
 
-    skipToTimeKey(Number(e.key));
+    const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
+    if(!vidElem)
+      return warn("Could not find video element, so the keypress is ignored");
+
+    const newVidTime = vidElem.duration / (10 / Number(e.key));
+    if(!isNaN(newVidTime)) {
+      log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+      vidElem.currentTime = newVidTime;
+    }
   });
   log("Added number key press listener");
-}
-
-/** Returns the x position as a fraction of timeKey in maxWidth */
-function getX(timeKey: number, maxWidth: number) {
-  if(timeKey >= 10)
-    return maxWidth;
-  return Math.floor((maxWidth / 10) * timeKey);
-}
-
-/** Calculates DOM-relative offsets of the bounding client rect of the passed element - see https://stackoverflow.com/a/442474/11187044 */
-function getOffsetRect(elem: HTMLElement) {
-  let left = 0;
-  let top = 0;
-  const rect = elem.getBoundingClientRect();
-  while(elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
-    left += elem.offsetLeft - elem.scrollLeft;
-    top += elem.offsetTop - elem.scrollTop;
-    elem = elem.offsetParent as HTMLElement;
-  }
-  return {
-    top,
-    left,
-    width: rect.width,
-    height: rect.height,
-  };
-}
-
-/** Emulates a click on the video progress bar at the position calculated from the passed time key (0-9) */
-function skipToTimeKey(key: number) {
-  // not technically a progress element but behaves pretty much the same
-  const progressElem = document.querySelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar");
-  if(!progressElem)
-    return;
-
-  const rect = getOffsetRect(progressElem);
-
-  const x = getX(key, rect.width);
-  const y = rect.top - rect.height / 2;
-
-  log(`Skipping to time key ${key} (x-offset: ${x}px of ${rect.width}px)`);
-
-  const evt = new MouseEvent("mousedown", {
-    clientX: x,
-    clientY: Math.round(y),
-    // @ts-ignore
-    layerX: x,
-    layerY: Math.round(rect.height / 2),
-    target: progressElem,
-    bubbles: true,
-    shiftKey: false,
-    ctrlKey: false,
-    altKey: false,
-    metaKey: false,
-    button: 0,
-    buttons: 1,
-    which: 1,
-    isTrusted: true,
-    offsetX: 0,
-    offsetY: 0,
-    // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-    view: getUnsafeWindow(),
-  });
-
-  progressElem.dispatchEvent(evt);
 }
