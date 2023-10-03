@@ -64,15 +64,6 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
-  closeToastsTimeout: {
-    type: "number",
-    category: "layout",
-    min: 0,
-    max: 30,
-    step: 0.5,
-    default: 0,
-    unit: "s",
-  },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
@@ -93,9 +84,25 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+
+  //#SECTION behavior
+  disableBeforeUnloadPopup: {
+    type: "toggle",
+    category: "behavior",
+    default: false,
+  },
+  closeToastsTimeout: {
+    type: "number",
+    category: "behavior",
+    min: 0,
+    max: 30,
+    step: 0.5,
+    default: 0,
+    unit: "s",
+  },
   rememberSongTime: {
     type: "toggle",
-    category: "layout",
+    category: "behavior",
     default: true,
   },
 
@@ -121,11 +128,6 @@ export const featInfo = {
       meta: false,
     },
   },
-  disableBeforeUnloadPopup: {
-    type: "toggle",
-    category: "input",
-    default: false,
-  },
   anchorImprovements: {
     type: "toggle",
     category: "input",
@@ -149,16 +151,16 @@ export const featInfo = {
     default: true,
   },
 
-  //#SECTION misc
+  //#SECTION general
   locale: {
     type: "select",
-    category: "misc",
+    category: "general",
     options: localeOptions,
     default: getPreferredLocale(),
   },
   logLevel: {
     type: "select",
-    category: "misc",
+    category: "general",
     options: () => [
       { value: 0, label: t("log_level_debug") },
       { value: 1, label: t("log_level_info") },
