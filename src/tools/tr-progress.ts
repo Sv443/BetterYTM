@@ -10,14 +10,24 @@ const { exit } = process;
 const rootDir = resolve(fileURLToPath(import.meta.url), "../../../");
 const trDir = join(rootDir, "assets/translations/");
 
+interface TrFile {
+  base: string | undefined;
+  translations: Record<string, string>;
+}
+
 async function run() {
   console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
 
   const translations = {} as Record<TrLocale, Record<string, string>>;
   for(const locale of Object.keys(locales) as TrLocale[]) {
     const trFile = join(trDir, `${locale}.json`);
-    const tr = JSON.parse(await readFile(trFile, "utf-8")) as { translations: Record<string, string> };
-    translations[locale] = tr.translations;
+    const tr = JSON.parse(await readFile(trFile, "utf-8")) as TrFile;
+
+    let baseTr = {} as Record<string, string>;
+    if(tr.base)
+      baseTr = (JSON.parse(await readFile(join(trDir, `${tr.base}.json`), "utf-8")) as TrFile).translations;
+
+    translations[locale] = { ...baseTr, ...tr.translations };
   }
 
   const trs = Object.keys(translations);
@@ -40,7 +50,7 @@ async function run() {
     const origKeys = Object.keys(en_US).length;
     const percent = mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1);
 
-    const sym = trKeys === origKeys ? "✅" : "⚠️";
+    const sym = trKeys === origKeys ? "✅" : "🚫";
 
     tableLines.push(`| ${sym} \`${locale}\` | ${trKeys}/${origKeys} (${percent}%) |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)`);
