@@ -552,7 +552,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "d790068", // asserted as generic string instead of literal
+    buildNumber: "7ec4223", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./assets/locales.json
@@ -628,6 +628,8 @@ function error(...args) {
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
 }
+const ytmVideoSelector = "ytmusic-player video";
+const ytVideoSelector = "#content ytd-player video";
 /**
  * Returns the current video time in seconds
  * Dispatches mouse movement events in case the video time can't be estimated
@@ -638,11 +640,17 @@ function getVideoTime() {
         const domain = getDomain();
         try {
             if (domain === "ytm") {
+                const vidElem = document.querySelector(ytmVideoSelector);
+                if (vidElem)
+                    return res(vidElem.currentTime);
                 onSelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
                     listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
                 });
             }
             else if (domain === "yt") {
+                const vidElem = document.querySelector(ytVideoSelector);
+                if (vidElem)
+                    return res(vidElem.currentTime);
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
                 ytForceShowVideoTime();
                 const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
@@ -760,7 +768,7 @@ function initTranslations(locale) {
             // merge with base translations if specified
             const baseTransUrl = transFile.base ? yield getResourceUrl(`tr-${transFile.base}`) : undefined;
             const baseTransFile = baseTransUrl ? yield (yield fetch(baseTransUrl)).json() : undefined;
-            tr.addLanguage(locale, Object.assign(Object.assign({}, ((_a = baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations));
+            tr.addLanguage(locale, Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations));
             utils_info(`Loaded translations for locale '${locale}'`);
         }
         catch (err) {
@@ -1653,244 +1661,6 @@ function openChangelogMenu() {
     menuBg.style.display = "block";
 }
 
-;// CONCATENATED MODULE: ./src/features/input.ts
-var input_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-function initArrowKeySkip() {
-    return input_awaiter(this, void 0, void 0, function* () {
-        document.addEventListener("keydown", (evt) => {
-            var _a, _b, _c;
-            if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
-                return;
-            // discard the event when a (text) input is currently active, like when editing a playlist
-            if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
-                return utils_info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
-            onArrowKeyPress(evt);
-        });
-        log("Added arrow key press listener");
-    });
-}
-/** Called when the user presses any key, anywhere */
-function onArrowKeyPress(evt) {
-    log(`Captured key '${evt.code}' in proxy listener`);
-    // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
-    const defaultProps = {
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-        shiftKey: false,
-        target: document.body,
-        currentTarget: document.body,
-        originalTarget: document.body,
-        explicitOriginalTarget: document.body,
-        srcElement: document.body,
-        type: "keydown",
-        bubbles: true,
-        cancelBubble: false,
-        cancelable: true,
-        isTrusted: true,
-        repeat: false,
-        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: getUnsafeWindow(),
-    };
-    let invalidKey = false;
-    let keyProps = {};
-    switch (evt.code) {
-        case "ArrowLeft":
-            keyProps = {
-                code: "KeyH",
-                key: "h",
-                keyCode: 72,
-                which: 72,
-            };
-            break;
-        case "ArrowRight":
-            keyProps = {
-                code: "KeyL",
-                key: "l",
-                keyCode: 76,
-                which: 76,
-            };
-            break;
-        default:
-            invalidKey = true;
-            break;
-    }
-    if (!invalidKey) {
-        const proxyProps = Object.assign(Object.assign({ code: "" }, defaultProps), keyProps);
-        document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
-        log(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
-    }
-    else
-        warn(`Captured key '${evt.code}' has no defined behavior`);
-}
-/** switch sites only if current video time is greater than this value */
-const videoTimeThreshold = 3;
-/** Initializes the site switch feature */
-function initSiteSwitch(domain) {
-    return input_awaiter(this, void 0, void 0, function* () {
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "F9")
-                switchSite(domain === "yt" ? "ytm" : "yt");
-        });
-        log("Initialized site switch listener");
-    });
-}
-/** Switches to the other site (between YT and YTM) */
-function switchSite(newDomain) {
-    return input_awaiter(this, void 0, void 0, function* () {
-        try {
-            if (newDomain === "ytm" && !location.href.includes("/watch"))
-                return warn("Not on a video page, so the site switch is ignored");
-            let subdomain;
-            if (newDomain === "ytm")
-                subdomain = "music";
-            else if (newDomain === "yt")
-                subdomain = "www";
-            if (!subdomain)
-                throw new Error(`Unrecognized domain '${newDomain}'`);
-            disableBeforeUnload();
-            const { pathname, search, hash } = new URL(location.href);
-            const vt = yield getVideoTime();
-            log(`Found video time of ${vt} seconds`);
-            const cleanSearch = search.split("&")
-                .filter((param) => !param.match(/^\??t=/))
-                .join("&");
-            const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
-                cleanSearch.includes("?")
-                    ? `${cleanSearch.startsWith("?")
-                        ? cleanSearch
-                        : "?" + cleanSearch}&t=${vt - 1}`
-                    : `?t=${vt - 1}`
-                : cleanSearch;
-            const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
-            utils_info(`Switching to domain '${newDomain}' at ${newUrl}`);
-            location.assign(newUrl);
-        }
-        catch (err) {
-            error("Error while switching site:", err);
-        }
-    });
-}
-let beforeUnloadEnabled = true;
-/** Disables the popup before leaving the site */
-function disableBeforeUnload() {
-    beforeUnloadEnabled = false;
-    utils_info("Disabled popup before leaving the site");
-}
-/** (Re-)enables the popup before leaving the site */
-function enableBeforeUnload() {
-    beforeUnloadEnabled = true;
-    info("Enabled popup before leaving the site");
-}
-/**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
- * event listeners before they can be called by the site.
- */
-function initBeforeUnloadHook() {
-    return input_awaiter(this, void 0, void 0, function* () {
-        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-        (function (original) {
-            // @ts-ignore
-            window.__proto__.addEventListener = function (...args) {
-                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-                args[1] = function (...a) {
-                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
-                        utils_info("Prevented beforeunload event listener from being called");
-                        return false;
-                    }
-                    else
-                        return origListener.apply(this, a);
-                };
-                original.apply(this, args);
-            };
-            // @ts-ignore
-        })(window.__proto__.addEventListener);
-    });
-}
-/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
-function initNumKeysSkip() {
-    return input_awaiter(this, void 0, void 0, function* () {
-        document.addEventListener("keydown", (e) => {
-            var _a, _b, _c, _d;
-            if (!e.key.trim().match(/^[0-9]$/))
-                return;
-            if (isCfgMenuOpen)
-                return;
-            // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
-            if (document.activeElement !== document.body
-                && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
-                && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
-                return utils_info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
-            skipToTimeKey(Number(e.key));
-        });
-        log("Added number key press listener");
-    });
-}
-/** Returns the x position as a fraction of timeKey in maxWidth */
-function getX(timeKey, maxWidth) {
-    if (timeKey >= 10)
-        return maxWidth;
-    return Math.floor((maxWidth / 10) * timeKey);
-}
-/** Calculates DOM-relative offsets of the bounding client rect of the passed element - see https://stackoverflow.com/a/442474/11187044 */
-function getOffsetRect(elem) {
-    let left = 0;
-    let top = 0;
-    const rect = elem.getBoundingClientRect();
-    while (elem && !isNaN(elem.offsetLeft) && !isNaN(elem.offsetTop)) {
-        left += elem.offsetLeft - elem.scrollLeft;
-        top += elem.offsetTop - elem.scrollTop;
-        elem = elem.offsetParent;
-    }
-    return {
-        top,
-        left,
-        width: rect.width,
-        height: rect.height,
-    };
-}
-/** Emulates a click on the video progress bar at the position calculated from the passed time key (0-9) */
-function skipToTimeKey(key) {
-    // not technically a progress element but behaves pretty much the same
-    const progressElem = document.querySelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar");
-    if (!progressElem)
-        return;
-    const rect = getOffsetRect(progressElem);
-    const x = getX(key, rect.width);
-    const y = rect.top - rect.height / 2;
-    log(`Skipping to time key ${key} (x-offset: ${x}px of ${rect.width}px)`);
-    const evt = new MouseEvent("mousedown", {
-        clientX: x,
-        clientY: Math.round(y),
-        // @ts-ignore
-        layerX: x,
-        layerY: Math.round(rect.height / 2),
-        target: progressElem,
-        bubbles: true,
-        shiftKey: false,
-        ctrlKey: false,
-        altKey: false,
-        metaKey: false,
-        button: 0,
-        buttons: 1,
-        which: 1,
-        isTrusted: true,
-        offsetX: 0,
-        offsetY: 0,
-        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: getUnsafeWindow(),
-    });
-    progressElem.dispatchEvent(evt);
-}
-
 ;// CONCATENATED MODULE: ./src/features/lyrics.ts
 var lyrics_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2628,39 +2398,6 @@ function improveSidebarAnchors(sidebarItems) {
         addParent(item, anchorElem);
     });
 }
-/** Closes toasts after a set amount of time */
-function initAutoCloseToasts() {
-    return layout_awaiter(this, void 0, void 0, function* () {
-        try {
-            const animTimeout = 300;
-            const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-            onSelector("tp-yt-paper-toast#toast", {
-                all: true,
-                continuous: true,
-                listener: (toastElems) => layout_awaiter(this, void 0, void 0, function* () {
-                    var _a;
-                    for (const toastElem of toastElems) {
-                        if (!toastElem.hasAttribute("allow-click-through"))
-                            continue;
-                        if (toastElem.classList.contains("bytm-closing"))
-                            continue;
-                        toastElem.classList.add("bytm-closing");
-                        yield pauseFor(closeTimeout);
-                        toastElem.classList.remove("paper-toast-open");
-                        log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
-                        // wait for the transition to finish
-                        yield pauseFor(animTimeout);
-                        toastElem.style.display = "none";
-                    }
-                }),
-            });
-            log("Initialized automatic toast closing");
-        }
-        catch (err) {
-            error("Error in automatic toast closing:", err);
-        }
-    });
-}
 /** Continuously removes the ?si tracking parameter from share URLs */
 function removeShareTrackingParam() {
     return layout_awaiter(this, void 0, void 0, function* () {
@@ -2744,7 +2481,7 @@ function addBoostGainButton() {
             e.preventDefault();
             e.stopImmediatePropagation();
             const btnElem = document.querySelector("#bytm-boost-gain-btn");
-            const videoElem = document.querySelector("ytmusic-player video");
+            const videoElem = document.querySelector(ytmVideoSelector);
             const imgElem = btnElem === null || btnElem === void 0 ? void 0 : btnElem.querySelector("img");
             if (!videoElem || !imgElem || !btnElem)
                 return;
@@ -2797,11 +2534,97 @@ function createMediaCtrlBtn(imgSrc) {
         return linkElem;
     });
 }
+
+;// CONCATENATED MODULE: ./src/features/behavior.ts
+var behavior_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+let behavior_features;
+function preInitBehavior(feats) {
+    behavior_features = feats;
+}
+let beforeUnloadEnabled = true;
+/** Disables the popup before leaving the site */
+function disableBeforeUnload() {
+    beforeUnloadEnabled = false;
+    utils_info("Disabled popup before leaving the site");
+}
+/** (Re-)enables the popup before leaving the site */
+function enableBeforeUnload() {
+    beforeUnloadEnabled = true;
+    info("Enabled popup before leaving the site");
+}
+/**
+ * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
+ * event listeners before they can be called by the site.
+ */
+function initBeforeUnloadHook() {
+    return behavior_awaiter(this, void 0, void 0, function* () {
+        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
+        (function (original) {
+            // @ts-ignore
+            window.__proto__.addEventListener = function (...args) {
+                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
+                args[1] = function (...a) {
+                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
+                        utils_info("Prevented beforeunload event listener from being called");
+                        return false;
+                    }
+                    else
+                        return origListener.apply(this, a);
+                };
+                original.apply(this, args);
+            };
+            // @ts-ignore
+        })(window.__proto__.addEventListener);
+    });
+}
+/** Closes toasts after a set amount of time */
+function initAutoCloseToasts() {
+    return behavior_awaiter(this, void 0, void 0, function* () {
+        try {
+            const animTimeout = 300;
+            const closeTimeout = Math.max(behavior_features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
+            onSelector("tp-yt-paper-toast#toast", {
+                all: true,
+                continuous: true,
+                listener: (toastElems) => behavior_awaiter(this, void 0, void 0, function* () {
+                    var _a;
+                    for (const toastElem of toastElems) {
+                        if (!toastElem.hasAttribute("allow-click-through"))
+                            continue;
+                        if (toastElem.classList.contains("bytm-closing"))
+                            continue;
+                        toastElem.classList.add("bytm-closing");
+                        yield pauseFor(closeTimeout);
+                        toastElem.classList.remove("paper-toast-open");
+                        log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${behavior_features.closeToastsTimeout * 1000}ms`);
+                        // wait for the transition to finish
+                        yield pauseFor(animTimeout);
+                        toastElem.style.display = "none";
+                    }
+                }),
+            });
+            log("Initialized automatic toast closing");
+        }
+        catch (err) {
+            error("Error in automatic toast closing:", err);
+        }
+    });
+}
 const rememberSongTimeout = 1000 * 60 * 1;
 let curSongId;
 /** Remembers the time of the last played song and resumes playback from that time */
 function initRememberSongTime() {
-    return layout_awaiter(this, void 0, void 0, function* () {
+    return behavior_awaiter(this, void 0, void 0, function* () {
         log("Initialized song time remembering");
         const params = new URL(location.href).searchParams;
         curSongId = params.get("v");
@@ -2809,27 +2632,32 @@ function initRememberSongTime() {
             const songTime = Number(yield GM.getValue("bytm-rem-song-time", 0));
             const songTimestamp = Number(yield GM.getValue("bytm-rem-song-timestamp", 0));
             if (songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
-                const newUrl = new URL(location.href);
-                newUrl.searchParams.set("t", String(Math.max(songTime - 1, 0)));
-                yield deletePersistentSongTimeValues();
-                return location.replace(newUrl);
+                onSelector(ytmVideoSelector, {
+                    listener: (vidElem) => behavior_awaiter(this, void 0, void 0, function* () {
+                        yield deletePersistentSongTimeValues();
+                        const applyTime = () => vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
+                        if (vidElem.readyState === 4)
+                            applyTime();
+                        else
+                            vidElem.addEventListener("canplay", applyTime, { once: true });
+                    }),
+                });
             }
         }
-        GM.getValue("bytm-rem-song-timestamp").then((ts) => layout_awaiter(this, void 0, void 0, function* () {
+        GM.getValue("bytm-rem-song-timestamp").then((ts) => behavior_awaiter(this, void 0, void 0, function* () {
             const time = Number(ts);
             if (Date.now() - time < rememberSongTimeout)
                 yield deletePersistentSongTimeValues();
         }));
         onSelector("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
             listener: (progressElem) => {
-                const progressObserver = new MutationObserver(() => layout_awaiter(this, void 0, void 0, function* () {
+                const progressObserver = new MutationObserver(() => behavior_awaiter(this, void 0, void 0, function* () {
                     const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
                     const newSongId = new URL(location.href).searchParams.get("v");
                     GM.setValue("bytm-rem-song-timestamp", Date.now());
                     GM.setValue("bytm-rem-song-time", songTime);
                     GM.getValue("bytm-rem-song-id").then((storedId) => {
                         if (!storedId && newSongId) {
-                            console.log("cond saving");
                             GM.setValue("bytm-rem-song-id", newSongId);
                         }
                     });
@@ -2852,7 +2680,119 @@ function deletePersistentSongTimeValues() {
     ]);
 }
 
+;// CONCATENATED MODULE: ./src/features/input.ts
+var input_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+function initArrowKeySkip() {
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (evt) => {
+            var _a, _b, _c;
+            if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
+                return;
+            // discard the event when a (text) input is currently active, like when editing a playlist
+            if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
+                return utils_info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
+            onArrowKeyPress(evt);
+        });
+        log("Added arrow key press listener");
+    });
+}
+/** Called when the user presses any key, anywhere */
+function onArrowKeyPress(evt) {
+    evt.preventDefault();
+    // TODO: make configurable
+    let skipBy = 5;
+    if (evt.code === "ArrowLeft")
+        skipBy *= -1;
+    log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+    const vidElem = document.querySelector(ytmVideoSelector);
+    if (vidElem)
+        vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
+}
+/** switch sites only if current video time is greater than this value */
+const videoTimeThreshold = 3;
+/** Initializes the site switch feature */
+function initSiteSwitch(domain) {
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "F9")
+                switchSite(domain === "yt" ? "ytm" : "yt");
+        });
+        log("Initialized site switch listener");
+    });
+}
+/** Switches to the other site (between YT and YTM) */
+function switchSite(newDomain) {
+    return input_awaiter(this, void 0, void 0, function* () {
+        try {
+            if (newDomain === "ytm" && !location.href.includes("/watch"))
+                return warn("Not on a video page, so the site switch is ignored");
+            let subdomain;
+            if (newDomain === "ytm")
+                subdomain = "music";
+            else if (newDomain === "yt")
+                subdomain = "www";
+            if (!subdomain)
+                throw new Error(`Unrecognized domain '${newDomain}'`);
+            disableBeforeUnload();
+            const { pathname, search, hash } = new URL(location.href);
+            const vt = yield getVideoTime();
+            log(`Found video time of ${vt} seconds`);
+            const cleanSearch = search.split("&")
+                .filter((param) => !param.match(/^\??t=/))
+                .join("&");
+            const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
+                cleanSearch.includes("?")
+                    ? `${cleanSearch.startsWith("?")
+                        ? cleanSearch
+                        : "?" + cleanSearch}&t=${vt - 1}`
+                    : `?t=${vt - 1}`
+                : cleanSearch;
+            const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
+            utils_info(`Switching to domain '${newDomain}' at ${newUrl}`);
+            location.assign(newUrl);
+        }
+        catch (err) {
+            error("Error while switching site:", err);
+        }
+    });
+}
+/** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
+function initNumKeysSkip() {
+    return input_awaiter(this, void 0, void 0, function* () {
+        document.addEventListener("keydown", (e) => {
+            var _a, _b, _c, _d;
+            if (!e.key.trim().match(/^[0-9]$/))
+                return;
+            if (isCfgMenuOpen)
+                return;
+            // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
+            if (document.activeElement !== document.body
+                && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
+                && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
+                return utils_info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
+            const vidElem = document.querySelector(ytmVideoSelector);
+            if (!vidElem)
+                return warn("Could not find video element, so the keypress is ignored");
+            const newVidTime = vidElem.duration / (10 / Number(e.key));
+            if (!isNaN(newVidTime)) {
+                log(`Captured number key [${e.key}], skipping to ${Math.floor(newVidTime / 60)}m ${(newVidTime % 60).toFixed(1)}s`);
+                vidElem.currentTime = newVidTime;
+            }
+        });
+        log("Added number key press listener");
+    });
+}
+
 ;// CONCATENATED MODULE: ./src/features/index.ts
+
 
 
 
@@ -3145,6 +3085,7 @@ function init() {
             setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
             setLogLevel(features.logLevel);
             preInitLayout(features);
+            preInitBehavior(features);
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
             if (!domLoaded)
