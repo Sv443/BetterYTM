@@ -795,7 +795,7 @@ async function addImportMenu() {
       else if(parsed.formatVersion !== formatVersion)
         return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
 
-      await saveFeatures(parsed.data);
+      await saveFeatures({ ...getFeatures(), ...parsed.data });
 
       if(confirm(t("import_success_confirm_reload"))) {
         disableBeforeUnload();
