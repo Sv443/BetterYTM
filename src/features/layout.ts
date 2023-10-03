@@ -393,7 +393,7 @@ async function addQueueButtons(queueItem: HTMLElement) {
         if(!lyricsUrl) {
           resetImgElem();
           if(confirm(t("lyrics_not_found_confirm_open_search")))
-            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
+            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
           return;
         }
       }
