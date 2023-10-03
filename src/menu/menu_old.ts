@@ -123,7 +123,9 @@ export async function addCfgMenu() {
       setLocale(featConf.locale);
       const newText = t("lang_changed_prompt_reload");
 
-      if(confirm(`${newText}\n\n────────────────────────────────\n\n${initLangReloadText}`)) {
+      const confirmText = newText !== initLangReloadText ? `${newText}\n\n────────────────────────────────\n\n${initLangReloadText}` : newText;
+
+      if(confirm(confirmText)) {
         closeCfgMenu();
         disableBeforeUnload();
         location.reload();
