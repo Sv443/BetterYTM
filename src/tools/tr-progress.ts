@@ -19,6 +19,8 @@ async function run() {
   console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
 
   const translations = {} as Record<TrLocale, Record<string, string>>;
+  const trFiles = {} as Record<TrLocale, TrFile>;
+
   for(const locale of Object.keys(locales) as TrLocale[]) {
     const trFile = join(trDir, `${locale}.json`);
     const tr = JSON.parse(await readFile(trFile, "utf-8")) as TrFile;
@@ -28,6 +30,7 @@ async function run() {
       baseTr = (JSON.parse(await readFile(join(trDir, `${tr.base}.json`), "utf-8")) as TrFile).translations;
 
     translations[locale] = { ...baseTr, ...tr.translations };
+    trFiles[locale] = tr;
   }
 
   const trs = Object.keys(translations);
@@ -37,7 +40,7 @@ async function run() {
   const progress = {} as Record<TrLocale, number>;
   const tableLines: string[] = [];
 
-  for(const [locale, translations] of Object.entries(restLocs)) {
+  for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
     for(const [k] of Object.entries(en_US)) {
       if(translations[k]) {
         if(!progress[locale as TrLocale])
@@ -52,8 +55,10 @@ async function run() {
 
     const sym = trKeys === origKeys ? "✅" : "🚫";
 
-    tableLines.push(`| ${sym} \`${locale}\` | ${trKeys}/${origKeys} (${percent}%) |`);
-    console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)`);
+    const baseTr = trFiles[locale as TrLocale]?.base;
+
+    tableLines.push(`| \`${locale}\` | ${sym} ${trKeys}/${origKeys} (${percent}%) | ${baseTr ? `\`${baseTr}\`` : "-"} |`);
+    console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
   let templateCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
