@@ -7,6 +7,7 @@
     "*.env": "dotenv",
     "*.env.template": "dotenv",
   },
+  "editor.tabSize": 2,
 
   // requires extension: fabiospampinato.vscode-highlight
   "highlight.regexes": {
