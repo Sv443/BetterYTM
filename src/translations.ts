@@ -23,7 +23,7 @@ export async function initTranslations(locale: TrLocale) {
     const baseTransUrl = transFile.base ? await getResourceUrl(`tr-${transFile.base}` as "_") : undefined;
     const baseTransFile = baseTransUrl ? await (await fetch(baseTransUrl)).json() : undefined;
 
-    tr.addLanguage(locale, { ...(baseTransFile.translations ?? {}), ...transFile.translations });
+    tr.addLanguage(locale, { ...(baseTransFile?.translations ?? {}), ...transFile.translations });
 
     info(`Loaded translations for locale '${locale}'`);
   }
