@@ -10,16 +10,18 @@ import {
   // layout
   initQueueButtons, addWatermark,
   preInitLayout, removeUpgradeTab,
-  initVolumeFeatures, initAutoCloseToasts,
-  removeShareTrackingParam, fixSpacing,
-  addScrollToActiveBtn, addBoostGainButton,
-  initRememberSongTime,
-  // lyrics
-  addMediaCtrlLyricsBtn, geniUrlBase,
+  initVolumeFeatures, removeShareTrackingParam,
+  fixSpacing, addScrollToActiveBtn,
+  addBoostGainButton,
+  // behavior
+  preInitBehavior,
+  initBeforeUnloadHook, disableBeforeUnload,
+  initAutoCloseToasts, initRememberSongTime,
   // input
   initArrowKeySkip, initSiteSwitch,
-  initBeforeUnloadHook, disableBeforeUnload,
   addAnchorImprovements, initNumKeysSkip,
+  // lyrics
+  addMediaCtrlLyricsBtn, geniUrlBase,
   // menu
   addConfigMenuOption,
 } from "./features/index";
@@ -81,6 +83,7 @@ async function init() {
     setLogLevel(features.logLevel);
 
     preInitLayout(features);
+    preInitBehavior(features);
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();

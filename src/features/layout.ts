@@ -1,7 +1,7 @@
 import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, onSelector, openInNewTab, pauseFor, AmplifyMediaResult } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { mode, scriptInfo } from "../constants";
-import { error, getResourceUrl, info, log, warn } from "../utils";
+import { error, getResourceUrl, info, log, warn, ytmVideoSelector } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { t } from "../translations";
 import { emitInterface } from "../interface";
@@ -587,46 +587,6 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#MARKER auto close toasts
-
-/** Closes toasts after a set amount of time */
-export async function initAutoCloseToasts() {
-  try {
-    const animTimeout = 300;
-    const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-
-    onSelector("tp-yt-paper-toast#toast", {
-      all: true,
-      continuous: true,
-      listener: async (toastElems) => {
-        for(const toastElem of toastElems) {
-          if(!toastElem.hasAttribute("allow-click-through"))
-            continue;
-
-          if(toastElem.classList.contains("bytm-closing"))
-            continue;
-          toastElem.classList.add("bytm-closing");
-
-          await pauseFor(closeTimeout);
-
-          toastElem.classList.remove("paper-toast-open");
-          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
-
-          // wait for the transition to finish
-          await pauseFor(animTimeout);
-
-          toastElem.style.display = "none";
-        }
-      },
-    });
-
-    log("Initialized automatic toast closing");
-  }
-  catch(err) {
-    error("Error in automatic toast closing:", err);
-  }
-}
-
 //#MARKER remove share tracking param
 
 /** Continuously removes the ?si tracking parameter from share URLs */
@@ -724,7 +684,7 @@ export async function addBoostGainButton() {
     e.stopImmediatePropagation();
 
     const btnElem = document.querySelector<HTMLElement>("#bytm-boost-gain-btn");
-    const videoElem = document.querySelector<HTMLVideoElement>("ytmusic-player video");
+    const videoElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
     const imgElem = btnElem?.querySelector<HTMLImageElement>("img");
 
     if(!videoElem || !imgElem || !btnElem)
@@ -780,70 +740,4 @@ export async function createMediaCtrlBtn(imgSrc?: string) {
   linkElem.appendChild(imgElem);
 
   return linkElem;
-}
-
-//#MARKER remember song time
-
-const rememberSongTimeout = 1000 * 60 * 1;
-let curSongId: string | undefined;
-
-/** Remembers the time of the last played song and resumes playback from that time */
-export async function initRememberSongTime() {
-  log("Initialized song time remembering");
-
-  const params = new URL(location.href).searchParams;
-  curSongId = params.get("v")!;
-
-  if(location.pathname.startsWith("/watch") && await GM.getValue("bytm-rem-song-id", null) === curSongId) {
-    const songTime = Number(await GM.getValue("bytm-rem-song-time", 0));
-    const songTimestamp = Number(await GM.getValue("bytm-rem-song-timestamp", 0));
-    if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
-      const newUrl = new URL(location.href);
-      newUrl.searchParams.set("t", String(Math.max(songTime - 1, 0)));
-      await deletePersistentSongTimeValues();
-      return location.replace(newUrl);
-    }
-  }
-
-  GM.getValue("bytm-rem-song-timestamp").then(async (ts) => {
-    const time = Number(ts);
-    if(Date.now() - time < rememberSongTimeout)
-      await deletePersistentSongTimeValues();
-  });
-
-  onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-    listener: (progressElem) => {
-      const progressObserver = new MutationObserver(async () => {
-        const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
-        const newSongId = new URL(location.href).searchParams.get("v");
-
-        GM.setValue("bytm-rem-song-timestamp", Date.now());
-        GM.setValue("bytm-rem-song-time", songTime);
-
-        GM.getValue("bytm-rem-song-id").then((storedId) => {
-          if(!storedId && newSongId) {
-            console.log("cond saving");
-            GM.setValue("bytm-rem-song-id", newSongId);
-          }
-        });
-
-        if(newSongId === curSongId || !newSongId)
-          return;
-
-        GM.setValue("bytm-rem-song-id", curSongId = newSongId);
-      });
-
-      progressObserver.observe(progressElem, {
-        attributes: true,
-      });
-    },
-  });
-}
-
-function deletePersistentSongTimeValues() {
-  return Promise.all([
-    GM.deleteValue("bytm-rem-song-id"),
-    GM.deleteValue("bytm-rem-song-time"),
-    GM.deleteValue("bytm-rem-song-timestamp"),
-  ]);
 }

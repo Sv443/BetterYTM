@@ -2,6 +2,7 @@ import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, ytmVideoSelector } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
+import { disableBeforeUnload } from "./behavior";
 
 //#MARKER arrow key skip
 
@@ -92,47 +93,6 @@ async function switchSite(newDomain: Domain) {
   catch(err) {
     error("Error while switching site:", err);
   }
-}
-
-//#MARKER beforeunload popup
-
-let beforeUnloadEnabled = true;
-
-/** Disables the popup before leaving the site */
-export function disableBeforeUnload() {
-  beforeUnloadEnabled = false;
-  info("Disabled popup before leaving the site");
-}
-
-/** (Re-)enables the popup before leaving the site */
-export function enableBeforeUnload() {
-  beforeUnloadEnabled = true;
-  info("Enabled popup before leaving the site");
-}
-
-/**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` 
- * event listeners before they can be called by the site.
- */
-export async function initBeforeUnloadHook() {
-  Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-
-  (function(original: typeof window.addEventListener) {
-    // @ts-ignore
-    window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
-      const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-      args[1] = function(...a) {
-        if(!beforeUnloadEnabled && args[0] === "beforeunload") {
-          info("Prevented beforeunload event listener from being called");
-          return false;
-        }
-        else
-          return origListener.apply(this, a);
-      };
-      original.apply(this, args);
-    };
-    // @ts-ignore
-  })(window.__proto__.addEventListener);
 }
 
 //#MARKER number keys skip to time

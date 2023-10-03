@@ -2,8 +2,9 @@ import { t } from "../translations";
 import { getPreferredLocale } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 
-export * from "./input";
 export * from "./layout";
+export * from "./behavior";
+export * from "./input";
 export * from "./lyrics";
 
 /** Union of all feature keys */
