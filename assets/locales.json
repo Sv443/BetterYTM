@@ -9,6 +9,11 @@
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
     "authors": ["Sv443"]
   },
+  "en_UK": {
+    "name": "English (United Kingdom)",
+    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
+    "authors": ["Sv443"]
+  },
   "es_ES": {
     "name": "Español (España)",
     "userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music",
