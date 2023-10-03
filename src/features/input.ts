@@ -1,5 +1,5 @@
-import { getUnsafeWindow } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn } from "../utils";
+import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
+import { error, getVideoTime, info, log, warn, ytmVideoSelector } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 
@@ -20,63 +20,19 @@ export async function initArrowKeySkip() {
 
 /** Called when the user presses any key, anywhere */
 function onArrowKeyPress(evt: KeyboardEvent) {
-  log(`Captured key '${evt.code}' in proxy listener`);
+  evt.preventDefault();
 
-  // ripped this stuff from the console, most of these are probably unnecessary but this was finnicky af and I am sick and tired of trial and error
-  const defaultProps = {
-    altKey: false,
-    ctrlKey: false,
-    metaKey: false,
-    shiftKey: false,
-    target: document.body,
-    currentTarget: document.body,
-    originalTarget: document.body,
-    explicitOriginalTarget: document.body,
-    srcElement: document.body,
-    type: "keydown",
-    bubbles: true,
-    cancelBubble: false,
-    cancelable: true,
-    isTrusted: true,
-    repeat: false,
-    // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-    view: getUnsafeWindow(),
-  };
+  // TODO: make configurable
+  let skipBy = 5;
+  if(evt.code === "ArrowLeft")
+    skipBy *= -1;
 
-  let invalidKey = false;
-  let keyProps = {};
+  log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
 
-  switch(evt.code) {
-  case "ArrowLeft":
-    keyProps = {
-      code: "KeyH",
-      key: "h",
-      keyCode: 72,
-      which: 72,
-    };
-    break;
-  case "ArrowRight":
-    keyProps = {
-      code: "KeyL",
-      key: "l",
-      keyCode: 76,
-      which: 76,
-    };
-    break;
-  default:
-    invalidKey = true;
-    break;
-  }
+  const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
 
-  if(!invalidKey) {
-    const proxyProps = { code: "", ...defaultProps, ...keyProps };
-
-    document.body.dispatchEvent(new KeyboardEvent("keydown", proxyProps));
-
-    log(`Dispatched proxy keydown event: [${evt.code}] -> [${proxyProps.code}]`);
-  }
-  else
-    warn(`Captured key '${evt.code}' has no defined behavior`);
+  if(vidElem)
+    vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
 }
 
 //#MARKER site switch
