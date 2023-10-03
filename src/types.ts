@@ -32,23 +32,6 @@ declare global {
 
 /** Feature configuration */
 export interface FeatureConfig {
-  //#SECTION input
-  /** Arrow keys skip forwards and backwards by 10 seconds */
-  arrowKeySupport: boolean;
-  /** Add F9 as a hotkey to switch between the YT and YTM sites on a video / song */
-  switchBetweenSites: boolean;
-  /** The hotkey that needs to be pressed to initiate the site switch */
-  switchSitesHotkey: {
-    key: string;
-    shift: boolean;
-    ctrl: boolean;
-    meta: boolean;
-  };
-  /** Whether to completely disable the popup that sometimes appears before leaving the site */
-  disableBeforeUnloadPopup: boolean;
-  /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
-  anchorImprovements: boolean;
-
   //#SECTION layout
   /** Remove the \"Upgrade\" / YT Music Premium tab */
   removeUpgradeTab: boolean;
@@ -62,8 +45,6 @@ export interface FeatureConfig {
   watermarkEnabled: boolean;
   /** Add a button to each song in the queue to quickly remove it */
   deleteFromQueueButton: boolean;
-  /** After how many milliseconds to close permanent toasts */
-  closeToastsTimeout: number;
   /** Remove the "si" tracking parameter from links in the share popup */
   removeShareTrackingParam: boolean;
   /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
@@ -74,8 +55,31 @@ export interface FeatureConfig {
   scrollToActiveSongBtn: boolean;
   /** Add a button to the media controls to boost the current song's gain */
   boostGain: boolean;
+
+  //#SECTION behavior
+  /** Whether to completely disable the popup that sometimes appears before leaving the site */
+  disableBeforeUnloadPopup: boolean;
+  /** After how many milliseconds to close permanent toasts */
+  closeToastsTimeout: number;
   /** Remember the last song's time when reloading or restoring the tab */
   rememberSongTime: boolean;
+
+  //#SECTION input
+  /** Arrow keys skip forwards and backwards */
+  arrowKeySupport: boolean;
+  /** By how many seconds to skip when pressing the arrow keys */
+  arrowKeySkipBy: number;
+  /** Add F9 as a hotkey to switch between the YT and YTM sites on a video / song */
+  switchBetweenSites: boolean;
+  /** The hotkey that needs to be pressed to initiate the site switch */
+  switchSitesHotkey: {
+    key: string;
+    shift: boolean;
+    ctrl: boolean;
+    meta: boolean;
+  };
+  /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
+  anchorImprovements: boolean;
 
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

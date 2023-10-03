@@ -33,6 +33,7 @@ export const migrations: ConfigMigrationsDict = {
     locale: "en_US",
     boostGain: true,
     rememberSongTime: false,
+    arrowKeySkipBy: 10,
   }),
 };
 

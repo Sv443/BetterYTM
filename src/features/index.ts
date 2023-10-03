@@ -113,6 +113,14 @@ export const featInfo = {
     category: "input",
     default: true,
   },
+  arrowKeySkipBy: {
+    type: "number",
+    category: "input",
+    min: 0.5,
+    max: 60,
+    step: 0.5,
+    default: 5,
+  },
   switchBetweenSites: {
     type: "toggle",
     category: "input",

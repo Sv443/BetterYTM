@@ -1,8 +1,15 @@
 import { clamp } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, ytmVideoSelector } from "../utils";
-import type { Domain } from "../types";
+import type { Domain, FeatureConfig } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
+import { featInfo } from "./index";
+
+let features: FeatureConfig;
+
+export function preInitInput(feats: FeatureConfig) {
+  features = feats;
+}
 
 //#MARKER arrow key skip
 
@@ -14,26 +21,20 @@ export async function initArrowKeySkip() {
     if(["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName ?? "_"))
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
-    onArrowKeyPress(evt);
+    evt.preventDefault();
+
+    let skipBy = features.arrowKeySkipBy ?? featInfo.arrowKeySkipBy.default;
+    if(evt.code === "ArrowLeft")
+      skipBy *= -1;
+    
+    log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+    
+    const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
+    
+    if(vidElem)
+      vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
   });
   log("Added arrow key press listener");
-}
-
-/** Called when the user presses any key, anywhere */
-function onArrowKeyPress(evt: KeyboardEvent) {
-  evt.preventDefault();
-
-  // TODO: make configurable
-  let skipBy = 5;
-  if(evt.code === "ArrowLeft")
-    skipBy *= -1;
-
-  log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-
-  const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
-
-  if(vidElem)
-    vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
 }
 
 //#MARKER site switch

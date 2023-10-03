@@ -8,16 +8,17 @@ import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";
 import {
   // layout
+  preInitLayout,
   initQueueButtons, addWatermark,
-  preInitLayout, removeUpgradeTab,
-  initVolumeFeatures, removeShareTrackingParam,
-  fixSpacing, addScrollToActiveBtn,
-  addBoostGainButton,
+  removeUpgradeTab, initVolumeFeatures,
+  removeShareTrackingParam, fixSpacing,
+  addScrollToActiveBtn, addBoostGainButton,
   // behavior
   preInitBehavior,
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
   // input
+  preInitInput,
   initArrowKeySkip, initSiteSwitch,
   addAnchorImprovements, initNumKeysSkip,
   // lyrics
@@ -84,6 +85,7 @@ async function init() {
 
     preInitLayout(features);
     preInitBehavior(features);
+    preInitInput(features);
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
