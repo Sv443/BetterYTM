@@ -552,7 +552,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "7ec4223", // asserted as generic string instead of literal
+    buildNumber: "b7ce2ab", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./assets/locales.json
@@ -2690,31 +2690,35 @@ var input_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
+
+
+
+
+let input_features;
+function preInitInput(feats) {
+    input_features = feats;
+}
 function initArrowKeySkip() {
     return input_awaiter(this, void 0, void 0, function* () {
         document.addEventListener("keydown", (evt) => {
-            var _a, _b, _c;
+            var _a, _b, _c, _d;
             if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
                 return;
             // discard the event when a (text) input is currently active, like when editing a playlist
             if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
                 return utils_info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
-            onArrowKeyPress(evt);
+            evt.preventDefault();
+            let skipBy = (_d = input_features.arrowKeySkipBy) !== null && _d !== void 0 ? _d : featInfo.arrowKeySkipBy.default;
+            if (evt.code === "ArrowLeft")
+                skipBy *= -1;
+            log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
+            const vidElem = document.querySelector(ytmVideoSelector);
+            if (vidElem)
+                vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
         });
         log("Added arrow key press listener");
     });
-}
-/** Called when the user presses any key, anywhere */
-function onArrowKeyPress(evt) {
-    evt.preventDefault();
-    // TODO: make configurable
-    let skipBy = 5;
-    if (evt.code === "ArrowLeft")
-        skipBy *= -1;
-    log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-    const vidElem = document.querySelector(ytmVideoSelector);
-    if (vidElem)
-        vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
 }
 /** switch sites only if current video time is greater than this value */
 const videoTimeThreshold = 3;
@@ -2889,6 +2893,14 @@ const featInfo = {
         category: "input",
         default: true,
     },
+    arrowKeySkipBy: {
+        type: "number",
+        category: "input",
+        min: 0.5,
+        max: 60,
+        step: 0.5,
+        default: 5,
+    },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
@@ -2969,7 +2981,7 @@ const migrations = {
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
     // 3 -> 4
-    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true, rememberSongTime: false })),
+    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true, rememberSongTime: false, arrowKeySkipBy: 10 })),
 };
 const defaultConfig = Object.keys(featInfo)
     .reduce((acc, key) => {
@@ -3086,6 +3098,7 @@ function init() {
             setLogLevel(features.logLevel);
             preInitLayout(features);
             preInitBehavior(features);
+            preInitInput(features);
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
             if (!domLoaded)
