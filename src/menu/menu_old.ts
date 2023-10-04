@@ -6,9 +6,10 @@ import { getResourceUrl, info, log, warn } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import { getLocale, initTranslations, setLocale, t } from "../translations";
-import { FeatureConfig } from "../types";
+import { FeatureConfig, HotkeyObj } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
+import { createHotkeyInput } from "./hotkeyInput";
 
 //#MARKER create menu elements
 
@@ -187,7 +188,7 @@ export async function addCfgMenu() {
 
       {
         let inputType: string | undefined = "text";
-        let inputTag = "input";
+        let inputTag: string | undefined = "input";
         switch(type)
         {
         case "toggle":
@@ -203,6 +204,10 @@ export async function addCfgMenu() {
           inputTag = "select";
           inputType = undefined;
           break;
+        case "hotkey":
+          inputTag = undefined;
+          inputType = undefined;
+          break;
         }
 
         const inputElemId = `bytm-ftconf-${featKey}-input`;
@@ -210,81 +215,102 @@ export async function addCfgMenu() {
         const ctrlElem = document.createElement("span");
         ctrlElem.classList.add("bytm-ftconf-ctrl");
 
-        const inputElem = document.createElement(inputTag) as HTMLInputElement;
-        inputElem.classList.add("bytm-ftconf-input");
-        inputElem.id = inputElemId;
-        if(inputType)
-          inputElem.type = inputType;
+        if(inputTag) {
+          // standard input element:
 
-        if(typeof initialVal !== "undefined")
-          inputElem.value = String(initialVal);
-        if(type === "number" && step)
-          inputElem.step = step;
+          const inputElem = document.createElement(inputTag) as HTMLInputElement;
+          inputElem.classList.add("bytm-ftconf-input");
+          inputElem.id = inputElemId;
+          if(inputType)
+            inputElem.type = inputType;
 
-        // @ts-ignore
-        if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-          // @ts-ignore
-          inputElem.min = ftInfo.min;
-          // @ts-ignore
-          inputElem.max = ftInfo.max;
-        }
-
-        if(type === "toggle" && typeof initialVal !== "undefined")
-          inputElem.checked = Boolean(initialVal);
-
-        // @ts-ignore
-        const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
-
-        let labelElem: HTMLLabelElement | undefined;
-        if(type === "slider") {
-          labelElem = document.createElement("label");
-          labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-          labelElem.htmlFor = inputElemId;
-          labelElem.innerText = fmtVal(initialVal) + unitTxt;
-
-          inputElem.addEventListener("input", () => {
-            if(labelElem)
-              labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
-          });
-        }
-        else if(type === "toggle") {
-          labelElem = document.createElement("label");
-          labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-          labelElem.htmlFor = inputElemId;
-          labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
-
-          inputElem.addEventListener("input", () => {
-            if(labelElem)
-              labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
-          });
-        }
-        else if(type === "select") {
-          const ftOpts = typeof ftInfo.options === "function"
-            ? ftInfo.options()
-            : ftInfo.options;
-          for(const { value, label } of ftOpts) {
-            const optionElem = document.createElement("option");
-            optionElem.value = String(value);
-            optionElem.innerText = label;
-            if(value === initialVal)
-              optionElem.selected = true;
-            inputElem.appendChild(optionElem);
-          }
-        }
-
-        inputElem.addEventListener("input", () => {
-          let v: string | number = String(inputElem.value).trim();
-          if(["number", "slider"].includes(type) || v.match(/^-?\d+$/))
-            v = Number(v);
           if(typeof initialVal !== "undefined")
-            confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
-        });
+            inputElem.value = String(initialVal);
+          if(type === "number" && step)
+            inputElem.step = step;
 
-        if(labelElem) {
-          labelElem.id = `bytm-ftconf-${featKey}-label`;
-          ctrlElem.appendChild(labelElem);
+          // @ts-ignore
+          if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
+            // @ts-ignore
+            inputElem.min = ftInfo.min;
+            // @ts-ignore
+            inputElem.max = ftInfo.max;
+          }
+
+          if(type === "toggle" && typeof initialVal !== "undefined")
+            inputElem.checked = Boolean(initialVal);
+
+          // @ts-ignore
+          const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+
+          let labelElem: HTMLLabelElement | undefined;
+          if(type === "slider") {
+            labelElem = document.createElement("label");
+            labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
+            labelElem.htmlFor = inputElemId;
+            labelElem.innerText = fmtVal(initialVal) + unitTxt;
+
+            inputElem.addEventListener("input", () => {
+              if(labelElem)
+                labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+            });
+          }
+          else if(type === "toggle") {
+            labelElem = document.createElement("label");
+            labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
+            labelElem.htmlFor = inputElemId;
+            labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+
+            inputElem.addEventListener("input", () => {
+              if(labelElem)
+                labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+            });
+          }
+          else if(type === "select") {
+            const ftOpts = typeof ftInfo.options === "function"
+              ? ftInfo.options()
+              : ftInfo.options;
+            for(const { value, label } of ftOpts) {
+              const optionElem = document.createElement("option");
+              optionElem.value = String(value);
+              optionElem.innerText = label;
+              if(value === initialVal)
+                optionElem.selected = true;
+              inputElem.appendChild(optionElem);
+            }
+          }
+
+          inputElem.addEventListener("input", () => {
+            let v: string | number = String(inputElem.value).trim();
+            if(["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+              v = Number(v);
+            if(typeof initialVal !== "undefined")
+              confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
+          });
+
+          if(labelElem) {
+            labelElem.id = `bytm-ftconf-${featKey}-label`;
+            ctrlElem.appendChild(labelElem);
+          }
+          ctrlElem.appendChild(inputElem);
         }
-        ctrlElem.appendChild(inputElem);
+        else {
+          // custom input element:
+          let wrapperElem: HTMLElement | undefined;
+
+          switch(type) {
+          case "hotkey":
+            wrapperElem = createHotkeyInput({
+              initialValue: initialVal as HotkeyObj,
+              onChange: (hotkey) => {
+                confChanged(featKey as keyof FeatureConfig, initialVal, hotkey);
+              },
+            });
+            break;
+          }
+
+          ctrlElem.appendChild(wrapperElem!);
+        }
 
         ftConfElem.appendChild(ctrlElem);
       }
@@ -464,6 +490,8 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
 
   document.body.classList.remove("bytm-disable-scroll");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+
+  siteEvents.emit("cfgMenuClosed");
 
   if(!menuBg)
     return;

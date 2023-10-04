@@ -204,6 +204,10 @@
   padding-right: 5px;
 }
 
+.bytm-ftconf-input.bytm-hotkey-input {
+  min-width: 50px;
+}
+
 .bytm-ftconf-input[type=number] {
   width: 75px;
 }
