@@ -45,7 +45,8 @@ const videoTimeThreshold = 3;
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
-    if(e.key === "F9")
+    const hotkey = features.switchSitesHotkey;
+    if(e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
   log("Initialized site switch listener");

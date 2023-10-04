@@ -127,7 +127,6 @@ export const featInfo = {
     default: true,
   },
   switchSitesHotkey: {
-    hidden: true,
     type: "hotkey",
     category: "input",
     default: {

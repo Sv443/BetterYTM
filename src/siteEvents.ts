@@ -9,6 +9,8 @@ export interface SiteEventsMap {
   configChanged: (config: FeatureConfig) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
   rebuildCfgMenu: (config: FeatureConfig) => void;
+  /** Emitted whenever the config menu is closed */
+  cfgMenuClosed: () => void;
 
   // DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */

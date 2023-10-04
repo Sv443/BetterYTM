@@ -3,6 +3,7 @@
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
   - Added an audio amplification button to the media controls
   - Added feature to restore the song time when reloading or restoring the tab
+  - Made site switch hotkey configurable
 
 <div class="split"></div>
 <br>

@@ -18,6 +18,14 @@ export type Domain = "yt" | "ytm";
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources | `tr-${keyof typeof langMapping}` | "changelog";
 
+/** Describes a single hotkey */
+export type HotkeyObj = {
+  code: string,
+  shift: boolean,
+  ctrl: boolean,
+  alt: boolean,
+};
+
 declare global {
   interface Window {
     BYTM: {
@@ -69,15 +77,10 @@ export interface FeatureConfig {
   arrowKeySupport: boolean;
   /** By how many seconds to skip when pressing the arrow keys */
   arrowKeySkipBy: number;
-  /** Add F9 as a hotkey to switch between the YT and YTM sites on a video / song */
+  /** Add a hotkey to switch between the YT and YTM sites on a video / song */
   switchBetweenSites: boolean;
   /** The hotkey that needs to be pressed to initiate the site switch */
-  switchSitesHotkey: {
-    key: string;
-    shift: boolean;
-    ctrl: boolean;
-    meta: boolean;
-  };
+  switchSitesHotkey: HotkeyObj;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
 
