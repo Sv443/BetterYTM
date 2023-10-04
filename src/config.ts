@@ -28,13 +28,22 @@ export const migrations: ConfigMigrationsDict = {
     logLevel: 1,
   }),
   // 3 -> 4
-  4: (oldData: Record<string, unknown>) => ({
-    ...oldData,
-    locale: "en_US",
-    boostGain: true,
-    rememberSongTime: false,
-    arrowKeySkipBy: 10,
-  }),
+  4: (oldData: Record<string, unknown>) => {
+    const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
+    return {
+      ...oldData,
+      locale: "en_US",
+      boostGain: true,
+      rememberSongTime: false,
+      arrowKeySkipBy: 10,
+      switchSitesHotkey: {
+        code: oldSwitchSitesHotkey.key ?? "F9",
+        shift: oldSwitchSitesHotkey.shift ?? false,
+        ctrl: oldSwitchSitesHotkey.ctrl ?? false,
+        alt: oldSwitchSitesHotkey.meta ?? false,
+      }
+    };
+  },
 };
 
 export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])

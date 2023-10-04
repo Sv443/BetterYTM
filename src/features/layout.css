@@ -101,6 +101,16 @@ button.bytm-btn {
   background: revert;
 }
 
+.bytm-link, .bytm-markdown-container a {
+  color: #369bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bytm-link:hover, .bytm-markdown-container a:hover {
+  text-decoration: underline;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {

@@ -5,6 +5,11 @@
   justify-content: flex-end;
 }
 
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
 .bytm-hotkey-info {
   font-size: 0.9em;
   margin-right: 5px;

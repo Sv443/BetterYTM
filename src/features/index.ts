@@ -130,10 +130,10 @@ export const featInfo = {
     type: "hotkey",
     category: "input",
     default: {
-      key: "F9",
+      code: "F9",
       shift: false,
       ctrl: false,
-      meta: false,
+      alt: false,
     },
   },
   anchorImprovements: {

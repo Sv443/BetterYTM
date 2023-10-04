@@ -302,6 +302,7 @@ export async function addCfgMenu() {
           case "hotkey":
             wrapperElem = createHotkeyInput({
               initialValue: initialVal as HotkeyObj,
+              resetValue: featInfo.switchSitesHotkey.default,
               onChange: (hotkey) => {
                 confChanged(featKey as keyof FeatureConfig, initialVal, hotkey);
               },
@@ -451,6 +452,7 @@ export async function addCfgMenu() {
 
   const versionElem = document.createElement("a");
   versionElem.id = "bytm-menu-version";
+  versionElem.classList.add("bytm-link");
   versionElem.role = "button";
   versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;

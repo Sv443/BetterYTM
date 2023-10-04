@@ -1,15 +1,17 @@
+import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { t } from "../translations";
-import { HotkeyObj } from "../types";
+import type { HotkeyObj } from "../types";
 import "./hotkeyInput.css";
 
 interface HotkeyInputProps {
   initialValue?: HotkeyObj;
+  resetValue?: HotkeyObj;
   onChange: (hotkey: HotkeyObj) => void;
 }
 
 /** Creates a hotkey input element */
-export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps): HTMLElement {
+export function createHotkeyInput({ initialValue, resetValue, onChange }: HotkeyInputProps): HTMLElement {
   const wrapperElem = document.createElement("div");
   wrapperElem.classList.add("bytm-hotkey-wrapper");
 
@@ -23,11 +25,26 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   inputElem.value = initialValue?.code ?? t("hotkey_input_click_to_change");
   inputElem.title = t("hotkey_input_click_to_change_tooltip");
 
+  const resetElem = document.createElement("a");
+  resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
+  resetElem.role = "button";
+  resetElem.innerText = `(${t("reset")})`;
+  resetElem.addEventListener("click", () => {
+    onChange(resetValue!);
+    inputElem.value = resetValue!.code;
+    inputElem.dataset.state = "inactive";
+    infoElem.innerText = getHotkeyInfo(resetValue!);
+  });
+
   if(initialValue)
     infoElem.innerText = getHotkeyInfo(initialValue);
 
+  let lastKeyDown: HotkeyObj | undefined;
+
   document.addEventListener("keypress", (e) => {
     if(inputElem.dataset.state !== "active")
+      return;
+    if(lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey)
       return;
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -44,11 +61,34 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     onChange(hotkey);
   });
 
+  document.addEventListener("keydown", (e) => {
+    if(inputElem.dataset.state !== "active")
+      return;
+    if(["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
+      return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const hotkey = {
+      code: e.code,
+      shift: e.shiftKey,
+      ctrl: e.ctrlKey,
+      alt: e.altKey,
+    } as HotkeyObj;
+    lastKeyDown = hotkey;
+
+    inputElem.value = hotkey.code;
+    inputElem.dataset.state = "inactive";
+    infoElem.innerText = getHotkeyInfo(hotkey);
+    onChange(hotkey);
+  });
+
   const deactivate = () => {
-    inputElem.value = initialValue?.code ?? t("hotkey_input_click_to_change");
+    const curVal = getFeatures().switchSitesHotkey ?? initialValue;
+    inputElem.value = curVal?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
     inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
-    infoElem.innerText = initialValue ? getHotkeyInfo(initialValue) : "";
+    infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
   };
 
   const reactivate = () => {
@@ -68,6 +108,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
 
   wrapperElem.appendChild(infoElem);
   wrapperElem.appendChild(inputElem);
+  resetValue && wrapperElem.appendChild(resetElem);
 
   return wrapperElem;
 }

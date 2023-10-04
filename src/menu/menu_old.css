@@ -246,16 +246,6 @@
 
 /* Markdown stuff */
 
-.bytm-markdown-container a, #bytm-menu-version {
-  color: #369bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.bytm-markdown-container a:hover, #bytm-menu-version:hover {
-  text-decoration: underline;
-}
-
 .bytm-markdown-container kbd {
   --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
