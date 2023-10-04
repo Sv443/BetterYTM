@@ -109,7 +109,12 @@ export async function initRememberSongTime() {
         listener: async (vidElem) => {
           await deletePersistentSongTimeValues();
 
-          const applyTime = () => vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
+          const applyTime = () => {
+            if(isNaN(songTime))
+              return;
+            vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
+            info(`Restored song time to ${Math.floor(songTime / 60)}m, ${(songTime % 60).toFixed(1)}s`);
+          };
 
           if(vidElem.readyState === 4)
             applyTime();
