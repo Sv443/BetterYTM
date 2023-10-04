@@ -1,4 +1,4 @@
-import { addGlobalStyle, initOnSelector, onSelector } from "@sv443-network/userutils";
+import { addGlobalStyle, getSelectorMap, initOnSelector, onSelector } from "@sv443-network/userutils";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, log, setLogLevel } from "./utils";
@@ -233,6 +233,19 @@ function registerMenuCommands() {
       await GM.deleteValue("bytm-installed");
       console.log("Reset install time.");
     }, "t");
+
+    GM.registerMenuCommand("List active selector listeners", async () => {
+      const selectors = getSelectorMap();
+      const lines: string[] = [];
+      [...selectors].forEach(([k, v]) => {
+        lines.push(`  (${v.length}): ${k}`);
+        v.forEach(({ all, continuous }, i) => {
+          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "all" : "one"}`);
+        });
+      });
+      console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
+      alert("See console.");
+    }, "s");
   }
 }
 
