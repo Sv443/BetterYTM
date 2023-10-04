@@ -552,7 +552,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "86d6bd5", // asserted as generic string instead of literal
+    buildNumber: "af2b654", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./assets/locales.json
@@ -890,8 +890,9 @@ var code = "<h2 id=\"110\">1.1.0</h2> <ul> <li><strong>Added Features:</strong><
 
 
 
+
 /** Creates a hotkey input element */
-function createHotkeyInput({ initialValue, onChange }) {
+function createHotkeyInput({ initialValue, resetValue, onChange }) {
     var _a;
     const wrapperElem = document.createElement("div");
     wrapperElem.classList.add("bytm-hotkey-wrapper");
@@ -903,10 +904,23 @@ function createHotkeyInput({ initialValue, onChange }) {
     inputElem.dataset.state = "inactive";
     inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
     inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    const resetElem = document.createElement("a");
+    resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
+    resetElem.role = "button";
+    resetElem.innerText = `(${t("reset")})`;
+    resetElem.addEventListener("click", () => {
+        onChange(resetValue);
+        inputElem.value = resetValue.code;
+        inputElem.dataset.state = "inactive";
+        infoElem.innerText = getHotkeyInfo(resetValue);
+    });
     if (initialValue)
         infoElem.innerText = getHotkeyInfo(initialValue);
+    let lastKeyDown;
     document.addEventListener("keypress", (e) => {
         if (inputElem.dataset.state !== "active")
+            return;
+        if ((lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.code) === e.code && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.shift) === e.shiftKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.ctrl) === e.ctrlKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.alt) === e.altKey)
             return;
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -921,12 +935,32 @@ function createHotkeyInput({ initialValue, onChange }) {
         infoElem.innerText = getHotkeyInfo(hotkey);
         onChange(hotkey);
     });
+    document.addEventListener("keydown", (e) => {
+        if (inputElem.dataset.state !== "active")
+            return;
+        if (["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const hotkey = {
+            code: e.code,
+            shift: e.shiftKey,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+        };
+        lastKeyDown = hotkey;
+        inputElem.value = hotkey.code;
+        inputElem.dataset.state = "inactive";
+        infoElem.innerText = getHotkeyInfo(hotkey);
+        onChange(hotkey);
+    });
     const deactivate = () => {
-        var _a;
-        inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+        var _a, _b;
+        const curVal = (_a = getFeatures().switchSitesHotkey) !== null && _a !== void 0 ? _a : initialValue;
+        inputElem.value = (_b = curVal === null || curVal === void 0 ? void 0 : curVal.code) !== null && _b !== void 0 ? _b : t("hotkey_input_click_to_change");
         inputElem.dataset.state = "inactive";
         inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
-        infoElem.innerText = initialValue ? getHotkeyInfo(initialValue) : "";
+        infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
     };
     const reactivate = () => {
         inputElem.value = "< ... >";
@@ -942,6 +976,7 @@ function createHotkeyInput({ initialValue, onChange }) {
     });
     wrapperElem.appendChild(infoElem);
     wrapperElem.appendChild(inputElem);
+    resetValue && wrapperElem.appendChild(resetElem);
     return wrapperElem;
 }
 function getHotkeyInfo(hotkey) {
@@ -1200,6 +1235,7 @@ function addCfgMenu() {
                             case "hotkey":
                                 wrapperElem = createHotkeyInput({
                                     initialValue: initialVal,
+                                    resetValue: featInfo.switchSitesHotkey.default,
                                     onChange: (hotkey) => {
                                         confChanged(featKey, initialVal, hotkey);
                                     },
@@ -1320,6 +1356,7 @@ function addCfgMenu() {
         versionCont.id = "bytm-menu-version-cont";
         const versionElem = document.createElement("a");
         versionElem.id = "bytm-menu-version";
+        versionElem.classList.add("bytm-link");
         versionElem.role = "button";
         versionElem.title = t("version_tooltip", constants_scriptInfo.version, constants_scriptInfo.buildNumber);
         versionElem.innerText = `v${constants_scriptInfo.version} (${constants_scriptInfo.buildNumber})`;
@@ -3012,10 +3049,10 @@ const featInfo = {
         type: "hotkey",
         category: "input",
         default: {
-            key: "F9",
+            code: "F9",
             shift: false,
             ctrl: false,
-            meta: false,
+            alt: false,
         },
     },
     anchorImprovements: {
@@ -3082,7 +3119,16 @@ const migrations = {
     // 2 -> 3
     3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
     // 3 -> 4
-    4: (oldData) => (Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true, rememberSongTime: false, arrowKeySkipBy: 10 })),
+    4: (oldData) => {
+        var _a, _b, _c, _d;
+        const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
+        return Object.assign(Object.assign({}, oldData), { locale: "en_US", boostGain: true, rememberSongTime: false, arrowKeySkipBy: 10, switchSitesHotkey: {
+                code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
+                shift: (_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false,
+                ctrl: (_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false,
+                alt: (_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false,
+            } });
+    },
 };
 const defaultConfig = Object.keys(featInfo)
     .reduce((acc, key) => {
@@ -3474,16 +3520,6 @@ function initFeatures() {
 
 /* Markdown stuff */
 
-.bytm-markdown-container a, #bytm-menu-version {
-  color: #369bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.bytm-markdown-container a:hover, #bytm-menu-version:hover {
-  text-decoration: underline;
-}
-
 .bytm-markdown-container kbd {
   --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
@@ -3538,6 +3574,11 @@ function initFeatures() {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-left: 5px;
 }
 
 .bytm-hotkey-info {
@@ -3645,6 +3686,16 @@ button.bytm-btn {
   text-transform: revert;
   color: revert;
   background: revert;
+}
+
+.bytm-link, .bytm-markdown-container a {
+  color: #369bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bytm-link:hover, .bytm-markdown-container a:hover {
+  text-decoration: underline;
 }
 
 .bytm-cfg-menu-option {
