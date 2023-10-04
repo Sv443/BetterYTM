@@ -391,7 +391,7 @@ function amplifyMedia(mediaElement, initialMultiplier = 1) {
     },
     /**
      * Set the options of the [limiter / DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode/DynamicsCompressorNode#options)  
-     * The default is `{ threshold: -2, knee: 40, ratio: 12, attack: 0.003, release: 0.25 }`
+     * The default is `{ threshold: -12, knee: 30, ratio: 12, attack: 0.003, release: 0.25 }`
      */
     setLimiterOptions(options) {
       for (const [key, val] of Object.entries(options))
@@ -403,8 +403,8 @@ function amplifyMedia(mediaElement, initialMultiplier = 1) {
     limiterNode: context.createDynamicsCompressor()
   };
   props.setLimiterOptions({
-    threshold: -2,
-    knee: 40,
+    threshold: -12,
+    knee: 30,
     ratio: 12,
     attack: 3e-3,
     release: 0.25
@@ -552,7 +552,7 @@ const constants_scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "82ed938", // asserted as generic string instead of literal
+    buildNumber: "86d6bd5", // asserted as generic string instead of literal
 };
 
 ;// CONCATENATED MODULE: ./assets/locales.json
@@ -883,9 +883,81 @@ function emitSiteEvent(key, ...args) {
 
 ;// CONCATENATED MODULE: ./changelog.md
 // Module
-var code = "<h2 id=\"110\">1.1.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li> <li>Added an audio amplification button to the media controls</li> <li>Added feature to restore the song time when reloading or restoring the tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"102\">1.0.2</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to OpenUserJS!</li> <li>Added a OpenUserJS link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to GreasyFork!</li> <li>Added a GreasyFork link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
+var code = "<h2 id=\"110\">1.1.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li> <li>Added an audio amplification button to the media controls</li> <li>Added feature to restore the song time when reloading or restoring the tab</li> <li>Made site switch hotkey configurable</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"102\">1.0.2</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to OpenUserJS!</li> <li>Added a OpenUserJS link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"101\">1.0.1</h2> <ul> <li><strong>Changes:</strong><ul> <li>Script is now published to GreasyFork!</li> <li>Added a GreasyFork link to the configuration menu</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"100\">1.0.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Added configuration menu to toggle and configure all features</li> <li>Added lyrics button to each song in the queue</li> <li>Added &quot;remove from queue&quot; button to each song in the queue</li> <li>Use number keys to skip to a specific point in the song</li> <li>Added feature to make volume slider bigger and volume control finer</li> <li>Added percentage label next to the volume slider &amp; title on hover</li> <li>Improvements to link hitboxes &amp; more links in general</li> <li>Permanent toast notifications can be automatically closed now</li> <li>Remove tracking parameter <code>&amp;si=...</code> from links in the share menu</li> <li>Fix spacing issues throughout the site</li> <li>Added a button to scroll to the currently active song in the queue</li> <li>Added an easter egg to the watermark and config menu option :)</li> </ul> </li> <li><strong>Changes &amp; Fixes:</strong><ul> <li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li> <li>Video time is now kept when switching site on regular YT too</li> <li>Fixed compatibility with the new site design</li> <li>A loading indicator is shown while the lyrics are loading</li> <li>Images are now smaller and cached by the userscript extension</li> <li>Song names with hyphens are now resolved better for lyrics lookup</li> <li>Site switch with <kbd>F9</kbd> will now keep the video time</li> <li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"020\">0.2.0</h2> <ul> <li><strong>Added Features:</strong><ul> <li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li> <li>Search for song lyrics with new button in media controls</li> <li>Remove &quot;Upgrade to YTM Premium&quot; tab</li> </ul> </li> </ul> <div class=\"split\"></div> <br> <h2 id=\"010\">0.1.0</h2> <ul> <li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li> </ul> ";
 // Exports
 /* harmony default export */ var changelog = (code);
+;// CONCATENATED MODULE: ./src/menu/hotkeyInput.ts
+
+
+
+/** Creates a hotkey input element */
+function createHotkeyInput({ initialValue, onChange }) {
+    var _a;
+    const wrapperElem = document.createElement("div");
+    wrapperElem.classList.add("bytm-hotkey-wrapper");
+    const infoElem = document.createElement("span");
+    infoElem.classList.add("bytm-hotkey-info");
+    const inputElem = document.createElement("input");
+    inputElem.type = "button";
+    inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
+    inputElem.dataset.state = "inactive";
+    inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+    inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    if (initialValue)
+        infoElem.innerText = getHotkeyInfo(initialValue);
+    document.addEventListener("keypress", (e) => {
+        if (inputElem.dataset.state !== "active")
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const hotkey = {
+            code: e.code,
+            shift: e.shiftKey,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+        };
+        inputElem.value = hotkey.code;
+        inputElem.dataset.state = "inactive";
+        infoElem.innerText = getHotkeyInfo(hotkey);
+        onChange(hotkey);
+    });
+    const deactivate = () => {
+        var _a;
+        inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+        inputElem.dataset.state = "inactive";
+        inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+        infoElem.innerText = initialValue ? getHotkeyInfo(initialValue) : "";
+    };
+    const reactivate = () => {
+        inputElem.value = "< ... >";
+        inputElem.dataset.state = "active";
+        inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    };
+    siteEvents.on("cfgMenuClosed", deactivate);
+    inputElem.addEventListener("click", () => {
+        if (inputElem.dataset.state === "active")
+            deactivate();
+        else
+            reactivate();
+    });
+    wrapperElem.appendChild(infoElem);
+    wrapperElem.appendChild(inputElem);
+    return wrapperElem;
+}
+function getHotkeyInfo(hotkey) {
+    const modifiers = [];
+    hotkey.ctrl && modifiers.push(t("hotkey_key_ctrl"));
+    hotkey.shift && modifiers.push(t("hotkey_key_shift"));
+    hotkey.alt && modifiers.push(getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt"));
+    return modifiers.reduce((a, c) => a += `${c} + `, "");
+}
+/** Crude OS detection for keyboard layout purposes */
+function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
+        return "mac";
+    return "win";
+}
+
 ;// CONCATENATED MODULE: ./src/menu/menu_old.ts
 var menu_old_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1044,76 +1116,98 @@ function addCfgMenu() {
                             inputTag = "select";
                             inputType = undefined;
                             break;
+                        case "hotkey":
+                            inputTag = undefined;
+                            inputType = undefined;
+                            break;
                     }
                     const inputElemId = `bytm-ftconf-${featKey}-input`;
                     const ctrlElem = document.createElement("span");
                     ctrlElem.classList.add("bytm-ftconf-ctrl");
-                    const inputElem = document.createElement(inputTag);
-                    inputElem.classList.add("bytm-ftconf-input");
-                    inputElem.id = inputElemId;
-                    if (inputType)
-                        inputElem.type = inputType;
-                    if (typeof initialVal !== "undefined")
-                        inputElem.value = String(initialVal);
-                    if (type === "number" && step)
-                        inputElem.step = step;
-                    // @ts-ignore
-                    if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-                        // @ts-ignore
-                        inputElem.min = ftInfo.min;
-                        // @ts-ignore
-                        inputElem.max = ftInfo.max;
-                    }
-                    if (type === "toggle" && typeof initialVal !== "undefined")
-                        inputElem.checked = Boolean(initialVal);
-                    // @ts-ignore
-                    const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
-                    let labelElem;
-                    if (type === "slider") {
-                        labelElem = document.createElement("label");
-                        labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-                        labelElem.htmlFor = inputElemId;
-                        labelElem.innerText = fmtVal(initialVal) + unitTxt;
-                        inputElem.addEventListener("input", () => {
-                            if (labelElem)
-                                labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
-                        });
-                    }
-                    else if (type === "toggle") {
-                        labelElem = document.createElement("label");
-                        labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-                        labelElem.htmlFor = inputElemId;
-                        labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
-                        inputElem.addEventListener("input", () => {
-                            if (labelElem)
-                                labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
-                        });
-                    }
-                    else if (type === "select") {
-                        const ftOpts = typeof ftInfo.options === "function"
-                            ? ftInfo.options()
-                            : ftInfo.options;
-                        for (const { value, label } of ftOpts) {
-                            const optionElem = document.createElement("option");
-                            optionElem.value = String(value);
-                            optionElem.innerText = label;
-                            if (value === initialVal)
-                                optionElem.selected = true;
-                            inputElem.appendChild(optionElem);
-                        }
-                    }
-                    inputElem.addEventListener("input", () => {
-                        let v = String(inputElem.value).trim();
-                        if (["number", "slider"].includes(type) || v.match(/^-?\d+$/))
-                            v = Number(v);
+                    if (inputTag) {
+                        // standard input element:
+                        const inputElem = document.createElement(inputTag);
+                        inputElem.classList.add("bytm-ftconf-input");
+                        inputElem.id = inputElemId;
+                        if (inputType)
+                            inputElem.type = inputType;
                         if (typeof initialVal !== "undefined")
-                            confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
-                    });
-                    if (labelElem) {
-                        labelElem.id = `bytm-ftconf-${featKey}-label`;
-                        ctrlElem.appendChild(labelElem);
+                            inputElem.value = String(initialVal);
+                        if (type === "number" && step)
+                            inputElem.step = step;
+                        // @ts-ignore
+                        if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
+                            // @ts-ignore
+                            inputElem.min = ftInfo.min;
+                            // @ts-ignore
+                            inputElem.max = ftInfo.max;
+                        }
+                        if (type === "toggle" && typeof initialVal !== "undefined")
+                            inputElem.checked = Boolean(initialVal);
+                        // @ts-ignore
+                        const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+                        let labelElem;
+                        if (type === "slider") {
+                            labelElem = document.createElement("label");
+                            labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
+                            labelElem.htmlFor = inputElemId;
+                            labelElem.innerText = fmtVal(initialVal) + unitTxt;
+                            inputElem.addEventListener("input", () => {
+                                if (labelElem)
+                                    labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+                            });
+                        }
+                        else if (type === "toggle") {
+                            labelElem = document.createElement("label");
+                            labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
+                            labelElem.htmlFor = inputElemId;
+                            labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+                            inputElem.addEventListener("input", () => {
+                                if (labelElem)
+                                    labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+                            });
+                        }
+                        else if (type === "select") {
+                            const ftOpts = typeof ftInfo.options === "function"
+                                ? ftInfo.options()
+                                : ftInfo.options;
+                            for (const { value, label } of ftOpts) {
+                                const optionElem = document.createElement("option");
+                                optionElem.value = String(value);
+                                optionElem.innerText = label;
+                                if (value === initialVal)
+                                    optionElem.selected = true;
+                                inputElem.appendChild(optionElem);
+                            }
+                        }
+                        inputElem.addEventListener("input", () => {
+                            let v = String(inputElem.value).trim();
+                            if (["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+                                v = Number(v);
+                            if (typeof initialVal !== "undefined")
+                                confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
+                        });
+                        if (labelElem) {
+                            labelElem.id = `bytm-ftconf-${featKey}-label`;
+                            ctrlElem.appendChild(labelElem);
+                        }
+                        ctrlElem.appendChild(inputElem);
                     }
-                    ctrlElem.appendChild(inputElem);
+                    else {
+                        // custom input element:
+                        let wrapperElem;
+                        switch (type) {
+                            case "hotkey":
+                                wrapperElem = createHotkeyInput({
+                                    initialValue: initialVal,
+                                    onChange: (hotkey) => {
+                                        confChanged(featKey, initialVal, hotkey);
+                                    },
+                                });
+                                break;
+                        }
+                        ctrlElem.appendChild(wrapperElem);
+                    }
                     ftConfElem.appendChild(ctrlElem);
                 }
                 featuresCont.appendChild(ftConfElem);
@@ -1255,6 +1349,7 @@ function closeCfgMenu(evt) {
     (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
     document.body.classList.remove("bytm-disable-scroll");
     const menuBg = document.querySelector("#bytm-cfg-menu-bg");
+    siteEvents.emit("cfgMenuClosed");
     if (!menuBg)
         return;
     menuBg.style.visibility = "hidden";
@@ -2246,7 +2341,7 @@ function addQueueButtons(queueItem) {
                     if (!lyricsUrl) {
                         resetImgElem();
                         if (confirm(t("lyrics_not_found_confirm_open_search")))
-                            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
+                            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
                         return;
                     }
                 }
@@ -2636,7 +2731,12 @@ function initRememberSongTime() {
                 onSelector(ytmVideoSelector, {
                     listener: (vidElem) => behavior_awaiter(this, void 0, void 0, function* () {
                         yield deletePersistentSongTimeValues();
-                        const applyTime = () => vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
+                        const applyTime = () => {
+                            if (isNaN(songTime))
+                                return;
+                            vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
+                            utils_info(`Restored song time to ${Math.floor(songTime / 60)}m, ${(songTime % 60).toFixed(1)}s`);
+                        };
                         if (vidElem.readyState === 4)
                             applyTime();
                         else
@@ -2727,7 +2827,8 @@ const videoTimeThreshold = 3;
 function initSiteSwitch(domain) {
     return input_awaiter(this, void 0, void 0, function* () {
         document.addEventListener("keydown", (e) => {
-            if (e.key === "F9")
+            const hotkey = input_features.switchSitesHotkey;
+            if (e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
                 switchSite(domain === "yt" ? "ytm" : "yt");
         });
         log("Initialized site switch listener");
@@ -2908,7 +3009,6 @@ const featInfo = {
         default: true,
     },
     switchSitesHotkey: {
-        hidden: true,
         type: "hotkey",
         category: "input",
         default: {
@@ -3332,6 +3432,10 @@ function initFeatures() {
   padding-right: 5px;
 }
 
+.bytm-ftconf-input.bytm-hotkey-input {
+  min-width: 50px;
+}
+
 .bytm-ftconf-input[type=number] {
   width: 75px;
 }
@@ -3427,6 +3531,19 @@ function initFeatures() {
   white-space: pre;
   content: "    • ";
   font-weight: bolder;
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  margin-right: 5px;
+  white-space: nowrap;
 }
 
 .bytm-disable-scroll {
@@ -3764,6 +3881,18 @@ function registerMenuCommands() {
             yield GM.deleteValue("bytm-installed");
             console.log("Reset install time.");
         }), "t");
+        GM.registerMenuCommand("List active selector listeners", () => src_awaiter(this, void 0, void 0, function* () {
+            const selectors = getSelectorMap();
+            const lines = [];
+            [...selectors].forEach(([k, v]) => {
+                lines.push(`  (${v.length}): ${k}`);
+                v.forEach(({ all, continuous }, i) => {
+                    lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "all" : "one"}`);
+                });
+            });
+            console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
+            alert("See console.");
+        }), "s");
     }
 }
 preInit();
