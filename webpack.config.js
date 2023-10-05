@@ -96,6 +96,9 @@ const getConfig = (env) => {
               stdout && process.stdout.write(stdout);
               stderr && process.stderr.write(stderr);
             });
+            exec("npm run --silent tr-progress", (_err, stdout, stderr) => {
+              stderr && process.stderr.write(stderr);
+            });
           });
         },
       },
