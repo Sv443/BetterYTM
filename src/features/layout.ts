@@ -665,17 +665,18 @@ export async function addScrollToActiveBtn() {
 
 //#MARKER boost gain button
 
-const gainBoostMultiplier = 3.0;
 let gainBoosted = false;
 
 /** Adds a button to the media controls to boost the current song's gain */
 export async function addBoostGainButton() {
+  const gainBoostMultiplier = features.boostGainPercentage / 100;
+
   const iconSrcOn = await getResourceUrl("volume_boost_on");
   const iconSrcOff = await getResourceUrl("volume_boost_off");
 
   const btnElem = await createMediaCtrlBtn(iconSrcOff);
   btnElem.id = "bytm-boost-gain-btn";
-  btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+  btnElem.title = t("boost_gain_enable_tooltip", features.boostGainPercentage);
 
   let amp: AmplifyMediaResult | undefined;
 
@@ -705,13 +706,13 @@ export async function addBoostGainButton() {
       }
       imgElem.src = iconSrcOn;
       btnElem.title = t("boost_gain_disable_tooltip");
-      info(`Boosted gain by ${Math.floor(gainBoostMultiplier * 100)}%`);
+      info(`Boosted gain by ${features.boostGainPercentage}%`);
     }
     else {
       gainBoosted = false;
       amp!.disable();
       imgElem.src = iconSrcOff;
-      btnElem.title = t("boost_gain_enable_tooltip", Math.floor(gainBoostMultiplier * 100));
+      btnElem.title = t("boost_gain_enable_tooltip", features.boostGainPercentage);
       info("Disabled gain boost");
     }
   });

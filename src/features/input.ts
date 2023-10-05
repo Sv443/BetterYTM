@@ -22,11 +22,12 @@ export async function initArrowKeySkip() {
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
+    evt.stopImmediatePropagation();
 
     let skipBy = features.arrowKeySkipBy ?? featInfo.arrowKeySkipBy.default;
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
-    
+
     log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
     
     const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
@@ -55,8 +56,8 @@ export async function initSiteSwitch(domain: Domain) {
 /** Switches to the other site (between YT and YTM) */
 async function switchSite(newDomain: Domain) {
   try {
-    if(newDomain === "ytm" && !location.href.includes("/watch"))
-      return warn("Not on a video page, so the site switch is ignored");
+    if(!(["/watch", "/playlist"].some(v => location.pathname.startsWith(v))))
+      return warn("Not on a supported page, so the site switch is ignored");
 
     let subdomain;
     if(newDomain === "ytm")
