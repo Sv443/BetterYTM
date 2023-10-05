@@ -210,3 +210,15 @@ export function getPreferredLocale(): TrLocale {
 
   return "en_US";
 }
+
+/** Removes all child nodes of an element */
+export function clearInner(element: Element) {
+  while(element.hasChildNodes())
+    clearNode(element!.firstChild as Element);
+}
+
+function clearNode(element: Element) {
+  while(element.hasChildNodes())
+    clearNode(element!.firstChild as Element);
+  element.parentNode!.removeChild(element);
+}

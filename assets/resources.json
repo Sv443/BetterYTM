@@ -10,8 +10,10 @@
   "skip_to": "icons/skip_to.svg",
   "volume_boost_off": "icons/volume_boost_off.svg",
   "volume_boost_on": "icons/volume_boost_on.svg",
+  "globe": "icons/globe.svg",
 
   "github": "external/github.png",
   "greasyfork": "external/greasyfork.png",
-  "openuserjs": "external/openuserjs.png"
+  "openuserjs": "external/openuserjs.png",
+  "discord": "external/discord.png"
 }

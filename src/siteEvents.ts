@@ -11,6 +11,8 @@ export interface SiteEventsMap {
   rebuildCfgMenu: (config: FeatureConfig) => void;
   /** Emitted whenever the config menu is closed */
   cfgMenuClosed: () => void;
+  /** Emitted when the welcome menu is closed */
+  welcomeMenuClosed: () => void;
 
   // DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */

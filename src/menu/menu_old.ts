@@ -10,6 +10,7 @@ import { FeatureConfig, HotkeyObj } from "../types";
 import changelogContent from "../../changelog.md";
 import "./menu_old.css";
 import { createHotkeyInput } from "./hotkeyInput";
+import pkg from "../../package.json" assert { type: "json" };
 
 //#MARKER create menu elements
 
@@ -92,8 +93,9 @@ export async function addCfgMenu() {
   };
 
   addLink(await getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name));
-  addLink(await getResourceUrl("greasyfork"), "https://greasyfork.org/en/scripts/475682-betterytm", t("open_greasyfork", scriptInfo.name));
-  addLink(await getResourceUrl("openuserjs"), "https://openuserjs.org/scripts/Sv443/BetterYTM", t("open_openuserjs", scriptInfo.name));
+  addLink(await getResourceUrl("discord"), "https://dc.sv443.net/", t("open_discord"));
+  addLink(await getResourceUrl("greasyfork"), pkg.cdn.greasyfork, t("open_greasyfork", scriptInfo.name));
+  addLink(await getResourceUrl("openuserjs"), pkg.cdn.openuserjs, t("open_openuserjs", scriptInfo.name));
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
@@ -228,11 +230,6 @@ export async function addCfgMenu() {
           if(inputType)
             inputElem.type = inputType;
 
-          if(typeof initialVal !== "undefined")
-            inputElem.value = String(initialVal);
-          if(type === "number" && step)
-            inputElem.step = step;
-
           // @ts-ignore
           if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
             // @ts-ignore
@@ -240,6 +237,12 @@ export async function addCfgMenu() {
             // @ts-ignore
             inputElem.max = ftInfo.max;
           }
+
+          if(typeof initialVal !== "undefined")
+            inputElem.value = String(initialVal);
+
+          if(type === "number" || type === "slider" && step)
+            inputElem.step = String(step);
 
           if(type === "toggle" && typeof initialVal !== "undefined")
             inputElem.checked = Boolean(initialVal);
@@ -251,18 +254,16 @@ export async function addCfgMenu() {
           if(type === "slider") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-            labelElem.htmlFor = inputElemId;
             labelElem.innerText = fmtVal(initialVal) + unitTxt;
 
             inputElem.addEventListener("input", () => {
               if(labelElem)
-                labelElem.innerText = fmtVal(parseInt(inputElem.value)) + unitTxt;
+                labelElem.innerText = fmtVal(Number(inputElem.value)) + unitTxt;
             });
           }
           else if(type === "toggle") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-            labelElem.htmlFor = inputElemId;
             labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
 
             inputElem.addEventListener("input", () => {
@@ -294,6 +295,7 @@ export async function addCfgMenu() {
 
           if(labelElem) {
             labelElem.id = `bytm-ftconf-${featKey}-label`;
+            labelElem.htmlFor = inputElemId;
             ctrlElem.appendChild(labelElem);
           }
           ctrlElem.appendChild(inputElem);
@@ -350,6 +352,7 @@ export async function addCfgMenu() {
       else if(ftInfo.type === "toggle")
         labelElem.innerText = toggleLabelText(Boolean(value)) + unitTxt;
     }
+    info("Rebuilt config menu");
   });
 
   //#SECTION scroll indicator
@@ -389,7 +392,7 @@ export async function addCfgMenu() {
 
   //#SECTION footer
   const footerCont = document.createElement("div");
-  footerCont.id = "bytm-menu-footer-cont";
+  footerCont.className = "bytm-menu-footer-cont";
 
   const footerElem = document.createElement("div");
   footerElem.classList.add("bytm-menu-footer");
@@ -466,7 +469,7 @@ export async function addCfgMenu() {
     e.stopPropagation();
 
     closeCfgMenu();
-    openChangelogMenu();
+    openChangelogMenu("cfgMenu");
   });
 
   versionCont.appendChild(versionElem);
@@ -507,9 +510,9 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
 }
 
 /** Opens the config menu if it is closed */
-export function openCfgMenu() {
+export async function openCfgMenu() {
   if(!isCfgMenuAdded)
-    addCfgMenu();
+    await addCfgMenu();
   if(isCfgMenuOpen)
     return;
   isCfgMenuOpen = true;
@@ -919,13 +922,15 @@ async function addChangelogMenu() {
   menuBgElem.addEventListener("click", (e) => {
     if(isChangelogMenuOpen && (e.target as HTMLElement)?.id === "bytm-changelog-menu-bg") {
       closeChangelogMenu(e);
-      openCfgMenu();
+      if(menuBgElem.dataset.returnTo === "cfgMenu")
+        openCfgMenu();
     }
   });
   document.body.addEventListener("keydown", (e) => {
     if(isChangelogMenuOpen && e.key === "Escape") {
       closeChangelogMenu(e);
-      openCfgMenu();
+      if(menuBgElem.dataset.returnTo === "cfgMenu")
+        openCfgMenu();
     }
   });
 
@@ -953,7 +958,8 @@ async function addChangelogMenu() {
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeChangelogMenu(e);
-    openCfgMenu();
+    if(menuBgElem.dataset.returnTo === "cfgMenu")
+      openCfgMenu();
   });
 
   titleCont.appendChild(titleElem);
@@ -1005,8 +1011,11 @@ function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
   menuBg.style.display = "none";
 }
 
-/** Opens the changelog menu if it is closed */
-export function openChangelogMenu() {
+/**
+ * Opens the changelog menu if it is closed
+ * @param returnTo What menu to open after the changelog menu is closed
+ */
+export function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu") {
   if(isChangelogMenuOpen)
     return;
   isChangelogMenuOpen = true;
@@ -1017,6 +1026,7 @@ export function openChangelogMenu() {
   if(!menuBg)
     return warn("Couldn't find changelog menu background element");
 
+  menuBg.dataset.returnTo = returnTo;
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
 }

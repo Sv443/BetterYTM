@@ -33,6 +33,14 @@
   "bugs": {
     "url": "https://github.com/Sv443/BetterYTM/issues"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Sv443"
+  },
+  "cdn": {
+    "greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
+    "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
+  },
   "dependencies": {
     "@sv443-network/userutils": "^2.0.1",
     "nanoevents": "^8.0.0"

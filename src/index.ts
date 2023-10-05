@@ -1,11 +1,12 @@
 import { addGlobalStyle, getSelectorMap, initOnSelector, onSelector } from "@sv443-network/userutils";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
-import { error, getDomain, log, setLogLevel } from "./utils";
+import { error, getDomain, info, log, setLogLevel } from "./utils";
 import { initSiteEvents } from "./siteEvents";
 import { initTranslations, setLocale } from "./translations";
 import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";
+import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import {
   // layout
   preInitLayout,
@@ -131,11 +132,14 @@ async function initFeatures() {
 
       ftInit.push(initSiteEvents());
 
-      if(!await GM.getValue("bytm-installed")) {
-        // open welcome page with language selector
-        // await showWelcomePage();
-      }
-      await GM.setValue("bytm-installed", Date.now());
+      //#DEBUG
+      // if(!await GM.getValue("bytm-installed")) {
+      // open welcome menu with language selector
+      await addWelcomeMenu();
+      info("Showing welcome menu");
+      await showWelcomeMenu();
+      GM.setValue("bytm-installed", Date.now());
+      // }
 
       try {
         ftInit.push(addCfgMenu()); // TODO(v1.1): remove
@@ -210,13 +214,13 @@ function registerMenuCommands() {
     }, "r");
 
     GM.registerMenuCommand("List GM values", async () => {
-      alert("See console.");
       const keys = await GM.listValues();
       console.log("GM values:");
       if(keys.length === 0)
         console.log("  No values found.");
       for(const key of keys)
         console.log(`  ${key} -> ${await GM.getValue(key)}`);
+      alert("See console.");
     }, "l");
 
     GM.registerMenuCommand("Delete all GM values", async () => {

@@ -79,6 +79,8 @@ There are two ways to interact with BetterYTM, static and dynamic:
   You may find all SiteEvents that are available and their types in [`src/siteEvents.ts`](src/siteEvents.ts)  
   Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts)
 
+If you need specific events to be added or modified, please submit an issue.
+
 <details><summary><h4>Static interaction example - click to expand</h4></summary>
 
 #### Example:
@@ -111,7 +113,7 @@ You may also just copy it entirely.
 #### Basic format:
 ```ts
 window.addEventListener("bytm:eventName", (event) => {
-  // can have a variable type, but usually it's an object or undefined
+  // can have any type, but usually it's an object or undefined
   const { detail } = event as CustomEvent<{ foo: string }>;
 
   console.log(detail.foo);
@@ -122,11 +124,11 @@ window.addEventListener("bytm:siteEvent:eventName", (event) => {
   // always typed as array / tuple
   const { detail } = event as CustomEvent<[ foo: HTMLElement ]>;
 
-  console.log(detail.foo);
+  console.log(detail[0]);
 });
 ```
 
-#### Example:
+#### Practical Example:
 ```ts
 // listening to generic events:
 window.addEventListener("bytm:ready", () => {
@@ -139,9 +141,9 @@ window.addEventListener("bytm:lyricsLoaded", (event) => {
   console.log(`Lyrics URL for "${detail.artists} - ${detail.title}" has been loaded: ${detail.url}`);
 
   if(detail.type === "current")
-    console.log("This is the currently playing song");
+    console.log("This is from the currently playing song");
   else
-    console.log("This is a song in the queue");
+    console.log("This is from a song in the queue");
 });
 
 // listening to a SiteEvent:

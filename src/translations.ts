@@ -2,7 +2,7 @@ import { tr, Stringifiable } from "@sv443-network/userutils";
 import { error, getResourceUrl, info } from "./utils";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import type tr_enUS from "../assets/translations/en_US.json";
-import { setGlobalProp } from "./interface";
+import { emitInterface, setGlobalProp } from "./interface";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrInfo = (typeof langMapping)["en_US"];
@@ -38,6 +38,7 @@ export async function initTranslations(locale: TrLocale) {
 export function setLocale(locale: TrLocale) {
   tr.setLanguage(locale);
   setGlobalProp("locale", locale);
+  emitInterface("bytm:setLocale", { locale });
 }
 
 /** Returns the currently set language */

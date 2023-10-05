@@ -76,11 +76,11 @@ async function run() {
     const lines = [] as string[];
     for(const [k] of Object.entries(en_US)) {
       if(!translations[k])
-        lines.push(`| \`${k}\` | ${en_US[k]} |`);
+        lines.push(`| \`${k}\` | \`${en_US[k]}\` |`);
     }
     if(lines.length > 0) {
       missingKeys.push(`
-<details><summary>\`${locale}\`: ${lines.length} missing keys (click to show)</summary>\n
+<details><summary><code>${locale}</code> - ${lines.length} missing ${autoPlural("key", lines)} (click to show)</summary>\n
 | Key | English text |
 | --- | ------------ |
 ${lines.join("\n")}\n
