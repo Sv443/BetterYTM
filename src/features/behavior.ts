@@ -103,6 +103,8 @@ interface RemSongObj {
 const rememberSongTimeout = 1000 * 60 * 1;
 let curSongId: string | undefined;
 
+// TODO:FIXME: broken af
+
 /** Remembers the time of the last played song and resumes playback from that time */
 export async function initRememberSongTime() {
   log("Initialized song time remembering");
@@ -226,6 +228,7 @@ export function disableDarkReader() {
   if(document.querySelector(".darkreader")) {
     const metaElem = document.createElement("meta");
     metaElem.name = "darkreader-lock";
+    metaElem.classList.add("bytm-disable-darkreader");
     document.head.appendChild(metaElem);
 
     info("Sent hint to Dark Reader to disable itself");

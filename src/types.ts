@@ -63,6 +63,8 @@ export interface FeatureConfig {
   scrollToActiveSongBtn: boolean;
   /** Add a button to the media controls to boost the current song's gain */
   boostGain: boolean;
+  /** By how much to multiply the current song's gain when the boost button is pressed */
+  boostGainPercentage: number;
 
   //#SECTION behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */

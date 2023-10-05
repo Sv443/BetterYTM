@@ -32,9 +32,10 @@ export const migrations: ConfigMigrationsDict = {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
       ...oldData,
-      locale: "en_US",
-      boostGain: true,
-      rememberSongTime: false,
+      locale: featInfo.locale.default,
+      boostGain: featInfo.boostGain.default,
+      boostGainPercentage: featInfo.boostGainPercentage.default,
+      rememberSongTime: featInfo.rememberSongTime.default,
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
         code: oldSwitchSitesHotkey.key ?? "F9",

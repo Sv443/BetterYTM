@@ -85,6 +85,15 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
+  boostGainPercentage: {
+    type: "slider",
+    category: "layout",
+    min: 125,
+    max: 300,
+    default: 200,
+    step: 25,
+    unit: "%",
+  },
 
   //#SECTION behavior
   disableBeforeUnloadPopup: {
