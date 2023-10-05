@@ -145,6 +145,18 @@
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
 #bytm-welcome-menu-content-wrapper {
   overflow-y: auto;
 }

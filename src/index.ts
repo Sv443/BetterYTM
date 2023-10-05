@@ -137,7 +137,6 @@ async function initFeatures() {
         await addWelcomeMenu();
         info("Showing welcome menu");
         await showWelcomeMenu();
-        GM.setValue("bytm-installed", Date.now());
       }
 
       try {

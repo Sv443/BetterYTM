@@ -17,14 +17,6 @@ export async function addWelcomeMenu() {
   backgroundElem.classList.add("bytm-menu-bg");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
-  backgroundElem.addEventListener("click", (e) => {
-    if(isWelcomeMenuOpen && (e.target as HTMLElement)?.id === "bytm-welcome-menu-bg")
-      closeWelcomeMenu(e);
-  });
-  document.body.addEventListener("keydown", (e) => {
-    if(isWelcomeMenuOpen && e.key === "Escape")
-      closeWelcomeMenu(e);
-  });
 
   const menuContainer = document.createElement("div");
   menuContainer.title = ""; // prevent bg title from propagating downwards
@@ -35,11 +27,21 @@ export async function addWelcomeMenu() {
   const headerElem = document.createElement("div");
   headerElem.classList.add("bytm-menu-header");
 
+  const titleWrapperElem = document.createElement("div");
+  titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
+
+  const titleLogoElem = document.createElement("img");
+  titleLogoElem.id = "bytm-welcome-menu-title-logo";
+  titleLogoElem.src = await getResourceUrl("logo");
+
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-welcome-menu-title";
   titleElem.className = "bytm-menu-title";
   titleElem.role = "heading";
   titleElem.ariaLevel = "1";
+
+  titleWrapperElem.appendChild(titleLogoElem);
+  titleWrapperElem.appendChild(titleElem);
 
   const titleCloseElem = document.createElement("img");
   titleCloseElem.id = "bytm-welcome-menu-title-close";
@@ -47,7 +49,7 @@ export async function addWelcomeMenu() {
   titleCloseElem.src = await getResourceUrl("close");
   titleCloseElem.addEventListener("click", closeWelcomeMenu);
 
-  headerElem.appendChild(titleElem);
+  headerElem.appendChild(titleWrapperElem);
   headerElem.appendChild(titleCloseElem);
 
   //#SECTION footer
@@ -224,7 +226,7 @@ function retranslateWelcomeMenu() {
   const textChanges = {
     "#bytm-welcome-text-line1": t("welcome_text_line_1"),
     "#bytm-welcome-text-line2": t("welcome_text_line_2", scriptInfo.name),
-    "#bytm-welcome-text-line3": t("welcome_text_line_3", scriptInfo.name, ...getLink(pkg.cdn.greasyfork), ...getLink(pkg.cdn.openuserjs)),
+    "#bytm-welcome-text-line3": t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.cdn.greasyfork}/feedback`), ...getLink(pkg.cdn.openuserjs)),
     "#bytm-welcome-text-line4": t("welcome_text_line_4", ...getLink(pkg.funding.url)),
     "#bytm-welcome-text-line5": t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
   };
@@ -278,6 +280,7 @@ export function showWelcomeMenu() {
   return new Promise<void>((resolve) => {
     const unsub = siteEvents.on("welcomeMenuClosed", () => {
       unsub();
+      GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
       resolve();
     });
 
