@@ -13,6 +13,7 @@ import { createHotkeyInput } from "./hotkeyInput";
 
 //#MARKER create menu elements
 
+let isCfgMenuAdded = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
@@ -25,6 +26,9 @@ let initLocale: string | undefined;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 export async function addCfgMenu() {
+  if(isCfgMenuAdded)
+    return;
+  isCfgMenuAdded = true;
   initLocale = getFeatures().locale;
 
   const initLangReloadText = t("lang_changed_prompt_reload");
@@ -58,12 +62,12 @@ export async function addCfgMenu() {
   headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
-  titleCont.id = "bytm-menu-titlecont";
+  titleCont.className = "bytm-menu-titlecont";
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
-  titleElem.id = "bytm-menu-title";
+  titleElem.className = "bytm-menu-title";
   titleElem.innerText = t("config_menu_title", scriptInfo.name);
 
   const linksCont = document.createElement("div");
@@ -504,6 +508,8 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
 
 /** Opens the config menu if it is closed */
 export function openCfgMenu() {
+  if(!isCfgMenuAdded)
+    addCfgMenu();
   if(isCfgMenuOpen)
     return;
   isCfgMenuOpen = true;
@@ -578,12 +584,12 @@ async function addExportMenu() {
   headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
-  titleCont.id = "bytm-menu-titlecont";
+  titleCont.className = "bytm-menu-titlecont";
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
-  titleElem.id = "bytm-menu-title";
+  titleElem.className = "bytm-menu-title";
   titleElem.innerText = t("export_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
@@ -745,12 +751,12 @@ async function addImportMenu() {
   headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
-  titleCont.id = "bytm-menu-titlecont";
+  titleCont.className = "bytm-menu-titlecont";
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
-  titleElem.id = "bytm-menu-title";
+  titleElem.className = "bytm-menu-title";
   titleElem.innerText = t("import_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
@@ -933,12 +939,12 @@ async function addChangelogMenu() {
   headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
-  titleCont.id = "bytm-menu-titlecont";
+  titleCont.className = "bytm-menu-titlecont";
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
-  titleElem.id = "bytm-menu-title";
+  titleElem.className = "bytm-menu-title";
   titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
@@ -1000,7 +1006,7 @@ function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
 }
 
 /** Opens the changelog menu if it is closed */
-function openChangelogMenu() {
+export function openChangelogMenu() {
   if(isChangelogMenuOpen)
     return;
   isChangelogMenuOpen = true;

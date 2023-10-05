@@ -71,12 +71,12 @@
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
-#bytm-menu-titlecont {
+.bytm-menu-titlecont {
   display: flex;
   align-items: center;
 }
 
-#bytm-menu-title {
+.bytm-menu-title {
   display: inline-block;
   font-size: 22px;
 }
