@@ -18,6 +18,8 @@ interface TrFile {
 async function run() {
   console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
 
+  //#SECTION parse
+
   const translations = {} as Record<TrLocale, Record<string, string>>;
   const trFiles = {} as Record<TrLocale, TrFile>;
 
@@ -38,6 +40,9 @@ async function run() {
 
   const { en_US, ...restLocs } = translations;
   const progress = {} as Record<TrLocale, number>;
+
+  //#SECTION table
+
   const tableLines: string[] = [];
 
   for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
@@ -63,8 +68,32 @@ async function run() {
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
+  //#SECTION missing keys
+
+  const missingKeys = [] as string[];
+
+  for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
+    const lines = [] as string[];
+    for(const [k] of Object.entries(en_US)) {
+      if(!translations[k])
+        lines.push(`| \`${k}\` | ${en_US[k]} |`);
+    }
+    if(lines.length > 0) {
+      missingKeys.push(`
+<details><summary>\`${locale}\`: ${lines.length} missing keys (click to show)</summary>\n
+| Key | English text |
+| --- | ------------ |
+${lines.join("\n")}\n
+</details>`);
+    }
+  }
+
+  //#SECTION finalize
+
   let templateCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
-  templateCont = templateCont.replace(/<!--{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"));
+  templateCont = templateCont
+    .replace(/<!--{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"))
+    .replace(/<!--{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
   await writeFile(join(trDir, "README.md"), templateCont);
 
   console.log(`\n\x1b[32mFinished updating translation progress\x1b[0m - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
