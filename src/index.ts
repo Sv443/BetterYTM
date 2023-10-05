@@ -132,14 +132,13 @@ async function initFeatures() {
 
       ftInit.push(initSiteEvents());
 
-      //#DEBUG
-      // if(!await GM.getValue("bytm-installed")) {
-      // open welcome menu with language selector
-      await addWelcomeMenu();
-      info("Showing welcome menu");
-      await showWelcomeMenu();
-      GM.setValue("bytm-installed", Date.now());
-      // }
+      if(!await GM.getValue("bytm-installed")) {
+        // open welcome menu with language selector
+        await addWelcomeMenu();
+        info("Showing welcome menu");
+        await showWelcomeMenu();
+        GM.setValue("bytm-installed", Date.now());
+      }
 
       try {
         ftInit.push(addCfgMenu()); // TODO(v1.1): remove
