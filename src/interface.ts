@@ -6,13 +6,11 @@ import { log } from "./utils";
 export interface InterfaceEvents {
   /** Fired when BYTM has finished initializing all features */
   "bytm:ready": undefined;
-  // /** Fired whenever a new song starts playing */
-  // "bytm:newSong": { artists: string, title: string };
   /** Fired whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
 
-  // additionally fires all events from `src/siteEvents.ts`
-  // in this format: `bytm:siteEvent:${eventName}`
+  // additionally all events from `src/siteEvents.ts` are fired
+  // in this format: `bytm:siteEvent:siteEventName`
 }
 
 /** Initializes the BYTM interface */

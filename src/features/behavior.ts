@@ -91,6 +91,15 @@ export async function initAutoCloseToasts() {
 
 //#MARKER remember song time
 
+interface RemSongObj {
+  /** Watch ID */
+  id: string;
+  /** Time of the song */
+  time: number;
+  /** Timestamp of last save */
+  timestamp: number;
+}
+
 const rememberSongTimeout = 1000 * 60 * 1;
 let curSongId: string | undefined;
 
@@ -101,13 +110,16 @@ export async function initRememberSongTime() {
   const params = new URL(location.href).searchParams;
   curSongId = params.get("v")!;
 
-  if(location.pathname.startsWith("/watch") && await GM.getValue("bytm-rem-song-id", null) === curSongId) {
-    const songTime = Number(await GM.getValue("bytm-rem-song-time", 0));
-    const songTimestamp = Number(await GM.getValue("bytm-rem-song-timestamp", 0));
+  const remData = await getRemSongData();
+  const curRemData = remData?.find(d => d.id === curSongId);
+
+  if(location.pathname.startsWith("/watch") && curRemData) {
+    const songTime = Number(curRemData.time);
+    const songTimestamp = Number(curRemData.timestamp);
     if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
       onSelector<HTMLVideoElement>(ytmVideoSelector, {
         listener: async (vidElem) => {
-          await deletePersistentSongTimeValues();
+          await delRemSongData(curRemData.id);
 
           const applyTime = () => {
             if(isNaN(songTime))
@@ -125,31 +137,34 @@ export async function initRememberSongTime() {
     }
   }
 
-  GM.getValue("bytm-rem-song-timestamp").then(async (ts) => {
-    const time = Number(ts);
-    if(Date.now() - time < rememberSongTimeout)
-      await deletePersistentSongTimeValues();
-  });
+  if(curRemData) {
+    (async () => {
+      const time = Number(curRemData.timestamp);
+      if(Date.now() - time < rememberSongTimeout)
+        await delRemSongData(curRemData.id);
+    })();
+  }
 
   onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
     listener: (progressElem) => {
+      let prevSongData: RemSongObj | undefined;
+
       const progressObserver = new MutationObserver(async () => {
         const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
         const newSongId = new URL(location.href).searchParams.get("v");
 
-        GM.setValue("bytm-rem-song-timestamp", Date.now());
-        GM.setValue("bytm-rem-song-time", songTime);
-
-        GM.getValue("bytm-rem-song-id").then((storedId) => {
-          if(!storedId && newSongId) {
-            GM.setValue("bytm-rem-song-id", newSongId);
-          }
-        });
-
         if(newSongId === curSongId || !newSongId)
           return;
+        if(prevSongData?.id === newSongId && prevSongData.time === songTime)
+          return;
 
-        GM.setValue("bytm-rem-song-id", curSongId = newSongId);
+        curSongId = newSongId;
+
+        await setRemSongData({
+          id: newSongId,
+          time: songTime,
+          timestamp: Date.now(),
+        });
       });
 
       progressObserver.observe(progressElem, {
@@ -159,10 +174,47 @@ export async function initRememberSongTime() {
   });
 }
 
-function deletePersistentSongTimeValues() {
-  return Promise.all([
-    GM.deleteValue("bytm-rem-song-id"),
-    GM.deleteValue("bytm-rem-song-time"),
-    GM.deleteValue("bytm-rem-song-timestamp"),
-  ]);
+async function getRemSongData(): Promise<RemSongObj[] | undefined> {
+  try {
+    const val = await GM.getValue("bytm-rem-song");
+    if(typeof val !== "string")
+      return undefined;
+    const json = JSON.parse(val);
+    if(!json.id || !json.time || !json.timestamp)
+      return undefined;
+    return json;
+  }
+  catch(err) {
+    return undefined;
+  }
+}
+
+async function setRemSongData(data: RemSongObj) {
+  try {
+    let storedData = await getRemSongData();
+    if(!storedData)
+      storedData = [];
+    const foundIdx = storedData.findIndex(d => d.id === data.id);
+    if(foundIdx >= 0)
+      storedData[foundIdx] = data;
+    else
+      storedData.push(data);
+    await GM.setValue("bytm-rem-song", JSON.stringify(storedData));
+  }
+  catch(err) {
+    return;
+  }
+}
+
+async function delRemSongData(id: string) {
+  try {
+    const data = await getRemSongData();
+    if(!data)
+      return;
+    const newData = data.filter(d => d.id !== id);
+    await GM.setValue("bytm-rem-song", JSON.stringify(newData));
+  }
+  catch(err) {
+    return;
+  }
 }
