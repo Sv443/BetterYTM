@@ -4,7 +4,6 @@ import { getFeatures, saveFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { scriptInfo } from "../constants";
 import { addCfgMenu, openCfgMenu, openChangelogMenu } from "./menu_old";
-import { featInfo } from "../features";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 
@@ -111,7 +110,7 @@ export async function addWelcomeMenu() {
     localeOptionElem.innerText = name;
     localeSelectElem.appendChild(localeOptionElem);
   }
-  localeSelectElem.value = featInfo.locale.default;
+  localeSelectElem.value = getFeatures().locale;
 
   localeSelectElem.addEventListener("change", async () => {
     const selectedLocale = localeSelectElem.value;
