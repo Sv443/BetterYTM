@@ -218,3 +218,16 @@ async function delRemSongData(id: string) {
     return;
   }
 }
+
+//#MARKER disable darkreader
+
+/** Disables Dark Reader if it is enabled */
+export function disableDarkReader() {
+  if(document.querySelector(".darkreader")) {
+    const metaElem = document.createElement("meta");
+    metaElem.name = "darkreader-lock";
+    document.head.appendChild(metaElem);
+
+    info("Sent hint to Dark Reader to disable itself");
+  }
+}

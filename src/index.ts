@@ -17,6 +17,7 @@ import {
   preInitBehavior,
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
+  disableDarkReader,
   // input
   preInitInput,
   initArrowKeySkip, initSiteSwitch,
@@ -126,6 +127,8 @@ async function initFeatures() {
 
   try {
     if(domain === "ytm") {
+      disableDarkReader();
+
       ftInit.push(initSiteEvents());
 
       if(!await GM.getValue("bytm-installed")) {
