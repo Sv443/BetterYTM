@@ -3,7 +3,11 @@
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
   - Added an audio amplification button to the media controls
   - Added feature to restore the song time when reloading or restoring the tab
-  - Made site switch hotkey configurable
+  - BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already
+- **Changes & Fixes:**
+  - Interval of arrow key skipping is configurable now
+  - Site switch hotkey is also configurable now
+  - Skipping to a specific point in the song is more reliable now
 
 <div class="split"></div>
 <br>
@@ -34,7 +38,7 @@
   - Added percentage label next to the volume slider & title on hover
   - Improvements to link hitboxes & more links in general
   - Permanent toast notifications can be automatically closed now
-  - Remove tracking parameter `&si=...` from links in the share menu
+  - Remove tracking parameter `&si` from links in the share menu
   - Fix spacing issues throughout the site
   - Added a button to scroll to the currently active song in the queue
   - Added an easter egg to the watermark and config menu option :)
