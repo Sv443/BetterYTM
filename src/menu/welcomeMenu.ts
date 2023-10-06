@@ -6,6 +6,9 @@ import { scriptInfo } from "../constants";
 import { addCfgMenu, openCfgMenu, openChangelogMenu } from "./menu_old";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
+import "./welcomeMenu.css";
+
+//#MARKER menu
 
 let isWelcomeMenuOpen = false;
 
@@ -191,10 +194,15 @@ export async function addWelcomeMenu() {
   retranslateWelcomeMenu();
 }
 
+//#MARKER (re-)translate
+
 /** Retranslates all elements inside the welcome menu */
 function retranslateWelcomeMenu() {
+  const getLink = (href: string): [string, string] => {
+    return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
+  };
+
   const changes = {
-    "#bytm-welcome-menu-bg": (e: HTMLElement) => e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-title": (e: HTMLElement) => e.innerText = t("welcome_menu_title", scriptInfo.name),
     "#bytm-welcome-menu-title-close": (e: HTMLElement) => e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-open-cfg": (e: HTMLElement) => {
@@ -209,34 +217,21 @@ function retranslateWelcomeMenu() {
       e.innerText = t("close");
       e.title = t("close_menu_tooltip");
     },
+    "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_1"),
+    "#bytm-welcome-text-line2": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
+    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.cdn.greasyfork}/feedback`), ...getLink(pkg.cdn.openuserjs)),
+    "#bytm-welcome-text-line4": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
+    "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
   };
 
   for(const [selector, cb] of Object.entries(changes)) {
     const elem = document.querySelector<HTMLElement>(selector);
-    if(!elem)
-      return warn(`Couldn't find element ${selector} in welcome menu`);
+    if(!elem) {
+      warn(`Couldn't find element ${selector} in welcome menu`);
+      continue;
+    }
 
     cb(elem);
-  }
-
-  const getLink = (href: string): [string, string] => {
-    return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
-  };
-
-  const textChanges = {
-    "#bytm-welcome-text-line1": t("welcome_text_line_1"),
-    "#bytm-welcome-text-line2": t("welcome_text_line_2", scriptInfo.name),
-    "#bytm-welcome-text-line3": t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.cdn.greasyfork}/feedback`), ...getLink(pkg.cdn.openuserjs)),
-    "#bytm-welcome-text-line4": t("welcome_text_line_4", ...getLink(pkg.funding.url)),
-    "#bytm-welcome-text-line5": t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
-  };
-
-  for(const [selector, text] of Object.entries(textChanges)) {
-    const elem = document.querySelector<HTMLElement>(selector);
-    if(!elem)
-      return warn(`Couldn't find element ${selector} in welcome menu`);
-
-    elem.innerHTML = text;
   }
 }
 
@@ -258,6 +253,8 @@ export function closeWelcomeMenu(evt?: MouseEvent | KeyboardEvent) {
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
 }
+
+//#MARKER open, show & close
 
 /** Opens the welcome menu if it is closed */
 export function openWelcomeMenu() {
