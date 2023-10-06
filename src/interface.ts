@@ -35,7 +35,7 @@ export function setGlobalProp<TValue = unknown>(key: string, value: TValue) {
   // use unsafeWindow so the properties are available outside of the userscript's scope
   const win = getUnsafeWindow();
   if(!win.BYTM)
-    return;
+    win.BYTM = {} as typeof win.BYTM;
   win.BYTM[key] = value;
 }
 
