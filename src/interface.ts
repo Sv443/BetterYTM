@@ -5,15 +5,15 @@ import type { TrLocale } from "./translations";
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export interface InterfaceEvents {
-  /** Fired when BYTM has finished initializing all features */
+  /** Emitted when BYTM has finished initializing all features */
   "bytm:ready": undefined;
-  /** Fired whenever the lyrics URL for a song is loaded */
+  /** Emitted whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
-  /** Fired whenever the locale is changed */
+  /** Emitted whenever the locale is changed */
   "bytm:setLocale": { locale: TrLocale };
 
-  // additionally all events from `src/siteEvents.ts` are fired
-  // in this format: `bytm:siteEvent:siteEventName`
+  // additionally all events from SiteEventsMap in `src/siteEvents.ts`
+  // are emitted in this format: `bytm:siteEvent:siteEventName`
 }
 
 /** Initializes the BYTM interface */
