@@ -125,5 +125,5 @@ function getHotkeyInfo(hotkey: HotkeyObj) {
 function getOS() {
   if(navigator.userAgent.match(/mac(\s?os|intel)/i))
     return "mac";
-  return "win";
+  return "other";
 }
