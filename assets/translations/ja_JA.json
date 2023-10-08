@@ -69,7 +69,7 @@
     "welcome_text_line_2": "%1 を使っていただきありがとうございます 😃",
     "welcome_text_line_3": "もし %1 を気に入っていただけたら、%2GreasyFork%3 か %4OpenUserJS%5 で評価をお願いします",
     "welcome_text_line_4": "私の作業は寄付に依存しているので、%1寄付%2 を検討してください ❤️",
-    "welcome_text_line_5": "バグを見つけた、または機能を提案したいですか？GitHub%2 で issue を発行してください。",
+    "welcome_text_line_5": "バグを見つけた、または機能を提案したいですか？%1GitHubで課題を開いてください。%2",
     "feature_category_layout": "レイアウト",
     "feature_category_behavior": "動作",
     "feature_category_input": "入力",
