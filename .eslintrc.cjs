@@ -38,6 +38,12 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "ignoreRestSiblings": true, "argsIgnorePattern": "^_" }],
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": ["error", {
+      types: {
+        "{}": false,
+      },
+      extendDefaults: true,
+    }],
     "comma-dangle": ["error", "only-multiline"],
     "no-misleading-character-class": "off",
   },
