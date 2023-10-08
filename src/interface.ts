@@ -2,6 +2,7 @@ import { getUnsafeWindow } from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { log } from "./utils";
 import type { TrLocale } from "./translations";
+import { SiteEventsMap } from "./siteEvents";
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export interface InterfaceEvents {
@@ -44,7 +45,7 @@ export function emitInterface<
   TEvt extends keyof InterfaceEvents,
   TDetail extends InterfaceEvents[TEvt],
 >(
-  type: TEvt | "_",
+  type: TEvt | `bytm:siteEvent:${keyof SiteEventsMap}`,
   ...data: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
   getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));

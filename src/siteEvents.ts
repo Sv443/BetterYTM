@@ -78,5 +78,5 @@ export async function initSiteEvents() {
 /** Emits a site event with the given key and arguments */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
   siteEvents.emit(key, ...args);
-  emitInterface(`bytm:siteEvent:${key}` as "_", args as unknown as undefined);
+  emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
 }
