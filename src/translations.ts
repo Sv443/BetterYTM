@@ -6,7 +6,7 @@ import { emitInterface, setGlobalProp } from "./interface";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrInfo = (typeof langMapping)["en_US"];
-type TFuncKey = keyof (typeof tr_enUS["translations"]) | "_";
+type TFuncKey = keyof (typeof tr_enUS["translations"]) | (string & {});
 
 const initializedLocales = new Set<TrLocale>();
 
@@ -51,11 +51,11 @@ export function t(key: TFuncKey, ...values: Stringifiable[]) {
   return tr(key, ...values);
 }
 
-/** Returns the passed translation key with an added pluralization identifier based on the passed `num` */
-export function pl(key: string, num: number | unknown[] | NodeList) {
+/** Returns the translated string for the given key with an added pluralization identifier based on the passed `num` */
+export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]) {
   if(typeof num !== "number")
     num = num.length;
   const plNum = num === 1 ? "1" : "n";
 
-  return `${key}-${plNum}` as "_";
+  return t(`${key}-${plNum}`, ...values);
 }

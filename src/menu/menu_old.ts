@@ -164,7 +164,7 @@ export async function addCfgMenu() {
     catHeaderElem.classList.add("bytm-ftconf-category-header");
     catHeaderElem.role = "heading";
     catHeaderElem.ariaLevel = "2";
-    catHeaderElem.innerText = `${t(`feature_category_${category}` as "_")}:`;
+    catHeaderElem.innerText = `${t(`feature_category_${category}`)}:`;
     featuresCont.appendChild(catHeaderElem);
 
     for(const featKey in featObj) {
@@ -187,7 +187,7 @@ export async function addCfgMenu() {
 
       {
         const textElem = document.createElement("span");
-        textElem.innerText = t(`feature_desc_${featKey}` as "_");
+        textElem.innerText = t(`feature_desc_${featKey}`);
 
         ftConfElem.appendChild(textElem);
       }

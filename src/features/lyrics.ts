@@ -1,6 +1,6 @@
 import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
 import { error, getResourceUrl, info, log, warn } from "../utils";
-import { pl, t } from "../translations";
+import { t, tp } from "../translations";
 import { emitInterface } from "../interface";
 
 /** Base URL of geniURL */
@@ -226,7 +226,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
     const fetchRes = await fetchAdvanced(fetchUrl);
     if(fetchRes.status === 429) {
       const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
-      alert(t(pl("lyrics_rate_limited", waitSeconds), waitSeconds));
+      alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {

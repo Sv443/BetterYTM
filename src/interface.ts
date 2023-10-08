@@ -2,7 +2,7 @@ import { getUnsafeWindow } from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { log } from "./utils";
 import type { TrLocale } from "./translations";
-import { SiteEventsMap } from "./siteEvents";
+import type { SiteEventsMap } from "./siteEvents";
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export interface InterfaceEvents {
@@ -14,7 +14,7 @@ export interface InterfaceEvents {
   "bytm:setLocale": { locale: TrLocale };
 
   // additionally all events from SiteEventsMap in `src/siteEvents.ts`
-  // are emitted in this format: `bytm:siteEvent:siteEventName`
+  // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
 }
 
 /** Initializes the BYTM interface */
