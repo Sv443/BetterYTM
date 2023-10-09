@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1696536690048
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1696883182902
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1696536690048
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1696536690048
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1696536690048
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1696536690048
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1696536690048
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1696536690048
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1696536690048
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1696536690048
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1696536690048
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1696536690048
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1696536690048
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1696536690048
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1696536690048
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1696536690048
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1696536690048
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1696536690048
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1696536690048
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1696536690048
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1696536690048
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1696536690048
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1696536690048
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1696536690048
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1696536690048
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1696536690048
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1696883182902
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1696883182902
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1696883182902
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1696883182902
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1696883182902
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1696883182902
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1696883182902
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1696883182902
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1696883182902
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1696883182902
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1696883182902
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1696883182902
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1696883182902
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1696883182902
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1696883182902
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1696883182902
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1696883182902
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1696883182902
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1696883182902
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1696883182902
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1696883182902
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1696883182902
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1696883182902
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1696883182902
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -124,6 +124,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/menu/welcomeMenu.css":
+/*!**********************************!*\
+  !*** ./src/menu/welcomeMenu.css ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/config.ts":
 /*!***********************!*\
   !*** ./src/config.ts ***!
@@ -169,7 +181,7 @@ const migrations = {
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
     // 2 -> 3
-    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: true, numKeysSkipToTime: true, fixSpacing: true, scrollToActiveSongBtn: true, logLevel: 1 })),
+    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo.removeShareTrackingParam.default, numKeysSkipToTime: _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo.numKeysSkipToTime.default, fixSpacing: _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo.fixSpacing.default, scrollToActiveSongBtn: _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo.scrollToActiveSongBtn.default, logLevel: _features_index__WEBPACK_IMPORTED_MODULE_1__.featInfo.logLevel.default })),
     // 3 -> 4
     4: (oldData) => {
         var _a, _b, _c, _d;
@@ -266,7 +278,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "4a44173", // asserted as generic string instead of literal
+    buildNumber: "cf82f90", // asserted as generic string instead of literal
 };
 
 
@@ -1584,7 +1596,7 @@ const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 const thresholdParam = threshold ? `&threshold=${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(threshold, 0, 1)}` : "";
-void thresholdParam; // TODO: remove once geniURL 1.4 is released
+void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 //#MARKER cache
 /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
 const lyricsUrlCache = new Map();
@@ -1765,7 +1777,7 @@ function getGeniusUrl(artist, song) {
             const fetchRes = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(fetchUrl);
             if (fetchRes.status === 429) {
                 const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-                alert((0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)((0,_translations__WEBPACK_IMPORTED_MODULE_2__.pl)("lyrics_rate_limited", waitSeconds), waitSeconds));
+                alert((0,_translations__WEBPACK_IMPORTED_MODULE_2__.tp)("lyrics_rate_limited", waitSeconds, waitSeconds));
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -1848,7 +1860,7 @@ function setGlobalProp(key, value) {
     // use unsafeWindow so the properties are available outside of the userscript's scope
     const win = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)();
     if (!win.BYTM)
-        return;
+        win.BYTM = {};
     win.BYTM[key] = value;
 }
 /** Emits an event on the BYTM interface */
@@ -1976,7 +1988,7 @@ function getHotkeyInfo(hotkey) {
 function getOS() {
     if (navigator.userAgent.match(/mac(\s?os|intel)/i))
         return "mac";
-    return "win";
+    return "other";
 }
 
 
@@ -2881,6 +2893,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _assets_locales_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../assets/locales.json */ "./assets/locales.json");
 /* harmony import */ var _package_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../package.json */ "./package.json");
+/* harmony import */ var _welcomeMenu_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./welcomeMenu.css */ "./src/menu/welcomeMenu.css");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2898,6 +2911,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
+//#MARKER menu
 let isWelcomeMenuOpen = false;
 /** Adds the welcome menu to the DOM */
 function addWelcomeMenu() {
@@ -3040,10 +3055,13 @@ function addWelcomeMenu() {
         retranslateWelcomeMenu();
     });
 }
+//#MARKER (re-)translate
 /** Retranslates all elements inside the welcome menu */
 function retranslateWelcomeMenu() {
+    const getLink = (href) => {
+        return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
+    };
     const changes = {
-        "#bytm-welcome-menu-bg": (e) => e.title = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("close_menu_tooltip"),
         "#bytm-welcome-menu-title": (e) => e.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_menu_title", _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.name),
         "#bytm-welcome-menu-title-close": (e) => e.title = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("close_menu_tooltip"),
         "#bytm-welcome-menu-open-cfg": (e) => {
@@ -3058,28 +3076,19 @@ function retranslateWelcomeMenu() {
             e.innerText = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("close");
             e.title = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("close_menu_tooltip");
         },
+        "#bytm-welcome-text-line1": (e) => e.innerHTML = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_1"),
+        "#bytm-welcome-text-line2": (e) => e.innerHTML = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_2", _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.name),
+        "#bytm-welcome-text-line3": (e) => e.innerHTML = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_3", _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.name, ...getLink(`${_package_json__WEBPACK_IMPORTED_MODULE_7__.cdn.greasyfork}/feedback`), ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.cdn.openuserjs)),
+        "#bytm-welcome-text-line4": (e) => e.innerHTML = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_4", ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.funding.url)),
+        "#bytm-welcome-text-line5": (e) => e.innerHTML = (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_5", ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.bugs.url)),
     };
     for (const [selector, cb] of Object.entries(changes)) {
         const elem = document.querySelector(selector);
-        if (!elem)
-            return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)(`Couldn't find element ${selector} in welcome menu`);
+        if (!elem) {
+            (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)(`Couldn't find element ${selector} in welcome menu`);
+            continue;
+        }
         cb(elem);
-    }
-    const getLink = (href) => {
-        return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
-    };
-    const textChanges = {
-        "#bytm-welcome-text-line1": (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_1"),
-        "#bytm-welcome-text-line2": (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_2", _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.name),
-        "#bytm-welcome-text-line3": (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_3", _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.name, ...getLink(`${_package_json__WEBPACK_IMPORTED_MODULE_7__.cdn.greasyfork}/feedback`), ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.cdn.openuserjs)),
-        "#bytm-welcome-text-line4": (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_4", ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.funding.url)),
-        "#bytm-welcome-text-line5": (0,_translations__WEBPACK_IMPORTED_MODULE_1__.t)("welcome_text_line_5", ...getLink(_package_json__WEBPACK_IMPORTED_MODULE_7__.bugs.url)),
-    };
-    for (const [selector, text] of Object.entries(textChanges)) {
-        const elem = document.querySelector(selector);
-        if (!elem)
-            return (0,_utils__WEBPACK_IMPORTED_MODULE_0__.warn)(`Couldn't find element ${selector} in welcome menu`);
-        elem.innerHTML = text;
     }
 }
 /** Closes the welcome menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
@@ -3096,6 +3105,7 @@ function closeWelcomeMenu(evt) {
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
+//#MARKER open, show & close
 /** Opens the welcome menu if it is closed */
 function openWelcomeMenu() {
     if (isWelcomeMenuOpen)
@@ -3113,7 +3123,6 @@ function showWelcomeMenu() {
     return new Promise((resolve) => {
         const unsub = _siteEvents__WEBPACK_IMPORTED_MODULE_3__.siteEvents.on("welcomeMenuClosed", () => {
             unsub();
-            GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: _constants__WEBPACK_IMPORTED_MODULE_4__.scriptInfo.version }));
             resolve();
         });
         openWelcomeMenu();
@@ -3217,9 +3226,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getLocale: function() { return /* binding */ getLocale; },
 /* harmony export */   initTranslations: function() { return /* binding */ initTranslations; },
-/* harmony export */   pl: function() { return /* binding */ pl; },
 /* harmony export */   setLocale: function() { return /* binding */ setLocale; },
-/* harmony export */   t: function() { return /* binding */ t; }
+/* harmony export */   t: function() { return /* binding */ t; },
+/* harmony export */   tp: function() { return /* binding */ tp; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
@@ -3273,12 +3282,12 @@ function getLocale() {
 function t(key, ...values) {
     return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr)(key, ...values);
 }
-/** Returns the passed translation key with an added pluralization identifier based on the passed `num` */
-function pl(key, num) {
+/** Returns the translated string for the given key with an added pluralization identifier based on the passed `num` */
+function tp(key, num, ...values) {
     if (typeof num !== "number")
         num = num.length;
     const plNum = num === 1 ? "1" : "n";
-    return `${key}-${plNum}`;
+    return t(`${key}-${plNum}`, ...values);
 }
 
 
@@ -4039,7 +4048,7 @@ module.exports = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscrip
   \**********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"MIT","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^2.0.1","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^5.59.8","@typescript-eslint/parser":"^5.59.7","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^7.32.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
+module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"MIT","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^2.0.1","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
 
 /***/ })
 
@@ -4194,7 +4203,7 @@ function init() {
         }
         // init menu separately from features
         try {
-            void "TODO(v1.1):";
+            void "TODO(v1.2):";
             // initMenu();
         }
         catch (err) {
@@ -4212,7 +4221,7 @@ function initFeatures() {
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.6);
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
 }
@@ -4230,11 +4239,6 @@ function initFeatures() {
 #bytm-export-menu-bg, #bytm-import-menu-bg {
   --bytm-menu-height-max: 500px;
   --bytm-menu-width-max: 600px;
-}
-
-#bytm-welcome-menu-bg {
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 700px;
 }
 
 .bytm-menu-bg {
@@ -4356,51 +4360,6 @@ function initFeatures() {
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
-#bytm-welcome-menu-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-welcome-menu-title-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 20px;
-}
-
-#bytm-welcome-menu-content-wrapper {
-  overflow-y: auto;
-}
-
-#bytm-welcome-menu-locale-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#bytm-welcome-menu-locale-img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-}
-
-#bytm-welcome-menu-text {
-  font-size: 1.6em;
-  padding: 8px 20px;
-  margin: 10px 0px;
-  line-height: 20px;
-}
-
-#bytm-welcome-menu-locale-select {
-  font-size: 1.6em;
-}
-
-#bytm-welcome-menu-footer-cont {
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
-  padding: 20px;
-}
-
 #bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
@@ -4471,6 +4430,7 @@ function initFeatures() {
 }
 
 .bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
   min-width: 50px;
 }
 
@@ -4513,7 +4473,7 @@ function initFeatures() {
 /* Markdown stuff */
 
 .bytm-markdown-container kbd {
-  --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
   padding: 4px;
@@ -4524,12 +4484,12 @@ function initFeatures() {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--easing), box-shadow 0.1s var(--easing);
+  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
 }
 
 .bytm-markdown-container kbd:active {
   padding-bottom: 2px;
-  box-shadow: inset 0 0 0 #61666c;
+  box-shadow: inset 0 0 0 initial;
 }
 
 .bytm-markdown-container kbd::selection {
@@ -4851,6 +4811,58 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   padding: 4px;
 }
 
+/*!****************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/welcomeMenu.css ***!
+  \****************************************************************************/
+#bytm-welcome-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 700px;
+}
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6em;
+  padding: 8px 20px;
+  margin: 10px 0px;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6em;
+}
+
+#bytm-welcome-menu-footer-cont {
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  padding: 20px;
+}
 
 /*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.initOnSelector)();
@@ -4861,14 +4873,15 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
             if (domain === "ytm") {
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_9__.disableDarkReader)();
                 ftInit.push((0,_siteEvents__WEBPACK_IMPORTED_MODULE_4__.initSiteEvents)());
-                if (!(yield GM.getValue("bytm-installed"))) {
+                if (typeof (yield GM.getValue("bytm-installed")) !== "string") {
                     // open welcome menu with language selector
                     yield (0,_menu_welcomeMenu__WEBPACK_IMPORTED_MODULE_8__.addWelcomeMenu)();
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.info)("Showing welcome menu");
                     yield (0,_menu_welcomeMenu__WEBPACK_IMPORTED_MODULE_8__.showWelcomeMenu)();
+                    yield GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: _constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.version }));
                 }
                 try {
-                    ftInit.push((0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_7__.addCfgMenu)()); // TODO(v1.1): remove
+                    ftInit.push((0,_menu_menu_old__WEBPACK_IMPORTED_MODULE_7__.addCfgMenu)()); // TODO(v1.2): remove
                 }
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.error)("Couldn't add menu:", err);
