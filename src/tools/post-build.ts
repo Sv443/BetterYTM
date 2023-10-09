@@ -3,6 +3,7 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import dotenv from "dotenv";
+import { output as webpackCfgOutput } from "../../webpack.config.js";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 
@@ -21,6 +22,7 @@ const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
+const devServerUserscriptUrl = `http://localhost:${devServerPort}/${webpackCfgOutput.filename}`;
 
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
@@ -141,7 +143,9 @@ I welcome every contribution on GitHub!
     }
 
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
-    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[34m${sizeKiB} KiB\x1b[0m${sizeIndicator}\n`);
+    console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
+    await devServerRunning() && console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
+    console.info();
 
     ringBell && process.stdout.write("\u0007");
 
@@ -255,4 +259,15 @@ function getAssetUrl(relativePath: string) {
   return mode === "development"
     ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildTs}`
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
+}
+
+/** Returns whether the dev server is running */
+async function devServerRunning() {
+  try {
+    const { status } = await fetch(devServerUserscriptUrl);
+    return status < 300 && status >= 200;
+  }
+  catch(err) {
+    return false;
+  }
 }

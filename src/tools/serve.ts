@@ -39,9 +39,10 @@ app.use("/assets", express.static(
 ));
 
 app.listen(devServerPort, "0.0.0.0", () => {
-  console.log(`The dev server is running.\nUserscript is served at \x1b[34m\x1b[4mhttp://localhost:${devServerPort}/${webpackCfgOutput.filename}\x1b[0m`);
+  console.log(`Dev server is running on port ${devServerPort}`);
   if(enableLogging)
     process.stdout.write("\nRequests: ");
   else
     console.log("\x1b[2m(request logging is disabled)\x1b[0m");
+  console.log();
 });
