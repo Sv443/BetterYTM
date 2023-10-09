@@ -1,7 +1,7 @@
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.6);
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
 }
@@ -210,6 +210,7 @@
 }
 
 .bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
   min-width: 50px;
 }
 
@@ -252,7 +253,7 @@
 /* Markdown stuff */
 
 .bytm-markdown-container kbd {
-  --easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
   padding: 4px;
@@ -263,12 +264,12 @@
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--easing), box-shadow 0.1s var(--easing);
+  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
 }
 
 .bytm-markdown-container kbd:active {
   padding-bottom: 2px;
-  box-shadow: inset 0 0 0 #61666c;
+  box-shadow: inset 0 0 0 initial;
 }
 
 .bytm-markdown-container kbd::selection {
