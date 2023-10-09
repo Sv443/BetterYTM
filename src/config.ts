@@ -21,11 +21,11 @@ export const migrations: ConfigMigrationsDict = {
   // 2 -> 3
   3: (oldData: Record<string, unknown>) => ({
     ...oldData,
-    removeShareTrackingParam: true,
-    numKeysSkipToTime: true,
-    fixSpacing: true,
-    scrollToActiveSongBtn: true,
-    logLevel: 1,
+    removeShareTrackingParam: featInfo.removeShareTrackingParam.default,
+    numKeysSkipToTime: featInfo.numKeysSkipToTime.default,
+    fixSpacing: featInfo.fixSpacing.default,
+    scrollToActiveSongBtn: featInfo.scrollToActiveSongBtn.default,
+    logLevel: featInfo.logLevel.default,
   }),
   // 3 -> 4
   4: (oldData: Record<string, unknown>) => {
@@ -42,7 +42,7 @@ export const migrations: ConfigMigrationsDict = {
         shift: oldSwitchSitesHotkey.shift ?? false,
         ctrl: oldSwitchSitesHotkey.ctrl ?? false,
         alt: oldSwitchSitesHotkey.meta ?? false,
-      }
+      },
     };
   },
 };
