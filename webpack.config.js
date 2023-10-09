@@ -44,9 +44,9 @@ const getConfig = (env) => {
       // also all modern browsers support ESM so this can safely be enabled:
       outputModule: true,
     },
+    // since sites like greasyfork don't allow minified userscripts:
     optimization: {
       moduleIds: "named",
-      // since sites like greasyfork don't allow minified userscripts:
       minimize: false,
       minimizer: [
         `...`,
@@ -96,7 +96,7 @@ const getConfig = (env) => {
               stdout && process.stdout.write(stdout);
               stderr && process.stderr.write(stderr);
             });
-            exec("npm run --silent tr-progress", (_err, stdout, stderr) => {
+            exec("npm run --silent tr-progress", (_err, _stdout, stderr) => {
               stderr && process.stderr.write(stderr);
             });
           });
