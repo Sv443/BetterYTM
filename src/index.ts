@@ -106,7 +106,7 @@ async function init() {
 
   // init menu separately from features
   try {
-    void "TODO(v1.1):";
+    void "TODO(v1.2):";
     // initMenu();
   }
   catch(err) {
@@ -132,15 +132,16 @@ async function initFeatures() {
 
       ftInit.push(initSiteEvents());
 
-      if(!await GM.getValue("bytm-installed")) {
+      if(typeof await GM.getValue("bytm-installed") !== "string") {
         // open welcome menu with language selector
         await addWelcomeMenu();
         info("Showing welcome menu");
         await showWelcomeMenu();
+        await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
       }
 
       try {
-        ftInit.push(addCfgMenu()); // TODO(v1.1): remove
+        ftInit.push(addCfgMenu()); // TODO(v1.2): remove
       }
       catch(err) {
         error("Couldn't add menu:", err);

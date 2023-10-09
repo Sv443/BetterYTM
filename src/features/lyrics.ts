@@ -17,7 +17,7 @@ const threshold = 0.55;
 const geniUrlRatelimitTimeframe = 30;
 
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
-void thresholdParam; // TODO: remove once geniURL 1.4 is released
+void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 
 //#MARKER cache
 

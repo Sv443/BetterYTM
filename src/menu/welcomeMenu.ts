@@ -277,7 +277,6 @@ export function showWelcomeMenu() {
   return new Promise<void>((resolve) => {
     const unsub = siteEvents.on("welcomeMenuClosed", () => {
       unsub();
-      GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
       resolve();
     });
 
