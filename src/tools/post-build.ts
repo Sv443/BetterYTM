@@ -51,8 +51,8 @@ const devDirectives = mode === "development" ? `
 
   const header = `\
 // ==UserScript==
-// @name              ${pkg.userscriptName}
-// @namespace         ${pkg.homepage}
+// @name              ${pkg.userscriptName}-a
+// @namespace         ${pkg.homepage}-a
 // @version           ${pkg.version}
 // @description       ${pkg.description}\
 ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
