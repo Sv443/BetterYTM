@@ -144,7 +144,7 @@ I welcome every contribution on GitHub!
 
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
     console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
-    await devServerRunning() && console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
+    console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
     console.info();
 
     ringBell && process.stdout.write("\u0007");
@@ -259,15 +259,4 @@ function getAssetUrl(relativePath: string) {
   return mode === "development"
     ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildTs}`
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
-}
-
-/** Returns whether the dev server is running */
-async function devServerRunning() {
-  try {
-    const { status } = await fetch(devServerUserscriptUrl);
-    return status < 300 && status >= 200;
-  }
-  catch(err) {
-    return false;
-  }
 }
