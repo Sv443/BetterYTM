@@ -132,14 +132,12 @@ async function initFeatures() {
 
       ftInit.push(initSiteEvents());
 
-      console.log("GM_BUG value before setting:", await GM.getValue("bytm-installed"));
       if(typeof await GM.getValue("bytm-installed") !== "string") {
         // open welcome menu with language selector
         await addWelcomeMenu();
         info("Showing welcome menu");
         await showWelcomeMenu();
         await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
-        console.log("GM_BUG value after setting:", await GM.getValue("bytm-installed"));
       }
 
       try {
