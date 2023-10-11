@@ -192,19 +192,25 @@ export function getResourceUrl(name: ResourceKey | "_") {
  * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
  */
 export function getPreferredLocale(): TrLocale {
-  if(Object.entries(langMapping).find(([key]) => key === navigator.language))
-    return navigator.language as TrLocale;
+  const navLang = navigator.language.replace(/-/g, "_");
+  const navLangs = navigator.languages
+    .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
+    .map(lang => lang.replace(/-/g, "_"));
 
-  for(const loc of navigator.languages) {
+  if(Object.entries(langMapping).find(([key]) => key === navLang))
+    return navLang as TrLocale;
+
+  for(const loc of navLangs) {
     if(Object.entries(langMapping).find(([key]) => key === loc))
       return loc as TrLocale;
   }
 
   // if navigator.languages has entries that aren't locale codes in the format xx_XX
-  if(navigator.languages.some(lang => lang.match(/^\w{2}$/))) {
-    for(const lang of navigator.languages) {
-      if(Object.entries(langMapping).find(([key]) => key.startsWith(lang)))
-        return lang as TrLocale;
+  if(navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
+    for(const lang of navLangs) {
+      const foundLoc = Object.entries(langMapping).find(([key]) => key.startsWith(lang))?.[0];
+      if(foundLoc)
+        return foundLoc as TrLocale;
     }
   }
 
