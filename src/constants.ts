@@ -7,6 +7,8 @@ const branchRaw = "{{BRANCH}}";
 export const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw) as "production" | "development";
 /** The branch to use in various URLs that point to the GitHub repo */
 export const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw) as "main" | "develop";
+/** Path to the GitHub repo */
+export const repo = "Sv443/BetterYTM";
 
 /**
  * How much info should be logged to the devtools console  

@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1696883182902
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697091242253
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1696883182902
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1696883182902
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1696883182902
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1696883182902
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1696883182902
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1696883182902
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1696883182902
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1696883182902
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1696883182902
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1696883182902
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1696883182902
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1696883182902
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1696883182902
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1696883182902
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1696883182902
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1696883182902
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1696883182902
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1696883182902
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1696883182902
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1696883182902
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1696883182902
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1696883182902
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1696883182902
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1696883182902
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697091242253
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697091242253
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697091242253
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697091242253
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697091242253
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697091242253
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697091242253
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697091242253
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697091242253
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697091242253
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697091242253
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1697091242253
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697091242253
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697091242253
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697091242253
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697091242253
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697091242253
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697091242253
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697091242253
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697091242253
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697091242253
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697091242253
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697091242253
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697091242253
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -260,6 +260,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   branch: function() { return /* binding */ branch; },
 /* harmony export */   defaultLogLevel: function() { return /* binding */ defaultLogLevel; },
 /* harmony export */   mode: function() { return /* binding */ mode; },
+/* harmony export */   repo: function() { return /* binding */ repo; },
 /* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; }
 /* harmony export */ });
 const modeRaw = "development";
@@ -268,6 +269,8 @@ const branchRaw = "develop";
 const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
 const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
+/** Path to the GitHub repo */
+const repo = "Sv443/BetterYTM";
 /**
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -278,7 +281,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "cf82f90", // asserted as generic string instead of literal
+    buildNumber: "02819d6", // asserted as generic string instead of literal
 };
 
 
@@ -3319,6 +3322,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _assets_locales_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/locales.json */ "./assets/locales.json");
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 
 
 
@@ -3463,29 +3475,51 @@ function getDomain() {
 }
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
 function getResourceUrl(name) {
-    return GM.getResourceUrl(name);
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        let url = yield GM.getResourceUrl(name);
+        if (!url || url.length === 0) {
+            const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
+            if (typeof resource === "string") {
+                const resourceUrl = new URL(resource);
+                const resourcePath = resourceUrl.pathname;
+                if (resourcePath)
+                    return `https://raw.githubusercontent.com/${_constants__WEBPACK_IMPORTED_MODULE_1__.repo}/${_constants__WEBPACK_IMPORTED_MODULE_1__.branch}${resourcePath}`;
+            }
+            error(`Couldn't get blob URL for @resource '${name}', trying to use base64-encoded fallback`);
+            // @ts-ignore
+            url = yield GM.getResourceUrl(name, false);
+        }
+        return url;
+    });
 }
 /**
  * Returns the preferred locale of the user, provided it is supported by the userscript.
  * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
  */
 function getPreferredLocale() {
-    if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).find(([key]) => key === navigator.language))
-        return navigator.language;
-    for (const loc of navigator.languages) {
+    var _a;
+    const navLang = navigator.language.replace(/-/g, "_");
+    const navLangs = navigator.languages
+        .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
+        .map(lang => lang.replace(/-/g, "_"));
+    if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).find(([key]) => key === navLang))
+        return navLang;
+    for (const loc of navLangs) {
         if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).find(([key]) => key === loc))
             return loc;
     }
     // if navigator.languages has entries that aren't locale codes in the format xx_XX
-    if (navigator.languages.some(lang => lang.match(/^\w{2}$/))) {
-        for (const lang of navigator.languages) {
-            if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).find(([key]) => key.startsWith(lang)))
-                return lang;
+    if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
+        for (const lang of navLangs) {
+            const foundLoc = (_a = Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+            if (foundLoc)
+                return foundLoc;
         }
     }
     return "en_US";
 }
-/** Removes all child nodes of an element */
+/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
 function clearInner(element) {
     while (element.hasChildNodes())
         clearNode(element.firstChild);

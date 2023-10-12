@@ -1,5 +1,5 @@
 import { clamp, getUnsafeWindow, onSelector } from "@sv443-network/userutils";
-import { scriptInfo } from "./constants";
+import { branch, repo, scriptInfo } from "./constants";
 import type { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import { TrLocale } from "./translations";
@@ -183,8 +183,21 @@ export function getDomain(): Domain {
 }
 
 /** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
-export function getResourceUrl(name: ResourceKey | "_") {
-  return GM.getResourceUrl(name);
+export async function getResourceUrl(name: ResourceKey | "_") {
+  let url = await GM.getResourceUrl(name);
+  if(!url || url.length === 0) {
+    const resource = GM.info.script.resources?.[name].url;
+    if(typeof resource === "string") {
+      const resourceUrl = new URL(resource);
+      const resourcePath = resourceUrl.pathname;
+      if(resourcePath)
+        return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
+    }
+    error(`Couldn't get blob URL for @resource '${name}', trying to use base64-encoded fallback`);
+    // @ts-ignore
+    url = await GM.getResourceUrl(name, false);
+  }
+  return url;
 }
 
 /**
@@ -217,7 +230,7 @@ export function getPreferredLocale(): TrLocale {
   return "en_US";
 }
 
-/** Removes all child nodes of an element */
+/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
 export function clearInner(element: Element) {
   while(element.hasChildNodes())
     clearNode(element!.firstChild as Element);
