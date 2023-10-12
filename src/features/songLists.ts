@@ -1,4 +1,5 @@
-import { autoPlural, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { onSelector } from "../onSelector";
 import { error, getResourceUrl, log } from "../utils";
 import { t } from "../translations";
 import { SiteEventsMap, siteEvents } from "../siteEvents";

@@ -1,4 +1,5 @@
-import { clamp, getUnsafeWindow, onSelector } from "@sv443-network/userutils";
+import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
+import { onSelector } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import type { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };

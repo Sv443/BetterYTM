@@ -1,4 +1,5 @@
-import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, onSelector, pauseFor, AmplifyMediaResult } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, pauseFor, AmplifyMediaResult } from "@sv443-network/userutils";
+import { onSelector } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { mode, scriptInfo } from "../constants";
 import { error, getResourceUrl, info, log, warn, ytmVideoSelector } from "../utils";

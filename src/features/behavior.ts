@@ -1,4 +1,5 @@
-import { clamp, onSelector, pauseFor } from "@sv443-network/userutils";
+import { clamp, pauseFor } from "@sv443-network/userutils";
+import { onSelector } from "../onSelector";
 import { error, info, log, ytmVideoSelector } from "../utils";
 import type { FeatureConfig } from "../types";
 

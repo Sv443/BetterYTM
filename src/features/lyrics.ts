@@ -1,4 +1,5 @@
-import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
+import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { onSelector } from "../onSelector";
 import { error, getResourceUrl, info, log, warn } from "../utils";
 import { t, tp } from "../translations";
 import { emitInterface } from "../interface";
