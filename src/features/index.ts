@@ -6,6 +6,7 @@ export * from "./layout";
 export * from "./behavior";
 export * from "./input";
 export * from "./lyrics";
+export * from "./songLists";
 
 /** Union of all feature keys */
 export type FeatInfoKey = keyof typeof featInfo;
@@ -60,11 +61,6 @@ export const featInfo = {
     category: "layout",
     default: true,
   },
-  deleteFromQueueButton: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-  },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
@@ -93,6 +89,27 @@ export const featInfo = {
     default: 200,
     step: 25,
     unit: "%",
+  },
+
+  //#SECTION song lists
+  lyricsQueueButton: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+  },
+  deleteFromQueueButton: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+  },
+  listButtonsPlacement: {
+    type: "select",
+    category: "songLists",
+    options: () => [
+      { value: "queueOnly", label: t("list_button_placement_queue_only") },
+      { value: "everywhere", label: t("list_button_placement_everywhere") },
+    ],
+    default: "everywhere",
   },
 
   //#SECTION behavior
@@ -158,11 +175,6 @@ export const featInfo = {
 
   //#SECTION lyrics
   geniusLyrics: {
-    type: "toggle",
-    category: "lyrics",
-    default: true,
-  },
-  lyricsQueueButton: {
     type: "toggle",
     category: "lyrics",
     default: true,

@@ -10,10 +10,13 @@ import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import {
   // layout
   preInitLayout,
-  initQueueButtons, addWatermark,
+  addWatermark,
   removeUpgradeTab, initVolumeFeatures,
   removeShareTrackingParam, fixSpacing,
   addScrollToActiveBtn, addBoostGainButton,
+  // song lists
+  preInitSongLists,
+  initQueueButtons,
   // behavior
   preInitBehavior,
   initBeforeUnloadHook, disableBeforeUnload,
@@ -88,6 +91,7 @@ async function init() {
     preInitLayout(features);
     preInitBehavior(features);
     preInitInput(features);
+    preInitSongLists(features);
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
