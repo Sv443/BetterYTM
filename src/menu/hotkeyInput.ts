@@ -84,17 +84,19 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
   });
 
   const deactivate = () => {
+    siteEvents.emit("hotkeyInputActive", false);
     const curVal = getFeatures().switchSitesHotkey ?? initialValue;
     inputElem.value = curVal?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
-    inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+    inputElem.title = t("hotkey_input_click_to_change_tooltip");
     infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
   };
 
-  const reactivate = () => {
+  const activate = () => {
+    siteEvents.emit("hotkeyInputActive", true);
     inputElem.value = "< ... >";
     inputElem.dataset.state = "active";
-    inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
   };
 
   siteEvents.on("cfgMenuClosed", deactivate);
@@ -103,7 +105,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     if(inputElem.dataset.state === "active")
       deactivate();
     else
-      reactivate();
+      activate();
   });
 
   wrapperElem.appendChild(infoElem);

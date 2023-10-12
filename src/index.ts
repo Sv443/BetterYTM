@@ -1,5 +1,5 @@
-import { addGlobalStyle, getSelectorMap } from "@sv443-network/userutils";
-import { initOnSelector, onSelector } from "./onSelector";
+import { addGlobalStyle } from "@sv443-network/userutils";
+import { initOnSelector, onSelector, getSelectorMap } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, log, setLogLevel } from "./utils";

@@ -3,6 +3,7 @@ import { error, getVideoTime, info, log, warn, ytmVideoSelector } from "../utils
 import type { Domain, FeatureConfig } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
+import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
 
 let features: FeatureConfig;
@@ -42,13 +43,17 @@ export async function initArrowKeySkip() {
 
 /** switch sites only if current video time is greater than this value */
 const videoTimeThreshold = 3;
+let siteSwitchEnabled = true;
 
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
     const hotkey = features.switchSitesHotkey;
-    if(e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
+    if(siteSwitchEnabled && e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
+  });
+  siteEvents.on("hotkeyInputActive", (state) => {
+    siteSwitchEnabled = !state;
   });
   log("Initialized site switch listener");
 }

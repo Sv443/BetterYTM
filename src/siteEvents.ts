@@ -13,6 +13,8 @@ export interface SiteEventsMap {
   cfgMenuClosed: () => void;
   /** Emitted when the welcome menu is closed */
   welcomeMenuClosed: () => void;
+  /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
+  hotkeyInputActive: (active: boolean) => void;
 
   // DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */
