@@ -21,21 +21,21 @@ export const migrations: ConfigMigrationsDict = {
   // 2 -> 3
   3: (oldData: Record<string, unknown>) => ({
     ...oldData,
-    removeShareTrackingParam: featInfo.removeShareTrackingParam.default,
-    numKeysSkipToTime: featInfo.numKeysSkipToTime.default,
-    fixSpacing: featInfo.fixSpacing.default,
-    scrollToActiveSongBtn: featInfo.scrollToActiveSongBtn.default,
-    logLevel: featInfo.logLevel.default,
+    removeShareTrackingParam: getFeatureDefault("removeShareTrackingParam"),
+    numKeysSkipToTime: getFeatureDefault("numKeysSkipToTime"),
+    fixSpacing: getFeatureDefault("fixSpacing"),
+    scrollToActiveSongBtn: getFeatureDefault("scrollToActiveSongBtn"),
+    logLevel: getFeatureDefault("logLevel"),
   }),
   // 3 -> 4
   4: (oldData: Record<string, unknown>) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
       ...oldData,
-      locale: featInfo.locale.default,
-      boostGain: featInfo.boostGain.default,
-      boostGainPercentage: featInfo.boostGainPercentage.default,
-      rememberSongTime: featInfo.rememberSongTime.default,
+      locale: getFeatureDefault("locale"),
+      boostGain: getFeatureDefault("boostGain"),
+      boostGainPercentage: getFeatureDefault("boostGainPercentage"),
+      rememberSongTime: getFeatureDefault("rememberSongTime"),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
         code: oldSwitchSitesHotkey.key ?? "F9",
@@ -43,9 +43,14 @@ export const migrations: ConfigMigrationsDict = {
         ctrl: oldSwitchSitesHotkey.ctrl ?? false,
         alt: oldSwitchSitesHotkey.meta ?? false,
       },
+      listButtonsPlacement: "queueOnly",
     };
   },
 };
+
+function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
+  return featInfo[key].default;
+}
 
 export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
