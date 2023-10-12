@@ -172,37 +172,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER queue buttons */
-
-.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-  position: relative;
-}
-
-.side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
-  display: none;
-  position: absolute;
-  right: 0;
-  padding-left: 25px;
-  height: 100%;
-}
-
-.side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container {
-  display: inline-block;
-}
-
-.side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
-}
-
-ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
-  display: none !important;
-}
-
 /* #MARKER anchor improvements */
 
 ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
