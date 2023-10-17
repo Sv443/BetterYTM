@@ -85,17 +85,17 @@ export function getVideoTime() {
       if(domain === "ytm") {
         const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
         if(vidElem)
-          return res(vidElem.currentTime);
+          return res(Math.floor(vidElem.currentTime));
 
         onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
-            res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
+            res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
       }
       else if(domain === "yt") {
         const vidElem = document.querySelector<HTMLVideoElement>(ytVideoSelector);
         if(vidElem)
-          return res(vidElem.currentTime);
+          return res(Math.floor(vidElem.currentTime));
 
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();
@@ -115,12 +115,12 @@ export function getVideoTime() {
           });
 
           if(videoTime >= 0 && !isNaN(videoTime)) {
-            res(videoTime);
+            res(Math.floor(videoTime));
             mut.disconnect();
           }
           else
             setTimeout(() => {
-              res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+              res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
               mut.disconnect();
             }, 500);
         };
