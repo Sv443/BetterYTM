@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697115034412
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697567872337
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697115034412
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697115034412
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697115034412
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697115034412
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697115034412
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697115034412
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697115034412
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697115034412
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697115034412
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697115034412
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697115034412
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1697115034412
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697115034412
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697115034412
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697115034412
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697115034412
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697115034412
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697115034412
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697115034412
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697115034412
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697115034412
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697115034412
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697115034412
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697115034412
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697567872337
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697567872337
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697567872337
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697567872337
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697567872337
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697567872337
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697567872337
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697567872337
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697567872337
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697567872337
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697567872337
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1697567872337
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697567872337
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697567872337
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697567872337
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697567872337
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697567872337
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697567872337
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697567872337
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697567872337
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697567872337
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697567872337
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697567872337
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697567872337
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -165,7 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _siteEvents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./siteEvents */ "./src/siteEvents.ts");
@@ -296,7 +296,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "f433505", // asserted as generic string instead of literal
+    buildNumber: "a0bcc71", // asserted as generic string instead of literal
 };
 
 
@@ -318,7 +318,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initRememberSongTime: function() { return /* binding */ initRememberSongTime; },
 /* harmony export */   preInitBehavior: function() { return /* binding */ preInitBehavior; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -786,7 +786,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; },
 /* harmony export */   preInitInput: function() { return /* binding */ preInitInput; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _behavior__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./behavior */ "./src/features/behavior.ts");
@@ -940,7 +940,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   removeShareTrackingParam: function() { return /* binding */ removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1446,7 +1446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
 /* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -1729,7 +1729,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   preInitSongLists: function() { return /* binding */ preInitSongLists; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -1952,7 +1952,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initInterface: function() { return /* binding */ initInterface; },
 /* harmony export */   setGlobalProp: function() { return /* binding */ setGlobalProp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 
@@ -2121,7 +2121,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   openCfgMenu: function() { return /* binding */ openCfgMenu; },
 /* harmony export */   openChangelogMenu: function() { return /* binding */ openChangelogMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../features/index */ "./src/features/index.ts");
@@ -3430,7 +3430,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   t: function() { return /* binding */ t; },
 /* harmony export */   tp: function() { return /* binding */ tp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -3515,7 +3515,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ytVideoSelector: function() { return /* binding */ ytVideoSelector; },
 /* harmony export */   ytmVideoSelector: function() { return /* binding */ ytmVideoSelector; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _assets_locales_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/locales.json */ "./assets/locales.json");
@@ -3596,15 +3596,15 @@ function getVideoTime() {
             if (domain === "ytm") {
                 const vidElem = document.querySelector(ytmVideoSelector);
                 if (vidElem)
-                    return res(vidElem.currentTime);
+                    return res(Math.floor(vidElem.currentTime));
                 (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Number(pbEl.value) : null)
+                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
                 });
             }
             else if (domain === "yt") {
                 const vidElem = document.querySelector(ytVideoSelector);
                 if (vidElem)
-                    return res(vidElem.currentTime);
+                    return res(Math.floor(vidElem.currentTime));
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
                 ytForceShowVideoTime();
                 const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
@@ -3619,12 +3619,12 @@ function getVideoTime() {
                         attributeFilter: ["aria-valuenow"],
                     });
                     if (videoTime >= 0 && !isNaN(videoTime)) {
-                        res(videoTime);
+                        res(Math.floor(videoTime));
                         mut.disconnect();
                     }
                     else
                         setTimeout(() => {
-                            res(videoTime >= 0 && !isNaN(videoTime) ? videoTime : null);
+                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
                             mut.disconnect();
                         }, 500);
                 };
@@ -3761,10 +3761,10 @@ let createNanoEvents = () => ({
 
 /***/ }),
 
-/***/ "../UserUtils/dist/index.mjs":
-/*!***********************************!*\
-  !*** ../UserUtils/dist/index.mjs ***!
-  \***********************************/
+/***/ "../../svn/UserUtils/dist/index.mjs":
+/*!******************************************!*\
+  !*** ../../svn/UserUtils/dist/index.mjs ***!
+  \******************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4189,7 +4189,7 @@ function insertValues(str, ...values) {
 var SelectorObserver = class {
   /**
    * Creates a new SelectorObserver that will observe the children of the given base element for changes (only creation and deletion of elements by default)
-   * @param options fine-tune what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
+   * @param options Fine-tune what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
    */
   constructor(baseElement, observerOptions) {
     __publicField(this, "enabled", true);
@@ -4199,10 +4199,14 @@ var SelectorObserver = class {
     __publicField(this, "listenerMap", /* @__PURE__ */ new Map());
     this.baseElement = baseElement;
     this.observer = new MutationObserver(this.checkSelectors);
-    this.observerOptions = observerOptions != null ? observerOptions : {};
+    this.observerOptions = __spreadValues({
+      childList: true,
+      subtree: true
+    }, observerOptions);
     this.enable();
   }
   checkSelectors() {
+    var _a;
     for (const [selector, listeners] of this.listenerMap.entries()) {
       if (!this.enabled)
         return;
@@ -4226,6 +4230,8 @@ var SelectorObserver = class {
               this.listenerMap.get(selector).splice(this.listenerMap.get(selector).indexOf(options), 1);
           }
         }
+        if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
+          this.listenerMap.delete(selector);
       }
     }
   }
@@ -4253,6 +4259,7 @@ var SelectorObserver = class {
       this.listenerMap.get(selector).push(options);
     else
       this.listenerMap.set(selector, [options]);
+    this.checkSelectors();
   }
   /** Disables the observation of the child elements */
   disable() {
@@ -4266,10 +4273,11 @@ var SelectorObserver = class {
     if (this.enabled)
       return;
     this.enabled = true;
-    this.observer.observe(this.baseElement, __spreadValues({
-      childList: true,
-      subtree: true
-    }, this.observerOptions));
+    this.observer.observe(this.baseElement, this.observerOptions);
+  }
+  /** Returns whether the observation of the child elements is currently enabled */
+  isEnabled() {
+    return this.enabled;
   }
   /** Removes all listeners that have been registered with {@linkcode addListener()} */
   clearListeners() {
@@ -4421,7 +4429,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
