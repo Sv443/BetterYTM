@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697567872337
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697568019167
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697567872337
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697567872337
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697567872337
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697567872337
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697567872337
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697567872337
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697567872337
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697567872337
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697567872337
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697567872337
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697567872337
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1697567872337
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697567872337
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697567872337
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697567872337
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697567872337
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697567872337
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697567872337
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697567872337
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697567872337
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697567872337
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697567872337
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697567872337
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697567872337
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697568019167
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697568019167
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697568019167
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697568019167
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697568019167
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697568019167
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697568019167
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697568019167
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697568019167
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697568019167
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697568019167
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1697568019167
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697568019167
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697568019167
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697568019167
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697568019167
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697568019167
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697568019167
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697568019167
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697568019167
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697568019167
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697568019167
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697568019167
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697568019167
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -296,7 +296,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "a0bcc71", // asserted as generic string instead of literal
+    buildNumber: "7fa7554", // asserted as generic string instead of literal
 };
 
 
@@ -876,8 +876,8 @@ function switchSite(newDomain) {
                 cleanSearch.includes("?")
                     ? `${cleanSearch.startsWith("?")
                         ? cleanSearch
-                        : "?" + cleanSearch}&t=${vt - 1}`
-                    : `?t=${vt - 1}`
+                        : "?" + cleanSearch}&t=${vt}`
+                    : `?t=${vt}`
                 : cleanSearch;
             const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Switching to domain '${newDomain}' at ${newUrl}`);
