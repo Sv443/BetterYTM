@@ -51,7 +51,7 @@ export async function initQueueButtons() {
     if(queueItems.length === 0)
       return;
 
-    queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns"));
+    queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", ["bytm-generic-list-queue-btn-container"]));
     listElem.classList.add("bytm-list-has-queue-btns");
 
     log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
@@ -84,11 +84,12 @@ export async function initQueueButtons() {
  * Also observes for changes to add new buttons to new items in the queue.
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  * @param containerParentSelector The selector of the parent element of the queue button container
+ * @param classes Extra CSS classes to apply to the container
  */
-async function addQueueButtons(queueItem: HTMLElement, containerParentSelector = ".song-info") {
+async function addQueueButtons(queueItem: HTMLElement, containerParentSelector = ".song-info", classes: string[] = []) {
   //#SECTION general queue item stuff
   const queueBtnsCont = document.createElement("div");
-  queueBtnsCont.className = "bytm-queue-btn-container";
+  queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
 
   const lyricsIconUrl = await getResourceUrl("lyrics");
   const deleteIconUrl = await getResourceUrl("delete");
