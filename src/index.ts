@@ -251,7 +251,7 @@ function registerMenuCommands() {
       [...selectors].forEach(([k, v]) => {
         lines.push(`  (${v.length}): ${k}`);
         v.forEach(({ all, continuous }, i) => {
-          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "all" : "one"}`);
+          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
         });
       });
       console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
