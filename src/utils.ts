@@ -243,7 +243,11 @@ function clearNode(element: Element) {
   element.parentNode!.removeChild(element);
 }
 
-/** Generates a random ID with the specified length (default: 16) */
+/**
+ * Generates a random hexadecimal ID with the specified length  
+ * Uses `window.crypto.getRandomValues()` for better randomness  
+ * @param length The length of the ID to generate (default = 16, minimum 2)
+ */
 export function randomId(length = 16) {
   const arr = new Uint8Array(length / 2);
   window.crypto.getRandomValues(arr);
