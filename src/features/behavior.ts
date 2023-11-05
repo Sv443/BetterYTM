@@ -1,6 +1,7 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { onSelector } from "../onSelector";
-import { error, info, log, ytmVideoSelector } from "../utils";
+import { onSelectorOld } from "../onSelector";
+import { error, getVideoTime, info, log, ytmVideoSelector } from "../utils";
+import { sessionID } from "../constants";
 import type { FeatureConfig } from "../types";
 
 let features: FeatureConfig;
@@ -58,7 +59,7 @@ export async function initAutoCloseToasts() {
     const animTimeout = 300;
     const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
 
-    onSelector("tp-yt-paper-toast#toast", {
+    onSelectorOld("tp-yt-paper-toast#toast", {
       all: true,
       continuous: true,
       listener: async (toastElems) => {
@@ -93,136 +94,118 @@ export async function initAutoCloseToasts() {
 //#MARKER remember song time
 
 interface RemSongObj {
+  /** Session ID */
+  sessionID: string;
   /** Watch ID */
-  id: string;
+  watchID: string;
   /** Time of the song */
-  time: number;
-  /** Timestamp of last save */
-  timestamp: number;
+  songTime: number;
+  /** Timestamp this entry was last updated */
+  updateTimestamp: number;
 }
 
 /** After how many milliseconds a remembered entry should expire */
-const rememberSongExpiry = 1000 * 60 * 1;
-let curSongId: string | undefined;
+const remSongEntryExpiry = 1000 * 60 * 1;
 
-// TODO:FIXME: broken af
-// use both sessionID and songID to identify the song
-// also fsr the entries aren't deleted after they expire
+let remSongsCache: RemSongObj[] = [];
+
 
 /** Remembers the time of the last played song and resumes playback from that time */
 export async function initRememberSongTime() {
-  log("Initialized song time remembering");
+  const storedDataRaw = await GM.getValue("bytm-rem-songs");
+  if(!storedDataRaw)
+    await GM.setValue("bytm-rem-songs", "[]");
 
-  const params = new URL(location.href).searchParams;
-  curSongId = params.get("v")!;
+  remSongsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemSongObj[];
 
-  const remData = await getRemSongData();
-  const curRemData = remData?.find(d => d.id === curSongId);
+  log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
 
-  if(location.pathname.startsWith("/watch") && curRemData) {
-    const songTime = Number(curRemData.time);
-    const songTimestamp = Number(curRemData.timestamp);
-    if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongExpiry) {
-      onSelector<HTMLVideoElement>(ytmVideoSelector, {
-        listener: async (vidElem) => {
-          await delRemSongData(curRemData.id);
+  if(location.pathname.startsWith("/watch"))
+    await restoreSongTime();
 
-          const applyTime = () => {
-            if(isNaN(songTime))
-              return;
-            vidElem.currentTime = clamp(Math.max(songTime - 1, 0), 0, vidElem.duration);
-            info(`Restored song time to ${Math.floor(songTime / 60)}m, ${(songTime % 60).toFixed(1)}s`);
-          };
+  remSongUpdateEntry();
+  setInterval(remSongUpdateEntry, 1000);
+}
 
-          if(vidElem.readyState === 4)
-            applyTime();
-          else
-            vidElem.addEventListener("canplay", applyTime, { once: true });
-        },
-      });
+/** Tries to restore the time of the currently playing song */
+async function restoreSongTime() {
+  if(location.pathname.startsWith("/watch")) {
+    const { searchParams } = new URL(location.href);
+    const watchID = searchParams.get("v");
+    if(!watchID)
+      return;
+
+    const entry = remSongsCache.find(entry => entry.sessionID === sessionID && entry.watchID === watchID);
+    if(entry) {
+      if(Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
+        await delRemSongData(entry.sessionID, entry.watchID);
+        return;
+      }
+      else {
+        onSelectorOld<HTMLVideoElement>(ytmVideoSelector, {
+          listener: async (vidElem) => {
+            if(vidElem) {
+              const applyTime = async () => {
+                if(isNaN(entry.songTime))
+                  return;
+                vidElem.currentTime = clamp(Math.max(entry.songTime - 1, 0), 0, vidElem.duration);
+                await delRemSongData(entry.sessionID, entry.watchID);
+                info(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`);
+              };
+
+              if(vidElem.readyState === 4)
+                applyTime();
+              else
+                vidElem.addEventListener("canplay", applyTime, { once: true });
+            }
+          },
+        });
+      }
     }
   }
-
-  if(curRemData) {
-    (async () => {
-      const time = Number(curRemData.timestamp);
-      if(Date.now() - time < rememberSongExpiry)
-        await delRemSongData(curRemData.id);
-    })();
-  }
-
-  onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-    listener: (progressElem) => {
-      let prevSongData: RemSongObj | undefined;
-
-      const progressObserver = new MutationObserver(async () => {
-        const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
-        const newSongId = new URL(location.href).searchParams.get("v");
-
-        if(newSongId === curSongId || !newSongId)
-          return;
-        if(prevSongData?.id === newSongId && prevSongData.time === songTime)
-          return;
-
-        curSongId = newSongId;
-
-        await setRemSongData({
-          id: newSongId,
-          time: songTime,
-          timestamp: Date.now(),
-        });
-      });
-
-      progressObserver.observe(progressElem, {
-        attributes: true,
-      });
-    },
-  });
 }
 
-async function getRemSongData(): Promise<RemSongObj[] | undefined> {
-  try {
-    const val = await GM.getValue("bytm-rem-song");
-    if(typeof val !== "string")
-      return undefined;
-    const json = JSON.parse(val);
-    if(!json.id || !json.time || !json.timestamp)
-      return undefined;
-    return json;
-  }
-  catch(err) {
-    return undefined;
-  }
-}
-
-async function setRemSongData(data: RemSongObj) {
-  try {
-    let storedData = await getRemSongData();
-    if(!storedData)
-      storedData = [];
-    const foundIdx = storedData.findIndex(d => d.id === data.id);
-    if(foundIdx >= 0)
-      storedData[foundIdx] = data;
-    else
-      storedData.push(data);
-    await GM.setValue("bytm-rem-song", JSON.stringify(storedData));
-  }
-  catch(err) {
-    return;
-  }
-}
-
-async function delRemSongData(id: string) {
-  try {
-    const data = await getRemSongData();
-    if(!data)
+/** Updates the currently playing song's entry in GM storage */
+async function remSongUpdateEntry() {
+  if(location.pathname.startsWith("/watch")) {
+    const { searchParams } = new URL(location.href);
+    const watchID = searchParams.get("v");
+    if(!watchID)
       return;
-    const newData = data.filter(d => d.id !== id);
-    await GM.setValue("bytm-rem-song", JSON.stringify(newData));
+
+    const songTime = await getVideoTime() ?? 0;
+
+    // don't immediately update to reduce race conditions
+    // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+    if(songTime > 2)
+      await setRemSongData({
+        sessionID,
+        watchID,
+        songTime,
+        updateTimestamp: Date.now(),
+      });
   }
-  catch(err) {
-    return;
-  }
+
+  const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
+  for(const entry of expiredEntries)
+    await delRemSongData(entry.sessionID, entry.watchID);
+}
+
+/** Adds an entry or updates it if it already exists */
+async function setRemSongData(data: RemSongObj) {
+  const foundIdx = remSongsCache.findIndex(entry => entry.sessionID === data.sessionID && entry.watchID === data.watchID);
+  if(foundIdx >= 0)
+    remSongsCache[foundIdx] = data;
+  else
+    remSongsCache.push(data);
+
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+}
+
+/** Deletes an entry */
+async function delRemSongData(sessionID: string, watchID: string) {
+  remSongsCache = [...remSongsCache.filter(entry => entry.sessionID !== sessionID && entry.watchID !== watchID)];
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
 }
 
 //#MARKER disable darkreader
