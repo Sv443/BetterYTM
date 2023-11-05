@@ -11,7 +11,7 @@ import "./menu.css";
 // - [ ] optional cleanup function per feature so a page reload is not always needed
 // 
 // Nice to have:
-// - [ ] use the &lt;dialog&gt; element for better accessibility
+// - [ ] use the <dialog> element for better accessibility
 // - [ ] toggle switches instead of checkboxes
 
 
