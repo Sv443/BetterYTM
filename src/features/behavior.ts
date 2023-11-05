@@ -101,10 +101,13 @@ interface RemSongObj {
   timestamp: number;
 }
 
-const rememberSongTimeout = 1000 * 60 * 1;
+/** After how many milliseconds a remembered entry should expire */
+const rememberSongExpiry = 1000 * 60 * 1;
 let curSongId: string | undefined;
 
 // TODO:FIXME: broken af
+// use both sessionID and songID to identify the song
+// also fsr the entries aren't deleted after they expire
 
 /** Remembers the time of the last played song and resumes playback from that time */
 export async function initRememberSongTime() {
@@ -119,7 +122,7 @@ export async function initRememberSongTime() {
   if(location.pathname.startsWith("/watch") && curRemData) {
     const songTime = Number(curRemData.time);
     const songTimestamp = Number(curRemData.timestamp);
-    if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
+    if(songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongExpiry) {
       onSelector<HTMLVideoElement>(ytmVideoSelector, {
         listener: async (vidElem) => {
           await delRemSongData(curRemData.id);
@@ -143,7 +146,7 @@ export async function initRememberSongTime() {
   if(curRemData) {
     (async () => {
       const time = Number(curRemData.timestamp);
-      if(Date.now() - time < rememberSongTimeout)
+      if(Date.now() - time < rememberSongExpiry)
         await delRemSongData(curRemData.id);
     })();
   }

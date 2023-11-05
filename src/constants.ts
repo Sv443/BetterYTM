@@ -9,6 +9,8 @@ export const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw) as "pro
 export const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw) as "main" | "develop";
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
+/** Random ID for the current BYTM / tab session (alphanumerical charset, all lowercase, length is variable) */
+export const sessionID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 /**
  * How much info should be logged to the devtools console  

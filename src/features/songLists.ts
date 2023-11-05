@@ -42,6 +42,7 @@ export async function initQueueButtons() {
   }
 
   // generic lists
+  // TODO:FIXME: dragging the items around removes the queue buttons
 
   const addGenericListQueueBtns = (listElem: HTMLElement) => {
     if(listElem.classList.contains("bytm-list-has-queue-btns"))
