@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1697568019167
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699219350821
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1697568019167
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1697568019167
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1697568019167
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1697568019167
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1697568019167
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1697568019167
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1697568019167
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1697568019167
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1697568019167
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1697568019167
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1697568019167
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1697568019167
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1697568019167
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1697568019167
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1697568019167
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1697568019167
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1697568019167
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1697568019167
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1697568019167
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1697568019167
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1697568019167
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1697568019167
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1697568019167
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1697568019167
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699219350821
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699219350821
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699219350821
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699219350821
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699219350821
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699219350821
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699219350821
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699219350821
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699219350821
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699219350821
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699219350821
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699219350821
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699219350821
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699219350821
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699219350821
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699219350821
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699219350821
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699219350821
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699219350821
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699219350821
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699219350821
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699219350821
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699219350821
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699219350821
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -276,8 +276,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   defaultLogLevel: function() { return /* binding */ defaultLogLevel; },
 /* harmony export */   mode: function() { return /* binding */ mode; },
 /* harmony export */   repo: function() { return /* binding */ repo; },
-/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; }
+/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; },
+/* harmony export */   sessionID: function() { return /* binding */ sessionID; }
 /* harmony export */ });
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+
 const modeRaw = "development";
 const branchRaw = "develop";
 /** The mode in which the script was built (production or development) */
@@ -286,6 +289,8 @@ const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
 const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
+/** Random ID for the current BYTM / tab session */
+const sessionID = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.randomId)(8, 36);
 /**
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -296,7 +301,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "7fa7554", // asserted as generic string instead of literal
+    buildNumber: "3404c88", // asserted as generic string instead of literal
 };
 
 
@@ -321,6 +326,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -330,6 +336,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -381,7 +388,7 @@ function initAutoCloseToasts() {
         try {
             const animTimeout = 300;
             const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-paper-toast#toast", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-paper-toast#toast", {
                 all: true,
                 continuous: true,
                 listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
@@ -408,115 +415,101 @@ function initAutoCloseToasts() {
         }
     });
 }
-const rememberSongTimeout = 1000 * 60 * 1;
-let curSongId;
-// TODO:FIXME: broken af
+/** After how many milliseconds a remembered entry should expire */
+const remSongEntryExpiry = 1000 * 60 * 1;
+let remSongsCache = [];
 /** Remembers the time of the last played song and resumes playback from that time */
 function initRememberSongTime() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)("Initialized song time remembering");
-        const params = new URL(location.href).searchParams;
-        curSongId = params.get("v");
-        const remData = yield getRemSongData();
-        const curRemData = remData === null || remData === void 0 ? void 0 : remData.find(d => d.id === curSongId);
-        if (location.pathname.startsWith("/watch") && curRemData) {
-            const songTime = Number(curRemData.time);
-            const songTimestamp = Number(curRemData.timestamp);
-            if (songTimestamp > 0 && songTime > 0 && Date.now() - songTimestamp < rememberSongTimeout) {
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(_utils__WEBPACK_IMPORTED_MODULE_2__.ytmVideoSelector, {
-                    listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
-                        yield delRemSongData(curRemData.id);
-                        const applyTime = () => {
-                            if (isNaN(songTime))
-                                return;
-                            vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(Math.max(songTime - 1, 0), 0, vidElem.duration);
-                            (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Restored song time to ${Math.floor(songTime / 60)}m, ${(songTime % 60).toFixed(1)}s`);
-                        };
-                        if (vidElem.readyState === 4)
-                            applyTime();
-                        else
-                            vidElem.addEventListener("canplay", applyTime, { once: true });
-                    }),
-                });
+        const storedDataRaw = yield GM.getValue("bytm-rem-songs");
+        if (!storedDataRaw)
+            yield GM.setValue("bytm-rem-songs", "[]");
+        remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+        if (location.pathname.startsWith("/watch"))
+            yield restoreSongTime();
+        remSongUpdateEntry();
+        setInterval(remSongUpdateEntry, 1000);
+    });
+}
+/** Tries to restore the time of the currently playing song */
+function restoreSongTime() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (location.pathname.startsWith("/watch")) {
+            const { searchParams } = new URL(location.href);
+            const watchID = searchParams.get("v");
+            if (!watchID)
+                return;
+            const entry = remSongsCache.find(entry => entry.sessionID === _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID && entry.watchID === watchID);
+            if (entry) {
+                if (Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
+                    yield delRemSongData(entry.sessionID, entry.watchID);
+                    return;
+                }
+                else {
+                    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(_utils__WEBPACK_IMPORTED_MODULE_2__.ytmVideoSelector, {
+                        listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
+                            if (vidElem) {
+                                const applyTime = () => __awaiter(this, void 0, void 0, function* () {
+                                    if (isNaN(entry.songTime))
+                                        return;
+                                    vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(Math.max(entry.songTime - 1, 0), 0, vidElem.duration);
+                                    yield delRemSongData(entry.sessionID, entry.watchID);
+                                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`);
+                                });
+                                if (vidElem.readyState === 4)
+                                    applyTime();
+                                else
+                                    vidElem.addEventListener("canplay", applyTime, { once: true });
+                            }
+                        }),
+                    });
+                }
             }
         }
-        if (curRemData) {
-            (() => __awaiter(this, void 0, void 0, function* () {
-                const time = Number(curRemData.timestamp);
-                if (Date.now() - time < rememberSongTimeout)
-                    yield delRemSongData(curRemData.id);
-            }))();
-        }
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-            listener: (progressElem) => {
-                let prevSongData;
-                const progressObserver = new MutationObserver(() => __awaiter(this, void 0, void 0, function* () {
-                    const songTime = isNaN(Number(progressElem.value)) ? 0 : Number(progressElem.value);
-                    const newSongId = new URL(location.href).searchParams.get("v");
-                    if (newSongId === curSongId || !newSongId)
-                        return;
-                    if ((prevSongData === null || prevSongData === void 0 ? void 0 : prevSongData.id) === newSongId && prevSongData.time === songTime)
-                        return;
-                    curSongId = newSongId;
-                    yield setRemSongData({
-                        id: newSongId,
-                        time: songTime,
-                        timestamp: Date.now(),
-                    });
-                }));
-                progressObserver.observe(progressElem, {
-                    attributes: true,
-                });
-            },
-        });
     });
 }
-function getRemSongData() {
+/** Updates the currently playing song's entry in GM storage */
+function remSongUpdateEntry() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const val = yield GM.getValue("bytm-rem-song");
-            if (typeof val !== "string")
-                return undefined;
-            const json = JSON.parse(val);
-            if (!json.id || !json.time || !json.timestamp)
-                return undefined;
-            return json;
+        if (location.pathname.startsWith("/watch")) {
+            const { searchParams } = new URL(location.href);
+            const watchID = searchParams.get("v");
+            if (!watchID)
+                return;
+            const songTime = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
+            // don't immediately update to reduce race conditions
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > 2)
+                yield setRemSongData({
+                    sessionID: _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID,
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                });
         }
-        catch (err) {
-            return undefined;
-        }
+        const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
+        for (const entry of expiredEntries)
+            yield delRemSongData(entry.sessionID, entry.watchID);
     });
 }
+/** Adds an entry or updates it if it already exists */
 function setRemSongData(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            let storedData = yield getRemSongData();
-            if (!storedData)
-                storedData = [];
-            const foundIdx = storedData.findIndex(d => d.id === data.id);
-            if (foundIdx >= 0)
-                storedData[foundIdx] = data;
-            else
-                storedData.push(data);
-            yield GM.setValue("bytm-rem-song", JSON.stringify(storedData));
-        }
-        catch (err) {
-            return;
-        }
+        const foundIdx = remSongsCache.findIndex(entry => entry.sessionID === data.sessionID && entry.watchID === data.watchID);
+        if (foundIdx >= 0)
+            remSongsCache[foundIdx] = data;
+        else
+            remSongsCache.push(data);
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
     });
 }
-function delRemSongData(id) {
+/** Deletes an entry */
+function delRemSongData(sessionID, watchID) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const data = yield getRemSongData();
-            if (!data)
-                return;
-            const newData = data.filter(d => d.id !== id);
-            yield GM.setValue("bytm-rem-song", JSON.stringify(newData));
-        }
-        catch (err) {
-            return;
-        }
+        remSongsCache = [...remSongsCache.filter(entry => entry.sessionID !== sessionID && entry.watchID !== watchID)];
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
     });
 }
 //#MARKER disable darkreader
@@ -999,7 +992,7 @@ function addWatermark() {
                     exchangeLogo();
             }
         });
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-nav-bar #left-content", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-nav-bar #left-content", {
             listener: (logoElem) => (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(logoElem, watermark),
         });
         (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added watermark element");
@@ -1014,7 +1007,7 @@ function improveLogo() {
             improveLogoCalled = true;
             const res = yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)("https://music.youtube.com/img/on_platform_logo_dark.svg");
             const svg = yield res.text();
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-logo a", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-logo a", {
                 listener: (logoElem) => {
                     var _a;
                     logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
@@ -1034,7 +1027,7 @@ function improveLogo() {
 }
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(".bytm-mod-logo", {
+    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(".bytm-mod-logo", {
         listener: (logoElem) => __awaiter(this, void 0, void 0, function* () {
             if (logoElem.classList.contains("bytm-logo-exchanged"))
                 return;
@@ -1091,13 +1084,13 @@ function addConfigMenuOption(container) {
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
             listener: (tabElemLarge) => {
                 tabElemLarge.remove();
                 (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed large upgrade tab");
             },
         });
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
             listener: (tabElemSmall) => {
                 tabElemSmall.remove();
                 (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Removed small upgrade tab");
@@ -1109,7 +1102,7 @@ function removeUpgradeTab() {
 function initVolumeFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         // not technically an input element but behaves pretty much the same
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-paper-slider#volume-slider", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-paper-slider#volume-slider", {
             listener: (sliderElem) => {
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
@@ -1145,7 +1138,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
             labelElem2.innerText = `${sliderElem.value}%`;
     };
     sliderElem.addEventListener("change", () => updateLabel());
-    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("#bytm-vol-slider-cont", {
+    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("#bytm-vol-slider-cont", {
         listener: (volumeCont) => {
             volumeCont.appendChild(labelElem);
         },
@@ -1208,25 +1201,25 @@ function addAnchorImprovements() {
                 }
             };
             // home page
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // related tab in /watch
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // playlists
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // generic shelves
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
@@ -1242,13 +1235,13 @@ function addAnchorImprovements() {
                 improveSidebarAnchors(items);
                 return items.length;
             };
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
                 listener: (sidebarCont) => {
                     const itemsAmt = addSidebarAnchors(sidebarCont);
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
                 },
             });
-            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+            (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
                 listener: (miniSidebarCont) => {
                     const itemsAmt = addSidebarAnchors(miniSidebarCont);
                     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)(`Added anchors around ${itemsAmt} mini sidebar ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", itemsAmt)}`);
@@ -1288,7 +1281,7 @@ function improveSidebarAnchors(sidebarItems) {
 /** Continuously removes the ?si tracking parameter from share URLs */
 function removeShareTrackingParam() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("yt-copy-link-renderer input#share-url", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("yt-copy-link-renderer input#share-url", {
             continuous: true,
             listener: (inputElem) => {
                 try {
@@ -1323,7 +1316,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 /** Adds a button to the queue to scroll to the active song */
 function addScrollToActiveBtn() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
             listener: (tabElem) => __awaiter(this, void 0, void 0, function* () {
                 const containerElem = document.createElement("div");
                 containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -1399,7 +1392,7 @@ function addBoostGainButton() {
                 (0,_utils__WEBPACK_IMPORTED_MODULE_3__.info)("Disabled gain boost");
             }
         }));
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
             listener: (likeCont) => {
                 (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.insertAfter)(likeCont, btnElem);
                 (0,_utils__WEBPACK_IMPORTED_MODULE_3__.log)("Added gain booster button");
@@ -1510,7 +1503,7 @@ let currentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+        (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
     });
 }
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
@@ -1781,13 +1774,14 @@ function initQueueButtons() {
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} existing "current song queue" ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", queueItems)}`);
         }
         // generic lists
+        // TODO:FIXME: dragging the items around removes the queue buttons
         const addGenericListQueueBtns = (listElem) => {
             if (listElem.classList.contains("bytm-list-has-queue-btns"))
                 return;
             const queueItems = listElem.querySelectorAll("ytmusic-responsive-list-item-renderer");
             if (queueItems.length === 0)
                 return;
-            queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns"));
+            queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", ["bytm-generic-list-queue-btn-container"]));
             listElem.classList.add("bytm-list-has-queue-btns");
             (0,_utils__WEBPACK_IMPORTED_MODULE_2__.log)(`Added buttons to ${queueItems.length} new "generic song list" ${(0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.autoPlural)("item", queueItems)}`);
         };
@@ -1798,7 +1792,7 @@ function initQueueButtons() {
         ];
         if (features.listButtonsPlacement === "everywhere") {
             for (const selector of listSelectors) {
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(selector, {
+                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(selector, {
                     all: true,
                     continuous: true,
                     listener: (songLists) => {
@@ -1816,13 +1810,14 @@ function initQueueButtons() {
  * Also observes for changes to add new buttons to new items in the queue.
  * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
  * @param containerParentSelector The selector of the parent element of the queue button container
+ * @param classes Extra CSS classes to apply to the container
  */
-function addQueueButtons(queueItem, containerParentSelector = ".song-info") {
+function addQueueButtons(queueItem, containerParentSelector = ".song-info", classes = []) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         //#SECTION general queue item stuff
         const queueBtnsCont = document.createElement("div");
-        queueBtnsCont.className = "bytm-queue-btn-container";
+        queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
         const lyricsIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("lyrics");
         const deleteIconUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getResourceUrl)("delete");
         //#SECTION lyrics btn
@@ -3255,7 +3250,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getSelectorMap: function() { return /* binding */ getSelectorMap; },
 /* harmony export */   initOnSelector: function() { return /* binding */ initOnSelector; },
-/* harmony export */   onSelector: function() { return /* binding */ onSelector; },
+/* harmony export */   onSelectorOld: function() { return /* binding */ onSelectorOld; },
 /* harmony export */   removeOnSelector: function() { return /* binding */ removeOnSelector; }
 /* harmony export */ });
 const selectorMap = new Map();
@@ -3268,7 +3263,7 @@ const selectorMap = new Map();
  * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
  * @deprecated To be replaced with UserUtils v3's SelectorObserver class
  */
-function onSelector(selector, options) {
+function onSelectorOld(selector, options) {
     let selectorMapItems = [];
     if (selectorMap.has(selector))
         selectorMapItems = selectorMap.get(selector);
@@ -3279,7 +3274,7 @@ function onSelector(selector, options) {
     checkSelectorExists(selector, selectorMapItems);
 }
 /**
- * Removes all listeners registered in {@linkcode onSelector()} that have the given selector
+ * Removes all listeners registered in {@linkcode onSelectorOld()} that have the given selector
  * @returns Returns true when all listeners with the associated selector were found and removed, false otherwise
  */
 function removeOnSelector(selector) {
@@ -3586,8 +3581,8 @@ const ytmVideoSelector = "ytmusic-player video";
 const ytVideoSelector = "#content ytd-player video";
 /**
  * Returns the current video time in seconds
- * Dispatches mouse movement events in case the video time can't be estimated
- * @returns Returns null if the video time is unavailable
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 function getVideoTime() {
     return new Promise((res) => {
@@ -3597,7 +3592,7 @@ function getVideoTime() {
                 const vidElem = document.querySelector(ytmVideoSelector);
                 if (vidElem)
                     return res(Math.floor(vidElem.currentTime));
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
                     listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
                 });
             }
@@ -3628,7 +3623,7 @@ function getVideoTime() {
                             mut.disconnect();
                         }, 500);
                 };
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)(pbSelector, { listener: observe });
+                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(pbSelector, { listener: observe });
             }
         }
         catch (err) {
@@ -3672,7 +3667,10 @@ function getDomain() {
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
-/** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
+/**
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ */
 function getResourceUrl(name) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
@@ -3685,7 +3683,7 @@ function getResourceUrl(name) {
                 if (resourcePath)
                     return `https://raw.githubusercontent.com/${_constants__WEBPACK_IMPORTED_MODULE_2__.repo}/${_constants__WEBPACK_IMPORTED_MODULE_2__.branch}${resourcePath}`;
             }
-            error(`Couldn't get blob URL for @resource '${name}', trying to use base64-encoded fallback`);
+            warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
             // @ts-ignore
             url = yield GM.getResourceUrl(name, false);
         }
@@ -3789,6 +3787,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   pauseFor: function() { return /* binding */ pauseFor; },
 /* harmony export */   preloadImages: function() { return /* binding */ preloadImages; },
 /* harmony export */   randRange: function() { return /* binding */ randRange; },
+/* harmony export */   randomId: function() { return /* binding */ randomId; },
 /* harmony export */   randomItem: function() { return /* binding */ randomItem; },
 /* harmony export */   randomItemIndex: function() { return /* binding */ randomItemIndex; },
 /* harmony export */   randomizeArray: function() { return /* binding */ randomizeArray; },
@@ -3864,6 +3863,14 @@ function randRange(...args) {
   if (min > max)
     throw new TypeError(`Parameter "min" can't be bigger than "max"`);
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function randomId(length = 16, radix = 16) {
+  const arr = new Uint8Array(length);
+  crypto.getRandomValues(arr);
+  return Array.from(
+    arr,
+    (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
+  ).join("");
 }
 
 // lib/array.ts
@@ -4479,6 +4486,7 @@ let domLoaded = false;
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
+    (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Session ID:", _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID);
     (0,_interface__WEBPACK_IMPORTED_MODULE_7__.initInterface)();
     (0,_utils__WEBPACK_IMPORTED_MODULE_4__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_3__.defaultLogLevel);
     if (domain === "ytm")
@@ -5116,6 +5124,11 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   height: 100%;
 }
 
+.bytm-generic-list-queue-btn-container {
+  /* otherwise the queue buttons render over the currently playing song page */
+  z-index: 1;
+}
+
 .side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container,
 ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
 ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
@@ -5212,7 +5225,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_4__.error)("Couldn't add menu:", err);
                 }
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelector)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_10__.addConfigMenuOption });
+                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_10__.addConfigMenuOption });
                 if (features.arrowKeySupport)
                     ftInit.push((0,_features_index__WEBPACK_IMPORTED_MODULE_10__.initArrowKeySkip)());
                 if (features.removeUpgradeTab)
@@ -5292,7 +5305,7 @@ function registerMenuCommands() {
             [...selectors].forEach(([k, v]) => {
                 lines.push(`  (${v.length}): ${k}`);
                 v.forEach(({ all, continuous }, i) => {
-                    lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "all" : "one"}`);
+                    lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
                 });
             });
             console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
