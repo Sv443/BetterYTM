@@ -2,13 +2,18 @@ import changelogContent from "../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
 
-// REQUIREMENTS:
-// - modal using the <dialog> element
-// - sections with headers
-// - support for "custom widgets"
-// - debounce or save on button press to store new configuration
-// - much better scaling including no vw and vh units
-// - cleanup function per feature so a page reload is not always needed
+// Requirements:
+// - [ ] different tabs for different categories
+// - [ ] sections with headers per feature
+// - [ ] support for "custom widgets"
+// - [ ] debounced save or explicitly save on button press to store new configuration
+// - [ ] much better scaling including no vw and vh units
+// - [ ] optional cleanup function per feature so a page reload is not always needed
+// 
+// Nice to have:
+// - [ ] use the &lt;dialog&gt; element for better accessibility
+// - [ ] toggle switches instead of checkboxes
+
 
 //#MARKER menu
 
