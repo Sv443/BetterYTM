@@ -183,7 +183,10 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl) */
+/**
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ */
 export async function getResourceUrl(name: ResourceKey | "_") {
   let url = await GM.getResourceUrl(name);
   if(!url || url.length === 0) {
@@ -194,7 +197,7 @@ export async function getResourceUrl(name: ResourceKey | "_") {
       if(resourcePath)
         return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
     }
-    error(`Couldn't get blob URL for @resource '${name}', trying to use base64-encoded fallback`);
+    warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
     // @ts-ignore
     url = await GM.getResourceUrl(name, false);
   }
