@@ -242,3 +242,10 @@ function clearNode(element: Element) {
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);
 }
+
+/** Generates a random ID with the specified length (default: 16) */
+export function randomId(length = 16) {
+  const arr = new Uint8Array(length / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, (v) => v.toString(16).padStart(2, "0")).join("");
+}
