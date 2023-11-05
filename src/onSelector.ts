@@ -1,4 +1,4 @@
-/** Options for the {@linkcode onSelector()} function */
+/** Options for the {@linkcode onSelectorOld()} function */
 export type OnSelectorOpts<TElem extends Element = HTMLElement> = SelectorOptsOne<TElem> | SelectorOptsAll<TElem>;
 
 type SelectorOptsOne<TElem extends Element> = SelectorOptsCommon & {
@@ -31,7 +31,7 @@ const selectorMap = new Map<string, OnSelectorOpts[]>();
  * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
  * @deprecated To be replaced with UserUtils v3's SelectorObserver class
  */
-export function onSelector<TElem extends Element = HTMLElement>(
+export function onSelectorOld<TElem extends Element = HTMLElement>(
   selector: string,
   options: OnSelectorOpts<TElem>,
 ) {
@@ -48,7 +48,7 @@ export function onSelector<TElem extends Element = HTMLElement>(
 }
 
 /**
- * Removes all listeners registered in {@linkcode onSelector()} that have the given selector
+ * Removes all listeners registered in {@linkcode onSelectorOld()} that have the given selector
  * @returns Returns true when all listeners with the associated selector were found and removed, false otherwise
  */
 export function removeOnSelector(selector: string) {

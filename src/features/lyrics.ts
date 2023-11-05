@@ -1,5 +1,5 @@
 import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
-import { onSelector } from "../onSelector";
+import { onSelectorOld } from "../onSelector";
 import { error, getResourceUrl, info, log, warn } from "../utils";
 import { t, tp } from "../translations";
 import { emitInterface } from "../interface";
@@ -49,7 +49,7 @@ let currentSongTitle = "";
 
 /** Adds a lyrics button to the media controls bar */
 export async function addMediaCtrlLyricsBtn() {
-  onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+  onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */

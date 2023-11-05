@@ -1,5 +1,5 @@
 import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, pauseFor, AmplifyMediaResult } from "@sv443-network/userutils";
-import { onSelector } from "../onSelector";
+import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { mode, scriptInfo } from "../constants";
 import { error, getResourceUrl, info, log, warn, ytmVideoSelector } from "../utils";
@@ -52,7 +52,7 @@ export async function addWatermark() {
     }
   });
 
-  onSelector("ytmusic-nav-bar #left-content", {
+  onSelectorOld("ytmusic-nav-bar #left-content", {
     listener: (logoElem) => insertAfter(logoElem, watermark),
   });
 
@@ -69,7 +69,7 @@ export async function improveLogo() {
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
 
-    onSelector("ytmusic-logo a", {
+    onSelectorOld("ytmusic-logo a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
         logoElem.innerHTML = svg;
@@ -91,7 +91,7 @@ export async function improveLogo() {
 
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-  onSelector(".bytm-mod-logo", {
+  onSelectorOld(".bytm-mod-logo", {
     listener: async (logoElem) => {
       if(logoElem.classList.contains("bytm-logo-exchanged"))
         return;
@@ -164,13 +164,13 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export async function removeUpgradeTab() {
-  onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+  onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemLarge) => {
       tabElemLarge.remove();
       log("Removed large upgrade tab");
     },
   });
-  onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+  onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemSmall) => {
       tabElemSmall.remove();
       log("Removed small upgrade tab");
@@ -182,7 +182,7 @@ export async function removeUpgradeTab() {
 
 export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
-  onSelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
+  onSelectorOld<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
     listener: (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
@@ -231,7 +231,7 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTM
 
   sliderElem.addEventListener("change", () => updateLabel());
 
-  onSelector("#bytm-vol-slider-cont", {
+  onSelectorOld("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
       volumeCont.appendChild(labelElem);
     },
@@ -311,7 +311,7 @@ export async function addAnchorImprovements() {
 
     // home page
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -319,7 +319,7 @@ export async function addAnchorImprovements() {
 
     // related tab in /watch
 
-    onSelector<HTMLElement>("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -327,7 +327,7 @@ export async function addAnchorImprovements() {
 
     // playlists
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -335,7 +335,7 @@ export async function addAnchorImprovements() {
 
     // generic shelves
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -354,14 +354,14 @@ export async function addAnchorImprovements() {
       return items.length;
     };
 
-    onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+    onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
       listener: (sidebarCont) => {
         const itemsAmt = addSidebarAnchors(sidebarCont);
         log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
       },
     });
 
-    onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+    onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
       listener: (miniSidebarCont) => {
         const itemsAmt = addSidebarAnchors(miniSidebarCont);
         log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
@@ -403,7 +403,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
 /** Continuously removes the ?si tracking parameter from share URLs */
 export async function removeShareTrackingParam() {
-  onSelector<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
+  onSelectorOld<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
     continuous: true,
     listener: (inputElem) => {
       try {
@@ -438,7 +438,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 
 /** Adds a button to the queue to scroll to the active song */
 export async function addScrollToActiveBtn() {
-  onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+  onSelectorOld(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
     listener: async (tabElem) => {
       const containerElem = document.createElement("div");
       containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -529,7 +529,7 @@ export async function addBoostGainButton() {
     }
   });
 
-  onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+  onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
     listener: (likeCont) => {
       insertAfter(likeCont, btnElem);
       log("Added gain booster button");

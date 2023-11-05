@@ -1,5 +1,5 @@
 import { addGlobalStyle } from "@sv443-network/userutils";
-import { initOnSelector, onSelector, getSelectorMap } from "./onSelector";
+import { initOnSelector, onSelectorOld, getSelectorMap } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo, sessionID } from "./constants";
 import { error, getDomain, info, log, setLogLevel } from "./utils";
@@ -153,7 +153,7 @@ async function initFeatures() {
         error("Couldn't add menu:", err);
       }
 
-      onSelector("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
+      onSelectorOld("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
 
       if(features.arrowKeySupport)
         ftInit.push(initArrowKeySkip());

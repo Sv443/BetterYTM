@@ -1,5 +1,5 @@
 import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { onSelector } from "../onSelector";
+import { onSelectorOld } from "../onSelector";
 import { error, getResourceUrl, log } from "../utils";
 import { t } from "../translations";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
@@ -66,7 +66,7 @@ export async function initQueueButtons() {
 
   if(features.listButtonsPlacement === "everywhere") {
     for(const selector of listSelectors) {
-      onSelector(selector, {
+      onSelectorOld(selector, {
         all: true,
         continuous: true,
         listener: (songLists) => {
