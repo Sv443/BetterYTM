@@ -1,5 +1,5 @@
 import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
-import { onSelector } from "./onSelector";
+import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import type { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };
@@ -74,8 +74,8 @@ export const ytVideoSelector = "#content ytd-player video";
 
 /**
  * Returns the current video time in seconds  
- * Dispatches mouse movement events in case the video time can't be estimated
- * @returns Returns null if the video time is unavailable
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 export function getVideoTime() {
   return new Promise<number | null>((res) => {
@@ -87,7 +87,7 @@ export function getVideoTime() {
         if(vidElem)
           return res(Math.floor(vidElem.currentTime));
 
-        onSelector<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+        onSelectorOld<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
             res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
@@ -125,7 +125,7 @@ export function getVideoTime() {
             }, 500);
         };
 
-        onSelector<HTMLProgressElement>(pbSelector, { listener: observe });
+        onSelectorOld<HTMLProgressElement>(pbSelector, { listener: observe });
       }
     }
     catch(err) {
@@ -244,15 +244,4 @@ function clearNode(element: Element) {
   while(element.hasChildNodes())
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);
-}
-
-/**
- * Generates a random hexadecimal ID with the specified length  
- * Uses `window.crypto.getRandomValues()` for better randomness  
- * @param length The length of the ID to generate (default = 16, minimum 2)
- */
-export function randomId(length = 16) {
-  const arr = new Uint8Array(length / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, (v) => v.toString(16).padStart(2, "0")).join("");
 }
