@@ -81,6 +81,8 @@ There are two ways to interact with BetterYTM, static and dynamic:
 
 If you need specific events to be added or modified, please submit an issue.
 
+<br>
+
 <details><summary>Static interaction example - click to expand</summary>
 
 #### Example:
@@ -107,6 +109,8 @@ To find which types BetterYTM exposes, check out the `declare global` block in [
 You may also just copy it entirely.
 
 </details>
+
+<br>
 
 <details><summary>Dynamic interaction examples - click to expand</summary>
 
@@ -155,3 +159,5 @@ window.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 ```
 
 </details>
+
+<br><br><br><br><br><br>
