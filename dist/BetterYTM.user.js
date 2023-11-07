@@ -17,7 +17,7 @@
 // @license           MIT
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699219350821
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699387072974
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699219350821
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699219350821
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699219350821
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699219350821
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699219350821
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699219350821
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699219350821
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699219350821
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699219350821
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699219350821
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699219350821
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699219350821
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699219350821
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699219350821
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699219350821
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699219350821
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699219350821
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699219350821
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699219350821
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699219350821
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699219350821
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699219350821
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699219350821
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699219350821
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699387072974
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699387072974
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699387072974
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699387072974
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699387072974
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699387072974
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699387072974
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699387072974
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699387072974
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699387072974
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699387072974
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699387072974
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699387072974
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699387072974
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699387072974
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699387072974
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699387072974
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699387072974
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699387072974
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699387072974
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699387072974
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699387072974
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699387072974
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699387072974
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -301,7 +301,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "3404c88", // asserted as generic string instead of literal
+    buildNumber: "465e253", // asserted as generic string instead of literal
 };
 
 
@@ -1348,17 +1348,24 @@ function addScrollToActiveBtn() {
     });
 }
 //#MARKER boost gain button
+const preampGain = 0.15;
 let gainBoosted = false;
 /** Adds a button to the media controls to boost the current song's gain */
 function addBoostGainButton() {
     return __awaiter(this, void 0, void 0, function* () {
-        const gainBoostMultiplier = features.boostGainPercentage / 100;
+        const postampGain = features.boostGainPercentage / 100;
         const iconSrcOn = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("volume_boost_on");
         const iconSrcOff = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("volume_boost_off");
         const btnElem = yield createMediaCtrlBtn(iconSrcOff);
         btnElem.id = "bytm-boost-gain-btn";
         btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_enable_tooltip", features.boostGainPercentage);
         let amp;
+        /** Enable amplification and set gain properties */
+        const enableAmp = () => {
+            amp === null || amp === void 0 ? void 0 : amp.enable();
+            amp === null || amp === void 0 ? void 0 : amp.setPreampGain(preampGain);
+            amp === null || amp === void 0 ? void 0 : amp.setPostampGain(postampGain);
+        };
         btnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -1369,16 +1376,12 @@ function addBoostGainButton() {
                 return;
             if (!gainBoosted) {
                 gainBoosted = true;
-                if (amp)
-                    amp.enable();
-                else {
-                    amp = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.amplifyMedia)(videoElem, gainBoostMultiplier);
-                    amp.enable();
-                    // allow changing limiter options through the console if script was built in development mode
-                    if (_constants__WEBPACK_IMPORTED_MODULE_2__.mode === "development") {
-                        // @ts-ignore
-                        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)().setLimiterOptions = amp.setLimiterOptions;
-                    }
+                amp = amp || (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.amplifyMedia)(videoElem, postampGain, preampGain);
+                enableAmp();
+                // allow changing limiter options through the console if script was built in development mode
+                if (_constants__WEBPACK_IMPORTED_MODULE_2__.mode === "development") {
+                    // @ts-ignore
+                    (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.getUnsafeWindow)().ampRes = amp;
                 }
                 imgElem.src = iconSrcOn;
                 btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_disable_tooltip");
@@ -1386,7 +1389,7 @@ function addBoostGainButton() {
             }
             else {
                 gainBoosted = false;
-                amp.disable();
+                amp === null || amp === void 0 ? void 0 : amp.disable();
                 imgElem.src = iconSrcOff;
                 btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_enable_tooltip", features.boostGainPercentage);
                 (0,_utils__WEBPACK_IMPORTED_MODULE_3__.info)("Disabled gain boost");
@@ -4099,51 +4102,68 @@ function interceptEvent(eventObject, eventName, predicate = () => true) {
 function interceptWindowEvent(eventName, predicate = () => true) {
   return interceptEvent(getUnsafeWindow(), eventName, predicate);
 }
-function amplifyMedia(mediaElement, initialMultiplier = 1) {
+var amplifyBands = [60, 170, 310, 600, 1e3, 3e3, 6e3, 12e3, 14e3, 16e3];
+function amplifyMedia(mediaElement, initialPreampGain = 0.02, initialPostampGain = 1) {
   const context = new (window.AudioContext || window.webkitAudioContext)();
   const props = {
-    /** Sets the gain multiplier */
-    setGain(multiplier) {
-      props.gainNode.gain.setValueAtTime(multiplier, props.context.currentTime);
+    context,
+    sourceNode: context.createMediaElementSource(mediaElement),
+    preampNode: context.createGain(),
+    postampNode: context.createGain(),
+    filterNodes: amplifyBands.map((band, i) => {
+      const node = context.createBiquadFilter();
+      node.type = i === 0 ? "lowshelf" : "highshelf";
+      node.frequency.setValueAtTime(band, context.currentTime);
+      return node;
+    }),
+    /** Sets the gain of the pre-amplifier GainNode */
+    setPreampGain(gain) {
+      props.preampNode.gain.setValueAtTime(gain, context.currentTime);
     },
-    /** Returns the current gain multiplier */
-    getGain() {
-      return props.gainNode.gain.value;
+    /** Returns the current gain of the pre-amplifier GainNode */
+    getPreampGain() {
+      return props.preampNode.gain.value;
     },
+    /** Sets the gain of the post-amplifier GainNode */
+    setPostampGain(multiplier) {
+      props.postampNode.gain.setValueAtTime(multiplier, context.currentTime);
+    },
+    /** Returns the current gain of the post-amplifier GainNode */
+    getPostampGain() {
+      return props.postampNode.gain.value;
+    },
+    /** Whether the amplification is currently enabled */
+    enabled: false,
     /** Enable the amplification for the first time or if it was disabled before */
     enable() {
-      props.source.connect(props.limiterNode);
-      props.limiterNode.connect(props.gainNode);
-      props.gainNode.connect(props.context.destination);
+      if (props.enabled)
+        return;
+      props.enabled = true;
+      props.sourceNode.connect(props.preampNode);
+      props.filterNodes.slice(1).forEach((filterNode) => {
+        props.preampNode.connect(filterNode);
+        filterNode.connect(props.filterNodes[0]);
+      });
+      props.filterNodes[0].connect(props.postampNode);
+      props.postampNode.connect(props.context.destination);
     },
     /** Disable the amplification */
     disable() {
-      props.source.disconnect(props.limiterNode);
-      props.limiterNode.disconnect(props.gainNode);
-      props.gainNode.disconnect(props.context.destination);
-      props.source.connect(props.context.destination);
-    },
-    /**
-     * Set the options of the [limiter / DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode/DynamicsCompressorNode#options)  
-     * The default is `{ threshold: -12, knee: 30, ratio: 12, attack: 0.003, release: 0.25 }`
-     */
-    setLimiterOptions(options) {
-      for (const [key, val] of Object.entries(options))
-        props.limiterNode[key].setValueAtTime(val, props.context.currentTime);
-    },
-    context,
-    source: context.createMediaElementSource(mediaElement),
-    gainNode: context.createGain(),
-    limiterNode: context.createDynamicsCompressor()
+      if (!props.enabled)
+        return;
+      props.enabled = false;
+      props.sourceNode.disconnect(props.preampNode);
+      props.filterNodes.slice(1).forEach((filterNode) => {
+        props.preampNode.disconnect(filterNode);
+        filterNode.disconnect(props.filterNodes[0]);
+      });
+      props.filterNodes[0].disconnect(props.postampNode);
+      props.postampNode.disconnect(props.context.destination);
+      props.sourceNode.connect(props.context.destination);
+    }
   };
-  props.setLimiterOptions({
-    threshold: -12,
-    knee: 30,
-    ratio: 12,
-    attack: 3e-3,
-    release: 0.25
-  });
-  props.setGain(initialMultiplier);
+  props.setPreampGain(initialPreampGain);
+  props.setPostampGain(initialPostampGain);
   return props;
 }
 function isScrollable(element) {
