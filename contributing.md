@@ -81,7 +81,7 @@ There are two ways to interact with BetterYTM, static and dynamic:
 
 If you need specific events to be added or modified, please submit an issue.
 
-<details><summary><h4>Static interaction example - click to expand</h4></summary>
+<details><summary>Static interaction example - click to expand</summary>
 
 #### Example:
 The `window.` prefix is optional since all properties are already globally available.
@@ -108,7 +108,7 @@ You may also just copy it entirely.
 
 </details>
 
-<details><summary><h4>Dynamic interaction examples - click to expand</h4></summary>
+<details><summary>Dynamic interaction examples - click to expand</summary>
 
 #### Basic format:
 ```ts
