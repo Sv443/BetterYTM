@@ -154,7 +154,7 @@ window.addEventListener("bytm:lyricsLoaded", (event) => {
 window.addEventListener("bytm:siteEvent:queueChanged", (event) => {
   const { detail } = event as CustomEvent<[ queueItem: HTMLElement ]>;
 
-  console.log(`The queue has been changed. It now contains ${detail.childNodes.length} items`);
+  console.log(`The queue has been changed. It now contains ${detail[0].childNodes.length} items`);
 });
 ```
 
