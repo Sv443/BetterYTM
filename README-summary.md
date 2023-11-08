@@ -93,4 +93,4 @@ Icons:
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
 If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
   
-© 2022 Sv443 - [MIT license](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)
+© 2022 Sv443 - [AGPL-3.0](https://github.com/Sv443/BetterYTM/tree/main/LICENSE.txt)
