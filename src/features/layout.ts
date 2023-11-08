@@ -477,12 +477,11 @@ export async function addScrollToActiveBtn() {
 
 //#MARKER boost gain button
 
-const preampGain = 0.15;
 let gainBoosted = false;
 
 /** Adds a button to the media controls to boost the current song's gain */
 export async function addBoostGainButton() {
-  const postampGain = features.boostGainPercentage / 100;
+  const gainMultiplier = features.boostGainPercentage / 100;
 
   const iconSrcOn = await getResourceUrl("volume_boost_on");
   const iconSrcOff = await getResourceUrl("volume_boost_off");
@@ -492,13 +491,6 @@ export async function addBoostGainButton() {
   btnElem.title = t("boost_gain_enable_tooltip", features.boostGainPercentage);
 
   let amp: AmplifyMediaResult | undefined;
-
-  /** Enable amplification and set gain properties */
-  const enableAmp = () => {
-    amp?.enable();
-    amp?.setPreampGain(preampGain);
-    amp?.setPostampGain(postampGain);
-  };
 
   btnElem.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -513,8 +505,8 @@ export async function addBoostGainButton() {
 
     if(!gainBoosted) {
       gainBoosted = true;
-      amp = amp || amplifyMedia(videoElem, postampGain, preampGain);
-      enableAmp();
+      amp = amp || amplifyMedia(videoElem, gainMultiplier);
+      amp.enable();
       // allow changing limiter options through the console if script was built in development mode
       if(mode === "development") {
         // @ts-ignore
