@@ -7,3 +7,4 @@ dist/*.map
 dist/out/
 dist/*.css
 .build.json
+*.ignore.*
