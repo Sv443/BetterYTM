@@ -23,9 +23,9 @@ All of these can be toggled and configured in the configuration menu.
   - Automatically close permanent notifications
   - Remove the premium tab in the sidebar
 - Input / Interaction:
-  - Use arrow keys to skip forward or backward by 10 seconds
+  - Use arrow keys to skip forward or backward by a set time (5s by default)
   - Press number keys to skip to a percentage of the currently playing song
-  - Switch between YouTube and YouTube Music on a video by pressing a hotkey
+  - Switch between YouTube and YouTube Music on a video by pressing a hotkey (F9 by default)
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
 ... and more!

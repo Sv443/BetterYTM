@@ -1,6 +1,6 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
-import { error, getVideoTime, info, log, ytmVideoSelector } from "../utils";
+import { dbg, error, getVideoTime, info, log, ytmVideoSelector } from "../utils";
 import { sessionID } from "../constants";
 import type { FeatureConfig } from "../types";
 
@@ -119,6 +119,7 @@ export async function initRememberSongTime() {
   remSongsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemSongObj[];
 
   log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+  dbg("REM init cache", remSongsCache);
 
   if(location.pathname.startsWith("/watch"))
     await restoreSongTime();
@@ -137,6 +138,7 @@ async function restoreSongTime() {
 
     const entry = remSongsCache.find(entry => entry.sessionID === sessionID && entry.watchID === watchID);
     if(entry) {
+      dbg("REM restore", entry);
       if(Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
         await delRemSongData(entry.sessionID, entry.watchID);
         return;
@@ -146,6 +148,7 @@ async function restoreSongTime() {
           listener: async (vidElem) => {
             if(vidElem) {
               const applyTime = async () => {
+                dbg("REM applying time", entry);
                 if(isNaN(entry.songTime))
                   return;
                 vidElem.currentTime = clamp(Math.max(entry.songTime - 1, 0), 0, vidElem.duration);
@@ -177,13 +180,16 @@ async function remSongUpdateEntry() {
 
     // don't immediately update to reduce race conditions
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > 2)
-      await setRemSongData({
+    if(songTime > 2) {
+      const entry = {
         sessionID,
         watchID,
         songTime,
         updateTimestamp: Date.now(),
-      });
+      };
+      await setRemSongData(entry);
+      dbg("REM updated", entry);
+    }
   }
 
   const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
@@ -199,12 +205,15 @@ async function setRemSongData(data: RemSongObj) {
   else
     remSongsCache.push(data);
 
+  dbg("REM set", data);
+
   await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
 }
 
 /** Deletes an entry */
 async function delRemSongData(sessionID: string, watchID: string) {
   remSongsCache = [...remSongsCache.filter(entry => entry.sessionID !== sessionID && entry.watchID !== watchID)];
+  dbg("REM deleted", sessionID, watchID);
   await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
 }
 
