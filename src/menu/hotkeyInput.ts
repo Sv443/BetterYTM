@@ -80,6 +80,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     inputElem.value = hotkey.code;
     inputElem.dataset.state = "inactive";
     infoElem.innerText = getHotkeyInfo(hotkey);
+    inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
     onChange(hotkey);
   });
 
