@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699814227391
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699825895945
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699814227391
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699814227391
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699814227391
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699814227391
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699814227391
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699814227391
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699814227391
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699814227391
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699814227391
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699814227391
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699814227391
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699814227391
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699814227391
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699814227391
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699814227391
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699814227391
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699814227391
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699814227391
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699814227391
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699814227391
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699814227391
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699814227391
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699814227391
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699814227391
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699825895945
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699825895945
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699825895945
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699825895945
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699825895945
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699825895945
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699825895945
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699825895945
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699825895945
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699825895945
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699825895945
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699825895945
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699825895945
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699825895945
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699825895945
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699825895945
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699825895945
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699825895945
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699825895945
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699825895945
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699825895945
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699825895945
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699825895945
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699825895945
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -298,7 +298,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "db1fae0", // asserted as generic string instead of literal
+    buildNumber: "5e03cb5", // asserted as generic string instead of literal
 };
 
 
@@ -452,7 +452,7 @@ function restoreSongTime() {
                                 const applyTime = () => __awaiter(this, void 0, void 0, function* () {
                                     if (isNaN(entry.songTime))
                                         return;
-                                    vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(Math.max(entry.songTime - 1, 0), 0, vidElem.duration);
+                                    vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(Math.max(entry.songTime, 0), 0, vidElem.duration);
                                     yield delRemSongData(entry.watchID);
                                     (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, _types__WEBPACK_IMPORTED_MODULE_3__.LogLevel.Info);
                                 });
@@ -470,7 +470,7 @@ function restoreSongTime() {
 }
 /** Updates the currently playing song's entry in GM storage */
 function remSongUpdateEntry() {
-    var _a;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         if (location.pathname.startsWith("/watch")) {
             const { searchParams } = new URL(location.href);
@@ -478,9 +478,10 @@ function remSongUpdateEntry() {
             if (!watchID)
                 return;
             const songTime = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
-            // don't immediately update to reduce race conditions
+            const paused = (_c = (_b = document.querySelector((0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)() === "ytm" ? _utils__WEBPACK_IMPORTED_MODULE_2__.ytmVideoSelector : _utils__WEBPACK_IMPORTED_MODULE_2__.ytVideoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > remSongMinTime) {
+            if (songTime > remSongMinTime && !paused) {
                 const entry = {
                     watchID,
                     songTime,
@@ -3313,6 +3314,42 @@ function showWelcomeMenu() {
 
 /***/ }),
 
+/***/ "./src/observers.ts":
+/*!**************************!*\
+  !*** ./src/observers.ts ***!
+  \**************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   initObservers: function() { return /* binding */ initObservers; },
+/* harmony export */   observers: function() { return /* binding */ observers; }
+/* harmony export */ });
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+
+/** Options that are applied to every SelectorObserver instance */
+const defaultObserverOptions = {
+    defaultDebounce: 100,
+};
+const observers = {};
+/** Call after DOM load to initialize all SelectorObserver instances */
+function initObservers() {
+    observers.body = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+    observers.body.addListener("ytmusic-app-layout ytmusic-player-bar.ytmusic-app", {
+        listener: (playerBar) => {
+            observers.playerBar = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(playerBar, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 250 }));
+            observers.playerBar.addListener("yt-formatted-string.title", {
+                listener: (titleElem) => {
+                    observers.playerBarTitle = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(titleElem, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false, childList: false, attributes: true, attributeFilter: ["title"] }));
+                },
+            });
+        },
+    });
+}
+
+
+/***/ }),
+
 /***/ "./src/onSelector.ts":
 /*!***************************!*\
   !*** ./src/onSelector.ts ***!
@@ -4300,19 +4337,22 @@ var SelectorObserver = class {
   /**
    * Creates a new SelectorObserver that will observe the children of the given base element for changes (only creation and deletion of elements by default)
    * @param options Fine-tune what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
+   * TODO: support passing a selector for the base element to be able to queue listeners before the element is available
    */
-  constructor(baseElement, observerOptions) {
-    __publicField(this, "enabled", true);
+  constructor(baseElement, options = {}) {
+    __publicField(this, "enabled", false);
     __publicField(this, "baseElement");
     __publicField(this, "observer");
     __publicField(this, "observerOptions");
-    __publicField(this, "listenerMap", /* @__PURE__ */ new Map());
+    __publicField(this, "listenerMap");
+    __publicField(this, "dbgId", Math.floor(Math.random() * 1e6));
     this.baseElement = baseElement;
-    this.observer = new MutationObserver(this.checkSelectors);
+    this.listenerMap = /* @__PURE__ */ new Map();
+    this.observer = new MutationObserver(() => this.checkSelectors());
     this.observerOptions = __spreadValues({
       childList: true,
       subtree: true
-    }, observerOptions);
+    }, options);
     this.enable();
   }
   checkSelectors() {
@@ -4325,19 +4365,17 @@ var SelectorObserver = class {
       const allElements = all ? this.baseElement.querySelectorAll(selector) : null;
       const oneElement = one ? this.baseElement.querySelector(selector) : null;
       for (const options of listeners) {
-        if (!this.enabled)
-          return;
         if (options.all) {
           if (allElements && allElements.length > 0) {
             options.listener(allElements);
             if (!options.continuous)
-              this.listenerMap.get(selector).splice(this.listenerMap.get(selector).indexOf(options), 1);
+              this.removeListener(selector, options);
           }
         } else {
           if (oneElement) {
             options.listener(oneElement);
             if (!options.continuous)
-              this.listenerMap.get(selector).splice(this.listenerMap.get(selector).indexOf(options), 1);
+              this.removeListener(selector, options);
           }
         }
         if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
@@ -4363,8 +4401,12 @@ var SelectorObserver = class {
    */
   addListener(selector, options) {
     options = __spreadValues({ all: false, continuous: false, debounce: 0 }, options);
-    if (options.debounce && options.debounce > 0)
-      options.listener = this.debounce(options.listener, options.debounce);
+    if (options.debounce && options.debounce > 0 || this.observerOptions.defaultDebounce && this.observerOptions.defaultDebounce > 0) {
+      options.listener = this.debounce(
+        options.listener,
+        options.debounce || this.observerOptions.defaultDebounce
+      );
+    }
     if (this.listenerMap.has(selector))
       this.listenerMap.get(selector).push(options);
     else
@@ -4409,7 +4451,7 @@ var SelectorObserver = class {
     if (!listeners)
       return false;
     const index = listeners.indexOf(options);
-    if (index !== -1) {
+    if (index > -1) {
       listeners.splice(index, 1);
       return true;
     }
@@ -4550,6 +4592,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _menu_welcomeMenu__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./menu/welcomeMenu */ "./src/menu/welcomeMenu.ts");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
+/* harmony import */ var _observers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./observers */ "./src/observers.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4559,6 +4602,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -5307,6 +5351,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
 }
 
 /*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
+        (0,_observers__WEBPACK_IMPORTED_MODULE_11__.initObservers)();
         (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.initOnSelector)();
         const features = (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)();
         const ftInit = [];
@@ -5328,7 +5373,9 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                 catch (err) {
                     (0,_utils__WEBPACK_IMPORTED_MODULE_4__.error)("Couldn't add menu:", err);
                 }
-                (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: _features_index__WEBPACK_IMPORTED_MODULE_10__.addConfigMenuOption });
+                _observers__WEBPACK_IMPORTED_MODULE_11__.observers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+                    listener: _features_index__WEBPACK_IMPORTED_MODULE_10__.addConfigMenuOption,
+                });
                 if (features.arrowKeySupport)
                     ftInit.push((0,_features_index__WEBPACK_IMPORTED_MODULE_10__.initArrowKeySkip)());
                 if (features.removeUpgradeTab)
