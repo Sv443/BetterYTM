@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699825895945
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699830606760
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699825895945
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699825895945
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699825895945
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699825895945
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699825895945
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699825895945
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699825895945
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699825895945
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699825895945
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699825895945
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699825895945
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699825895945
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699825895945
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699825895945
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699825895945
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699825895945
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699825895945
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699825895945
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699825895945
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699825895945
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699825895945
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699825895945
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699825895945
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699825895945
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699830606760
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699830606760
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699830606760
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699830606760
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699830606760
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699830606760
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699830606760
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699830606760
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699830606760
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699830606760
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699830606760
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699830606760
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699830606760
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699830606760
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699830606760
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699830606760
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699830606760
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699830606760
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699830606760
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699830606760
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699830606760
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699830606760
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699830606760
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699830606760
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -298,7 +298,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "5e03cb5", // asserted as generic string instead of literal
+    buildNumber: "be84408", // asserted as generic string instead of literal
 };
 
 
@@ -3335,14 +3335,28 @@ const observers = {};
 /** Call after DOM load to initialize all SelectorObserver instances */
 function initObservers() {
     observers.body = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-    observers.body.addListener("ytmusic-app-layout ytmusic-player-bar.ytmusic-app", {
-        listener: (playerBar) => {
-            observers.playerBar = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(playerBar, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 250 }));
-            observers.playerBar.addListener("yt-formatted-string.title", {
-                listener: (titleElem) => {
-                    observers.playerBarTitle = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(titleElem, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false, childList: false, attributes: true, attributeFilter: ["title"] }));
-                },
-            });
+    observers.body.enable();
+    const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+    observers.playerBar = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+    observers.body.addListener(playerBarSelector, {
+        listener: () => {
+            console.log("#DBG-UU enabling playerBar observer");
+            observers.playerBar.enable();
+        },
+    });
+    const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+    observers.playerBarInfo = new _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+    observers.playerBarInfo.addListener(playerBarInfoSelector, {
+        listener: () => {
+            console.log("#DBG-UU enabling playerBarTitle observer");
+            observers.playerBarInfo.enable();
+        },
+    });
+    // #DEBUG example: listen for title change:
+    observers.playerBarInfo.addListener("yt-formatted-string.title", {
+        continuous: true,
+        listener: (titleElem) => {
+            console.log("#DBG-UU >>>>> title changed", titleElem.title);
         },
     });
 }
@@ -4334,53 +4348,51 @@ function insertValues(str, ...values) {
 
 // lib/SelectorObserver.ts
 var SelectorObserver = class {
-  /**
-   * Creates a new SelectorObserver that will observe the children of the given base element for changes (only creation and deletion of elements by default)
-   * @param options Fine-tune what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
-   * TODO: support passing a selector for the base element to be able to queue listeners before the element is available
-   */
   constructor(baseElement, options = {}) {
     __publicField(this, "enabled", false);
     __publicField(this, "baseElement");
     __publicField(this, "observer");
     __publicField(this, "observerOptions");
     __publicField(this, "listenerMap");
-    __publicField(this, "dbgId", Math.floor(Math.random() * 1e6));
     this.baseElement = baseElement;
     this.listenerMap = /* @__PURE__ */ new Map();
-    this.observer = new MutationObserver(() => this.checkSelectors());
+    this.observer = new MutationObserver(() => this.checkAllSelectors());
     this.observerOptions = __spreadValues({
       childList: true,
       subtree: true
     }, options);
-    this.enable();
   }
-  checkSelectors() {
+  checkAllSelectors() {
+    for (const [selector, listeners] of this.listenerMap.entries())
+      this.checkSelector(selector, listeners);
+  }
+  checkSelector(selector, listeners) {
     var _a;
-    for (const [selector, listeners] of this.listenerMap.entries()) {
-      if (!this.enabled)
-        return;
-      const all = listeners.some((listener) => listener.all);
-      const one = listeners.some((listener) => !listener.all);
-      const allElements = all ? this.baseElement.querySelectorAll(selector) : null;
-      const oneElement = one ? this.baseElement.querySelector(selector) : null;
-      for (const options of listeners) {
-        if (options.all) {
-          if (allElements && allElements.length > 0) {
-            options.listener(allElements);
-            if (!options.continuous)
-              this.removeListener(selector, options);
-          }
-        } else {
-          if (oneElement) {
-            options.listener(oneElement);
-            if (!options.continuous)
-              this.removeListener(selector, options);
-          }
+    if (!this.enabled)
+      return;
+    const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
+    if (!baseElement)
+      return;
+    const all = listeners.some((listener) => listener.all);
+    const one = listeners.some((listener) => !listener.all);
+    const allElements = all ? baseElement.querySelectorAll(selector) : null;
+    const oneElement = one ? baseElement.querySelector(selector) : null;
+    for (const options of listeners) {
+      if (options.all) {
+        if (allElements && allElements.length > 0) {
+          options.listener(allElements);
+          if (!options.continuous)
+            this.removeListener(selector, options);
         }
-        if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
-          this.listenerMap.delete(selector);
+      } else {
+        if (oneElement) {
+          options.listener(oneElement);
+          if (!options.continuous)
+            this.removeListener(selector, options);
+        }
       }
+      if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
+        this.listenerMap.delete(selector);
     }
   }
   debounce(func, time) {
@@ -4411,7 +4423,7 @@ var SelectorObserver = class {
       this.listenerMap.get(selector).push(options);
     else
       this.listenerMap.set(selector, [options]);
-    this.checkSelectors();
+    this.checkSelector(selector, [options]);
   }
   /** Disables the observation of the child elements */
   disable() {
@@ -4420,12 +4432,20 @@ var SelectorObserver = class {
     this.enabled = false;
     this.observer.disconnect();
   }
-  /** Reenables the observation of the child elements */
-  enable() {
-    if (this.enabled)
-      return;
+  /**
+   * Enables or reenables the observation of the child elements.
+   * @param immediatelyCheckSelectors Whether to immediately check if all previously registered selectors exist (default is true)
+   * @returns Returns true when the observation was enabled, false otherwise (e.g. when the base element wasn't found)
+   */
+  enable(immediatelyCheckSelectors = true) {
+    const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
+    if (this.enabled || !baseElement)
+      return false;
     this.enabled = true;
-    this.observer.observe(this.baseElement, this.observerOptions);
+    this.observer.observe(baseElement, this.observerOptions);
+    if (immediatelyCheckSelectors)
+      this.checkAllSelectors();
+    return true;
   }
   /** Returns whether the observation of the child elements is currently enabled */
   isEnabled() {
