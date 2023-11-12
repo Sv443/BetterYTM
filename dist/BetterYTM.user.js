@@ -14,10 +14,10 @@
 // @description:zh-CN 可配置的布局和YouTube Music的用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           MIT
+// @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699387072974
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699814227391
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699387072974
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699387072974
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699387072974
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699387072974
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699387072974
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699387072974
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699387072974
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699387072974
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699387072974
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699387072974
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699387072974
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699387072974
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699387072974
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699387072974
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699387072974
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699387072974
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699387072974
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699387072974
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699387072974
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699387072974
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699387072974
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699387072974
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699387072974
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699387072974
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699814227391
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699814227391
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699814227391
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699814227391
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699814227391
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699814227391
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699814227391
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699814227391
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699814227391
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699814227391
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699814227391
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699814227391
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699814227391
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699814227391
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699814227391
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699814227391
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699814227391
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699814227391
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699814227391
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699814227391
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699814227391
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699814227391
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699814227391
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699814227391
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -276,10 +276,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   defaultLogLevel: function() { return /* binding */ defaultLogLevel; },
 /* harmony export */   mode: function() { return /* binding */ mode; },
 /* harmony export */   repo: function() { return /* binding */ repo; },
-/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; },
-/* harmony export */   sessionID: function() { return /* binding */ sessionID; }
+/* harmony export */   scriptInfo: function() { return /* binding */ scriptInfo; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/types.ts");
 
 const modeRaw = "development";
 const branchRaw = "develop";
@@ -289,19 +288,17 @@ const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
 const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
 /** Path to the GitHub repo */
 const repo = "Sv443/BetterYTM";
-/** Random ID for the current BYTM / tab session */
-const sessionID = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.randomId)(8, 36);
 /**
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-const defaultLogLevel = mode === "production" ? 1 : 0;
+const defaultLogLevel = mode === "production" ? _types__WEBPACK_IMPORTED_MODULE_0__.LogLevel.Info : _types__WEBPACK_IMPORTED_MODULE_0__.LogLevel.Debug;
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "465e253", // asserted as generic string instead of literal
+    buildNumber: "db1fae0", // asserted as generic string instead of literal
 };
 
 
@@ -326,7 +323,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../types */ "./src/types.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -417,6 +414,8 @@ function initAutoCloseToasts() {
 }
 /** After how many milliseconds a remembered entry should expire */
 const remSongEntryExpiry = 1000 * 60 * 1;
+/** Minimum time a song has to be played before it is committed to GM storage */
+const remSongMinTime = 10;
 let remSongsCache = [];
 /** Remembers the time of the last played song and resumes playback from that time */
 function initRememberSongTime() {
@@ -440,10 +439,10 @@ function restoreSongTime() {
             const watchID = searchParams.get("v");
             if (!watchID)
                 return;
-            const entry = remSongsCache.find(entry => entry.sessionID === _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID && entry.watchID === watchID);
+            const entry = remSongsCache.find(entry => entry.watchID === watchID);
             if (entry) {
                 if (Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
-                    yield delRemSongData(entry.sessionID, entry.watchID);
+                    yield delRemSongData(entry.watchID);
                     return;
                 }
                 else {
@@ -454,8 +453,8 @@ function restoreSongTime() {
                                     if (isNaN(entry.songTime))
                                         return;
                                     vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(Math.max(entry.songTime - 1, 0), 0, vidElem.duration);
-                                    yield delRemSongData(entry.sessionID, entry.watchID);
-                                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`);
+                                    yield delRemSongData(entry.watchID);
+                                    (0,_utils__WEBPACK_IMPORTED_MODULE_2__.info)(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, _types__WEBPACK_IMPORTED_MODULE_3__.LogLevel.Info);
                                 });
                                 if (vidElem.readyState === 4)
                                     applyTime();
@@ -481,23 +480,30 @@ function remSongUpdateEntry() {
             const songTime = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
             // don't immediately update to reduce race conditions
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > 2)
-                yield setRemSongData({
-                    sessionID: _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID,
+            if (songTime > remSongMinTime) {
+                const entry = {
                     watchID,
                     songTime,
                     updateTimestamp: Date.now(),
-                });
+                };
+                yield setRemSongData(entry);
+            }
+            // if the song is rewound to the beginning, delete the entry
+            else {
+                const entry = remSongsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= remSongMinTime)
+                    yield delRemSongData(entry.watchID);
+            }
         }
         const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
         for (const entry of expiredEntries)
-            yield delRemSongData(entry.sessionID, entry.watchID);
+            yield delRemSongData(entry.watchID);
     });
 }
 /** Adds an entry or updates it if it already exists */
 function setRemSongData(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const foundIdx = remSongsCache.findIndex(entry => entry.sessionID === data.sessionID && entry.watchID === data.watchID);
+        const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
         if (foundIdx >= 0)
             remSongsCache[foundIdx] = data;
         else
@@ -506,9 +512,9 @@ function setRemSongData(data) {
     });
 }
 /** Deletes an entry */
-function delRemSongData(sessionID, watchID) {
+function delRemSongData(watchID) {
     return __awaiter(this, void 0, void 0, function* () {
-        remSongsCache = [...remSongsCache.filter(entry => entry.sessionID !== sessionID && entry.watchID !== watchID)];
+        remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
         yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
     });
 }
@@ -588,26 +594,53 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const localeOptions = Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).reduce((a, [locale, langInfo]) => {
+const localeOptions = Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_2__).reduce((a, [locale, { name }]) => {
     return [...a, {
             value: locale,
-            label: `${langInfo.name}`,
+            label: name,
         }];
 }, [])
     .sort((a, b) => a.label.localeCompare(b.label));
 //#MARKER features
-/** Contains all possible features with their default values and other configuration */
+/**
+ * Contains all possible features with their default values and other configuration.
+ *
+ * **Required props:**
+ * | Prop | Description |
+ * | :-- | :-- |
+ * | `type` | type of the feature - see below for possible values |
+ * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
+ * | `default` | default value of the feature - type of the value depends on the `type` property |
+ * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
+ *
+ * **Optional props:**
+ * | Prop | Description |
+ * | :-- | :-- |
+ * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+ * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
+ * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+ * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+ * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+ * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element |
+ *
+ * **Notes:**
+ * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
+ */
 const featInfo = {
     //#SECTION layout
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
     },
     volumeSliderLabel: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     volumeSliderSize: {
         type: "number",
@@ -617,6 +650,8 @@ const featInfo = {
         step: 5,
         default: 150,
         unit: "px",
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     volumeSliderStep: {
         type: "slider",
@@ -625,31 +660,43 @@ const featInfo = {
         max: 25,
         default: 2,
         unit: "%",
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     fixSpacing: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     boostGain: {
         type: "toggle",
         category: "layout",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     boostGainPercentage: {
         type: "slider",
@@ -659,17 +706,23 @@ const featInfo = {
         default: 200,
         step: 25,
         unit: "%",
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     //#SECTION song lists
     lyricsQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     listButtonsPlacement: {
         type: "select",
@@ -679,12 +732,15 @@ const featInfo = {
             { value: "everywhere", label: (0,_translations__WEBPACK_IMPORTED_MODULE_0__.t)("list_button_placement_everywhere") },
         ],
         default: "everywhere",
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     //#SECTION behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
         default: false,
+        enable: () => void "TODO",
     },
     closeToastsTimeout: {
         type: "number",
@@ -694,17 +750,23 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO", // TODO: feasible?
     },
     //#SECTION input
     arrowKeySupport: {
         type: "toggle",
         category: "input",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     arrowKeySkipBy: {
         type: "number",
@@ -713,11 +775,15 @@ const featInfo = {
         max: 60,
         step: 0.5,
         default: 5,
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     switchSitesHotkey: {
         type: "hotkey",
@@ -728,22 +794,30 @@ const featInfo = {
             ctrl: false,
             alt: false,
         },
+        enable: () => void "TODO",
+        change: () => void "TODO",
     },
     anchorImprovements: {
         type: "toggle",
         category: "input",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     numKeysSkipToTime: {
         type: "toggle",
         category: "input",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     //#SECTION lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
         default: true,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
     },
     //#SECTION general
     locale: {
@@ -751,6 +825,7 @@ const featInfo = {
         category: "general",
         options: localeOptions,
         default: (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getPreferredLocale)(),
+        enable: () => void "TODO",
     },
     logLevel: {
         type: "select",
@@ -760,6 +835,7 @@ const featInfo = {
             { value: 1, label: (0,_translations__WEBPACK_IMPORTED_MODULE_0__.t)("log_level_info") },
         ],
         default: 1,
+        enable: () => void "TODO",
     },
 };
 
@@ -1348,24 +1424,17 @@ function addScrollToActiveBtn() {
     });
 }
 //#MARKER boost gain button
-const preampGain = 0.15;
 let gainBoosted = false;
 /** Adds a button to the media controls to boost the current song's gain */
 function addBoostGainButton() {
     return __awaiter(this, void 0, void 0, function* () {
-        const postampGain = features.boostGainPercentage / 100;
+        const gainMultiplier = features.boostGainPercentage / 100;
         const iconSrcOn = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("volume_boost_on");
         const iconSrcOff = yield (0,_utils__WEBPACK_IMPORTED_MODULE_3__.getResourceUrl)("volume_boost_off");
         const btnElem = yield createMediaCtrlBtn(iconSrcOff);
         btnElem.id = "bytm-boost-gain-btn";
         btnElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_4__.t)("boost_gain_enable_tooltip", features.boostGainPercentage);
         let amp;
-        /** Enable amplification and set gain properties */
-        const enableAmp = () => {
-            amp === null || amp === void 0 ? void 0 : amp.enable();
-            amp === null || amp === void 0 ? void 0 : amp.setPreampGain(preampGain);
-            amp === null || amp === void 0 ? void 0 : amp.setPostampGain(postampGain);
-        };
         btnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -1376,8 +1445,8 @@ function addBoostGainButton() {
                 return;
             if (!gainBoosted) {
                 gainBoosted = true;
-                amp = amp || (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.amplifyMedia)(videoElem, postampGain, preampGain);
-                enableAmp();
+                amp = amp || (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.amplifyMedia)(videoElem, gainMultiplier);
+                amp.enable();
                 // allow changing limiter options through the console if script was built in development mode
                 if (_constants__WEBPACK_IMPORTED_MODULE_2__.mode === "development") {
                     // @ts-ignore
@@ -2059,6 +2128,7 @@ function createHotkeyInput({ initialValue, resetValue, onChange }) {
         inputElem.value = hotkey.code;
         inputElem.dataset.state = "inactive";
         infoElem.innerText = getHotkeyInfo(hotkey);
+        inputElem.title = (0,_translations__WEBPACK_IMPORTED_MODULE_2__.t)("hotkey_input_click_to_cancel_tooltip");
         onChange(hotkey);
     });
     const deactivate = () => {
@@ -3443,6 +3513,9 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+const fetchOpts = {
+    timeout: 10000,
+};
 const initializedLocales = new Set();
 /** Initializes the translations */
 function initTranslations(locale) {
@@ -3452,10 +3525,10 @@ function initTranslations(locale) {
             return;
         try {
             const transUrl = yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)(`tr-${locale}`);
-            const transFile = yield (yield fetch(transUrl)).json();
+            const transFile = yield (yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(transUrl, fetchOpts)).json();
             // merge with base translations if specified
             const baseTransUrl = transFile.base ? yield (0,_utils__WEBPACK_IMPORTED_MODULE_1__.getResourceUrl)(`tr-${transFile.base}`) : undefined;
-            const baseTransFile = baseTransUrl ? yield (yield fetch(baseTransUrl)).json() : undefined;
+            const baseTransFile = baseTransUrl ? yield (yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.fetchAdvanced)(baseTransUrl, fetchOpts)).json() : undefined;
             _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr.addLanguage(locale, Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations));
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)(`Loaded translations for locale '${locale}'`);
         }
@@ -3480,13 +3553,38 @@ function getLocale() {
 function t(key, ...values) {
     return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.tr)(key, ...values);
 }
-/** Returns the translated string for the given key with an added pluralization identifier based on the passed `num` */
+/**
+ * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
+ * Tries to fall back to the non-pluralized syntax if no translation was found
+ */
 function tp(key, num, ...values) {
     if (typeof num !== "number")
         num = num.length;
     const plNum = num === 1 ? "1" : "n";
-    return t(`${key}-${plNum}`, ...values);
+    const trans = t(`${key}-${plNum}`, ...values);
+    if (trans === key)
+        return t(key, ...values);
+    return trans;
 }
+
+
+/***/ }),
+
+/***/ "./src/types.ts":
+/*!**********************!*\
+  !*** ./src/types.ts ***!
+  \**********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LogLevel: function() { return /* binding */ LogLevel; }
+/* harmony export */ });
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Debug"] = 0] = "Debug";
+    LogLevel[LogLevel["Info"] = 1] = "Info";
+})(LogLevel || (LogLevel = {}));
 
 
 /***/ }),
@@ -3505,6 +3603,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getDomain: function() { return /* binding */ getDomain; },
 /* harmony export */   getPreferredLocale: function() { return /* binding */ getPreferredLocale; },
 /* harmony export */   getResourceUrl: function() { return /* binding */ getResourceUrl; },
+/* harmony export */   getSessionId: function() { return /* binding */ getSessionId; },
 /* harmony export */   getVideoTime: function() { return /* binding */ getVideoTime; },
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   log: function() { return /* binding */ log; },
@@ -3516,8 +3615,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
-/* harmony import */ var _assets_locales_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../assets/locales.json */ "./assets/locales.json");
-/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types */ "./src/types.ts");
+/* harmony import */ var _assets_locales_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/locales.json */ "./assets/locales.json");
+/* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3532,8 +3632,10 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
+
 //#SECTION logging
-let curLogLevel = 1;
+let curLogLevel = _types__WEBPACK_IMPORTED_MODULE_3__.LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name}]`;
 const consPrefixDbg = `[${_constants__WEBPACK_IMPORTED_MODULE_2__.scriptInfo.name}/#DEBUG]`;
@@ -3542,14 +3644,14 @@ function setLogLevel(level) {
     if (curLogLevel !== level)
         console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
     curLogLevel = level;
-    (0,_interface__WEBPACK_IMPORTED_MODULE_4__.setGlobalProp)("logLevel", level);
+    (0,_interface__WEBPACK_IMPORTED_MODULE_5__.setGlobalProp)("logLevel", level);
 }
 /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
         return (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-    return 0;
+    return _types__WEBPACK_IMPORTED_MODULE_3__.LogLevel.Debug;
 }
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.
@@ -3703,16 +3805,16 @@ function getPreferredLocale() {
     const navLangs = navigator.languages
         .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
         .map(lang => lang.replace(/-/g, "_"));
-    if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_3__).find(([key]) => key === navLang))
+    if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_4__).find(([key]) => key === navLang))
         return navLang;
     for (const loc of navLangs) {
-        if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_3__).find(([key]) => key === loc))
+        if (Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_4__).find(([key]) => key === loc))
             return loc;
     }
     // if navigator.languages has entries that aren't locale codes in the format xx_XX
     if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
         for (const lang of navLangs) {
-            const foundLoc = (_a = Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_3__).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+            const foundLoc = (_a = Object.entries(_assets_locales_json__WEBPACK_IMPORTED_MODULE_4__).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
             if (foundLoc)
                 return foundLoc;
         }
@@ -3728,6 +3830,14 @@ function clearNode(element) {
     while (element.hasChildNodes())
         clearNode(element.firstChild);
     element.parentNode.removeChild(element);
+}
+function getSessionId() {
+    let sesId = window.sessionStorage.getItem("bytm-session-id");
+    if (!sesId || !window.name) {
+        window.name = sesId = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.randomId)(8, 36);
+        window.sessionStorage.setItem("bytm-session-id", sesId);
+    }
+    return window.name = sesId;
 }
 
 
@@ -4102,35 +4212,19 @@ function interceptEvent(eventObject, eventName, predicate = () => true) {
 function interceptWindowEvent(eventName, predicate = () => true) {
   return interceptEvent(getUnsafeWindow(), eventName, predicate);
 }
-var amplifyBands = [60, 170, 310, 600, 1e3, 3e3, 6e3, 12e3, 14e3, 16e3];
-function amplifyMedia(mediaElement, initialPreampGain = 0.02, initialPostampGain = 1) {
+function amplifyMedia(mediaElement, initialGain = 1) {
   const context = new (window.AudioContext || window.webkitAudioContext)();
   const props = {
     context,
     sourceNode: context.createMediaElementSource(mediaElement),
-    preampNode: context.createGain(),
-    postampNode: context.createGain(),
-    filterNodes: amplifyBands.map((band, i) => {
-      const node = context.createBiquadFilter();
-      node.type = i === 0 ? "lowshelf" : "highshelf";
-      node.frequency.setValueAtTime(band, context.currentTime);
-      return node;
-    }),
-    /** Sets the gain of the pre-amplifier GainNode */
-    setPreampGain(gain) {
-      props.preampNode.gain.setValueAtTime(gain, context.currentTime);
+    gainNode: context.createGain(),
+    /** Sets the gain of the amplifying GainNode */
+    setGain(gain) {
+      props.gainNode.gain.value = gain;
     },
-    /** Returns the current gain of the pre-amplifier GainNode */
-    getPreampGain() {
-      return props.preampNode.gain.value;
-    },
-    /** Sets the gain of the post-amplifier GainNode */
-    setPostampGain(multiplier) {
-      props.postampNode.gain.setValueAtTime(multiplier, context.currentTime);
-    },
-    /** Returns the current gain of the post-amplifier GainNode */
-    getPostampGain() {
-      return props.postampNode.gain.value;
+    /** Returns the current gain of the amplifying GainNode */
+    getGain() {
+      return props.gainNode.gain.value;
     },
     /** Whether the amplification is currently enabled */
     enabled: false,
@@ -4139,31 +4233,20 @@ function amplifyMedia(mediaElement, initialPreampGain = 0.02, initialPostampGain
       if (props.enabled)
         return;
       props.enabled = true;
-      props.sourceNode.connect(props.preampNode);
-      props.filterNodes.slice(1).forEach((filterNode) => {
-        props.preampNode.connect(filterNode);
-        filterNode.connect(props.filterNodes[0]);
-      });
-      props.filterNodes[0].connect(props.postampNode);
-      props.postampNode.connect(props.context.destination);
+      props.sourceNode.connect(props.gainNode);
+      props.gainNode.connect(props.context.destination);
     },
     /** Disable the amplification */
     disable() {
       if (!props.enabled)
         return;
       props.enabled = false;
-      props.sourceNode.disconnect(props.preampNode);
-      props.filterNodes.slice(1).forEach((filterNode) => {
-        props.preampNode.disconnect(filterNode);
-        filterNode.disconnect(props.filterNodes[0]);
-      });
-      props.filterNodes[0].disconnect(props.postampNode);
-      props.postampNode.disconnect(props.context.destination);
+      props.sourceNode.disconnect(props.gainNode);
+      props.gainNode.disconnect(props.context.destination);
       props.sourceNode.connect(props.context.destination);
     }
   };
-  props.setPreampGain(initialPreampGain);
-  props.setPostampGain(initialPostampGain);
+  props.setGain(initialGain);
   return props;
 }
 function isScrollable(element) {
@@ -4389,7 +4472,7 @@ module.exports = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscrip
   \**********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"MIT","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^2.0.1","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
+module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"AGPL-3.0","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^2.0.1","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
 
 /***/ })
 
@@ -4506,7 +4589,7 @@ let domLoaded = false;
 const domain = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getDomain)();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-    (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Session ID:", _constants__WEBPACK_IMPORTED_MODULE_3__.sessionID);
+    (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)("Session ID:", (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getSessionId)());
     (0,_interface__WEBPACK_IMPORTED_MODULE_7__.initInterface)();
     (0,_utils__WEBPACK_IMPORTED_MODULE_4__.setLogLevel)(_constants__WEBPACK_IMPORTED_MODULE_3__.defaultLogLevel);
     if (domain === "ytm")
@@ -4537,9 +4620,9 @@ function init() {
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_10__.disableBeforeUnload)();
             if (!domLoaded)
-                document.addEventListener("DOMContentLoaded", initFeatures);
+                document.addEventListener("DOMContentLoaded", onDomLoad);
             else
-                initFeatures();
+                onDomLoad();
             if (features.rememberSongTime)
                 (0,_features_index__WEBPACK_IMPORTED_MODULE_10__.initRememberSongTime)();
         }
@@ -4557,7 +4640,7 @@ function init() {
     });
 }
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
-function initFeatures() {
+function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
         (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!*************************************************************************!*\
@@ -5285,6 +5368,56 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
         }
     });
 }
+void ["TODO:", initFeatures];
+function initFeatures() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ftInit = [];
+        (0,_utils__WEBPACK_IMPORTED_MODULE_4__.log)(`DOM loaded. Initializing features for domain "${domain}"...`);
+        for (const [ftKey, ftInfo] of Object.entries(_features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo)) {
+            try {
+                const res = ftInfo.enable();
+                if (res instanceof Promise)
+                    ftInit.push(res);
+                else
+                    ftInit.push(Promise.resolve());
+            }
+            catch (err) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_4__.error)(`Couldn't initialize feature "${ftKey}" due to error:`, err);
+            }
+        }
+        _siteEvents__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
+            try {
+                // @ts-ignore
+                if (_features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].change) {
+                    // @ts-ignore
+                    _features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].change(oldValue, newValue);
+                }
+                // @ts-ignore
+                else if (_features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].disable) {
+                    // @ts-ignore
+                    const disableRes = _features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].disable();
+                    if (disableRes instanceof Promise)
+                        disableRes.then(() => _features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].enable());
+                    else
+                        _features_index__WEBPACK_IMPORTED_MODULE_10__.featInfo[ftKey].enable();
+                }
+                else {
+                    // TODO: set "page reload required" flag in new menu
+                    if (confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
+                        (0,_features_index__WEBPACK_IMPORTED_MODULE_10__.disableBeforeUnload)();
+                        location.reload();
+                    }
+                }
+            }
+            catch (err) {
+                (0,_utils__WEBPACK_IMPORTED_MODULE_4__.error)(`Couldn't change feature "${ftKey}" due to error:`, err);
+            }
+        });
+        Promise.all(ftInit).then(() => {
+            (0,_interface__WEBPACK_IMPORTED_MODULE_7__.emitInterface)("bytm:ready");
+        });
+    });
+}
 function registerMenuCommands() {
     if (_constants__WEBPACK_IMPORTED_MODULE_3__.mode === "development") {
         GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
@@ -5315,6 +5448,14 @@ function registerMenuCommands() {
                 }
             }
         }), "d");
+        GM.registerMenuCommand("Delete GM value by name", () => __awaiter(this, void 0, void 0, function* () {
+            const key = prompt("Enter the name of the GM value to delete.\nEmpty input cancels the operation.");
+            if (key && key.length > 0) {
+                const oldVal = yield GM.getValue(key);
+                yield GM.deleteValue(key);
+                console.log(`Deleted GM value '${key}' with previous value '${oldVal}'`);
+            }
+        }), "n");
         GM.registerMenuCommand("Reset install timestamp", () => __awaiter(this, void 0, void 0, function* () {
             yield GM.deleteValue("bytm-installed");
             console.log("Reset install time.");
