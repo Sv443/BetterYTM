@@ -3,12 +3,16 @@ import { initOnSelector, onSelectorOld, getSelectorMap } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo, sessionID } from "./constants";
 import { error, getDomain, info, log, setLogLevel } from "./utils";
-import { initSiteEvents } from "./siteEvents";
+import { initSiteEvents, siteEvents } from "./siteEvents";
 import { initTranslations, setLocale } from "./translations";
 import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import {
+  // other:
+  featInfo,
+
+  // features:
   // layout
   preInitLayout,
   addWatermark,
@@ -99,9 +103,9 @@ async function init() {
       disableBeforeUnload();
 
     if(!domLoaded)
-      document.addEventListener("DOMContentLoaded", initFeatures);
+      document.addEventListener("DOMContentLoaded", onDomLoad);
     else
-      initFeatures();
+      onDomLoad();
 
     if(features.rememberSongTime)
       initRememberSongTime();
@@ -121,7 +125,7 @@ async function init() {
 }
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
-async function initFeatures() {
+async function onDomLoad() {
   // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
   addGlobalStyle("{{GLOBAL_STYLE}}");
 
@@ -208,6 +212,59 @@ async function initFeatures() {
   }
 }
 
+void ["TODO:", initFeatures];
+async function initFeatures() {
+  const ftInit = [] as Promise<void>[];
+
+  log(`DOM loaded. Initializing features for domain "${domain}"...`);
+
+  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+    try {
+      const res = ftInfo.enable() as void | Promise<void>;
+      if(res instanceof Promise)
+        ftInit.push(res);
+      else
+        ftInit.push(Promise.resolve());
+    }
+    catch(err) {
+      error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
+    }
+  }
+
+  siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
+    try {
+      // @ts-ignore
+      if(featInfo[ftKey].change) {
+        // @ts-ignore
+        featInfo[ftKey].change(oldValue, newValue);
+      }
+      // @ts-ignore
+      else if(featInfo[ftKey].disable) {
+        // @ts-ignore
+        const disableRes = featInfo[ftKey].disable();
+        if(disableRes instanceof Promise)
+          disableRes.then(() => featInfo[ftKey].enable());
+        else
+          featInfo[ftKey].enable();
+      }
+      else {
+        // TODO: set "page reload required" flag in new menu
+        if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
+          disableBeforeUnload();
+          location.reload();
+        }
+      }
+    }
+    catch(err) {
+      error(`Couldn't change feature "${ftKey}" due to error:`, err);
+    }
+  });
+
+  Promise.all(ftInit).then(() => {
+    emitInterface("bytm:ready");
+  });
+}
+
 function registerMenuCommands() {
   if(mode === "development") {
     GM.registerMenuCommand("Reset config", async () => {
@@ -240,6 +297,15 @@ function registerMenuCommands() {
         }
       }
     }, "d");
+
+    GM.registerMenuCommand("Delete GM value by name", async () => {
+      const key = prompt("Enter the name of the GM value to delete.\nEmpty input cancels the operation.");
+      if(key && key.length > 0) {
+        const oldVal = await GM.getValue(key);
+        await GM.deleteValue(key);
+        console.log(`Deleted GM value '${key}' with previous value '${oldVal}'`);
+      }
+    }, "n");
 
     GM.registerMenuCommand("Reset install timestamp", async () => {
       await GM.deleteValue("bytm-installed");

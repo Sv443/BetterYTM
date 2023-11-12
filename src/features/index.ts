@@ -16,28 +16,55 @@ export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
 
 type SelectOption = { value: number | string, label: string };
 
-const localeOptions = Object.entries(langMapping).reduce((a, [locale, langInfo]) => {
+const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
   return [...a, {
     value: locale,
-    label: `${langInfo.name}`,
+    label: name,
   }];
 }, [] as SelectOption[])
   .sort((a, b) => a.label.localeCompare(b.label));
 
 //#MARKER features
 
-/** Contains all possible features with their default values and other configuration */
+/**
+ * Contains all possible features with their default values and other configuration.  
+ *   
+ * **Required props:**
+ * | Prop | Description |
+ * | :-- | :-- |
+ * | `type` | type of the feature - see below for possible values |
+ * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
+ * | `default` | default value of the feature - type of the value depends on the `type` property |
+ * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
+ *   
+ * **Optional props:**
+ * | Prop | Description |
+ * | :-- | :-- |
+ * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+ * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
+ * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+ * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+ * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+ * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element |
+ *   
+ * **Notes:**
+ * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
+ */
 export const featInfo = {
   //#SECTION layout
   removeUpgradeTab: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
   },
   volumeSliderLabel: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   volumeSliderSize: {
     type: "number",
@@ -47,6 +74,8 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   volumeSliderStep: {
     type: "slider",
@@ -55,31 +84,43 @@ export const featInfo = {
     max: 25,
     default: 2,
     unit: "%",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   boostGain: {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   boostGainPercentage: {
     type: "slider",
@@ -89,6 +130,8 @@ export const featInfo = {
     default: 200,
     step: 25,
     unit: "%",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
 
   //#SECTION song lists
@@ -96,11 +139,15 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   listButtonsPlacement: {
     type: "select",
@@ -110,6 +157,8 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 
   //#SECTION behavior
@@ -117,6 +166,7 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: false,
+    enable: () => void "TODO",
   },
   closeToastsTimeout: {
     type: "number",
@@ -126,11 +176,15 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO", // TODO: feasible?
   },
 
   //#SECTION input
@@ -138,6 +192,8 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   arrowKeySkipBy: {
     type: "number",
@@ -146,11 +202,15 @@ export const featInfo = {
     max: 60,
     step: 0.5,
     default: 5,
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   switchBetweenSites: {
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -161,16 +221,22 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   anchorImprovements: {
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 
   //#SECTION lyrics
@@ -178,6 +244,8 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 
   //#SECTION general
@@ -186,6 +254,7 @@ export const featInfo = {
     category: "general",
     options: localeOptions,
     default: getPreferredLocale(),
+    enable: () => void "TODO",
   },
   logLevel: {
     type: "select",
@@ -195,5 +264,6 @@ export const featInfo = {
       { value: 1, label: t("log_level_info") },
     ],
     default: 1,
+    enable: () => void "TODO",
   },
 } as const;
