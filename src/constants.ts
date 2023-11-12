@@ -1,5 +1,4 @@
-import { randomId } from "@sv443-network/userutils";
-import type { LogLevel } from "./types";
+import { LogLevel } from "./types";
 
 const modeRaw = "{{MODE}}";
 const branchRaw = "{{BRANCH}}";
@@ -10,14 +9,12 @@ export const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw) as "pro
 export const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw) as "main" | "develop";
 /** Path to the GitHub repo */
 export const repo = "Sv443/BetterYTM";
-/** Random ID for the current BYTM / tab session */
-export const sessionID = randomId(8, 36);
 
 /**
  * How much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
-export const defaultLogLevel: LogLevel = mode === "production" ? 1 : 0;
+export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
 
 /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
 export const scriptInfo = {

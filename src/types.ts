@@ -9,8 +9,10 @@ export type WebpackEnv = Partial<{
   mode: "production" | "development",
 }> & Record<"WEBPACK_BUNDLE" | "WEBPACK_BUILD", boolean>;
 
-/** 0 = Debug, 1 = Info */
-export type LogLevel = 0 | 1;
+export enum LogLevel {
+  Debug = 0,
+  Info = 1,
+}
 
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";

@@ -1,14 +1,15 @@
 import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
 import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
-import type { Domain, LogLevel, ResourceKey } from "./types";
+import { Domain, LogLevel, ResourceKey } from "./types";
 import langMapping from "../assets/locales.json" assert { type: "json" };
 import { TrLocale } from "./translations";
 import { setGlobalProp } from "./interface";
+import { randomId } from "@sv443-network/userutils";
 
 //#SECTION logging
 
-let curLogLevel: LogLevel = 1;
+let curLogLevel = LogLevel.Info;
 
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -31,7 +32,7 @@ function getLogLevel(args: unknown[]): number {
       minLogLvl,
       maxLogLvl,
     );
-  return 0;
+  return LogLevel.Debug;
 }
 
 /**
@@ -244,4 +245,15 @@ function clearNode(element: Element) {
   while(element.hasChildNodes())
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);
+}
+
+export function getSessionId(): string {
+  let sesId = window.sessionStorage.getItem("bytm-session-id");
+
+  if(!sesId || !window.name) {
+    window.name = sesId = randomId(8, 36);
+    window.sessionStorage.setItem("bytm-session-id", sesId);
+  }
+
+  return window.name = sesId;
 }

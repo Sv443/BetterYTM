@@ -1,8 +1,8 @@
 import { addGlobalStyle } from "@sv443-network/userutils";
 import { initOnSelector, onSelectorOld, getSelectorMap } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
-import { defaultLogLevel, mode, scriptInfo, sessionID } from "./constants";
-import { error, getDomain, info, log, setLogLevel } from "./utils";
+import { defaultLogLevel, mode, scriptInfo } from "./constants";
+import { error, getDomain, info, getSessionId, log, setLogLevel } from "./utils";
 import { initSiteEvents, siteEvents } from "./siteEvents";
 import { initTranslations, setLocale } from "./translations";
 import { emitInterface, initInterface } from "./interface";
@@ -64,7 +64,7 @@ const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-  log("Session ID:", sessionID);
+  log("Session ID:", getSessionId());
   initInterface();
   setLogLevel(defaultLogLevel);
 
