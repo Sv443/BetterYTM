@@ -1,5 +1,5 @@
 import { addGlobalStyle } from "@sv443-network/userutils";
-import { initOnSelector, onSelectorOld, getSelectorMap } from "./onSelector";
+import { initOnSelector, getSelectorMap } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel } from "./utils";
@@ -36,6 +36,7 @@ import {
   // menu
   addConfigMenuOption,
 } from "./features/index";
+import { initObservers, observers } from "./observers";
 
 {
   // console watermark with sexy gradient
@@ -129,6 +130,7 @@ async function onDomLoad() {
   // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
   addGlobalStyle("{{GLOBAL_STYLE}}");
 
+  initObservers();
   initOnSelector();
 
   const features = getFeatures();
@@ -157,7 +159,9 @@ async function onDomLoad() {
         error("Couldn't add menu:", err);
       }
 
-      onSelectorOld("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", { listener: addConfigMenuOption });
+      observers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+        listener: addConfigMenuOption,
+      });
 
       if(features.arrowKeySupport)
         ftInit.push(initArrowKeySkip());
