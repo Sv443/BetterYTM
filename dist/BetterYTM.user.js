@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699830606760
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699831122635
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699830606760
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699830606760
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699830606760
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699830606760
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699830606760
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699830606760
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699830606760
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699830606760
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699830606760
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699830606760
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699830606760
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699830606760
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699830606760
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699830606760
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699830606760
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699830606760
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699830606760
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699830606760
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699830606760
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699830606760
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699830606760
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699830606760
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699830606760
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699830606760
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699831122635
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699831122635
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699831122635
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699831122635
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699831122635
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699831122635
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699831122635
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699831122635
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699831122635
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699831122635
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699831122635
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1699831122635
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699831122635
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699831122635
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699831122635
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699831122635
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699831122635
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699831122635
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699831122635
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699831122635
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699831122635
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699831122635
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699831122635
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699831122635
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -165,7 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _siteEvents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./siteEvents */ "./src/siteEvents.ts");
@@ -298,7 +298,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "be84408", // asserted as generic string instead of literal
+    buildNumber: "6142236", // asserted as generic string instead of literal
 };
 
 
@@ -320,7 +320,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initRememberSongTime: function() { return /* binding */ initRememberSongTime; },
 /* harmony export */   preInitBehavior: function() { return /* binding */ preInitBehavior; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../types */ "./src/types.ts");
@@ -856,7 +856,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; },
 /* harmony export */   preInitInput: function() { return /* binding */ preInitInput; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _behavior__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./behavior */ "./src/features/behavior.ts");
@@ -1010,7 +1010,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   removeShareTrackingParam: function() { return /* binding */ removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1512,7 +1512,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
 /* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -1795,7 +1795,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   preInitSongLists: function() { return /* binding */ preInitSongLists; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -2020,7 +2020,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initInterface: function() { return /* binding */ initInterface; },
 /* harmony export */   setGlobalProp: function() { return /* binding */ setGlobalProp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 
@@ -2190,7 +2190,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   openCfgMenu: function() { return /* binding */ openCfgMenu; },
 /* harmony export */   openChangelogMenu: function() { return /* binding */ openChangelogMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../features/index */ "./src/features/index.ts");
@@ -3325,7 +3325,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initObservers: function() { return /* binding */ initObservers; },
 /* harmony export */   observers: function() { return /* binding */ observers; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
@@ -3549,7 +3549,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   t: function() { return /* binding */ t; },
 /* harmony export */   tp: function() { return /* binding */ tp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -3663,7 +3663,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ytVideoSelector: function() { return /* binding */ ytVideoSelector; },
 /* harmony export */   ytmVideoSelector: function() { return /* binding */ ytmVideoSelector; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types */ "./src/types.ts");
@@ -3894,39 +3894,10 @@ function getSessionId() {
 
 /***/ }),
 
-/***/ "./node_modules/nanoevents/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/nanoevents/index.js ***!
-  \******************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createNanoEvents: function() { return /* binding */ createNanoEvents; }
-/* harmony export */ });
-let createNanoEvents = () => ({
-  emit(event, ...args) {
-    let callbacks = this.events[event] || []
-    for (let i = 0, length = callbacks.length; i < length; i++) {
-      callbacks[i](...args)
-    }
-  },
-  events: {},
-  on(event, cb) {
-    this.events[event]?.push(cb) || (this.events[event] = [cb])
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i)
-    }
-  }
-})
-
-
-/***/ }),
-
-/***/ "../../svn/UserUtils/dist/index.mjs":
-/*!******************************************!*\
-  !*** ../../svn/UserUtils/dist/index.mjs ***!
-  \******************************************/
+/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4513,8 +4484,36 @@ tr.getLanguage = () => {
 };
 
 
-//# sourceMappingURL=http://localhost:8710/out.js.map
-//# sourceMappingURL=http://localhost:8710/index.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/nanoevents/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/nanoevents/index.js ***!
+  \******************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createNanoEvents: function() { return /* binding */ createNanoEvents; }
+/* harmony export */ });
+let createNanoEvents = () => ({
+  emit(event, ...args) {
+    let callbacks = this.events[event] || []
+    for (let i = 0, length = callbacks.length; i < length; i++) {
+      callbacks[i](...args)
+    }
+  },
+  events: {},
+  on(event, cb) {
+    this.events[event]?.push(cb) || (this.events[event] = [cb])
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i)
+    }
+  }
+})
+
 
 /***/ }),
 
@@ -4534,7 +4533,7 @@ module.exports = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscrip
   \**********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"AGPL-3.0","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^2.0.1","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
+module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"AGPL-3.0","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^3.0.0","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
 
 /***/ })
 
@@ -4601,7 +4600,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
