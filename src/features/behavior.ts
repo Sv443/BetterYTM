@@ -1,6 +1,6 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
-import { error, getDomain, getVideoTime, info, log, ytVideoSelector, ytmVideoSelector } from "../utils";
+import { error, getVideoTime, info, log, videoSelector } from "../utils";
 import { LogLevel, type FeatureConfig } from "../types";
 
 let features: FeatureConfig;
@@ -140,7 +140,7 @@ async function restoreSongTime() {
         return;
       }
       else {
-        onSelectorOld<HTMLVideoElement>(ytmVideoSelector, {
+        onSelectorOld<HTMLVideoElement>(videoSelector, {
           listener: async (vidElem) => {
             if(vidElem) {
               const applyTime = async () => {
@@ -173,7 +173,7 @@ async function remSongUpdateEntry() {
 
     const songTime = await getVideoTime() ?? 0;
 
-    const paused = document.querySelector<HTMLVideoElement>(getDomain() === "ytm" ? ytmVideoSelector : ytVideoSelector)?.paused ?? false;
+    const paused = document.querySelector<HTMLVideoElement>(videoSelector)?.paused ?? false;
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed

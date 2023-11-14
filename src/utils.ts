@@ -70,8 +70,7 @@ export function dbg(...args: unknown[]): void {
 
 //#SECTION video time
 
-export const ytmVideoSelector = "ytmusic-player video";
-export const ytVideoSelector = "#content ytd-player video";
+export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
 
 /**
  * Returns the current video time in seconds  
@@ -84,7 +83,7 @@ export function getVideoTime() {
 
     try {
       if(domain === "ytm") {
-        const vidElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
+        const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
         if(vidElem)
           return res(Math.floor(vidElem.currentTime));
 
@@ -94,7 +93,7 @@ export function getVideoTime() {
         });
       }
       else if(domain === "yt") {
-        const vidElem = document.querySelector<HTMLVideoElement>(ytVideoSelector);
+        const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
         if(vidElem)
           return res(Math.floor(vidElem.currentTime));
 

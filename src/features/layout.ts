@@ -2,7 +2,7 @@ import { addGlobalStyle, addParent, amplifyMedia, autoPlural, fetchAdvanced, get
 import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { mode, scriptInfo } from "../constants";
-import { error, getResourceUrl, info, log, warn, ytmVideoSelector } from "../utils";
+import { error, getResourceUrl, info, log, warn, videoSelector } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -497,7 +497,7 @@ export async function addBoostGainButton() {
     e.stopImmediatePropagation();
 
     const btnElem = document.querySelector<HTMLElement>("#bytm-boost-gain-btn");
-    const videoElem = document.querySelector<HTMLVideoElement>(ytmVideoSelector);
+    const videoElem = document.querySelector<HTMLVideoElement>(videoSelector);
     const imgElem = btnElem?.querySelector<HTMLImageElement>("img");
 
     if(!videoElem || !imgElem || !btnElem)
