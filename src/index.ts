@@ -1,5 +1,5 @@
 import { addGlobalStyle } from "@sv443-network/userutils";
-import { initOnSelector, getSelectorMap } from "./onSelector";
+import { initOnSelector } from "./onSelector";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel } from "./utils";
@@ -316,16 +316,22 @@ function registerMenuCommands() {
       console.log("Reset install time.");
     }, "t");
 
+    // TODO: check if this works lol
     GM.registerMenuCommand("List active selector listeners", async () => {
-      const selectors = getSelectorMap();
-      const lines: string[] = [];
-      [...selectors].forEach(([k, v]) => {
-        lines.push(`  (${v.length}): ${k}`);
-        v.forEach(({ all, continuous }, i) => {
-          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+      const lines = [] as string[];
+      let listenersAmt = 0;
+      for(const [obsName, obs] of Object.entries(observers)) {
+        const listeners = obs.getAllListeners();
+        lines.push(`- "${obsName}" (${listeners.size} listeners):`);
+        [...listeners].forEach(([k, v]) => {
+          listenersAmt += v.length;
+          lines.push(`    [${v.length}] ${k}`);
+          v.forEach(({ all, continuous }, i) => {
+            lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+          });
         });
-      });
-      console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
+      }
+      console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
       alert("See console.");
     }, "s");
   }
