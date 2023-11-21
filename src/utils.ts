@@ -249,10 +249,10 @@ function clearNode(element: Element) {
 export function getSessionId(): string {
   let sesId = window.sessionStorage.getItem("bytm-session-id");
 
-  if(!sesId || !window.name) {
-    window.name = sesId = randomId(8, 36);
+  if(!sesId) {
+    sesId = randomId(8, 36);
     window.sessionStorage.setItem("bytm-session-id", sesId);
   }
 
-  return window.name = sesId;
+  return sesId;
 }

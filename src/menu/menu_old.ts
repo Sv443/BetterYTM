@@ -1,4 +1,4 @@
-import { debounce, isScrollable } from "@sv443-network/userutils";
+import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
@@ -16,6 +16,18 @@ import pkg from "../../package.json" assert { type: "json" };
 
 let isCfgMenuAdded = false;
 export let isCfgMenuOpen = false;
+
+const compressionFormat: CompressionFormat = "deflate-raw";
+
+async function compressionSupported() {
+  try {
+    await compress(".", compressionFormat);
+    return true;
+  }
+  catch(e) {
+    return false;
+  }
+}
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
@@ -558,6 +570,8 @@ let copiedTxtTimeout: number | undefined = undefined;
 
 /** Adds a menu to copy the current configuration as JSON (hidden by default) */
 async function addExportMenu() {
+  const canCompress = await compressionSupported();
+
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-export-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
@@ -621,12 +635,14 @@ async function addExportMenu() {
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-export-menu-textarea";
   textAreaElem.readOnly = true;
-  textAreaElem.value = JSON.stringify({ formatVersion, data: getFeatures() });
+  const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
+  textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
 
-  siteEvents.on("configChanged", (data) => {
+  siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
+    const cfgString = JSON.stringify({ formatVersion, data });
     if(textAreaElem)
-      textAreaElem.value = JSON.stringify({ formatVersion, data });
+      textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
   });
 
   //#SECTION footer
@@ -803,7 +819,21 @@ async function addImportMenu() {
     if(!textAreaElem)
       return warn("Couldn't find import menu textarea element");
     try {
-      const parsed = JSON.parse(textAreaElem.value.trim());
+      const decode = async (input: string) => {
+        try {
+          return JSON.parse(input);
+        }
+        catch {
+          try {
+            return JSON.parse(await decompress(input, compressionFormat));
+          }
+          catch(err) {
+            warn("Couldn't import configuration:", err);
+            alert(t("import_error_invalid"));
+          }
+        }
+      };
+      const parsed = await decode(textAreaElem.value.trim());
       if(typeof parsed !== "object")
         return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
