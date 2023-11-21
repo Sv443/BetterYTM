@@ -1,6 +1,7 @@
 name: "Lint BetterYTM"
 
 on:
+  workflow_dispatch:
   push:
     branches: [develop]
 
