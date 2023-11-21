@@ -1,3 +1,75 @@
+// ==UserScript==
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           1.1.0
+// @description       Configurable layout and user experience improvements for YouTube Music
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music
+// @description:en-US Configurable layout and user experience improvements for YouTube Music
+// @description:en-UK Configurable layout and user experience improvements for YouTube Music
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music
+// @description:hi-IN YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार
+// @description:ja-JA YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music
+// @description:zh-CN 可配置的布局和YouTube Music的用户体验改进
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           AGPL-3.0
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1700576703657
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @connect           api.sv443.net
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             unsafeWindow
+// @noframes
+// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=1700576703657
+// @resource          close      http://localhost:8710/assets/icons/close.png?t=1700576703657
+// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=1700576703657
+// @resource          error      http://localhost:8710/assets/icons/error.svg?t=1700576703657
+// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=1700576703657
+// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=1700576703657
+// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=1700576703657
+// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=1700576703657
+// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=1700576703657
+// @resource          github     http://localhost:8710/assets/external/github.png?t=1700576703657
+// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=1700576703657
+// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=1700576703657
+// @resource          discord    http://localhost:8710/assets/external/discord.png?t=1700576703657
+// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=1700576703657
+// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=1700576703657
+// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=1700576703657
+// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=1700576703657
+// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=1700576703657
+// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=1700576703657
+// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=1700576703657
+// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=1700576703657
+// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=1700576703657
+// @grant             GM.registerMenuCommand
+// @grant             GM.listValues
+// ==/UserScript==
+/*
+▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
 /******/ var __webpack_modules__ = ({
 
 /***/ "./changelog.md":
@@ -91,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveFeatures: function() { return /* binding */ saveFeatures; },
 /* harmony export */   setDefaultFeatures: function() { return /* binding */ setDefaultFeatures; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/index */ "./src/features/index.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _siteEvents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./siteEvents */ "./src/siteEvents.ts");
@@ -124,7 +196,7 @@ const migrations = {
     4: (oldData) => {
         var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-        return Object.assign(Object.assign({}, oldData), { locale: getFeatureDefault("locale"), boostGain: getFeatureDefault("boostGain"), boostGainPercentage: getFeatureDefault("boostGainPercentage"), rememberSongTime: getFeatureDefault("rememberSongTime"), arrowKeySkipBy: 10, switchSitesHotkey: {
+        return Object.assign(Object.assign({}, oldData), { locale: getFeatureDefault("locale"), rememberSongTime: getFeatureDefault("rememberSongTime"), arrowKeySkipBy: 10, switchSitesHotkey: {
                 code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
                 shift: (_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false,
                 ctrl: (_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false,
@@ -206,8 +278,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./src/types.ts");
 
-const modeRaw = "{{MODE}}";
-const branchRaw = "{{BRANCH}}";
+const modeRaw = "development";
+const branchRaw = "develop";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -224,7 +296,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "{{BUILD_NUMBER}}", // asserted as generic string instead of literal
+    buildNumber: "b8a5720", // asserted as generic string instead of literal
 };
 
 
@@ -246,7 +318,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initRememberSongTime: function() { return /* binding */ initRememberSongTime; },
 /* harmony export */   preInitBehavior: function() { return /* binding */ preInitBehavior; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../types */ "./src/types.ts");
@@ -616,24 +688,6 @@ const featInfo = {
         enable: () => void "TODO",
         disable: () => void "TODO",
     },
-    boostGain: {
-        type: "toggle",
-        category: "layout",
-        default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
-    },
-    boostGainPercentage: {
-        type: "slider",
-        category: "layout",
-        min: 125,
-        max: 300,
-        default: 200,
-        step: 25,
-        unit: "%",
-        enable: () => void "TODO",
-        change: () => void "TODO",
-    },
     //#SECTION song lists
     lyricsQueueButton: {
         type: "toggle",
@@ -780,7 +834,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initSiteSwitch: function() { return /* binding */ initSiteSwitch; },
 /* harmony export */   preInitInput: function() { return /* binding */ preInitInput; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _behavior__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./behavior */ "./src/features/behavior.ts");
@@ -932,7 +986,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   removeShareTrackingParam: function() { return /* binding */ removeShareTrackingParam; },
 /* harmony export */   removeUpgradeTab: function() { return /* binding */ removeUpgradeTab; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
@@ -1369,7 +1423,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   sanitizeSong: function() { return /* binding */ sanitizeSong; },
 /* harmony export */   splitVideoTitle: function() { return /* binding */ splitVideoTitle; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -1652,7 +1706,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initQueueButtons: function() { return /* binding */ initQueueButtons; },
 /* harmony export */   preInitSongLists: function() { return /* binding */ preInitSongLists; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
@@ -1877,7 +1931,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initInterface: function() { return /* binding */ initInterface; },
 /* harmony export */   setGlobalProp: function() { return /* binding */ setGlobalProp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 
@@ -2047,7 +2101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   openCfgMenu: function() { return /* binding */ openCfgMenu; },
 /* harmony export */   openChangelogMenu: function() { return /* binding */ openChangelogMenu; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./src/constants.ts");
 /* harmony import */ var _features_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../features/index */ "./src/features/index.ts");
@@ -2082,6 +2136,18 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 //#MARKER create menu elements
 let isCfgMenuAdded = false;
 let isCfgMenuOpen = false;
+const compressionFormat = "deflate-raw";
+function compressionSupported() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.compress)(".", compressionFormat);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    });
+}
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
 let scrollIndicatorEnabled = true;
@@ -2523,6 +2589,7 @@ let copiedTxtTimeout = undefined;
 /** Adds a menu to copy the current configuration as JSON (hidden by default) */
 function addExportMenu() {
     return __awaiter(this, void 0, void 0, function* () {
+        const canCompress = yield compressionSupported();
         const menuBgElem = document.createElement("div");
         menuBgElem.id = "bytm-export-menu-bg";
         menuBgElem.classList.add("bytm-menu-bg");
@@ -2576,12 +2643,14 @@ function addExportMenu() {
         const textAreaElem = document.createElement("textarea");
         textAreaElem.id = "bytm-export-menu-textarea";
         textAreaElem.readOnly = true;
-        textAreaElem.value = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data: (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)() });
-        _siteEvents__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("configChanged", (data) => {
+        const cfgString = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data: (0,_config__WEBPACK_IMPORTED_MODULE_1__.getFeatures)() });
+        textAreaElem.value = canCompress ? yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.compress)(cfgString, compressionFormat) : cfgString;
+        _siteEvents__WEBPACK_IMPORTED_MODULE_5__.siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
             const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
+            const cfgString = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data });
             if (textAreaElem)
-                textAreaElem.value = JSON.stringify({ formatVersion: _config__WEBPACK_IMPORTED_MODULE_1__.formatVersion, data });
-        });
+                textAreaElem.value = canCompress ? yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.compress)(cfgString, compressionFormat) : cfgString;
+        }));
         //#SECTION footer
         const footerElem = document.createElement("div");
         footerElem.classList.add("bytm-menu-footer-right");
@@ -2724,7 +2793,21 @@ function addImportMenu() {
             if (!textAreaElem)
                 return (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't find import menu textarea element");
             try {
-                const parsed = JSON.parse(textAreaElem.value.trim());
+                const decode = (input) => __awaiter(this, void 0, void 0, function* () {
+                    try {
+                        return JSON.parse(input);
+                    }
+                    catch (_a) {
+                        try {
+                            return JSON.parse(yield (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.decompress)(input, compressionFormat));
+                        }
+                        catch (err) {
+                            (0,_utils__WEBPACK_IMPORTED_MODULE_4__.warn)("Couldn't import configuration:", err);
+                            alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_invalid"));
+                        }
+                    }
+                });
+                const parsed = yield decode(textAreaElem.value.trim());
                 if (typeof parsed !== "object")
                     return alert((0,_translations__WEBPACK_IMPORTED_MODULE_6__.t)("import_error_invalid"));
                 if (typeof parsed.formatVersion !== "number")
@@ -3182,7 +3265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   initObservers: function() { return /* binding */ initObservers; },
 /* harmony export */   observers: function() { return /* binding */ observers; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
@@ -3406,7 +3489,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   t: function() { return /* binding */ t; },
 /* harmony export */   tp: function() { return /* binding */ tp; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.ts");
 /* harmony import */ var _interface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./interface */ "./src/interface.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -3519,7 +3602,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   videoSelector: function() { return /* binding */ videoSelector; },
 /* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types */ "./src/types.ts");
@@ -3739,49 +3822,20 @@ function clearNode(element) {
 }
 function getSessionId() {
     let sesId = window.sessionStorage.getItem("bytm-session-id");
-    if (!sesId || !window.name) {
-        window.name = sesId = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.randomId)(8, 36);
+    if (!sesId) {
+        sesId = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.randomId)(8, 36);
         window.sessionStorage.setItem("bytm-session-id", sesId);
     }
-    return window.name = sesId;
+    return sesId;
 }
 
 
 /***/ }),
 
-/***/ "./node_modules/nanoevents/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/nanoevents/index.js ***!
-  \******************************************/
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createNanoEvents: function() { return /* binding */ createNanoEvents; }
-/* harmony export */ });
-let createNanoEvents = () => ({
-  emit(event, ...args) {
-    let callbacks = this.events[event] || []
-    for (let i = 0, length = callbacks.length; i < length; i++) {
-      callbacks[i](...args)
-    }
-  },
-  events: {},
-  on(event, cb) {
-    this.events[event]?.push(cb) || (this.events[event] = [cb])
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i)
-    }
-  }
-})
-
-
-/***/ }),
-
-/***/ "../../svn/UserUtils/dist/index.mjs":
-/*!******************************************!*\
-  !*** ../../svn/UserUtils/dist/index.mjs ***!
-  \******************************************/
+/***/ "./node_modules/@sv443-network/userutils/dist/index.mjs":
+/*!**************************************************************!*\
+  !*** ./node_modules/@sv443-network/userutils/dist/index.mjs ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3792,7 +3846,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addParent: function() { return /* binding */ addParent; },
 /* harmony export */   autoPlural: function() { return /* binding */ autoPlural; },
 /* harmony export */   clamp: function() { return /* binding */ clamp; },
+/* harmony export */   compress: function() { return /* binding */ compress; },
 /* harmony export */   debounce: function() { return /* binding */ debounce; },
+/* harmony export */   decompress: function() { return /* binding */ decompress; },
 /* harmony export */   fetchAdvanced: function() { return /* binding */ fetchAdvanced; },
 /* harmony export */   getUnsafeWindow: function() { return /* binding */ getUnsafeWindow; },
 /* harmony export */   insertAfter: function() { return /* binding */ insertAfter; },
@@ -4155,12 +4211,42 @@ function fetchAdvanced(_0) {
     return res;
   });
 }
-function insertValues(str, ...values) {
-  return str.replace(/%\d/gm, (match) => {
+function insertValues(input, ...values) {
+  return input.replace(/%\d/gm, (match) => {
     var _a, _b;
     const argIndex = Number(match.substring(1)) - 1;
     return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
   });
+}
+function compress(input, compressionFormat, outputType = "base64") {
+  return __async(this, null, function* () {
+    const byteArray = typeof input === "string" ? new TextEncoder().encode(input) : input;
+    const comp = new CompressionStream(compressionFormat);
+    const writer = comp.writable.getWriter();
+    writer.write(byteArray);
+    writer.close();
+    const buf = yield new Response(comp.readable).arrayBuffer();
+    return outputType === "arrayBuffer" ? buf : ab2str(buf);
+  });
+}
+function decompress(input, compressionFormat, outputType = "string") {
+  return __async(this, null, function* () {
+    const byteArray = typeof input === "string" ? str2ab(input) : input;
+    const decomp = new DecompressionStream(compressionFormat);
+    const writer = decomp.writable.getWriter();
+    writer.write(byteArray);
+    writer.close();
+    const buf = yield new Response(decomp.readable).arrayBuffer();
+    return outputType === "arrayBuffer" ? buf : new TextDecoder().decode(buf);
+  });
+}
+function ab2str(buf) {
+  return getUnsafeWindow().btoa(
+    new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
+  );
+}
+function str2ab(str) {
+  return Uint8Array.from(getUnsafeWindow().atob(str), (c) => c.charCodeAt(0));
 }
 
 // lib/SelectorObserver.ts
@@ -4330,8 +4416,36 @@ tr.getLanguage = () => {
 };
 
 
-//# sourceMappingURL=out.js.map
-//# sourceMappingURL=index.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/nanoevents/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/nanoevents/index.js ***!
+  \******************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createNanoEvents: function() { return /* binding */ createNanoEvents; }
+/* harmony export */ });
+let createNanoEvents = () => ({
+  emit(event, ...args) {
+    let callbacks = this.events[event] || []
+    for (let i = 0, length = callbacks.length; i < length; i++) {
+      callbacks[i](...args)
+    }
+  },
+  events: {},
+  on(event, cb) {
+    this.events[event]?.push(cb) || (this.events[event] = [cb])
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i)
+    }
+  }
+})
+
 
 /***/ }),
 
@@ -4351,7 +4465,7 @@ module.exports = JSON.parse('{"de_DE":{"name":"Deutsch (Deutschland)","userscrip
   \**********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"AGPL-3.0","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^3.0.0","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
+module.exports = JSON.parse('{"name":"betterytm","userscriptName":"BetterYTM","version":"1.1.0","description":"Configurable layout and user experience improvements for YouTube Music","homepage":"https://github.com/Sv443/BetterYTM","main":"./src/index.ts","type":"module","scripts":{"test":"npm run node-ts -- ./test.ts","build-prod":"webpack --env mode=production","build-dev":"webpack --env mode=development","post-build":"npm run node-ts -- ./src/tools/post-build.ts","serve":"npm run node-ts -- ./src/tools/serve.ts","dev":"concurrently \\"nodemon --exec npm run build-dev\\" \\"npm run serve\\"","lint":"tsc --noEmit && eslint .","tr-progress":"npm run node-ts -- ./src/tools/tr-progress.ts","node-ts":"node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"},"engines":{"node":">=18","npm":">=8"},"repository":{"type":"git","url":"git+https://github.com/Sv443/BetterYTM.git"},"author":{"name":"Sv443","url":"https://github.com/Sv443"},"license":"AGPL-3.0","bugs":{"url":"https://github.com/Sv443/BetterYTM/issues"},"funding":{"type":"github","url":"https://github.com/sponsors/Sv443"},"cdn":{"greasyfork":"https://greasyfork.org/en/scripts/475682-betterytm","openuserjs":"https://openuserjs.org/scripts/Sv443/BetterYTM"},"dependencies":{"@sv443-network/userutils":"^4.0.0","nanoevents":"^8.0.0"},"devDependencies":{"@types/express":"^4.17.17","@types/greasemonkey":"^4.0.4","@types/node":"^20.2.4","@typescript-eslint/eslint-plugin":"^6.7.4","@typescript-eslint/parser":"^6.7.4","concurrently":"^8.1.0","css-loader":"^6.8.1","css-minimizer-webpack-plugin":"^5.0.0","dotenv":"^16.1.4","eslint":"^8.51.0","express":"^4.18.2","html-loader":"^4.2.0","markdown-loader":"^8.0.0","mini-css-extract-plugin":"^2.7.6","nodemon":"^3.0.1","ts-loader":"^9.4.3","ts-node":"^10.9.1","tslib":"^2.5.2","typescript":"^5.0.4","webpack-cli":"^5.1.1"},"browserslist":["last 1 version","> 1%","not dead"],"nodemonConfig":{"watch":["src/**","assets/**","webpack.config.js",".env","changelog.md"],"ext":"ts,js,json,html,css,svg,png","ignore":["dist/*","dev/*"]}}');
 
 /***/ })
 
@@ -4418,7 +4532,7 @@ var __webpack_exports__ = {};
   !*** ./src/index.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "../../svn/UserUtils/dist/index.mjs");
+/* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./src/config.ts");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
@@ -4524,7 +4638,670 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         // post-build these double quotes are replaced by backticks (because if backticks are used here, webpack converts them to double quotes)
-        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)("{{GLOBAL_STYLE}}");
+        (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addGlobalStyle)(`/*!*************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/menu_old.css ***!
+  \*************************************************************************/
+.bytm-menu-bg {
+  --bytm-menu-bg: #333333;
+  --bytm-menu-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-menu-separator-color: #797979;
+  --bytm-menu-border-radius: 10px;
+}
+
+#bytm-cfg-menu-bg {
+  --bytm-menu-height-max: 750px;
+  --bytm-menu-width-max: 1000px;
+}
+
+#bytm-changelog-menu-bg {
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 800px;
+}
+
+#bytm-export-menu-bg, #bytm-import-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+.bytm-menu-bg {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bytm-menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  border-radius: var(--bytm-menu-border-radius);
+  height: auto;
+  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 16;
+  color: #fff;
+  background-color: var(--bytm-menu-bg);
+}
+
+.bytm-menu-body {
+  padding: 20px;
+}
+
+#bytm-menu-opts {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 30px 0px;
+  overflow-y: auto;
+}
+
+.bytm-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-menu-bg);
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
+}
+
+.bytm-menu-titlecont {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-menu-title {
+  display: inline-block;
+  font-size: 22px;
+}
+
+#bytm-menu-linkscont {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+
+.bytm-menu-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bytm-menu-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.bytm-menu-close {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.bytm-menu-footer {
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.bytm-menu-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 20px 20px 8px 20px;
+  background: var(--bytm-menu-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: solid none none none;
+}
+
+#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-menu-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#bytm-menu-version-cont {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.2em;
+  padding-bottom: 8px;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
+}
+
+#bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#bytm-menu-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
+  position: sticky;
+  bottom: -15px;
+  left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 101;
+  background-color: var(--bytm-scroll-indicator-bg);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0px 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.bytm-ftitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4em;
+  padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-ftitem:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.bytm-ftconf-label {
+  user-select: none;
+}
+
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-toggle-label {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
+  min-width: 50px;
+}
+
+.bytm-ftconf-input[type=number] {
+  width: 75px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
+}
+
+#bytm-export-menu-text, #bytm-import-menu-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+.bytm-menu-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
+#bytm-changelog-menu-body {
+  overflow-y: auto;
+}
+
+#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
+}
+
+.bytm-markdown-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1.5em;
+  line-height: 20px;
+}
+
+/* Markdown stuff */
+
+.bytm-markdown-container kbd {
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 11px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+}
+
+.bytm-markdown-container kbd:active {
+  padding-bottom: 2px;
+  box-shadow: inset 0 0 0 initial;
+}
+
+.bytm-markdown-container kbd::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
+  margin-bottom: 5px;
+}
+
+.bytm-markdown-container h2:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.bytm-markdown-container ul li::before {
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li::before {
+  white-space: pre;
+  content: "    • ";
+  font-weight: bolder;
+}
+
+/*!****************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/hotkeyInput.css ***!
+  \****************************************************************************/
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+/*!***************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/layout.css ***!
+  \***************************************************************************/
+/* #MARKER misc */
+
+.bytm-disable-scroll {
+  overflow: hidden !important;
+}
+
+.bytm-generic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+
+  margin-left: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: transparent;
+}
+
+.bytm-generic-btn:hover {
+  background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
+}
+
+.bytm-generic-btn-img {
+  display: inline-block;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+}
+
+.bytm-spinner {
+  animation: rotate 1.2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-anchor {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out infinite;
+} */
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
+  width: 24px;
+  height: 24px;
+  z-index: 1000;
+  position: absolute;
+  animation: rotate-fade-in 1s ease-in-out;
+}
+
+@keyframes rotate-fade-in {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+  30% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+button.bytm-btn {
+  padding: revert;
+  border: revert;
+  outline: revert;
+  font: revert;
+  text-transform: revert;
+  color: revert;
+  background: revert;
+}
+
+.bytm-link, .bytm-markdown-container a {
+  color: #369bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bytm-link:hover, .bytm-markdown-container a:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER menu */
+
+.bytm-cfg-menu-option {
+  display: block;
+  padding: 8px 0;
+}
+
+.bytm-cfg-menu-option-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
+  min-height: var(--paper-item-min-height, 40px);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bytm-cfg-menu-option-item:hover {
+  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+}
+
+.bytm-cfg-menu-option-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: none;
+}
+
+.bytm-cfg-menu-option-text {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
+  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
+}
+
+/* #MARKER watermark */
+
+#bytm-watermark {
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 97px;
+  top: 46px;
+  z-index: 10;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#bytm-watermark:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER anchor improvements */
+
+ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
+  margin-right: 0 !important;
+}
+
+.bytm-carousel-shelf-anchor {
+  margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 24px);
+}
+
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  font-size: 15px;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+/* #MARKER scroll to active */
+
+#bytm-scroll-to-active-btn-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  height: 100%;
+}
+
+#bytm-scroll-to-active-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#bytm-scroll-to-active-btn {
+  width: revert;
+  height: revert;
+}
+
+#bytm-scroll-to-active-btn .bytm-generic-btn-img {
+  padding: 4px;
+}
+
+/*!******************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/features/songLists.css ***!
+  \******************************************************************************/
+/* #MARKER queue buttons */
+
+.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+  position: relative;
+}
+
+.side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
+  display: none;
+  position: absolute;
+  right: 0;
+  padding-left: 25px;
+  height: 100%;
+}
+
+.bytm-generic-list-queue-btn-container {
+  /* otherwise the queue buttons render over the currently playing song page */
+  z-index: 1;
+}
+
+.side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container,
+ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
+  display: inline-block;
+}
+
+ytmusic-responsive-list-item-renderer .title-column {
+  align-items: center;
+}
+
+.side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
+}
+
+ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+  display: none !important;
+}
+
+/*!****************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/menu/welcomeMenu.css ***!
+  \****************************************************************************/
+#bytm-welcome-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 700px;
+}
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6em;
+  padding: 8px 20px;
+  margin: 10px 0px;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6em;
+}
+
+#bytm-welcome-menu-footer-cont {
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  padding: 20px;
+}
+
+/*# sourceMappingURL=http://localhost:8710/global.css.map*/`);
         (0,_observers__WEBPACK_IMPORTED_MODULE_11__.initObservers)();
         (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.initOnSelector)();
         const features = (0,_config__WEBPACK_IMPORTED_MODULE_2__.getFeatures)();
@@ -4703,4 +5480,4 @@ preInit();
 
 }();
 
-//# sourceMappingURL=BetterYTM.user.js.map
+//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
