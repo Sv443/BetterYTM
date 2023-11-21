@@ -85,8 +85,6 @@
     "feature_desc_removeShareTrackingParam": "Eliminar el parámetro de seguimiento \"&si\" de los enlaces en el cuadro de diálogo Compartir",
     "feature_desc_fixSpacing": "Solucionar problemas de espaciado en el diseño",
     "feature_desc_scrollToActiveSongBtn": "Agregue un botón a la cola para desplazarse hasta la canción que se está reproduciendo actualmente",
-    "feature_desc_boostGain": "Agregue un botón a los controles multimedia de la canción que se está reproduciendo actualmente para aumentar su volumen más allá del 100%",
-    "feature_desc_boostGainPercentage": "En qué porcentaje aumentar el volumen cuando se presiona el botón de aumento de ganancia",
     "feature_desc_rememberSongTime": "Recuerde el tiempo de la última canción al volver a cargar o restaurar la pestaña",
     "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás en la canción que se está reproduciendo actualmente",
     "feature_desc_arrowKeySkipBy": "Por cuántos segundos saltar al usar las teclas de flecha",

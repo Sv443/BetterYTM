@@ -85,8 +85,6 @@
     "feature_desc_removeShareTrackingParam": "共有ポップアップ内のリンクから追跡パラメータ \"&si\" を削除する",
     "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",
     "feature_desc_scrollToActiveSongBtn": "キューに現在再生中の曲までスクロールするボタンを追加する",
-    "feature_desc_boostGain": "現在再生中の曲のメディアコントロールにボタンを追加して、音量を 100% 以上にブーストする",
-    "feature_desc_boostGainPercentage": "ブーストゲインボタンを押したときに音量をどれだけブーストするか",
     "feature_desc_rememberSongTime": "リロードまたはタブの復元時に最後の曲の時間を記憶する",
     "feature_desc_arrowKeySupport": "現在再生中の曲で前後にスキップするには矢印キーを使用する",
     "feature_desc_arrowKeySkipBy": "矢印キーを使用してスキップする秒数",

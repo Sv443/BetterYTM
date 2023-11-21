@@ -85,8 +85,6 @@
     "feature_desc_removeShareTrackingParam": "从共享弹出窗口中的链接中删除跟踪参数 \"&si\"",
     "feature_desc_fixSpacing": "修复布局中的间距问题",
     "feature_desc_scrollToActiveSongBtn": "在队列中添加一个按钮，以滚动到当前播放的歌曲",
-    "feature_desc_boostGain": "在当前播放的歌曲的媒体控件中添加一个按钮，以将其音量提升到 100% 以上",
-    "feature_desc_boostGainPercentage": "按下提升增益按钮时，要提升多少音量",
     "feature_desc_rememberSongTime": "记住重新加载或恢复标签时的最后一首歌的时间",
     "feature_desc_arrowKeySupport": "使用箭头键在当前播放的歌曲中前进和后退",
     "feature_desc_arrowKeySkipBy": "使用箭头键跳过多少秒",

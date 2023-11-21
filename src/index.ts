@@ -18,7 +18,7 @@ import {
   addWatermark,
   removeUpgradeTab, initVolumeFeatures,
   removeShareTrackingParam, fixSpacing,
-  addScrollToActiveBtn, addBoostGainButton,
+  addScrollToActiveBtn,
   // song lists
   preInitSongLists,
   initQueueButtons,
@@ -195,9 +195,6 @@ async function onDomLoad() {
 
       if(features.scrollToActiveSongBtn)
         ftInit.push(addScrollToActiveBtn());
-
-      if(features.boostGain)
-        ftInit.push(addBoostGainButton());
 
       ftInit.push(initVolumeFeatures());
     }

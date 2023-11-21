@@ -93,8 +93,6 @@
     "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"&si\" from links in the share popup",
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     "feature_desc_fixSpacing": "Fix spacing issues in the layout",
-    "feature_desc_boostGain": "Add a button to the media controls of the currently playing song to boost its volume past 100%",
-    "feature_desc_boostGainPercentage": "By how much to boost the volume when the boost gain button is pressed",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",

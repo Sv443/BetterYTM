@@ -59,10 +59,6 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
-  /** Add a button to the media controls to boost the current song's gain */
-  boostGain: boolean;
-  /** By how much to multiply the current song's gain when the boost button is pressed */
-  boostGainPercentage: number;
 
   //#SECTION song lists
   /** Add a button to each song in the queue to quickly open its lyrics page */

@@ -85,8 +85,6 @@
     "feature_desc_removeShareTrackingParam": "Entferne den Tracking-Parameter \"&si\" von URLs im \"Teilen\" Popup",
     "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",
     "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen",
-    "feature_desc_boostGain": "Füge einen Knopf zum aktuell spielenden Song hinzu, um die Lautstärke über 100% nachzuverstärken",
-    "feature_desc_boostGainPercentage": "Um wie viel Prozent die Lautstärke nachverstärkt werden soll",
     "feature_desc_rememberSongTime": "Stelle die Zeit des letzten Songs wieder her, wenn die Seite neu geladen oder wiederhergestellt wird",
     "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen",
     "feature_desc_arrowKeySkipBy": "Um wie viele Sekunden vor- und zurückspulen, wenn die Pfeiltasten benutzt werden",

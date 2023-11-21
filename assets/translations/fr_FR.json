@@ -85,8 +85,6 @@
     "feature_desc_removeShareTrackingParam": "Supprimer le paramètre de suivi \"&si\" des liens dans la fenêtre contextuelle de partage",
     "feature_desc_fixSpacing": "Corriger les problèmes d'espacement dans la mise en page",
     "feature_desc_scrollToActiveSongBtn": "Ajouter un bouton à la file d'attente pour faire défiler jusqu'à la chanson en cours de lecture",
-    "feature_desc_boostGain": "Ajouter un bouton aux contrôles multimédias de la chanson en cours de lecture pour augmenter son volume au-delà de 100%",
-    "feature_desc_boostGainPercentage": "De combien augmenter le volume lorsque le bouton d'augmentation du gain est enfoncé",
     "feature_desc_rememberSongTime": "Se souvenir du temps de la dernière chanson lors du rechargement ou de la restauration de l'onglet",
     "feature_desc_arrowKeySupport": "Utilisez les touches fléchées pour avancer et reculer dans la chanson en cours de lecture",
     "feature_desc_arrowKeySkipBy": "De combien de secondes sauter en utilisant les touches fléchées",

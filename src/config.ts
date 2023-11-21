@@ -33,8 +33,6 @@ export const migrations: ConfigMigrationsDict = {
     return {
       ...oldData,
       locale: getFeatureDefault("locale"),
-      boostGain: getFeatureDefault("boostGain"),
-      boostGainPercentage: getFeatureDefault("boostGainPercentage"),
       rememberSongTime: getFeatureDefault("rememberSongTime"),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {

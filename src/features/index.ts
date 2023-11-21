@@ -115,24 +115,6 @@ export const featInfo = {
     enable: () => void "TODO",
     disable: () => void "TODO",
   },
-  boostGain: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
-  },
-  boostGainPercentage: {
-    type: "slider",
-    category: "layout",
-    min: 125,
-    max: 300,
-    default: 200,
-    step: 25,
-    unit: "%",
-    enable: () => void "TODO",
-    change: () => void "TODO",
-  },
 
   //#SECTION song lists
   lyricsQueueButton: {
