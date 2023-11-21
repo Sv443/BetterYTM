@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1699831122635
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1700561087124
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,30 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1699831122635
-// @resource          close            http://localhost:8710/assets/icons/close.png?t=1699831122635
-// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1699831122635
-// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1699831122635
-// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1699831122635
-// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1699831122635
-// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1699831122635
-// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1699831122635
-// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1699831122635
-// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1699831122635
-// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1699831122635
-// @resource          github           http://localhost:8710/assets/external/github.png?t=1699831122635
-// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1699831122635
-// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1699831122635
-// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1699831122635
-// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1699831122635
-// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1699831122635
-// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1699831122635
-// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1699831122635
-// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1699831122635
-// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1699831122635
-// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1699831122635
-// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1699831122635
-// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1699831122635
+// @resource          logo             http://localhost:8710/assets/logo/logo_48.png?t=1700561087124
+// @resource          close            http://localhost:8710/assets/icons/close.png?t=1700561087124
+// @resource          delete           http://localhost:8710/assets/icons/delete.svg?t=1700561087124
+// @resource          error            http://localhost:8710/assets/icons/error.svg?t=1700561087124
+// @resource          lyrics           http://localhost:8710/assets/icons/lyrics.svg?t=1700561087124
+// @resource          spinner          http://localhost:8710/assets/icons/spinner.svg?t=1700561087124
+// @resource          arrow_down       http://localhost:8710/assets/icons/arrow_down.svg?t=1700561087124
+// @resource          skip_to          http://localhost:8710/assets/icons/skip_to.svg?t=1700561087124
+// @resource          volume_boost_off http://localhost:8710/assets/icons/volume_boost_off.svg?t=1700561087124
+// @resource          volume_boost_on  http://localhost:8710/assets/icons/volume_boost_on.svg?t=1700561087124
+// @resource          globe            http://localhost:8710/assets/icons/globe.svg?t=1700561087124
+// @resource          github           http://localhost:8710/assets/external/github.png?t=1700561087124
+// @resource          greasyfork       http://localhost:8710/assets/external/greasyfork.png?t=1700561087124
+// @resource          openuserjs       http://localhost:8710/assets/external/openuserjs.png?t=1700561087124
+// @resource          discord          http://localhost:8710/assets/external/discord.png?t=1700561087124
+// @resource          tr-de_DE         http://localhost:8710/assets/translations/de_DE.json?t=1700561087124
+// @resource          tr-en_US         http://localhost:8710/assets/translations/en_US.json?t=1700561087124
+// @resource          tr-en_UK         http://localhost:8710/assets/translations/en_UK.json?t=1700561087124
+// @resource          tr-es_ES         http://localhost:8710/assets/translations/es_ES.json?t=1700561087124
+// @resource          tr-fr_FR         http://localhost:8710/assets/translations/fr_FR.json?t=1700561087124
+// @resource          tr-hi_IN         http://localhost:8710/assets/translations/hi_IN.json?t=1700561087124
+// @resource          tr-ja_JA         http://localhost:8710/assets/translations/ja_JA.json?t=1700561087124
+// @resource          tr-pt_BR         http://localhost:8710/assets/translations/pt_BR.json?t=1700561087124
+// @resource          tr-zh_CN         http://localhost:8710/assets/translations/zh_CN.json?t=1700561087124
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -298,7 +298,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "6142236", // asserted as generic string instead of literal
+    buildNumber: "32f7950", // asserted as generic string instead of literal
 };
 
 
@@ -446,7 +446,7 @@ function restoreSongTime() {
                     return;
                 }
                 else {
-                    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(_utils__WEBPACK_IMPORTED_MODULE_2__.ytmVideoSelector, {
+                    (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)(_utils__WEBPACK_IMPORTED_MODULE_2__.videoSelector, {
                         listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
                             if (vidElem) {
                                 const applyTime = () => __awaiter(this, void 0, void 0, function* () {
@@ -478,7 +478,7 @@ function remSongUpdateEntry() {
             if (!watchID)
                 return;
             const songTime = (_a = yield (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getVideoTime)()) !== null && _a !== void 0 ? _a : 0;
-            const paused = (_c = (_b = document.querySelector((0,_utils__WEBPACK_IMPORTED_MODULE_2__.getDomain)() === "ytm" ? _utils__WEBPACK_IMPORTED_MODULE_2__.ytmVideoSelector : _utils__WEBPACK_IMPORTED_MODULE_2__.ytVideoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            const paused = (_c = (_b = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_2__.videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
             // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
             if (songTime > remSongMinTime && !paused) {
@@ -897,7 +897,7 @@ function initArrowKeySkip() {
             if (evt.code === "ArrowLeft")
                 skipBy *= -1;
             (0,_utils__WEBPACK_IMPORTED_MODULE_1__.log)(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-            const vidElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_1__.ytmVideoSelector);
+            const vidElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_1__.videoSelector);
             if (vidElem)
                 vidElem.currentTime = (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.clamp)(vidElem.currentTime + skipBy, 0, vidElem.duration);
         });
@@ -973,7 +973,7 @@ function initNumKeysSkip() {
                 && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
                 && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
                 return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.info)("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
-            const vidElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_1__.ytmVideoSelector);
+            const vidElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_1__.videoSelector);
             if (!vidElem)
                 return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.warn)("Could not find video element, so the keypress is ignored");
             const newVidTime = vidElem.duration / (10 / Number(e.key));
@@ -1440,7 +1440,7 @@ function addBoostGainButton() {
             e.preventDefault();
             e.stopImmediatePropagation();
             const btnElem = document.querySelector("#bytm-boost-gain-btn");
-            const videoElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_3__.ytmVideoSelector);
+            const videoElem = document.querySelector(_utils__WEBPACK_IMPORTED_MODULE_3__.videoSelector);
             const imgElem = btnElem === null || btnElem === void 0 ? void 0 : btnElem.querySelector("img");
             if (!videoElem || !imgElem || !btnElem)
                 return;
@@ -3659,9 +3659,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   info: function() { return /* binding */ info; },
 /* harmony export */   log: function() { return /* binding */ log; },
 /* harmony export */   setLogLevel: function() { return /* binding */ setLogLevel; },
-/* harmony export */   warn: function() { return /* binding */ warn; },
-/* harmony export */   ytVideoSelector: function() { return /* binding */ ytVideoSelector; },
-/* harmony export */   ytmVideoSelector: function() { return /* binding */ ytmVideoSelector; }
+/* harmony export */   videoSelector: function() { return /* binding */ videoSelector; },
+/* harmony export */   warn: function() { return /* binding */ warn; }
 /* harmony export */ });
 /* harmony import */ var _sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @sv443-network/userutils */ "./node_modules/@sv443-network/userutils/dist/index.mjs");
 /* harmony import */ var _onSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onSelector */ "./src/onSelector.ts");
@@ -3733,8 +3732,7 @@ function dbg(...args) {
     console.log(consPrefixDbg, ...args);
 }
 //#SECTION video time
-const ytmVideoSelector = "ytmusic-player video";
-const ytVideoSelector = "#content ytd-player video";
+const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
 /**
  * Returns the current video time in seconds
  * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
@@ -3745,7 +3743,7 @@ function getVideoTime() {
         const domain = getDomain();
         try {
             if (domain === "ytm") {
-                const vidElem = document.querySelector(ytmVideoSelector);
+                const vidElem = document.querySelector(videoSelector);
                 if (vidElem)
                     return res(Math.floor(vidElem.currentTime));
                 (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.onSelectorOld)("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
@@ -3753,7 +3751,7 @@ function getVideoTime() {
                 });
             }
             else if (domain === "yt") {
-                const vidElem = document.querySelector(ytVideoSelector);
+                const vidElem = document.querySelector(videoSelector);
                 if (vidElem)
                     return res(Math.floor(vidElem.currentTime));
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
@@ -5526,16 +5524,22 @@ function registerMenuCommands() {
             yield GM.deleteValue("bytm-installed");
             console.log("Reset install time.");
         }), "t");
+        // TODO: check if this works lol
         GM.registerMenuCommand("List active selector listeners", () => __awaiter(this, void 0, void 0, function* () {
-            const selectors = (0,_onSelector__WEBPACK_IMPORTED_MODULE_1__.getSelectorMap)();
             const lines = [];
-            [...selectors].forEach(([k, v]) => {
-                lines.push(`  (${v.length}): ${k}`);
-                v.forEach(({ all, continuous }, i) => {
-                    lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+            let listenersAmt = 0;
+            for (const [obsName, obs] of Object.entries(_observers__WEBPACK_IMPORTED_MODULE_11__.observers)) {
+                const listeners = obs.getAllListeners();
+                lines.push(`- "${obsName}" (${listeners.size} listeners):`);
+                [...listeners].forEach(([k, v]) => {
+                    listenersAmt += v.length;
+                    lines.push(`    [${v.length}] ${k}`);
+                    v.forEach(({ all, continuous }, i) => {
+                        lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+                    });
                 });
-            });
-            console.log(`Showing currently active listeners for ${selectors.size} selectors:\n${lines.join("\n")}`);
+            }
+            console.log(`Showing currently active listeners for ${Object.keys(_observers__WEBPACK_IMPORTED_MODULE_11__.observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
             alert("See console.");
         }), "s");
     }
