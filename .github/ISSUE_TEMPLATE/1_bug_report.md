@@ -7,10 +7,19 @@ assignees: Sv443
 
 ---
 
+### Checklist:
+<!-- Please go through all steps and check them off by replacing the [ ] with [x] -->
+<!-- You can also click on the checkboxes after submitting this issue -->
+- [ ] I checked [here](https://github.com/Sv443/BetterYTM/issues?q=is%3Aissue+sort%3Aupdated-desc) if there is already an issue for this bug
+- [ ] I am using the latest version of BetterYTM
+- [ ] I am using the latest version of my browser
+- [ ] I was able to reproduce the bug while all my other userscripts or extensions were disabled
+
 
 ### Description of the bug and steps to reproduce:
 <!-- A clear and concise description of what the bug is -->
 <!-- Also include steps to reproduce it -->
+<!-- Don't shy away from adding too much information, it's better to have too much than too little -->
 
 
 ### Environment:
@@ -18,7 +27,7 @@ assignees: Sv443
 - Userscript version & build number: x.x.x (xxxxxxx)
 <!--
   To view the userscript version and build number, either open the configuration menu and copy the numbers and letters at the bottom,
-  or open the JavaScript console of your browser (usually with F12). It should be near the very top.
+  or open the JavaScript console of your browser (usually with F12) and look for them at the very top.
 -->
 
 
