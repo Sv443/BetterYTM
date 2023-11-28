@@ -51,6 +51,8 @@ export interface FeatureConfig {
   volumeSliderSize: number;
   /** Volume slider sensitivity - the smaller this number, the finer the volume control */
   volumeSliderStep: number;
+  /** Volume slider scroll wheel sensitivity */
+  volumeSliderScrollStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
   /** Remove the "si" tracking parameter from links in the share popup */

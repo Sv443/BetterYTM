@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1700576703657
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=1701205883777
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,28 +31,28 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=1700576703657
-// @resource          close      http://localhost:8710/assets/icons/close.png?t=1700576703657
-// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=1700576703657
-// @resource          error      http://localhost:8710/assets/icons/error.svg?t=1700576703657
-// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=1700576703657
-// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=1700576703657
-// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=1700576703657
-// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=1700576703657
-// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=1700576703657
-// @resource          github     http://localhost:8710/assets/external/github.png?t=1700576703657
-// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=1700576703657
-// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=1700576703657
-// @resource          discord    http://localhost:8710/assets/external/discord.png?t=1700576703657
-// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=1700576703657
-// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=1700576703657
-// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=1700576703657
-// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=1700576703657
-// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=1700576703657
-// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=1700576703657
-// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=1700576703657
-// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=1700576703657
-// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=1700576703657
+// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=1701205883777
+// @resource          close      http://localhost:8710/assets/icons/close.png?t=1701205883777
+// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=1701205883777
+// @resource          error      http://localhost:8710/assets/icons/error.svg?t=1701205883777
+// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=1701205883777
+// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=1701205883777
+// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=1701205883777
+// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=1701205883777
+// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=1701205883777
+// @resource          github     http://localhost:8710/assets/external/github.png?t=1701205883777
+// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=1701205883777
+// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=1701205883777
+// @resource          discord    http://localhost:8710/assets/external/discord.png?t=1701205883777
+// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=1701205883777
+// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=1701205883777
+// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=1701205883777
+// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=1701205883777
+// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=1701205883777
+// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=1701205883777
+// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=1701205883777
+// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=1701205883777
+// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=1701205883777
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -201,7 +201,7 @@ const migrations = {
                 shift: (_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false,
                 ctrl: (_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false,
                 alt: (_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false,
-            }, listButtonsPlacement: "queueOnly" });
+            }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: 10 });
     },
 };
 function getFeatureDefault(key) {
@@ -296,7 +296,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "b8a5720", // asserted as generic string instead of literal
+    buildNumber: "7330035", // asserted as generic string instead of literal
 };
 
 
@@ -660,6 +660,16 @@ const featInfo = {
         enable: () => void "TODO",
         change: () => void "TODO",
     },
+    volumeSliderScrollStep: {
+        type: "slider",
+        category: "layout",
+        min: 1,
+        max: 25,
+        default: 10,
+        unit: "%",
+        enable: () => void "TODO",
+        change: () => void "TODO",
+    },
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
@@ -993,6 +1003,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _translations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../translations */ "./src/translations.ts");
 /* harmony import */ var _menu_menu_old__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../menu/menu_old */ "./src/menu/menu_old.ts");
 /* harmony import */ var _layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layout.css */ "./src/features/layout.css");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! . */ "./src/features/index.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1002,6 +1013,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 
 
 
@@ -1159,6 +1171,26 @@ function initVolumeFeatures() {
             listener: (sliderElem) => {
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
+                if (features.volumeSliderScrollStep !== ___WEBPACK_IMPORTED_MODULE_7__.featInfo.volumeSliderScrollStep.default) {
+                    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+                        volSliderCont.addEventListener(evtName, (e) => {
+                            var _a, _b;
+                            e.preventDefault();
+                            // cancels all the other events that would be fired
+                            e.stopImmediatePropagation();
+                            const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
+                            const volumeDir = -Math.sign(delta);
+                            const newVolume = String(Number(sliderElem.value) + (features.volumeSliderScrollStep * volumeDir));
+                            sliderElem.value = newVolume;
+                            sliderElem.setAttribute("aria-valuenow", newVolume);
+                            // make the site actually change the volume
+                            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                        }, {
+                            // takes precedence over the slider's own event listener
+                            capture: true,
+                        });
+                    }
+                }
                 (0,_sv443_network_userutils__WEBPACK_IMPORTED_MODULE_0__.addParent)(sliderElem, volSliderCont);
                 if (typeof features.volumeSliderSize === "number")
                     setVolSliderSize();

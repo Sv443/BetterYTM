@@ -1,11 +1,12 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, getUnsafeWindow, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
-import { mode, scriptInfo } from "../constants";
-import { error, getResourceUrl, info, log, warn, videoSelector } from "../utils";
+import { scriptInfo } from "../constants";
+import { error, getResourceUrl, log, warn } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
+import { featInfo } from ".";
 
 let features: FeatureConfig;
 
@@ -186,6 +187,28 @@ export async function initVolumeFeatures() {
     listener: (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
+
+      if(features.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
+        for(const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+          volSliderCont.addEventListener(evtName, (e) => {
+            e.preventDefault();
+            // cancels all the other events that would be fired
+            e.stopImmediatePropagation();
+
+            const delta = (e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1;
+            const volumeDir = -Math.sign(delta);
+            const newVolume = String(Number(sliderElem.value) + (features.volumeSliderScrollStep * volumeDir));
+
+            sliderElem.value = newVolume;
+            sliderElem.setAttribute("aria-valuenow", newVolume);
+            // make the site actually change the volume
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+          }, {
+            // takes precedence over the slider's own event listener
+            capture: true,
+          });
+        }
+      }
 
       addParent(sliderElem, volSliderCont);
 

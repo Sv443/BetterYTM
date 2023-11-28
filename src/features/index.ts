@@ -87,6 +87,16 @@ export const featInfo = {
     enable: () => void "TODO",
     change: () => void "TODO",
   },
+  volumeSliderScrollStep: {
+    type: "slider",
+    category: "layout",
+    min: 1,
+    max: 25,
+    default: 10,
+    unit: "%",
+    enable: () => void "TODO",
+    change: () => void "TODO",
+  },
   watermarkEnabled: {
     type: "toggle",
     category: "layout",

@@ -42,6 +42,7 @@ export const migrations: ConfigMigrationsDict = {
         alt: oldSwitchSitesHotkey.meta ?? false,
       },
       listButtonsPlacement: "queueOnly",
+      volumeSliderScrollStep: 10,
     };
   },
 };

@@ -89,6 +89,7 @@
     "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
     "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",
     "feature_desc_volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
+    "feature_desc_volumeSliderScrollStep": "Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above",
     "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
     "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"&si\" from links in the share popup",
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
