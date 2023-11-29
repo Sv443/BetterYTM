@@ -12,7 +12,7 @@ const outputFile = "BetterYTM.user.js";
 export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async () => {
   const mode = args["config-mode"] ?? (process.env.NODE_ENV === "production" ? "production" : "development");
   const branch = args["config-branch"] ?? "develop";
-  const host = args["config-host"] ?? "greasyfork";
+  const host = args["config-host"] ?? "github";
 
   /** @type {import("rollup").RollupOptions} */
   const config = {
@@ -43,7 +43,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         const { message, ...rest } = warning;
         console.error(`\x1b[33m(!)\x1b[0m ${message}\n`, rest);
       }
-    }
+    },
   };
   return config;
 })();

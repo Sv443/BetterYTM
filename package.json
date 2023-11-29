@@ -79,7 +79,7 @@
     "watch": [
       "src/**",
       "assets/**",
-      "rollup.config.js",
+      "rollup.config.mjs",
       ".env",
       "changelog.md"
     ],

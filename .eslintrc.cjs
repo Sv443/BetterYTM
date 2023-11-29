@@ -6,7 +6,6 @@ module.exports = {
   },
   ignorePatterns: [
     "*.min.*",
-    "rollup.config.js",
     "*.user.js",
     "*.map",
     "dist/**",
@@ -49,7 +48,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**.js"],
+      files: ["**.js", "**.mjs", "**.cjs"],
       rules: {
         "@typescript-eslint/no-var-requires": "off",
         "quotes": [ "error", "double" ],

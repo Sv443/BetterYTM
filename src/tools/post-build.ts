@@ -1,6 +1,7 @@
 import { access, readFile, writeFile, constants as fsconstants } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
 import dotenv from "dotenv";
 import { outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
@@ -12,6 +13,8 @@ import type { RollupArgs } from "../types";
 type Stringifiable = string | { toString(): string; };
 
 const buildTs = Date.now();
+/** Used to force the browser and userscript extension to refresh resources */
+const buildUuid = randomUUID();
 
 const { env, exit } = process;
 dotenv.config();
@@ -31,8 +34,6 @@ const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
 const assetFolderPath = "./assets/";
-// TODO: change URL for GreasyFork and OpenUserJS
-void host;
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
@@ -70,8 +71,10 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
+${host === "github" ? (`\
 // @downloadURL       ${scriptUrl}
 // @updateURL         ${scriptUrl}
+`) : ""}\
 // @connect           api.sv443.net
 // @grant             GM.getValue
 // @grant             GM.setValue
@@ -263,12 +266,13 @@ function getLocalizedDescriptions() {
 /** Returns the full URL for a given relative asset path, based on the current mode */
 function getAssetUrl(relativePath: string) {
   return mode === "development"
-    ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildTs}`
+    ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildUuid}`
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
 }
 
 /** Returns the value of a CLI argument or undefined if it doesn't exist */
 function getCliArg(name: string) {
   const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
-  return arg ? arg.split("=")[1] : undefined;
+  const val = arg?.split("=")?.[1];
+  return val && val.length > 0 ? val : undefined;
 }
