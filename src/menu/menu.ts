@@ -1,4 +1,4 @@
-import changelogContent from "../../changelog.md";
+import changelog from "../../changelog.md";
 import menuContent from "./menu.html";
 import "./menu.css";
 
@@ -96,5 +96,5 @@ function initInfoContent() {
 
 function initChangelogContent() {
   const tab = document.querySelector("#bytm-menu-tab-changelog-content")!;
-  tab.innerHTML = changelogContent;
+  tab.innerHTML = changelog.html;
 }

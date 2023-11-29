@@ -4,10 +4,12 @@ import type { scriptInfo } from "./constants";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
 
-/** Env object passed to webpack.config.js */
-export type WebpackEnv = Partial<{
-  mode: "production" | "development",
-}> & Record<"WEBPACK_BUNDLE" | "WEBPACK_BUILD", boolean>;
+/** Custom CLI args passed to rollup */
+export interface RollupArgs {
+  "config-mode"?: "development" | "production";
+  "config-branch"?: "main" | "develop";
+  "config-host"?: "greasyfork" | "github" | "openuserjs";
+}
 
 export enum LogLevel {
   Debug = 0,

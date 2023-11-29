@@ -3,9 +3,10 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import dotenv from "dotenv";
-import { output as webpackCfgOutput } from "../../webpack.config.js";
+import { outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
+import type { RollupArgs } from "../types";
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
@@ -15,19 +16,23 @@ const buildTs = Date.now();
 const { env, exit } = process;
 dotenv.config();
 
-const mode = process.argv.find((v) => v.trim().match(/^(--)?mode=production$/)) ? "production" : "development";
-const branch = mode === "production" ? "main" : "develop";
+const mode = (getCliArg("mode") ?? "development") as Required<RollupArgs>["config-mode"];
+const branch = (getCliArg("branch") ?? (mode === "production" ? "main" : "develop")) as Required<RollupArgs>["config-branch"];
+const host = (getCliArg("host") ?? "github") as Required<RollupArgs>["config-host"];
+
 const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
 const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
-const devServerUserscriptUrl = `http://localhost:${devServerPort}/${webpackCfgOutput.filename}`;
+const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}`;
 
 const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
 const assetFolderPath = "./assets/";
+// TODO: change URL for GreasyFork and OpenUserJS
+void host;
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
@@ -142,6 +147,7 @@ I welcome every contribution on GitHub!
       sizeIndicator = " \x1b[2m[\x1b[0m\x1b[1m" + (sizeDiff > 0 ? "\x1b[33m↑↑↑" : (sizeDiff !== 0 ? "\x1b[32m↓↓↓" : "\x1b[32m===")) + "\x1b[0m\x1b[2m]\x1b[0m";
     }
 
+    console.info();
     console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
     console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
     console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
@@ -178,7 +184,7 @@ function insertValues(userscript: string, replacements: Record<string, Stringifi
 /** Removes sourcemapping comments */
 function remSourcemapComments(input: string) {
   return input
-    .replace(/\n\s*\/(\*|\/)\s?#.+(\*\/)?$/gm, "");
+    .replace(/\/\/#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
 
 /**
@@ -259,4 +265,10 @@ function getAssetUrl(relativePath: string) {
   return mode === "development"
     ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildTs}`
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
+}
+
+/** Returns the value of a CLI argument or undefined if it doesn't exist */
+function getCliArg(name: string) {
+  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
+  return arg ? arg.split("=")[1] : undefined;
 }

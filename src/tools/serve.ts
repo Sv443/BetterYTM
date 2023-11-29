@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
-import { output as webpackCfgOutput } from "../../webpack.config.js";
+import { outputDir } from "../../rollup.config.mjs";
 import "dotenv/config";
 
 const envPort = Number(process.env.DEV_SERVER_PORT);
@@ -28,10 +28,9 @@ app.use((err: unknown, _req: Request, _res: Response, _next: NextFunction) => {
 //   res.setHeader("Cache-Control", "no-store");
 //   next();
 // });
-
-// serves everything from `webpackConfig.output.path` (`dist/` by default)
+// serves everything from `rollupConfig.output.path` (`dist/` by default)
 app.use("/", express.static(
-  resolve(fileURLToPath(import.meta.url), "../../", webpackCfgOutput.path)
+  resolve(fileURLToPath(import.meta.url), `../../../${outputDir}`)
 ));
 
 app.use("/assets", express.static(

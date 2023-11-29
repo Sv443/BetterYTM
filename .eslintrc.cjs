@@ -6,7 +6,7 @@ module.exports = {
   },
   ignorePatterns: [
     "*.min.*",
-    "webpack.config.js",
+    "rollup.config.js",
     "*.user.js",
     "*.map",
     "dist/**",

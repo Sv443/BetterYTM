@@ -7,7 +7,7 @@ import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import { getLocale, initTranslations, setLocale, t } from "../translations";
 import { FeatureConfig, HotkeyObj } from "../types";
-import changelogContent from "../../changelog.md";
+import changelog from "../../changelog.md";
 import "./menu_old.css";
 import { createHotkeyInput } from "./hotkeyInput";
 import pkg from "../../package.json" assert { type: "json" };
@@ -1006,7 +1006,7 @@ async function addChangelogMenu() {
   const textElem = document.createElement("div");
   textElem.id = "bytm-changelog-menu-text";
   textElem.classList.add("bytm-markdown-container");
-  textElem.innerHTML = changelogContent;
+  textElem.innerHTML = changelog.html;
 
   //#SECTION finalize
 

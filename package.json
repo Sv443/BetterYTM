@@ -8,8 +8,9 @@
   "type": "module",
   "scripts": {
     "test": "npm run node-ts -- ./test.ts",
-    "build-prod": "webpack --env mode=production",
-    "build-dev": "webpack --env mode=development",
+    "build": "rollup -c",
+    "build-dev": "rollup -c --config-mode development",
+    "build-prod": "rollup -c --config-mode production",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "dev": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
@@ -46,26 +47,28 @@
     "nanoevents": "^8.0.0"
   },
   "devDependencies": {
+    "@jackfranklin/rollup-plugin-markdown": "^0.4.0",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
     "@types/express": "^4.17.17",
     "@types/greasemonkey": "^4.0.4",
     "@types/node": "^20.2.4",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "concurrently": "^8.1.0",
-    "css-loader": "^6.8.1",
-    "css-minimizer-webpack-plugin": "^5.0.0",
     "dotenv": "^16.1.4",
     "eslint": "^8.51.0",
     "express": "^4.18.2",
-    "html-loader": "^4.2.0",
-    "markdown-loader": "^8.0.0",
-    "mini-css-extract-plugin": "^2.7.6",
     "nodemon": "^3.0.1",
-    "ts-loader": "^9.4.3",
+    "rollup": "^4.6.0",
+    "rollup-plugin-execute": "^1.1.1",
+    "rollup-plugin-html": "^0.2.1",
+    "rollup-plugin-import-css": "^3.3.5",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.2",
-    "typescript": "^5.0.4",
-    "webpack-cli": "^5.1.1"
+    "typescript": "^5.0.4"
   },
   "browserslist": [
     "last 1 version",
@@ -76,7 +79,7 @@
     "watch": [
       "src/**",
       "assets/**",
-      "webpack.config.js",
+      "rollup.config.js",
       ".env",
       "changelog.md"
     ],
