@@ -53,6 +53,7 @@ If you want to submit or edit a translation, please follow these steps:
 | `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `.env` and `src/tools/serve.ts` | - |
 | `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't actually verify the functionality of the script though! | - |
 | `npm run tr-progress` | Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md` | - |
+| `npm run --silent invisible -- "<command>"` | Runs the passed command without giving any console output | - |
 
 By passing the `--config-mode` argument, you can specify the mode that BetterYTM should be built in.  
 It can be either `production` or `development` (default)  

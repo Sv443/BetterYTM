@@ -1,6 +1,6 @@
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import express, { NextFunction, Request, Response } from "express";
-import { resolve } from "path";
-import { fileURLToPath } from "url";
 import { outputDir } from "../../rollup.config.mjs";
 import "dotenv/config";
 

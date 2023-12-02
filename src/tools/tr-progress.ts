@@ -1,6 +1,6 @@
-import { readFile, writeFile } from "fs/promises";
-import { join, relative, resolve } from "path";
-import { fileURLToPath } from "url";
+import { readFile, writeFile } from "node:fs/promises";
+import { join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { autoPlural, mapRange } from "@sv443-network/userutils";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import type { TrLocale } from "../translations";

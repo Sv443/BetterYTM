@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,28 +31,28 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          close      http://localhost:8710/assets/icons/close.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          error      http://localhost:8710/assets/icons/error.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          github     http://localhost:8710/assets/external/github.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          discord    http://localhost:8710/assets/external/discord.png?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
-// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=313216e0-45f6-42cb-ba3d-593798e4c971
+// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          close      http://localhost:8710/assets/icons/close.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          error      http://localhost:8710/assets/icons/error.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          github     http://localhost:8710/assets/external/github.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          discord    http://localhost:8710/assets/external/discord.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -670,7 +670,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "c19a1c1", // asserted as generic string instead of literal
+    buildNumber: "89d2df0", // asserted as generic string instead of literal
 };var de_DE = {
 	name: "Deutsch (Deutschland)",
 	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music",
@@ -1182,7 +1182,8 @@ var scripts = {
 	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
 	lint: "tsc --noEmit && eslint .",
 	"tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
-	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm"
+	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
+	invisible: "node src/tools/run-invisible.mjs"
 };
 var engines = {
 	node: ">=18",
