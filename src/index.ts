@@ -313,7 +313,6 @@ function registerMenuCommands() {
       console.log("Reset install time.");
     }, "t");
 
-    // TODO: check if this works lol
     GM.registerMenuCommand("List active selector listeners", async () => {
       const lines = [] as string[];
       let listenersAmt = 0;

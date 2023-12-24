@@ -17,7 +17,7 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/logo/logo_48.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -31,28 +31,28 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          close      http://localhost:8710/assets/icons/close.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          error      http://localhost:8710/assets/icons/error.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          github     http://localhost:8710/assets/external/github.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          discord    http://localhost:8710/assets/external/discord.png?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
-// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=6a1a3ff4-3051-4fcd-b383-8d1586a84bed
+// @resource          logo       http://localhost:8710/assets/logo/logo_48.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          close      http://localhost:8710/assets/icons/close.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          delete     http://localhost:8710/assets/icons/delete.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          error      http://localhost:8710/assets/icons/error.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          lyrics     http://localhost:8710/assets/icons/lyrics.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          spinner    http://localhost:8710/assets/icons/spinner.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          arrow_down http://localhost:8710/assets/icons/arrow_down.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          skip_to    http://localhost:8710/assets/icons/skip_to.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          globe      http://localhost:8710/assets/icons/globe.svg?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          github     http://localhost:8710/assets/external/github.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          greasyfork http://localhost:8710/assets/external/greasyfork.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          openuserjs http://localhost:8710/assets/external/openuserjs.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          discord    http://localhost:8710/assets/external/discord.png?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-de_DE   http://localhost:8710/assets/translations/de_DE.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-en_US   http://localhost:8710/assets/translations/en_US.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-en_UK   http://localhost:8710/assets/translations/en_UK.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-es_ES   http://localhost:8710/assets/translations/es_ES.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-fr_FR   http://localhost:8710/assets/translations/fr_FR.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-hi_IN   http://localhost:8710/assets/translations/hi_IN.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-ja_JA   http://localhost:8710/assets/translations/ja_JA.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-pt_BR   http://localhost:8710/assets/translations/pt_BR.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
+// @resource          tr-zh_CN   http://localhost:8710/assets/translations/zh_CN.json?t=782e5a69-c1d4-48f3-9ea2-e1fb4e5dea13
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -670,7 +670,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "89d2df0", // asserted as generic string instead of literal
+    buildNumber: "3eb9223", // asserted as generic string instead of literal
 };var de_DE = {
 	name: "Deutsch (Deutschland)",
 	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music",
@@ -2620,6 +2620,8 @@ let remSongsCache = [];
 /** Remembers the time of the last played song and resumes playback from that time */
 function initRememberSongTime() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (features$2.rememberSongTimeSites !== "all" && features$2.rememberSongTimeSites !== getDomain())
+            return;
         const storedDataRaw = yield GM.getValue("bytm-rem-songs");
         if (!storedDataRaw)
             yield GM.setValue("bytm-rem-songs", "[]");
@@ -3410,6 +3412,18 @@ const featInfo = {
         enable: () => void "TODO",
         disable: () => void "TODO", // TODO: feasible?
     },
+    rememberSongTimeSites: {
+        type: "select",
+        category: "behavior",
+        options: () => [
+            { value: "all", label: t("remember_song_time_sites_all") },
+            { value: "yt", label: t("remember_song_time_sites_yt") },
+            { value: "ytm", label: t("remember_song_time_sites_ytm") },
+        ],
+        default: "ytm",
+        enable: () => void "TODO",
+        change: () => void "TODO",
+    },
     //#SECTION input
     arrowKeySupport: {
         type: "toggle",
@@ -3503,11 +3517,11 @@ const migrations = {
     4: (oldData) => {
         var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-        return Object.assign(Object.assign({}, oldData), { locale: getFeatureDefault("locale"), rememberSongTime: getFeatureDefault("rememberSongTime"), arrowKeySkipBy: 10, switchSitesHotkey: {
+        return Object.assign(Object.assign({}, oldData), { locale: getFeatureDefault("locale"), rememberSongTime: getFeatureDefault("rememberSongTime"), rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"), arrowKeySkipBy: 10, switchSitesHotkey: {
                 code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
-                shift: (_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false,
-                ctrl: (_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false,
-                alt: (_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false,
+                shift: Boolean((_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false),
+                ctrl: Boolean((_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false),
+                alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
             }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: 10 });
     },
 };
@@ -4634,7 +4648,6 @@ function registerMenuCommands() {
             yield GM.deleteValue("bytm-installed");
             console.log("Reset install time.");
         }), "t");
-        // TODO: check if this works lol
         GM.registerMenuCommand("List active selector listeners", () => __awaiter(this, void 0, void 0, function* () {
             const lines = [];
             let listenersAmt = 0;
