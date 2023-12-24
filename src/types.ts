@@ -81,6 +81,8 @@ export interface FeatureConfig {
   closeToastsTimeout: number;
   /** Remember the last song's time when reloading or restoring the tab */
   rememberSongTime: boolean;
+  /** Where to remember the song time */
+  rememberSongTimeSites: Domain | "all";
 
   //#SECTION input
   /** Arrow keys skip forwards and backwards */

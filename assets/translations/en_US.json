@@ -78,6 +78,10 @@
     "list_button_placement_queue_only": "\"Up next\" queue only",
     "list_button_placement_everywhere": "In every song list",
 
+    "remember_song_time_sites_all": "Both sites",
+    "remember_song_time_sites_yt": "Only YouTube",
+    "remember_song_time_sites_ytm": "Only YouTube Music",
+
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
     "feature_category_behavior": "Behavior",
@@ -103,6 +107,7 @@
     "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
     "feature_desc_closeToastsTimeout": "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
     "feature_desc_rememberSongTime": "Remember the last song's time when reloading or restoring the tab",
+    "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
     "feature_desc_arrowKeySkipBy": "By how many seconds to skip when using the arrow keys",

@@ -178,6 +178,18 @@ export const featInfo = {
     enable: () => void "TODO",
     disable: () => void "TODO", // TODO: feasible?
   },
+  rememberSongTimeSites: {
+    type: "select",
+    category: "behavior",
+    options: () => [
+      { value: "all", label: t("remember_song_time_sites_all") },
+      { value: "yt", label: t("remember_song_time_sites_yt") },
+      { value: "ytm", label: t("remember_song_time_sites_ytm") },
+    ],
+    default: "ytm",
+    enable: () => void "TODO",
+    change: () => void "TODO",
+  },
 
   //#SECTION input
   arrowKeySupport: {

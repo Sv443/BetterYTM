@@ -1,6 +1,6 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
-import { error, getVideoTime, info, log, videoSelector } from "../utils";
+import { error, getDomain, getVideoTime, info, log, videoSelector } from "../utils";
 import { LogLevel, type FeatureConfig } from "../types";
 
 let features: FeatureConfig;
@@ -110,6 +110,9 @@ let remSongsCache: RemSongObj[] = [];
 
 /** Remembers the time of the last played song and resumes playback from that time */
 export async function initRememberSongTime() {
+  if(features.rememberSongTimeSites !== "all" && features.rememberSongTimeSites !== getDomain())
+    return;
+
   const storedDataRaw = await GM.getValue("bytm-rem-songs");
   if(!storedDataRaw)
     await GM.setValue("bytm-rem-songs", "[]");
