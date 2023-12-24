@@ -204,7 +204,7 @@ async function onDomLoad() {
         ftInit.push(initSiteSwitch(domain));
     }
 
-    Promise.all(ftInit).then(() => {
+    Promise.allSettled(ftInit).then(() => {
       emitInterface("bytm:ready");
     });
   }
