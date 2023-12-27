@@ -18,7 +18,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
   const config = {
     input: "src/index.ts",
     plugins: [
-      pluginTypeScript(),
+      pluginTypeScript({
+        sourceMap: mode === "development",
+      }),
       pluginNodeResolve(),
       pluginJson(),
       pluginHtml(),

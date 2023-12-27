@@ -34,6 +34,7 @@ const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
 const distFolderPath = "./dist/";
 const assetFolderPath = "./assets/";
+// TODO: change for OUJS and GF
 const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
