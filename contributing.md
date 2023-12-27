@@ -22,15 +22,16 @@ If a language is already fully translated but you are interested in improving th
 If you want to submit or edit a translation, please follow these steps:  
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
-3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n.
-4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites
+3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
+4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
+  Please duplicate the file `README-summary.md` and call it `README-summary-languageCode_localeCode.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 5. If you want to submit a pull request with the translated file:
-  1. Create a file in the folder [`assets/translations/`](./assets/translations/) with the format `langCode-localeCode.json`
-  2. Insert your translated version of the original file
-  3. Create the mapping in `assets/locales.json` (please make sure it's alphabetically ordered)
-  4. Add that translated property inside of the `header` in [`src/tools/post-build.ts`](src/tools/post-build.ts) by following the same format as the other translation(s)
-  5. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
-6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
+    1. Duplicate the `en_US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
+    2. Edit it to your translated version and keep the left side of the colon unchanged
+    3. Create the mapping in `assets/locales.json` by copying the english one and editing it (please make sure it's alphabetically ordered)
+    4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
+    5. Test your changes by following [this guide](#setting-up-the-project-for-local-development), then submit your pull request
+7. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
   Make sure you also add your language to the contents of [`assets/locales.json`](./assets/locales.json)
 
 <br><br><br>
