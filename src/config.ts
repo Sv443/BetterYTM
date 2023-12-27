@@ -1,8 +1,8 @@
-import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
+import { ConfigManager, type ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
-import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
+import type { FeatureConfig } from "./types";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 4;
@@ -43,7 +43,7 @@ export const migrations: ConfigMigrationsDict = {
         alt: Boolean(oldSwitchSitesHotkey.meta ?? false),
       },
       listButtonsPlacement: "queueOnly",
-      volumeSliderScrollStep: 10,
+      volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"),
     };
   },
 };
@@ -83,17 +83,19 @@ export function getFeatures() {
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
-export async function saveFeatures(featureConf: FeatureConfig) {
-  await cfgMgr.setData(featureConf);
+export function saveFeatures(featureConf: FeatureConfig) {
+  const res = cfgMgr.setData(featureConf);
   emitSiteEvent("configChanged", cfgMgr.getData());
   info("Saved new feature config:", featureConf);
+  return res;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
-export async function setDefaultFeatures() {
-  await cfgMgr.saveDefaultData();
+export function setDefaultFeatures() {
+  const res = cfgMgr.saveDefaultData();
   emitSiteEvent("configChanged", cfgMgr.getData());
   info("Reset feature config to its default values");
+  return res;
 }
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
