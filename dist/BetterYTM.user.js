@@ -679,7 +679,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "daf430a", // asserted as generic string instead of literal
+        buildNumber: "1596e2f", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -757,11 +757,59 @@ I welcome every contribution on GitHub!
     	zh_CN: zh_CN
     };
 
+    /** Options that are applied to every SelectorObserver instance */
+    const defaultObserverOptions = {
+        defaultDebounce: 100,
+    };
+    const observers$1 = {};
+    /** Call after DOM load to initialize all SelectorObserver instances */
+    function initObservers() {
+        observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        observers$1.body.enable();
+        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+        observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+        observers$1.body.addListener(playerBarSelector, {
+            listener: () => {
+                console.log("#DBG-UU enabling playerBar observer");
+                observers$1.playerBar.enable();
+            },
+        });
+        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+        observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+        observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
+            listener: () => {
+                console.log("#DBG-UU enabling playerBarTitle observer");
+                observers$1.playerBarInfo.enable();
+            },
+        });
+        // #DEBUG example: listen for title change:
+        observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
+            continuous: true,
+            listener: (titleElem) => {
+                console.log("#DBG-UU >>>>> title changed", titleElem.title);
+            },
+        });
+        emitInterface("bytm:observersReady");
+    }
+    /** Interface function for adding listeners to the already present observers */
+    function interfaceAddListener(observerName, selector, options) {
+        observers$1[observerName].addListener(selector, options);
+    }
+
+    const globalFuncs = {
+        addObserverListener: interfaceAddListener,
+        getResourceUrl,
+        getSessionId,
+        getVideoTime,
+        t,
+    };
     /** Initializes the BYTM interface */
     function initInterface() {
         const props = Object.assign({ mode,
             branch }, scriptInfo);
         for (const [key, value] of Object.entries(props))
+            setGlobalProp(key, value);
+        for (const [key, value] of Object.entries(globalFuncs))
             setGlobalProp(key, value);
         log("Initialized BYTM interface");
     }
@@ -1041,7 +1089,7 @@ I welcome every contribution on GitHub!
 
     /** EventEmitter instance that is used to detect changes to the site */
     const siteEvents = createNanoEvents();
-    let observers$1 = [];
+    let observers = [];
     /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
     function initSiteEvents() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -1068,7 +1116,7 @@ I welcome every contribution on GitHub!
                     childList: true,
                 });
                 info("Successfully initialized SiteEvents observers");
-                observers$1 = observers$1.concat([
+                observers = observers.concat([
                     queueObs,
                     autoplayObs,
                 ]);
@@ -3840,40 +3888,6 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
         });
     }
 
-    /** Options that are applied to every SelectorObserver instance */
-    const defaultObserverOptions = {
-        defaultDebounce: 100,
-    };
-    const observers = {};
-    /** Call after DOM load to initialize all SelectorObserver instances */
-    function initObservers() {
-        observers.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-        observers.body.enable();
-        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        observers.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-        observers.body.addListener(playerBarSelector, {
-            listener: () => {
-                console.log("#DBG-UU enabling playerBar observer");
-                observers.playerBar.enable();
-            },
-        });
-        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        observers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-        observers.playerBarInfo.addListener(playerBarInfoSelector, {
-            listener: () => {
-                console.log("#DBG-UU enabling playerBarTitle observer");
-                observers.playerBarInfo.enable();
-            },
-        });
-        // #DEBUG example: listen for title change:
-        observers.playerBarInfo.addListener("yt-formatted-string.title", {
-            continuous: true,
-            listener: (titleElem) => {
-                console.log("#DBG-UU >>>>> title changed", titleElem.title);
-            },
-        });
-    }
-
     {
         // console watermark with sexy gradient
         const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -4615,7 +4629,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                     catch (err) {
                         error("Couldn't add menu:", err);
                     }
-                    observers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+                    observers$1.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
                         listener: addConfigMenuOption,
                     });
                     if (features.arrowKeySupport)
@@ -4700,7 +4714,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
             GM.registerMenuCommand("List active selector listeners", () => __awaiter(this, void 0, void 0, function* () {
                 const lines = [];
                 let listenersAmt = 0;
-                for (const [obsName, obs] of Object.entries(observers)) {
+                for (const [obsName, obs] of Object.entries(observers$1)) {
                     const listeners = obs.getAllListeners();
                     lines.push(`- "${obsName}" (${listeners.size} listeners):`);
                     [...listeners].forEach(([k, v]) => {
@@ -4711,7 +4725,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                         });
                     });
                 }
-                console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+                console.log(`Showing currently active listeners for ${Object.keys(observers$1).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
                 alert("See console.");
             }), "s");
         }
