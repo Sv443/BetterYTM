@@ -1,8 +1,10 @@
-import type { TrLocale } from "./translations";
+import type { TrLocale, t } from "./translations";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
+import type { interfaceAddListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
+import type { getResourceUrl, getSessionId, getVideoTime } from "./utils";
 
 /** Custom CLI args passed to rollup */
 export interface RollupArgs {
@@ -30,6 +32,32 @@ export type HotkeyObj = {
   alt: boolean,
 };
 
+export type ObserverName = "body" | "playerBar" | "playerBarInfo";
+
+/** All functions exposed by the interface on the global `BYTM` object */
+export type InterfaceFunctions = {
+  /** Adds a listener to one of the already present SelectorObserver instances */
+  addObserverListener: typeof interfaceAddListener;
+  /**
+   * Returns the URL of a resource as defined in `assets/resources.json`  
+   * There are also some resources like translation files that get added by `tools/post-build.ts`  
+   *   
+   * The returned URL is a `blob:` URL served up by the userscript extension  
+   * This makes the resource fast to fetch and also prevents CORS issues
+   */
+  getResourceUrl: typeof getResourceUrl;
+  /** Returns the unique session ID for the current tab */
+  getSessionId: typeof getSessionId;
+  /**
+   * Returns the current video time (on both YT and YTM)  
+   * In case it can't be determined on YT, mouse movement is simulated to bring up the video time  
+   * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers
+   */
+  getVideoTime: typeof getVideoTime;
+  /** Returns the translation for the provided translation key and set locale (check the files in the folder `assets/translations`) */
+  t: typeof t;
+};
+
 declare global {
   interface Window {
     BYTM: {
@@ -38,7 +66,8 @@ declare global {
       logLevel: LogLevel;
     }
     & typeof scriptInfo
-    & Pick<typeof consts, "mode" | "branch">;
+    & Pick<typeof consts, "mode" | "branch">
+    & InterfaceFunctions;
   }
 }
 

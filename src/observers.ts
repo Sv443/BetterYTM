@@ -1,6 +1,6 @@
-import { SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-
-type ObserverName = "body" | "playerBar" | "playerBarInfo";
+import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
+import type { ObserverName } from "./types";
+import { emitInterface } from "./interface";
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
@@ -49,4 +49,11 @@ export function initObservers() {
       console.log("#DBG-UU >>>>> title changed", titleElem.title);
     },
   });
+
+  emitInterface("bytm:observersReady");
+}
+
+/** Interface function for adding listeners to the already present observers */
+export function interfaceAddListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
+  observers[observerName].addListener(selector, options);
 }

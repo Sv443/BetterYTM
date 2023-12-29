@@ -76,13 +76,14 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 <br><br><br>
 
 ### Developing a plugin that interfaces with BetterYTM:
-BetterYTM has a built-in interface based on events that allows other userscripts to benefit from its features.  
-If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please contact me [(see my homepage)](https://sv443.net/)  
+BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
+If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new?assignees=Sv443&labels=plugin%20submission&projects=&template=3_plugin_submission.md&title=)  
   
-There are two ways to interact with BetterYTM, static and dynamic:  
-- Static interaction is done through the global `BYTM` object, which is available on the `window` object.  
-  This is pretty much reserved for read-only properties that tell you more about how BetterYTM is currently being run.  
+These are the ways to interact with BetterYTM; constants, events and global functions:  
+- Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `window` object.  
+  These read-only properties tell you more about how BetterYTM is currently being run.  
   You can find all properties that are available and their types in the `declare global` block of [`src/types.ts`](src/types.ts)
+
 - Dynamic interaction is done through events that are dispatched on the `window` object.  
   They all have the prefix `bytm:eventName` and are all dispatched with the `CustomEvent` interface, meaning their data can be read using the `detail` property.  
   You can find all events that are available and their types in [`src/interface.ts`](src/interface.ts)  
@@ -91,34 +92,26 @@ There are two ways to interact with BetterYTM, static and dynamic:
   You may find all SiteEvents that are available and their types in [`src/siteEvents.ts`](src/siteEvents.ts)  
   Note that the `detail` property will be an array of the arguments that can be found in the event handler at the top of [`src/siteEvents.ts`](src/siteEvents.ts)
 
-If you need specific events to be added or modified, please submit an issue.
+- Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
+  You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
+  There is also a summary with examples [below.](#global-functions)
+
+All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
+  
+If you need specific events to be added or modified, please [submit an issue.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 
 <br>
 
 <details><summary>Static interaction example - click to expand</summary>
 
 #### Example:
-The `window.` prefix is optional since all properties are already globally available.
 ```ts
+const BYTM = unsafeWindow.BYTM;
+
 console.log(`BetterYTM was built in '${BYTM.mode}' mode`);
 console.log(`BetterYTM's locale is set to '${BYTM.locale}'`);
 console.log(`BetterYTM's version is '${BYTM.version} #${BYTM.buildNumber}'`);
 ```
-
-#### Shimming for TypeScript without errors & with autocomplete:
-Create a .d.ts file (for example `types.d.ts`) and add the following code:
-```ts
-declare global {
-  interface Window {
-    BYTM: {
-      foo: string;
-    };
-  }
-}
-```
-You may specify all types that you need in this file.  
-To find which types BetterYTM exposes, check out the `declare global` block in [`src/types.ts`](src/types.ts)  
-You may also just copy it entirely.
 
 </details>
 
@@ -172,4 +165,62 @@ window.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 
 </details>
 
+<br>
+
+For global function examples [see below.](#global-functions)
+
+<br><br>
+
+### Shimming for TypeScript without errors & with autocomplete:
+In order for TypeScript to not throw errors while creating a plugin, you need to shim the types for BYTM.  
+To do this, create a .d.ts file (for example `bytm.d.ts`) and add the following code:
+```ts
+declare global {
+  interface Window {
+    BYTM: {
+      // add types here
+    };
+  }
+}
+```
+You may specify all types that you need in this file.  
+To find which types BetterYTM exposes, check out the `declare global` block in [`src/types.ts`](src/types.ts)  
+You may also just copy it entirely, as long as all the imports also exist in your project.  
+An easy way to do this might be to include BetterYTM as a Git submodule, as long as you ***stick to only using type imports***
+
+
+<br><br>
+
+### Global functions:
+> **addSelectorListener()**  
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>)
+> ```
+>   
+> Description:  
+> Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
+> These instances are created by BetterYTM to observe the DOM for changes.  
+> See the [UserUtils documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
+>   
+> Arguments:  
+> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances in the file [`src/observers.ts`](src/observers.ts).
+> - `selector` - The CSS selector to observe for changes.
+> - `options` - The options for the listener. See the [UserUtils documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> // wait for the observers to exist
+> unsafeWindow.addEventListener("bytm:observersReady", () => {
+>   // use the "lowest" possible SelectorObserver (playerBar)
+>   // and check if the lyrics button gets added or removed
+>   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
+>     listener: (elem) => {
+>       console.log("The BYTM lyrics button exists now");
+>     },
+>   });
+> });
+> ```
+> </details>
 <br><br><br><br><br><br>

@@ -1,8 +1,9 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
-import { log } from "./utils";
-import type { TrLocale } from "./translations";
+import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
+import { t, type TrLocale } from "./translations";
 import type { SiteEventsMap } from "./siteEvents";
+import { interfaceAddListener } from "./observers";
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export interface InterfaceEvents {
@@ -12,10 +13,23 @@ export interface InterfaceEvents {
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
   /** Emitted whenever the locale is changed */
   "bytm:setLocale": { locale: TrLocale };
+  /**
+   * Emitted whenever the SelectorObserver instances have been initialized  
+   * Use `unsafeWindow.BYTM.addObserverListener()` to add custom listener functions to the observers
+   */
+  "bytm:observersReady": undefined;
 
   // additionally all events from SiteEventsMap in `src/siteEvents.ts`
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
 }
+
+const globalFuncs = {
+  addObserverListener: interfaceAddListener,
+  getResourceUrl,
+  getSessionId,
+  getVideoTime,
+  t,
+};
 
 /** Initializes the BYTM interface */
 export function initInterface() {
@@ -26,6 +40,9 @@ export function initInterface() {
   };
 
   for(const [key, value] of Object.entries(props))
+    setGlobalProp(key, value);
+
+  for(const [key, value] of Object.entries(globalFuncs))
     setGlobalProp(key, value);
 
   log("Initialized BYTM interface");
