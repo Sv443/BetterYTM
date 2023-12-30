@@ -1,4 +1,4 @@
-import type { TrLocale, t } from "./translations";
+import type { TrLocale, t, tp } from "./translations";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
 import type { interfaceAddListener } from "./observers";
@@ -37,7 +37,7 @@ export type ObserverName = "body" | "playerBar" | "playerBarInfo";
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   /** Adds a listener to one of the already present SelectorObserver instances */
-  addObserverListener: typeof interfaceAddListener;
+  addSelectorListener: typeof interfaceAddListener;
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
@@ -56,10 +56,15 @@ export type InterfaceFunctions = {
   getVideoTime: typeof getVideoTime;
   /** Returns the translation for the provided translation key and set locale (check the files in the folder `assets/translations`) */
   t: typeof t;
+  /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
+  tp: typeof tp;
 };
 
+// shim for the BYTM interface properties
 declare global {
   interface Window {
+    // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts"
+    // and hover over the "BYTM" just below:
     BYTM: {
       [key: string]: unknown;
       locale: TrLocale;

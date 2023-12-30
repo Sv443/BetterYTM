@@ -192,21 +192,31 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 <br><br>
 
 ### Global functions:
-> **addSelectorListener()**  
+
+- [addSelectorListener()](#addselectorlistener)
+- [getResourceUrl()](#getresourceurl)
+- [getSessionId()](#getsessionid)
+- [getVideoTime()](#getvideotime)
+- [t()](#t)
+- [tp()](#tp)
+
+<br>
+
+> #### addSelectorListener()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>)
+> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
 > ```
 >   
 > Description:  
 > Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
 > These instances are created by BetterYTM to observe the DOM for changes.  
-> See the [UserUtils documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
 >   
 > Arguments:  
 > - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances in the file [`src/observers.ts`](src/observers.ts).
 > - `selector` - The CSS selector to observe for changes.
-> - `options` - The options for the listener. See the [UserUtils documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
+> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
 >   
 > <details><summary>Example - click to expand</summary>
 > 
@@ -223,4 +233,153 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > });
 > ```
 > </details>
+
+<br>
+
+> #### getResourceUrl()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getResourceUrl(): Promise<string>
+> ```
+>   
+> Description:  
+> Returns a `blob:` URL for the specified BYTM resource file.  
+> You can find a list of them by looking at the `@resource` directives in the userscript header or in the files `assets/resources.json` and `src/tools/post-build.ts`  
+> The resource and its URL are provided by the userscript extension and it is locally cached for quicker fetching.  
+>   
+> Should a resource not be defined, the function will return the equivalent URL from the GitHub repository instead.  
+> Should that also fail, it will try to return a base64-encoded `data:` URI version of the resource.  
+>   
+> Arguments:  
+> - `resourceName` - The name of the resource to get the URL for.
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> const deleteButtonImg = document.createElement("img");
+> deleteButtonImg.src = await unsafeWindow.BYTM.getResourceUrl("delete");
+> 
+> myElement.appendChild(deleteButtonImg);
+> ```
+> </details>
+
+<br>
+
+> #### getSessionId()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getSessionId(): string
+> ```
+>   
+> Description:  
+> Returns the unique session ID that is generated on every page load.  
+> It should persist between history navigations, but not between page reloads.  
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> const sessionId = unsafeWindow.BYTM.getSessionId();
+> 
+> if(await GM.getValue("sessionId") !== sessionId) {
+>   console.log("New session started");
+>   await GM.setValue("sessionId", sessionId);
+> }
+> ```
+> </details>
+
+<br>
+
+> #### getVideoTime()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getVideoTime(): Promise<number | null>
+> ```
+>   
+> Description:  
+> Returns the current video time (on both YT and YTM).  
+> In case it can't be determined on YT, mouse movement is simulated to bring up the video time element and read it.  
+> In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers.  
+> Resolves with a number of seconds or `null` if the time couldn't be determined.  
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> try {
+>   const videoTime = await unsafeWindow.BYTM.getVideoTime();
+>   console.log(`The video time is ${videoTime}s`);
+> }
+> catch(err) {
+>   console.error("Couldn't get the video time, probably due to automated interaction restrictions");
+> }
+> ```
+> </details>
+
+<br>
+
+> #### t()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.t(key: TFuncKey, ...values: Stringifiable[]): string
+> ```
+>   
+> Description:  
+> Returns the translation for the provided translation key and currently set locale.  
+> To see a list of translations, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+>   
+> Arguments:  
+> - `translationKey` - The key of the translation to get.
+> - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> const customConfigMenuTitle = document.createElement("div");
+> customConfigMenuTitle.innerText = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
+> // translated text: "My cool BYTM Plugin - Configuration" (when locale is en_US or en_UK)
+> ```
+> </details>
+
+<br>
+
+> #### tp()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
+> ```
+>   
+> Description:  
+> Returns the translation for the provided translation key, including pluralization identifier and currently set locale.  
+> To see a list of translations, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+>   
+> The pluralization identifier is determined by the number of items in the second argument.  
+> It can be either "1" or "n" and will be appended to the translation key separated by a hyphen.  
+>   
+> Arguments:  
+> - `translationKey` - The key of the translation to get.
+> - `num` - The number of items to determine the pluralization identifier from. Can also be an array or NodeList.
+> - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
+>   
+> <details><summary>Example - click to expand</summary>
+> 
+> ```ts
+> try {
+>   const lyrics = await customFetchLyrics(foo, bar);
+> }
+> catch(err) {
+>   if(err instanceof AxiosError) {
+>     if(err.status === 429) {
+>       // rate limited
+>       const retryAfter = err.response.headers["retry-after"];
+>       const retryAfterSeconds = retryAfter ? parseInt(retryAfter) : 60;
+>       const errorText = unsafeWindow.BYTM.tp("lyrics_rate_limited", retryAfterSeconds);
+>       // translation key: "lyrics_rate_limited-n"
+>       // translated text: "You are being rate limited.\nPlease wait 23 seconds before requesting more lyrics."
+>       alert(errorText);
+>     }
+>   }
+> }
+> ```
+> </details>
+
+
 <br><br><br><br><br><br>
