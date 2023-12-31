@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "f23ca65", // asserted as generic string instead of literal
+        buildNumber: "60dc5a8", // asserted as generic string instead of literal
     };
 
     var de_DE = {
