@@ -31,19 +31,20 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
 // @resource          close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
 // @resource          delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
 // @resource          error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
 // @resource          globe      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
+// @resource          help       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
+// @resource          lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          discord    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
 // @resource          github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
 // @resource          greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
 // @resource          openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          discord    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
 // @resource          tr-de_DE   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
 // @resource          tr-en_US   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
 // @resource          tr-en_UK   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
@@ -679,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "1596e2f", // asserted as generic string instead of literal
+        buildNumber: "6b73801", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1016,10 +1017,28 @@ I welcome every contribution on GitHub!
         }
         return sesId;
     }
+    /** Returns the SVG content behind the passed resource identifier to be assigned to an element's innerHTML property */
+    function resourceToHTMLString(resource) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resourceUrl = yield getResourceUrl(resource);
+                if (!resourceUrl)
+                    throw new Error(`Couldn't find URL for resource '${resource}'`);
+                return yield (yield fetchAdvanced(resourceUrl)).text();
+            }
+            catch (err) {
+                error("Couldn't get SVG element from resource:", err);
+                return null;
+            }
+        });
+    }
 
     const fetchOpts = {
         timeout: 10000,
     };
+    /** Contains all translation keys of all initialized and loaded translations */
+    const allTrKeys = new Map();
+    /** Contains the identifiers of all initialized and loaded translation locales */
     const initializedLocales = new Set();
     /** Initializes the translations */
     function initTranslations(locale) {
@@ -1033,7 +1052,9 @@ I welcome every contribution on GitHub!
                 // merge with base translations if specified
                 const baseTransUrl = transFile.base ? yield getResourceUrl(`tr-${transFile.base}`) : undefined;
                 const baseTransFile = baseTransUrl ? yield (yield fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
-                tr.addLanguage(locale, Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations));
+                const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
+                tr.addLanguage(locale, translations);
+                allTrKeys.set(locale, new Set(Object.keys(translations)));
                 info(`Loaded translations for locale '${locale}'`);
             }
             catch (err) {
@@ -1052,6 +1073,15 @@ I welcome every contribution on GitHub!
     /** Returns the currently set language */
     function getLocale() {
         return tr.getLanguage();
+    }
+    /** Returns whether the given translation key exists in the current locale */
+    function hasKey(key) {
+        return hasKeyFor(getLocale(), key);
+    }
+    /** Returns whether the given translation key exists in the given locale */
+    function hasKeyFor(locale, key) {
+        var _a, _b;
+        return (_b = (_a = allTrKeys.get(locale)) === null || _a === void 0 ? void 0 : _a.has(key)) !== null && _b !== void 0 ? _b : false;
     }
     /** Returns the translated string for the given key, after optionally inserting values */
     function t(key, ...values) {
@@ -1503,9 +1533,32 @@ I welcome every contribution on GitHub!
                     const ftConfElem = document.createElement("div");
                     ftConfElem.classList.add("bytm-ftitem");
                     {
+                        const featLeftSideElem = document.createElement("div");
+                        featLeftSideElem.classList.add("bytm-ftitem-leftside");
                         const textElem = document.createElement("span");
                         textElem.innerText = t(`feature_desc_${featKey}`);
-                        ftConfElem.appendChild(textElem);
+                        let helpElem;
+                        if (hasKey(`feature_helptext_${featKey}`)) {
+                            const helpElemImgHtml = yield resourceToHTMLString("help");
+                            if (helpElemImgHtml) {
+                                helpElem = document.createElement("div");
+                                helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
+                                helpElem.title = t("feature_help_button_tooltip");
+                                helpElem.role = "button";
+                                helpElem.innerHTML = helpElemImgHtml;
+                                helpElem.addEventListener("click", (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    openHelpDialog(featKey);
+                                });
+                            }
+                            else {
+                                error(`Couldn't create help button SVG element for feature '${featKey}'`);
+                            }
+                        }
+                        featLeftSideElem.appendChild(textElem);
+                        helpElem && featLeftSideElem.appendChild(helpElem);
+                        ftConfElem.appendChild(featLeftSideElem);
                     }
                     {
                         let inputType = "text";
@@ -1804,6 +1857,89 @@ I welcome every contribution on GitHub!
                 scrollIndicator.classList.add("bytm-hidden");
             }
         }
+    }
+    //#MARKER help dialog
+    let isHelpDialogOpen = false;
+    /** Key of the feature currently loaded in the help dialog */
+    let helpDialogCurFeature;
+    /** Opens the feature help dialog for the given feature */
+    function openHelpDialog(featureKey) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (isHelpDialogOpen)
+                return;
+            isHelpDialogOpen = true;
+            let menuBgElem;
+            if (!helpDialogCurFeature) {
+                // create menu
+                const headerElem = document.createElement("div");
+                headerElem.classList.add("bytm-menu-header", "small");
+                const titleCont = document.createElement("div");
+                titleCont.className = "bytm-menu-titlecont-no-title";
+                titleCont.role = "heading";
+                titleCont.ariaLevel = "1";
+                const helpIconHtml = yield resourceToHTMLString("help");
+                if (helpIconHtml)
+                    titleCont.innerHTML = helpIconHtml;
+                const closeElem = document.createElement("img");
+                closeElem.classList.add("bytm-menu-close", "small");
+                closeElem.src = yield getResourceUrl("close");
+                closeElem.title = t("close_menu_tooltip");
+                closeElem.addEventListener("click", (e) => closeHelpDialog(e));
+                headerElem.appendChild(titleCont);
+                headerElem.appendChild(closeElem);
+                menuBgElem = document.createElement("div");
+                menuBgElem.id = "bytm-feat-help-menu-bg";
+                menuBgElem.classList.add("bytm-menu-bg");
+                menuBgElem.title = t("close_menu_tooltip");
+                menuBgElem.style.visibility = "hidden";
+                menuBgElem.style.display = "none";
+                menuBgElem.addEventListener("click", (e) => {
+                    var _a;
+                    if (isHelpDialogOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-feat-help-menu-bg")
+                        closeHelpDialog(e);
+                });
+                document.body.addEventListener("keydown", (e) => {
+                    if (isHelpDialogOpen && e.key === "Escape")
+                        closeHelpDialog(e);
+                });
+                const menuContainer = document.createElement("div");
+                menuContainer.title = ""; // prevent bg title from propagating downwards
+                menuContainer.classList.add("bytm-menu");
+                menuContainer.id = "bytm-feat-help-menu";
+                const helpTextElem = document.createElement("div");
+                helpTextElem.id = "bytm-feat-help-menu-text";
+                menuContainer.appendChild(headerElem);
+                menuContainer.appendChild(helpTextElem);
+                menuBgElem.appendChild(menuContainer);
+                document.body.appendChild(menuBgElem);
+            }
+            else
+                menuBgElem = document.querySelector("#bytm-feat-help-menu-bg");
+            if (helpDialogCurFeature !== featureKey) {
+                const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
+                helpTextElem.innerText = t(`feature_helptext_${featureKey}`);
+            }
+            helpDialogCurFeature = featureKey;
+            // show menu
+            document.body.classList.add("bytm-disable-scroll");
+            const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
+            if (!menuBg)
+                return warn("Couldn't find feature help dialog background element");
+            menuBg.style.visibility = "visible";
+            menuBg.style.display = "block";
+        });
+    }
+    function closeHelpDialog(evt) {
+        if (!isHelpDialogOpen)
+            return;
+        isHelpDialogOpen = false;
+        (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+        document.body.classList.remove("bytm-disable-scroll");
+        const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
+        if (!menuBg)
+            return warn("Couldn't find feature help dialog background element");
+        menuBg.style.visibility = "hidden";
+        menuBg.style.display = "none";
     }
     //#MARKER export menu
     let isExportMenuOpen = false;
@@ -3345,6 +3481,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
         });
     }
 
+    //#MARKER feature dependencies
     const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => {
         return [...a, {
                 value: locale,
@@ -3983,6 +4120,11 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   --bytm-menu-width-max: 600px;
 }
 
+#bytm-feat-help-menu-bg {
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
+}
+
 .bytm-menu-bg {
   display: block;
   position: fixed;
@@ -4034,9 +4176,20 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
+.bytm-menu-header.small {
+  padding: 10px;
+}
+
 .bytm-menu-titlecont {
   display: flex;
   align-items: center;
+}
+
+.bytm-menu-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 5px;
 }
 
 .bytm-menu-title {
@@ -4064,6 +4217,11 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+
+.bytm-menu-close.small {
+  width: 24px;
+  height: 24px;
 }
 
 .bytm-menu-footer {
@@ -4149,6 +4307,12 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 
 .bytm-ftitem:hover {
   background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
 }
 
 .bytm-ftconf-ctrl {
@@ -4261,6 +4425,27 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   white-space: pre;
   content: "    • ";
   font-weight: bolder;
+}
+
+#bytm-feat-help-menu-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
 }
 
 .bytm-hotkey-wrapper {
