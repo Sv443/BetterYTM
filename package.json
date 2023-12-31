@@ -19,6 +19,7 @@
     "dev": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     "lint": "tsc --noEmit && eslint .",
     "tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
+    "tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
     "invisible": "node src/tools/run-invisible.mjs"
   },
