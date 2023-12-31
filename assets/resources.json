@@ -1,17 +1,18 @@
 {
-  "logo": "logo/logo_48.png",
   "close": "icons/close.png",
+  "logo": "logo/logo_48.png",
 
+  "arrow_down": "icons/arrow_down.svg",
   "delete": "icons/delete.svg",
   "error": "icons/error.svg",
-  "lyrics": "icons/lyrics.svg",
-  "spinner": "icons/spinner.svg",
-  "arrow_down": "icons/arrow_down.svg",
-  "skip_to": "icons/skip_to.svg",
   "globe": "icons/globe.svg",
+  "help": "icons/help.svg",
+  "lyrics": "icons/lyrics.svg",
+  "skip_to": "icons/skip_to.svg",
+  "spinner": "icons/spinner.svg",
 
+  "discord": "external/discord.png",
   "github": "external/github.png",
   "greasyfork": "external/greasyfork.png",
-  "openuserjs": "external/openuserjs.png",
-  "discord": "external/discord.png"
+  "openuserjs": "external/openuserjs.png"
 }

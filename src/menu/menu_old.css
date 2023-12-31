@@ -21,6 +21,11 @@
   --bytm-menu-width-max: 600px;
 }
 
+#bytm-feat-help-menu-bg {
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
+}
+
 .bytm-menu-bg {
   display: block;
   position: fixed;
@@ -72,9 +77,20 @@
   border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
+.bytm-menu-header.small {
+  padding: 10px;
+}
+
 .bytm-menu-titlecont {
   display: flex;
   align-items: center;
+}
+
+.bytm-menu-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 5px;
 }
 
 .bytm-menu-title {
@@ -102,6 +118,11 @@
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+
+.bytm-menu-close.small {
+  width: 24px;
+  height: 24px;
 }
 
 .bytm-menu-footer {
@@ -187,6 +208,12 @@
 
 .bytm-ftitem:hover {
   background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
 }
 
 .bytm-ftconf-ctrl {
@@ -299,4 +326,25 @@
   white-space: pre;
   content: "    • ";
   font-weight: bolder;
+}
+
+#bytm-feat-help-menu-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
 }

@@ -69,6 +69,7 @@
     "open_config_menu_tooltip": "Click to open the configuration menu",
     "open_changelog": "Changelog",
     "open_changelog_tooltip": "Click to open the changelog",
+    "feature_help_button_tooltip": "Click to get more information about this feature",
     "welcome_text_line_1": "Thank you for installing!",
     "welcome_text_line_2": "I hope you enjoy using %1 as much as I enjoyed making it 😃",
     "welcome_text_line_3": "If you like %1, please leave a rating on %2GreasyFork%3 or %4OpenUserJS%5",
@@ -94,30 +95,42 @@
     "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",
     "feature_desc_volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
     "feature_desc_volumeSliderScrollStep": "Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above",
+    "feature_helptext_volumeSliderScrollStep": "By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.",
     "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
+    "feature_helptext_watermarkEnabled": "If this is disabled, you can still open the config menu by clicking the option in the menu that opens when you click your profile picture in the top right corner.\nHowever it will be harder to find the easter egg ;)",
     "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"&si\" from links in the share popup",
+    "feature_helptext_removeShareTrackingParam": "For analytics purposes YouTube adds a tracking parameter to the end of the URL you can copy in the share menu. While not directly harmful, it makes the URL longer and gives YouTube more information about you and the people you send the link to.",
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     "feature_desc_fixSpacing": "Fix spacing issues in the layout",
+    "feature_helptext_fixSpacing": "There are various locations in the user interface where the spacing between elements is inconsistent. This feature fixes those issues.",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",
     "feature_desc_listButtonsPlacement": "Where should the queue buttons show up?",
+    "feature_helptext_listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.",
     "feature_desc_scrollToActiveSongBtn": "Add a button to the queue to scroll to the currently playing song",
-    
+
     "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
+    "feature_helptext_disableBeforeUnloadPopup": "When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of \"you have unsaved data\" or \"this site is asking if you want to close it\".\nThis feature disables that popup entirely.",
     "feature_desc_closeToastsTimeout": "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
+    "feature_helptext_closeToastsTimeout": "Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.",
     "feature_desc_rememberSongTime": "Remember the last song's time when reloading or restoring the tab",
+    "feature_helptext_rememberSongTime": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.",
     "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
+    "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys H and L. This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.",
     "feature_desc_arrowKeySkipBy": "By how many seconds to skip when using the arrow keys",
     "feature_desc_switchBetweenSites": "Add a hotkey to switch between the YT and YTM sites on a video / song",
+    "feature_helptext_switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while keeping the same video / song.",
     "feature_desc_switchSitesHotkey": "Which hotkey needs to be pressed to switch sites?",
     "feature_desc_anchorImprovements": "Add and improve links all over the page so things can be opened in a new tab easier",
+    "feature_helptext_anchorImprovements": "Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.",
 
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
 
     "feature_desc_locale": "Language 🌐",
-    "feature_desc_logLevel": "How much information to log to the console"
+    "feature_desc_logLevel": "How much information to log to the console",
+    "feature_helptext_logLevel": "This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue."
   }
 }

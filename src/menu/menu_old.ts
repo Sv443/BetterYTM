@@ -2,10 +2,10 @@ import { compress, decompress, debounce, isScrollable } from "@sv443-network/use
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
-import { getResourceUrl, info, log, warn } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
-import { getLocale, initTranslations, setLocale, t } from "../translations";
+import { getLocale, hasKey, initTranslations, setLocale, t } from "../translations";
 import { FeatureConfig, HotkeyObj } from "../types";
 import changelog from "../../changelog.md";
 import "./menu_old.css";
@@ -198,10 +198,39 @@ export async function addCfgMenu() {
       ftConfElem.classList.add("bytm-ftitem");
 
       {
+        const featLeftSideElem = document.createElement("div");
+        featLeftSideElem.classList.add("bytm-ftitem-leftside");
+
         const textElem = document.createElement("span");
         textElem.innerText = t(`feature_desc_${featKey}`);
 
-        ftConfElem.appendChild(textElem);
+        let helpElem: undefined | HTMLDivElement;
+
+        if(hasKey(`feature_helptext_${featKey}`)) {
+          const helpElemImgHtml = await resourceToHTMLString("help");
+          if(helpElemImgHtml) {
+            helpElem = document.createElement("div");
+            helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
+            helpElem.title = t("feature_help_button_tooltip");
+            helpElem.role = "button";
+            helpElem.innerHTML = helpElemImgHtml;
+
+            helpElem.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              openHelpDialog(featKey as FeatInfoKey);
+            });
+          }
+          else {
+            error(`Couldn't create help button SVG element for feature '${featKey}'`);
+          }
+        }
+
+        featLeftSideElem.appendChild(textElem);
+        helpElem && featLeftSideElem.appendChild(helpElem);
+
+        ftConfElem.appendChild(featLeftSideElem);
       }
 
       {
@@ -561,6 +590,110 @@ function checkToggleScrollIndicator() {
       scrollIndicator.classList.add("bytm-hidden");
     }
   }
+}
+
+//#MARKER help dialog
+
+let isHelpDialogOpen = false;
+/** Key of the feature currently loaded in the help dialog */
+let helpDialogCurFeature: FeatInfoKey | undefined;
+
+/** Opens the feature help dialog for the given feature */
+async function openHelpDialog(featureKey: FeatInfoKey) {
+  if(isHelpDialogOpen)
+    return;
+  isHelpDialogOpen = true;
+
+  let menuBgElem: HTMLElement;
+
+  if(!helpDialogCurFeature) {
+    // create menu
+
+    const headerElem = document.createElement("div");
+    headerElem.classList.add("bytm-menu-header", "small");
+
+    const titleCont = document.createElement("div");
+    titleCont.className = "bytm-menu-titlecont-no-title";
+    titleCont.role = "heading";
+    titleCont.ariaLevel = "1";
+
+    const helpIconHtml = await resourceToHTMLString("help");
+    if(helpIconHtml)
+      titleCont.innerHTML = helpIconHtml;
+
+    const closeElem = document.createElement("img");
+    closeElem.classList.add("bytm-menu-close", "small");
+    closeElem.src = await getResourceUrl("close");
+    closeElem.title = t("close_menu_tooltip");
+    closeElem.addEventListener("click", (e) => closeHelpDialog(e));
+
+    headerElem.appendChild(titleCont);
+    headerElem.appendChild(closeElem);
+
+    menuBgElem = document.createElement("div");
+    menuBgElem.id = "bytm-feat-help-menu-bg";
+    menuBgElem.classList.add("bytm-menu-bg");
+    menuBgElem.title = t("close_menu_tooltip");
+    menuBgElem.style.visibility = "hidden";
+    menuBgElem.style.display = "none";
+    menuBgElem.addEventListener("click", (e) => {
+      if(isHelpDialogOpen && (e.target as HTMLElement)?.id === "bytm-feat-help-menu-bg")
+        closeHelpDialog(e);
+    });
+    document.body.addEventListener("keydown", (e) => {
+      if(isHelpDialogOpen && e.key === "Escape")
+        closeHelpDialog(e);
+    });
+
+    const menuContainer = document.createElement("div");
+    menuContainer.title = ""; // prevent bg title from propagating downwards
+    menuContainer.classList.add("bytm-menu");
+    menuContainer.id = "bytm-feat-help-menu";
+
+    const helpTextElem = document.createElement("div");
+    helpTextElem.id = "bytm-feat-help-menu-text";
+
+    menuContainer.appendChild(headerElem);
+    menuContainer.appendChild(helpTextElem);
+    menuBgElem.appendChild(menuContainer);
+    document.body.appendChild(menuBgElem);
+  }
+  else
+    menuBgElem = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg")!;
+
+  if(helpDialogCurFeature !== featureKey) {
+    const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
+
+    helpTextElem.innerText = t(`feature_helptext_${featureKey}`);
+  }
+
+  helpDialogCurFeature = featureKey;
+
+  // show menu
+  document.body.classList.add("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find feature help dialog background element");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
+}
+
+function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
+  if(!isHelpDialogOpen)
+    return;
+  isHelpDialogOpen = false;
+  evt?.bubbles && evt.stopPropagation();
+
+  document.body.classList.remove("bytm-disable-scroll");
+  const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
+
+  if(!menuBg)
+    return warn("Couldn't find feature help dialog background element");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
 }
 
 //#MARKER export menu

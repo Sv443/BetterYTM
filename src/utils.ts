@@ -1,4 +1,4 @@
-import { clamp, getUnsafeWindow } from "@sv443-network/userutils";
+import { clamp, fetchAdvanced, getUnsafeWindow } from "@sv443-network/userutils";
 import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import { Domain, LogLevel, ResourceKey } from "./types";
@@ -255,4 +255,18 @@ export function getSessionId(): string {
   }
 
   return sesId;
+}
+
+/** Returns the SVG content behind the passed resource identifier to be assigned to an element's innerHTML property */
+export async function resourceToHTMLString(resource: ResourceKey) {
+  try {
+    const resourceUrl = await getResourceUrl(resource);
+    if(!resourceUrl)
+      throw new Error(`Couldn't find URL for resource '${resource}'`);
+    return await (await fetchAdvanced(resourceUrl)).text();
+  }
+  catch(err) {
+    error("Couldn't get SVG element from resource:", err);
+    return null;
+  }
 }

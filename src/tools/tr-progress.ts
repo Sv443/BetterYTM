@@ -64,7 +64,7 @@ async function run() {
 
     const baseTr = trFiles[locale as TrLocale]?.base;
 
-    tableLines.push(`| \`${locale}\` | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : "─"} |`);
+    tableLines.push(`| \`${locale}\` | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en_US" ? "" : "─")} |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
@@ -76,7 +76,7 @@ async function run() {
     const lines = [] as string[];
     for(const [k] of Object.entries(en_US)) {
       if(!translations[k])
-        lines.push(`| \`${k}\` | \`${en_US[k]}\` |`);
+        lines.push(`| \`${k}\` | \`${en_US[k].replace(/\n/gm, "\\n")}\` |`);
     }
     if(lines.length > 0) {
       missingKeys.push(`

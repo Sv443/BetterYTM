@@ -8,6 +8,8 @@ export * from "./input";
 export * from "./lyrics";
 export * from "./songLists";
 
+//#MARKER types
+
 /** Union of all feature keys */
 export type FeatInfoKey = keyof typeof featInfo;
 
@@ -15,6 +17,8 @@ export type FeatInfoKey = keyof typeof featInfo;
 export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
 
 type SelectOption = { value: number | string, label: string };
+
+//#MARKER feature dependencies
 
 const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
   return [...a, {
