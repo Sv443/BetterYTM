@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "60dc5a8", // asserted as generic string instead of literal
+        buildNumber: "3932cc0", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1289,6 +1289,7 @@ I welcome every contribution on GitHub!
     	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     	lint: "tsc --noEmit && eslint .",
     	"tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
+    	"tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
     	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
     	invisible: "node src/tools/run-invisible.mjs"
     };
@@ -1921,7 +1922,6 @@ I welcome every contribution on GitHub!
             }
             helpDialogCurFeature = featureKey;
             // show menu
-            document.body.classList.add("bytm-disable-scroll");
             const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
             if (!menuBg)
                 return warn("Couldn't find feature help dialog background element");
@@ -1934,7 +1934,6 @@ I welcome every contribution on GitHub!
             return;
         isHelpDialogOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-        document.body.classList.remove("bytm-disable-scroll");
         const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
         if (!menuBg)
             return warn("Couldn't find feature help dialog background element");
