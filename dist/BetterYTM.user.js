@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "6b73801", // asserted as generic string instead of literal
+        buildNumber: "f23ca65", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -3830,6 +3830,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
             titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
             const titleLogoElem = document.createElement("img");
             titleLogoElem.id = "bytm-welcome-menu-title-logo";
+            titleLogoElem.classList.add("bytm-no-select");
             titleLogoElem.src = yield getResourceUrl("logo");
             const titleElem = document.createElement("h2");
             titleElem.id = "bytm-welcome-menu-title";
@@ -3838,13 +3839,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
             titleElem.ariaLevel = "1";
             titleWrapperElem.appendChild(titleLogoElem);
             titleWrapperElem.appendChild(titleElem);
-            const titleCloseElem = document.createElement("img");
-            titleCloseElem.id = "bytm-welcome-menu-title-close";
-            titleCloseElem.classList.add("bytm-menu-close");
-            titleCloseElem.src = yield getResourceUrl("close");
-            titleCloseElem.addEventListener("click", closeWelcomeMenu);
             headerElem.appendChild(titleWrapperElem);
-            headerElem.appendChild(titleCloseElem);
             //#SECTION footer
             const footerCont = document.createElement("div");
             footerCont.id = "bytm-welcome-menu-footer-cont";
@@ -3884,6 +3879,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
             localeCont.id = "bytm-welcome-menu-locale-cont";
             const localeImg = document.createElement("img");
             localeImg.id = "bytm-welcome-menu-locale-img";
+            localeImg.classList.add("bytm-no-select");
             localeImg.src = yield getResourceUrl("globe");
             const localeSelectElem = document.createElement("select");
             localeSelectElem.id = "bytm-welcome-menu-locale-select";
@@ -4567,6 +4563,7 @@ button.bytm-btn {
   text-transform: revert;
   color: revert;
   background: revert;
+  line-height: 1.4em;
 }
 
 .bytm-link, .bytm-markdown-container a {

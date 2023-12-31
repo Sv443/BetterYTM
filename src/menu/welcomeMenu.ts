@@ -35,6 +35,7 @@ export async function addWelcomeMenu() {
 
   const titleLogoElem = document.createElement("img");
   titleLogoElem.id = "bytm-welcome-menu-title-logo";
+  titleLogoElem.classList.add("bytm-no-select");
   titleLogoElem.src = await getResourceUrl("logo");
 
   const titleElem = document.createElement("h2");
@@ -46,14 +47,7 @@ export async function addWelcomeMenu() {
   titleWrapperElem.appendChild(titleLogoElem);
   titleWrapperElem.appendChild(titleElem);
 
-  const titleCloseElem = document.createElement("img");
-  titleCloseElem.id = "bytm-welcome-menu-title-close";
-  titleCloseElem.classList.add("bytm-menu-close");
-  titleCloseElem.src = await getResourceUrl("close");
-  titleCloseElem.addEventListener("click", closeWelcomeMenu);
-
   headerElem.appendChild(titleWrapperElem);
-  headerElem.appendChild(titleCloseElem);
 
   //#SECTION footer
   const footerCont = document.createElement("div");
@@ -104,6 +98,7 @@ export async function addWelcomeMenu() {
 
   const localeImg = document.createElement("img");
   localeImg.id = "bytm-welcome-menu-locale-img";
+  localeImg.classList.add("bytm-no-select");
   localeImg.src = await getResourceUrl("globe");
 
   const localeSelectElem = document.createElement("select");

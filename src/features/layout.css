@@ -99,6 +99,7 @@ button.bytm-btn {
   text-transform: revert;
   color: revert;
   background: revert;
+  line-height: 1.4em;
 }
 
 .bytm-link, .bytm-markdown-container a {
