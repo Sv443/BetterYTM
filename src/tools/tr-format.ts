@@ -75,8 +75,7 @@ async function run() {
 function escapeJsonVal(val: string) {
   return val
     .replace(/\n/gm, "\\n")
-    .replace(/"/gm, "\\\"")
-    .replace(/\\/gm, "\\");
+    .replace(/"/gm, "\\\"");
 }
 
 run();
