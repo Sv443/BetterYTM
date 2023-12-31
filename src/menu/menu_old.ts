@@ -670,7 +670,6 @@ async function openHelpDialog(featureKey: FeatInfoKey) {
   helpDialogCurFeature = featureKey;
 
   // show menu
-  document.body.classList.add("bytm-disable-scroll");
   const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
 
   if(!menuBg)
@@ -686,7 +685,6 @@ function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
   isHelpDialogOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
   const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
 
   if(!menuBg)
