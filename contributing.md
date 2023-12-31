@@ -46,26 +46,32 @@ If you want to submit or edit a translation, please follow these steps:
 <br>
 
 #### These are the CLI commands available after setting up the project:
-| Command | Description | Extra Arguments |
-| :-- | :-- | :-- |
-| `npm i` | Run once to install dependencies | - |
-| `npm run build-prod` | Builds the userscript for production | `--config-mode`, `--config-branch`, `--config-host` |
-| `npm run build-dev` | Builds the userscript for development | `--config-mode`, `--config-branch`, `--config-host` |
-| `npm run dev` | Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see below). Configure request logging and more in `.env` and `src/tools/serve.ts` | - |
-| `npm run lint` | Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't actually verify the functionality of the script though! | - |
-| `npm run tr-progress` | Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md` | - |
-| `npm run tr-format` | Reformats all translation files so they match that of the base file `en_US.json` | - |
-| `npm run --silent invisible -- "<command>"` | Runs the passed command as a detached child process without giving any console output | - |
-
-By passing the `--config-mode` argument, you can specify the mode that BetterYTM should be built in.  
-It can be either `production` or `development` (default)  
-  
-By passing the `--config-branch` argument, you can specify the GitHub branch that BetterYTM should target (for resource URLs, etc).  
-It can be any branch name, but should be `main` for production and `develop` for development (default).  
-  
-By passing the `--config-host` argument, you can specify the host that BetterYTM will be distributed on.  
-It can be either `github` (default), `greasyfork` or `openuserjs`  
-This mostly just changes the userscript header so it doesn't matter for development.
+- **`npm i`**  
+  Run once to install dependencies
+- **`npm run build-prod`**  
+  Builds the userscript for production  
+  Arguments:  
+  - `--config-mode` - The mode to build in. Can be either `production` or `development` (default)
+  - `--config-branch` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
+  - `--config-host` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
+- **`npm run build-dev`**  
+  Builds the userscript for development  
+  Arguments:  
+  - `--config-mode` - The mode to build in. Can be either `production` or `development` (default)
+  - `--config-branch` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
+  - `--config-host` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs` - this just changes the userscript header so it doesn't matter for development.
+- **`npm run dev`**  
+  Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)). Configure request logging and more in `.env` and `src/tools/serve.ts`  
+- **`npm run lint`**  
+  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
+- **`npm run tr-progress`**  
+  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
+- **`npm run tr-format`**  
+  Reformats all translation files so they match that of the base file `en_US.json`  
+  Arguments:  
+  - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value.
+- **`npm run --silent invisible -- "<command>"`**  
+  Runs the passed command as a detached child process without giving any console output
 
 <br>
 
