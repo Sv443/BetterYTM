@@ -51,15 +51,15 @@ If you want to submit or edit a translation, please follow these steps:
 - **`npm run build-prod`**  
   Builds the userscript for production  
   Arguments:  
-  - `--config-mode` - The mode to build in. Can be either `production` or `development` (default)
-  - `--config-branch` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
-  - `--config-host` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
+  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
+  - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
+  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
 - **`npm run build-dev`**  
   Builds the userscript for development  
   Arguments:  
-  - `--config-mode` - The mode to build in. Can be either `production` or `development` (default)
-  - `--config-branch` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
-  - `--config-host` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs` - this just changes the userscript header so it doesn't matter for development.
+  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
+  - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
+  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs` - this just changes the userscript header so it doesn't matter for development.
 - **`npm run dev`**  
   Watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)). Configure request logging and more in `.env` and `src/tools/serve.ts`  
 - **`npm run lint`**  
@@ -69,7 +69,8 @@ If you want to submit or edit a translation, please follow these steps:
 - **`npm run tr-format`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   Arguments:  
-  - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value.
+  - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
+  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a comma separated list (e.g. `-o="fr_FR,de_DE"`)
 - **`npm run --silent invisible -- "<command>"`**  
   Runs the passed command as a detached child process without giving any console output
 

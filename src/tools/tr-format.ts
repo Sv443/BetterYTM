@@ -4,7 +4,9 @@ import locales from "../../assets/locales.json" assert { type: "json" };
 
 const prepTranslate = process.argv.find((v) => v === "--prep" || v === "-p");
 
-console.log("prepTranslate:", prepTranslate, process.argv);
+const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.startsWith("-o"));
+const onlyLocales = onlyLocalesRaw?.split("=")[1]?.replace(/"/g, "")
+  ?.replace(/\s/g, "")?.split(",") as TrLocale[] | undefined;
 
 async function run() {
   console.log("\nReformatting translation files...");
@@ -14,7 +16,12 @@ async function run() {
   const localeKeysRaw = Object.keys(locales) as TrLocale[];
   const localeKeys = localeKeysRaw.filter((key) => key !== "en_US") as Exclude<TrLocale, "en_US">[];
 
+  let reformattedAmt = 0;
+
   for(const locale of localeKeys) {
+    if(onlyLocales && !onlyLocales.includes(locale))
+      continue;
+
     // use en_US as base, replace values with values from locale file
 
     let localeFile = en_US;
@@ -58,15 +65,18 @@ async function run() {
     // (backup is available through git history so idc)
 
     await writeFile(`./assets/translations/${locale}.json`, localeFile);
+
+    reformattedAmt++;
   }
-  console.log(`\nDone reformatting \x1b[32m${localeKeys.length}\x1b[0m translation files!\n`);
+  console.log(`\nDone reformatting \x1b[32m${reformattedAmt}\x1b[0m translation file${reformattedAmt === 1 ? "" : "s"}!\n`);
 }
 
 /** Escapes various characters for use as a JSON value */
 function escapeJsonVal(val: string) {
   return val
     .replace(/\n/gm, "\\n")
-    .replace(/"/gm, "\\\"");
+    .replace(/"/gm, "\\\"")
+    .replace(/\\/gm, "\\");
 }
 
 run();
