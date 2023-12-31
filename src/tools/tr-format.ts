@@ -4,6 +4,8 @@ import locales from "../../assets/locales.json" assert { type: "json" };
 
 const prepTranslate = process.argv.find((v) => v === "--prep" || v === "-p");
 
+console.log("prepTranslate:", prepTranslate, process.argv);
+
 async function run() {
   console.log("\nReformatting translation files...");
   const en_US = await readFile("./assets/translations/en_US.json", "utf-8");
@@ -24,7 +26,7 @@ async function run() {
         localeFile = localeFile.replace(new RegExp(`"${k}":\\s+".*"`, "m"), `"${k}": "${escapeJsonVal(val).trim()}"`);
       else {
         if(prepTranslate)
-          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `"${k}": "",\n    "${k}": "${escapeJsonVal(en_US_obj.translations[k]).trim()}"`);
+          localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), `\n    "${k}": "",\n    "${k}": "${escapeJsonVal(en_US_obj.translations[k]).trim()}",`);
         else
           localeFile = localeFile.replace(new RegExp(`\\n\\s+"${k}":\\s+".*",?`, "m"), "");
       }
