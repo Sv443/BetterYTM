@@ -510,8 +510,10 @@ export async function addCfgMenu() {
   menuContainer.appendChild(headerElem);
   menuContainer.appendChild(featuresCont);
 
+  const versionElemCont = document.createElement("div");
+  versionElemCont.id = "bytm-menu-version";
+
   const versionElem = document.createElement("a");
-  versionElem.id = "bytm-menu-version";
   versionElem.classList.add("bytm-link");
   versionElem.role = "button";
   versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
@@ -526,7 +528,8 @@ export async function addCfgMenu() {
   });
 
   menuContainer.appendChild(footerCont);
-  titleElem.appendChild(versionElem);
+  versionElemCont.appendChild(versionElem);
+  titleElem.appendChild(versionElemCont);
 
   backgroundElem.appendChild(menuContainer);
 
