@@ -6,12 +6,16 @@
 
 .side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
   background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
   display: none;
   position: absolute;
   right: 0;
   padding-left: 25px;
   height: 100%;
+}
+
+.side-panel.modular ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
 
 .bytm-generic-list-queue-btn-container {
@@ -33,7 +37,14 @@ ytmusic-responsive-list-item-renderer .title-column {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
