@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "3932cc0", // asserted as generic string instead of literal
+        buildNumber: "30d4062", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1101,6 +1101,197 @@ I welcome every contribution on GitHub!
         return trans;
     }
 
+    let features$3;
+    function preInitBehavior(feats) {
+        features$3 = feats;
+    }
+    //#MARKER beforeunload popup
+    let beforeUnloadEnabled = true;
+    /** Disables the popup before leaving the site */
+    function disableBeforeUnload() {
+        beforeUnloadEnabled = false;
+        info("Disabled popup before leaving the site");
+    }
+    /**
+     * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
+     * event listeners before they can be called by the site.
+     */
+    function initBeforeUnloadHook() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
+            (function (original) {
+                // @ts-ignore
+                window.__proto__.addEventListener = function (...args) {
+                    const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
+                    args[1] = function (...a) {
+                        if (!beforeUnloadEnabled && args[0] === "beforeunload") {
+                            info("Prevented beforeunload event listener from being called");
+                            return false;
+                        }
+                        else
+                            return origListener.apply(this, a);
+                    };
+                    original.apply(this, args);
+                };
+                // @ts-ignore
+            })(window.__proto__.addEventListener);
+        });
+    }
+    //#MARKER auto close toasts
+    /** Closes toasts after a set amount of time */
+    function initAutoCloseToasts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const animTimeout = 300;
+                const closeTimeout = Math.max(features$3.closeToastsTimeout * 1000 + animTimeout, animTimeout);
+                onSelectorOld("tp-yt-paper-toast#toast", {
+                    all: true,
+                    continuous: true,
+                    listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
+                        var _a;
+                        for (const toastElem of toastElems) {
+                            if (!toastElem.hasAttribute("allow-click-through"))
+                                continue;
+                            if (toastElem.classList.contains("bytm-closing"))
+                                continue;
+                            toastElem.classList.add("bytm-closing");
+                            yield pauseFor(closeTimeout);
+                            toastElem.classList.remove("paper-toast-open");
+                            log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features$3.closeToastsTimeout * 1000}ms`);
+                            // wait for the transition to finish
+                            yield pauseFor(animTimeout);
+                            toastElem.style.display = "none";
+                        }
+                    }),
+                });
+                log("Initialized automatic toast closing");
+            }
+            catch (err) {
+                error("Error in automatic toast closing:", err);
+            }
+        });
+    }
+    /** After how many milliseconds a remembered entry should expire */
+    const remSongEntryExpiry = 1000 * 60 * 1;
+    /** Minimum time a song has to be played before it is committed to GM storage */
+    const remSongMinPlayTime = 10;
+    let remSongsCache = [];
+    /** Remembers the time of the last played song and resumes playback from that time */
+    function initRememberSongTime() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (features$3.rememberSongTimeSites !== "all" && features$3.rememberSongTimeSites !== getDomain())
+                return;
+            const storedDataRaw = yield GM.getValue("bytm-rem-songs");
+            if (!storedDataRaw)
+                yield GM.setValue("bytm-rem-songs", "[]");
+            remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+            log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+            if (location.pathname.startsWith("/watch"))
+                yield restoreSongTime();
+            remSongUpdateEntry();
+            setInterval(remSongUpdateEntry, 1000);
+        });
+    }
+    /** Tries to restore the time of the currently playing song */
+    function restoreSongTime() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (location.pathname.startsWith("/watch")) {
+                const { searchParams } = new URL(location.href);
+                const watchID = searchParams.get("v");
+                if (!watchID)
+                    return;
+                const entry = remSongsCache.find(entry => entry.watchID === watchID);
+                if (entry) {
+                    if (Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
+                        yield delRemSongData(entry.watchID);
+                        return;
+                    }
+                    else {
+                        onSelectorOld(videoSelector, {
+                            listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
+                                if (vidElem) {
+                                    const applyTime = () => __awaiter(this, void 0, void 0, function* () {
+                                        if (isNaN(entry.songTime))
+                                            return;
+                                        vidElem.currentTime = clamp(Math.max(entry.songTime, 0), 0, vidElem.duration);
+                                        yield delRemSongData(entry.watchID);
+                                        info(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, LogLevel.Info);
+                                    });
+                                    if (vidElem.readyState === 4)
+                                        applyTime();
+                                    else
+                                        vidElem.addEventListener("canplay", applyTime, { once: true });
+                                }
+                            }),
+                        });
+                    }
+                }
+            }
+        });
+    }
+    /** Updates the currently playing song's entry in GM storage */
+    function remSongUpdateEntry() {
+        var _a, _b, _c;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (location.pathname.startsWith("/watch")) {
+                const { searchParams } = new URL(location.href);
+                const watchID = searchParams.get("v");
+                if (!watchID)
+                    return;
+                const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+                const paused = (_c = (_b = document.querySelector(videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+                // don't immediately update to reduce race conditions and only update if the video is playing
+                // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+                if (songTime > remSongMinPlayTime && !paused) {
+                    const entry = {
+                        watchID,
+                        songTime,
+                        updateTimestamp: Date.now(),
+                    };
+                    yield setRemSongData(entry);
+                }
+                // if the song is rewound to the beginning, delete the entry
+                else {
+                    const entry = remSongsCache.find(entry => entry.watchID === watchID);
+                    if (entry && songTime <= remSongMinPlayTime)
+                        yield delRemSongData(entry.watchID);
+                }
+            }
+            const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
+            for (const entry of expiredEntries)
+                yield delRemSongData(entry.watchID);
+        });
+    }
+    /** Adds an entry or updates it if it already exists */
+    function setRemSongData(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
+            if (foundIdx >= 0)
+                remSongsCache[foundIdx] = data;
+            else
+                remSongsCache.push(data);
+            yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+        });
+    }
+    /** Deletes an entry */
+    function delRemSongData(watchID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
+            yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+        });
+    }
+    //#MARKER disable darkreader
+    /** Disables Dark Reader if it is enabled */
+    function disableDarkReader() {
+        if (document.querySelector(".darkreader")) {
+            const metaElem = document.createElement("meta");
+            metaElem.name = "darkreader-lock";
+            metaElem.classList.add("bytm-disable-darkreader");
+            document.head.appendChild(metaElem);
+            info("Sent hint to Dark Reader to disable itself");
+        }
+    }
+
     let createNanoEvents = () => ({
       emit(event, ...args) {
         let callbacks = this.events[event] || [];
@@ -1410,7 +1601,7 @@ I welcome every contribution on GitHub!
      * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
      */
     function addCfgMenu() {
-        var _a, _b;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             if (isCfgMenuAdded)
                 return;
@@ -1539,7 +1730,9 @@ I welcome every contribution on GitHub!
                         const textElem = document.createElement("span");
                         textElem.innerText = t(`feature_desc_${featKey}`);
                         let helpElem;
-                        if (hasKey(`feature_helptext_${featKey}`)) {
+                        // @ts-ignore
+                        const hasHelpTextFunc = typeof ((_c = featInfo[featKey]) === null || _c === void 0 ? void 0 : _c.helpText) === "function";
+                        if (hasKey(`feature_helptext_${featKey}`) || hasHelpTextFunc) {
                             const helpElemImgHtml = yield resourceToHTMLString("help");
                             if (helpElemImgHtml) {
                                 helpElem = document.createElement("div");
@@ -1865,6 +2058,7 @@ I welcome every contribution on GitHub!
     let helpDialogCurFeature;
     /** Opens the feature help dialog for the given feature */
     function openHelpDialog(featureKey) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if (isHelpDialogOpen)
                 return;
@@ -1918,7 +2112,9 @@ I welcome every contribution on GitHub!
                 menuBgElem = document.querySelector("#bytm-feat-help-menu-bg");
             if (helpDialogCurFeature !== featureKey) {
                 const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
-                helpTextElem.innerText = t(`feature_helptext_${featureKey}`);
+                // @ts-ignore
+                const helpText = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText();
+                helpTextElem.innerText = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
             }
             helpDialogCurFeature = featureKey;
             // show menu
@@ -2348,9 +2544,9 @@ I welcome every contribution on GitHub!
         menuBg.style.display = "block";
     }
 
-    let features$3;
+    let features$2;
     function preInitLayout(feats) {
-        features$3 = feats;
+        features$2 = feats;
     }
     //#MARKER BYTM-Config buttons
     let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
@@ -2498,7 +2694,7 @@ I welcome every contribution on GitHub!
                 listener: (sliderElem) => {
                     const volSliderCont = document.createElement("div");
                     volSliderCont.id = "bytm-vol-slider-cont";
-                    if (features$3.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
+                    if (features$2.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
                         for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
                             volSliderCont.addEventListener(evtName, (e) => {
                                 var _a, _b;
@@ -2507,7 +2703,7 @@ I welcome every contribution on GitHub!
                                 e.stopImmediatePropagation();
                                 const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
                                 const volumeDir = -Math.sign(delta);
-                                const newVolume = String(Number(sliderElem.value) + (features$3.volumeSliderScrollStep * volumeDir));
+                                const newVolume = String(Number(sliderElem.value) + (features$2.volumeSliderScrollStep * volumeDir));
                                 sliderElem.value = newVolume;
                                 sliderElem.setAttribute("aria-valuenow", newVolume);
                                 // make the site actually change the volume
@@ -2519,9 +2715,9 @@ I welcome every contribution on GitHub!
                         }
                     }
                     addParent(sliderElem, volSliderCont);
-                    if (typeof features$3.volumeSliderSize === "number")
+                    if (typeof features$2.volumeSliderSize === "number")
                         setVolSliderSize();
-                    if (features$3.volumeSliderLabel)
+                    if (features$2.volumeSliderLabel)
                         addVolumeSliderLabel(sliderElem, volSliderCont);
                     setVolSliderStep(sliderElem);
                 },
@@ -2535,7 +2731,7 @@ I welcome every contribution on GitHub!
         labelElem.innerText = `${sliderElem.value}%`;
         // prevent video from minimizing
         labelElem.addEventListener("click", (e) => e.stopPropagation());
-        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$3.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
         const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
@@ -2573,7 +2769,7 @@ I welcome every contribution on GitHub!
     }
     /** Sets the volume slider to a set size */
     function setVolSliderSize() {
-        const { volumeSliderSize: size } = features$3;
+        const { volumeSliderSize: size } = features$2;
         if (typeof size !== "number" || isNaN(Number(size)))
             return;
         addGlobalStyle(`\
@@ -2583,7 +2779,7 @@ I welcome every contribution on GitHub!
     }
     /** Sets the `step` attribute of the volume slider */
     function setVolSliderStep(sliderElem) {
-        sliderElem.setAttribute("step", String(features$3.volumeSliderStep));
+        sliderElem.setAttribute("step", String(features$2.volumeSliderStep));
     }
     //#MARKER anchor improvements
     /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
@@ -2758,197 +2954,6 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
                 }),
             });
         });
-    }
-
-    let features$2;
-    function preInitBehavior(feats) {
-        features$2 = feats;
-    }
-    //#MARKER beforeunload popup
-    let beforeUnloadEnabled = true;
-    /** Disables the popup before leaving the site */
-    function disableBeforeUnload() {
-        beforeUnloadEnabled = false;
-        info("Disabled popup before leaving the site");
-    }
-    /**
-     * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
-     * event listeners before they can be called by the site.
-     */
-    function initBeforeUnloadHook() {
-        return __awaiter(this, void 0, void 0, function* () {
-            Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-            (function (original) {
-                // @ts-ignore
-                window.__proto__.addEventListener = function (...args) {
-                    const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-                    args[1] = function (...a) {
-                        if (!beforeUnloadEnabled && args[0] === "beforeunload") {
-                            info("Prevented beforeunload event listener from being called");
-                            return false;
-                        }
-                        else
-                            return origListener.apply(this, a);
-                    };
-                    original.apply(this, args);
-                };
-                // @ts-ignore
-            })(window.__proto__.addEventListener);
-        });
-    }
-    //#MARKER auto close toasts
-    /** Closes toasts after a set amount of time */
-    function initAutoCloseToasts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const animTimeout = 300;
-                const closeTimeout = Math.max(features$2.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-                onSelectorOld("tp-yt-paper-toast#toast", {
-                    all: true,
-                    continuous: true,
-                    listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
-                        var _a;
-                        for (const toastElem of toastElems) {
-                            if (!toastElem.hasAttribute("allow-click-through"))
-                                continue;
-                            if (toastElem.classList.contains("bytm-closing"))
-                                continue;
-                            toastElem.classList.add("bytm-closing");
-                            yield pauseFor(closeTimeout);
-                            toastElem.classList.remove("paper-toast-open");
-                            log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features$2.closeToastsTimeout * 1000}ms`);
-                            // wait for the transition to finish
-                            yield pauseFor(animTimeout);
-                            toastElem.style.display = "none";
-                        }
-                    }),
-                });
-                log("Initialized automatic toast closing");
-            }
-            catch (err) {
-                error("Error in automatic toast closing:", err);
-            }
-        });
-    }
-    /** After how many milliseconds a remembered entry should expire */
-    const remSongEntryExpiry = 1000 * 60 * 1;
-    /** Minimum time a song has to be played before it is committed to GM storage */
-    const remSongMinTime = 10;
-    let remSongsCache = [];
-    /** Remembers the time of the last played song and resumes playback from that time */
-    function initRememberSongTime() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (features$2.rememberSongTimeSites !== "all" && features$2.rememberSongTimeSites !== getDomain())
-                return;
-            const storedDataRaw = yield GM.getValue("bytm-rem-songs");
-            if (!storedDataRaw)
-                yield GM.setValue("bytm-rem-songs", "[]");
-            remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-            log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
-            if (location.pathname.startsWith("/watch"))
-                yield restoreSongTime();
-            remSongUpdateEntry();
-            setInterval(remSongUpdateEntry, 1000);
-        });
-    }
-    /** Tries to restore the time of the currently playing song */
-    function restoreSongTime() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (location.pathname.startsWith("/watch")) {
-                const { searchParams } = new URL(location.href);
-                const watchID = searchParams.get("v");
-                if (!watchID)
-                    return;
-                const entry = remSongsCache.find(entry => entry.watchID === watchID);
-                if (entry) {
-                    if (Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
-                        yield delRemSongData(entry.watchID);
-                        return;
-                    }
-                    else {
-                        onSelectorOld(videoSelector, {
-                            listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
-                                if (vidElem) {
-                                    const applyTime = () => __awaiter(this, void 0, void 0, function* () {
-                                        if (isNaN(entry.songTime))
-                                            return;
-                                        vidElem.currentTime = clamp(Math.max(entry.songTime, 0), 0, vidElem.duration);
-                                        yield delRemSongData(entry.watchID);
-                                        info(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, LogLevel.Info);
-                                    });
-                                    if (vidElem.readyState === 4)
-                                        applyTime();
-                                    else
-                                        vidElem.addEventListener("canplay", applyTime, { once: true });
-                                }
-                            }),
-                        });
-                    }
-                }
-            }
-        });
-    }
-    /** Updates the currently playing song's entry in GM storage */
-    function remSongUpdateEntry() {
-        var _a, _b, _c;
-        return __awaiter(this, void 0, void 0, function* () {
-            if (location.pathname.startsWith("/watch")) {
-                const { searchParams } = new URL(location.href);
-                const watchID = searchParams.get("v");
-                if (!watchID)
-                    return;
-                const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-                const paused = (_c = (_b = document.querySelector(videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-                // don't immediately update to reduce race conditions and only update if the video is playing
-                // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-                if (songTime > remSongMinTime && !paused) {
-                    const entry = {
-                        watchID,
-                        songTime,
-                        updateTimestamp: Date.now(),
-                    };
-                    yield setRemSongData(entry);
-                }
-                // if the song is rewound to the beginning, delete the entry
-                else {
-                    const entry = remSongsCache.find(entry => entry.watchID === watchID);
-                    if (entry && songTime <= remSongMinTime)
-                        yield delRemSongData(entry.watchID);
-                }
-            }
-            const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
-            for (const entry of expiredEntries)
-                yield delRemSongData(entry.watchID);
-        });
-    }
-    /** Adds an entry or updates it if it already exists */
-    function setRemSongData(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
-            if (foundIdx >= 0)
-                remSongsCache[foundIdx] = data;
-            else
-                remSongsCache.push(data);
-            yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
-        });
-    }
-    /** Deletes an entry */
-    function delRemSongData(watchID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
-            yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
-        });
-    }
-    //#MARKER disable darkreader
-    /** Disables Dark Reader if it is enabled */
-    function disableDarkReader() {
-        if (document.querySelector(".darkreader")) {
-            const metaElem = document.createElement("meta");
-            metaElem.name = "darkreader-lock";
-            metaElem.classList.add("bytm-disable-darkreader");
-            document.head.appendChild(metaElem);
-            info("Sent hint to Dark Reader to disable itself");
-        }
     }
 
     let features$1;
@@ -3493,7 +3498,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
      * Contains all possible features with their default values and other configuration.
      *
      * **Required props:**
-     * | Prop | Description |
+     * | Property | Description |
      * | :-- | :-- |
      * | `type` | type of the feature - see below for possible values |
      * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
@@ -3501,10 +3506,11 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
      * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
      *
      * **Optional props:**
-     * | Prop | Description |
+     * | Property | Description |
      * | :-- | :-- |
      * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
      * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+     * | `helpText(): string` | function that returns an HTML string that will be the help text for this feature - useful for pluralizing or inserting values into the translation - if not set, translation with key `feature_helptext_featureKey` will be used instead |
      * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
      * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
      * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
@@ -3637,7 +3643,8 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
             category: "behavior",
             default: true,
             enable: () => void "TODO",
-            disable: () => void "TODO", // TODO: feasible?
+            disable: () => void "TODO",
+            helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
         },
         rememberSongTimeSites: {
             type: "select",
@@ -4172,7 +4179,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 }
 
 .bytm-menu-header.small {
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 .bytm-menu-titlecont {
@@ -4184,7 +4191,6 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: 5px;
 }
 
 .bytm-menu-title {
@@ -4705,12 +4711,16 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 
 .side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
   background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 15%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
   display: none;
   position: absolute;
   right: 0;
   padding-left: 25px;
   height: 100%;
+}
+
+.side-panel.modular ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
 
 .bytm-generic-list-queue-btn-container {
@@ -4732,7 +4742,14 @@ ytmusic-responsive-list-item-renderer .title-column {
 .side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
 .side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(29, 29, 29, 1) 15%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
