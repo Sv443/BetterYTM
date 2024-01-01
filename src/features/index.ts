@@ -1,6 +1,7 @@
-import { t } from "../translations";
+import { t, tp } from "../translations";
 import { getPreferredLocale } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
+import { remSongMinPlayTime } from "./behavior";
 
 export * from "./layout";
 export * from "./behavior";
@@ -34,7 +35,7 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * Contains all possible features with their default values and other configuration.  
  *   
  * **Required props:**
- * | Prop | Description |
+ * | Property | Description |
  * | :-- | :-- |
  * | `type` | type of the feature - see below for possible values |
  * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
@@ -42,10 +43,11 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
  *   
  * **Optional props:**
- * | Prop | Description |
+ * | Property | Description |
  * | :-- | :-- |
  * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
  * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `helpText(): string` | function that returns an HTML string that will be the help text for this feature - useful for pluralizing or inserting values into the translation - if not set, translation with key `feature_helptext_featureKey` will be used instead |
  * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
  * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
@@ -181,6 +183,7 @@ export const featInfo = {
     default: true,
     enable: () => void "TODO",
     disable: () => void "TODO", // TODO: feasible?
+    helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
   },
   rememberSongTimeSites: {
     type: "select",

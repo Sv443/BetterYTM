@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| `en_US` | 119 (default locale) |  |
-| `de_DE` | 🚫 `97/119` (81.5%) | ─ |
-| `en_UK` | ✅ `119/119` (100.0%) | `en_US` |
-| `es_ES` | 🚫 `97/119` (81.5%) | ─ |
-| `fr_FR` | 🚫 `97/119` (81.5%) | ─ |
-| `hi_IN` | 🚫 `97/119` (81.5%) | ─ |
-| `ja_JA` | 🚫 `97/119` (81.5%) | ─ |
-| `pt_BR` | 🚫 `97/119` (81.5%) | ─ |
-| `zh_CN` | 🚫 `97/119` (81.5%) | ─ |
+| `en_US` | 120 (default locale) |  |
+| `de_DE` | 🚫 `97/120` (80.8%) | ─ |
+| `en_UK` | ✅ `120/120` (100.0%) | `en_US` |
+| `es_ES` | 🚫 `97/120` (80.8%) | ─ |
+| `fr_FR` | 🚫 `97/120` (80.8%) | ─ |
+| `hi_IN` | 🚫 `97/120` (80.8%) | ─ |
+| `ja_JA` | 🚫 `97/120` (80.8%) | ─ |
+| `pt_BR` | 🚫 `97/120` (80.8%) | ─ |
+| `zh_CN` | 🚫 `97/120` (80.8%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>de_DE</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -44,8 +44,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -54,7 +55,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>es_ES</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>es_ES</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -73,8 +74,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -83,7 +85,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>fr_FR</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>fr_FR</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -102,8 +104,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -112,7 +115,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>hi_IN</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>hi_IN</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -131,8 +134,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -141,7 +145,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>ja_JA</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>ja_JA</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -160,8 +164,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -170,7 +175,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>pt_BR</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>pt_BR</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -189,8 +194,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
@@ -199,7 +205,7 @@ This means you need to manually check against the base translations for missing 
 
 </details>
 
-<details><summary><code>zh_CN</code> - 22 missing keys (click to show)</summary>
+<details><summary><code>zh_CN</code> - 23 missing keys (click to show)</summary>
 
 | Key | English text |
 | --- | ------------ |
@@ -218,8 +224,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_listButtonsPlacement` | `Where should the queue buttons show up?` |
 | `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.` |
 | `feature_helptext_disableBeforeUnloadPopup` | `When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of "you have unsaved data" or "this site is asking if you want to close it".\nThis feature disables that popup entirely.` |
-| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.` |
-| `feature_helptext_rememberSongTime` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for a few seconds, then its time will be remembered and be restorable for about a minute.` |
+| `feature_helptext_closeToastsTimeout` | `Most popups that appear in the bottom left corner will close automatically after 3 seconds with the exception of certain ones like when liking a song.\nThis feature allows you to set a time for those permanent popups to be closed.\nThe other kind of popups will stay unaffected.\nSet this to 0 for the default behavior of not closing permanent notifications.` |
+| `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
+| `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |

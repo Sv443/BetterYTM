@@ -104,7 +104,7 @@ interface RemSongObj {
 /** After how many milliseconds a remembered entry should expire */
 const remSongEntryExpiry = 1000 * 60 * 1;
 /** Minimum time a song has to be played before it is committed to GM storage */
-const remSongMinTime = 10;
+export const remSongMinPlayTime = 10;
 
 let remSongsCache: RemSongObj[] = [];
 
@@ -180,7 +180,7 @@ async function remSongUpdateEntry() {
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > remSongMinTime && !paused) {
+    if(songTime > remSongMinPlayTime && !paused) {
       const entry = {
         watchID,
         songTime,
@@ -191,7 +191,7 @@ async function remSongUpdateEntry() {
     // if the song is rewound to the beginning, delete the entry
     else {
       const entry = remSongsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= remSongMinTime)
+      if(entry && songTime <= remSongMinPlayTime)
         await delRemSongData(entry.watchID);
     }
   }

@@ -78,7 +78,7 @@
 }
 
 .bytm-menu-header.small {
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 .bytm-menu-titlecont {
@@ -90,7 +90,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: 5px;
 }
 
 .bytm-menu-title {

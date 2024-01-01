@@ -206,7 +206,10 @@ export async function addCfgMenu() {
 
         let helpElem: undefined | HTMLDivElement;
 
-        if(hasKey(`feature_helptext_${featKey}`)) {
+        // @ts-ignore
+        const hasHelpTextFunc = typeof featInfo[featKey as keyof typeof featInfo]?.helpText === "function";
+
+        if(hasKey(`feature_helptext_${featKey}`) || hasHelpTextFunc) {
           const helpElemImgHtml = await resourceToHTMLString("help");
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
@@ -664,7 +667,9 @@ async function openHelpDialog(featureKey: FeatInfoKey) {
   if(helpDialogCurFeature !== featureKey) {
     const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
 
-    helpTextElem.innerText = t(`feature_helptext_${featureKey}`);
+    // @ts-ignore
+    const helpText: string | undefined = featInfo[featureKey]?.helpText();
+    helpTextElem.innerText = helpText ?? t(`feature_helptext_${featureKey}`);
   }
 
   helpDialogCurFeature = featureKey;

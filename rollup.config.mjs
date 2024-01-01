@@ -29,7 +29,6 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       }),
       pluginMarkdown(),
       pluginExecute([
-        // TODO: find better spot for this or add silent param and move to the end
         `npm run --silent post-build -- --mode=${mode} --branch=${branch} --host=${host}`,
         ...(mode === "development" ? ["npm run --silent invisible -- \"npm run tr-progress\""] : []),
       ]),
