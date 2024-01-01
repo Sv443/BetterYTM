@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "30d4062", // asserted as generic string instead of literal
+        buildNumber: "faae0f0", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1595,7 +1595,10 @@ I welcome every contribution on GitHub!
     /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
     const scrollIndicatorOffsetThreshold = 30;
     let scrollIndicatorEnabled = true;
+    /** Locale at the point of initializing the config menu */
     let initLocale;
+    /** Stringified config at the point of initializing the config menu */
+    let initConfig$1;
     /**
      * Adds an element to open the BetterYTM menu
      * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1607,6 +1610,7 @@ I welcome every contribution on GitHub!
                 return;
             isCfgMenuAdded = true;
             initLocale = getFeatures().locale;
+            initConfig$1 = JSON.stringify(getFeatures());
             const initLangReloadText = t("lang_changed_prompt_reload");
             const toggled_on = t("toggled_on");
             const toggled_off = t("toggled_off");
@@ -1670,6 +1674,60 @@ I welcome every contribution on GitHub!
             titleCont.appendChild(linksCont);
             headerElem.appendChild(titleCont);
             headerElem.appendChild(closeElem);
+            //#SECTION footer
+            const footerCont = document.createElement("div");
+            footerCont.className = "bytm-menu-footer-cont";
+            const footerElemCont = document.createElement("div");
+            const footerElem = document.createElement("div");
+            footerElem.classList.add("bytm-menu-footer", "hidden");
+            footerElem.innerText = t("reload_hint");
+            const reloadElem = document.createElement("button");
+            reloadElem.classList.add("bytm-btn");
+            reloadElem.style.marginLeft = "10px";
+            reloadElem.innerText = t("reload_now");
+            reloadElem.title = t("reload_tooltip");
+            reloadElem.addEventListener("click", () => {
+                closeCfgMenu();
+                disableBeforeUnload();
+                location.reload();
+            });
+            footerElem.appendChild(reloadElem);
+            footerElemCont.appendChild(footerElem);
+            const resetElem = document.createElement("button");
+            resetElem.classList.add("bytm-btn");
+            resetElem.title = t("reset_tooltip");
+            resetElem.innerText = t("reset");
+            resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                if (confirm(t("reset_confirm"))) {
+                    yield setDefaultFeatures();
+                    closeCfgMenu();
+                    disableBeforeUnload();
+                    location.reload();
+                }
+            }));
+            const exportElem = document.createElement("button");
+            exportElem.classList.add("bytm-btn");
+            exportElem.title = t("export_tooltip");
+            exportElem.innerText = t("export");
+            exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                closeCfgMenu();
+                openExportMenu();
+            }));
+            const importElem = document.createElement("button");
+            importElem.classList.add("bytm-btn");
+            importElem.title = t("import_tooltip");
+            importElem.innerText = t("import");
+            importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                closeCfgMenu();
+                openImportMenu();
+            }));
+            const buttonsCont = document.createElement("div");
+            buttonsCont.id = "bytm-menu-footer-buttons-cont";
+            buttonsCont.appendChild(exportElem);
+            buttonsCont.appendChild(importElem);
+            buttonsCont.appendChild(resetElem);
+            footerCont.appendChild(footerElemCont);
+            footerCont.appendChild(buttonsCont);
             //#SECTION feature list
             const featuresCont = document.createElement("div");
             featuresCont.id = "bytm-menu-opts";
@@ -1680,6 +1738,10 @@ I welcome every contribution on GitHub!
                 const featConf = JSON.parse(JSON.stringify(getFeatures()));
                 featConf[key] = newVal;
                 yield saveFeatures(featConf);
+                if (initConfig$1 !== JSON.stringify(featConf))
+                    footerElem.classList.remove("hidden");
+                else
+                    footerElem.classList.add("hidden");
                 if (initLocale !== featConf.locale) {
                     yield initTranslations(featConf.locale);
                     setLocale(featConf.locale);
@@ -1921,65 +1983,12 @@ I welcome every contribution on GitHub!
             const bottomAnchor = document.createElement("div");
             bottomAnchor.id = "bytm-menu-bottom-anchor";
             featuresCont.appendChild(bottomAnchor);
-            //#SECTION footer
-            const footerCont = document.createElement("div");
-            footerCont.className = "bytm-menu-footer-cont";
-            const footerElem = document.createElement("div");
-            footerElem.classList.add("bytm-menu-footer");
-            footerElem.innerText = t("reload_hint");
-            const reloadElem = document.createElement("button");
-            reloadElem.classList.add("bytm-btn");
-            reloadElem.style.marginLeft = "10px";
-            reloadElem.innerText = t("reload_now");
-            reloadElem.title = t("reload_tooltip");
-            reloadElem.addEventListener("click", () => {
-                closeCfgMenu();
-                disableBeforeUnload();
-                location.reload();
-            });
-            footerElem.appendChild(reloadElem);
-            const resetElem = document.createElement("button");
-            resetElem.classList.add("bytm-btn");
-            resetElem.title = t("reset_tooltip");
-            resetElem.innerText = t("reset");
-            resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-                if (confirm(t("reset_confirm"))) {
-                    yield setDefaultFeatures();
-                    closeCfgMenu();
-                    disableBeforeUnload();
-                    location.reload();
-                }
-            }));
-            const exportElem = document.createElement("button");
-            exportElem.classList.add("bytm-btn");
-            exportElem.title = t("export_tooltip");
-            exportElem.innerText = t("export");
-            exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-                closeCfgMenu();
-                openExportMenu();
-            }));
-            const importElem = document.createElement("button");
-            importElem.classList.add("bytm-btn");
-            importElem.title = t("import_tooltip");
-            importElem.innerText = t("import");
-            importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-                closeCfgMenu();
-                openImportMenu();
-            }));
-            const buttonsCont = document.createElement("div");
-            buttonsCont.id = "bytm-menu-footer-buttons-cont";
-            buttonsCont.appendChild(exportElem);
-            buttonsCont.appendChild(importElem);
-            buttonsCont.appendChild(resetElem);
-            footerCont.appendChild(footerElem);
-            footerCont.appendChild(buttonsCont);
             //#SECTION finalize
             menuContainer.appendChild(headerElem);
             menuContainer.appendChild(featuresCont);
-            const versionCont = document.createElement("div");
-            versionCont.id = "bytm-menu-version-cont";
+            const versionElemCont = document.createElement("div");
+            versionElemCont.id = "bytm-menu-version";
             const versionElem = document.createElement("a");
-            versionElem.id = "bytm-menu-version";
             versionElem.classList.add("bytm-link");
             versionElem.role = "button";
             versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
@@ -1990,9 +1999,9 @@ I welcome every contribution on GitHub!
                 closeCfgMenu();
                 openChangelogMenu("cfgMenu");
             });
-            versionCont.appendChild(versionElem);
             menuContainer.appendChild(footerCont);
-            menuContainer.appendChild(versionCont);
+            versionElemCont.appendChild(versionElem);
+            titleElem.appendChild(versionElemCont);
             backgroundElem.appendChild(menuContainer);
             document.body.appendChild(backgroundElem);
             window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
@@ -2000,6 +2009,11 @@ I welcome every contribution on GitHub!
             yield addExportMenu();
             yield addImportMenu();
             log("Added menu element");
+            // ensure stuff is reset if menu was opened before being added
+            isCfgMenuOpen = false;
+            document.body.classList.remove("bytm-disable-scroll");
+            backgroundElem.style.visibility = "hidden";
+            backgroundElem.style.display = "none";
         });
     }
     /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
@@ -2058,7 +2072,7 @@ I welcome every contribution on GitHub!
     let helpDialogCurFeature;
     /** Opens the feature help dialog for the given feature */
     function openHelpDialog(featureKey) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             if (isHelpDialogOpen)
                 return;
@@ -2113,7 +2127,7 @@ I welcome every contribution on GitHub!
             if (helpDialogCurFeature !== featureKey) {
                 const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
                 // @ts-ignore
-                const helpText = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText();
+                const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
                 helpTextElem.innerText = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
             }
             helpDialogCurFeature = featureKey;
@@ -4134,7 +4148,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 15;
+  z-index: 5;
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -4149,7 +4163,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 16;
+  z-index: 6;
   color: #fff;
   background-color: var(--bytm-menu-bg);
 }
@@ -4194,8 +4208,23 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 }
 
 .bytm-menu-title {
+  position: relative;
   display: inline-block;
   font-size: 22px;
+}
+
+#bytm-menu-version {
+  position: absolute;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  font-size: 10px;
+  font-weight: normal;
+  z-index: 7;
+}
+
+#bytm-menu-version .bytm-link {
+  color: #c6d2db;
 }
 
 #bytm-menu-linkscont {
@@ -4214,6 +4243,17 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   margin-right: 10px;
 }
 
+.bytm-menu-link .bytm-menu-img {
+  position: relative;
+  border-radius: 50%;
+  bottom: 0px;
+  transition: bottom 0.15s ease-out;
+}
+
+.bytm-menu-link:hover .bytm-menu-img {
+  bottom: 5px;
+}
+
 .bytm-menu-close {
   width: 32px;
   height: 32px;
@@ -4230,16 +4270,21 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   text-decoration: underline;
 }
 
+.bytm-menu-footer.hidden {
+  display: none;
+}
+
 .bytm-menu-footer-cont {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 6px;
-  padding: 20px 20px 8px 20px;
+  padding: 15px 20px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: solid none none none;
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
 
 #bytm-menu-footer-buttons-cont button:not(:last-of-type) {
@@ -4251,14 +4296,6 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   flex-direction: row-reverse;
   align-items: center;
   margin-top: 15px;
-}
-
-#bytm-menu-version-cont {
-  display: flex;
-  justify-content: space-around;
-  font-size: 1.2em;
-  padding-bottom: 8px;
-  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
 }
 
 #bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
@@ -4275,7 +4312,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
   transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  z-index: 101;
+  z-index: 7;
   background-color: var(--bytm-scroll-indicator-bg);
   border-radius: 50%;
   cursor: pointer;
