@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@sv443-network/userutils": "^4.0.0",
-    "nanoevents": "^8.0.0"
+    "nanoevents": "^9.0.0"
   },
   "devDependencies": {
     "@jackfranklin/rollup-plugin-markdown": "^0.4.0",
