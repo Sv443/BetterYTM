@@ -31,29 +31,30 @@
 // @grant             GM.setClipboard
 // @grant             unsafeWindow
 // @noframes
-// @resource          close      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          logo       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          arrow_down https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          delete     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          error      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          globe      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          help       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          lyrics     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          skip_to    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          spinner    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          discord    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          github     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          greasyfork https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          openuserjs https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          tr-de_DE   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          tr-en_US   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          tr-en_UK   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          tr-es_ES   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          tr-fr_FR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          tr-hi_IN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          tr-ja_JA   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          tr-pt_BR   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          tr-zh_CN   https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          close       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          logo        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          arrow_down  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          delete      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          error       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          globe       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
+// @resource          help        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
+// @resource          lyrics      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          skip_to     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          spinner     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          discord     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
+// @resource          github      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          greasyfork  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          openuserjs  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          fix_spacing https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/other/fixSpacing.css
+// @resource          tr-de_DE    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          tr-en_US    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          tr-en_UK    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
+// @resource          tr-es_ES    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          tr-fr_FR    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          tr-hi_IN    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          tr-ja_JA    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          tr-pt_BR    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          tr-zh_CN    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -680,7 +681,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "61f6629", // asserted as generic string instead of literal
+        buildNumber: "5e11631", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1294,14 +1295,19 @@ I welcome every contribution on GitHub!
 
     let createNanoEvents = () => ({
       emit(event, ...args) {
-        let callbacks = this.events[event] || [];
-        for (let i = 0, length = callbacks.length; i < length; i++) {
+        for (
+          let i = 0,
+            callbacks = this.events[event] || [],
+            length = callbacks.length;
+          i < length;
+          i++
+        ) {
           callbacks[i](...args);
         }
       },
       events: {},
       on(event, cb) {
-        this.events[event]?.push(cb) || (this.events[event] = [cb]);
+    (this.events[event] ||= []).push(cb);
         return () => {
           this.events[event] = this.events[event]?.filter(i => cb !== i);
         }
@@ -1510,7 +1516,7 @@ I welcome every contribution on GitHub!
     };
     var dependencies = {
     	"@sv443-network/userutils": "^4.0.0",
-    	nanoevents: "^8.0.0"
+    	nanoevents: "^9.0.0"
     };
     var devDependencies = {
     	"@jackfranklin/rollup-plugin-markdown": "^0.4.0",
@@ -2566,6 +2572,7 @@ I welcome every contribution on GitHub!
     }
     //#MARKER BYTM-Config buttons
     let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
+    const eastereggOpenAmt = 5;
     /** Adds a watermark beneath the logo */
     function addWatermark() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2580,9 +2587,9 @@ I welcome every contribution on GitHub!
             watermark.addEventListener("click", (e) => {
                 e.stopPropagation();
                 menuOpenAmt++;
-                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
                     openCfgMenu();
-                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
                     exchangeLogo();
             });
             // when using the tab key to navigate
@@ -2590,9 +2597,9 @@ I welcome every contribution on GitHub!
                 if (e.key === "Enter") {
                     e.stopPropagation();
                     menuOpenAmt++;
-                    if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                    if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
                         openCfgMenu();
-                    if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                    if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
                         exchangeLogo();
                 }
             });
@@ -2664,10 +2671,10 @@ I welcome every contribution on GitHub!
                 const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
                 settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
                 menuOpenAmt++;
-                yield pauseFor(100);
-                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+                yield pauseFor(50);
+                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
                     openCfgMenu();
-                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
                     exchangeLogo();
             }));
             const cfgOptIconElem = document.createElement("img");
@@ -2927,16 +2934,16 @@ I welcome every contribution on GitHub!
     /** Applies global CSS to fix various spacings */
     function fixSpacing() {
         return __awaiter(this, void 0, void 0, function* () {
-            addGlobalStyle(`\
-ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
-  margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
-}
-
-ytmusic-carousel-shelf-renderer ytmusic-carousel {
-  --ytmusic-carousel-item-height: 60px !important;
-}`);
+            try {
+                const css = yield (yield fetchAdvanced(yield getResourceUrl("fix_spacing"))).text();
+                css && addGlobalStyle(css);
+            }
+            catch (err) {
+                error("Couldn't fix spacing due to an error:", err);
+            }
         });
     }
+    //#MARKER scroll to active song
     /** Adds a button to the queue to scroll to the active song */
     function addScrollToActiveBtn() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -3659,7 +3666,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
             category: "behavior",
             default: true,
             enable: () => void "TODO",
-            disable: () => void "TODO",
+            disable: () => void "TODO", // TODO: feasible?
             helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
         },
         rememberSongTimeSites: {
