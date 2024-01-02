@@ -85,7 +85,11 @@ export async function addCfgMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.className = "bytm-menu-title";
-  titleElem.innerText = t("config_menu_title", scriptInfo.name);
+
+  const titleTextElem = document.createElement("div");
+  titleTextElem.innerText = t("config_menu_title", scriptInfo.name);
+
+  titleElem.appendChild(titleTextElem);
 
   const linksCont = document.createElement("div");
   linksCont.id = "bytm-menu-linkscont";

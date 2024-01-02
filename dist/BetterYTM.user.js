@@ -680,7 +680,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "faae0f0", // asserted as generic string instead of literal
+        buildNumber: "61f6629", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1643,7 +1643,9 @@ I welcome every contribution on GitHub!
             titleCont.ariaLevel = "1";
             const titleElem = document.createElement("h2");
             titleElem.className = "bytm-menu-title";
-            titleElem.innerText = t("config_menu_title", scriptInfo.name);
+            const titleTextElem = document.createElement("div");
+            titleTextElem.innerText = t("config_menu_title", scriptInfo.name);
+            titleElem.appendChild(titleTextElem);
             const linksCont = document.createElement("div");
             linksCont.id = "bytm-menu-linkscont";
             const addLink = (imgSrc, href, title) => {
