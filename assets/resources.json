@@ -14,5 +14,7 @@
   "discord": "external/discord.png",
   "github": "external/github.png",
   "greasyfork": "external/greasyfork.png",
-  "openuserjs": "external/openuserjs.png"
+  "openuserjs": "external/openuserjs.png",
+
+  "fix_spacing": "other/fixSpacing.css"
 }

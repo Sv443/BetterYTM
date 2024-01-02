@@ -5,8 +5,8 @@ import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log, warn } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
-import "./layout.css";
 import { featInfo } from ".";
+import "./layout.css";
 
 let features: FeatureConfig;
 
@@ -17,6 +17,7 @@ export function preInitLayout(feats: FeatureConfig) {
 //#MARKER BYTM-Config buttons
 
 let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
+const eastereggOpenAmt = 5;
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
@@ -34,9 +35,9 @@ export async function addWatermark() {
     e.stopPropagation();
     menuOpenAmt++;
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
       openCfgMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+    if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
       exchangeLogo();
   });
 
@@ -46,9 +47,9 @@ export async function addWatermark() {
       e.stopPropagation();
       menuOpenAmt++;
 
-      if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+      if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
         openCfgMenu();
-      if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+      if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
         exchangeLogo();
     }
   });
@@ -133,11 +134,11 @@ export async function addConfigMenuOption(container: HTMLElement) {
     settingsBtnElem?.click();
     menuOpenAmt++;
 
-    await pauseFor(100);
+    await pauseFor(50);
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
+    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
       openCfgMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+    if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
       exchangeLogo();
   });
 
@@ -449,15 +450,16 @@ export async function removeShareTrackingParam() {
 
 /** Applies global CSS to fix various spacings */
 export async function fixSpacing() {
-  addGlobalStyle(`\
-ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
-  margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl("fix_spacing"))).text();
+    css && addGlobalStyle(css);
+  }
+  catch(err) {
+    error("Couldn't fix spacing due to an error:", err);
+  }
 }
 
-ytmusic-carousel-shelf-renderer ytmusic-carousel {
-  --ytmusic-carousel-item-height: 60px !important;
-}`);
-}
+//#MARKER scroll to active song
 
 /** Adds a button to the queue to scroll to the active song */
 export async function addScrollToActiveBtn() {
