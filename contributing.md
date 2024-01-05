@@ -138,7 +138,7 @@ If you need specific events to be added or modified, please [submit an issue.](h
 
 <br>
 
-<details><summary>Static interaction example - click to expand</summary>
+<details><summary>Static interaction <b>Example <i>(click to expand)</i></b></summary>
 
 #### Example:
 ```ts
@@ -153,7 +153,7 @@ console.log(`BetterYTM's version is '${BYTM.version} #${BYTM.buildNumber}'`);
 
 <br>
 
-<details><summary>Dynamic interaction examples - click to expand</summary>
+<details><summary>Dynamic interaction examples <i>(click to expand)</i></summary>
 
 #### Basic format:
 ```ts
@@ -254,7 +254,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > - `selector` - The CSS selector to observe for changes.
 > - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > // wait for the observers to exist
@@ -289,7 +289,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > Arguments:  
 > - `resourceName` - The name of the resource to get the URL for.
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const deleteButtonImg = document.createElement("img");
@@ -311,7 +311,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > Returns the unique session ID that is generated on every page load.  
 > It should persist between history navigations, but not between page reloads.  
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const sessionId = unsafeWindow.BYTM.getSessionId();
@@ -337,7 +337,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers.  
 > Resolves with a number of seconds or `null` if the time couldn't be determined.  
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > try {
@@ -366,7 +366,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > - `translationKey` - The key of the translation to get.
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const customConfigMenuTitle = document.createElement("div");
@@ -395,7 +395,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > - `num` - The number of items to determine the pluralization identifier from. Can also be an array or NodeList.
 > - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
 >   
-> <details><summary>Example - click to expand</summary>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > try {
