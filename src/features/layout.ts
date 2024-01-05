@@ -1,8 +1,8 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, observeElementProp, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, observeElementProperty, warn } from "../utils";
+import { error, getResourceUrl, log, warn } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
 import { featInfo } from ".";
@@ -444,7 +444,7 @@ export async function removeShareTrackingParam() {
 
   onSelectorOld<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
     listener: (el) => {
-      observeElementProperty(el, "value", (_oldVal, newVal) => {
+      observeElementProp(el, "value", (_oldVal, newVal) => {
         if(newVal.match(/si=/))
           removeSiParam(el);
       });
