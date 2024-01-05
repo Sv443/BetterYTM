@@ -437,6 +437,28 @@ I welcome every contribution on GitHub!
         horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
       };
     }
+    function observeElementProp(element, property, callback) {
+      const elementPrototype = Object.getPrototypeOf(element);
+      if (elementPrototype.hasOwnProperty(property)) {
+        const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
+        Object.defineProperty(element, property, {
+          get: function() {
+            var _a;
+            return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
+          },
+          set: function() {
+            var _a;
+            const oldValue = this[property];
+            (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
+            const newValue = this[property];
+            if (typeof callback === "function") {
+              callback.bind(this, oldValue, newValue);
+            }
+            return newValue;
+          }
+        });
+      }
+    }
 
     // lib/misc.ts
     function autoPlural(word, num) {
@@ -691,6 +713,7 @@ I welcome every contribution on GitHub!
         interceptWindowEvent: interceptWindowEvent,
         isScrollable: isScrollable,
         mapRange: mapRange,
+        observeElementProp: observeElementProp,
         openInNewTab: openInNewTab,
         pauseFor: pauseFor,
         preloadImages: preloadImages,
@@ -787,7 +810,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "16b6bfe", // asserted as generic string instead of literal
+        buildNumber: "a3a4efe", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1140,43 +1163,6 @@ I welcome every contribution on GitHub!
                 return null;
             }
         });
-    }
-    /**
-     * Executes the callback when the passed element's property changes.
-     * Contrary to an element's attributes, properties can usually not be observed with a MutationObserver.
-     * This function shims the getter and setter of the property to invoke the callback.
-     *
-     * [Source](https://stackoverflow.com/a/61975440)
-     * @param property The name of the property to observe
-     * @param callback Callback to execute when the value is changed
-     */
-    function observeElementProperty(element, property, callback) {
-        const elementPrototype = Object.getPrototypeOf(element);
-        // eslint-disable-next-line no-prototype-builtins
-        if (elementPrototype.hasOwnProperty(property)) {
-            const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
-            Object.defineProperty(element, property, {
-                get: function () {
-                    var _a;
-                    // @ts-ignore
-                    // eslint-disable-next-line prefer-rest-params
-                    return (_a = descriptor === null || descriptor === void 0 ? void 0 : descriptor.get) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
-                },
-                set: function () {
-                    var _a;
-                    const oldValue = this[property];
-                    // @ts-ignore
-                    // eslint-disable-next-line prefer-rest-params
-                    (_a = descriptor === null || descriptor === void 0 ? void 0 : descriptor.set) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
-                    const newValue = this[property];
-                    if (typeof callback === "function") {
-                        // @ts-ignore
-                        callback.bind(this, oldValue, newValue);
-                    }
-                    return newValue;
-                }
-            });
-        }
     }
 
     const fetchOpts = {
@@ -1660,7 +1646,7 @@ I welcome every contribution on GitHub!
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
     };
     var dependencies = {
-    	"@sv443-network/userutils": "^4.0.0",
+    	"@sv443-network/userutils": "^4.1.0",
     	nanoevents: "^9.0.0"
     };
     var devDependencies = {
@@ -3074,7 +3060,7 @@ I welcome every contribution on GitHub!
             };
             onSelectorOld("yt-copy-link-renderer input#share-url", {
                 listener: (el) => {
-                    observeElementProperty(el, "value", (_oldVal, newVal) => {
+                    observeElementProp(el, "value", (_oldVal, newVal) => {
                         if (newVal.match(/si=/))
                             removeSiParam(el);
                     });
