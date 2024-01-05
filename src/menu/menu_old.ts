@@ -283,8 +283,10 @@ export async function addCfgMenu() {
 
         // @ts-ignore
         const hasHelpTextFunc = typeof featInfo[featKey as keyof typeof featInfo]?.helpText === "function";
+        // @ts-ignore
+        const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
-        if(hasKey(`feature_helptext_${featKey}`) || hasHelpTextFunc) {
+        if(hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
           const helpElemImgHtml = await resourceToHTMLString("help");
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");

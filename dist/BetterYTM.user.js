@@ -787,7 +787,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "cfa74c0", // asserted as generic string instead of literal
+        buildNumber: "16b6bfe", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1947,7 +1947,9 @@ I welcome every contribution on GitHub!
                         let helpElem;
                         // @ts-ignore
                         const hasHelpTextFunc = typeof ((_c = featInfo[featKey]) === null || _c === void 0 ? void 0 : _c.helpText) === "function";
-                        if (hasKey(`feature_helptext_${featKey}`) || hasHelpTextFunc) {
+                        // @ts-ignore
+                        const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
+                        if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
                             const helpElemImgHtml = yield resourceToHTMLString("help");
                             if (helpElemImgHtml) {
                                 helpElem = document.createElement("div");
