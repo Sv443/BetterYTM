@@ -270,3 +270,46 @@ export async function resourceToHTMLString(resource: ResourceKey) {
     return null;
   }
 }
+
+/**
+ * Executes the callback when the passed element's property changes.  
+ * Contrary to an element's attributes, properties can usually not be observed with a MutationObserver.  
+ * This function shims the getter and setter of the property to invoke the callback.  
+ *   
+ * [Source](https://stackoverflow.com/a/61975440)
+ * @param property The name of the property to observe
+ * @param callback Callback to execute when the value is changed
+ */
+export function observeElementProperty<
+  TElem extends Element = HTMLElement,
+  TProp extends keyof TElem = keyof TElem,
+>(
+  element: TElem,
+  property: TProp,
+  callback: (oldVal: TElem[TProp], newVal: TElem[TProp]) => void
+) {
+  const elementPrototype = Object.getPrototypeOf(element);
+  // eslint-disable-next-line no-prototype-builtins
+  if(elementPrototype.hasOwnProperty(property)) {
+    const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
+    Object.defineProperty(element, property, {
+      get: function() {
+        // @ts-ignore
+        // eslint-disable-next-line prefer-rest-params
+        return descriptor?.get?.apply(this, arguments);
+      },
+      set: function() {
+        const oldValue = this[property];
+        // @ts-ignore
+        // eslint-disable-next-line prefer-rest-params
+        descriptor?.set?.apply(this, arguments);
+        const newValue = this[property];
+        if(typeof callback === "function") {
+          // @ts-ignore
+          callback.bind(this, oldValue, newValue);
+        }
+        return newValue;
+      }
+    });
+  }
+}

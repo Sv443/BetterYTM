@@ -2,7 +2,7 @@ import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, paus
 import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, warn } from "../utils";
+import { error, getResourceUrl, log, observeElementProperty, warn } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
 import { featInfo } from ".";
@@ -427,21 +427,28 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
 /** Continuously removes the ?si tracking parameter from share URLs */
 export async function removeShareTrackingParam() {
-  onSelectorOld<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
-    continuous: true,
-    listener: (inputElem) => {
-      try {
-        const url = new URL(inputElem.value);
-        if(!url.searchParams.has("si"))
-          return;
+  const removeSiParam = (inputElem: HTMLInputElement) => {
+    try {
+      const url = new URL(inputElem.value);
+      if(!url.searchParams.has("si"))
+        return;
 
-        url.searchParams.delete("si");
-        inputElem.value = String(url);
-        log(`Removed tracking parameter from share link: ${url}`);
-      }
-      catch(err) {
-        warn("Couldn't remove tracking parameter from share link due to error:", err);
-      }
+      url.searchParams.delete("si");
+      inputElem.value = String(url);
+      log(`Removed tracking parameter from share link: ${url}`);
+    }
+    catch(err) {
+      warn("Couldn't remove tracking parameter from share link due to error:", err);
+    }
+  };
+
+  onSelectorOld<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
+    listener: (el) => {
+      observeElementProperty(el, "value", (_oldVal, newVal) => {
+        if(newVal.match(/si=/))
+          removeSiParam(el);
+      });
+      removeSiParam(el);
     },
   });
 }
