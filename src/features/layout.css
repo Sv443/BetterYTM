@@ -11,16 +11,37 @@
   position: relative;
   vertical-align: middle;
   cursor: pointer;
-
   margin-left: 8px;
-  width: 40px;
-  height: 40px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid transparent;
   border-radius: 100%;
   background-color: transparent;
+
+  transition: background-color 0.2s ease;
 }
 
 .bytm-generic-btn:hover {
-  background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn:active {
+  background-color: #5f5f5f;
+  animation: flashBorder 0.4s ease 1;
+}
+
+@keyframes flashBorder {
+  0% {
+    border: 1px solid transparent;
+  }
+  20% {
+    border: 1px solid #7b7b7b;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
 }
 
 .bytm-generic-btn-img {
@@ -28,7 +49,6 @@
   z-index: 10;
   width: 24px;
   height: 24px;
-  padding: 5px;
 }
 
 .bytm-spinner {
