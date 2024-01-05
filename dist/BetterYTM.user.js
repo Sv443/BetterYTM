@@ -787,7 +787,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "d2fdcba", // asserted as generic string instead of literal
+        buildNumber: "cfa74c0", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -3054,7 +3054,7 @@ I welcome every contribution on GitHub!
         });
     }
     //#MARKER remove share tracking param
-    /** Continuously removes the ?si tracking parameter from share URLs */
+    /** Removes the ?si tracking parameter from share URLs */
     function removeShareTrackingParam() {
         return __awaiter(this, void 0, void 0, function* () {
             const removeSiParam = (inputElem) => {
@@ -4703,7 +4703,7 @@ I welcome every contribution on GitHub!
     border: 1px solid transparent;
   }
   20% {
-    border: 1px solid #7b7b7b;
+    border: 1px solid #727272;
   }
   100% {
     border: 1px solid transparent;
