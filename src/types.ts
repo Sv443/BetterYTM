@@ -5,6 +5,7 @@ import type { interfaceAddListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime } from "./utils";
+import type { getFeatures, saveFeatures } from "./config";
 
 /** Custom CLI args passed to rollup */
 export interface RollupArgs {
@@ -58,21 +59,37 @@ export type InterfaceFunctions = {
   t: typeof t;
   /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
   tp: typeof tp;
+  /** Returns the current feature configuration */
+  getFeatures: typeof getFeatures;
+  /** Overwrites the feature configuration with the provided one */
+  saveFeatures: typeof saveFeatures;
 };
 
 // shim for the BYTM interface properties
+export type BytmObject =
+  // properties defined and modified by BYTM at runtime
+  {
+    [key: string]: unknown;
+    locale: TrLocale;
+    logLevel: LogLevel;
+  }
+  // information from the userscript header
+  & typeof scriptInfo
+  // certain variables from `src/constants.ts`
+  & Pick<typeof consts, "mode" | "branch">
+  // global functions exposed through the interface in `src/interface.ts`
+  & InterfaceFunctions
+  // others
+  & {
+    // the entire UserUtils library
+    UserUtils: typeof import("@sv443-network/userutils");
+  };
+
 declare global {
   interface Window {
     // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts"
-    // and hover over the "BYTM" just below:
-    BYTM: {
-      [key: string]: unknown;
-      locale: TrLocale;
-      logLevel: LogLevel;
-    }
-    & typeof scriptInfo
-    & Pick<typeof consts, "mode" | "branch">
-    & InterfaceFunctions;
+    // and hover over the "BytmObject" just below:
+    BYTM: BytmObject;
   }
 }
 

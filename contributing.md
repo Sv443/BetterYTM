@@ -130,7 +130,8 @@ These are the ways to interact with BetterYTM; constants, events and global func
 
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
-  There is also a summary with examples [below.](#global-functions)
+  There is also a summary with examples [below.](#global-functions)  
+  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all functions from the [UserUtils](https://github.com/Sv443-Network/UserUtils) library.
 
 All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
   
@@ -235,6 +236,8 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 - [getVideoTime()](#getvideotime)
 - [t()](#t)
 - [tp()](#tp)
+- [getFeatures()](#getfeatures)
+- [saveFeatures()](#savefeatures)
 
 <br>
 
@@ -414,6 +417,63 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 >     }
 >   }
 > }
+> ```
+> </details>
+
+<br>
+
+> #### getFeatures()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getFeatures(): FeatureConfig
+> ```
+>   
+> Description:  
+> Returns the current feature configuration object synchronously from memory.  
+> To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const features = unsafeWindow.BYTM.getFeatures();
+> console.log(`The volume slider step is currently set to ${features.volumeSliderStep}`);
+> ```
+> </details>
+
+<br>
+
+> #### saveFeatures()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.saveFeatures(config: FeatureConfig): Promise<void>
+> ```
+>   
+> Description:  
+> Overwrites the current feature configuration object with the provided one.  
+> The object in memory is updated synchronously, while the one in GM storage is updated asynchronously once the Promise resolves.  
+>   
+> Arguments:  
+> - `config` - The full config object to save. If properties are missing, BYTM will break!  
+>   To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function updateVolSliderStep() {
+>   const oldConfig = unsafeWindow.BYTM.getFeatures();
+>   const newConfig = { ...oldConfig, volumeSliderStep: 1 };
+> 
+>   const promise = unsafeWindow.BYTM.saveFeatures(newConfig);
+>   // new config is now saved in memory, but not yet in GM storage
+>   // so this already returns the updated config:
+>   console.log(unsafeWindow.BYTM.getFeatures());
+> 
+>   await promise;
+>   // now the data is saved persistently in GM storage and the page can
+>   // safely be reloaded without losing the updated config data
+> }
+> 
+> updateVolSliderStep();
 > ```
 > </details>
 

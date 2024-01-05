@@ -1,9 +1,12 @@
-import { getUnsafeWindow } from "@sv443-network/userutils";
+import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
 import { t, type TrLocale } from "./translations";
-import type { SiteEventsMap } from "./siteEvents";
 import { interfaceAddListener } from "./observers";
+import { getFeatures, saveFeatures } from "./config";
+import type { SiteEventsMap } from "./siteEvents";
+
+const { getUnsafeWindow } = UserUtils;
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export interface InterfaceEvents {
@@ -29,6 +32,8 @@ const globalFuncs = {
   getSessionId,
   getVideoTime,
   t,
+  getFeatures,
+  saveFeatures,
 };
 
 /** Initializes the BYTM interface */
@@ -37,19 +42,24 @@ export function initInterface() {
     mode,
     branch,
     ...scriptInfo,
+    ...globalFuncs,
+    UserUtils,
   };
 
   for(const [key, value] of Object.entries(props))
-    setGlobalProp(key, value);
-
-  for(const [key, value] of Object.entries(globalFuncs))
     setGlobalProp(key, value);
 
   log("Initialized BYTM interface");
 }
 
 /** Sets a global property on the window.BYTM object */
-export function setGlobalProp<TValue = unknown>(key: string, value: TValue) {
+export function setGlobalProp<
+  TKey extends keyof Window["BYTM"],
+  TValue = Window["BYTM"][TKey],
+> (
+  key: TKey | (string & {}),
+  value: TValue,
+) {
   // use unsafeWindow so the properties are available outside of the userscript's scope
   const win = getUnsafeWindow();
   if(!win.BYTM)
