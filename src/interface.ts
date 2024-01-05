@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
-import { t, type TrLocale } from "./translations";
+import { t, tp, type TrLocale } from "./translations";
 import { interfaceAddListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
 import type { SiteEventsMap } from "./siteEvents";
@@ -32,6 +32,7 @@ const globalFuncs = {
   getSessionId,
   getVideoTime,
   t,
+  tp,
   getFeatures,
   saveFeatures,
 };

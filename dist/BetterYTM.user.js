@@ -787,7 +787,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "5fc7ec7", // asserted as generic string instead of literal
+        buildNumber: "67cf43a", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -911,6 +911,7 @@ I welcome every contribution on GitHub!
         getSessionId,
         getVideoTime,
         t,
+        tp,
         getFeatures,
         saveFeatures,
     };
