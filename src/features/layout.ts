@@ -425,7 +425,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
 //#MARKER remove share tracking param
 
-/** Continuously removes the ?si tracking parameter from share URLs */
+/** Removes the ?si tracking parameter from share URLs */
 export async function removeShareTrackingParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
