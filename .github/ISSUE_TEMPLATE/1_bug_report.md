@@ -24,10 +24,10 @@ assignees: Sv443
 
 ### Environment:
 - Browser name & version: 
-- Userscript version & build number: x.x.x (xxxxxxx)
+- Userscript version & build number: vX.X.X (xxxxxxx)
 <!--
-  To view the userscript version and build number, either open the configuration menu and copy the numbers and letters at the bottom,
-  or open the JavaScript console of your browser (usually with F12) and look for them at the very top.
+  To view the userscript version and build number, either open the configuration menu and copy the numbers and letters below the menu title,
+  or open the JavaScript console of your browser (usually with Ctrl + Shift + K) and scroll to the very top.
 -->
 
 

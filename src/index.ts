@@ -45,7 +45,7 @@ import { initObservers, observers } from "./observers";
 
   console.log();
   console.log(
-    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`,
+    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`,
     `font-weight: bold; ${styleCommon} ${styleGradient}`,
     `background-color: #333; ${styleCommon}`,
     "padding: initial;",
