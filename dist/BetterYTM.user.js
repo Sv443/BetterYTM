@@ -787,7 +787,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "67cf43a", // asserted as generic string instead of literal
+        buildNumber: "d2fdcba", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1141,6 +1141,43 @@ I welcome every contribution on GitHub!
             }
         });
     }
+    /**
+     * Executes the callback when the passed element's property changes.
+     * Contrary to an element's attributes, properties can usually not be observed with a MutationObserver.
+     * This function shims the getter and setter of the property to invoke the callback.
+     *
+     * [Source](https://stackoverflow.com/a/61975440)
+     * @param property The name of the property to observe
+     * @param callback Callback to execute when the value is changed
+     */
+    function observeElementProperty(element, property, callback) {
+        const elementPrototype = Object.getPrototypeOf(element);
+        // eslint-disable-next-line no-prototype-builtins
+        if (elementPrototype.hasOwnProperty(property)) {
+            const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
+            Object.defineProperty(element, property, {
+                get: function () {
+                    var _a;
+                    // @ts-ignore
+                    // eslint-disable-next-line prefer-rest-params
+                    return (_a = descriptor === null || descriptor === void 0 ? void 0 : descriptor.get) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
+                },
+                set: function () {
+                    var _a;
+                    const oldValue = this[property];
+                    // @ts-ignore
+                    // eslint-disable-next-line prefer-rest-params
+                    (_a = descriptor === null || descriptor === void 0 ? void 0 : descriptor.set) === null || _a === void 0 ? void 0 : _a.apply(this, arguments);
+                    const newValue = this[property];
+                    if (typeof callback === "function") {
+                        // @ts-ignore
+                        callback.bind(this, oldValue, newValue);
+                    }
+                    return newValue;
+                }
+            });
+        }
+    }
 
     const fetchOpts = {
         timeout: 10000,
@@ -1467,7 +1504,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
+    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -3020,20 +3057,26 @@ I welcome every contribution on GitHub!
     /** Continuously removes the ?si tracking parameter from share URLs */
     function removeShareTrackingParam() {
         return __awaiter(this, void 0, void 0, function* () {
+            const removeSiParam = (inputElem) => {
+                try {
+                    const url = new URL(inputElem.value);
+                    if (!url.searchParams.has("si"))
+                        return;
+                    url.searchParams.delete("si");
+                    inputElem.value = String(url);
+                    log(`Removed tracking parameter from share link: ${url}`);
+                }
+                catch (err) {
+                    warn("Couldn't remove tracking parameter from share link due to error:", err);
+                }
+            };
             onSelectorOld("yt-copy-link-renderer input#share-url", {
-                continuous: true,
-                listener: (inputElem) => {
-                    try {
-                        const url = new URL(inputElem.value);
-                        if (!url.searchParams.has("si"))
-                            return;
-                        url.searchParams.delete("si");
-                        inputElem.value = String(url);
-                        log(`Removed tracking parameter from share link: ${url}`);
-                    }
-                    catch (err) {
-                        warn("Couldn't remove tracking parameter from share link due to error:", err);
-                    }
+                listener: (el) => {
+                    observeElementProperty(el, "value", (_oldVal, newVal) => {
+                        if (newVal.match(/si=/))
+                            removeSiParam(el);
+                    });
+                    removeSiParam(el);
                 },
             });
         });
@@ -4163,7 +4206,7 @@ I welcome every contribution on GitHub!
         const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
         const styleCommon = "color: #fff; font-size: 1.5em; padding-left: 6px; padding-right: 6px;";
         console.log();
-        console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+        console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
         console.log([
             "Powered by:",
             "─ lots of ambition",
@@ -4634,16 +4677,37 @@ I welcome every contribution on GitHub!
   position: relative;
   vertical-align: middle;
   cursor: pointer;
-
   margin-left: 8px;
-  width: 40px;
-  height: 40px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid transparent;
   border-radius: 100%;
   background-color: transparent;
+
+  transition: background-color 0.2s ease;
 }
 
 .bytm-generic-btn:hover {
-  background-color: var(--yt-spec-10-percent-layer, #1d1d1d);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn:active {
+  background-color: #5f5f5f;
+  animation: flashBorder 0.4s ease 1;
+}
+
+@keyframes flashBorder {
+  0% {
+    border: 1px solid transparent;
+  }
+  20% {
+    border: 1px solid #7b7b7b;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
 }
 
 .bytm-generic-btn-img {
@@ -4651,7 +4715,6 @@ I welcome every contribution on GitHub!
   z-index: 10;
   width: 24px;
   height: 24px;
-  padding: 5px;
 }
 
 .bytm-spinner {
