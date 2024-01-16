@@ -120,7 +120,7 @@
     "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
-    "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.",
+    "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",
     "feature_desc_arrowKeySkipBy": "By how many seconds to skip when using the arrow keys",
     "feature_desc_switchBetweenSites": "Add a hotkey to switch between the YT and YTM sites on a video / song",
     "feature_helptext_switchBetweenSites": "Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.",
@@ -132,6 +132,6 @@
 
     "feature_desc_locale": "Language 🌐",
     "feature_desc_logLevel": "How much information to log to the console",
-    "feature_helptext_logLevel": "This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue."
+    "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue."
   }
 }

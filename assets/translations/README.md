@@ -48,10 +48,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -78,10 +78,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -108,10 +108,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -138,10 +138,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -168,10 +168,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -198,10 +198,10 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
@@ -228,9 +228,9 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_rememberSongTime-1` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.` |
 | `feature_helptext_rememberSongTime-n` | `Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.` |
 | `feature_desc_rememberSongTimeSites` | `On which sites should the song time be remembered and restored?` |
-| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too. To change the amount of seconds to skip, use the option below.` |
+| `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
-| `feature_helptext_logLevel` | `This is really only needed for debugging purposes. If you have a problem with the userscript, you should set this to a verbose setting so you can include the JavaScript console log in your GitHub issue.` |
+| `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
