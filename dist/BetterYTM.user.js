@@ -810,7 +810,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "a3a4efe", // asserted as generic string instead of literal
+        buildNumber: "270ecff", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -2256,9 +2256,12 @@ I welcome every contribution on GitHub!
                 menuContainer.title = ""; // prevent bg title from propagating downwards
                 menuContainer.classList.add("bytm-menu");
                 menuContainer.id = "bytm-feat-help-menu";
+                const featDescElem = document.createElement("h3");
+                featDescElem.id = "bytm-feat-help-menu-desc";
                 const helpTextElem = document.createElement("div");
                 helpTextElem.id = "bytm-feat-help-menu-text";
                 menuContainer.appendChild(headerElem);
+                menuContainer.appendChild(featDescElem);
                 menuContainer.appendChild(helpTextElem);
                 menuBgElem.appendChild(menuContainer);
                 document.body.appendChild(menuBgElem);
@@ -2266,16 +2269,19 @@ I welcome every contribution on GitHub!
             else
                 menuBgElem = document.querySelector("#bytm-feat-help-menu-bg");
             if (helpDialogCurFeature !== featureKey) {
+                // update help text
+                const featDescElem = menuBgElem.querySelector("#bytm-feat-help-menu-desc");
                 const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
+                featDescElem.innerText = t(`feature_desc_${featureKey}`);
                 // @ts-ignore
                 const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
                 helpTextElem.innerText = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
             }
-            helpDialogCurFeature = featureKey;
             // show menu
             const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
             if (!menuBg)
                 return warn("Couldn't find feature help dialog background element");
+            helpDialogCurFeature = featureKey;
             menuBg.style.visibility = "visible";
             menuBg.style.display = "block";
         });
@@ -4613,11 +4619,16 @@ I welcome every contribution on GitHub!
   font-weight: bolder;
 }
 
-#bytm-feat-help-menu-text {
+#bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   padding: 10px 10px 15px 20px;
   font-size: 1.5em;
+}
+
+#bytm-feat-help-menu-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
 }
 
 .bytm-ftitem-help-btn {
@@ -4632,6 +4643,12 @@ I welcome every contribution on GitHub!
 
 .bytm-ftitem-help-btn svg > path {
   fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
 }
 
 .bytm-hotkey-wrapper {
