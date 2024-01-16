@@ -350,11 +350,16 @@
   font-weight: bolder;
 }
 
-#bytm-feat-help-menu-text {
+#bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   padding: 10px 10px 15px 20px;
   font-size: 1.5em;
+}
+
+#bytm-feat-help-menu-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
 }
 
 .bytm-ftitem-help-btn {
@@ -369,4 +374,10 @@
 
 .bytm-ftitem-help-btn svg > path {
   fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
 }

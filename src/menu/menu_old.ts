@@ -675,11 +675,16 @@ async function openHelpDialog(featureKey: FeatInfoKey) {
     menuContainer.classList.add("bytm-menu");
     menuContainer.id = "bytm-feat-help-menu";
 
+    const featDescElem = document.createElement("h3");
+    featDescElem.id = "bytm-feat-help-menu-desc";
+
     const helpTextElem = document.createElement("div");
     helpTextElem.id = "bytm-feat-help-menu-text";
 
     menuContainer.appendChild(headerElem);
+    menuContainer.appendChild(featDescElem);
     menuContainer.appendChild(helpTextElem);
+
     menuBgElem.appendChild(menuContainer);
     document.body.appendChild(menuBgElem);
   }
@@ -687,20 +692,24 @@ async function openHelpDialog(featureKey: FeatInfoKey) {
     menuBgElem = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg")!;
 
   if(helpDialogCurFeature !== featureKey) {
+    // update help text
+    const featDescElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-desc")!;
     const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
+
+    featDescElem.innerText = t(`feature_desc_${featureKey}`);
 
     // @ts-ignore
     const helpText: string | undefined = featInfo[featureKey]?.helpText?.();
     helpTextElem.innerText = helpText ?? t(`feature_helptext_${featureKey}`);
   }
 
-  helpDialogCurFeature = featureKey;
-
   // show menu
   const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
 
   if(!menuBg)
     return warn("Couldn't find feature help dialog background element");
+
+  helpDialogCurFeature = featureKey;
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";

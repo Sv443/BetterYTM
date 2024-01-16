@@ -2,9 +2,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import type { TrLocale } from "../translations";
 import locales from "../../assets/locales.json" assert { type: "json" };
 
-const prepTranslate = process.argv.find((v) => v === "--prep" || v === "-p");
+const prepTranslate = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");
 
-const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.startsWith("-o"));
+const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.toLowerCase().startsWith("-o"));
 const onlyLocales = onlyLocalesRaw?.split("=")[1]?.replace(/"/g, "")
   ?.replace(/\s/g, "")?.split(",") as TrLocale[] | undefined;
 
