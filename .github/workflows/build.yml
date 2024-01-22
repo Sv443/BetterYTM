@@ -1,13 +1,13 @@
-name: "Lint BetterYTM"
+name: "Build BetterYTM"
 
 on:
   workflow_dispatch:
   push:
-    branches: [develop]
+    branches: [main]
 
 jobs:
-  lint:
-    name: Lint
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     timeout-minutes: 5
@@ -27,5 +27,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies # runs the npm ci command to install from package-lock.json
         run: npm ci
-      - name: Build with tsc & lint
-        run: npm run lint
+      - name: Build all
+        run: npm run build-prod-all
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
