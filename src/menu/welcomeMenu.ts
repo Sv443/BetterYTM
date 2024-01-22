@@ -214,7 +214,7 @@ function retranslateWelcomeMenu() {
     },
     "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_1"),
     "#bytm-welcome-text-line2": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
-    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.cdn.greasyfork}/feedback`), ...getLink(pkg.cdn.openuserjs)),
+    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
     "#bytm-welcome-text-line4": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
     "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
   };

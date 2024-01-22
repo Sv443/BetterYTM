@@ -6,7 +6,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-<!--{{TR_PROGRESS_TABLE}}-->
+<!--#{{TR_PROGRESS_TABLE}}-->
 
 <br>
 
@@ -16,4 +16,4 @@ This means you need to manually check against the base translations for missing 
 <br>
 
 ### Missing keys:
-<!--{{TR_MISSING_KEYS}}-->
+<!--#{{TR_MISSING_KEYS}}-->

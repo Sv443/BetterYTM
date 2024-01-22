@@ -12,6 +12,7 @@ export interface RollupArgs {
   "config-mode"?: "development" | "production";
   "config-branch"?: "main" | "develop";
   "config-host"?: "greasyfork" | "github" | "openuserjs";
+  "config-suffix"?: string;
 }
 
 export enum LogLevel {

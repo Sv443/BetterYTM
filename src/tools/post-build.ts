@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
 import dotenv from "dotenv";
-import { outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
+import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 import type { RollupArgs } from "../types";
@@ -19,11 +19,10 @@ const buildUuid = randomUUID();
 const { env, exit } = process;
 dotenv.config();
 
-const mode = (getCliArg("mode") ?? "development") as Required<RollupArgs>["config-mode"];
-const branch = (getCliArg("branch") ?? (mode === "production" ? "main" : "develop")) as Required<RollupArgs>["config-branch"];
-const host = (getCliArg("host") ?? "github") as Required<RollupArgs>["config-host"];
-
-const outFileSuffix = env.OUTFILE_SUFFIX ?? "";
+const mode = (getCliArg("mode") ?? "development").trim() as Required<RollupArgs>["config-mode"];
+const branch = (getCliArg("branch") ?? (mode === "production" ? "main" : "develop")).trim() as Required<RollupArgs>["config-branch"];
+const host = (getCliArg("host") ?? "github").trim() as Required<RollupArgs>["config-host"];
+const suffix = (getCliArg("suffix") ?? "").trim() as Required<RollupArgs>["config-suffix"];
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
@@ -31,11 +30,20 @@ const devServerPort = isNaN(envPort) || envPort === 0 ? 8710 : envPort;
 const devServerUserscriptUrl = `http://localhost:${devServerPort}/${rollupCfgOutputFile}`;
 
 const repo = "Sv443/BetterYTM";
-const userscriptDistFile = `BetterYTM${outFileSuffix}.user.js`;
-const distFolderPath = "./dist/";
+const userscriptDistFile = `BetterYTM${suffix}.user.js`;
+const distFolderPath = `./${rollupCfgOutputDir}/`;
 const assetFolderPath = "./assets/";
-// TODO: change for OUJS and GF
-const scriptUrl = `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
+const scriptUrl = (() => {
+  switch(host) {
+  case "greasyfork":
+    return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
+  case "openuserjs":
+    return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
+  case "github":
+  default:
+    return `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
+  }
+})();
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
@@ -72,10 +80,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
-${host === "github" ? (`\
 // @downloadURL       ${scriptUrl}
 // @updateURL         ${scriptUrl}
-`) : ""}\
 // @connect           api.sv443.net
 // @grant             GM.getValue
 // @grant             GM.setValue
@@ -118,11 +124,12 @@ I welcome every contribution on GitHub!
       {
         MODE: mode,
         BRANCH: branch,
+        HOST: host,
         BUILD_NUMBER: lastCommitSha,
       },
     )
       // needs special treatment because the double quotes need to be replaced with backticks
-      .replace(/"(\/\*)?{{GLOBAL_STYLE}}(\*\/)?"/gm, `\`${globalStyle}\``);
+      .replace(/"(\/\*)?#{{GLOBAL_STYLE}}(\*\/)?"/gm, `\`${globalStyle}\``);
 
     if(mode === "production")
       userscript = remSourcemapComments(userscript);
@@ -178,10 +185,10 @@ I welcome every contribution on GitHub!
   }
 })();
 
-/** Replaces tokens in the format `{{key}}` or `/⋆{{key}}⋆/` of the `replacements` param with their respective value */
+/** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
   for(const key in replacements)
-    userscript = userscript.replace(new RegExp(`(\\/\\*)?{{${key}}}(\\*\\/)?`, "gm"), String(replacements[key]));
+    userscript = userscript.replace(new RegExp(`(\\/\\*)?#{{${key}}}(\\*\\/)?`, "gm"), String(replacements[key]));
   return userscript;
 }
 

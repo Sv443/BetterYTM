@@ -92,8 +92,8 @@ ${lines.join("\n")}\n
 
   let templateCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
   templateCont = templateCont
-    .replace(/<!--{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"))
-    .replace(/<!--{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
+    .replace(/<!--#{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"))
+    .replace(/<!--#{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
   await writeFile(join(trDir, "README.md"), templateCont);
 
   console.log(`\n\x1b[32mFinished updating translation progress\x1b[0m - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);

@@ -11,9 +11,10 @@
     "build": "rollup -c",
     "build-dev": "rollup -c --config-mode development",
     "build-prod": "rollup -c --config-mode production",
+    "build-prod-all": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     "build-prod-gh": "rollup -c --config-mode production --config-host github",
-    "build-prod-gf": "rollup -c --config-mode production --config-host greasyfork",
-    "build-prod-oujs": "rollup -c --config-mode production --config-host openuserjs",
+    "build-prod-gf": "rollup -c --config-mode production --config-host greasyfork --config-suffix _gf",
+    "build-prod-oujs": "rollup -c --config-mode production --config-host openuserjs --config-suffix _oujs",
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "dev": "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
@@ -43,7 +44,7 @@
     "type": "github",
     "url": "https://github.com/sponsors/Sv443"
   },
-  "cdn": {
+  "hosts": {
     "greasyfork": "https://greasyfork.org/en/scripts/475682-betterytm",
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },

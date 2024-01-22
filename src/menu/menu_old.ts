@@ -1,6 +1,6 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
-import { scriptInfo } from "../constants";
+import { host, scriptInfo } from "../constants";
 import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn } from "../utils";
 import { formatVersion } from "../config";
@@ -112,10 +112,21 @@ export async function addCfgMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name));
   addLink(await getResourceUrl("discord"), "https://dc.sv443.net/", t("open_discord"));
-  addLink(await getResourceUrl("greasyfork"), pkg.cdn.greasyfork, t("open_greasyfork", scriptInfo.name));
-  addLink(await getResourceUrl("openuserjs"), pkg.cdn.openuserjs, t("open_openuserjs", scriptInfo.name));
+
+  const links: Array<[name: string, ...Parameters<typeof addLink>]> = [
+    ["github", await getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
+    ["greasyfork", await getResourceUrl("greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
+    ["openuserjs", await getResourceUrl("openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
+  ];
+
+  const hostLink = links.find(([name]) => name === host);
+  const otherLinks = links.filter(([name]) => name !== host);
+
+  const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
+
+  for(const [, ...args] of reorderedLinks)
+    addLink(...args);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
