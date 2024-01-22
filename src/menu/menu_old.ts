@@ -735,7 +735,7 @@ function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
 let isExportMenuOpen = false;
 let copiedTxtTimeout: number | undefined = undefined;
 
-/** Adds a menu to copy the current configuration as JSON (hidden by default) */
+/** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
 async function addExportMenu() {
   const canCompress = await compressionSupported();
 
@@ -906,7 +906,7 @@ function openExportMenu() {
 
 let isImportMenuOpen = false;
 
-/** Adds a menu to import a configuration from JSON (hidden by default) */
+/** Adds a menu to import a configuration from compressed or uncompressed JSON (hidden by default) */
 async function addImportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-import-menu-bg";
@@ -986,6 +986,7 @@ async function addImportMenu() {
     if(!textAreaElem)
       return warn("Couldn't find import menu textarea element");
     try {
+      /** Tries to parse an uncompressed or compressed input string as a JSON object */
       const decode = async (input: string) => {
         try {
           return JSON.parse(input);
@@ -996,7 +997,7 @@ async function addImportMenu() {
           }
           catch(err) {
             warn("Couldn't import configuration:", err);
-            alert(t("import_error_invalid"));
+            return null;
           }
         }
       };

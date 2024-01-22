@@ -810,7 +810,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "270ecff", // asserted as generic string instead of literal
+        buildNumber: "eea799c", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -2300,7 +2300,7 @@ I welcome every contribution on GitHub!
     //#MARKER export menu
     let isExportMenuOpen = false;
     let copiedTxtTimeout = undefined;
-    /** Adds a menu to copy the current configuration as JSON (hidden by default) */
+    /** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
     function addExportMenu() {
         return __awaiter(this, void 0, void 0, function* () {
             const canCompress = yield compressionSupported();
@@ -2439,7 +2439,7 @@ I welcome every contribution on GitHub!
     }
     //#MARKER import menu
     let isImportMenuOpen = false;
-    /** Adds a menu to import a configuration from JSON (hidden by default) */
+    /** Adds a menu to import a configuration from compressed or uncompressed JSON (hidden by default) */
     function addImportMenu() {
         return __awaiter(this, void 0, void 0, function* () {
             const menuBgElem = document.createElement("div");
@@ -2507,6 +2507,7 @@ I welcome every contribution on GitHub!
                 if (!textAreaElem)
                     return warn("Couldn't find import menu textarea element");
                 try {
+                    /** Tries to parse an uncompressed or compressed input string as a JSON object */
                     const decode = (input) => __awaiter(this, void 0, void 0, function* () {
                         try {
                             return JSON.parse(input);
@@ -2517,7 +2518,7 @@ I welcome every contribution on GitHub!
                             }
                             catch (err) {
                                 warn("Couldn't import configuration:", err);
-                                alert(t("import_error_invalid"));
+                                return null;
                             }
                         }
                     });
