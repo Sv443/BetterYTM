@@ -794,12 +794,15 @@ I welcome every contribution on GitHub!
 
     const modeRaw = "production";
     const branchRaw = "develop";
+    const hostRaw = "github";
     /** The mode in which the script was built (production or development) */
-    const mode = (modeRaw.match(/^{{.+}}$/) ? "production" : modeRaw);
+    const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
-    const branch = (branchRaw.match(/^{{.+}}$/) ? "main" : branchRaw);
+    const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw);
     /** Path to the GitHub repo */
     const repo = "Sv443/BetterYTM";
+    /** Which host the userscript was installed from */
+    const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
     /**
      * How much info should be logged to the devtools console
      * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -810,7 +813,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "eea799c", // asserted as generic string instead of literal
+        buildNumber: "4f2a55f", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1609,9 +1612,10 @@ I welcome every contribution on GitHub!
     	build: "rollup -c",
     	"build-dev": "rollup -c --config-mode development",
     	"build-prod": "rollup -c --config-mode production",
+    	"build-prod-all": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     	"build-prod-gh": "rollup -c --config-mode production --config-host github",
-    	"build-prod-gf": "rollup -c --config-mode production --config-host greasyfork",
-    	"build-prod-oujs": "rollup -c --config-mode production --config-host openuserjs",
+    	"build-prod-gf": "rollup -c --config-mode production --config-host greasyfork --config-suffix _gf",
+    	"build-prod-oujs": "rollup -c --config-mode production --config-host openuserjs --config-suffix _oujs",
     	"post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
@@ -1641,7 +1645,7 @@ I welcome every contribution on GitHub!
     	type: "github",
     	url: "https://github.com/sponsors/Sv443"
     };
-    var cdn = {
+    var hosts = {
     	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
     };
@@ -1707,7 +1711,7 @@ I welcome every contribution on GitHub!
     	license: license,
     	bugs: bugs,
     	funding: funding,
-    	cdn: cdn,
+    	hosts: hosts,
     	dependencies: dependencies,
     	devDependencies: devDependencies,
     	browserslist: browserslist,
@@ -1800,10 +1804,17 @@ I welcome every contribution on GitHub!
                 anchorElem.appendChild(imgElem);
                 linksCont.appendChild(anchorElem);
             };
-            addLink(yield getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name));
             addLink(yield getResourceUrl("discord"), "https://dc.sv443.net/", t("open_discord"));
-            addLink(yield getResourceUrl("greasyfork"), pkg.cdn.greasyfork, t("open_greasyfork", scriptInfo.name));
-            addLink(yield getResourceUrl("openuserjs"), pkg.cdn.openuserjs, t("open_openuserjs", scriptInfo.name));
+            const links = [
+                ["github", yield getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
+                ["greasyfork", yield getResourceUrl("greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
+                ["openuserjs", yield getResourceUrl("openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
+            ];
+            const hostLink = links.find(([name]) => name === host);
+            const otherLinks = links.filter(([name]) => name !== host);
+            const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
+            for (const [, ...args] of reorderedLinks)
+                addLink(...args);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
             closeElem.src = yield getResourceUrl("close");
@@ -4145,7 +4156,7 @@ I welcome every contribution on GitHub!
             },
             "#bytm-welcome-text-line1": (e) => e.innerHTML = t("welcome_text_line_1"),
             "#bytm-welcome-text-line2": (e) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
-            "#bytm-welcome-text-line3": (e) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.cdn.greasyfork}/feedback`), ...getLink(pkg.cdn.openuserjs)),
+            "#bytm-welcome-text-line3": (e) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
             "#bytm-welcome-text-line4": (e) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
             "#bytm-welcome-text-line5": (e) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
         };
