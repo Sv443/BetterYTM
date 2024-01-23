@@ -81,7 +81,7 @@ To edit an existing translation, please follow these steps:
 - **`npm run build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`npm run build`**  
+- **`npm run build -- <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
@@ -96,7 +96,7 @@ To edit an existing translation, please follow these steps:
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
 - **`npm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
-- **`npm run tr-format`**  
+- **`npm run tr-format -- <arguments>`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
