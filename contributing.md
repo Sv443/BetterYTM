@@ -78,28 +78,27 @@ To edit an existing translation, please follow these steps:
   It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
   Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
-- **`npm run build-prod-all`**  
-  Builds the userscript for production for all hosts with their respective options already set
 - **`npm run build-prod`**  
-  Builds the userscript for production with custom options  
+  Builds the userscript for production for all hosts with their respective options already set.  
+  Use this to build the userscript for distribution on all host/CDN platforms.
+- **`npm run build`**  
+  Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
   - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
-- **`npm run build-dev`**  
-  Builds the userscript for development  
-  Arguments:  
-  - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
-  - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
-  - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs` - this just changes the userscript header so it doesn't matter for development.
-  - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
+    
+  Shorthand commands:
+  - `npm run build-prod` - Sets `--config-mode=production`
+  - `npm run build-dev` - Sets `--config-mode=development`
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
 - **`npm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
 - **`npm run tr-format`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
+  This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a comma separated list (e.g. `-o="fr_FR,de_DE"`)
