@@ -246,13 +246,12 @@ function clearNode(element: Element) {
   element.parentNode!.removeChild(element);
 }
 
+/** Returns a pseudo-random ID unique to each session */
 export function getSessionId(): string {
-  let sesId = window.sessionStorage.getItem("bytm-session-id");
+  let sesId = window.sessionStorage.getItem("_bytm-session-id");
 
-  if(!sesId) {
-    sesId = randomId(8, 36);
-    window.sessionStorage.setItem("bytm-session-id", sesId);
-  }
+  if(!sesId)
+    window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
 
   return sesId;
 }
