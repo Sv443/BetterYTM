@@ -117,7 +117,7 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 
 ### Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
-If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new?assignees=Sv443&labels=plugin%20submission&projects=&template=3_plugin_submission.md&title=)  
+If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
 These are the ways to interact with BetterYTM; constants, events and global functions:  
 - Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `window` object.  

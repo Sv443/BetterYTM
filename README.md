@@ -70,7 +70,7 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
   
-Currently there are no available plugins, but you can [submit your own here](https://github.com/Sv443/BetterYTM/issues/new?assignees=Sv443&labels=plugin%20submission&projects=&template=3_plugin_submission.md&title=).  
+Currently there are no available plugins, but you can [submit an issue here, using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose).  
 Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API.
 
 <br><br>
