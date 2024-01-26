@@ -1,7 +1,7 @@
 import type { TrLocale, t, tp } from "./translations";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
-import type { interfaceAddListener } from "./observers";
+import type { addSelectorListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime } from "./utils";
@@ -15,9 +15,10 @@ export interface RollupArgs {
   "config-suffix"?: string;
 }
 
+// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 export enum LogLevel {
-  Debug = 0,
-  Info = 1,
+  Debug,
+  Info,
 }
 
 /** Which domain this script is currently running on */
@@ -39,7 +40,7 @@ export type ObserverName = "body" | "playerBar" | "playerBarInfo";
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   /** Adds a listener to one of the already present SelectorObserver instances */
-  addSelectorListener: typeof interfaceAddListener;
+  addSelectorListener: typeof addSelectorListener;
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  

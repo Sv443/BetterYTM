@@ -191,7 +191,7 @@ export async function getCurrentLyricsUrl() {
       }
     }
 
-    const url = await getGeniusUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+    const url = await fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
 
     if(url) {
       emitInterface("bytm:lyricsLoaded", {
@@ -211,7 +211,7 @@ export async function getCurrentLyricsUrl() {
 }
 
 /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
+export async function fetchLyricsUrl(artist: string, song: string): Promise<string | undefined> {
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {

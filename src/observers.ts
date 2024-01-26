@@ -11,12 +11,14 @@ export const observers = {} as Record<ObserverName, SelectorObserver>;
 
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers() {
+  // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
   observers.body = new SelectorObserver(document.body, {
     ...defaultObserverOptions,
     subtree: false,
   });
   observers.body.enable();
 
+  // #SECTION playerBar = media controls bar at the bottom of the page
   const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
   observers.playerBar = new SelectorObserver(playerBarSelector, {
     ...defaultObserverOptions,
@@ -29,6 +31,7 @@ export function initObservers() {
     },
   });
 
+  // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
   const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
   observers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
     ...defaultObserverOptions,
@@ -54,6 +57,6 @@ export function initObservers() {
 }
 
 /** Interface function for adding listeners to the already present observers */
-export function interfaceAddListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
+export function addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
   observers[observerName].addListener(selector, options);
 }

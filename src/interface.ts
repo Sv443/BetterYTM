@@ -2,8 +2,9 @@ import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
 import { t, tp, type TrLocale } from "./translations";
-import { interfaceAddListener } from "./observers";
+import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
+import { fetchLyricsUrl, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
 import type { SiteEventsMap } from "./siteEvents";
 
 const { getUnsafeWindow } = UserUtils;
@@ -27,7 +28,7 @@ export interface InterfaceEvents {
 }
 
 const globalFuncs = {
-  addObserverListener: interfaceAddListener,
+  addSelectorListener,
   getResourceUrl,
   getSessionId,
   getVideoTime,
@@ -35,6 +36,10 @@ const globalFuncs = {
   tp,
   getFeatures,
   saveFeatures,
+  fetchLyricsUrl,
+  getLyricsCacheEntry,
+  sanitizeArtists,
+  sanitizeSong,
 };
 
 /** Initializes the BYTM interface */

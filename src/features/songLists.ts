@@ -4,7 +4,7 @@ import { error, getResourceUrl, log } from "../utils";
 import { t } from "../translations";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
-import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
+import { fetchLyricsUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import type { FeatureConfig } from "../types";
 import "./songLists.css";
 
@@ -143,7 +143,7 @@ async function addQueueButtons(queueItem: HTMLElement, containerParentSelector =
           imgEl.classList.add("bytm-spinner");
         }
 
-        lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
+        lyricsUrl = cachedLyricsUrl ?? await fetchLyricsUrl(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {

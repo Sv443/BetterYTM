@@ -143,7 +143,7 @@ If you need specific events to be added or modified, please [submit an issue.](h
 
 <br>
 
-<details><summary>Static interaction <b>Example <i>(click to expand)</i></b></summary>
+<details><summary><b>Static interaction Example <i>(click to expand)</i></b></summary>
 
 #### Example:
 ```ts
@@ -158,7 +158,7 @@ console.log(`BetterYTM's version is '${BYTM.version} #${BYTM.buildNumber}'`);
 
 <br>
 
-<details><summary>Dynamic interaction examples <i>(click to expand)</i></summary>
+<details><summary><b>Dynamic interaction examples <i>(click to expand)</i></b></summary>
 
 #### Basic format:
 ```ts
@@ -208,7 +208,7 @@ window.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 
 <br>
 
-For global function examples [see below.](#global-functions)
+**For global function examples [see below.](#global-functions)**
 
 <br><br>
 
@@ -233,15 +233,21 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 <br><br>
 
 ### Global functions:
-
-- [addSelectorListener()](#addselectorlistener)
-- [getResourceUrl()](#getresourceurl)
-- [getSessionId()](#getsessionid)
-- [getVideoTime()](#getvideotime)
-- [t()](#t)
-- [tp()](#tp)
-- [getFeatures()](#getfeatures)
-- [saveFeatures()](#savefeatures)
+These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
+The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
+  
+- [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
+- [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
+- [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
+- [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
+- [t()](#t) - Translates the specified translation key using the currently set locale
+- [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
+- [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
+- [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
+- [fetchLyricsUrl](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
+- [getLyricsCacheEntry](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
+- [sanitizeArtists](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
+- [sanitizeSong](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 
 <br>
 
@@ -257,7 +263,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
 >   
 > Arguments:  
-> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances in the file [`src/observers.ts`](src/observers.ts).
+> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which parent element they observe in the file [`src/observers.ts`](src/observers.ts).
 > - `selector` - The CSS selector to observe for changes.
 > - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
 >   
@@ -270,7 +276,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 >   // and check if the lyrics button gets added or removed
 >   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
 >     listener: (elem) => {
->       console.log("The BYTM lyrics button exists now");
+>       console.log("The BYTM lyrics button changed");
 >     },
 >   });
 > });
@@ -323,9 +329,11 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > ```ts
 > const sessionId = unsafeWindow.BYTM.getSessionId();
 > 
-> if(await GM.getValue("sessionId") !== sessionId) {
+> if(await GM.getValue("_myPlugin-sesId") !== sessionId) {
 >   console.log("New session started");
->   await GM.setValue("sessionId", sessionId);
+>   // do something that should only be done once per session
+>   // or store values persistently that should be unique per session:
+>   await GM.setValue("_myPlugin-sesId", sessionId);
 > }
 > ```
 > </details>
@@ -378,7 +386,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > ```ts
 > const customConfigMenuTitle = document.createElement("div");
 > customConfigMenuTitle.innerText = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
-> // translated text: "My cool BYTM Plugin - Configuration" (when locale is en_US or en_UK)
+> // translated text: "My cool BYTM Plugin - Configuration" (if locale is en_US or en_UK)
 > ```
 > </details>
 
@@ -406,19 +414,17 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > 
 > ```ts
 > try {
->   const lyrics = await customFetchLyrics(foo, bar);
+>   const lyrics = await unsafeWindow.BYTM.fetchLyricsUrl("Michael Jackson", "Thriller");
 > }
 > catch(err) {
->   if(err instanceof AxiosError) {
->     if(err.status === 429) {
->       // rate limited
->       const retryAfter = err.response.headers["retry-after"];
->       const retryAfterSeconds = retryAfter ? parseInt(retryAfter) : 60;
->       const errorText = unsafeWindow.BYTM.tp("lyrics_rate_limited", retryAfterSeconds);
->       // translation key: "lyrics_rate_limited-n"
->       // translated text: "You are being rate limited.\nPlease wait 23 seconds before requesting more lyrics."
->       alert(errorText);
->     }
+>   if(err instanceof Error && err.status === 429) {
+>     // rate limited
+>     const retryAfter = err.response.headers["retry-after"];
+>     const retryAfterSeconds = retryAfter ? parseInt(retryAfter) : 60;
+>     const errorText = unsafeWindow.BYTM.tp("lyrics_rate_limited", retryAfterSeconds);
+>     // translation key: "lyrics_rate_limited-n"
+>     // translated text: "You are being rate limited.\nPlease wait 23 seconds before requesting more lyrics."
+>     alert(errorText);
 >   }
 > }
 > ```
@@ -478,6 +484,125 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 > }
 > 
 > updateVolSliderStep();
+> ```
+> </details>
+
+<br>
+
+> #### fetchLyricsUrl()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.fetchLyricsUrl(artist: string, song: string): Promise<string | undefined>
+> ```
+>   
+> Description:  
+> Fetches the URL to the lyrics page for the specified song.  
+> If there is already an entry in the in-memory cache for the song, it will be returned without fetching anything new.  
+> URLs that are returned by this function are added to the cache automatically.  
+> Returns undefined if there was an error while fetching the URL.  
+>   
+> Arguments:  
+> - `artist` - The main artist of the song to fetch the lyrics URL for.  
+>   The value needs to be sanitized with [`sanitizeArtists()`](#sanitizeartists) before being passed to this function.
+> - `song` - The title of the song to fetch the lyrics URL for.  
+>   The value needs to be sanitized with [`sanitizeSong()`](#sanitizesong) before being passed to this function.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function getLyricsUrl() {
+>   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrl("Michael Jackson", "Thriller");
+> 
+>   if(lyricsUrl)
+>     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>   else
+>     console.log("Couldn't find the lyrics URL for this song");
+> }
+> 
+> getLyricsUrl();
+> ```
+> </details>
+
+<br>
+
+> #### getLyricsCacheEntry()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): string | undefined
+> ```
+>   
+> Description:  
+> Tries to find an entry in the in-memory cache for the specified song.  
+> Contrary to [`fetchLyricsUrl()`](#fetchlyricsurl), this function does not fetch anything new if there is no entry in the cache.  
+>   
+> Arguments:  
+> - `artist` - The main artist of the song to grab the lyrics URL for.  
+>   The value needs to be sanitized with [`sanitizeArtists()`](#sanitizeartists) before being passed to this function.
+> - `song` - The title of the song to grab the lyrics URL for.  
+>   The value needs to be sanitized with [`sanitizeSong()`](#sanitizesong) before being passed to this function.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> function tryToGetLyricsUrl() {
+>   const lyricsUrl = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
+> 
+>   if(lyricsUrl)
+>     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>   else
+>     console.log("Couldn't find the lyrics URL for this song in cache");
+> }
+> 
+> tryToGetLyricsUrl();
+> ```
+> </details>
+
+<br>
+
+> #### sanitizeArtists()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.sanitizeArtists(artists: string): string
+> ```
+>   
+> Description:  
+> Sanitizes the specified artist string to be used in fetching a lyrics URL.  
+> This tries to strip out special characters and co-artist names, separated by a comma or ampersand.  
+> Returns (hopefully) a single artist name with leading and trailing whitespaces trimmed.  
+>   
+> Arguments:  
+> - `artists` - The string of artist name(s) to sanitize.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // usually artist strings will only have one of these characters but this is just an example
+> const sanitizedArtists = unsafeWindow.BYTM.sanitizeArtists(" Michael Jackson    • Paul McCartney & Freddy Mercury, Frank Sinatra");
+> console.log(sanitizedArtists); // "Michael Jackson"
+> ```
+> </details>
+
+<br>
+
+> #### sanitizeSong()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.sanitizeSong(songName: string): string
+> ```
+>   
+> Description:  
+> Sanitizes the specified song title string to be used in fetching a lyrics URL.  
+> This tries to strip out special characters and everything inside regular and square parentheses like `(Foo Remix)`.  
+> Returns (hopefully) a song title with leading and trailing whitespaces trimmed.  
+>   
+> Arguments:  
+> - `songName` - The string of the song title to sanitize.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const sanitizedSong = unsafeWindow.BYTM.sanitizeSong(" Thriller (Freddy Mercury Cover) [Tommy Cash Remix]");
+> console.log(sanitizedSong); // "Thriller"
 > ```
 > </details>
 
