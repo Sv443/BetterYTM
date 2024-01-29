@@ -1199,8 +1199,10 @@ async function addChangelogMenu() {
   document.body.appendChild(menuBgElem);
 
   const anchors = document.querySelectorAll<HTMLAnchorElement>("#bytm-changelog-menu-text a");
-  for(const anchor of anchors)
+  for(const anchor of anchors) {
+    anchor.title = anchor.href;
     anchor.target = "_blank";
+  }
 }
 
 /** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
