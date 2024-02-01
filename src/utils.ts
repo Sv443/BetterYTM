@@ -1,4 +1,4 @@
-import { clamp, fetchAdvanced, getUnsafeWindow } from "@sv443-network/userutils";
+import { Stringifiable, clamp, fetchAdvanced, getUnsafeWindow } from "@sv443-network/userutils";
 import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import { Domain, LogLevel, ResourceKey } from "./types";
@@ -268,4 +268,24 @@ export async function resourceToHTMLString(resource: ResourceKey) {
     error("Couldn't get SVG element from resource:", err);
     return null;
   }
+}
+
+/**
+ * Constructs a URL from a base URL and a record of query parameters.  
+ * If a value is undefined, the parameter will be valueless.  
+ * All values will be stringified using their `toString()` method and then URI-encoded.
+ * @returns Returns a string instead of a URL object
+ */
+export function constructUrlString(base: string, params: Record<string, Stringifiable | undefined>) {
+  return `${base}?${Object.entries(params).map(([key, val]) => `${key}${val === undefined ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+}
+
+/**
+ * Constructs a URL from a base URL and a record of query parameters.  
+ * If a value is undefined, the parameter will be valueless.  
+ * All values will be URI-encoded.  
+ * @returns Returns a URL object instead of a string
+ */
+export function constructUrl(base: string, params: Record<string, Stringifiable | undefined>) {
+  return new URL(constructUrlString(base, params));
 }

@@ -1,8 +1,9 @@
 import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
-import { error, getResourceUrl, info, log, warn } from "../utils";
+import { constructUrlString, error, getResourceUrl, info, log, warn } from "../utils";
 import { t, tp } from "../translations";
 import { emitInterface } from "../interface";
+import { scriptInfo } from "../constants";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -220,7 +221,13 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
     }
 
     const startTs = Date.now();
-    const fetchUrl = `${geniURLSearchTopUrl}?disableFuzzy&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+    const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+      disableFuzzy: undefined,
+      utm_source: "betterytm",
+      utm_content: `v${scriptInfo.version}`,
+      artist,
+      song,
+    });
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
