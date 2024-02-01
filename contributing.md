@@ -90,8 +90,8 @@ To edit an existing translation, please follow these steps:
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
-  - `npm run build-prod` - Sets `--config-mode=production`
-  - `npm run build-dev` - Sets `--config-mode=development`
+  - `npm run build-prod` - Sets `--config-mode=production` and `--config-branch=main`
+  - `npm run build-dev` - Sets `--config-mode=development` and `--config-branch=develop`
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
 - **`npm run tr-progress`**  
