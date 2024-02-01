@@ -786,6 +786,7 @@ I welcome every contribution on GitHub!
         observer.observe(document.body, Object.assign({ subtree: true, childList: true }, options));
     }
 
+    // I know TS enums are impure but it doesn't really matter here, plus they look cooler
     var LogLevel;
     (function (LogLevel) {
         LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -813,7 +814,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "4f2a55f", // asserted as generic string instead of literal
+        buildNumber: "a7d4529", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -898,8 +899,10 @@ I welcome every contribution on GitHub!
     const observers$1 = {};
     /** Call after DOM load to initialize all SelectorObserver instances */
     function initObservers() {
+        // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
         observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
         observers$1.body.enable();
+        // #SECTION playerBar = media controls bar at the bottom of the page
         const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
         observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
         observers$1.body.addListener(playerBarSelector, {
@@ -908,6 +911,7 @@ I welcome every contribution on GitHub!
                 observers$1.playerBar.enable();
             },
         });
+        // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
         const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
         observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
         observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
@@ -926,13 +930,254 @@ I welcome every contribution on GitHub!
         emitInterface("bytm:observersReady");
     }
     /** Interface function for adding listeners to the already present observers */
-    function interfaceAddListener(observerName, selector, options) {
+    function addSelectorListener(observerName, selector, options) {
         observers$1[observerName].addListener(selector, options);
+    }
+
+    /** Base URL of geniURL */
+    const geniUrlBase = "https://api.sv443.net/geniurl";
+    /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
+    const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+    /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+    const geniUrlRatelimitTimeframe = 30;
+    //#MARKER cache
+    /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+    const lyricsUrlCache = new Map();
+    /** How many cache entries can exist at a time - this is used to cap memory usage */
+    const maxLyricsCacheSize = 100;
+    /**
+     * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
+     * **The passed parameters need to be sanitized first!**
+     */
+    function getLyricsCacheEntry(artists, song) {
+        return lyricsUrlCache.get(`${artists} - ${song}`);
+    }
+    /** Adds the provided entry into the lyrics URL cache */
+    function addLyricsCacheEntry(artists, song, lyricsUrl) {
+        lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
+        // delete oldest entry if cache gets too big
+        if (lyricsUrlCache.size > maxLyricsCacheSize)
+            lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
+    }
+    //#MARKER media control bar
+    let currentSongTitle = "";
+    /** Adds a lyrics button to the media controls bar */
+    function addMediaCtrlLyricsBtn() {
+        return __awaiter(this, void 0, void 0, function* () {
+            onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+        });
+    }
+    /** Actually adds the lyrics button after the like button renderer has been verified to exist */
+    function addActualMediaCtrlLyricsBtn(likeContainer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+            if (!songTitleElem)
+                return warn("Couldn't find song title element");
+            // run parallel without awaiting so the MutationObserver below can observe the title element in time
+            (() => __awaiter(this, void 0, void 0, function* () {
+                const gUrl = yield getCurrentLyricsUrl();
+                const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+                linkElem.id = "betterytm-lyrics-button";
+                log("Inserted lyrics button into media controls bar");
+                insertAfter(likeContainer, linkElem);
+            }))();
+            currentSongTitle = songTitleElem.title;
+            const spinnerIconUrl = yield getResourceUrl("spinner");
+            const lyricsIconUrl = yield getResourceUrl("lyrics");
+            const errorIconUrl = yield getResourceUrl("error");
+            const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+                var _b, e_1, _c, _d;
+                try {
+                    for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
+                        _d = mutations_1_1.value;
+                        _a = false;
+                        const mut = _d;
+                        const newTitle = mut.target.title;
+                        if (newTitle !== currentSongTitle && newTitle.length > 0) {
+                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                            if (!lyricsBtn)
+                                continue;
+                            info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
+                            lyricsBtn.style.cursor = "wait";
+                            lyricsBtn.style.pointerEvents = "none";
+                            const imgElem = lyricsBtn.querySelector("img");
+                            imgElem.src = spinnerIconUrl;
+                            imgElem.classList.add("bytm-spinner");
+                            currentSongTitle = newTitle;
+                            const url = yield getCurrentLyricsUrl(); // can take a second or two
+                            imgElem.src = lyricsIconUrl;
+                            imgElem.classList.remove("bytm-spinner");
+                            if (!url) {
+                                let artist, song;
+                                if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+                                    artist = navigator.mediaSession.metadata.artist;
+                                    song = navigator.mediaSession.metadata.title;
+                                }
+                                const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+                                imgElem.src = errorIconUrl;
+                                imgElem.title = t("lyrics_not_found_click_open_search");
+                                lyricsBtn.style.cursor = "pointer";
+                                lyricsBtn.style.pointerEvents = "all";
+                                lyricsBtn.style.display = "inline-flex";
+                                lyricsBtn.style.visibility = "visible";
+                                lyricsBtn.href = `https://genius.com/search${query}`;
+                                continue;
+                            }
+                            lyricsBtn.href = url;
+                            lyricsBtn.title = t("open_current_lyrics");
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.visibility = "visible";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.pointerEvents = "initial";
+                        }
+                    }
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
+            }); };
+            // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+            const obs = new MutationObserver(onMutation);
+            obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+        });
+    }
+    //#MARKER utils
+    /** Removes everything in parentheses from the passed song name */
+    function sanitizeSong(songName) {
+        const parensRegex = /\(.+\)/gmi;
+        const squareParensRegex = /\[.+\]/gmi;
+        // trim right after the song name:
+        const sanitized = songName
+            .replace(parensRegex, "")
+            .replace(squareParensRegex, "");
+        return sanitized.trim();
+    }
+    /** Removes the secondary artist (if it exists) from the passed artists string */
+    function sanitizeArtists(artists) {
+        artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+        if (artists.match(/&/))
+            artists = artists.split(/\s*&\s*/gm)[0];
+        if (artists.match(/,/))
+            artists = artists.split(/,\s*/gm)[0];
+        return artists.trim();
+    }
+    /** Returns the lyrics URL from genius for the currently selected song */
+    function getCurrentLyricsUrl() {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+                const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
+                const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+                const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
+                if (!songTitleElem || !songMetaElem)
+                    return undefined;
+                const songNameRaw = songTitleElem.title;
+                let songName = songNameRaw;
+                let artistName = songMetaElem.innerText;
+                if (isVideo) {
+                    // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                    if (songName.includes("-")) {
+                        const split = splitVideoTitle(songName);
+                        songName = split.song;
+                        artistName = split.artist;
+                    }
+                }
+                const url = yield fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+                if (url) {
+                    emitInterface("bytm:lyricsLoaded", {
+                        type: "current",
+                        artists: artistName,
+                        title: songName,
+                        url,
+                    });
+                }
+                return url;
+            }
+            catch (err) {
+                error("Couldn't resolve lyrics URL:", err);
+                return undefined;
+            }
+        });
+    }
+    /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
+    function fetchLyricsUrl(artist, song) {
+        var _a, _b, _c;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const cacheEntry = getLyricsCacheEntry(artist, song);
+                if (cacheEntry) {
+                    info(`Found lyrics URL in cache: ${cacheEntry}`);
+                    return cacheEntry;
+                }
+                const startTs = Date.now();
+                const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+                    disableFuzzy: undefined,
+                    utm_source: "betterytm",
+                    utm_content: `v${scriptInfo.version}`,
+                    artist,
+                    song,
+                });
+                log(`Requesting URL from geniURL at '${fetchUrl}'`);
+                const fetchRes = yield fetchAdvanced(fetchUrl);
+                if (fetchRes.status === 429) {
+                    const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+                    alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+                    return undefined;
+                }
+                else if (fetchRes.status < 200 || fetchRes.status >= 300) {
+                    error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                    return undefined;
+                }
+                const result = yield fetchRes.json();
+                if (typeof result === "object" && result.error) {
+                    error("Couldn't fetch lyrics URL:", result.message);
+                    return undefined;
+                }
+                const url = result.url;
+                info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+                addLyricsCacheEntry(artist, song, url);
+                return url;
+            }
+            catch (err) {
+                error("Couldn't get lyrics URL due to error:", err);
+                return undefined;
+            }
+        });
+    }
+    /** Creates the base lyrics button element */
+    function createLyricsBtn(geniusUrl, hideIfLoading = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const linkElem = document.createElement("a");
+            linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+            linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+            if (geniusUrl)
+                linkElem.href = geniusUrl;
+            linkElem.role = "button";
+            linkElem.target = "_blank";
+            linkElem.rel = "noopener noreferrer";
+            linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+            linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+            const imgElem = document.createElement("img");
+            imgElem.className = "bytm-generic-btn-img";
+            imgElem.src = yield getResourceUrl("lyrics");
+            linkElem.appendChild(imgElem);
+            return linkElem;
+        });
+    }
+    /** Splits a video title that contains a hyphen into an artist and song */
+    function splitVideoTitle(title) {
+        const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+        return { artist, song: rest.join("-") };
     }
 
     const { getUnsafeWindow } = UserUtils;
     const globalFuncs = {
-        addObserverListener: interfaceAddListener,
+        addSelectorListener,
         getResourceUrl,
         getSessionId,
         getVideoTime,
@@ -940,6 +1185,10 @@ I welcome every contribution on GitHub!
         tp,
         getFeatures,
         saveFeatures,
+        fetchLyricsUrl,
+        getLyricsCacheEntry,
+        sanitizeArtists,
+        sanitizeSong,
     };
     /** Initializes the BYTM interface */
     function initInterface() {
@@ -1144,12 +1393,11 @@ I welcome every contribution on GitHub!
         }
         return "en_US";
     }
+    /** Returns a pseudo-random ID unique to each session */
     function getSessionId() {
-        let sesId = window.sessionStorage.getItem("bytm-session-id");
-        if (!sesId) {
-            sesId = randomId(8, 36);
-            window.sessionStorage.setItem("bytm-session-id", sesId);
-        }
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
         return sesId;
     }
     /** Returns the SVG content behind the passed resource identifier to be assigned to an element's innerHTML property */
@@ -1166,6 +1414,15 @@ I welcome every contribution on GitHub!
                 return null;
             }
         });
+    }
+    /**
+     * Constructs a URL from a base URL and a record of query parameters.
+     * If a value is undefined, the parameter will be valueless.
+     * All values will be stringified using their `toString()` method and then URI-encoded.
+     * @returns Returns a string instead of a URL object
+     */
+    function constructUrlString(base, params) {
+        return `${base}?${Object.entries(params).map(([key, val]) => `${key}${val === undefined ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
     }
 
     const fetchOpts = {
@@ -1608,22 +1865,22 @@ I welcome every contribution on GitHub!
     var main = "./src/index.ts";
     var type = "module";
     var scripts = {
-    	test: "npm run node-ts -- ./test.ts",
-    	build: "rollup -c",
-    	"build-dev": "rollup -c --config-mode development",
-    	"build-prod": "rollup -c --config-mode production",
-    	"build-prod-all": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
-    	"build-prod-gh": "rollup -c --config-mode production --config-host github",
-    	"build-prod-gf": "rollup -c --config-mode production --config-host greasyfork --config-suffix _gf",
-    	"build-prod-oujs": "rollup -c --config-mode production --config-host openuserjs --config-suffix _oujs",
-    	"post-build": "npm run node-ts -- ./src/tools/post-build.ts",
-    	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
+    	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	lint: "tsc --noEmit && eslint .",
+    	build: "rollup -c",
+    	"build-dev": "rollup -c --config-mode production --config-host github --config-branch develop",
+    	"build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
+    	"build-prod-base": "rollup -c --config-mode production --config-branch main",
+    	"build-prod-gh": "npm run build-prod-base -- --config-host github",
+    	"build-prod-gf": "npm run build-prod-base -- --config-host greasyfork --config-suffix _gf",
+    	"build-prod-oujs": "npm run build-prod-base -- --config-host openuserjs --config-suffix _oujs",
+    	"post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     	"tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
     	"tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
     	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
-    	invisible: "node src/tools/run-invisible.mjs"
+    	invisible: "node src/tools/run-invisible.mjs",
+    	test: "npm run node-ts -- ./test.ts"
     };
     var engines = {
     	node: ">=18",
@@ -2683,8 +2940,10 @@ I welcome every contribution on GitHub!
             menuBgElem.appendChild(menuContainer);
             document.body.appendChild(menuBgElem);
             const anchors = document.querySelectorAll("#bytm-changelog-menu-text a");
-            for (const anchor of anchors)
+            for (const anchor of anchors) {
+                anchor.title = anchor.href;
                 anchor.target = "_blank";
+            }
         });
     }
     /** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
@@ -3245,241 +3504,6 @@ I welcome every contribution on GitHub!
         });
     }
 
-    /** Base URL of geniURL */
-    const geniUrlBase = "https://api.sv443.net/geniurl";
-    /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-    const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
-    /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
-    const geniUrlRatelimitTimeframe = 30;
-    //#MARKER cache
-    /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
-    const lyricsUrlCache = new Map();
-    /** How many cache entries can exist at a time - this is used to cap memory usage */
-    const maxLyricsCacheSize = 100;
-    /**
-     * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
-     * **The passed parameters need to be sanitized first!**
-     */
-    function getLyricsCacheEntry(artists, song) {
-        return lyricsUrlCache.get(`${artists} - ${song}`);
-    }
-    /** Adds the provided entry into the lyrics URL cache */
-    function addLyricsCacheEntry(artists, song, lyricsUrl) {
-        lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
-        // delete oldest entry if cache gets too big
-        if (lyricsUrlCache.size > maxLyricsCacheSize)
-            lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
-    }
-    //#MARKER media control bar
-    let currentSongTitle = "";
-    /** Adds a lyrics button to the media controls bar */
-    function addMediaCtrlLyricsBtn() {
-        return __awaiter(this, void 0, void 0, function* () {
-            onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
-        });
-    }
-    /** Actually adds the lyrics button after the like button renderer has been verified to exist */
-    function addActualMediaCtrlLyricsBtn(likeContainer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-            if (!songTitleElem)
-                return warn("Couldn't find song title element");
-            // run parallel without awaiting so the MutationObserver below can observe the title element in time
-            (() => __awaiter(this, void 0, void 0, function* () {
-                const gUrl = yield getCurrentLyricsUrl();
-                const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
-                linkElem.id = "betterytm-lyrics-button";
-                log("Inserted lyrics button into media controls bar");
-                insertAfter(likeContainer, linkElem);
-            }))();
-            currentSongTitle = songTitleElem.title;
-            const spinnerIconUrl = yield getResourceUrl("spinner");
-            const lyricsIconUrl = yield getResourceUrl("lyrics");
-            const errorIconUrl = yield getResourceUrl("error");
-            const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
-                var _b, e_1, _c, _d;
-                try {
-                    for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
-                        _d = mutations_1_1.value;
-                        _a = false;
-                        const mut = _d;
-                        const newTitle = mut.target.title;
-                        if (newTitle !== currentSongTitle && newTitle.length > 0) {
-                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                            if (!lyricsBtn)
-                                continue;
-                            info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
-                            lyricsBtn.style.cursor = "wait";
-                            lyricsBtn.style.pointerEvents = "none";
-                            const imgElem = lyricsBtn.querySelector("img");
-                            imgElem.src = spinnerIconUrl;
-                            imgElem.classList.add("bytm-spinner");
-                            currentSongTitle = newTitle;
-                            const url = yield getCurrentLyricsUrl(); // can take a second or two
-                            imgElem.src = lyricsIconUrl;
-                            imgElem.classList.remove("bytm-spinner");
-                            if (!url) {
-                                let artist, song;
-                                if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                                    artist = navigator.mediaSession.metadata.artist;
-                                    song = navigator.mediaSession.metadata.title;
-                                }
-                                const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                                imgElem.src = errorIconUrl;
-                                imgElem.title = t("lyrics_not_found_click_open_search");
-                                lyricsBtn.style.cursor = "pointer";
-                                lyricsBtn.style.pointerEvents = "all";
-                                lyricsBtn.style.display = "inline-flex";
-                                lyricsBtn.style.visibility = "visible";
-                                lyricsBtn.href = `https://genius.com/search${query}`;
-                                continue;
-                            }
-                            lyricsBtn.href = url;
-                            lyricsBtn.title = t("open_current_lyrics");
-                            lyricsBtn.style.cursor = "pointer";
-                            lyricsBtn.style.visibility = "visible";
-                            lyricsBtn.style.display = "inline-flex";
-                            lyricsBtn.style.pointerEvents = "initial";
-                        }
-                    }
-                }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                finally {
-                    try {
-                        if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
-                    }
-                    finally { if (e_1) throw e_1.error; }
-                }
-            }); };
-            // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
-            const obs = new MutationObserver(onMutation);
-            obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
-        });
-    }
-    //#MARKER utils
-    /** Removes everything in parentheses from the passed song name */
-    function sanitizeSong(songName) {
-        const parensRegex = /\(.+\)/gmi;
-        const squareParensRegex = /\[.+\]/gmi;
-        // trim right after the song name:
-        const sanitized = songName
-            .replace(parensRegex, "")
-            .replace(squareParensRegex, "");
-        return sanitized.trim();
-    }
-    /** Removes the secondary artist (if it exists) from the passed artists string */
-    function sanitizeArtists(artists) {
-        artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
-        if (artists.match(/&/))
-            artists = artists.split(/\s*&\s*/gm)[0];
-        if (artists.match(/,/))
-            artists = artists.split(/,\s*/gm)[0];
-        return artists.trim();
-    }
-    /** Returns the lyrics URL from genius for the currently selected song */
-    function getCurrentLyricsUrl() {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-                const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
-                const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-                const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
-                if (!songTitleElem || !songMetaElem)
-                    return undefined;
-                const songNameRaw = songTitleElem.title;
-                let songName = songNameRaw;
-                let artistName = songMetaElem.innerText;
-                if (isVideo) {
-                    // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                    if (songName.includes("-")) {
-                        const split = splitVideoTitle(songName);
-                        songName = split.song;
-                        artistName = split.artist;
-                    }
-                }
-                const url = yield getGeniusUrl(sanitizeArtists(artistName), sanitizeSong(songName));
-                if (url) {
-                    emitInterface("bytm:lyricsLoaded", {
-                        type: "current",
-                        artists: artistName,
-                        title: songName,
-                        url,
-                    });
-                }
-                return url;
-            }
-            catch (err) {
-                error("Couldn't resolve lyrics URL:", err);
-                return undefined;
-            }
-        });
-    }
-    /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-    function getGeniusUrl(artist, song) {
-        var _a, _b, _c;
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const cacheEntry = getLyricsCacheEntry(artist, song);
-                if (cacheEntry) {
-                    info(`Found lyrics URL in cache: ${cacheEntry}`);
-                    return cacheEntry;
-                }
-                const startTs = Date.now();
-                const fetchUrl = `${geniURLSearchTopUrl}?disableFuzzy&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
-                log(`Requesting URL from geniURL at '${fetchUrl}'`);
-                const fetchRes = yield fetchAdvanced(fetchUrl);
-                if (fetchRes.status === 429) {
-                    const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-                    alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
-                    return undefined;
-                }
-                else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                    error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
-                    return undefined;
-                }
-                const result = yield fetchRes.json();
-                if (typeof result === "object" && result.error) {
-                    error("Couldn't fetch lyrics URL:", result.message);
-                    return undefined;
-                }
-                const url = result.url;
-                info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
-                addLyricsCacheEntry(artist, song, url);
-                return url;
-            }
-            catch (err) {
-                error("Couldn't get lyrics URL due to error:", err);
-                return undefined;
-            }
-        });
-    }
-    /** Creates the base lyrics button element */
-    function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const linkElem = document.createElement("a");
-            linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-            linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-            if (geniusUrl)
-                linkElem.href = geniusUrl;
-            linkElem.role = "button";
-            linkElem.target = "_blank";
-            linkElem.rel = "noopener noreferrer";
-            linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-            linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-            const imgElem = document.createElement("img");
-            imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = yield getResourceUrl("lyrics");
-            linkElem.appendChild(imgElem);
-            return linkElem;
-        });
-    }
-    /** Splits a video title that contains a hyphen into an artist and song */
-    function splitVideoTitle(title) {
-        const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
-        return { artist, song: rest.join("-") };
-    }
-
     let features;
     function preInitSongLists(feats) {
         features = feats;
@@ -3589,7 +3613,7 @@ I welcome every contribution on GitHub!
                             imgEl.src = yield getResourceUrl("spinner");
                             imgEl.classList.add("bytm-spinner");
                         }
-                        lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield getGeniusUrl(artistsSan, songSan);
+                        lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield fetchLyricsUrl(artistsSan, songSan);
                         if (lyricsUrl) {
                             emitInterface("bytm:lyricsLoaded", {
                                 type: "queue",
