@@ -53,7 +53,7 @@ export async function initSiteEvents() {
     });
 
     // only observe added or removed elements
-    queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue")!, {
+    queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue")!, {
       childList: true,
     });
 
@@ -64,7 +64,7 @@ export async function initSiteEvents() {
       }
     });
 
-    autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents")!, {
+    autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents")!, {
       childList: true,
     });
 

@@ -317,6 +317,11 @@ function registerMenuCommands() {
       console.log("Reset install time.");
     }, "t");
 
+    GM.registerMenuCommand("Reset version check timestamp", async () => {
+      await GM.deleteValue("bytm-version-check");
+      console.log("Reset version check time.");
+    }, "v");
+
     GM.registerMenuCommand("List active selector listeners", async () => {
       const lines = [] as string[];
       let listenersAmt = 0;

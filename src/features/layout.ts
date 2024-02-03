@@ -470,7 +470,7 @@ export async function fixSpacing() {
 
 /** Adds a button to the queue to scroll to the active song */
 export async function addScrollToActiveBtn() {
-  onSelectorOld(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+  onSelectorOld("#side-panel #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
     listener: async (tabElem) => {
       const containerElem = document.createElement("div");
       containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -486,7 +486,7 @@ export async function addScrollToActiveBtn() {
       imgElem.src = await getResourceUrl("skip_to");
 
       linkElem.addEventListener("click", (e) => {
-        const activeItem = document.querySelector<HTMLElement>(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+        const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
 
