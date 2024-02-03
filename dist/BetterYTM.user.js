@@ -24,11 +24,13 @@
 // @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
 // @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
 // @connect           api.sv443.net
+// @connect           github.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
 // @resource          close       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
@@ -814,7 +816,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "a7d4529", // asserted as generic string instead of literal
+        buildNumber: "2915f40", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -899,35 +901,40 @@ I welcome every contribution on GitHub!
     const observers$1 = {};
     /** Call after DOM load to initialize all SelectorObserver instances */
     function initObservers() {
-        // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-        observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-        observers$1.body.enable();
-        // #SECTION playerBar = media controls bar at the bottom of the page
-        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-        observers$1.body.addListener(playerBarSelector, {
-            listener: () => {
-                console.log("#DBG-UU enabling playerBar observer");
-                observers$1.playerBar.enable();
-            },
-        });
-        // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
-        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-        observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
-            listener: () => {
-                console.log("#DBG-UU enabling playerBarTitle observer");
-                observers$1.playerBarInfo.enable();
-            },
-        });
-        // #DEBUG example: listen for title change:
-        observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
-            continuous: true,
-            listener: (titleElem) => {
-                console.log("#DBG-UU >>>>> title changed", titleElem.title);
-            },
-        });
-        emitInterface("bytm:observersReady");
+        try {
+            // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
+            observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+            observers$1.body.enable();
+            // #SECTION playerBar = media controls bar at the bottom of the page
+            const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+            observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+            observers$1.body.addListener(playerBarSelector, {
+                listener: () => {
+                    console.log("#DBG-UU enabling playerBar observer");
+                    observers$1.playerBar.enable();
+                },
+            });
+            // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+            const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+            observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+            observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
+                listener: () => {
+                    console.log("#DBG-UU enabling playerBarTitle observer");
+                    observers$1.playerBarInfo.enable();
+                },
+            });
+            // #DEBUG example: listen for title change:
+            observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
+                continuous: true,
+                listener: (titleElem) => {
+                    console.log("#DBG-UU >>>>> title changed", titleElem.title);
+                },
+            });
+            emitInterface("bytm:observersReady");
+        }
+        catch (err) {
+            error("Failed to initialize observers:", err);
+        }
     }
     /** Interface function for adding listeners to the already present observers */
     function addSelectorListener(observerName, selector, options) {
@@ -1116,8 +1123,8 @@ I welcome every contribution on GitHub!
                 }
                 const startTs = Date.now();
                 const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
-                    disableFuzzy: undefined,
-                    utm_source: "betterytm",
+                    disableFuzzy: null,
+                    utm_source: "BetterYTM",
                     utm_content: `v${scriptInfo.version}`,
                     artist,
                     song,
@@ -1181,6 +1188,10 @@ I welcome every contribution on GitHub!
         getResourceUrl,
         getSessionId,
         getVideoTime,
+        setLocale,
+        getLocale,
+        hasKey,
+        hasKeyFor,
         t,
         tp,
         getFeatures,
@@ -1417,12 +1428,32 @@ I welcome every contribution on GitHub!
     }
     /**
      * Constructs a URL from a base URL and a record of query parameters.
-     * If a value is undefined, the parameter will be valueless.
+     * If a value is null, the parameter will be valueless.
      * All values will be stringified using their `toString()` method and then URI-encoded.
      * @returns Returns a string instead of a URL object
      */
-    function constructUrlString(base, params) {
-        return `${base}?${Object.entries(params).map(([key, val]) => `${key}${val === undefined ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+    function constructUrlString(baseUrl, params) {
+        return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+    }
+    /**
+     * Sends a request with the specified parameters and returns the response as a Promise.
+     * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
+     */
+    function sendRequest(details) {
+        return new Promise((resolve, reject) => {
+            GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload(res) {
+                    resolve(res);
+                },
+                onerror(res) {
+                    reject(res);
+                },
+                ontimeout(res) {
+                    reject(res);
+                },
+                onabort(res) {
+                    reject(res);
+                } }));
+        });
     }
 
     const fetchOpts = {
@@ -1438,6 +1469,7 @@ I welcome every contribution on GitHub!
         return __awaiter(this, void 0, void 0, function* () {
             if (initializedLocales.has(locale))
                 return;
+            initializedLocales.add(locale);
             try {
                 const transUrl = yield getResourceUrl(`tr-${locale}`);
                 const transFile = yield (yield fetchAdvanced(transUrl, fetchOpts)).json();
@@ -1721,7 +1753,7 @@ I welcome every contribution on GitHub!
                     }
                 });
                 // only observe added or removed elements
-                queueObs.observe(document.querySelector(".side-panel.modular #contents.ytmusic-player-queue"), {
+                queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue"), {
                     childList: true,
                 });
                 const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
@@ -1730,7 +1762,7 @@ I welcome every contribution on GitHub!
                         emitSiteEvent("autoplayQueueChanged", target);
                     }
                 });
-                autoplayObs.observe(document.querySelector(".side-panel.modular ytmusic-player-queue #automix-contents"), {
+                autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents"), {
                     childList: true,
                 });
                 info("Successfully initialized SiteEvents observers");
@@ -1750,7 +1782,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
+    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -1865,11 +1897,12 @@ I welcome every contribution on GitHub!
     var main = "./src/index.ts";
     var type = "module";
     var scripts = {
-    	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
+    	dev: "concurrently \"nodemon --exec npm run build-dev-watch\" \"npm run serve\"",
     	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	lint: "tsc --noEmit && eslint .",
     	build: "rollup -c",
     	"build-dev": "rollup -c --config-mode production --config-host github --config-branch develop",
+    	"build-dev-watch": "rollup -c --config-mode development --config-host github --config-branch develop",
     	"build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     	"build-prod-base": "rollup -c --config-mode production --config-branch main",
     	"build-prod-gh": "npm run build-prod-base -- --config-host github",
@@ -1903,6 +1936,12 @@ I welcome every contribution on GitHub!
     	url: "https://github.com/sponsors/Sv443"
     };
     var hosts = {
+    	github: "https://github.com/Sv443/BetterYTM",
+    	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
+    	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
+    };
+    var releases = {
+    	github: "https://github.com/Sv443/BetterYTM/releases",
     	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
     };
@@ -1945,7 +1984,8 @@ I welcome every contribution on GitHub!
     		"assets/**",
     		"rollup.config.mjs",
     		".env",
-    		"changelog.md"
+    		"changelog.md",
+    		"package.json"
     	],
     	ext: "ts,js,json,html,css,svg,png",
     	ignore: [
@@ -1969,6 +2009,7 @@ I welcome every contribution on GitHub!
     	bugs: bugs,
     	funding: funding,
     	hosts: hosts,
+    	releases: releases,
     	dependencies: dependencies,
     	devDependencies: devDependencies,
     	browserslist: browserslist,
@@ -3363,7 +3404,7 @@ I welcome every contribution on GitHub!
     /** Adds a button to the queue to scroll to the active song */
     function addScrollToActiveBtn() {
         return __awaiter(this, void 0, void 0, function* () {
-            onSelectorOld(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+            onSelectorOld("#side-panel #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
                 listener: (tabElem) => __awaiter(this, void 0, void 0, function* () {
                     const containerElem = document.createElement("div");
                     containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -3376,7 +3417,7 @@ I welcome every contribution on GitHub!
                     imgElem.className = "bytm-generic-btn-img";
                     imgElem.src = yield getResourceUrl("skip_to");
                     linkElem.addEventListener("click", (e) => {
-                        const activeItem = document.querySelector(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+                        const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
                         if (!activeItem)
                             return;
                         e.preventDefault();
@@ -3689,6 +3730,63 @@ I welcome every contribution on GitHub!
         });
     }
 
+    const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
+    function checkVersion() {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (getFeatures().versionCheck === false)
+                    return info("Version check is disabled");
+                const lastCheck = yield GM.getValue("bytm-version-check", 0);
+                if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+                    return;
+                yield GM.setValue("bytm-version-check", Date.now());
+                const res = yield sendRequest({
+                    method: "GET",
+                    url: releaseURL,
+                });
+                const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
+                if (!latestTag)
+                    return;
+                const versionComp = compareVersions(scriptInfo.version, latestTag);
+                info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+                if (versionComp < 0) {
+                    const platformNames = {
+                        github: "GitHub",
+                        greasyfork: "GreasyFork",
+                        openuserjs: "OpenUserJS",
+                    };
+                    if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
+                        window.open(pkg.releases[host]);
+                }
+            }
+            catch (err) {
+                error("Version check failed:", err);
+            }
+        });
+    }
+    /**
+     * Compares two semver version strings.
+     * @returns Returns 1 if a > b, -1 if a < b, 0 if a == b
+     */
+    function compareVersions(a, b) {
+        const pa = a.split(".");
+        const pb = b.split(".");
+        for (let i = 0; i < 3; i++) {
+            const na = Number(pa[i]);
+            const nb = Number(pb[i]);
+            if (na > nb)
+                return 1;
+            if (nb > na)
+                return -1;
+            if (!isNaN(na) && isNaN(nb))
+                return 1;
+            if (isNaN(na) && !isNaN(nb))
+                return -1;
+        }
+        return 0;
+    }
+
     //#MARKER feature dependencies
     const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => {
         return [...a, {
@@ -3929,6 +4027,13 @@ I welcome every contribution on GitHub!
             default: getPreferredLocale(),
             enable: () => void "TODO",
         },
+        versionCheck: {
+            type: "toggle",
+            category: "general",
+            default: true,
+            enable: () => void "TODO",
+            disable: () => void "TODO",
+        },
         logLevel: {
             type: "select",
             category: "general",
@@ -3957,12 +4062,12 @@ I welcome every contribution on GitHub!
         4: (oldData) => {
             var _a, _b, _c, _d;
             const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-            return Object.assign(Object.assign({}, oldData), { locale: getFeatureDefault("locale"), rememberSongTime: getFeatureDefault("rememberSongTime"), rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"), arrowKeySkipBy: 10, switchSitesHotkey: {
+            return Object.assign(Object.assign({}, oldData), { rememberSongTime: getFeatureDefault("rememberSongTime"), rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"), arrowKeySkipBy: 10, switchSitesHotkey: {
                     code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
                     shift: Boolean((_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false),
                     ctrl: Boolean((_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false),
                     alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
-                }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep") });
+                }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"), locale: getFeatureDefault("locale"), versionCheck: getFeatureDefault("versionCheck") });
         },
     };
     function getFeatureDefault(key) {
@@ -4963,11 +5068,11 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
 
 /* #MARKER queue buttons */
 
-.side-panel.modular ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
   position: relative;
 }
 
-.side-panel.modular ytmusic-player-queue-item .bytm-queue-btn-container {
+#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
   background: rgb(0, 0, 0);
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
   display: none;
@@ -4977,7 +5082,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   height: 100%;
 }
 
-.side-panel.modular ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
 
@@ -4986,7 +5091,7 @@ ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
   z-index: 1;
 }
 
-.side-panel.modular ytmusic-player-queue-item:hover .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
 ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
 ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
   display: inline-block;
@@ -4996,16 +5101,16 @@ ytmusic-responsive-list-item-renderer .title-column {
   align-items: center;
 }
 
-.side-panel.modular ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
 }
 
-.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
-.side-panel.modular ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
   /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
   background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
 }
@@ -5067,6 +5172,7 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
             initOnSelector();
             const features = getFeatures();
             const ftInit = [];
+            yield checkVersion();
             log(`DOM loaded. Initializing features for domain "${domain}"...`);
             try {
                 if (domain === "ytm") {
@@ -5167,6 +5273,10 @@ ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
                 yield GM.deleteValue("bytm-installed");
                 console.log("Reset install time.");
             }), "t");
+            GM.registerMenuCommand("Reset version check timestamp", () => __awaiter(this, void 0, void 0, function* () {
+                yield GM.deleteValue("bytm-version-check");
+                console.log("Reset version check time.");
+            }), "v");
             GM.registerMenuCommand("List active selector listeners", () => __awaiter(this, void 0, void 0, function* () {
                 const lines = [];
                 let listenersAmt = 0;
