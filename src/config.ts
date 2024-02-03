@@ -32,7 +32,6 @@ export const migrations: ConfigMigrationsDict = {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
       ...oldData,
-      locale: getFeatureDefault("locale"),
       rememberSongTime: getFeatureDefault("rememberSongTime"),
       rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"),
       arrowKeySkipBy: 10,
@@ -44,6 +43,8 @@ export const migrations: ConfigMigrationsDict = {
       },
       listButtonsPlacement: "queueOnly",
       volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"),
+      locale: getFeatureDefault("locale"),
+      versionCheck: getFeatureDefault("versionCheck"),
     };
   },
 };
