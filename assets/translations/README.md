@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 120 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `120/120` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `97/120` (80.8%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `97/120` (80.8%) | ─ |
+| [`en_US`](./en_US.json) | 123 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `123/123` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `97/123` (78.9%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -35,6 +35,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -51,11 +52,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -65,6 +68,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -81,11 +85,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -95,6 +101,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -111,11 +118,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -125,6 +134,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -141,11 +151,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -155,6 +167,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -171,11 +184,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -185,6 +200,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -201,11 +217,13 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -215,6 +233,7 @@ This means you need to manually check against the base translations for missing 
 | `remember_song_time_sites_all` | `Both sites` |
 | `remember_song_time_sites_yt` | `Only YouTube` |
 | `remember_song_time_sites_ytm` | `Only YouTube Music` |
+| `new_version_available` | `A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?` |
 | `feature_category_songLists` | `Song Lists` |
 | `feature_desc_volumeSliderScrollStep` | `Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above` |
 | `feature_helptext_volumeSliderScrollStep` | `By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.` |
@@ -231,6 +250,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_helptext_arrowKeySupport` | `Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys "H" and "L". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.` |
 | `feature_helptext_switchBetweenSites` | `Pressing this hotkey will switch to the other site if you are on YouTube or YouTube Music while staying on the same video / song.` |
 | `feature_helptext_anchorImprovements` | `Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.` |
+| `feature_desc_versionCheck` | `Check for updates every 24 hours?` |
+| `feature_helptext_versionCheck` | `This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.` |
 | `feature_helptext_logLevel` | `Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.` |
 
 <br></details>

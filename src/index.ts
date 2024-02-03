@@ -35,6 +35,8 @@ import {
   addMediaCtrlLyricsBtn, geniUrlBase,
   // menu
   addConfigMenuOption,
+  // other
+  checkVersion,
 } from "./features/index";
 import { initObservers, observers } from "./observers";
 
@@ -135,6 +137,8 @@ async function onDomLoad() {
 
   const features = getFeatures();
   const ftInit = [] as Promise<void>[];
+
+  await checkVersion();
 
   log(`DOM loaded. Initializing features for domain "${domain}"...`);
 

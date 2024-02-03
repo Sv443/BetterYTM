@@ -24,6 +24,9 @@ export enum LogLevel {
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
 
+/** A URL string that starts with "http://" or "https://" */
+export type HttpUrlString = `http://${string}` | `https://${string}`;
+
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources | `tr-${keyof typeof langMapping}` | "changelog";
 
@@ -156,6 +159,8 @@ export interface FeatureConfig {
   //#SECTION misc
   /** The locale to use for translations */
   locale: TrLocale;
+  /** Whether to check for updates to the script */
+  versionCheck: boolean;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
 }

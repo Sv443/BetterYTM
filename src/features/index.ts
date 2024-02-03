@@ -8,6 +8,7 @@ export * from "./behavior";
 export * from "./input";
 export * from "./lyrics";
 export * from "./songLists";
+export * from "./versionCheck";
 
 //#MARKER types
 
@@ -266,6 +267,13 @@ export const featInfo = {
     options: localeOptions,
     default: getPreferredLocale(),
     enable: () => void "TODO",
+  },
+  versionCheck: {
+    type: "toggle",
+    category: "general",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   logLevel: {
     type: "select",

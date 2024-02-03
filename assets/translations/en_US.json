@@ -83,6 +83,8 @@
     "remember_song_time_sites_yt": "Only YouTube",
     "remember_song_time_sites_ytm": "Only YouTube Music",
 
+    "new_version_available": "A new version of %1 is available!\nCurrently installed: %2 - new version: %3\n(You can disable this notification in the config menu)\n\nDo you want to open %4 to install it manually?",
+
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
     "feature_category_behavior": "Behavior",
@@ -131,6 +133,8 @@
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
 
     "feature_desc_locale": "Language 🌐",
+    "feature_desc_versionCheck": "Check for updates every 24 hours?",
+    "feature_helptext_versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
     "feature_desc_logLevel": "How much information to log to the console",
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue."
   }
