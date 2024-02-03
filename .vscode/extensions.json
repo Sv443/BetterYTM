@@ -2,7 +2,7 @@
   "recommendations": [
     "andywang.vscode-scriptmonkey",
     "dbaeumer.vscode-eslint",
-    "fabiospampinato.vscode-highlight"
+    "fabiospampinato.vscode-highlight",
   ],
   "unwantedRecommendations": [
     "adpyke.vscode-userscript",
