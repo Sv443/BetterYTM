@@ -236,52 +236,27 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
-- [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
-- [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
-- [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
-- [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
-- [t()](#t) - Translates the specified translation key using the currently set locale
-- [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
-- [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
-- [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
-- [fetchLyricsUrl](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
-- [getLyricsCacheEntry](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
-- [sanitizeArtists](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
-- [sanitizeSong](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
-
-<br>
-
-> #### addSelectorListener()
-> Usage:  
-> ```ts
-> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
-> ```
->   
-> Description:  
-> Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
-> These instances are created by BetterYTM to observe the DOM for changes.  
-> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
->   
-> Arguments:  
-> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which parent element they observe in the file [`src/observers.ts`](src/observers.ts).
-> - `selector` - The CSS selector to observe for changes.
-> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
->   
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> // wait for the observers to exist
-> unsafeWindow.addEventListener("bytm:observersReady", () => {
->   // use the "lowest" possible SelectorObserver (playerBar)
->   // and check if the lyrics button gets added or removed
->   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
->     listener: (elem) => {
->       console.log("The BYTM lyrics button changed");
->     },
->   });
-> });
-> ```
-> </details>
+- BYTM-specific:
+  - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
+  - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
+- DOM:
+  - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
+  - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
+- Translations:
+  - [setLocale()](#setlocale) - Sets the locale for BetterYTM
+  - [getLocale()](#getlocale) - Returns the currently set locale
+  - [hasKey()](#haskey) - Checks if the specified translation key exists in the currently set locale
+  - [hasKeyFor()](#haskeyfor) - Checks if the specified translation key exists in the specified locale
+  - [t()](#t) - Translates the specified translation key using the currently set locale
+  - [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
+- Feature config:
+  - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
+  - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
+- Lyrics:
+  - [fetchLyricsUrl](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
+  - [getLyricsCacheEntry](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
+  - [sanitizeArtists](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
+  - [sanitizeSong](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 
 <br>
 
@@ -340,6 +315,40 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
+> #### addSelectorListener()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>): void
+> ```
+>   
+> Description:  
+> Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
+> These instances are created by BetterYTM to observe the DOM for changes.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
+>   
+> Arguments:  
+> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which parent element they observe in the file [`src/observers.ts`](src/observers.ts).
+> - `selector` - The CSS selector to observe for changes.
+> - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // wait for the observers to exist
+> unsafeWindow.addEventListener("bytm:observersReady", () => {
+>   // use the "lowest" possible SelectorObserver (playerBar)
+>   // and check if the lyrics button gets added or removed
+>   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
+>     listener: (elem) => {
+>       console.log("The BYTM lyrics button changed");
+>     },
+>   });
+> });
+> ```
+> </details>
+
+<br>
+
 > #### getVideoTime()
 > Usage:  
 > ```ts
@@ -362,6 +371,95 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > catch(err) {
 >   console.error("Couldn't get the video time, probably due to automated interaction restrictions");
 > }
+> ```
+> </details>
+
+<br>
+
+> #### setLocale()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.setLocale(locale: string): void
+> ```
+>   
+> Description:  
+> Sets the locale for BetterYTM's translations.  
+> The new locale is used for all translations *after* this function is called.  
+>   
+> Arguments:  
+> - `locale` - The locale to set. Refer to the file [`assets/locales.json`](assets/locales.json) for a list of available locales.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.setLocale("en_UK");
+> ```
+> </details>
+
+<br>
+
+> #### getLocale()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getLocale(): string
+> ```
+>   
+> Description:  
+> Returns the currently set locale.  
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.getLocale(); // "en_US"
+> 
+> unsafeWindow.BYTM.setLocale("en_UK");
+> 
+> unsafeWindow.BYTM.getLocale(); // "en_UK"
+> ```
+> </details>
+
+<br>
+
+> #### hasKey()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.hasKey(key: string): boolean
+> ```
+>   
+> Description:  
+> Returns true if the specified translation key exists in the currently set locale.  
+>   
+> Arguments:  
+> - `key` - The key of the translation to check for.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.hasKey("lyrics_rate_limited"); // true
+> unsafeWindow.BYTM.hasKey("some_key_that_doesnt_exist"); // false
+> ```
+> </details>
+
+<br>
+
+> #### hasKeyFor()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.hasKeyFor(locale: string, key: string): boolean
+> ```
+>   
+> Description:  
+> Returns true if the specified translation key exists in the specified locale.  
+>   
+> Arguments:  
+> - `locale` - The locale to check for the translation key in.
+> - `key` - The key of the translation to check for.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.hasKeyFor("en_UK", "lyrics_rate_limited"); // true
+> unsafeWindow.BYTM.hasKeyFor("en_UK", "some_key_that_doesnt_exist"); // false
 > ```
 > </details>
 

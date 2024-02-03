@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
-import { t, tp, type TrLocale } from "./translations";
+import { setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./translations";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
 import { fetchLyricsUrl, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
@@ -32,6 +32,10 @@ const globalFuncs = {
   getResourceUrl,
   getSessionId,
   getVideoTime,
+  setLocale,
+  getLocale,
+  hasKey,
+  hasKeyFor,
   t,
   tp,
   getFeatures,

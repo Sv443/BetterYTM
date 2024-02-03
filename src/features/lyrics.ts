@@ -222,8 +222,8 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
 
     const startTs = Date.now();
     const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
-      disableFuzzy: undefined,
-      utm_source: "betterytm",
+      disableFuzzy: null,
+      utm_source: "BetterYTM",
       utm_content: `v${scriptInfo.version}`,
       artist,
       song,

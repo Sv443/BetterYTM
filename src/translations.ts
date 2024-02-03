@@ -23,6 +23,8 @@ export async function initTranslations(locale: TrLocale) {
   if(initializedLocales.has(locale))
     return;
 
+  initializedLocales.add(locale);
+
   try {
     const transUrl = await getResourceUrl(`tr-${locale}` as "_");
     const transFile = await (await fetchAdvanced(transUrl, fetchOpts)).json();
