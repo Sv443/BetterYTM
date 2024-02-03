@@ -44,6 +44,7 @@ module.exports = {
       },
       extendDefaults: true,
     }],
+    "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": ["error", "only-multiline"],
     "no-misleading-character-class": "off",
   },

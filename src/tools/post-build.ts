@@ -83,11 +83,13 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @downloadURL       ${scriptUrl}
 // @updateURL         ${scriptUrl}
 // @connect           api.sv443.net
+// @connect           github.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\

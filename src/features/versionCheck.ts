@@ -1,35 +1,48 @@
 import { t } from "../translations";
 import { scriptInfo, host } from "../constants";
 import { getFeatures } from "../config";
-import { info } from "../utils";
+import { error, info, sendRequest } from "../utils";
 import pkg from "../../package.json" assert { type: "json" };
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
 export async function checkVersion() {
-  if(getFeatures().versionCheck === false)
-    return info("Version check is disabled");
+  try {
+    if(getFeatures().versionCheck === false)
+      return info("Version check is disabled");
 
-  const lastCheck = await GM.getValue("bytm-versionCheck", 0);
-  if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-    return;
+    const lastCheck = await GM.getValue("bytm-version-check", 0);
+    if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+      return;
 
-  await GM.setValue("bytm-versionCheck", Date.now());
+    await GM.setValue("bytm-version-check", Date.now());
 
-  const res = await fetch(releaseURL);
-  const latestTag = res.url.split("/").pop();
+    const res = await sendRequest({
+      method: "GET",
+      url: releaseURL,
+    });
 
-  if(!latestTag)
-    return;
+    const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
-  if(compareVersions(scriptInfo.version, latestTag) < 0) {
-    const platformNames: Record<typeof host, string> = {
-      github: "GitHub",
-      greasyfork: "GreasyFork",
-      openuserjs: "OpenUserJS",
-    };
-    if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-      window.open(pkg.releases[host]);
+    if(!latestTag)
+      return;
+
+    const versionComp = compareVersions(scriptInfo.version, latestTag);
+
+    info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+
+    if(versionComp < 0) {
+      const platformNames: Record<typeof host, string> = {
+        github: "GitHub",
+        greasyfork: "GreasyFork",
+        openuserjs: "OpenUserJS",
+      };
+      if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
+        window.open(pkg.releases[host]);
+    }
+  }
+  catch(err) {
+    error("Version check failed:", err);
   }
 }
 

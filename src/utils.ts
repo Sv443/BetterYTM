@@ -288,3 +288,27 @@ export function constructUrlString(baseUrl: HttpUrlString, params: Record<string
 export function constructUrl(base: HttpUrlString, params: Record<string, Stringifiable | null>) {
   return new URL(constructUrlString(base, params));
 }
+
+/**
+ * Sends a request with the specified parameters and returns the response as a Promise.  
+ * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
+ */
+export function sendRequest<T = any>(details: GM.Request<T>) {
+  return new Promise<GM.Response<T>>((resolve, reject) => {
+    GM.xmlHttpRequest({
+      ...details,
+      onload(res) {
+        resolve(res);
+      },
+      onerror(res) {
+        reject(res);
+      },
+      ontimeout(res) {
+        reject(res);
+      },
+      onabort(res) {
+        reject(res);
+      },
+    });
+  });
+}
