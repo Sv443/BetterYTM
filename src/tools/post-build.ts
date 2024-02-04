@@ -138,6 +138,10 @@ I welcome every contribution on GitHub!
     else
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
+    // replace with arrow IIFE & move "use strict"
+    userscript = userscript.replace(/["']use strict["'];?\n\s*/, "");
+    userscript = userscript.replace(/\(function \(\) \{/, "\"use strict\";\n\n(() => {");
+
     // insert userscript header and final newline
     const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
