@@ -33,30 +33,31 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          close       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          logo        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          arrow_down  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          delete      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          error       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          globe       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          help        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          lyrics      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          skip_to     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          spinner     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          discord     https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          github      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          greasyfork  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          openuserjs  https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          fix_spacing https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/other/fixSpacing.css
-// @resource          tr-de_DE    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          tr-en_US    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          tr-en_UK    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          tr-es_ES    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          tr-fr_FR    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          tr-hi_IN    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          tr-ja_JA    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          tr-pt_BR    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          tr-zh_CN    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
+// @resource          help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
+// @resource          lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
+// @resource          github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
+// @resource          anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
+// @resource          trans-de_DE         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          trans-en_US         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          trans-en_UK         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
+// @resource          trans-es_ES         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          trans-fr_FR         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          trans-hi_IN         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          trans-ja_JA         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          trans-pt_BR         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          trans-zh_CN         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -72,9 +73,9 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function () {
-    'use strict';
+"use strict";
 
+(() => {
     /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
@@ -816,7 +817,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "2915f40", // asserted as generic string instead of literal
+        buildNumber: "98c020b", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1471,10 +1472,10 @@ I welcome every contribution on GitHub!
                 return;
             initializedLocales.add(locale);
             try {
-                const transUrl = yield getResourceUrl(`tr-${locale}`);
+                const transUrl = yield getResourceUrl(`trans-${locale}`);
                 const transFile = yield (yield fetchAdvanced(transUrl, fetchOpts)).json();
                 // merge with base translations if specified
-                const baseTransUrl = transFile.base ? yield getResourceUrl(`tr-${transFile.base}`) : undefined;
+                const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
                 const baseTransFile = baseTransUrl ? yield (yield fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
                 const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
                 tr.addLanguage(locale, translations);
@@ -1782,7 +1783,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
+    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -1897,12 +1898,12 @@ I welcome every contribution on GitHub!
     var main = "./src/index.ts";
     var type = "module";
     var scripts = {
-    	dev: "concurrently \"nodemon --exec npm run build-dev-watch\" \"npm run serve\"",
+    	dev: "concurrently \"nodemon --exec npm run build-watch\" \"npm run serve\"",
     	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	lint: "tsc --noEmit && eslint .",
     	build: "rollup -c",
-    	"build-dev": "rollup -c --config-mode production --config-host github --config-branch develop",
-    	"build-dev-watch": "rollup -c --config-mode development --config-host github --config-branch develop",
+    	"build-watch": "rollup -c --config-mode development --config-host github --config-branch develop",
+    	"build-develop": "rollup -c --config-mode production --config-host github --config-branch develop",
     	"build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     	"build-prod-base": "rollup -c --config-mode production --config-branch main",
     	"build-prod-gh": "npm run build-prod-base -- --config-host github",
@@ -3259,6 +3260,13 @@ I welcome every contribution on GitHub!
     /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
     function addAnchorImprovements() {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const css = yield (yield fetchAdvanced(yield getResourceUrl("anchor_improvements"))).text();
+                css && addGlobalStyle(css);
+            }
+            catch (err) {
+                error("Couldn't add anchor improvements CSS due to an error:", err);
+            }
             //#SECTION carousel shelves
             try {
                 const preventDefault = (e) => e.preventDefault();
@@ -3360,14 +3368,18 @@ I welcome every contribution on GitHub!
         });
     }
     //#MARKER remove share tracking param
+    let lastShareVal = "";
     /** Removes the ?si tracking parameter from share URLs */
     function removeShareTrackingParam() {
         return __awaiter(this, void 0, void 0, function* () {
             const removeSiParam = (inputElem) => {
                 try {
+                    if (lastShareVal === inputElem.value)
+                        return;
                     const url = new URL(inputElem.value);
                     if (!url.searchParams.has("si"))
                         return;
+                    lastShareVal = inputElem.value;
                     url.searchParams.delete("si");
                     inputElem.value = String(url);
                     log(`Removed tracking parameter from share link: ${url}`);
@@ -3376,13 +3388,17 @@ I welcome every contribution on GitHub!
                     warn("Couldn't remove tracking parameter from share link due to error:", err);
                 }
             };
-            onSelectorOld("yt-copy-link-renderer input#share-url", {
-                listener: (el) => {
-                    observeElementProp(el, "value", (_oldVal, newVal) => {
-                        if (newVal.match(/si=/))
-                            removeSiParam(el);
+            onSelectorOld("tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", {
+                listener: (sharePanelEl) => {
+                    const obs = new MutationObserver(() => {
+                        const inputElem = sharePanelEl.querySelector("input#share-url");
+                        inputElem && removeSiParam(inputElem);
                     });
-                    removeSiParam(el);
+                    obs.observe(sharePanelEl, {
+                        childList: true,
+                        subtree: true,
+                        attributeFilter: ["aria-hidden", "checked"],
+                    });
                 },
             });
         });
@@ -5003,16 +5019,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 #bytm-watermark:hover {
   text-decoration: underline;
-}
-
-/* #MARKER anchor improvements */
-
-ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
-  margin-right: 0 !important;
-}
-
-.bytm-carousel-shelf-anchor {
-  margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 24px);
 }
 
 /* #MARKER volume slider */
