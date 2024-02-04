@@ -1,4 +1,4 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, observeElementProp, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
@@ -433,13 +433,20 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
 //#MARKER remove share tracking param
 
+let lastShareVal = "";
+
 /** Removes the ?si tracking parameter from share URLs */
 export async function removeShareTrackingParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
+      if(lastShareVal === inputElem.value)
+        return;
+
       const url = new URL(inputElem.value);
       if(!url.searchParams.has("si"))
         return;
+
+      lastShareVal = inputElem.value;
 
       url.searchParams.delete("si");
       inputElem.value = String(url);
@@ -450,13 +457,18 @@ export async function removeShareTrackingParam() {
     }
   };
 
-  onSelectorOld<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
-    listener: (el) => {
-      observeElementProp(el, "value", (_oldVal, newVal) => {
-        if(newVal.match(/si=/))
-          removeSiParam(el);
+  onSelectorOld<HTMLInputElement>("tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", {
+    listener: (sharePanelEl) => {
+      const obs = new MutationObserver(() => {
+        const inputElem = sharePanelEl.querySelector<HTMLInputElement>("input#share-url");
+        inputElem && removeSiParam(inputElem);
       });
-      removeSiParam(el);
+
+      obs.observe(sharePanelEl, {
+        childList: true,
+        subtree: true,
+        attributeFilter: ["aria-hidden", "checked"],
+      });
     },
   });
 }
