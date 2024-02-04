@@ -19,10 +19,12 @@ const buildUuid = randomUUID();
 const { env, exit } = process;
 dotenv.config();
 
-const mode = (getCliArg("mode") ?? "development").trim() as Required<RollupArgs>["config-mode"];
-const branch = (getCliArg("branch") ?? (mode === "production" ? "main" : "develop")).trim() as Required<RollupArgs>["config-branch"];
-const host = (getCliArg("host") ?? "github").trim() as Required<RollupArgs>["config-host"];
-const suffix = (getCliArg("suffix") ?? "").trim() as Required<RollupArgs>["config-suffix"];
+type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
+
+const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
+const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
+const host = getCliArg<CliArg<"config-host">>("host", "github");
+const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
 
 const envPort = Number(env.DEV_SERVER_PORT);
 /** HTTP port of the dev server */
@@ -284,9 +286,13 @@ function getAssetUrl(relativePath: string) {
     : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
 }
 
-/** Returns the value of a CLI argument or undefined if it doesn't exist */
-function getCliArg(name: string) {
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal: string): TReturn
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: string): TReturn | undefined
+/** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: string): TReturn | undefined {
   const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
   const val = arg?.split("=")?.[1];
-  return val && val.length > 0 ? val : undefined;
+  return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
