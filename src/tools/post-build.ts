@@ -234,7 +234,7 @@ async function getResourceDirectives() {
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
 
     for(const [locale] of Object.entries(langMapping))
-      resources[`tr-${locale}`] = `translations/${locale}.json`;
+      resources[`trans-${locale}`] = `translations/${locale}.json`;
 
     let longestName = 0;
     for(const name of Object.keys(resources))

@@ -28,7 +28,7 @@ export type Domain = "yt" | "ytm";
 export type HttpUrlString = `http://${string}` | `https://${string}`;
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `tr-${keyof typeof langMapping}` | "changelog";
+export type ResourceKey = keyof typeof resources | `trans-${keyof typeof langMapping}` | "changelog";
 
 /** Describes a single hotkey */
 export type HotkeyObj = {

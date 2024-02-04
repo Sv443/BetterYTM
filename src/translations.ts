@@ -26,11 +26,11 @@ export async function initTranslations(locale: TrLocale) {
   initializedLocales.add(locale);
 
   try {
-    const transUrl = await getResourceUrl(`tr-${locale}` as "_");
+    const transUrl = await getResourceUrl(`trans-${locale}` as "_");
     const transFile = await (await fetchAdvanced(transUrl, fetchOpts)).json();
 
     // merge with base translations if specified
-    const baseTransUrl = transFile.base ? await getResourceUrl(`tr-${transFile.base}` as "_") : undefined;
+    const baseTransUrl = transFile.base ? await getResourceUrl(`trans-${transFile.base}` as "_") : undefined;
     const baseTransFile = baseTransUrl ? await (await fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
 
     const translations = { ...(baseTransFile?.translations ?? {}), ...transFile.translations };
