@@ -303,6 +303,14 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl("anchor_improvements"))).text();
+    css && addGlobalStyle(css);
+  }
+  catch(err) {
+    error("Couldn't add anchor improvements CSS due to an error:", err);
+  }
+
   //#SECTION carousel shelves
   try {
     const preventDefault = (e: MouseEvent) => e.preventDefault();

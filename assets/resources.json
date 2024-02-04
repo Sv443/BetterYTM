@@ -16,5 +16,6 @@
   "greasyfork": "external/greasyfork.png",
   "openuserjs": "external/openuserjs.png",
 
-  "fix_spacing": "other/fixSpacing.css"
+  "fix_spacing": "other/fixSpacing.css",
+  "anchor_improvements": "other/anchorImprovements.css"
 }

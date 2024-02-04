@@ -193,16 +193,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER anchor improvements */
-
-ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
-  margin-right: 0 !important;
-}
-
-.bytm-carousel-shelf-anchor {
-  margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 24px);
-}
-
 /* #MARKER volume slider */
 
 #bytm-vol-slider-cont {
