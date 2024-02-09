@@ -2,6 +2,7 @@ import { t, tp } from "../translations";
 import { getPreferredLocale } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
+import { FeatureInfo } from "../types";
 
 export * from "./layout";
 export * from "./behavior";
@@ -9,14 +10,6 @@ export * from "./input";
 export * from "./lyrics";
 export * from "./songLists";
 export * from "./versionCheck";
-
-//#MARKER types
-
-/** Union of all feature keys */
-export type FeatInfoKey = keyof typeof featInfo;
-
-/** Union of all feature categories */
-export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
 
 type SelectOption = { value: number | string, label: string };
 
@@ -38,9 +31,9 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * **Required props:**
  * | Property | Description |
  * | :-- | :-- |
- * | `type` | type of the feature - see below for possible values |
- * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
- * | `default` | default value of the feature - type of the value depends on the `type` property |
+ * | `type` | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
+ * | `category` | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
+ * | `default` | default value of the feature - type of the value depends on the given `type` |
  * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
  *   
  * **Optional props:**
@@ -53,7 +46,7 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
  * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element |
+ * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
  *   
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -285,4 +278,4 @@ export const featInfo = {
     default: 1,
     enable: () => void "TODO",
   },
-} as const;
+} as const satisfies FeatureInfo;

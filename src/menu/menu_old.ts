@@ -1,12 +1,12 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { host, scriptInfo } from "../constants";
-import { FeatureCategory, FeatInfoKey, featInfo, disableBeforeUnload } from "../features/index";
+import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import { getLocale, hasKey, initTranslations, setLocale, t } from "../translations";
-import { FeatureConfig, HotkeyObj } from "../types";
+import { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj } from "../types";
 import changelog from "../../changelog.md";
 import "./menu_old.css";
 import { createHotkeyInput } from "./hotkeyInput";
@@ -245,11 +245,11 @@ export async function addCfgMenu() {
     .reduce(
       (acc, [key, { category }]) => {
         if(!acc[category])
-          acc[category] = {} as Record<FeatInfoKey, unknown>;
-        acc[category][key as FeatInfoKey] = featureCfg[key as FeatInfoKey];
+          acc[category] = {} as Record<FeatureKey, unknown>;
+        acc[category][key as FeatureKey] = featureCfg[key as FeatureKey];
         return acc;
       },
-    {} as Record<FeatureCategory, Record<FeatInfoKey, unknown>>,
+    {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
   const fmtVal = (v: unknown) => String(v).trim();
@@ -310,7 +310,7 @@ export async function addCfgMenu() {
               e.preventDefault();
               e.stopPropagation();
 
-              openHelpDialog(featKey as FeatInfoKey);
+              openHelpDialog(featKey as FeatureKey);
             });
           }
           else {
@@ -632,10 +632,10 @@ function checkToggleScrollIndicator() {
 
 let isHelpDialogOpen = false;
 /** Key of the feature currently loaded in the help dialog */
-let helpDialogCurFeature: FeatInfoKey | undefined;
+let helpDialogCurFeature: FeatureKey | undefined;
 
 /** Opens the feature help dialog for the given feature */
-async function openHelpDialog(featureKey: FeatInfoKey) {
+async function openHelpDialog(featureKey: FeatureKey) {
   if(isHelpDialogOpen)
     return;
   isHelpDialogOpen = true;

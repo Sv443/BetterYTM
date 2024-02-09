@@ -98,6 +98,78 @@ declare global {
   }
 }
 
+export type FeatureKey = keyof FeatureConfig;
+
+export type FeatureCategory =
+  | "layout"
+  | "songLists"
+  | "behavior"
+  | "input"
+  | "lyrics"
+  | "general";
+
+type SelectOption = {
+  value: string | number,
+  label: string,
+};
+
+type FeatureTypeProps = 
+  | {
+    type: "toggle",
+    default: boolean,
+  }
+  | {
+    type: "number",
+    default: number,
+    min: number,
+    max: number,
+    step?: number,
+    unit?: string,
+  }
+  | {
+    type: "select",
+    default: string | number,
+    options: SelectOption[] | (() => SelectOption[]),
+  }
+  | {
+    type: "slider",
+    default: number,
+    min: number,
+    max: number,
+    step?: number,
+    unit?: string,
+  }
+  | {
+    type: "hotkey",
+    default: HotkeyObj,
+  };
+
+type FeatureFuncProps = {
+  enable: () => void,
+} & (
+  {
+    disable?: () => void,
+  }
+  | {
+    change?: () => void,
+  }
+)
+
+/**
+ * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
+ * Values are loosely typed so try to only use this with the `satisfies` keyword.  
+ * Use `typeof featInfo` (from `src/features/index.ts`) instead for full type safety.
+ */
+export type FeatureInfo = Record<
+  keyof FeatureConfig,
+  {
+    category: FeatureCategory;
+    helpText?: string | (() => string);
+  }
+    & FeatureTypeProps
+    & FeatureFuncProps
+>;
+
 /** Feature configuration */
 export interface FeatureConfig {
   //#SECTION layout
