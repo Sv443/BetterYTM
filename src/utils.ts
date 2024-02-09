@@ -1,4 +1,5 @@
 import { Stringifiable, clamp, fetchAdvanced, getUnsafeWindow, randomId } from "@sv443-network/userutils";
+import { type EventsMap, createNanoEvents } from "nanoevents";
 import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import { type Domain, type HttpUrlString, LogLevel, type ResourceKey } from "./types";
@@ -311,4 +312,18 @@ export function sendRequest<T = any>(details: GM.Request<T>) {
       },
     });
   });
+}
+
+/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
+export abstract class NanoEmitter<TEvtMap extends EventsMap> {
+  protected readonly events;
+
+  constructor() {
+    this.events = createNanoEvents<TEvtMap>();
+  }
+
+  /** Subscribes to an event - returns a function that unsubscribes the event listener */
+  public on<TKey extends keyof TEvtMap>(event: TKey, cb: TEvtMap[TKey]) {
+    return this.events.on(event, cb);
+  }
 }
