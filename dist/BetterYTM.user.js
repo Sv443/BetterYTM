@@ -58,6 +58,8 @@
 // @resource          trans-ja_JA         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
 // @resource          trans-pt_BR         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
 // @resource          trans-zh_CN         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @require           https://unpkg.com/react@18/umd/react.development.js
+// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -73,6 +75,8 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
+
+/* globals React, ReactDOM */
 "use strict";
 
 (() => {
@@ -92,40 +96,75 @@ I welcome every contribution on GitHub!
     ***************************************************************************** */
     /* global Reflect, Promise, SuppressedError, Symbol */
 
-
     function __awaiter(thisArg, _arguments, P, generator) {
-        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-        return new (P || (P = Promise))(function (resolve, reject) {
-            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-            step((generator = generator.apply(thisArg, _arguments || [])).next());
+      function adopt(value) {
+        return value instanceof P ? value : new P(function (resolve) {
+          resolve(value);
         });
+      }
+      return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
     }
-
     function __values(o) {
-        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-        if (m) return m.call(o);
-        if (o && typeof o.length === "number") return {
-            next: function () {
-                if (o && i >= o.length) o = void 0;
-                return { value: o && o[i++], done: !o };
-            }
-        };
-        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+      var s = typeof Symbol === "function" && Symbol.iterator,
+        m = s && o[s],
+        i = 0;
+      if (m) return m.call(o);
+      if (o && typeof o.length === "number") return {
+        next: function () {
+          if (o && i >= o.length) o = void 0;
+          return {
+            value: o && o[i++],
+            done: !o
+          };
+        }
+      };
+      throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
     }
-
     function __asyncValues(o) {
-        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-        var m = o[Symbol.asyncIterator], i;
-        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+      if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+      var m = o[Symbol.asyncIterator],
+        i;
+      return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
+        return this;
+      }, i);
+      function verb(n) {
+        i[n] = o[n] && function (v) {
+          return new Promise(function (resolve, reject) {
+            v = o[n](v), settle(resolve, reject, v.done, v.value);
+          });
+        };
+      }
+      function settle(resolve, reject, d, v) {
+        Promise.resolve(v).then(function (v) {
+          resolve({
+            value: v,
+            done: d
+          });
+        }, reject);
+      }
     }
-
     typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-        var e = new Error(message);
-        return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+      var e = new Error(message);
+      return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
     };
 
     var __defProp = Object.defineProperty;
@@ -134,16 +173,17 @@ I welcome every contribution on GitHub!
     var __getOwnPropSymbols = Object.getOwnPropertySymbols;
     var __hasOwnProp = Object.prototype.hasOwnProperty;
     var __propIsEnum = Object.prototype.propertyIsEnumerable;
-    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value
+    }) : obj[key] = value;
     var __spreadValues = (a, b) => {
-      for (var prop in b || (b = {}))
-        if (__hasOwnProp.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      if (__getOwnPropSymbols)
-        for (var prop of __getOwnPropSymbols(b)) {
-          if (__propIsEnum.call(b, prop))
-            __defNormalProp(a, prop, b[prop]);
-        }
+      for (var prop in b || (b = {})) if (__hasOwnProp.call(b, prop)) __defNormalProp(a, prop, b[prop]);
+      if (__getOwnPropSymbols) for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop)) __defNormalProp(a, prop, b[prop]);
+      }
       return a;
     };
     var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
@@ -153,21 +193,21 @@ I welcome every contribution on GitHub!
     };
     var __async = (__this, __arguments, generator) => {
       return new Promise((resolve, reject) => {
-        var fulfilled = (value) => {
+        var fulfilled = value => {
           try {
             step(generator.next(value));
           } catch (e) {
             reject(e);
           }
         };
-        var rejected = (value) => {
+        var rejected = value => {
           try {
             step(generator.throw(value));
           } catch (e) {
             reject(e);
           }
         };
-        var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+        var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
         step((generator = generator.apply(__this, __arguments)).next());
       });
     };
@@ -177,34 +217,25 @@ I welcome every contribution on GitHub!
       return Math.max(Math.min(value, max), min);
     }
     function mapRange(value, range1min, range1max, range2min, range2max) {
-      if (Number(range1min) === 0 && Number(range2min) === 0)
-        return value * (range2max / range1max);
+      if (Number(range1min) === 0 && Number(range2min) === 0) return value * (range2max / range1max);
       return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
     }
     function randRange(...args) {
       let min, max;
-      if (typeof args[0] === "number" && typeof args[1] === "number")
-        [min, max] = args;
-      else if (typeof args[0] === "number" && typeof args[1] !== "number") {
+      if (typeof args[0] === "number" && typeof args[1] === "number") [min, max] = args;else if (typeof args[0] === "number" && typeof args[1] !== "number") {
         min = 0;
         [max] = args;
-      } else
-        throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
+      } else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
       min = Number(min);
       max = Number(max);
-      if (isNaN(min) || isNaN(max))
-        return NaN;
-      if (min > max)
-        throw new TypeError(`Parameter "min" can't be bigger than "max"`);
+      if (isNaN(min) || isNaN(max)) return NaN;
+      if (min > max) throw new TypeError(`Parameter "min" can't be bigger than "max"`);
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     function randomId(length = 16, radix = 16) {
       const arr = new Uint8Array(length);
       crypto.getRandomValues(arr);
-      return Array.from(
-        arr,
-        (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
-      ).join("");
+      return Array.from(arr, v => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)).join("");
     }
 
     // lib/array.ts
@@ -212,22 +243,19 @@ I welcome every contribution on GitHub!
       return randomItemIndex(array)[0];
     }
     function randomItemIndex(array) {
-      if (array.length === 0)
-        return [void 0, void 0];
+      if (array.length === 0) return [void 0, void 0];
       const idx = randRange(array.length - 1);
       return [array[idx], idx];
     }
     function takeRandomItem(arr) {
       const [itm, idx] = randomItemIndex(arr);
-      if (idx === void 0)
-        return void 0;
+      if (idx === void 0) return void 0;
       arr.splice(idx, 1);
       return itm;
     }
     function randomizeArray(array) {
       const retArray = [...array];
-      if (array.length === 0)
-        return array;
+      if (array.length === 0) return array;
       for (let i = retArray.length - 1; i > 0; i--) {
         const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
         [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
@@ -273,11 +301,9 @@ I welcome every contribution on GitHub!
               yield this.saveDefaultData();
               return this.defaultConfig;
             }
-            if (isNaN(gmFmtVer))
-              yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
+            if (isNaN(gmFmtVer)) yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
             let parsed = JSON.parse(gmData);
-            if (gmFmtVer < this.formatVersion && this.migrations)
-              parsed = yield this.runMigrations(parsed, gmFmtVer);
+            if (gmFmtVer < this.formatVersion && this.migrations) parsed = yield this.runMigrations(parsed, gmFmtVer);
             return this.cachedConfig = typeof parsed === "object" ? parsed : void 0;
           } catch (err) {
             yield this.saveDefaultData();
@@ -295,11 +321,8 @@ I welcome every contribution on GitHub!
       /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
       setData(data) {
         this.cachedConfig = data;
-        return new Promise((resolve) => __async(this, null, function* () {
-          yield Promise.all([
-            GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)),
-            GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
-          ]);
+        return new Promise(resolve => __async(this, null, function* () {
+          yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)), GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)]);
           resolve();
         }));
       }
@@ -307,11 +330,8 @@ I welcome every contribution on GitHub!
       saveDefaultData() {
         return __async(this, null, function* () {
           this.cachedConfig = this.defaultConfig;
-          return new Promise((resolve) => __async(this, null, function* () {
-            yield Promise.all([
-              GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)),
-              GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
-            ]);
+          return new Promise(resolve => __async(this, null, function* () {
+            yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)), GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)]);
             resolve();
           }));
         });
@@ -325,17 +345,13 @@ I welcome every contribution on GitHub!
        */
       deleteConfig() {
         return __async(this, null, function* () {
-          yield Promise.all([
-            GM.deleteValue(`_uucfg-${this.id}`),
-            GM.deleteValue(`_uucfgver-${this.id}`)
-          ]);
+          yield Promise.all([GM.deleteValue(`_uucfg-${this.id}`), GM.deleteValue(`_uucfgver-${this.id}`)]);
         });
       }
       /** Runs all necessary migration functions consecutively - may be overwritten in a subclass */
       runMigrations(oldData, oldFmtVer) {
         return __async(this, null, function* () {
-          if (!this.migrations)
-            return oldData;
+          if (!this.migrations) return oldData;
           let newData = oldData;
           const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
           let lastFmtVer = oldFmtVer;
@@ -351,10 +367,7 @@ I welcome every contribution on GitHub!
               }
             }
           }
-          yield Promise.all([
-            GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)),
-            GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)
-          ]);
+          yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)), GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)]);
           return newData;
         });
       }
@@ -379,8 +392,7 @@ I welcome every contribution on GitHub!
     }
     function addParent(element, newParent) {
       const oldParent = element.parentNode;
-      if (!oldParent)
-        throw new Error("Element doesn't have a parent node");
+      if (!oldParent) throw new Error("Element doesn't have a parent node");
       oldParent.replaceChild(newParent, element);
       newParent.appendChild(element);
       return newParent;
@@ -391,11 +403,11 @@ I welcome every contribution on GitHub!
       document.head.appendChild(styleElem);
     }
     function preloadImages(srcUrls, rejects = false) {
-      const promises = srcUrls.map((src) => new Promise((res, rej) => {
+      const promises = srcUrls.map(src => new Promise((res, rej) => {
         const image = new Image();
         image.src = src;
         image.addEventListener("load", () => res(image));
-        image.addEventListener("error", (evt) => rejects && rej(evt));
+        image.addEventListener("error", evt => rejects && rej(evt));
       }));
       return Promise.allSettled(promises);
     }
@@ -416,15 +428,12 @@ I welcome every contribution on GitHub!
       if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
         Error.stackTraceLimit = 1e3;
       }
-      (function(original) {
-        eventObject.__proto__.addEventListener = function(...args) {
+      (function (original) {
+        eventObject.__proto__.addEventListener = function (...args) {
           var _a, _b;
           const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
-          args[1] = function(...a) {
-            if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
-              return;
-            else
-              return origListener.apply(this, a);
+          args[1] = function (...a) {
+            if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a)) return;else return origListener.apply(this, a);
           };
           original.apply(this, args);
         };
@@ -434,7 +443,10 @@ I welcome every contribution on GitHub!
       return interceptEvent(getUnsafeWindow$1(), eventName, predicate);
     }
     function isScrollable(element) {
-      const { overflowX, overflowY } = getComputedStyle(element);
+      const {
+        overflowX,
+        overflowY
+      } = getComputedStyle(element);
       return {
         vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
         horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
@@ -445,11 +457,11 @@ I welcome every contribution on GitHub!
       if (elementPrototype.hasOwnProperty(property)) {
         const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
         Object.defineProperty(element, property, {
-          get: function() {
+          get: function () {
             var _a;
             return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
           },
-          set: function() {
+          set: function () {
             var _a;
             const oldValue = this[property];
             (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
@@ -465,25 +477,26 @@ I welcome every contribution on GitHub!
 
     // lib/misc.ts
     function autoPlural(word, num) {
-      if (Array.isArray(num) || num instanceof NodeList)
-        num = num.length;
+      if (Array.isArray(num) || num instanceof NodeList) num = num.length;
       return `${word}${num === 1 ? "" : "s"}`;
     }
     function pauseFor(time) {
-      return new Promise((res) => {
+      return new Promise(res => {
         setTimeout(() => res(), time);
       });
     }
     function debounce(func, timeout = 300) {
       let timer;
-      return function(...args) {
+      return function (...args) {
         clearTimeout(timer);
         timer = setTimeout(() => func.apply(this, args), timeout);
       };
     }
     function fetchAdvanced(_0) {
       return __async(this, arguments, function* (url, options = {}) {
-        const { timeout = 1e4 } = options;
+        const {
+          timeout = 1e4
+        } = options;
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
         const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
@@ -494,7 +507,7 @@ I welcome every contribution on GitHub!
       });
     }
     function insertValues(input, ...values) {
-      return input.replace(/%\d/gm, (match) => {
+      return input.replace(/%\d/gm, match => {
         var _a, _b;
         const argIndex = Number(match.substring(1)) - 1;
         return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
@@ -523,12 +536,10 @@ I welcome every contribution on GitHub!
       });
     }
     function ab2str(buf) {
-      return getUnsafeWindow$1().btoa(
-        new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
-      );
+      return getUnsafeWindow$1().btoa(new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), ""));
     }
     function str2ab(str) {
-      return Uint8Array.from(getUnsafeWindow$1().atob(str), (c) => c.charCodeAt(0));
+      return Uint8Array.from(getUnsafeWindow$1().atob(str), c => c.charCodeAt(0));
     }
 
     // lib/SelectorObserver.ts
@@ -540,7 +551,7 @@ I welcome every contribution on GitHub!
         __publicField(this, "observerOptions");
         __publicField(this, "listenerMap");
         this.baseElement = baseElement;
-        this.listenerMap = /* @__PURE__ */ new Map();
+        this.listenerMap = /* @__PURE__ */new Map();
         this.observer = new MutationObserver(() => this.checkAllSelectors());
         this.observerOptions = __spreadValues({
           childList: true,
@@ -548,41 +559,35 @@ I welcome every contribution on GitHub!
         }, options);
       }
       checkAllSelectors() {
-        for (const [selector, listeners] of this.listenerMap.entries())
-          this.checkSelector(selector, listeners);
+        for (const [selector, listeners] of this.listenerMap.entries()) this.checkSelector(selector, listeners);
       }
       checkSelector(selector, listeners) {
         var _a;
-        if (!this.enabled)
-          return;
+        if (!this.enabled) return;
         const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-        if (!baseElement)
-          return;
-        const all = listeners.some((listener) => listener.all);
-        const one = listeners.some((listener) => !listener.all);
+        if (!baseElement) return;
+        const all = listeners.some(listener => listener.all);
+        const one = listeners.some(listener => !listener.all);
         const allElements = all ? baseElement.querySelectorAll(selector) : null;
         const oneElement = one ? baseElement.querySelector(selector) : null;
         for (const options of listeners) {
           if (options.all) {
             if (allElements && allElements.length > 0) {
               options.listener(allElements);
-              if (!options.continuous)
-                this.removeListener(selector, options);
+              if (!options.continuous) this.removeListener(selector, options);
             }
           } else {
             if (oneElement) {
               options.listener(oneElement);
-              if (!options.continuous)
-                this.removeListener(selector, options);
+              if (!options.continuous) this.removeListener(selector, options);
             }
           }
-          if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
-            this.listenerMap.delete(selector);
+          if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0) this.listenerMap.delete(selector);
         }
       }
       debounce(func, time) {
         let timeout;
-        return function(...args) {
+        return function (...args) {
           clearTimeout(timeout);
           timeout = setTimeout(() => func.apply(this, args), time);
         };
@@ -597,23 +602,20 @@ I welcome every contribution on GitHub!
        * @param [options.debounce] Whether to debounce the listener to reduce calls to `querySelector` or `querySelectorAll` - set undefined or <=0 to disable (default)
        */
       addListener(selector, options) {
-        options = __spreadValues({ all: false, continuous: false, debounce: 0 }, options);
+        options = __spreadValues({
+          all: false,
+          continuous: false,
+          debounce: 0
+        }, options);
         if (options.debounce && options.debounce > 0 || this.observerOptions.defaultDebounce && this.observerOptions.defaultDebounce > 0) {
-          options.listener = this.debounce(
-            options.listener,
-            options.debounce || this.observerOptions.defaultDebounce
-          );
+          options.listener = this.debounce(options.listener, options.debounce || this.observerOptions.defaultDebounce);
         }
-        if (this.listenerMap.has(selector))
-          this.listenerMap.get(selector).push(options);
-        else
-          this.listenerMap.set(selector, [options]);
+        if (this.listenerMap.has(selector)) this.listenerMap.get(selector).push(options);else this.listenerMap.set(selector, [options]);
         this.checkSelector(selector, [options]);
       }
       /** Disables the observation of the child elements */
       disable() {
-        if (!this.enabled)
-          return;
+        if (!this.enabled) return;
         this.enabled = false;
         this.observer.disconnect();
       }
@@ -624,12 +626,10 @@ I welcome every contribution on GitHub!
        */
       enable(immediatelyCheckSelectors = true) {
         const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-        if (this.enabled || !baseElement)
-          return false;
+        if (this.enabled || !baseElement) return false;
         this.enabled = true;
         this.observer.observe(baseElement, this.observerOptions);
-        if (immediatelyCheckSelectors)
-          this.checkAllSelectors();
+        if (immediatelyCheckSelectors) this.checkAllSelectors();
         return true;
       }
       /** Returns whether the observation of the child elements is currently enabled */
@@ -653,8 +653,7 @@ I welcome every contribution on GitHub!
        */
       removeListener(selector, options) {
         const listeners = this.listenerMap.get(selector);
-        if (!listeners)
-          return false;
+        if (!listeners) return false;
         const index = listeners.indexOf(options);
         if (index > -1) {
           listeners.splice(index, 1);
@@ -677,11 +676,9 @@ I welcome every contribution on GitHub!
     var curLang;
     function tr(key, ...args) {
       var _a;
-      if (!curLang)
-        return key;
+      if (!curLang) return key;
       const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
-      if (!trText)
-        return key;
+      if (!trText) return key;
       if (args.length > 0 && trText.match(/%\d/)) {
         return insertValues(trText, ...args);
       }
@@ -690,7 +687,7 @@ I welcome every contribution on GitHub!
     tr.addLanguage = (language, translations) => {
       trans[language] = translations;
     };
-    tr.setLanguage = (language) => {
+    tr.setLanguage = language => {
       curLang = language;
     };
     tr.getLanguage = () => {
@@ -789,6 +786,21 @@ I welcome every contribution on GitHub!
         observer.observe(document.body, Object.assign({ subtree: true, childList: true }, options));
     }
 
+    let createNanoEvents = () => ({
+      emit(event, ...args) {
+        for (let i = 0, callbacks = this.events[event] || [], length = callbacks.length; i < length; i++) {
+          callbacks[i](...args);
+        }
+      },
+      events: {},
+      on(event, cb) {
+        (this.events[event] ||= []).push(cb);
+        return () => {
+          this.events[event] = this.events[event]?.filter(i => cb !== i);
+        };
+      }
+    });
+
     // I know TS enums are impure but it doesn't really matter here, plus they look cooler
     var LogLevel;
     (function (LogLevel) {
@@ -817,7 +829,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "98c020b", // asserted as generic string instead of literal
+        buildNumber: "81b1e6c", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1717,27 +1729,6 @@ I welcome every contribution on GitHub!
         }
     }
 
-    let createNanoEvents = () => ({
-      emit(event, ...args) {
-        for (
-          let i = 0,
-            callbacks = this.events[event] || [],
-            length = callbacks.length;
-          i < length;
-          i++
-        ) {
-          callbacks[i](...args);
-        }
-      },
-      events: {},
-      on(event, cb) {
-    (this.events[event] ||= []).push(cb);
-        return () => {
-          this.events[event] = this.events[event]?.filter(i => cb !== i);
-        }
-      }
-    });
-
     /** EventEmitter instance that is used to detect changes to the site */
     const siteEvents = createNanoEvents();
     let observers = [];
@@ -1783,7 +1774,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
+    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -1951,22 +1942,34 @@ I welcome every contribution on GitHub!
     	nanoevents: "^9.0.0"
     };
     var devDependencies = {
+    	"@babel/cli": "^7.23.9",
+    	"@babel/core": "^7.23.9",
+    	"@babel/plugin-transform-class-properties": "^7.23.3",
+    	"@babel/preset-react": "^7.23.3",
     	"@jackfranklin/rollup-plugin-markdown": "^0.4.0",
+    	"@rollup/plugin-babel": "^6.0.4",
     	"@rollup/plugin-json": "^6.0.1",
     	"@rollup/plugin-node-resolve": "^15.2.3",
+    	"@rollup/plugin-replace": "^5.0.5",
     	"@rollup/plugin-terser": "^0.4.4",
     	"@rollup/plugin-typescript": "^11.1.5",
     	"@types/express": "^4.17.17",
     	"@types/greasemonkey": "^4.0.4",
     	"@types/node": "^20.2.4",
+    	"@types/react": "^18.2.55",
+    	"@types/react-dom": "^18.2.19",
     	"@typescript-eslint/eslint-plugin": "^6.7.4",
     	"@typescript-eslint/parser": "^6.7.4",
     	concurrently: "^8.1.0",
     	dotenv: "^16.1.4",
     	eslint: "^8.51.0",
+    	esm: "^3.2.25",
     	express: "^4.18.2",
     	nodemon: "^3.0.1",
+    	react: "^18.2.0",
+    	"react-dom": "^18.2.0",
     	rollup: "^4.6.0",
+    	"rollup-plugin-commonjs": "^10.1.0",
     	"rollup-plugin-execute": "^1.1.1",
     	"rollup-plugin-html": "^0.2.1",
     	"rollup-plugin-import-css": "^3.3.5",
@@ -1988,7 +1991,7 @@ I welcome every contribution on GitHub!
     		"changelog.md",
     		"package.json"
     	],
-    	ext: "ts,js,json,html,css,svg,png",
+    	ext: "ts,tsx,mts,js,jsx,mjs,json,html,css,svg,png",
     	ignore: [
     		"dist/*",
     		"dev/*"
@@ -3818,9 +3821,9 @@ I welcome every contribution on GitHub!
      * **Required props:**
      * | Property | Description |
      * | :-- | :-- |
-     * | `type` | type of the feature - see below for possible values |
-     * | `category` | category of the feature - see what `FeatureCategory` above expands to for possible values |
-     * | `default` | default value of the feature - type of the value depends on the `type` property |
+     * | `type` | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
+     * | `category` | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
+     * | `default` | default value of the feature - type of the value depends on the given `type` |
      * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
      *
      * **Optional props:**
@@ -3833,7 +3836,7 @@ I welcome every contribution on GitHub!
      * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
      * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
      * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
-     * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element |
+     * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
      *
      * **Notes:**
      * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
