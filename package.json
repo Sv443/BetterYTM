@@ -70,6 +70,7 @@
     "@types/node": "^20.2.4",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "@violentmonkey/dom": "^2.1.5",
     "concurrently": "^8.1.0",
     "dotenv": "^16.1.4",
     "eslint": "^8.51.0",
