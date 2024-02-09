@@ -12,6 +12,12 @@ import type { RollupArgs } from "../types";
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
 
+/** An entry in the file `assets/require.json` */
+type RequireObj = (
+  | { version: string; npm: string; }
+  | { url: string; }
+);
+
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUuid = randomUUID();
@@ -264,18 +270,13 @@ async function getResourceDirectives() {
   }
 }
 
-type RequireObj = (
-  | { version: string; npmPkg: string; }
-  | { url: string; }
-);
-
 export async function getRequireDirectives() {
   const directives: string[] = [];
   const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
   const require = JSON.parse(requireFile) as RequireObj[];
 
   for(const entry of require) {
-    "npmPkg" in entry && "version" in entry && directives.push(`// @require           https://cdn.jsdelivr.net/npm/${entry.npmPkg}@${entry.version}`);
+    "npm" in entry && "version" in entry && directives.push(`// @require           https://cdn.jsdelivr.net/npm/${entry.npm}@${entry.version}`);
     "url" in entry && directives.push(`// @require           ${entry.url}`);
   }
 

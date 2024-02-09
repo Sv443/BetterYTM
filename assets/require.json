@@ -1,6 +1,8 @@
 [
   {
-    "npmPkg": "@violentmonkey/dom",
-    "version": "2.1.5"
+    "url": "https://unpkg.com/react@18/umd/react.development.js"
+  },
+  {
+    "url": "https://unpkg.com/react-dom@18/umd/react-dom.development.js"
   }
 ]
