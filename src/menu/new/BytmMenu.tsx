@@ -1,15 +1,16 @@
+import * as ReactDOM from "react-dom";
+import * as React from "react";
 import { clearInner, NanoEmitter, warn } from "../../utils";
-import menuTemplateHtml from "./menuTemplate.html";
 
 export interface BytmMenuConfig {
   /** ID that gets added to all child element IDs and class names */
   id: string;
   /** Called to render the body of the menu */
-  renderBody: (bodyContainer: HTMLElement) => HTMLElement;
+  renderBody: () => React.ReactNode;
   /** Called to render the header of the menu - leave undefined for a blank header */
-  renderHeader?: (headerContainer: HTMLElement) => HTMLElement;
+  renderHeader?: () => React.ReactNode;
   /** Called to render the footer of the menu - leave undefined for no footer */
-  renderFooter?: (footerContainer: HTMLElement) => HTMLElement;
+  renderFooter?: () => React.ReactNode;
 }
 
 interface BytmMenuEventsMap {
@@ -23,7 +24,6 @@ interface BytmMenuEventsMap {
   clear: () => void;
 }
 
-// TODO: expose on interface
 /** Creates and manages a modal menu element */
 export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
   public readonly config;
@@ -43,11 +43,12 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-menu-bg`;
     bgElem.classList.add("bytm-menu-bg");
-    bgElem.innerHTML = menuTemplateHtml;
     bgElem.style.visibility = "hidden";
     bgElem.style.display = "none";
 
     document.body.appendChild(bgElem);
+
+    ReactDOM.render(<MenuContent></MenuContent>, bgElem);
 
     this.events.emit("render");
   }
@@ -109,4 +110,15 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
     this.events.emit("close");
   }
+}
+
+function MenuContent() {
+  // TODO:
+  return (
+    <div className="bytm-menu-content">
+      <div className="bytm-menu-header" id="bytm-menu-header"></div>
+      <div className="bytm-menu-body" id="bytm-menu-body"></div>
+      <div className="bytm-menu-footer" id="bytm-menu-footer"></div>
+    </div>
+  );
 }
