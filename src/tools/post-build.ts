@@ -64,6 +64,7 @@ const devDirectives = mode === "development" ? `
 
 (async () => {
   const resourcesDirectives = await getResourceDirectives();
+  const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
 
   const header = `\
@@ -95,6 +96,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
+${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ?? ""}
 // ==/UserScript==
 /*
@@ -260,6 +262,24 @@ async function getResourceDirectives() {
   catch(err) {
     console.warn("No resource directives found:", err);
   }
+}
+
+type RequireObj = (
+  | { version: string; npmPkg: string; }
+  | { url: string; }
+);
+
+export async function getRequireDirectives() {
+  const directives: string[] = [];
+  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
+  const require = JSON.parse(requireFile) as RequireObj[];
+
+  for(const entry of require) {
+    "npmPkg" in entry && "version" in entry && directives.push(`// @require           https://cdn.jsdelivr.net/npm/${entry.npmPkg}@${entry.version}`);
+    "url" in entry && directives.push(`// @require           ${entry.url}`);
+  }
+
+  return directives.length > 0 ? directives.join("\n") : undefined;
 }
 
 /** Returns the @description directive block for each defined locale in `assets/locales.json` */
