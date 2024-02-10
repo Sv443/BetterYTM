@@ -36,6 +36,11 @@ module.exports = {
     "react",
     "react-hooks",
   ],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
   rules: {
     "no-unreachable": "off",
     "quotes": [ "error", "double" ],
