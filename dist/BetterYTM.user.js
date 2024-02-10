@@ -25,6 +25,7 @@
 // @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
 // @connect           api.sv443.net
 // @connect           github.com
+// @connect           raw.githubusercontent.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -33,34 +34,33 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
-// @resource          anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
-// @resource          trans-de_DE         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          trans-en_US         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          trans-en_UK         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          trans-es_ES         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          trans-fr_FR         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          trans-hi_IN         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          trans-ja_JA         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          trans-pt_BR         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          trans-zh_CN         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
+// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
+// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // @require           https://unpkg.com/react@18/umd/react.development.js
-// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js
-// ==/UserScript==
+// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js// ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
 █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
@@ -76,10 +76,10 @@ I welcome every contribution on GitHub!
 /* C&D this 🖕 */
 
 
-/* globals React, ReactDOM */
-"use strict";
+/* global React, ReactDOM */
+(function () {
+    'use strict';
 
-(() => {
     /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
@@ -829,7 +829,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "81b1e6c", // asserted as generic string instead of literal
+        buildNumber: "f7e4ce6", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1002,9 +1002,9 @@ I welcome every contribution on GitHub!
                 insertAfter(likeContainer, linkElem);
             }))();
             currentSongTitle = songTitleElem.title;
-            const spinnerIconUrl = yield getResourceUrl("spinner");
-            const lyricsIconUrl = yield getResourceUrl("lyrics");
-            const errorIconUrl = yield getResourceUrl("error");
+            const spinnerIconUrl = yield getResourceUrl("img-spinner");
+            const lyricsIconUrl = yield getResourceUrl("img-lyrics");
+            const errorIconUrl = yield getResourceUrl("img-error");
             const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
                 var _b, e_1, _c, _d;
                 try {
@@ -1184,7 +1184,7 @@ I welcome every contribution on GitHub!
             linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = yield getResourceUrl("lyrics");
+            imgElem.src = yield getResourceUrl("img-lyrics");
             linkElem.appendChild(imgElem);
             return linkElem;
         });
@@ -1335,7 +1335,7 @@ I welcome every contribution on GitHub!
     }
     /**
      * Sends events that force the video controls to become visible for about 3 seconds.
-     * This only works once, then the page needs to be reloaded!
+     * This only works once (for some reason), then the page needs to be reloaded!
      */
     function ytForceShowVideoTime() {
         const player = document.querySelector("#movie_player");
@@ -1424,7 +1424,7 @@ I welcome every contribution on GitHub!
             window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
         return sesId;
     }
-    /** Returns the SVG content behind the passed resource identifier to be assigned to an element's innerHTML property */
+    /** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
     function resourceToHTMLString(resource) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -1454,18 +1454,7 @@ I welcome every contribution on GitHub!
      */
     function sendRequest(details) {
         return new Promise((resolve, reject) => {
-            GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload(res) {
-                    resolve(res);
-                },
-                onerror(res) {
-                    reject(res);
-                },
-                ontimeout(res) {
-                    reject(res);
-                },
-                onabort(res) {
-                    reject(res);
-                } }));
+            GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
         });
     }
 
@@ -1774,7 +1763,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
+    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an audio amplification button to the media controls</li>\n<li>Added feature to restore the song time when reloading or restoring the tab</li>\n<li>BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Interval of arrow key skipping is configurable now</li>\n<li>Site switch hotkey is also configurable now</li>\n<li>Skipping to a specific point in the song is more reliable now</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -1961,9 +1950,8 @@ I welcome every contribution on GitHub!
     	"@typescript-eslint/eslint-plugin": "^6.7.4",
     	"@typescript-eslint/parser": "^6.7.4",
     	concurrently: "^8.1.0",
-    	dotenv: "^16.1.4",
+    	dotenv: "^16.4.1",
     	eslint: "^8.51.0",
-    	esm: "^3.2.25",
     	express: "^4.18.2",
     	nodemon: "^3.0.1",
     	react: "^18.2.0",
@@ -2106,11 +2094,11 @@ I welcome every contribution on GitHub!
                 anchorElem.appendChild(imgElem);
                 linksCont.appendChild(anchorElem);
             };
-            addLink(yield getResourceUrl("discord"), "https://dc.sv443.net/", t("open_discord"));
+            addLink(yield getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"));
             const links = [
-                ["github", yield getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
-                ["greasyfork", yield getResourceUrl("greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
-                ["openuserjs", yield getResourceUrl("openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
+                ["github", yield getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
+                ["greasyfork", yield getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
+                ["openuserjs", yield getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
             ];
             const hostLink = links.find(([name]) => name === host);
             const otherLinks = links.filter(([name]) => name !== host);
@@ -2119,7 +2107,7 @@ I welcome every contribution on GitHub!
                 addLink(...args);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
-            closeElem.src = yield getResourceUrl("close");
+            closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", closeCfgMenu);
             titleCont.appendChild(titleElem);
@@ -2249,7 +2237,7 @@ I welcome every contribution on GitHub!
                         // @ts-ignore
                         const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                         if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
-                            const helpElemImgHtml = yield resourceToHTMLString("help");
+                            const helpElemImgHtml = yield resourceToHTMLString("img-help");
                             if (helpElemImgHtml) {
                                 helpElem = document.createElement("div");
                                 helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
@@ -2411,7 +2399,7 @@ I welcome every contribution on GitHub!
             //#SECTION scroll indicator
             const scrollIndicator = document.createElement("img");
             scrollIndicator.id = "bytm-menu-scroll-indicator";
-            scrollIndicator.src = yield getResourceUrl("arrow_down");
+            scrollIndicator.src = yield getResourceUrl("img-arrow_down");
             scrollIndicator.role = "button";
             scrollIndicator.title = t("scroll_to_bottom");
             featuresCont.appendChild(scrollIndicator);
@@ -2540,12 +2528,12 @@ I welcome every contribution on GitHub!
                 titleCont.className = "bytm-menu-titlecont-no-title";
                 titleCont.role = "heading";
                 titleCont.ariaLevel = "1";
-                const helpIconHtml = yield resourceToHTMLString("help");
-                if (helpIconHtml)
-                    titleCont.innerHTML = helpIconHtml;
+                const helpIconSvg = yield resourceToHTMLString("img-help");
+                if (helpIconSvg)
+                    titleCont.innerHTML = helpIconSvg;
                 const closeElem = document.createElement("img");
                 closeElem.classList.add("bytm-menu-close", "small");
-                closeElem.src = yield getResourceUrl("close");
+                closeElem.src = yield getResourceUrl("img-close");
                 closeElem.title = t("close_menu_tooltip");
                 closeElem.addEventListener("click", (e) => closeHelpDialog(e));
                 headerElem.appendChild(titleCont);
@@ -2652,7 +2640,7 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("export_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
-            closeElem.src = yield getResourceUrl("close");
+            closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", (e) => {
                 closeExportMenu(e);
@@ -2790,7 +2778,7 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("import_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
-            closeElem.src = yield getResourceUrl("close");
+            closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", (e) => {
                 closeImportMenu(e);
@@ -2960,7 +2948,7 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
-            closeElem.src = yield getResourceUrl("close");
+            closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", (e) => {
                 closeChangelogMenu(e);
@@ -3099,7 +3087,7 @@ I welcome every contribution on GitHub!
                     return;
                 logoExchanged = true;
                 logoElem.classList.add("bytm-logo-exchanged");
-                const iconUrl = yield getResourceUrl("logo");
+                const iconUrl = yield getResourceUrl("img-logo");
                 const newLogo = document.createElement("img");
                 newLogo.className = "bytm-mod-logo-img";
                 newLogo.src = iconUrl;
@@ -3134,7 +3122,7 @@ I welcome every contribution on GitHub!
             }));
             const cfgOptIconElem = document.createElement("img");
             cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-            cfgOptIconElem.src = yield getResourceUrl("logo");
+            cfgOptIconElem.src = yield getResourceUrl("img-logo");
             const cfgOptTextElem = document.createElement("div");
             cfgOptTextElem.className = "bytm-cfg-menu-option-text";
             cfgOptTextElem.innerText = t("config_menu_option", scriptInfo.name);
@@ -3264,7 +3252,7 @@ I welcome every contribution on GitHub!
     function addAnchorImprovements() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const css = yield (yield fetchAdvanced(yield getResourceUrl("anchor_improvements"))).text();
+                const css = yield (yield fetchAdvanced(yield getResourceUrl("css-anchor_improvements"))).text();
                 css && addGlobalStyle(css);
             }
             catch (err) {
@@ -3411,7 +3399,7 @@ I welcome every contribution on GitHub!
     function fixSpacing() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const css = yield (yield fetchAdvanced(yield getResourceUrl("fix_spacing"))).text();
+                const css = yield (yield fetchAdvanced(yield getResourceUrl("css-fix_spacing"))).text();
                 css && addGlobalStyle(css);
             }
             catch (err) {
@@ -3434,7 +3422,7 @@ I welcome every contribution on GitHub!
                     linkElem.role = "button";
                     const imgElem = document.createElement("img");
                     imgElem.className = "bytm-generic-btn-img";
-                    imgElem.src = yield getResourceUrl("skip_to");
+                    imgElem.src = yield getResourceUrl("img-skip_to");
                     linkElem.addEventListener("click", (e) => {
                         const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
                         if (!activeItem)
@@ -3635,8 +3623,8 @@ I welcome every contribution on GitHub!
             //#SECTION general queue item stuff
             const queueBtnsCont = document.createElement("div");
             queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
-            const lyricsIconUrl = yield getResourceUrl("lyrics");
-            const deleteIconUrl = yield getResourceUrl("delete");
+            const lyricsIconUrl = yield getResourceUrl("img-lyrics");
+            const deleteIconUrl = yield getResourceUrl("img-delete");
             //#SECTION lyrics btn
             let lyricsBtnElem;
             if (features.lyricsQueueButton) {
@@ -3670,7 +3658,7 @@ I welcome every contribution on GitHub!
                             return;
                         if (!cachedLyricsUrl) {
                             songInfo.setAttribute("data-bytm-loading", "");
-                            imgEl.src = yield getResourceUrl("spinner");
+                            imgEl.src = yield getResourceUrl("img-spinner");
                             imgEl.classList.add("bytm-spinner");
                         }
                         lyricsUrl = cachedLyricsUrl !== null && cachedLyricsUrl !== void 0 ? cachedLyricsUrl : yield fetchLyricsUrl(artistsSan, songSan);
@@ -4165,7 +4153,7 @@ I welcome every contribution on GitHub!
             const titleLogoElem = document.createElement("img");
             titleLogoElem.id = "bytm-welcome-menu-title-logo";
             titleLogoElem.classList.add("bytm-no-select");
-            titleLogoElem.src = yield getResourceUrl("logo");
+            titleLogoElem.src = yield getResourceUrl("img-logo");
             const titleElem = document.createElement("h2");
             titleElem.id = "bytm-welcome-menu-title";
             titleElem.className = "bytm-menu-title";
@@ -4214,7 +4202,7 @@ I welcome every contribution on GitHub!
             const localeImg = document.createElement("img");
             localeImg.id = "bytm-welcome-menu-locale-img";
             localeImg.classList.add("bytm-no-select");
-            localeImg.src = yield getResourceUrl("globe");
+            localeImg.src = yield getResourceUrl("img-globe");
             const localeSelectElem = document.createElement("select");
             localeSelectElem.id = "bytm-welcome-menu-locale-select";
             for (const [locale, { name }] of Object.entries(locales)) {
