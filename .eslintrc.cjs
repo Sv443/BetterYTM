@@ -13,6 +13,9 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
   ],
   globals: {
     Atomics: "readonly",
@@ -23,9 +26,15 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    sourceType: "module",
   },
   plugins: [
     "@typescript-eslint",
+    "react",
+    "react-hooks",
   ],
   rules: {
     "no-unreachable": "off",
@@ -47,6 +56,10 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": ["error", "only-multiline"],
     "no-misleading-character-class": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
   },
   overrides: [
     {

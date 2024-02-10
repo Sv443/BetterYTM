@@ -141,7 +141,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
               {header}
             </div>
           ) : null}
-          <img className="bytm-menu-close" src={closeSrc} role="button" />
+          <img className="bytm-menu-close" src={closeSrc} role="button" onClick={() => this.close()} />
         </div>
         <div>
           {this.config.renderBody()}
