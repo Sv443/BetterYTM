@@ -65,7 +65,7 @@ type BuildStats = {
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `\
 // @grant             GM.registerMenuCommand
-// @grant             GM.listValues
+// @grant             GM.listValues\
 ` : undefined;
 
 (async () => {
@@ -104,7 +104,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
-${devDirectives ? "\n" + devDirectives : ""}\
+${devDirectives ? "\n" + devDirectives : ""}
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
