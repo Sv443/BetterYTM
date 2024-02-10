@@ -74,9 +74,9 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
   currentSongTitle = songTitleElem.title;
 
-  const spinnerIconUrl = await getResourceUrl("spinner");
-  const lyricsIconUrl = await getResourceUrl("lyrics");
-  const errorIconUrl = await getResourceUrl("error");
+  const spinnerIconUrl = await getResourceUrl("img-spinner");
+  const lyricsIconUrl = await getResourceUrl("img-lyrics");
+  const errorIconUrl = await getResourceUrl("img-error");
 
   const onMutation = async (mutations: MutationRecord[]) => {
     for await(const mut of mutations) {
@@ -276,7 +276,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
 
   const imgElem = document.createElement("img");
   imgElem.className = "bytm-generic-btn-img";
-  imgElem.src = await getResourceUrl("lyrics");
+  imgElem.src = await getResourceUrl("img-lyrics");
 
   linkElem.appendChild(imgElem);
 

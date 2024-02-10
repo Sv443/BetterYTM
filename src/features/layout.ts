@@ -101,7 +101,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl("logo");
+      const iconUrl = await getResourceUrl("img-logo");
 
       const newLogo = document.createElement("img");
       newLogo.className = "bytm-mod-logo-img";
@@ -144,7 +144,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-  cfgOptIconElem.src = await getResourceUrl("logo");
+  cfgOptIconElem.src = await getResourceUrl("img-logo");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
@@ -304,7 +304,7 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
   try {
-    const css = await (await fetchAdvanced(await getResourceUrl("anchor_improvements"))).text();
+    const css = await (await fetchAdvanced(await getResourceUrl("css-anchor_improvements"))).text();
     css && addGlobalStyle(css);
   }
   catch(err) {
@@ -478,7 +478,7 @@ export async function removeShareTrackingParam() {
 /** Applies global CSS to fix various spacings */
 export async function fixSpacing() {
   try {
-    const css = await (await fetchAdvanced(await getResourceUrl("fix_spacing"))).text();
+    const css = await (await fetchAdvanced(await getResourceUrl("css-fix_spacing"))).text();
     css && addGlobalStyle(css);
   }
   catch(err) {
@@ -503,7 +503,7 @@ export async function addScrollToActiveBtn() {
 
       const imgElem = document.createElement("img");
       imgElem.className = "bytm-generic-btn-img";
-      imgElem.src = await getResourceUrl("skip_to");
+      imgElem.src = await getResourceUrl("img-skip_to");
 
       linkElem.addEventListener("click", (e) => {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");

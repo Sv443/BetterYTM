@@ -92,8 +92,8 @@ async function addQueueButtons(queueItem: HTMLElement, containerParentSelector =
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
 
-  const lyricsIconUrl = await getResourceUrl("lyrics");
-  const deleteIconUrl = await getResourceUrl("delete");
+  const lyricsIconUrl = await getResourceUrl("img-lyrics");
+  const deleteIconUrl = await getResourceUrl("img-delete");
 
   //#SECTION lyrics btn
   let lyricsBtnElem: HTMLAnchorElement | undefined;
@@ -139,7 +139,7 @@ async function addQueueButtons(queueItem: HTMLElement, containerParentSelector =
         if(!cachedLyricsUrl) {
           songInfo.setAttribute("data-bytm-loading", "");
 
-          imgEl.src = await getResourceUrl("spinner");
+          imgEl.src = await getResourceUrl("img-spinner");
           imgEl.classList.add("bytm-spinner");
         }
 

@@ -8,12 +8,12 @@ import type { getResourceUrl, getSessionId, getVideoTime } from "./utils";
 import type { getFeatures, saveFeatures } from "./config";
 
 /** Custom CLI args passed to rollup */
-export interface RollupArgs {
-  "config-mode"?: "development" | "production";
-  "config-branch"?: "main" | "develop";
-  "config-host"?: "greasyfork" | "github" | "openuserjs";
-  "config-suffix"?: string;
-}
+export type RollupArgs = Partial<{
+  "config-mode": "development" | "production";
+  "config-branch": "main" | "develop";
+  "config-host": "greasyfork" | "github" | "openuserjs";
+  "config-suffix": string;
+}>;
 
 // I know TS enums are impure but it doesn't really matter here, plus they look cooler
 export enum LogLevel {

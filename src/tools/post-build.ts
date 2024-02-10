@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
 import dotenv from "dotenv";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
-import langMapping from "../../assets/locales.json" assert { type: "json" };
+import locales from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 import type { RollupArgs } from "../types";
 
@@ -63,7 +63,7 @@ type BuildStats = {
 };
 
 /** Directives that are only added in dev mode */
-const devDirectives = mode === "development" ? `
+const devDirectives = mode === "development" ? `\
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues\
 ` : undefined;
@@ -93,6 +93,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @updateURL         ${scriptUrl}
 // @connect           api.sv443.net
 // @connect           github.com
+// @connect           raw.githubusercontent.com
 // @grant             GM.getValue
 // @grant             GM.setValue
 // @grant             GM.deleteValue
@@ -103,7 +104,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
-${devDirectives ?? ""}
+${devDirectives ? "\n" + devDirectives : ""}\
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -247,7 +248,7 @@ async function getResourceDirectives() {
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
 
-    for(const [locale] of Object.entries(langMapping))
+    for(const [locale] of Object.entries(locales))
       resources[`trans-${locale}`] = `translations/${locale}.json`;
 
     let longestName = 0;
@@ -287,7 +288,7 @@ export async function getRequireDirectives() {
 function getLocalizedDescriptions() {
   try {
     const descriptions: string[] = [];
-    for(const [locale, { userscriptDesc }] of Object.entries(langMapping)) {
+    for(const [locale, { userscriptDesc }] of Object.entries(locales)) {
       let loc = locale.replace(/_/, "-");
       if(loc.length < 5)
         loc += " ".repeat(5 - loc.length);
@@ -308,11 +309,11 @@ function getAssetUrl(relativePath: string) {
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal: string): TReturn
+function getCliArg<TReturn extends string = string>(name: string, defaultVal: TReturn | (string & {})): TReturn
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or undefined if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: string): TReturn | undefined
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
-function getCliArg<TReturn extends string = string>(name: string, defaultVal?: string): TReturn | undefined {
+function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
   const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
   const val = arg?.split("=")?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;

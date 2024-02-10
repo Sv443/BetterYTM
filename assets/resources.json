@@ -1,21 +1,19 @@
 {
-  "close": "icons/close.png",
-  "logo": "logo/logo_48.png",
+  "img-arrow_down": "icons/arrow_down.svg",
+  "img-delete": "icons/delete.svg",
+  "img-error": "icons/error.svg",
+  "img-globe": "icons/globe.svg",
+  "img-help": "icons/help.svg",
+  "img-lyrics": "icons/lyrics.svg",
+  "img-skip_to": "icons/skip_to.svg",
+  "img-spinner": "icons/spinner.svg",
+  "img-logo": "logo/logo_48.png",
+  "img-close": "icons/close.png",
+  "img-discord": "external/discord.png",
+  "img-github": "external/github.png",
+  "img-greasyfork": "external/greasyfork.png",
+  "img-openuserjs": "external/openuserjs.png",
 
-  "arrow_down": "icons/arrow_down.svg",
-  "delete": "icons/delete.svg",
-  "error": "icons/error.svg",
-  "globe": "icons/globe.svg",
-  "help": "icons/help.svg",
-  "lyrics": "icons/lyrics.svg",
-  "skip_to": "icons/skip_to.svg",
-  "spinner": "icons/spinner.svg",
-
-  "discord": "external/discord.png",
-  "github": "external/github.png",
-  "greasyfork": "external/greasyfork.png",
-  "openuserjs": "external/openuserjs.png",
-
-  "fix_spacing": "style/fixSpacing.css",
-  "anchor_improvements": "style/anchorImprovements.css"
+  "css-fix_spacing": "style/fixSpacing.css",
+  "css-anchor_improvements": "style/anchorImprovements.css"
 }

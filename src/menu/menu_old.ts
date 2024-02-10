@@ -112,12 +112,12 @@ export async function addCfgMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("discord"), "https://dc.sv443.net/", t("open_discord"));
+  addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"));
 
   const links: Array<[name: string, ...Parameters<typeof addLink>]> = [
-    ["github", await getResourceUrl("github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
-    ["greasyfork", await getResourceUrl("greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
-    ["openuserjs", await getResourceUrl("openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
+    ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
+    ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
+    ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
   ];
 
   const hostLink = links.find(([name]) => name === host);
@@ -130,7 +130,7 @@ export async function addCfgMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
-  closeElem.src = await getResourceUrl("close");
+  closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", closeCfgMenu);
 
@@ -298,7 +298,7 @@ export async function addCfgMenu() {
         const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
         if(hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
-          const helpElemImgHtml = await resourceToHTMLString("help");
+          const helpElemImgHtml = await resourceToHTMLString("img-help");
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
@@ -490,7 +490,7 @@ export async function addCfgMenu() {
   //#SECTION scroll indicator
   const scrollIndicator = document.createElement("img");
   scrollIndicator.id = "bytm-menu-scroll-indicator";
-  scrollIndicator.src = await getResourceUrl("arrow_down");
+  scrollIndicator.src = await getResourceUrl("img-arrow_down");
   scrollIndicator.role = "button";
   scrollIndicator.title = t("scroll_to_bottom");
 
@@ -653,13 +653,13 @@ async function openHelpDialog(featureKey: FeatureKey) {
     titleCont.role = "heading";
     titleCont.ariaLevel = "1";
 
-    const helpIconHtml = await resourceToHTMLString("help");
-    if(helpIconHtml)
-      titleCont.innerHTML = helpIconHtml;
+    const helpIconSvg = await resourceToHTMLString("img-help");
+    if(helpIconSvg)
+      titleCont.innerHTML = helpIconSvg;
 
     const closeElem = document.createElement("img");
     closeElem.classList.add("bytm-menu-close", "small");
-    closeElem.src = await getResourceUrl("close");
+    closeElem.src = await getResourceUrl("img-close");
     closeElem.title = t("close_menu_tooltip");
     closeElem.addEventListener("click", (e) => closeHelpDialog(e));
 
@@ -789,7 +789,7 @@ async function addExportMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
-  closeElem.src = await getResourceUrl("close");
+  closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeExportMenu(e);
@@ -958,7 +958,7 @@ async function addImportMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
-  closeElem.src = await getResourceUrl("close");
+  closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeImportMenu(e);
@@ -1163,7 +1163,7 @@ async function addChangelogMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
-  closeElem.src = await getResourceUrl("close");
+  closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", (e) => {
     closeChangelogMenu(e);

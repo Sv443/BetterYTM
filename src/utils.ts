@@ -1,5 +1,5 @@
 import { Stringifiable, clamp, fetchAdvanced, getUnsafeWindow, randomId } from "@sv443-network/userutils";
-import { type EventsMap, createNanoEvents } from "nanoevents";
+import { type EventsMap, createNanoEvents, type Unsubscribe, type DefaultEvents } from "nanoevents";
 import { onSelectorOld } from "./onSelector";
 import { branch, repo, scriptInfo } from "./constants";
 import { type Domain, type HttpUrlString, LogLevel, type ResourceKey } from "./types";
@@ -137,7 +137,7 @@ export function getVideoTime() {
 
 /**
  * Sends events that force the video controls to become visible for about 3 seconds.  
- * This only works once, then the page needs to be reloaded!
+ * This only works once (for some reason), then the page needs to be reloaded!
  */
 function ytForceShowVideoTime() {
   const player = document.querySelector("#movie_player");
@@ -256,7 +256,7 @@ export function getSessionId(): string {
   return sesId;
 }
 
-/** Returns the SVG content behind the passed resource identifier to be assigned to an element's innerHTML property */
+/** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
 export async function resourceToHTMLString(resource: ResourceKey) {
   try {
     const resourceUrl = await getResourceUrl(resource);
@@ -298,32 +298,41 @@ export function sendRequest<T = any>(details: GM.Request<T>) {
   return new Promise<GM.Response<T>>((resolve, reject) => {
     GM.xmlHttpRequest({
       ...details,
-      onload(res) {
-        resolve(res);
-      },
-      onerror(res) {
-        reject(res);
-      },
-      ontimeout(res) {
-        reject(res);
-      },
-      onabort(res) {
-        reject(res);
-      },
+      onload: resolve,
+      onerror: reject,
+      ontimeout: reject,
+      onabort: reject,
     });
   });
 }
 
 /** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
-export abstract class NanoEmitter<TEvtMap extends EventsMap> {
-  protected readonly events;
-
-  constructor() {
-    this.events = createNanoEvents<TEvtMap>();
-  }
+export abstract class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
+  protected readonly events = createNanoEvents<TEvtMap>();
+  protected unsubscribers: Unsubscribe[] = [];
 
   /** Subscribes to an event - returns a function that unsubscribes the event listener */
   public on<TKey extends keyof TEvtMap>(event: TKey, cb: TEvtMap[TKey]) {
-    return this.events.on(event, cb);
+    // eslint-disable-next-line prefer-const
+    let unsub: Unsubscribe | undefined;
+
+    const proxyUnsub = () => {
+      if(!unsub)
+        return;
+      unsub();
+      this.unsubscribers = this.unsubscribers.filter(u => u !== unsub);
+    };
+
+    unsub = this.events.on(event, cb);
+
+    this.unsubscribers.push(unsub);
+    return proxyUnsub;
+  }
+
+  /** Unsubscribes all event listeners */
+  public unsubscribeAll() {
+    for(const unsub of this.unsubscribers)
+      unsub();
+    this.unsubscribers = [];
   }
 }

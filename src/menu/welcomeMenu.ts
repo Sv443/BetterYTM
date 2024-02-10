@@ -36,7 +36,7 @@ export async function addWelcomeMenu() {
   const titleLogoElem = document.createElement("img");
   titleLogoElem.id = "bytm-welcome-menu-title-logo";
   titleLogoElem.classList.add("bytm-no-select");
-  titleLogoElem.src = await getResourceUrl("logo");
+  titleLogoElem.src = await getResourceUrl("img-logo");
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-welcome-menu-title";
@@ -99,7 +99,7 @@ export async function addWelcomeMenu() {
   const localeImg = document.createElement("img");
   localeImg.id = "bytm-welcome-menu-locale-img";
   localeImg.classList.add("bytm-no-select");
-  localeImg.src = await getResourceUrl("globe");
+  localeImg.src = await getResourceUrl("img-globe");
 
   const localeSelectElem = document.createElement("select");
   localeSelectElem.id = "bytm-welcome-menu-locale-select";
