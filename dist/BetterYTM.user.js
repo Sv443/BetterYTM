@@ -60,7 +60,8 @@
 // @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
 // @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // @require           https://unpkg.com/react@18/umd/react.development.js
-// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js// ==/UserScript==
+// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js
+// ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
 █  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
@@ -829,7 +830,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "f7e4ce6", // asserted as generic string instead of literal
+        buildNumber: "ea71253", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1952,6 +1953,8 @@ I welcome every contribution on GitHub!
     	concurrently: "^8.1.0",
     	dotenv: "^16.4.1",
     	eslint: "^8.51.0",
+    	"eslint-plugin-react": "^7.33.2",
+    	"eslint-plugin-react-hooks": "^4.6.0",
     	express: "^4.18.2",
     	nodemon: "^3.0.1",
     	react: "^18.2.0",
