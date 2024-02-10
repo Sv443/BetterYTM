@@ -105,6 +105,9 @@ To edit an existing translation, please follow these steps:
 - **`npm run --silent invisible -- "<command>"`**  
   Runs the passed command as a detached child process without giving any console output.  
   Remove `--silent` to see npm's info and error messages.
+- **`npm run node-ts -- <path>`**  
+  Runs the TypeScript file at the given path using the regular node binary and the node-ts loader.  
+  Also enables source map support and disables experimental warnings.
 
 <br>
 
