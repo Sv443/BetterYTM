@@ -65,7 +65,7 @@ type BuildStats = {
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `\
 // @grant             GM.registerMenuCommand
-// @grant             GM.listValues\
+// @grant             GM.listValues
 ` : undefined;
 
 (async () => {
@@ -149,9 +149,9 @@ I welcome every contribution on GitHub!
     else
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
-    // replace with arrow IIFE & move "use strict"
-    userscript = userscript.replace(/["']use strict["'];?\n\s*/, "");
-    userscript = userscript.replace(/\(function \(\) \{/, "\"use strict\";\n\n(() => {");
+    // replace with arrow IIFE
+    userscript = userscript.replace(/\(function\s?\(ReactDOM,\s?React\)\s?\{/m, "((ReactDOM, React) => {");
+    userscript = userscript.replace(/\(function \(reactDom, React\) \{/m, "((reactDOM, React) => {");
 
     // insert userscript header and final newline
     const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;

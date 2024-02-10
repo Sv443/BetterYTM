@@ -66,7 +66,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       format: "iife",
       sourcemap: mode === "development",
       compact: mode === "development",
-      banner: "\n/* globals React, ReactDOM */",
+      banner: "\n/* global React, ReactDOM */",
       globals: {
         react: "React",
         "react-dom": "ReactDOM",
