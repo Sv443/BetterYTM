@@ -640,6 +640,7 @@ function checkToggleScrollIndicator() {
 }
 
 //#MARKER help dialog
+// TODO: a11y
 
 let isHelpDialogOpen = false;
 /** Key of the feature currently loaded in the help dialog */
