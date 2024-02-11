@@ -830,7 +830,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "ea71253", // asserted as generic string instead of literal
+        buildNumber: "9ab8d28", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1779,16 +1779,21 @@ I welcome every contribution on GitHub!
         inputElem.dataset.state = "inactive";
         inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
         inputElem.title = t("hotkey_input_click_to_change_tooltip");
-        const resetElem = document.createElement("a");
+        const resetElem = document.createElement("span");
         resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
         resetElem.role = "button";
+        resetElem.tabIndex = 0;
         resetElem.innerText = `(${t("reset")})`;
-        resetElem.addEventListener("click", () => {
+        const resetClicked = (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
             onChange(resetValue);
             inputElem.value = resetValue.code;
             inputElem.dataset.state = "inactive";
             infoElem.innerText = getHotkeyInfo(resetValue);
-        });
+        };
+        resetElem.addEventListener("click", resetClicked);
+        resetElem.addEventListener("keydown", (e) => e.key === "Enter" && resetClicked(e));
         if (initialValue)
             infoElem.innerText = getHotkeyInfo(initialValue);
         let lastKeyDown;
@@ -2038,7 +2043,7 @@ I welcome every contribution on GitHub!
      * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
      */
     function addCfgMenu() {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             if (isCfgMenuAdded)
                 return;
@@ -2082,12 +2087,15 @@ I welcome every contribution on GitHub!
             titleElem.appendChild(titleTextElem);
             const linksCont = document.createElement("div");
             linksCont.id = "bytm-menu-linkscont";
+            linksCont.role = "navigation";
             const addLink = (imgSrc, href, title) => {
                 const anchorElem = document.createElement("a");
                 anchorElem.className = "bytm-menu-link bytm-no-select";
                 anchorElem.rel = "noopener noreferrer";
-                anchorElem.target = "_blank";
                 anchorElem.href = href;
+                anchorElem.target = "_blank";
+                anchorElem.tabIndex = 0;
+                anchorElem.role = "button";
                 anchorElem.title = title;
                 const imgElem = document.createElement("img");
                 imgElem.className = "bytm-menu-img";
@@ -2110,9 +2118,12 @@ I welcome every contribution on GitHub!
                 addLink(...args);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
+            closeElem.role = "button";
+            closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", closeCfgMenu);
+            closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
             titleCont.appendChild(titleElem);
             titleCont.appendChild(linksCont);
             headerElem.appendChild(titleCont);
@@ -2436,14 +2447,17 @@ I welcome every contribution on GitHub!
             const versionElem = document.createElement("a");
             versionElem.classList.add("bytm-link");
             versionElem.role = "button";
+            versionElem.tabIndex = 0;
             versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
             versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
-            versionElem.addEventListener("click", (e) => {
+            const versionElemClicked = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 closeCfgMenu();
                 openChangelogMenu("cfgMenu");
-            });
+            };
+            versionElem.addEventListener("click", versionElemClicked);
+            versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
             menuContainer.appendChild(footerCont);
             versionElemCont.appendChild(versionElem);
             titleElem.appendChild(versionElemCont);
@@ -2457,17 +2471,20 @@ I welcome every contribution on GitHub!
             // ensure stuff is reset if menu was opened before being added
             isCfgMenuOpen = false;
             document.body.classList.remove("bytm-disable-scroll");
+            (_d = document.querySelector("ytmusic-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
             backgroundElem.style.visibility = "hidden";
             backgroundElem.style.display = "none";
         });
     }
     /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeCfgMenu(evt) {
+        var _a;
         if (!isCfgMenuOpen)
             return;
         isCfgMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
         document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
         siteEvents.emit("cfgMenuClosed");
         if (!menuBg)
@@ -2477,6 +2494,7 @@ I welcome every contribution on GitHub!
     }
     /** Opens the config menu if it is closed */
     function openCfgMenu() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if (!isCfgMenuAdded)
                 yield addCfgMenu();
@@ -2484,6 +2502,7 @@ I welcome every contribution on GitHub!
                 return;
             isCfgMenuOpen = true;
             document.body.classList.add("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
             const menuBg = document.querySelector("#bytm-cfg-menu-bg");
             if (!menuBg)
                 return;
@@ -2536,9 +2555,12 @@ I welcome every contribution on GitHub!
                     titleCont.innerHTML = helpIconSvg;
                 const closeElem = document.createElement("img");
                 closeElem.classList.add("bytm-menu-close", "small");
+                closeElem.role = "button";
+                closeElem.tabIndex = 0;
                 closeElem.src = yield getResourceUrl("img-close");
                 closeElem.title = t("close_menu_tooltip");
                 closeElem.addEventListener("click", (e) => closeHelpDialog(e));
+                closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
                 headerElem.appendChild(titleCont);
                 headerElem.appendChild(closeElem);
                 menuBgElem = document.createElement("div");
@@ -2643,12 +2665,16 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("export_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
+            closeElem.role = "button";
+            closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
-            closeElem.addEventListener("click", (e) => {
+            const closeExportMenuClicked = (e) => {
                 closeExportMenu(e);
                 openCfgMenu();
-            });
+            };
+            closeElem.addEventListener("click", (e) => closeExportMenuClicked(e));
+            closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeExportMenuClicked(e));
             titleCont.appendChild(titleElem);
             headerElem.appendChild(titleCont);
             headerElem.appendChild(closeElem);
@@ -2710,11 +2736,13 @@ I welcome every contribution on GitHub!
     }
     /** Closes the export menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeExportMenu(evt) {
+        var _a;
         if (!isExportMenuOpen)
             return;
         isExportMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
         document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-export-menu-bg");
         if (!menuBg)
             return warn("Couldn't find export menu background element");
@@ -2731,10 +2759,12 @@ I welcome every contribution on GitHub!
     }
     /** Opens the export menu if it is closed */
     function openExportMenu() {
+        var _a;
         if (isExportMenuOpen)
             return;
         isExportMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-export-menu-bg");
         if (!menuBg)
             return warn("Couldn't find export menu background element");
@@ -2781,12 +2811,16 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("import_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
+            closeElem.role = "button";
+            closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
-            closeElem.addEventListener("click", (e) => {
+            const closeImportMenuClicked = (e) => {
                 closeImportMenu(e);
                 openCfgMenu();
-            });
+            };
+            closeElem.addEventListener("click", closeImportMenuClicked);
+            closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeImportMenuClicked(e));
             titleCont.appendChild(titleElem);
             headerElem.appendChild(titleCont);
             headerElem.appendChild(closeElem);
@@ -2883,11 +2917,13 @@ I welcome every contribution on GitHub!
     }
     /** Closes the import menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeImportMenu(evt) {
+        var _a;
         if (!isImportMenuOpen)
             return;
         isImportMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
         document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-import-menu-bg");
         const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
         if (textAreaElem)
@@ -2899,10 +2935,12 @@ I welcome every contribution on GitHub!
     }
     /** Opens the import menu if it is closed */
     function openImportMenu() {
+        var _a;
         if (isImportMenuOpen)
             return;
         isImportMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-import-menu-bg");
         if (!menuBg)
             return warn("Couldn't find import menu background element");
@@ -2951,13 +2989,17 @@ I welcome every contribution on GitHub!
             titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
+            closeElem.role = "button";
+            closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
             closeElem.title = t("close_menu_tooltip");
-            closeElem.addEventListener("click", (e) => {
+            const closeChangelogMenuClicked = (e) => {
                 closeChangelogMenu(e);
                 if (menuBgElem.dataset.returnTo === "cfgMenu")
                     openCfgMenu();
-            });
+            };
+            closeElem.addEventListener("click", closeChangelogMenuClicked);
+            closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeChangelogMenuClicked(e));
             titleCont.appendChild(titleElem);
             headerElem.appendChild(titleCont);
             headerElem.appendChild(closeElem);
@@ -2984,11 +3026,13 @@ I welcome every contribution on GitHub!
     }
     /** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeChangelogMenu(evt) {
+        var _a;
         if (!isChangelogMenuOpen)
             return;
         isChangelogMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
         document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-changelog-menu-bg");
         if (!menuBg)
             return warn("Couldn't find changelog menu background element");
@@ -3000,10 +3044,12 @@ I welcome every contribution on GitHub!
      * @param returnTo What menu to open after the changelog menu is closed
      */
     function openChangelogMenu(returnTo = "cfgMenu") {
+        var _a;
         if (isChangelogMenuOpen)
             return;
         isChangelogMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-changelog-menu-bg");
         if (!menuBg)
             return warn("Couldn't find changelog menu background element");
@@ -3028,27 +3074,18 @@ I welcome every contribution on GitHub!
             watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
             watermark.innerText = scriptInfo.name;
             watermark.title = t("open_menu_tooltip", scriptInfo.name);
-            watermark.tabIndex = 1000;
+            watermark.tabIndex = 0;
             improveLogo();
-            watermark.addEventListener("click", (e) => {
+            const watermarkOpenMenu = (e) => {
                 e.stopPropagation();
                 menuOpenAmt++;
                 if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
                     openCfgMenu();
                 if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
                     exchangeLogo();
-            });
-            // when using the tab key to navigate
-            watermark.addEventListener("keydown", (e) => {
-                if (e.key === "Enter") {
-                    e.stopPropagation();
-                    menuOpenAmt++;
-                    if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
-                        openCfgMenu();
-                    if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
-                        exchangeLogo();
-                }
-            });
+            };
+            watermark.addEventListener("click", watermarkOpenMenu);
+            watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
             onSelectorOld("ytmusic-nav-bar #left-content", {
                 listener: (logoElem) => insertAfter(logoElem, watermark),
             });
@@ -4310,11 +4347,13 @@ I welcome every contribution on GitHub!
     }
     /** Closes the welcome menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeWelcomeMenu(evt) {
+        var _a;
         if (!isWelcomeMenuOpen)
             return;
         isWelcomeMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
         document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-welcome-menu-bg");
         siteEvents.emit("welcomeMenuClosed");
         if (!menuBg)
@@ -4325,10 +4364,12 @@ I welcome every contribution on GitHub!
     //#MARKER open, show & close
     /** Opens the welcome menu if it is closed */
     function openWelcomeMenu() {
+        var _a;
         if (isWelcomeMenuOpen)
             return;
         isWelcomeMenuOpen = true;
         document.body.classList.add("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
         const menuBg = document.querySelector("#bytm-welcome-menu-bg");
         if (!menuBg)
             return warn("Couldn't find welcome menu background element");
@@ -4354,10 +4395,11 @@ I welcome every contribution on GitHub!
         console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
         console.log([
             "Powered by:",
-            "─ lots of ambition",
-            `─ my song metadata API: ${geniUrlBase}`,
-            "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
-            "─ this tiny event listener library: https://github.com/ai/nanoevents",
+            "─ Lots of ambition",
+            `─ My song metadata API: ${geniUrlBase}`,
+            "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
+            "─ This tiny event listener library: https://github.com/ai/nanoevents",
+            "─ The React library: https://github.com/facebook/react",
         ].join("\n"));
         console.log();
     }
