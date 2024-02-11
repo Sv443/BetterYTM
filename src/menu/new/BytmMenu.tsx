@@ -30,7 +30,8 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
   public readonly config;
   public readonly id;
 
-  private isOpen = false;
+  private menuOpen = false;
+  private menuRendered = false;
 
   constructor(config: BytmMenuConfig) {
     super();
@@ -41,6 +42,8 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
   /** Call after DOMContentLoaded to pre-render the menu (or call just before calling open()) */
   public async render() {
+    this.menuRendered = true;
+
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-menu-bg`;
     bgElem.classList.add("bytm-menu-bg");
@@ -49,11 +52,11 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     bgElem.style.display = "none";
 
     bgElem.addEventListener("click", (e) => {
-      if(this.isOpen && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
+      if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
         this.close(e);
     });
     document.body.addEventListener("keydown", (e) => {
-      if(this.isOpen && e.key === "Escape")
+      if(this.isOpen() && e.key === "Escape")
         this.close(e);
     });
 
@@ -67,6 +70,8 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
   /** Clears all menu contents in preparation for a new rendering call */
   public clear() {
+    this.menuRendered = false;
+
     const clearSelectors = [
       `#bytm-${this.id}-menu-bg`,
     ];
@@ -83,14 +88,26 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     this.events.emit("clear");
   }
 
-  /** Opens the menu - prevents default action and immediate propagation of the passed event */
-  public open(e?: MouseEvent | KeyboardEvent) {
+  /** Clears and then re-renders the menu */
+  public async rerender() {
+    this.clear();
+    await this.render();
+  }
+
+  /**
+   * Opens the menu - renders it if it hasn't been rendered yet  
+   * Prevents default action and immediate propagation of the passed event
+   */
+  public async open(e?: MouseEvent | KeyboardEvent) {
     e?.preventDefault();
     e?.stopImmediatePropagation();
 
-    if(this.isOpen)
+    if(this.isOpen())
       return;
-    this.isOpen = true;
+    this.menuOpen = true;
+
+    if(!this.isRendered())
+      await this.render();
 
     document.body.classList.add("bytm-disable-scroll");
     const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
@@ -109,9 +126,9 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     e?.preventDefault();
     e?.stopImmediatePropagation();
 
-    if(!this.isOpen)
+    if(!this.isOpen())
       return;
-    this.isOpen = false;
+    this.menuOpen = false;
 
     document.body.classList.remove("bytm-disable-scroll");
     const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
@@ -125,6 +142,16 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     this.events.emit("close");
   }
 
+  /** Returns true if the menu is open */
+  public isOpen() {
+    return this.menuOpen;
+  }
+
+  /** Returns true if the menu has been rendered */
+  public isRendered() {
+    return this.menuRendered;
+  }
+
   private async getMenuContent() {
     const closeSrc = await getResourceUrl("img-close");
 
@@ -134,7 +161,6 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     // TODO:
     return (
       <div id={`bytm-${this.id}-menu`} className="bytm-menu" title="">
-        <div id="kahlknkpnaf"></div>
         <div className="bytm-menu-header">
           {header ? (
             <div className="bytm-menu-title-wrapper" role="heading" aria-level={1}>
