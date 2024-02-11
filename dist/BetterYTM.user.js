@@ -833,7 +833,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "555365b", // asserted as generic string instead of literal
+        buildNumber: "e98ac10", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
@@ -2053,7 +2053,7 @@ I welcome every contribution on GitHub!
     let helpDialogCurFeature;
     /** Opens the feature help dialog for the given feature */
     function openHelpDialog(featureKey) {
-        var _a, _b;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             if (isHelpDialogOpen)
                 return;
@@ -2127,9 +2127,11 @@ I welcome every contribution on GitHub!
             helpDialogCurFeature = featureKey;
             menuBg.style.visibility = "visible";
             menuBg.style.display = "block";
+            (_c = document.querySelector("#bytm-cfg-menu")) === null || _c === void 0 ? void 0 : _c.setAttribute("inert", "true");
         });
     }
     function closeHelpDialog(evt) {
+        var _a;
         if (!isHelpDialogOpen)
             return;
         isHelpDialogOpen = false;
@@ -2139,6 +2141,7 @@ I welcome every contribution on GitHub!
             return warn("Couldn't find feature help dialog background element");
         menuBg.style.visibility = "hidden";
         menuBg.style.display = "none";
+        (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
     }
     //#MARKER export menu
     let isExportMenuOpen = false;

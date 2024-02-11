@@ -740,6 +740,8 @@ async function openHelpDialog(featureKey: FeatureKey) {
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
+
+  document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true");
 }
 
 function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
@@ -755,6 +757,8 @@ function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
+
+  document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert");
 }
 
 //#MARKER export menu
