@@ -3,8 +3,8 @@ import * as React from "react";
 import { clearInner, getResourceUrl, NanoEmitter, warn } from "../../utils";
 import { t } from "../../translations";
 
-export interface BytmMenuConfig {
-  /** ID that gets added to all child element IDs and class names */
+export interface BytmMenuOptions {
+  /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
   /** Called to render the body of the menu */
   renderBody: () => React.ReactNode;
@@ -14,7 +14,11 @@ export interface BytmMenuConfig {
   renderFooter?: () => React.ReactNode;
 }
 
-interface BytmMenuEventsMap {
+/** ID of the last opened (top-most) menu */
+let lastMenuId: string | null = null;
+
+/** Creates and manages a modal menu element */
+export class BytmMenu extends NanoEmitter<{
   /** Emitted just after the menu is closed */
   close: () => void;
   /** Emitted just after the menu is opened */
@@ -23,25 +27,25 @@ interface BytmMenuEventsMap {
   render: () => void;
   /** Emitted just after the menu contents are cleared */
   clear: () => void;
-}
-
-/** Creates and manages a modal menu element */
-export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
-  public readonly config;
+}> {
+  public readonly options;
   public readonly id;
 
   private menuOpen = false;
   private menuRendered = false;
+  private listenersAttached = false;
 
-  constructor(config: BytmMenuConfig) {
+  constructor(options: BytmMenuOptions) {
     super();
 
-    this.config = config;
-    this.id = config.id;
+    this.options = options;
+    this.id = options.id;
   }
 
   /** Call after DOMContentLoaded to pre-render the menu (or call just before calling open()) */
   public async render() {
+    if(this.menuRendered)
+      return;
     this.menuRendered = true;
 
     const bgElem = document.createElement("div");
@@ -66,6 +70,8 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
     const root = createRoot(bgElem);
     root.render(await this.getMenuContent());
+
+    this.attachListeners(bgElem);
 
     this.events.emit("render");
   }
@@ -122,6 +128,8 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     menuBg.style.display = "block";
     menuBg.inert = false;
 
+    lastMenuId = this.id;
+
     this.events.emit("open");
   }
 
@@ -145,6 +153,9 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     menuBg.style.display = "none";
     menuBg.inert = true;
 
+    if(BytmMenu.getLastMenuId() === this.id)
+      lastMenuId = null;
+
     this.events.emit("close");
   }
 
@@ -158,11 +169,33 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     return this.menuRendered;
   }
 
+  /** Returns the ID of the top-most menu (the menu that has been opened last) */
+  public static getLastMenuId() {
+    return lastMenuId;
+  }
+
+  /** Called once to attach all generic event listeners */
+  private attachListeners(bgElem: HTMLElement) {
+    if(this.listenersAttached)
+      return;
+    this.listenersAttached = true;
+
+    bgElem.addEventListener("click", (e) => {
+      if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
+        this.close(e);
+    });
+
+    document.body.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && this.isOpen() && BytmMenu.getLastMenuId() === this.id)
+        this.close(e);
+    });
+  }
+
   private async getMenuContent() {
     const closeSrc = await getResourceUrl("img-close");
 
-    const header = this.config.renderHeader?.();
-    const footer = this.config.renderFooter?.();
+    const header = this.options.renderHeader?.();
+    const footer = this.options.renderFooter?.();
 
     // TODO:
     return (
@@ -176,7 +209,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
           <img className="bytm-menu-close" src={closeSrc} role="button" tabIndex={0} onClick={() => this.close()} />
         </div>
         <div>
-          {this.config.renderBody()}
+          {this.options.renderBody()}
         </div>
         {footer ? (
           <div>

@@ -308,16 +308,18 @@ export async function addCfgMenu() {
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-            helpElem.title = t("feature_help_button_tooltip");
+            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip");
             helpElem.role = "button";
+            helpElem.tabIndex = 0;
             helpElem.innerHTML = helpElemImgHtml;
-
-            helpElem.addEventListener("click", (e) => {
+            const helpElemClicked = (e: MouseEvent | KeyboardEvent) => {
               e.preventDefault();
               e.stopPropagation();
 
               openHelpDialog(featKey as FeatureKey);
-            });
+            };
+            helpElem.addEventListener("click", helpElemClicked);
+            helpElem.addEventListener("keydown", (e) => e.key === "Enter" && helpElemClicked(e));
           }
           else {
             error(`Couldn't create help button SVG element for feature '${featKey}'`);
@@ -640,7 +642,6 @@ function checkToggleScrollIndicator() {
 }
 
 //#MARKER help dialog
-// TODO: a11y
 
 let isHelpDialogOpen = false;
 /** Key of the feature currently loaded in the help dialog */
