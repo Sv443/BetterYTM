@@ -727,558 +727,6 @@ I welcome every contribution on GitHub!
         tr: tr
     });
 
-    const selectorMap = new Map();
-    /**
-     * Calls the {@linkcode listener} as soon as the {@linkcode selector} exists in the DOM.
-     * Listeners are deleted when they are called once, unless `options.continuous` is set.
-     * Multiple listeners with the same selector may be registered.
-     * @param selector The selector to listen for
-     * @param options Used for switching to `querySelectorAll()` and for calling the listener continuously
-     * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
-     * @deprecated To be replaced with UserUtils v3's SelectorObserver class
-     */
-    function onSelectorOld(selector, options) {
-        let selectorMapItems = [];
-        if (selectorMap.has(selector))
-            selectorMapItems = selectorMap.get(selector);
-        // I don't feel like dealing with intersecting types, this should work just fine at runtime
-        // @ts-ignore
-        selectorMapItems.push(options);
-        selectorMap.set(selector, selectorMapItems);
-        checkSelectorExists(selector, selectorMapItems);
-    }
-    function checkSelectorExists(selector, options) {
-        const deleteIndices = [];
-        options.forEach((option, i) => {
-            try {
-                const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
-                if ((elements !== null && elements instanceof NodeList && elements.length > 0) || elements !== null) {
-                    // I don't feel like dealing with intersecting types, this should work just fine at runtime
-                    // @ts-ignore
-                    option.listener(elements);
-                    if (!option.continuous)
-                        deleteIndices.push(i);
-                }
-            }
-            catch (err) {
-                console.error(`Couldn't call listener for selector '${selector}'`, err);
-            }
-        });
-        if (deleteIndices.length > 0) {
-            const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
-            if (newOptsArray.length === 0)
-                selectorMap.delete(selector);
-            else {
-                // once again laziness strikes
-                // @ts-ignore
-                selectorMap.set(selector, newOptsArray);
-            }
-        }
-    }
-    /**
-     * Initializes a MutationObserver that checks for all registered selectors whenever an element is added to or removed from the `<body>`
-     * @param options For fine-tuning what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
-     */
-    function initOnSelector(options = {}) {
-        const observer = new MutationObserver(() => {
-            for (const [selector, options] of selectorMap.entries())
-                checkSelectorExists(selector, options);
-        });
-        observer.observe(document.body, Object.assign({ subtree: true, childList: true }, options));
-    }
-
-    let createNanoEvents = () => ({
-      emit(event, ...args) {
-        for (let i = 0, callbacks = this.events[event] || [], length = callbacks.length; i < length; i++) {
-          callbacks[i](...args);
-        }
-      },
-      events: {},
-      on(event, cb) {
-        (this.events[event] ||= []).push(cb);
-        return () => {
-          this.events[event] = this.events[event]?.filter(i => cb !== i);
-        };
-      }
-    });
-
-    // I know TS enums are impure but it doesn't really matter here, plus they look cooler
-    var LogLevel;
-    (function (LogLevel) {
-        LogLevel[LogLevel["Debug"] = 0] = "Debug";
-        LogLevel[LogLevel["Info"] = 1] = "Info";
-    })(LogLevel || (LogLevel = {}));
-
-    const modeRaw = "production";
-    const branchRaw = "develop";
-    const hostRaw = "github";
-    /** The mode in which the script was built (production or development) */
-    const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
-    /** The branch to use in various URLs that point to the GitHub repo */
-    const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw);
-    /** Path to the GitHub repo */
-    const repo = "Sv443/BetterYTM";
-    /** Which host the userscript was installed from */
-    const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
-    /**
-     * How much info should be logged to the devtools console
-     * 0 = Debug (show everything) or 1 = Info (show only important stuff)
-     */
-    const defaultLogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
-    /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
-    const scriptInfo = {
-        name: GM.info.script.name,
-        version: GM.info.script.version,
-        namespace: GM.info.script.namespace,
-        buildNumber: "26ce525", // asserted as generic string instead of literal
-    };
-
-    var de_DE = {
-    	name: "Deutsch (Deutschland)",
-    	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var en_US = {
-    	name: "English (United States)",
-    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var en_UK = {
-    	name: "English (United Kingdom)",
-    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var es_ES = {
-    	name: "Español (España)",
-    	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var fr_FR = {
-    	name: "Français (France)",
-    	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var hi_IN = {
-    	name: "हिंदी (भारत)",
-    	userscriptDesc: "YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var ja_JA = {
-    	name: "日本語 (日本)",
-    	userscriptDesc: "YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var pt_BR = {
-    	name: "Português (Brasil)",
-    	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var zh_CN = {
-    	name: "中文（简化，中国）",
-    	userscriptDesc: "可配置的布局和YouTube Music的用户体验改进",
-    	authors: [
-    		"Sv443"
-    	]
-    };
-    var locales = {
-    	de_DE: de_DE,
-    	en_US: en_US,
-    	en_UK: en_UK,
-    	es_ES: es_ES,
-    	fr_FR: fr_FR,
-    	hi_IN: hi_IN,
-    	ja_JA: ja_JA,
-    	pt_BR: pt_BR,
-    	zh_CN: zh_CN
-    };
-
-    /** Options that are applied to every SelectorObserver instance */
-    const defaultObserverOptions = {
-        defaultDebounce: 100,
-    };
-    const observers$1 = {};
-    /** Call after DOM load to initialize all SelectorObserver instances */
-    function initObservers() {
-        try {
-            // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-            observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-            observers$1.body.enable();
-            // #SECTION playerBar = media controls bar at the bottom of the page
-            const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-            observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-            observers$1.body.addListener(playerBarSelector, {
-                listener: () => {
-                    console.log("#DBG-UU enabling playerBar observer");
-                    observers$1.playerBar.enable();
-                },
-            });
-            // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
-            const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-            observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-            observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
-                listener: () => {
-                    console.log("#DBG-UU enabling playerBarTitle observer");
-                    observers$1.playerBarInfo.enable();
-                },
-            });
-            // #DEBUG example: listen for title change:
-            observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
-                continuous: true,
-                listener: (titleElem) => {
-                    console.log("#DBG-UU >>>>> title changed", titleElem.title);
-                },
-            });
-            emitInterface("bytm:observersReady");
-        }
-        catch (err) {
-            error("Failed to initialize observers:", err);
-        }
-    }
-    /** Interface function for adding listeners to the already present observers */
-    function addSelectorListener(observerName, selector, options) {
-        observers$1[observerName].addListener(selector, options);
-    }
-
-    /** Base URL of geniURL */
-    const geniUrlBase = "https://api.sv443.net/geniurl";
-    /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-    const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
-    /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
-    const geniUrlRatelimitTimeframe = 30;
-    //#MARKER cache
-    /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
-    const lyricsUrlCache = new Map();
-    /** How many cache entries can exist at a time - this is used to cap memory usage */
-    const maxLyricsCacheSize = 100;
-    /**
-     * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
-     * **The passed parameters need to be sanitized first!**
-     */
-    function getLyricsCacheEntry(artists, song) {
-        return lyricsUrlCache.get(`${artists} - ${song}`);
-    }
-    /** Adds the provided entry into the lyrics URL cache */
-    function addLyricsCacheEntry(artists, song, lyricsUrl) {
-        lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
-        // delete oldest entry if cache gets too big
-        if (lyricsUrlCache.size > maxLyricsCacheSize)
-            lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
-    }
-    //#MARKER media control bar
-    let currentSongTitle = "";
-    /** Adds a lyrics button to the media controls bar */
-    function addMediaCtrlLyricsBtn() {
-        return __awaiter(this, void 0, void 0, function* () {
-            onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
-        });
-    }
-    /** Actually adds the lyrics button after the like button renderer has been verified to exist */
-    function addActualMediaCtrlLyricsBtn(likeContainer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-            if (!songTitleElem)
-                return warn("Couldn't find song title element");
-            // run parallel without awaiting so the MutationObserver below can observe the title element in time
-            (() => __awaiter(this, void 0, void 0, function* () {
-                const gUrl = yield getCurrentLyricsUrl();
-                const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
-                linkElem.id = "betterytm-lyrics-button";
-                log("Inserted lyrics button into media controls bar");
-                insertAfter(likeContainer, linkElem);
-            }))();
-            currentSongTitle = songTitleElem.title;
-            const spinnerIconUrl = yield getResourceUrl("img-spinner");
-            const lyricsIconUrl = yield getResourceUrl("img-lyrics");
-            const errorIconUrl = yield getResourceUrl("img-error");
-            const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
-                var _b, e_1, _c, _d;
-                try {
-                    for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
-                        _d = mutations_1_1.value;
-                        _a = false;
-                        const mut = _d;
-                        const newTitle = mut.target.title;
-                        if (newTitle !== currentSongTitle && newTitle.length > 0) {
-                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                            if (!lyricsBtn)
-                                continue;
-                            info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
-                            lyricsBtn.style.cursor = "wait";
-                            lyricsBtn.style.pointerEvents = "none";
-                            const imgElem = lyricsBtn.querySelector("img");
-                            imgElem.src = spinnerIconUrl;
-                            imgElem.classList.add("bytm-spinner");
-                            currentSongTitle = newTitle;
-                            const url = yield getCurrentLyricsUrl(); // can take a second or two
-                            imgElem.src = lyricsIconUrl;
-                            imgElem.classList.remove("bytm-spinner");
-                            if (!url) {
-                                let artist, song;
-                                if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                                    artist = navigator.mediaSession.metadata.artist;
-                                    song = navigator.mediaSession.metadata.title;
-                                }
-                                const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                                imgElem.src = errorIconUrl;
-                                imgElem.title = t("lyrics_not_found_click_open_search");
-                                lyricsBtn.style.cursor = "pointer";
-                                lyricsBtn.style.pointerEvents = "all";
-                                lyricsBtn.style.display = "inline-flex";
-                                lyricsBtn.style.visibility = "visible";
-                                lyricsBtn.href = `https://genius.com/search${query}`;
-                                continue;
-                            }
-                            lyricsBtn.href = url;
-                            lyricsBtn.title = t("open_current_lyrics");
-                            lyricsBtn.style.cursor = "pointer";
-                            lyricsBtn.style.visibility = "visible";
-                            lyricsBtn.style.display = "inline-flex";
-                            lyricsBtn.style.pointerEvents = "initial";
-                        }
-                    }
-                }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                finally {
-                    try {
-                        if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
-                    }
-                    finally { if (e_1) throw e_1.error; }
-                }
-            }); };
-            // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
-            const obs = new MutationObserver(onMutation);
-            obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
-        });
-    }
-    //#MARKER utils
-    /** Removes everything in parentheses from the passed song name */
-    function sanitizeSong(songName) {
-        const parensRegex = /\(.+\)/gmi;
-        const squareParensRegex = /\[.+\]/gmi;
-        // trim right after the song name:
-        const sanitized = songName
-            .replace(parensRegex, "")
-            .replace(squareParensRegex, "");
-        return sanitized.trim();
-    }
-    /** Removes the secondary artist (if it exists) from the passed artists string */
-    function sanitizeArtists(artists) {
-        artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
-        if (artists.match(/&/))
-            artists = artists.split(/\s*&\s*/gm)[0];
-        if (artists.match(/,/))
-            artists = artists.split(/,\s*/gm)[0];
-        return artists.trim();
-    }
-    /** Returns the lyrics URL from genius for the currently selected song */
-    function getCurrentLyricsUrl() {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-                const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
-                const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-                const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
-                if (!songTitleElem || !songMetaElem)
-                    return undefined;
-                const songNameRaw = songTitleElem.title;
-                let songName = songNameRaw;
-                let artistName = songMetaElem.innerText;
-                if (isVideo) {
-                    // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                    if (songName.includes("-")) {
-                        const split = splitVideoTitle(songName);
-                        songName = split.song;
-                        artistName = split.artist;
-                    }
-                }
-                const url = yield fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
-                if (url) {
-                    emitInterface("bytm:lyricsLoaded", {
-                        type: "current",
-                        artists: artistName,
-                        title: songName,
-                        url,
-                    });
-                }
-                return url;
-            }
-            catch (err) {
-                error("Couldn't resolve lyrics URL:", err);
-                return undefined;
-            }
-        });
-    }
-    /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-    function fetchLyricsUrl(artist, song) {
-        var _a, _b, _c;
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const cacheEntry = getLyricsCacheEntry(artist, song);
-                if (cacheEntry) {
-                    info(`Found lyrics URL in cache: ${cacheEntry}`);
-                    return cacheEntry;
-                }
-                const startTs = Date.now();
-                const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
-                    disableFuzzy: null,
-                    utm_source: "BetterYTM",
-                    utm_content: `v${scriptInfo.version}`,
-                    artist,
-                    song,
-                });
-                log(`Requesting URL from geniURL at '${fetchUrl}'`);
-                const fetchRes = yield fetchAdvanced(fetchUrl);
-                if (fetchRes.status === 429) {
-                    const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-                    alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
-                    return undefined;
-                }
-                else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                    error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
-                    return undefined;
-                }
-                const result = yield fetchRes.json();
-                if (typeof result === "object" && result.error) {
-                    error("Couldn't fetch lyrics URL:", result.message);
-                    return undefined;
-                }
-                const url = result.url;
-                info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
-                addLyricsCacheEntry(artist, song, url);
-                return url;
-            }
-            catch (err) {
-                error("Couldn't get lyrics URL due to error:", err);
-                return undefined;
-            }
-        });
-    }
-    /** Creates the base lyrics button element */
-    function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const linkElem = document.createElement("a");
-            linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-            linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-            if (geniusUrl)
-                linkElem.href = geniusUrl;
-            linkElem.role = "button";
-            linkElem.target = "_blank";
-            linkElem.rel = "noopener noreferrer";
-            linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-            linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-            const imgElem = document.createElement("img");
-            imgElem.className = "bytm-generic-btn-img";
-            imgElem.src = yield getResourceUrl("img-lyrics");
-            linkElem.appendChild(imgElem);
-            return linkElem;
-        });
-    }
-    /** Splits a video title that contains a hyphen into an artist and song */
-    function splitVideoTitle(title) {
-        const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
-        return { artist, song: rest.join("-") };
-    }
-
-    const { getUnsafeWindow } = UserUtils;
-    const globalFuncs = {
-        addSelectorListener,
-        getResourceUrl,
-        getSessionId,
-        getVideoTime,
-        setLocale,
-        getLocale,
-        hasKey,
-        hasKeyFor,
-        t,
-        tp,
-        getFeatures,
-        saveFeatures,
-        fetchLyricsUrl,
-        getLyricsCacheEntry,
-        sanitizeArtists,
-        sanitizeSong,
-    };
-    /** Initializes the BYTM interface */
-    function initInterface() {
-        const props = Object.assign(Object.assign(Object.assign({ mode,
-            branch }, scriptInfo), globalFuncs), { UserUtils });
-        for (const [key, value] of Object.entries(props))
-            setGlobalProp(key, value);
-        log("Initialized BYTM interface");
-    }
-    /** Sets a global property on the window.BYTM object */
-    function setGlobalProp(key, value) {
-        // use unsafeWindow so the properties are available outside of the userscript's scope
-        const win = getUnsafeWindow();
-        if (!win.BYTM)
-            win.BYTM = {};
-        win.BYTM[key] = value;
-    }
-    /** Emits an event on the BYTM interface */
-    function emitInterface(type, ...data) {
-        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
-    }
-
-    //#SECTION logging
-    let curLogLevel = LogLevel.Info;
-    /** Common prefix to be able to tell logged messages apart and filter them in devtools */
-    const consPrefix = `[${scriptInfo.name}]`;
-`[${scriptInfo.name}/#DEBUG]`;
-    /** Sets the current log level. 0 = Debug, 1 = Info */
-    function setLogLevel(level) {
-        if (curLogLevel !== level)
-            console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
-        curLogLevel = level;
-        setGlobalProp("logLevel", level);
-    }
-    /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
-    function getLogLevel(args) {
-        const minLogLvl = 0, maxLogLvl = 1;
-        if (typeof args.at(-1) === "number")
-            return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-        return LogLevel.Debug;
-    }
-    /**
-     * Logs all passed values to the console, as long as the log level is sufficient.
-     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
-     */
-    function log(...args) {
-        if (curLogLevel <= getLogLevel(args))
-            console.log(consPrefix, ...args);
-    }
-    /**
-     * Logs all passed values to the console as info, as long as the log level is sufficient.
-     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
-     */
-    function info(...args) {
-        if (curLogLevel <= getLogLevel(args))
-            console.info(consPrefix, ...args);
-    }
-    /** Logs all passed values to the console as a warning, no matter the log level. */
-    function warn(...args) {
-        console.warn(consPrefix, ...args);
-    }
-    /** Logs all passed values to the console as an error, no matter the log level. */
-    function error(...args) {
-        console.error(consPrefix, ...args);
-    }
     //#SECTION video time
     const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
     /**
@@ -1356,108 +804,37 @@ I welcome every contribution on GitHub!
             screenX, movementX: 5, movementY: 0 })));
         return true;
     }
-    //#SECTION misc
+
+    // I know TS enums are impure but it doesn't really matter here, plus they look cooler
+    var LogLevel;
+    (function (LogLevel) {
+        LogLevel[LogLevel["Debug"] = 0] = "Debug";
+        LogLevel[LogLevel["Info"] = 1] = "Info";
+    })(LogLevel || (LogLevel = {}));
+
+    const modeRaw = "production";
+    const branchRaw = "develop";
+    const hostRaw = "github";
+    /** The mode in which the script was built (production or development) */
+    const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
+    /** The branch to use in various URLs that point to the GitHub repo */
+    const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw);
+    /** Path to the GitHub repo */
+    const repo = "Sv443/BetterYTM";
+    /** Which host the userscript was installed from */
+    const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
     /**
-     * Returns the current domain as a constant string representation
-     * @throws Throws if script runs on an unexpected website
+     * How much info should be logged to the devtools console
+     * 0 = Debug (show everything) or 1 = Info (show only important stuff)
      */
-    function getDomain() {
-        if (location.hostname.match(/^music\.youtube/))
-            return "ytm";
-        else if (location.hostname.match(/youtube\./))
-            return "yt";
-        else
-            throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-    }
-    /**
-     * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
-     * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
-     */
-    function getResourceUrl(name) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            let url = yield GM.getResourceUrl(name);
-            if (!url || url.length === 0) {
-                const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
-                if (typeof resource === "string") {
-                    const resourceUrl = new URL(resource);
-                    const resourcePath = resourceUrl.pathname;
-                    if (resourcePath)
-                        return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
-                }
-                warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
-                // @ts-ignore
-                url = yield GM.getResourceUrl(name, false);
-            }
-            return url;
-        });
-    }
-    /**
-     * Returns the preferred locale of the user, provided it is supported by the userscript.
-     * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
-     */
-    function getPreferredLocale() {
-        var _a;
-        const navLang = navigator.language.replace(/-/g, "_");
-        const navLangs = navigator.languages
-            .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
-            .map(lang => lang.replace(/-/g, "_"));
-        if (Object.entries(locales).find(([key]) => key === navLang))
-            return navLang;
-        for (const loc of navLangs) {
-            if (Object.entries(locales).find(([key]) => key === loc))
-                return loc;
-        }
-        // if navigator.languages has entries that aren't locale codes in the format xx_XX
-        if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-            for (const lang of navLangs) {
-                const foundLoc = (_a = Object.entries(locales).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
-                if (foundLoc)
-                    return foundLoc;
-            }
-        }
-        return "en_US";
-    }
-    /** Returns a pseudo-random ID unique to each session */
-    function getSessionId() {
-        let sesId = window.sessionStorage.getItem("_bytm-session-id");
-        if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
-        return sesId;
-    }
-    /** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
-    function resourceToHTMLString(resource) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const resourceUrl = yield getResourceUrl(resource);
-                if (!resourceUrl)
-                    throw new Error(`Couldn't find URL for resource '${resource}'`);
-                return yield (yield fetchAdvanced(resourceUrl)).text();
-            }
-            catch (err) {
-                error("Couldn't get SVG element from resource:", err);
-                return null;
-            }
-        });
-    }
-    /**
-     * Constructs a URL from a base URL and a record of query parameters.
-     * If a value is null, the parameter will be valueless.
-     * All values will be stringified using their `toString()` method and then URI-encoded.
-     * @returns Returns a string instead of a URL object
-     */
-    function constructUrlString(baseUrl, params) {
-        return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
-    }
-    /**
-     * Sends a request with the specified parameters and returns the response as a Promise.
-     * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
-     */
-    function sendRequest(details) {
-        return new Promise((resolve, reject) => {
-            GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
-        });
-    }
+    const defaultLogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
+    /** Info about the userscript, parsed from the userscript header (tools/post-build.js) */
+    const scriptInfo = {
+        name: GM.info.script.name,
+        version: GM.info.script.version,
+        namespace: GM.info.script.namespace,
+        buildNumber: "555365b", // asserted as generic string instead of literal
+    };
 
     const fetchOpts = {
         timeout: 10000,
@@ -1527,6 +904,128 @@ I welcome every contribution on GitHub!
             return t(key, ...values);
         return trans;
     }
+
+    /** Options that are applied to every SelectorObserver instance */
+    const defaultObserverOptions = {
+        defaultDebounce: 100,
+    };
+    const observers$1 = {};
+    /** Call after DOM load to initialize all SelectorObserver instances */
+    function initObservers() {
+        try {
+            // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
+            observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+            observers$1.body.enable();
+            // #SECTION playerBar = media controls bar at the bottom of the page
+            const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+            observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+            observers$1.body.addListener(playerBarSelector, {
+                listener: () => {
+                    console.log("#DBG-UU enabling playerBar observer");
+                    observers$1.playerBar.enable();
+                },
+            });
+            // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+            const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+            observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+            observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
+                listener: () => {
+                    console.log("#DBG-UU enabling playerBarTitle observer");
+                    observers$1.playerBarInfo.enable();
+                },
+            });
+            // #DEBUG example: listen for title change:
+            observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
+                continuous: true,
+                listener: (titleElem) => {
+                    console.log("#DBG-UU >>>>> title changed", titleElem.title);
+                },
+            });
+            emitInterface("bytm:observersReady");
+        }
+        catch (err) {
+            error("Failed to initialize observers:", err);
+        }
+    }
+    /** Interface function for adding listeners to the already present observers */
+    function addSelectorListener(observerName, selector, options) {
+        observers$1[observerName].addListener(selector, options);
+    }
+
+    var de_DE = {
+    	name: "Deutsch (Deutschland)",
+    	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var en_US = {
+    	name: "English (United States)",
+    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var en_UK = {
+    	name: "English (United Kingdom)",
+    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var es_ES = {
+    	name: "Español (España)",
+    	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var fr_FR = {
+    	name: "Français (France)",
+    	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var hi_IN = {
+    	name: "हिंदी (भारत)",
+    	userscriptDesc: "YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var ja_JA = {
+    	name: "日本語 (日本)",
+    	userscriptDesc: "YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var pt_BR = {
+    	name: "Português (Brasil)",
+    	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var zh_CN = {
+    	name: "中文（简化，中国）",
+    	userscriptDesc: "可配置的布局和YouTube Music的用户体验改进",
+    	authors: [
+    		"Sv443"
+    	]
+    };
+    var locales = {
+    	de_DE: de_DE,
+    	en_US: en_US,
+    	en_UK: en_UK,
+    	es_ES: es_ES,
+    	fr_FR: fr_FR,
+    	hi_IN: hi_IN,
+    	ja_JA: ja_JA,
+    	pt_BR: pt_BR,
+    	zh_CN: zh_CN
+    };
 
     let features$3;
     function preInitBehavior(feats) {
@@ -1718,6 +1217,21 @@ I welcome every contribution on GitHub!
             info("Sent hint to Dark Reader to disable itself");
         }
     }
+
+    let createNanoEvents = () => ({
+      emit(event, ...args) {
+        for (let i = 0, callbacks = this.events[event] || [], length = callbacks.length; i < length; i++) {
+          callbacks[i](...args);
+        }
+      },
+      events: {},
+      on(event, cb) {
+        (this.events[event] ||= []).push(cb);
+        return () => {
+          this.events[event] = this.events[event]?.filter(i => cb !== i);
+        };
+      }
+    });
 
     /** EventEmitter instance that is used to detect changes to the site */
     const siteEvents = createNanoEvents();
@@ -2255,14 +1769,17 @@ I welcome every contribution on GitHub!
                             if (helpElemImgHtml) {
                                 helpElem = document.createElement("div");
                                 helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-                                helpElem.title = t("feature_help_button_tooltip");
+                                helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip");
                                 helpElem.role = "button";
+                                helpElem.tabIndex = 0;
                                 helpElem.innerHTML = helpElemImgHtml;
-                                helpElem.addEventListener("click", (e) => {
+                                const helpElemClicked = (e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                     openHelpDialog(featKey);
-                                });
+                                };
+                                helpElem.addEventListener("click", helpElemClicked);
+                                helpElem.addEventListener("keydown", (e) => e.key === "Enter" && helpElemClicked(e));
                             }
                             else {
                                 error(`Couldn't create help button SVG element for feature '${featKey}'`);
@@ -3595,6 +3112,247 @@ I welcome every contribution on GitHub!
         });
     }
 
+    /** Base URL of geniURL */
+    const geniUrlBase = "https://api.sv443.net/geniurl";
+    /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
+    const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+    /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+    const geniUrlRatelimitTimeframe = 30;
+    //#MARKER cache
+    /** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
+    const lyricsUrlCache = new Map();
+    /** How many cache entries can exist at a time - this is used to cap memory usage */
+    const maxLyricsCacheSize = 100;
+    /**
+     * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.
+     * **The passed parameters need to be sanitized first!**
+     */
+    function getLyricsCacheEntry(artists, song) {
+        return lyricsUrlCache.get(`${artists} - ${song}`);
+    }
+    /** Adds the provided entry into the lyrics URL cache */
+    function addLyricsCacheEntry(artists, song, lyricsUrl) {
+        lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
+        // delete oldest entry if cache gets too big
+        if (lyricsUrlCache.size > maxLyricsCacheSize)
+            lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1));
+    }
+    //#MARKER media control bar
+    let currentSongTitle = "";
+    /** Adds a lyrics button to the media controls bar */
+    function addMediaCtrlLyricsBtn() {
+        return __awaiter(this, void 0, void 0, function* () {
+            onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+        });
+    }
+    /** Actually adds the lyrics button after the like button renderer has been verified to exist */
+    function addActualMediaCtrlLyricsBtn(likeContainer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+            if (!songTitleElem)
+                return warn("Couldn't find song title element");
+            // run parallel without awaiting so the MutationObserver below can observe the title element in time
+            (() => __awaiter(this, void 0, void 0, function* () {
+                const gUrl = yield getCurrentLyricsUrl();
+                const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+                linkElem.id = "betterytm-lyrics-button";
+                log("Inserted lyrics button into media controls bar");
+                insertAfter(likeContainer, linkElem);
+            }))();
+            currentSongTitle = songTitleElem.title;
+            const spinnerIconUrl = yield getResourceUrl("img-spinner");
+            const lyricsIconUrl = yield getResourceUrl("img-lyrics");
+            const errorIconUrl = yield getResourceUrl("img-error");
+            const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+                var _b, e_1, _c, _d;
+                try {
+                    for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
+                        _d = mutations_1_1.value;
+                        _a = false;
+                        const mut = _d;
+                        const newTitle = mut.target.title;
+                        if (newTitle !== currentSongTitle && newTitle.length > 0) {
+                            const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                            if (!lyricsBtn)
+                                continue;
+                            info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
+                            lyricsBtn.style.cursor = "wait";
+                            lyricsBtn.style.pointerEvents = "none";
+                            const imgElem = lyricsBtn.querySelector("img");
+                            imgElem.src = spinnerIconUrl;
+                            imgElem.classList.add("bytm-spinner");
+                            currentSongTitle = newTitle;
+                            const url = yield getCurrentLyricsUrl(); // can take a second or two
+                            imgElem.src = lyricsIconUrl;
+                            imgElem.classList.remove("bytm-spinner");
+                            if (!url) {
+                                let artist, song;
+                                if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+                                    artist = navigator.mediaSession.metadata.artist;
+                                    song = navigator.mediaSession.metadata.title;
+                                }
+                                const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+                                imgElem.src = errorIconUrl;
+                                imgElem.title = t("lyrics_not_found_click_open_search");
+                                lyricsBtn.style.cursor = "pointer";
+                                lyricsBtn.style.pointerEvents = "all";
+                                lyricsBtn.style.display = "inline-flex";
+                                lyricsBtn.style.visibility = "visible";
+                                lyricsBtn.href = `https://genius.com/search${query}`;
+                                continue;
+                            }
+                            lyricsBtn.href = url;
+                            lyricsBtn.title = t("open_current_lyrics");
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.visibility = "visible";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.pointerEvents = "initial";
+                        }
+                    }
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
+            }); };
+            // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+            const obs = new MutationObserver(onMutation);
+            obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+        });
+    }
+    //#MARKER utils
+    /** Removes everything in parentheses from the passed song name */
+    function sanitizeSong(songName) {
+        const parensRegex = /\(.+\)/gmi;
+        const squareParensRegex = /\[.+\]/gmi;
+        // trim right after the song name:
+        const sanitized = songName
+            .replace(parensRegex, "")
+            .replace(squareParensRegex, "");
+        return sanitized.trim();
+    }
+    /** Removes the secondary artist (if it exists) from the passed artists string */
+    function sanitizeArtists(artists) {
+        artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+        if (artists.match(/&/))
+            artists = artists.split(/\s*&\s*/gm)[0];
+        if (artists.match(/,/))
+            artists = artists.split(/,\s*/gm)[0];
+        return artists.trim();
+    }
+    /** Returns the lyrics URL from genius for the currently selected song */
+    function getCurrentLyricsUrl() {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+                const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
+                const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+                const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
+                if (!songTitleElem || !songMetaElem)
+                    return undefined;
+                const songNameRaw = songTitleElem.title;
+                let songName = songNameRaw;
+                let artistName = songMetaElem.innerText;
+                if (isVideo) {
+                    // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                    if (songName.includes("-")) {
+                        const split = splitVideoTitle(songName);
+                        songName = split.song;
+                        artistName = split.artist;
+                    }
+                }
+                const url = yield fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+                if (url) {
+                    emitInterface("bytm:lyricsLoaded", {
+                        type: "current",
+                        artists: artistName,
+                        title: songName,
+                        url,
+                    });
+                }
+                return url;
+            }
+            catch (err) {
+                error("Couldn't resolve lyrics URL:", err);
+                return undefined;
+            }
+        });
+    }
+    /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
+    function fetchLyricsUrl(artist, song) {
+        var _a, _b, _c;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const cacheEntry = getLyricsCacheEntry(artist, song);
+                if (cacheEntry) {
+                    info(`Found lyrics URL in cache: ${cacheEntry}`);
+                    return cacheEntry;
+                }
+                const startTs = Date.now();
+                const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+                    disableFuzzy: null,
+                    utm_source: "BetterYTM",
+                    utm_content: `v${scriptInfo.version}`,
+                    artist,
+                    song,
+                });
+                log(`Requesting URL from geniURL at '${fetchUrl}'`);
+                const fetchRes = yield fetchAdvanced(fetchUrl);
+                if (fetchRes.status === 429) {
+                    const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+                    alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+                    return undefined;
+                }
+                else if (fetchRes.status < 200 || fetchRes.status >= 300) {
+                    error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                    return undefined;
+                }
+                const result = yield fetchRes.json();
+                if (typeof result === "object" && result.error) {
+                    error("Couldn't fetch lyrics URL:", result.message);
+                    return undefined;
+                }
+                const url = result.url;
+                info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
+                addLyricsCacheEntry(artist, song, url);
+                return url;
+            }
+            catch (err) {
+                error("Couldn't get lyrics URL due to error:", err);
+                return undefined;
+            }
+        });
+    }
+    /** Creates the base lyrics button element */
+    function createLyricsBtn(geniusUrl, hideIfLoading = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const linkElem = document.createElement("a");
+            linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+            linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+            if (geniusUrl)
+                linkElem.href = geniusUrl;
+            linkElem.role = "button";
+            linkElem.target = "_blank";
+            linkElem.rel = "noopener noreferrer";
+            linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+            linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+            const imgElem = document.createElement("img");
+            imgElem.className = "bytm-generic-btn-img";
+            imgElem.src = yield getResourceUrl("img-lyrics");
+            linkElem.appendChild(imgElem);
+            return linkElem;
+        });
+    }
+    /** Splits a video title that contains a hyphen into an artist and song */
+    function splitVideoTitle(title) {
+        const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+        return { artist, song: rest.join("-") };
+    }
+
     let features;
     function preInitSongLists(feats) {
         features = feats;
@@ -4171,6 +3929,254 @@ I welcome every contribution on GitHub!
         return __awaiter(this, void 0, void 0, function* () {
             yield cfgMgr.deleteConfig();
             info("Deleted config from persistent storage");
+        });
+    }
+
+    const { getUnsafeWindow } = UserUtils;
+    const globalFuncs = {
+        addSelectorListener,
+        getResourceUrl,
+        getSessionId,
+        getVideoTime,
+        setLocale,
+        getLocale,
+        hasKey,
+        hasKeyFor,
+        t,
+        tp,
+        getFeatures,
+        saveFeatures,
+        fetchLyricsUrl,
+        getLyricsCacheEntry,
+        sanitizeArtists,
+        sanitizeSong,
+    };
+    /** Initializes the BYTM interface */
+    function initInterface() {
+        const props = Object.assign(Object.assign(Object.assign({ mode,
+            branch }, scriptInfo), globalFuncs), { UserUtils });
+        for (const [key, value] of Object.entries(props))
+            setGlobalProp(key, value);
+        log("Initialized BYTM interface");
+    }
+    /** Sets a global property on the window.BYTM object */
+    function setGlobalProp(key, value) {
+        // use unsafeWindow so the properties are available outside of the userscript's scope
+        const win = getUnsafeWindow();
+        if (!win.BYTM)
+            win.BYTM = {};
+        win.BYTM[key] = value;
+    }
+    /** Emits an event on the BYTM interface */
+    function emitInterface(type, ...data) {
+        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+    }
+
+    let curLogLevel = LogLevel.Info;
+    /** Common prefix to be able to tell logged messages apart and filter them in devtools */
+    const consPrefix = `[${scriptInfo.name}]`;
+`[${scriptInfo.name}/#DEBUG]`;
+    /** Sets the current log level. 0 = Debug, 1 = Info */
+    function setLogLevel(level) {
+        if (curLogLevel !== level)
+            console.log(consPrefix, "Setting log level to", level === 0 ? "Debug" : "Info");
+        curLogLevel = level;
+        setGlobalProp("logLevel", level);
+    }
+    /** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
+    function getLogLevel(args) {
+        const minLogLvl = 0, maxLogLvl = 1;
+        if (typeof args.at(-1) === "number")
+            return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+        return LogLevel.Debug;
+    }
+    /**
+     * Logs all passed values to the console, as long as the log level is sufficient.
+     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+     */
+    function log(...args) {
+        if (curLogLevel <= getLogLevel(args))
+            console.log(consPrefix, ...args);
+    }
+    /**
+     * Logs all passed values to the console as info, as long as the log level is sufficient.
+     * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+     */
+    function info(...args) {
+        if (curLogLevel <= getLogLevel(args))
+            console.info(consPrefix, ...args);
+    }
+    /** Logs all passed values to the console as a warning, no matter the log level. */
+    function warn(...args) {
+        console.warn(consPrefix, ...args);
+    }
+    /** Logs all passed values to the console as an error, no matter the log level. */
+    function error(...args) {
+        console.error(consPrefix, ...args);
+    }
+
+    //#SECTION misc
+    /**
+     * Returns the current domain as a constant string representation
+     * @throws Throws if script runs on an unexpected website
+     */
+    function getDomain() {
+        if (location.hostname.match(/^music\.youtube/))
+            return "ytm";
+        else if (location.hostname.match(/youtube\./))
+            return "yt";
+        else
+            throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+    }
+    /** Returns a pseudo-random ID unique to each session */
+    function getSessionId() {
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
+        return sesId;
+    }
+    //#SECTION resources
+    /**
+     * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+     * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+     */
+    function getResourceUrl(name) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            let url = yield GM.getResourceUrl(name);
+            if (!url || url.length === 0) {
+                const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
+                if (typeof resource === "string") {
+                    const resourceUrl = new URL(resource);
+                    const resourcePath = resourceUrl.pathname;
+                    if (resourcePath)
+                        return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
+                }
+                warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
+                // @ts-ignore
+                url = yield GM.getResourceUrl(name, false);
+            }
+            return url;
+        });
+    }
+    /**
+     * Returns the preferred locale of the user, provided it is supported by the userscript.
+     * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+     */
+    function getPreferredLocale() {
+        var _a;
+        const navLang = navigator.language.replace(/-/g, "_");
+        const navLangs = navigator.languages
+            .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
+            .map(lang => lang.replace(/-/g, "_"));
+        if (Object.entries(locales).find(([key]) => key === navLang))
+            return navLang;
+        for (const loc of navLangs) {
+            if (Object.entries(locales).find(([key]) => key === loc))
+                return loc;
+        }
+        // if navigator.languages has entries that aren't locale codes in the format xx_XX
+        if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
+            for (const lang of navLangs) {
+                const foundLoc = (_a = Object.entries(locales).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+                if (foundLoc)
+                    return foundLoc;
+            }
+        }
+        return "en_US";
+    }
+    /** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
+    function resourceToHTMLString(resource) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resourceUrl = yield getResourceUrl(resource);
+                if (!resourceUrl)
+                    throw new Error(`Couldn't find URL for resource '${resource}'`);
+                return yield (yield fetchAdvanced(resourceUrl)).text();
+            }
+            catch (err) {
+                error("Couldn't get SVG element from resource:", err);
+                return null;
+            }
+        });
+    }
+
+    const selectorMap = new Map();
+    /**
+     * Calls the {@linkcode listener} as soon as the {@linkcode selector} exists in the DOM.
+     * Listeners are deleted when they are called once, unless `options.continuous` is set.
+     * Multiple listeners with the same selector may be registered.
+     * @param selector The selector to listen for
+     * @param options Used for switching to `querySelectorAll()` and for calling the listener continuously
+     * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
+     * @deprecated To be replaced with UserUtils' SelectorObserver class
+     */
+    function onSelectorOld(selector, options) {
+        let selectorMapItems = [];
+        if (selectorMap.has(selector))
+            selectorMapItems = selectorMap.get(selector);
+        // I don't feel like dealing with intersecting types, this should work just fine at runtime
+        // @ts-ignore
+        selectorMapItems.push(options);
+        selectorMap.set(selector, selectorMapItems);
+        checkSelectorExists(selector, selectorMapItems);
+    }
+    function checkSelectorExists(selector, options) {
+        const deleteIndices = [];
+        options.forEach((option, i) => {
+            try {
+                const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
+                if ((elements !== null && elements instanceof NodeList && elements.length > 0) || elements !== null) {
+                    // I don't feel like dealing with intersecting types, this should work just fine at runtime
+                    // @ts-ignore
+                    option.listener(elements);
+                    if (!option.continuous)
+                        deleteIndices.push(i);
+                }
+            }
+            catch (err) {
+                console.error(`Couldn't call listener for selector '${selector}'`, err);
+            }
+        });
+        if (deleteIndices.length > 0) {
+            const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
+            if (newOptsArray.length === 0)
+                selectorMap.delete(selector);
+            else {
+                // once again laziness strikes
+                // @ts-ignore
+                selectorMap.set(selector, newOptsArray);
+            }
+        }
+    }
+    /**
+     * Initializes a MutationObserver that checks for all registered selectors whenever an element is added to or removed from the `<body>`
+     * @param options For fine-tuning what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
+     */
+    function initOnSelector(options = {}) {
+        const observer = new MutationObserver(() => {
+            for (const [selector, options] of selectorMap.entries())
+                checkSelectorExists(selector, options);
+        });
+        observer.observe(document.body, Object.assign({ subtree: true, childList: true }, options));
+    }
+
+    /**
+     * Constructs a URL from a base URL and a record of query parameters.
+     * If a value is null, the parameter will be valueless.
+     * All values will be stringified using their `toString()` method and then URI-encoded.
+     * @returns Returns a string instead of a URL object
+     */
+    function constructUrlString(baseUrl, params) {
+        return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+    }
+    /**
+     * Sends a request with the specified parameters and returns the response as a Promise.
+     * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
+     */
+    function sendRequest(details) {
+        return new Promise((resolve, reject) => {
+            GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
         });
     }
 
