@@ -238,6 +238,7 @@ export function closeWelcomeMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-welcome-menu-bg");
 
   siteEvents.emit("welcomeMenuClosed");
@@ -258,6 +259,7 @@ export function openWelcomeMenu() {
   isWelcomeMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-welcome-menu-bg");
 
   if(!menuBg)

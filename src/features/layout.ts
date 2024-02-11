@@ -27,11 +27,11 @@ export async function addWatermark() {
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
   watermark.title = t("open_menu_tooltip", scriptInfo.name);
-  watermark.tabIndex = 1000;
+  watermark.tabIndex = 0;
 
   improveLogo();
 
-  watermark.addEventListener("click", (e) => {
+  const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
     e.stopPropagation();
     menuOpenAmt++;
 
@@ -39,20 +39,10 @@ export async function addWatermark() {
       openCfgMenu();
     if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
       exchangeLogo();
-  });
+  };
 
-  // when using the tab key to navigate
-  watermark.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") {
-      e.stopPropagation();
-      menuOpenAmt++;
-
-      if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
-        openCfgMenu();
-      if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
-        exchangeLogo();
-    }
-  });
+  watermark.addEventListener("click", watermarkOpenMenu);
+  watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
 
   onSelectorOld("ytmusic-nav-bar #left-content", {
     listener: (logoElem) => insertAfter(logoElem, watermark),

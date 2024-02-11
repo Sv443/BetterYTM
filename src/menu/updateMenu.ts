@@ -2,6 +2,8 @@ import { warn } from "../utils";
 import "./updateMenu.css";
 import menuTemplateHtml from "./new/menuTemplate.html";
 
+// TODO: implement using BytmMenu class
+
 let isUpdateMenuOpen = false;
 
 export function createUpdateMenu() {
@@ -28,6 +30,7 @@ function closeUpdateMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-update-menu-bg");
 
   if(!menuBg)
@@ -37,6 +40,8 @@ function closeUpdateMenu(evt?: MouseEvent | KeyboardEvent) {
   menuBg.style.display = "none";
 }
 
+void closeUpdateMenu;
+
 /** Opens the update menu if it is closed */
 export function openUpdateMenu(newVersion: string) {
   if(isUpdateMenuOpen)
@@ -44,6 +49,7 @@ export function openUpdateMenu(newVersion: string) {
   isUpdateMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-update-menu-bg");
 
   if(!menuBg)

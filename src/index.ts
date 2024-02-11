@@ -8,6 +8,7 @@ import { initTranslations, setLocale } from "./translations";
 import { emitInterface, initInterface } from "./interface";
 import { addCfgMenu } from "./menu/menu_old";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
+import { initObservers, observers } from "./observers";
 import {
   // other:
   featInfo,
@@ -38,7 +39,6 @@ import {
   // other
   checkVersion,
 } from "./features/index";
-import { initObservers, observers } from "./observers";
 
 {
   // console watermark with sexy gradient
@@ -54,10 +54,11 @@ import { initObservers, observers } from "./observers";
   );
   console.log([
     "Powered by:",
-    "─ lots of ambition",
-    `─ my song metadata API: ${geniUrlBase}`,
-    "─ my userscript utility library: https://github.com/Sv443-Network/UserUtils",
-    "─ this tiny event listener library: https://github.com/ai/nanoevents",
+    "─ Lots of ambition",
+    `─ My song metadata API: ${geniUrlBase}`,
+    "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
+    "─ This tiny event listener library: https://github.com/ai/nanoevents",
+    "─ The React library: https://github.com/facebook/react",
   ].join("\n"));
   console.log();
 }

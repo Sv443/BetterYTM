@@ -93,13 +93,16 @@ export async function addCfgMenu() {
 
   const linksCont = document.createElement("div");
   linksCont.id = "bytm-menu-linkscont";
+  linksCont.role = "navigation";
 
   const addLink = (imgSrc: string, href: string, title: string) => {
     const anchorElem = document.createElement("a");
     anchorElem.className = "bytm-menu-link bytm-no-select";
     anchorElem.rel = "noopener noreferrer";
-    anchorElem.target = "_blank";
     anchorElem.href = href;
+    anchorElem.target = "_blank";
+    anchorElem.tabIndex = 0;
+    anchorElem.role = "button";
     anchorElem.title = title;
 
     const imgElem = document.createElement("img");
@@ -130,9 +133,12 @@ export async function addCfgMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
+  closeElem.role = "button";
+  closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", closeCfgMenu);
+  closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
 
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
@@ -533,16 +539,18 @@ export async function addCfgMenu() {
   const versionElem = document.createElement("a");
   versionElem.classList.add("bytm-link");
   versionElem.role = "button";
+  versionElem.tabIndex = 0;
   versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
-
-  versionElem.addEventListener("click", (e) => {
+  const versionElemClicked = (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     closeCfgMenu();
     openChangelogMenu("cfgMenu");
-  });
+  };
+  versionElem.addEventListener("click", versionElemClicked);
+  versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
 
   menuContainer.appendChild(footerCont);
   versionElemCont.appendChild(versionElem);
@@ -563,6 +571,7 @@ export async function addCfgMenu() {
   // ensure stuff is reset if menu was opened before being added
   isCfgMenuOpen = false;
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
 }
@@ -575,6 +584,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   siteEvents.emit("cfgMenuClosed");
@@ -595,6 +605,7 @@ export async function openCfgMenu() {
   isCfgMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   if(!menuBg)
@@ -659,9 +670,12 @@ async function openHelpDialog(featureKey: FeatureKey) {
 
     const closeElem = document.createElement("img");
     closeElem.classList.add("bytm-menu-close", "small");
+    closeElem.role = "button";
+    closeElem.tabIndex = 0;
     closeElem.src = await getResourceUrl("img-close");
     closeElem.title = t("close_menu_tooltip");
     closeElem.addEventListener("click", (e) => closeHelpDialog(e));
+    closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
 
     headerElem.appendChild(titleCont);
     headerElem.appendChild(closeElem);
@@ -789,12 +803,16 @@ async function addExportMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
+  closeElem.role = "button";
+  closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
-  closeElem.addEventListener("click", (e) => {
+  const closeExportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeExportMenu(e);
     openCfgMenu();
-  });
+  };
+  closeElem.addEventListener("click", (e) => closeExportMenuClicked(e));
+  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeExportMenuClicked(e));
 
   titleCont.appendChild(titleElem);
 
@@ -879,6 +897,7 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-export-menu-bg");
 
   if(!menuBg)
@@ -904,6 +923,7 @@ function openExportMenu() {
   isExportMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-export-menu-bg");
 
   if(!menuBg)
@@ -958,12 +978,16 @@ async function addImportMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
+  closeElem.role = "button";
+  closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
-  closeElem.addEventListener("click", (e) => {
+  const closeImportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeImportMenu(e);
     openCfgMenu();
-  });
+  };
+  closeElem.addEventListener("click", closeImportMenuClicked);
+  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeImportMenuClicked(e));
 
   titleCont.appendChild(titleElem);
 
@@ -1087,6 +1111,7 @@ function closeImportMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-import-menu-bg");
 
   const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-import-menu-textarea");
@@ -1107,6 +1132,7 @@ function openImportMenu() {
   isImportMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-import-menu-bg");
 
   if(!menuBg)
@@ -1163,13 +1189,17 @@ async function addChangelogMenu() {
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
+  closeElem.role = "button";
+  closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.title = t("close_menu_tooltip");
-  closeElem.addEventListener("click", (e) => {
+  const closeChangelogMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeChangelogMenu(e);
     if(menuBgElem.dataset.returnTo === "cfgMenu")
       openCfgMenu();
-  });
+  };
+  closeElem.addEventListener("click", closeChangelogMenuClicked);
+  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeChangelogMenuClicked(e));
 
   titleCont.appendChild(titleElem);
 
@@ -1213,6 +1243,7 @@ function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
   evt?.bubbles && evt.stopPropagation();
 
   document.body.classList.remove("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
 
   if(!menuBg)
@@ -1232,6 +1263,7 @@ export function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu") {
   isChangelogMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
+  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
 
   if(!menuBg)

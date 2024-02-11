@@ -25,16 +25,24 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
   inputElem.value = initialValue?.code ?? t("hotkey_input_click_to_change");
   inputElem.title = t("hotkey_input_click_to_change_tooltip");
 
-  const resetElem = document.createElement("a");
+  const resetElem = document.createElement("span");
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
   resetElem.role = "button";
+  resetElem.tabIndex = 0;
   resetElem.innerText = `(${t("reset")})`;
-  resetElem.addEventListener("click", () => {
+
+  const resetClicked = (e: MouseEvent | KeyboardEvent) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
     onChange(resetValue!);
     inputElem.value = resetValue!.code;
     inputElem.dataset.state = "inactive";
     infoElem.innerText = getHotkeyInfo(resetValue!);
-  });
+  };
+
+  resetElem.addEventListener("click", resetClicked);
+  resetElem.addEventListener("keydown", (e) => e.key === "Enter" && resetClicked(e));
 
   if(initialValue)
     infoElem.innerText = getHotkeyInfo(initialValue);

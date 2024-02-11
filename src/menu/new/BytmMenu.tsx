@@ -48,8 +48,10 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     bgElem.id = `bytm-${this.id}-menu-bg`;
     bgElem.classList.add("bytm-menu-bg");
     bgElem.title = t("close_menu_tooltip");
+
     bgElem.style.visibility = "hidden";
     bgElem.style.display = "none";
+    bgElem.inert = true;
 
     bgElem.addEventListener("click", (e) => {
       if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
@@ -110,6 +112,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
       await this.render();
 
     document.body.classList.add("bytm-disable-scroll");
+    document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
     const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
 
     if(!menuBg)
@@ -117,6 +120,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
     menuBg.style.visibility = "visible";
     menuBg.style.display = "block";
+    menuBg.inert = false;
 
     this.events.emit("open");
   }
@@ -131,6 +135,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
     this.menuOpen = false;
 
     document.body.classList.remove("bytm-disable-scroll");
+    document.querySelector("ytmusic-app")?.removeAttribute("inert");
     const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
 
     if(!menuBg)
@@ -138,6 +143,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
 
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
+    menuBg.inert = true;
 
     this.events.emit("close");
   }
@@ -167,7 +173,7 @@ export class BytmMenu extends NanoEmitter<BytmMenuEventsMap> {
               {header}
             </div>
           ) : null}
-          <img className="bytm-menu-close" src={closeSrc} role="button" onClick={() => this.close()} />
+          <img className="bytm-menu-close" src={closeSrc} role="button" tabIndex={0} onClick={() => this.close()} />
         </div>
         <div>
           {this.config.renderBody()}
