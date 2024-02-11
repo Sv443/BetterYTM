@@ -78,7 +78,7 @@ I welcome every contribution on GitHub!
 
 
 /* global React, ReactDOM */
-(function () {
+(() => {
     'use strict';
 
     /******************************************************************************
@@ -830,7 +830,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "9ab8d28", // asserted as generic string instead of literal
+        buildNumber: "26ce525", // asserted as generic string instead of literal
     };
 
     var de_DE = {
@@ -1927,7 +1927,7 @@ I welcome every contribution on GitHub!
     	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
     };
-    var releases = {
+    var updates = {
     	github: "https://github.com/Sv443/BetterYTM/releases",
     	greasyfork: "https://greasyfork.org/en/scripts/475682-betterytm",
     	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
@@ -2009,7 +2009,7 @@ I welcome every contribution on GitHub!
     	bugs: bugs,
     	funding: funding,
     	hosts: hosts,
-    	releases: releases,
+    	updates: updates,
     	dependencies: dependencies,
     	devDependencies: devDependencies,
     	browserslist: browserslist,
@@ -3145,12 +3145,13 @@ I welcome every contribution on GitHub!
     function addConfigMenuOption(container) {
         return __awaiter(this, void 0, void 0, function* () {
             const cfgOptElem = document.createElement("div");
-            cfgOptElem.role = "button";
             cfgOptElem.className = "bytm-cfg-menu-option";
             const cfgOptItemElem = document.createElement("div");
             cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+            cfgOptItemElem.role = "button";
+            cfgOptItemElem.tabIndex = 0;
             cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
-            cfgOptItemElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
+            const cfgOptItemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
                 const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
                 settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
                 menuOpenAmt++;
@@ -3159,7 +3160,9 @@ I welcome every contribution on GitHub!
                     openCfgMenu();
                 if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
                     exchangeLogo();
-            }));
+            });
+            cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
+            cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
             const cfgOptIconElem = document.createElement("img");
             cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
             cfgOptIconElem.src = yield getResourceUrl("img-logo");
@@ -3803,8 +3806,9 @@ I welcome every contribution on GitHub!
                         greasyfork: "GreasyFork",
                         openuserjs: "OpenUserJS",
                     };
+                    // TODO: replace with custom dialog
                     if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-                        window.open(pkg.releases[host]);
+                        window.open(pkg.updates[host]);
                 }
             }
             catch (err) {
@@ -3813,8 +3817,8 @@ I welcome every contribution on GitHub!
         });
     }
     /**
-     * Compares two semver version strings.
-     * @returns Returns 1 if a > b, -1 if a < b, 0 if a == b
+     * Crudely compares two semver version strings.
+     * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
      */
     function compareVersions(a, b) {
         const pa = a.split(".");
