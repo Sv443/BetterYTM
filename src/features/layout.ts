@@ -113,13 +113,14 @@ function exchangeLogo() {
 /** Called whenever the avatar popover menu exists to add a BYTM-Configuration button to the user menu popover */
 export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.role = "button";
   cfgOptElem.className = "bytm-cfg-menu-option";
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+  cfgOptItemElem.role = "button";
+  cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
-  cfgOptItemElem.addEventListener("click", async (e) => {
+  const cfgOptItemClicked = async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
     menuOpenAmt++;
@@ -130,7 +131,9 @@ export async function addConfigMenuOption(container: HTMLElement) {
       openCfgMenu();
     if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
       exchangeLogo();
-  });
+  };
+  cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
+  cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
