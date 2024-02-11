@@ -1,8 +1,7 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
-import { onSelectorOld } from "../onSelector";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, warn } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn } from "../utils";
 import { t } from "../translations";
 import { openCfgMenu } from "../menu/menu_old";
 import { featInfo } from ".";

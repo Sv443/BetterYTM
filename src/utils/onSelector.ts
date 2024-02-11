@@ -29,7 +29,7 @@ const selectorMap = new Map<string, OnSelectorOpts[]>();
  * @param selector The selector to listen for
  * @param options Used for switching to `querySelectorAll()` and for calling the listener continuously
  * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
- * @deprecated To be replaced with UserUtils v3's SelectorObserver class
+ * @deprecated To be replaced with UserUtils' SelectorObserver class
  */
 export function onSelectorOld<TElem extends Element = HTMLElement>(
   selector: string,

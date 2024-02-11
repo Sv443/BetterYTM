@@ -1,6 +1,5 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { onSelectorOld } from "../onSelector";
-import { error, getDomain, getVideoTime, info, log, videoSelector } from "../utils";
+import { error, getDomain, getVideoTime, info, log, onSelectorOld, videoSelector } from "../utils";
 import { LogLevel, type FeatureConfig } from "../types";
 
 let features: FeatureConfig;
