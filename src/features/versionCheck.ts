@@ -37,8 +37,9 @@ export async function checkVersion() {
         greasyfork: "GreasyFork",
         openuserjs: "OpenUserJS",
       };
+      // TODO: replace with custom dialog
       if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-        window.open(pkg.releases[host]);
+        window.open(pkg.updates[host]);
     }
   }
   catch(err) {
@@ -47,19 +48,19 @@ export async function checkVersion() {
 }
 
 /**
- * Compares two semver version strings.  
- * @returns Returns 1 if a > b, -1 if a < b, 0 if a == b
+ * Crudely compares two semver version strings.  
+ * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
  */
 function compareVersions(a: string, b: string) {
   const pa = a.split(".");
   const pb = b.split(".");
-  for (let i = 0; i < 3; i++) {
+  for(let i = 0; i < 3; i++) {
     const na = Number(pa[i]);
     const nb = Number(pb[i]);
-    if (na > nb) return 1;
-    if (nb > na) return -1;
-    if (!isNaN(na) && isNaN(nb)) return 1;
-    if (isNaN(na) && !isNaN(nb)) return -1;
+    if(na > nb) return 1;
+    if(nb > na) return -1;
+    if(!isNaN(na) && isNaN(nb)) return 1;
+    if(isNaN(na) && !isNaN(nb)) return -1;
   }
   return 0;
 }
