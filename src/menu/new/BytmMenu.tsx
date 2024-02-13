@@ -1,11 +1,19 @@
 import { createRoot } from "react-dom/client";
 import * as React from "react";
-import { clearInner, getResourceUrl, NanoEmitter, warn } from "../../utils";
+// hoist the class declaration because either rollup or babel is being a hoe
+import { NanoEmitter } from "../../utils/NanoEmitter";
+import { clearInner, getResourceUrl, warn } from "../../utils";
 import { t } from "../../translations";
 
 export interface BytmMenuOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
+  /** Whether the menu should close when the background is clicked - defaults to true */
+  closeOnBgClick?: boolean;
+  /** Whether the menu should close when the escape key is pressed - defaults to true */
+  closeOnEscPress?: boolean;
+  /** Whether the close button should be enabled - defaults to true */
+  closeBtnEnabled?: boolean;
   /** Called to render the body of the menu */
   renderBody: () => React.ReactNode;
   /** Called to render the header of the menu - leave undefined for a blank header */
@@ -27,6 +35,8 @@ export class BytmMenu extends NanoEmitter<{
   render: () => void;
   /** Emitted just after the menu contents are cleared */
   clear: () => void;
+  /** Emitted just before the menu is destroyed and all listeners are removed */
+  destroy: () => void;
 }> {
   public readonly options;
   public readonly id;
@@ -38,7 +48,12 @@ export class BytmMenu extends NanoEmitter<{
   constructor(options: BytmMenuOptions) {
     super();
 
-    this.options = options;
+    this.options = {
+      closeOnBgClick: true,
+      closeOnEscPress: true,
+      closeBtnEnabled: true,
+      ...options,
+    };
     this.id = options.id;
   }
 
@@ -51,20 +66,12 @@ export class BytmMenu extends NanoEmitter<{
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-menu-bg`;
     bgElem.classList.add("bytm-menu-bg");
-    bgElem.title = t("close_menu_tooltip");
+    if(this.options.closeOnBgClick)
+      bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
     bgElem.style.visibility = "hidden";
     bgElem.style.display = "none";
     bgElem.inert = true;
-
-    bgElem.addEventListener("click", (e) => {
-      if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
-        this.close(e);
-    });
-    document.body.addEventListener("keydown", (e) => {
-      if(this.isOpen() && e.key === "Escape")
-        this.close(e);
-    });
 
     document.body.appendChild(bgElem);
 
@@ -169,6 +176,13 @@ export class BytmMenu extends NanoEmitter<{
     return this.menuRendered;
   }
 
+  /** Clears the menu and removes all event listeners */
+  public destroy() {
+    this.events.emit("destroy");
+    this.clear();
+    this.unsubscribeAll();
+  }
+
   /** Returns the ID of the top-most menu (the menu that has been opened last) */
   public static getLastMenuId() {
     return lastMenuId;
@@ -180,15 +194,19 @@ export class BytmMenu extends NanoEmitter<{
       return;
     this.listenersAttached = true;
 
-    bgElem.addEventListener("click", (e) => {
-      if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
-        this.close(e);
-    });
+    if(this.options.closeOnBgClick) {
+      bgElem.addEventListener("click", (e) => {
+        if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
+          this.close(e);
+      });
+    }
 
-    document.body.addEventListener("keydown", (e) => {
-      if(e.key === "Escape" && this.isOpen() && BytmMenu.getLastMenuId() === this.id)
-        this.close(e);
-    });
+    if(this.options.closeOnEscPress) {
+      document.body.addEventListener("keydown", (e) => {
+        if(e.key === "Escape" && this.isOpen() && BytmMenu.getLastMenuId() === this.id)
+          this.close(e);
+      });
+    }
   }
 
   private async getMenuContent() {
@@ -206,7 +224,9 @@ export class BytmMenu extends NanoEmitter<{
               {header}
             </div>
           ) : null}
-          <img className="bytm-menu-close" src={closeSrc} role="button" tabIndex={0} onClick={() => this.close()} />
+          {this.options.closeBtnEnabled ? (
+            <img className="bytm-menu-close" src={closeSrc} role="button" tabIndex={0} onClick={() => this.close()} />
+          ) : null}
         </div>
         <div>
           {this.options.renderBody()}
