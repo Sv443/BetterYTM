@@ -833,7 +833,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "e98ac10", // asserted as generic string instead of literal
+        buildNumber: "f1323ac", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
@@ -1557,7 +1557,7 @@ I welcome every contribution on GitHub!
      * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
      */
     function addCfgMenu() {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function* () {
             if (isCfgMenuAdded)
                 return;
@@ -1759,9 +1759,17 @@ I welcome every contribution on GitHub!
                         featLeftSideElem.classList.add("bytm-ftitem-leftside");
                         const textElem = document.createElement("span");
                         textElem.innerText = t(`feature_desc_${featKey}`);
+                        let adornmentElem;
+                        const adornContent = (_c = ftInfo.textAdornment) === null || _c === void 0 ? void 0 : _c.call(ftInfo);
+                        if (typeof adornContent === "string" || adornContent instanceof Promise) {
+                            adornmentElem = document.createElement("span");
+                            adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
+                            adornmentElem.classList.add("bytm-ftitem-adornment");
+                            adornmentElem.innerHTML = adornContent instanceof Promise ? yield adornContent : adornContent;
+                        }
                         let helpElem;
                         // @ts-ignore
-                        const hasHelpTextFunc = typeof ((_c = featInfo[featKey]) === null || _c === void 0 ? void 0 : _c.helpText) === "function";
+                        const hasHelpTextFunc = typeof ((_d = featInfo[featKey]) === null || _d === void 0 ? void 0 : _d.helpText) === "function";
                         // @ts-ignore
                         const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                         if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
@@ -1786,6 +1794,7 @@ I welcome every contribution on GitHub!
                             }
                         }
                         featLeftSideElem.appendChild(textElem);
+                        adornmentElem && featLeftSideElem.appendChild(adornmentElem);
                         helpElem && featLeftSideElem.appendChild(helpElem);
                         ftConfElem.appendChild(featLeftSideElem);
                     }
@@ -1988,7 +1997,7 @@ I welcome every contribution on GitHub!
             // ensure stuff is reset if menu was opened before being added
             isCfgMenuOpen = false;
             document.body.classList.remove("bytm-disable-scroll");
-            (_d = document.querySelector("ytmusic-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
+            (_e = document.querySelector("ytmusic-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
             backgroundElem.style.visibility = "hidden";
             backgroundElem.style.display = "none";
         });
@@ -3614,22 +3623,23 @@ I welcome every contribution on GitHub!
      * **Required props:**
      * | Property | Description |
      * | :-- | :-- |
-     * | `type` | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
-     * | `category` | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
-     * | `default` | default value of the feature - type of the value depends on the given `type` |
+     * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
+     * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
+     * | `default`            | default value of the feature - type of the value depends on the given `type` |
      * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
      *
      * **Optional props:**
      * | Property | Description |
      * | :-- | :-- |
-     * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
-     * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
-     * | `helpText(): string` | function that returns an HTML string that will be the help text for this feature - useful for pluralizing or inserting values into the translation - if not set, translation with key `feature_helptext_featureKey` will be used instead |
-     * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
-     * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
-     * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
-     * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
-     * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+     * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+     * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+     * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+     * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+     * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
+     * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+     * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+     * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+     * | `unit`                                      | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
      *
      * **Notes:**
      * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -3838,6 +3848,8 @@ I welcome every contribution on GitHub!
             options: localeOptions,
             default: getPreferredLocale(),
             enable: () => void "TODO",
+            // TODO: to be reworked or removed in the big menu rework
+            textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("img-globe")) !== null && _a !== void 0 ? _a : ""; }),
         },
         versionCheck: {
             type: "toggle",
@@ -4855,6 +4867,17 @@ hr {
   display: block;
   margin: 8px 0px 12px 0px;
   border: revert;
+}
+
+.bytm-ftitem-adornment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 8px;
+}
+
+#bytm-ftitem-locale-adornment svg path {
+  fill: #4595c7;
 }
 
 .bytm-hotkey-wrapper {
