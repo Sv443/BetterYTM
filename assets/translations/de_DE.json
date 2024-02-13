@@ -106,7 +106,7 @@
 
     "feature_desc_geniusLyrics": "Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen",
 
-    "feature_desc_locale": "Sprache 🌐",
+    "feature_desc_locale": "Sprache",
     "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?"
   }
 }

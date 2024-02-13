@@ -132,7 +132,7 @@
 
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
 
-    "feature_desc_locale": "Language 🌐",
+    "feature_desc_locale": "Language",
     "feature_desc_versionCheck": "Check for updates every 24 hours?",
     "feature_helptext_versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
     "feature_desc_logLevel": "How much information to log to the console",

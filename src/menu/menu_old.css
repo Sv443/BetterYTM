@@ -381,3 +381,14 @@ hr {
   margin: 8px 0px 12px 0px;
   border: revert;
 }
+
+.bytm-ftitem-adornment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 8px;
+}
+
+#bytm-ftitem-locale-adornment svg path {
+  fill: #4595c7;
+}

@@ -106,7 +106,7 @@
 
     "feature_desc_geniusLyrics": "Agregue un botón a los controles multimedia de la canción que se está reproduciendo actualmente para abrir sus letras en genius.com",
 
-    "feature_desc_locale": "Idioma 🌐",
+    "feature_desc_locale": "Idioma",
     "feature_desc_logLevel": "Cuánta información registrar en la consola"
   }
 }

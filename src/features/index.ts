@@ -1,5 +1,5 @@
 import { t, tp } from "../translations";
-import { getPreferredLocale } from "../utils";
+import { getPreferredLocale, resourceToHTMLString } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
 import { FeatureInfo } from "../types";
@@ -31,22 +31,23 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * **Required props:**
  * | Property | Description |
  * | :-- | :-- |
- * | `type` | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
- * | `category` | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
- * | `default` | default value of the feature - type of the value depends on the given `type` |
+ * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
+ * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
+ * | `default`            | default value of the feature - type of the value depends on the given `type` |
  * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
  *   
  * **Optional props:**
  * | Property | Description |
  * | :-- | :-- |
- * | `disable(newValue: any)` | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
- * | `change(prevValue: any, newValue: any)` | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
- * | `helpText(): string` | function that returns an HTML string that will be the help text for this feature - useful for pluralizing or inserting values into the translation - if not set, translation with key `feature_helptext_featureKey` will be used instead |
- * | `hidden` | if true, the feature will not be shown in the settings - default is undefined (false) |
- * | `min` | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
- * | `max` | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
- * | `step` | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `unit` | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+ * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
+ * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+ * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+ * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+ * | `unit`                                      | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
  *   
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -260,6 +261,8 @@ export const featInfo = {
     options: localeOptions,
     default: getPreferredLocale(),
     enable: () => void "TODO",
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => await resourceToHTMLString("img-globe") ?? "",
   },
   versionCheck: {
     type: "toggle",

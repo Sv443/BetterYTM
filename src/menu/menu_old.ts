@@ -6,7 +6,7 @@ import { error, getResourceUrl, info, log, resourceToHTMLString, warn } from "..
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import { getLocale, hasKey, initTranslations, setLocale, t } from "../translations";
-import { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj } from "../types";
+import { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, type FeatureInfo } from "../types";
 import changelog from "../../changelog.md";
 import "./menu_old.css";
 import { createHotkeyInput } from "./hotkeyInput";
@@ -272,7 +272,7 @@ export async function addCfgMenu() {
     featuresCont.appendChild(catHeaderElem);
 
     for(const featKey in featObj) {
-      const ftInfo = featInfo[featKey as keyof typeof featureCfg];
+      const ftInfo = featInfo[featKey as keyof typeof featureCfg] as FeatureInfo[keyof typeof featureCfg];
 
       // @ts-ignore
       if(!ftInfo || ftInfo.hidden === true)
@@ -295,6 +295,16 @@ export async function addCfgMenu() {
 
         const textElem = document.createElement("span");
         textElem.innerText = t(`feature_desc_${featKey}`);
+
+        let adornmentElem: undefined | HTMLElement;
+
+        const adornContent = ftInfo.textAdornment?.();
+        if(typeof adornContent === "string" || adornContent instanceof Promise) {
+          adornmentElem = document.createElement("span");
+          adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
+          adornmentElem.classList.add("bytm-ftitem-adornment");
+          adornmentElem.innerHTML = adornContent instanceof Promise ? await adornContent : adornContent;
+        }
 
         let helpElem: undefined | HTMLDivElement;
 
@@ -327,6 +337,7 @@ export async function addCfgMenu() {
         }
 
         featLeftSideElem.appendChild(textElem);
+        adornmentElem && featLeftSideElem.appendChild(adornmentElem);
         helpElem && featLeftSideElem.appendChild(helpElem);
 
         ftConfElem.appendChild(featLeftSideElem);

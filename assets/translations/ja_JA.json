@@ -106,7 +106,7 @@
 
     "feature_desc_geniusLyrics": "現在再生中の曲のメディアコントロールにボタンを追加して、genius.com で歌詞を開く",
 
-    "feature_desc_locale": "言語 🌐",
+    "feature_desc_locale": "言語",
     "feature_desc_logLevel": "ログレベル"
   }
 }

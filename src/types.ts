@@ -145,12 +145,15 @@ type FeatureTypeProps =
   };
 
 type FeatureFuncProps = {
+  /** Called to instantiate the feature on the page */
   enable: () => void,
 } & (
   {
+    /** Called to remove all traces of the feature from the page and memory (includes event listeners) */
     disable?: () => void,
   }
   | {
+    /** Called to update the feature's behavior when the config changes */
     change?: () => void,
   }
 )
@@ -164,7 +167,16 @@ export type FeatureInfo = Record<
   keyof FeatureConfig,
   {
     category: FeatureCategory;
+    /**
+     * HTML string that will be the help text for this feature  
+     * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
+     */
     helpText?: string | (() => string);
+    /**
+     * HTML string that is appended to the end of a feature's text description
+     * @deprecated TODO:FIXME: To be removed or changed in the big menu rework
+     */
+    textAdornment?: () => (Promise<string> | string);
   }
     & FeatureTypeProps
     & FeatureFuncProps

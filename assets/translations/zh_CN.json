@@ -106,7 +106,7 @@
 
     "feature_desc_geniusLyrics": "在当前播放的歌曲的媒体控件中添加一个按钮，以在 genius.com 上打开其歌词",
 
-    "feature_desc_locale": "语言 🌐",
+    "feature_desc_locale": "语言",
     "feature_desc_logLevel": "更改扩展程序的日志级别"
   }
 }

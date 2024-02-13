@@ -106,7 +106,7 @@
 
     "feature_desc_geniusLyrics": "Ajouter un bouton aux contrôles multimédias de la chanson en cours de lecture pour ouvrir ses paroles sur genius.com",
 
-    "feature_desc_locale": "Langue 🌐",
+    "feature_desc_locale": "Langue",
     "feature_desc_logLevel": "Combien d'informations à enregistrer dans la console"
   }
 }
