@@ -33,8 +33,7 @@ All of these can be toggled and configured in the configuration menu.
 <br>
 
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
-Alternatively or if you disabled the watermark, you can open it through the menu you get by clicking on your avatar in the top right corner.  
-Note that the page needs to be reloaded for changes to take effect.  
+Alternatively or if you disabled the watermark, you can open it through the popover menu opened by clicking your avatar in the top right corner.  
   
 My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
 
