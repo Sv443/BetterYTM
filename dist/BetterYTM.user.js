@@ -833,7 +833,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "f1323ac", // asserted as generic string instead of literal
+        buildNumber: "4e1a1bb", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
@@ -3576,6 +3576,28 @@ I welcome every contribution on GitHub!
                         greasyfork: "GreasyFork",
                         openuserjs: "OpenUserJS",
                     };
+                    // const menu = new BytmMenu({
+                    //   id: "version-check",
+                    //   closeOnBgClick: false,
+                    //   closeOnEscPress: false,
+                    //   renderBody() {
+                    //     return (
+                    //       <div>
+                    //         <p>
+                    //           {t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])}
+                    //         </p>
+                    //         <button
+                    //           className="bytm-btn"
+                    //           onClick={() => window.open(pkg.updates[host])}
+                    //         >
+                    //           {t("update_now")}
+                    //         </button>
+                    //       </div>
+                    //     );
+                    //   },
+                    // });
+                    // menu.on("close", () => menu.destroy());
+                    // await menu.open();
                     // TODO: replace with custom dialog
                     if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
                         window.open(pkg.updates[host]);
