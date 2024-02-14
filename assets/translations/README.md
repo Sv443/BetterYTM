@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 123 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `123/123` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `97/123` (78.9%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `97/123` (78.9%) | ─ |
+| [`en_US`](./en_US.json) | 124 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `124/124` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `97/124` (78.2%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `97/124` (78.2%) | ─ |
 
 <br>
 
@@ -25,10 +25,11 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -58,10 +59,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -91,10 +93,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -124,10 +127,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -157,10 +161,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -190,10 +195,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |
@@ -223,10 +229,11 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `delete_from_list` | `Delete this song from the list` |
 | `feature_help_button_tooltip` | `Click to get more information about this feature` |
 | `list_button_placement_queue_only` | `"Up next" queue only` |
 | `list_button_placement_everywhere` | `In every song list` |

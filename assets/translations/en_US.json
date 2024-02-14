@@ -41,6 +41,7 @@
     "toggled_on": "On",
     "toggled_off": "Off",
     "remove_from_queue": "Remove this song from the queue",
+    "delete_from_list": "Delete this song from the list",
     "scroll_to_playing": "Scroll to the currently playing song",
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
