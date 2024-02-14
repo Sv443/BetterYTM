@@ -117,7 +117,7 @@ export async function addCfgMenu() {
 
   addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"));
 
-  const links: Array<[name: string, ...Parameters<typeof addLink>]> = [
+  const links: [name: string, ...Parameters<typeof addLink>][] = [
     ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
     ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
     ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],

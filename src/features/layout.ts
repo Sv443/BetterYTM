@@ -15,8 +15,7 @@ export function preInitLayout(feats: FeatureConfig) {
 
 //#MARKER BYTM-Config buttons
 
-let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
-const eastereggOpenAmt = 5;
+let logoExchanged = false, improveLogoCalled = false;
 
 /** Adds a watermark beneath the logo */
 export async function addWatermark() {
@@ -32,11 +31,10 @@ export async function addWatermark() {
 
   const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
     e.stopPropagation();
-    menuOpenAmt++;
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
+    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
+    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
   };
 
@@ -122,13 +120,12 @@ export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptItemClicked = async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
-    menuOpenAmt++;
 
-    await pauseFor(50);
+    await pauseFor(20);
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
+    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
       openCfgMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
+    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
   };
   cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
