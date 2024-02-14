@@ -804,6 +804,16 @@ I welcome every contribution on GitHub!
             screenX, movementX: 5, movementY: 0 })));
         return true;
     }
+    /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
+    function clearInner(element) {
+        while (element.hasChildNodes())
+            clearNode(element.firstChild);
+    }
+    function clearNode(element) {
+        while (element.hasChildNodes())
+            clearNode(element.firstChild);
+        element.parentNode.removeChild(element);
+    }
 
     // I know TS enums are impure but it doesn't really matter here, plus they look cooler
     var LogLevel;
@@ -833,7 +843,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "4e1a1bb", // asserted as generic string instead of literal
+        buildNumber: "afe625c", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
@@ -1292,7 +1302,7 @@ I welcome every contribution on GitHub!
         inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
         inputElem.dataset.state = "inactive";
         inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
-        inputElem.title = t("hotkey_input_click_to_change_tooltip");
+        inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
         const resetElem = document.createElement("span");
         resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
         resetElem.role = "button";
@@ -1346,7 +1356,7 @@ I welcome every contribution on GitHub!
             inputElem.value = hotkey.code;
             inputElem.dataset.state = "inactive";
             infoElem.innerText = getHotkeyInfo(hotkey);
-            inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
             onChange(hotkey);
         });
         const deactivate = () => {
@@ -1355,14 +1365,14 @@ I welcome every contribution on GitHub!
             const curVal = (_a = getFeatures().switchSitesHotkey) !== null && _a !== void 0 ? _a : initialValue;
             inputElem.value = (_b = curVal === null || curVal === void 0 ? void 0 : curVal.code) !== null && _b !== void 0 ? _b : t("hotkey_input_click_to_change");
             inputElem.dataset.state = "inactive";
-            inputElem.title = t("hotkey_input_click_to_change_tooltip");
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
             infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
         };
         const activate = () => {
             siteEvents.emit("hotkeyInputActive", true);
             inputElem.value = "< ... >";
             inputElem.dataset.state = "active";
-            inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
         };
         siteEvents.on("cfgMenuClosed", deactivate);
         inputElem.addEventListener("click", () => {
@@ -1571,7 +1581,7 @@ I welcome every contribution on GitHub!
             const backgroundElem = document.createElement("div");
             backgroundElem.id = "bytm-cfg-menu-bg";
             backgroundElem.classList.add("bytm-menu-bg");
-            backgroundElem.title = t("close_menu_tooltip");
+            backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
             backgroundElem.style.visibility = "hidden";
             backgroundElem.style.display = "none";
             backgroundElem.addEventListener("click", (e) => {
@@ -1584,7 +1594,7 @@ I welcome every contribution on GitHub!
                     closeCfgMenu(e);
             });
             const menuContainer = document.createElement("div");
-            menuContainer.title = ""; // prevent bg title from propagating downwards
+            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
             menuContainer.classList.add("bytm-menu");
             menuContainer.id = "bytm-cfg-menu";
             //#SECTION title bar
@@ -1610,7 +1620,7 @@ I welcome every contribution on GitHub!
                 anchorElem.target = "_blank";
                 anchorElem.tabIndex = 0;
                 anchorElem.role = "button";
-                anchorElem.title = title;
+                anchorElem.ariaLabel = anchorElem.title = title;
                 const imgElem = document.createElement("img");
                 imgElem.className = "bytm-menu-img";
                 imgElem.src = imgSrc;
@@ -1635,7 +1645,7 @@ I welcome every contribution on GitHub!
             closeElem.role = "button";
             closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
-            closeElem.title = t("close_menu_tooltip");
+            closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
             closeElem.addEventListener("click", closeCfgMenu);
             closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
             titleCont.appendChild(titleElem);
@@ -1653,7 +1663,7 @@ I welcome every contribution on GitHub!
             reloadElem.classList.add("bytm-btn");
             reloadElem.style.marginLeft = "10px";
             reloadElem.innerText = t("reload_now");
-            reloadElem.title = t("reload_tooltip");
+            reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
             reloadElem.addEventListener("click", () => {
                 closeCfgMenu();
                 disableBeforeUnload();
@@ -1663,7 +1673,7 @@ I welcome every contribution on GitHub!
             footerElemCont.appendChild(footerElem);
             const resetElem = document.createElement("button");
             resetElem.classList.add("bytm-btn");
-            resetElem.title = t("reset_tooltip");
+            resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
             resetElem.innerText = t("reset");
             resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 if (confirm(t("reset_confirm"))) {
@@ -1675,7 +1685,7 @@ I welcome every contribution on GitHub!
             }));
             const exportElem = document.createElement("button");
             exportElem.classList.add("bytm-btn");
-            exportElem.title = t("export_tooltip");
+            exportElem.ariaLabel = exportElem.title = t("export_tooltip");
             exportElem.innerText = t("export");
             exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 closeCfgMenu();
@@ -1683,7 +1693,7 @@ I welcome every contribution on GitHub!
             }));
             const importElem = document.createElement("button");
             importElem.classList.add("bytm-btn");
-            importElem.title = t("import_tooltip");
+            importElem.ariaLabel = importElem.title = t("import_tooltip");
             importElem.innerText = t("import");
             importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 closeCfgMenu();
@@ -1941,7 +1951,7 @@ I welcome every contribution on GitHub!
             scrollIndicator.id = "bytm-menu-scroll-indicator";
             scrollIndicator.src = yield getResourceUrl("img-arrow_down");
             scrollIndicator.role = "button";
-            scrollIndicator.title = t("scroll_to_bottom");
+            scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
             featuresCont.appendChild(scrollIndicator);
             scrollIndicator.addEventListener("click", () => {
                 const bottomAnchor = document.querySelector("#bytm-menu-bottom-anchor");
@@ -1974,7 +1984,7 @@ I welcome every contribution on GitHub!
             versionElem.classList.add("bytm-link");
             versionElem.role = "button";
             versionElem.tabIndex = 0;
-            versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
+            versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
             versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
             const versionElemClicked = (e) => {
                 e.preventDefault();
@@ -2084,7 +2094,7 @@ I welcome every contribution on GitHub!
                 closeElem.role = "button";
                 closeElem.tabIndex = 0;
                 closeElem.src = yield getResourceUrl("img-close");
-                closeElem.title = t("close_menu_tooltip");
+                closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
                 closeElem.addEventListener("click", (e) => closeHelpDialog(e));
                 closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
                 headerElem.appendChild(titleCont);
@@ -2092,7 +2102,7 @@ I welcome every contribution on GitHub!
                 menuBgElem = document.createElement("div");
                 menuBgElem.id = "bytm-feat-help-menu-bg";
                 menuBgElem.classList.add("bytm-menu-bg");
-                menuBgElem.title = t("close_menu_tooltip");
+                menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
                 menuBgElem.style.visibility = "hidden";
                 menuBgElem.style.display = "none";
                 menuBgElem.addEventListener("click", (e) => {
@@ -2105,7 +2115,7 @@ I welcome every contribution on GitHub!
                         closeHelpDialog(e);
                 });
                 const menuContainer = document.createElement("div");
-                menuContainer.title = ""; // prevent bg title from propagating downwards
+                menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
                 menuContainer.classList.add("bytm-menu");
                 menuContainer.id = "bytm-feat-help-menu";
                 const featDescElem = document.createElement("h3");
@@ -2162,7 +2172,7 @@ I welcome every contribution on GitHub!
             const menuBgElem = document.createElement("div");
             menuBgElem.id = "bytm-export-menu-bg";
             menuBgElem.classList.add("bytm-menu-bg");
-            menuBgElem.title = t("close_menu_tooltip");
+            menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
             menuBgElem.style.visibility = "hidden";
             menuBgElem.style.display = "none";
             menuBgElem.addEventListener("click", (e) => {
@@ -2179,7 +2189,7 @@ I welcome every contribution on GitHub!
                 }
             });
             const menuContainer = document.createElement("div");
-            menuContainer.title = ""; // prevent bg title from propagating downwards
+            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
             menuContainer.classList.add("bytm-menu");
             menuContainer.id = "bytm-export-menu";
             //#SECTION title bar
@@ -2197,7 +2207,7 @@ I welcome every contribution on GitHub!
             closeElem.role = "button";
             closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
-            closeElem.title = t("close_menu_tooltip");
+            closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
             const closeExportMenuClicked = (e) => {
                 closeExportMenu(e);
                 openCfgMenu();
@@ -2230,7 +2240,7 @@ I welcome every contribution on GitHub!
             const copyBtnElem = document.createElement("button");
             copyBtnElem.classList.add("bytm-btn");
             copyBtnElem.innerText = t("copy_to_clipboard");
-            copyBtnElem.title = t("copy_config_tooltip");
+            copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
             const copiedTextElem = document.createElement("span");
             copiedTextElem.id = "bytm-export-menu-copied-txt";
             copiedTextElem.classList.add("bytm-menu-footer-copied");
@@ -2308,7 +2318,7 @@ I welcome every contribution on GitHub!
             const menuBgElem = document.createElement("div");
             menuBgElem.id = "bytm-import-menu-bg";
             menuBgElem.classList.add("bytm-menu-bg");
-            menuBgElem.title = t("close_menu_tooltip");
+            menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
             menuBgElem.style.visibility = "hidden";
             menuBgElem.style.display = "none";
             menuBgElem.addEventListener("click", (e) => {
@@ -2325,7 +2335,7 @@ I welcome every contribution on GitHub!
                 }
             });
             const menuContainer = document.createElement("div");
-            menuContainer.title = ""; // prevent bg title from propagating downwards
+            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
             menuContainer.classList.add("bytm-menu");
             menuContainer.id = "bytm-import-menu";
             //#SECTION title bar
@@ -2343,7 +2353,7 @@ I welcome every contribution on GitHub!
             closeElem.role = "button";
             closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
-            closeElem.title = t("close_menu_tooltip");
+            closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
             const closeImportMenuClicked = (e) => {
                 closeImportMenu(e);
                 openCfgMenu();
@@ -2367,7 +2377,7 @@ I welcome every contribution on GitHub!
             const importBtnElem = document.createElement("button");
             importBtnElem.classList.add("bytm-btn");
             importBtnElem.innerText = t("import");
-            importBtnElem.title = t("start_import_tooltip");
+            importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
             importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
                 (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
                 const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
@@ -2484,7 +2494,7 @@ I welcome every contribution on GitHub!
             const menuBgElem = document.createElement("div");
             menuBgElem.id = "bytm-changelog-menu-bg";
             menuBgElem.classList.add("bytm-menu-bg");
-            menuBgElem.title = t("close_menu_tooltip");
+            menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
             menuBgElem.style.visibility = "hidden";
             menuBgElem.style.display = "none";
             menuBgElem.addEventListener("click", (e) => {
@@ -2503,7 +2513,7 @@ I welcome every contribution on GitHub!
                 }
             });
             const menuContainer = document.createElement("div");
-            menuContainer.title = ""; // prevent bg title from propagating downwards
+            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
             menuContainer.classList.add("bytm-menu");
             menuContainer.id = "bytm-changelog-menu";
             //#SECTION title bar
@@ -2521,7 +2531,7 @@ I welcome every contribution on GitHub!
             closeElem.role = "button";
             closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
-            closeElem.title = t("close_menu_tooltip");
+            closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
             const closeChangelogMenuClicked = (e) => {
                 closeChangelogMenu(e);
                 if (menuBgElem.dataset.returnTo === "cfgMenu")
@@ -2548,7 +2558,7 @@ I welcome every contribution on GitHub!
             document.body.appendChild(menuBgElem);
             const anchors = document.querySelectorAll("#bytm-changelog-menu-text a");
             for (const anchor of anchors) {
-                anchor.title = anchor.href;
+                anchor.ariaLabel = anchor.title = anchor.href;
                 anchor.target = "_blank";
             }
         });
@@ -2592,8 +2602,7 @@ I welcome every contribution on GitHub!
         features$2 = feats;
     }
     //#MARKER BYTM-Config buttons
-    let menuOpenAmt = 0, logoExchanged = false, improveLogoCalled = false;
-    const eastereggOpenAmt = 5;
+    let logoExchanged = false, improveLogoCalled = false;
     /** Adds a watermark beneath the logo */
     function addWatermark() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2602,15 +2611,14 @@ I welcome every contribution on GitHub!
             watermark.id = "bytm-watermark";
             watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
             watermark.innerText = scriptInfo.name;
-            watermark.title = t("open_menu_tooltip", scriptInfo.name);
+            watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
             watermark.tabIndex = 0;
             improveLogo();
             const watermarkOpenMenu = (e) => {
                 e.stopPropagation();
-                menuOpenAmt++;
-                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
+                if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
                     openCfgMenu();
-                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
+                if (!logoExchanged && (e.shiftKey || e.ctrlKey))
                     exchangeLogo();
             };
             watermark.addEventListener("click", watermarkOpenMenu);
@@ -2683,11 +2691,10 @@ I welcome every contribution on GitHub!
             const cfgOptItemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
                 const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
                 settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
-                menuOpenAmt++;
-                yield pauseFor(50);
-                if ((!e.shiftKey || logoExchanged) && menuOpenAmt !== eastereggOpenAmt)
+                yield pauseFor(20);
+                if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
                     openCfgMenu();
-                if ((!logoExchanged && e.shiftKey) || menuOpenAmt === eastereggOpenAmt)
+                if (!logoExchanged && (e.shiftKey || e.ctrlKey))
                     exchangeLogo();
             });
             cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
@@ -2923,7 +2930,7 @@ I welcome every contribution on GitHub!
             anchorElem.role = "button";
             anchorElem.target = "_self";
             anchorElem.href = (_a = sidebarPaths[i]) !== null && _a !== void 0 ? _a : "#";
-            anchorElem.title = t("middle_click_open_tab");
+            anchorElem.ariaLabel = anchorElem.title = t("middle_click_open_tab");
             anchorElem.addEventListener("click", (e) => {
                 e.preventDefault();
             });
@@ -2990,7 +2997,7 @@ I welcome every contribution on GitHub!
                     const linkElem = document.createElement("div");
                     linkElem.id = "bytm-scroll-to-active-btn";
                     linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-                    linkElem.title = t("scroll_to_playing");
+                    linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
                     linkElem.role = "button";
                     const imgElem = document.createElement("img");
                     imgElem.className = "bytm-generic-btn-img";
@@ -3205,7 +3212,7 @@ I welcome every contribution on GitHub!
                                 }
                                 const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
                                 imgElem.src = errorIconUrl;
-                                imgElem.title = t("lyrics_not_found_click_open_search");
+                                imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
                                 lyricsBtn.style.cursor = "pointer";
                                 lyricsBtn.style.pointerEvents = "all";
                                 lyricsBtn.style.display = "inline-flex";
@@ -3214,7 +3221,7 @@ I welcome every contribution on GitHub!
                                 continue;
                             }
                             lyricsBtn.href = url;
-                            lyricsBtn.title = t("open_current_lyrics");
+                            lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
                             lyricsBtn.style.cursor = "pointer";
                             lyricsBtn.style.visibility = "visible";
                             lyricsBtn.style.display = "inline-flex";
@@ -3344,7 +3351,7 @@ I welcome every contribution on GitHub!
         return __awaiter(this, void 0, void 0, function* () {
             const linkElem = document.createElement("a");
             linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-            linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+            linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
             if (geniusUrl)
                 linkElem.href = geniusUrl;
             linkElem.role = "button";
@@ -3376,7 +3383,7 @@ I welcome every contribution on GitHub!
                 let amt = 0;
                 for (const queueItm of evt.childNodes) {
                     if (!queueItm.classList.contains("bytm-has-queue-btns")) {
-                        addQueueButtons(queueItm);
+                        addQueueButtons(queueItm, undefined, "currentQueue");
                         amt++;
                     }
                 }
@@ -3388,7 +3395,7 @@ I welcome every contribution on GitHub!
             siteEvents.on("autoplayQueueChanged", addCurrentQueueBtns);
             const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
             if (queueItems.length > 0) {
-                queueItems.forEach(itm => addQueueButtons(itm));
+                queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
                 log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
             }
             // generic lists
@@ -3399,8 +3406,8 @@ I welcome every contribution on GitHub!
                 const queueItems = listElem.querySelectorAll("ytmusic-responsive-list-item-renderer");
                 if (queueItems.length === 0)
                     return;
-                queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", ["bytm-generic-list-queue-btn-container"]));
                 listElem.classList.add("bytm-list-has-queue-btns");
+                queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", "genericQueue", ["bytm-generic-list-queue-btn-container"]));
                 log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
             };
             const listSelectors = [
@@ -3427,10 +3434,10 @@ I welcome every contribution on GitHub!
      * Adds the buttons to each item in the current song queue.
      * Also observes for changes to add new buttons to new items in the queue.
      * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
-     * @param containerParentSelector The selector of the parent element of the queue button container
+     * @param listType The type of list the queue item is in
      * @param classes Extra CSS classes to apply to the container
      */
-    function addQueueButtons(queueItem, containerParentSelector = ".song-info", classes = []) {
+    function addQueueButtons(queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = []) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             //#SECTION general queue item stuff
@@ -3442,20 +3449,38 @@ I welcome every contribution on GitHub!
             let lyricsBtnElem;
             if (features.lyricsQueueButton) {
                 lyricsBtnElem = yield createLyricsBtn(undefined, false);
-                lyricsBtnElem.title = t("open_lyrics");
+                lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
                 lyricsBtnElem.style.display = "inline-flex";
                 lyricsBtnElem.style.visibility = "initial";
                 lyricsBtnElem.style.pointerEvents = "initial";
-                lyricsBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
-                    e.stopPropagation();
-                    const songInfo = queueItem.querySelector(".song-info");
-                    if (!songInfo)
+                lyricsBtnElem.role = "link";
+                lyricsBtnElem.tabIndex = 0;
+                const lyricsBtnClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    let song, artist;
+                    if (listType === "currentQueue") {
+                        const songInfo = queueItem.querySelector(".song-info");
+                        if (!songInfo)
+                            return;
+                        const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
+                        song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
+                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
+                    }
+                    else if (listType === "genericQueue") {
+                        const songEl = queueItem.querySelector(".title-column yt-formatted-string a");
+                        let artistEl = null;
+                        if (location.pathname.startsWith("/playlist"))
+                            artistEl = document.querySelector("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
+                        else
+                            artistEl = queueItem.querySelector(".secondary-flex-columns yt-formatted-string:first-child a");
+                        song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
+                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
+                    }
+                    else
                         return;
-                    const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
-                    const song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
-                    const artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
                     if (!song || !artist)
-                        return;
+                        return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
                     let lyricsUrl;
                     const artistsSan = sanitizeArtists(artist);
                     const songSan = sanitizeSong(song);
@@ -3465,12 +3490,12 @@ I welcome every contribution on GitHub!
                         : getLyricsCacheEntry(artistsSan, songSan);
                     if (cachedLyricsUrl)
                         lyricsUrl = cachedLyricsUrl;
-                    else if (!songInfo.hasAttribute("data-bytm-loading")) {
+                    else if (!queueItem.hasAttribute("data-bytm-loading")) {
                         const imgEl = lyricsBtnElem === null || lyricsBtnElem === void 0 ? void 0 : lyricsBtnElem.querySelector("img");
                         if (!imgEl)
                             return;
                         if (!cachedLyricsUrl) {
-                            songInfo.setAttribute("data-bytm-loading", "");
+                            queueItem.setAttribute("data-bytm-loading", "");
                             imgEl.src = yield getResourceUrl("img-spinner");
                             imgEl.classList.add("bytm-spinner");
                         }
@@ -3488,7 +3513,7 @@ I welcome every contribution on GitHub!
                             imgEl.classList.remove("bytm-spinner");
                         };
                         if (!cachedLyricsUrl) {
-                            songInfo.removeAttribute("data-bytm-loading");
+                            queueItem.removeAttribute("data-bytm-loading");
                             // so the new image doesn't "blink"
                             setTimeout(resetImgElem, 100);
                         }
@@ -3500,35 +3525,55 @@ I welcome every contribution on GitHub!
                         }
                     }
                     lyricsUrl && openInNewTab(lyricsUrl);
-                }));
+                });
+                lyricsBtnElem.addEventListener("click", lyricsBtnClicked);
+                lyricsBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && lyricsBtnClicked(e));
             }
             //#SECTION delete from queue btn
             let deleteBtnElem;
             if (features.deleteFromQueueButton) {
                 deleteBtnElem = document.createElement("a");
-                Object.assign(deleteBtnElem, {
-                    title: t("remove_from_queue"),
-                    className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
-                    role: "button",
-                });
+                deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
+                deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");
+                deleteBtnElem.role = "button";
+                deleteBtnElem.tabIndex = 0;
                 deleteBtnElem.style.visibility = "initial";
-                deleteBtnElem.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
-                    e.stopPropagation();
+                const imgElem = document.createElement("img");
+                imgElem.classList.add("bytm-generic-btn-img");
+                imgElem.src = deleteIconUrl;
+                const deleteBtnClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
                     // container of the queue item popup menu - element gets reused for every queue item
                     let queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
                     try {
                         // three dots button to open the popup menu of a queue item
-                        const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape button");
-                        if (queuePopupCont)
-                            queuePopupCont.setAttribute("data-bytm-hidden", "true");
-                        dotsBtnElem === null || dotsBtnElem === void 0 ? void 0 : dotsBtnElem.click();
-                        yield pauseFor(20);
-                        queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-                        queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.setAttribute("data-bytm-hidden", "true");
-                        // a little bit janky and unreliable but the only way afaik
-                        const removeFromQueueBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-                        yield pauseFor(10);
-                        removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
+                        const dotsBtnElem = queueItem.querySelector("ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button");
+                        if (dotsBtnElem) {
+                            if (queuePopupCont)
+                                queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                            dotsBtnElem.click();
+                            yield pauseFor(10);
+                            queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+                            queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.setAttribute("data-bytm-hidden", "true");
+                            // a little bit janky and unreliable but the only way afaik
+                            const removeFromQueueBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+                            yield pauseFor(10);
+                            removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
+                            // queue items aren't removed automatically outside of the current queue
+                            if (removeFromQueueBtn && listType === "genericQueue") {
+                                yield pauseFor(500);
+                                clearInner(queueItem);
+                                queueItem.remove();
+                            }
+                            if (!removeFromQueueBtn) {
+                                warn("Couldn't find 'remove from queue' button in queue item three dots menu");
+                                dotsBtnElem.click();
+                                imgElem.src = yield getResourceUrl("img-error");
+                                if (deleteBtnElem)
+                                    deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
+                            }
+                        }
                     }
                     catch (err) {
                         error("Couldn't remove song from queue due to error:", err);
@@ -3536,10 +3581,9 @@ I welcome every contribution on GitHub!
                     finally {
                         queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
                     }
-                }));
-                const imgElem = document.createElement("img");
-                imgElem.className = "bytm-generic-btn-img";
-                imgElem.src = deleteIconUrl;
+                });
+                deleteBtnElem.addEventListener("click", deleteBtnClicked);
+                deleteBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && deleteBtnClicked(e));
                 deleteBtnElem.appendChild(imgElem);
             }
             //#SECTION append elements to DOM
@@ -4229,7 +4273,7 @@ I welcome every contribution on GitHub!
             backgroundElem.style.visibility = "hidden";
             backgroundElem.style.display = "none";
             const menuContainer = document.createElement("div");
-            menuContainer.title = ""; // prevent bg title from propagating downwards
+            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
             menuContainer.classList.add("bytm-menu");
             menuContainer.id = "bytm-welcome-menu";
             //#SECTION title bar
@@ -4364,18 +4408,18 @@ I welcome every contribution on GitHub!
         };
         const changes = {
             "#bytm-welcome-menu-title": (e) => e.innerText = t("welcome_menu_title", scriptInfo.name),
-            "#bytm-welcome-menu-title-close": (e) => e.title = t("close_menu_tooltip"),
+            "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
             "#bytm-welcome-menu-open-cfg": (e) => {
                 e.innerText = t("config_menu");
-                e.title = t("open_config_menu_tooltip");
+                e.ariaLabel = e.title = t("open_config_menu_tooltip");
             },
             "#bytm-welcome-menu-open-changelog": (e) => {
                 e.innerText = t("open_changelog");
-                e.title = t("open_changelog_tooltip");
+                e.ariaLabel = e.title = t("open_changelog_tooltip");
             },
             "#bytm-welcome-menu-footer-close": (e) => {
                 e.innerText = t("close");
-                e.title = t("close_menu_tooltip");
+                e.ariaLabel = e.title = t("close_menu_tooltip");
             },
             "#bytm-welcome-text-line1": (e) => e.innerHTML = t("welcome_text_line_1"),
             "#bytm-welcome-text-line2": (e) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
@@ -5217,6 +5261,22 @@ ytmusic-responsive-list-item-renderer .title-column {
 
 ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
   display: none !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+  visibility: hidden;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: hidden !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container {
+  visibility: visible;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: visible !important;
 }
 
 #bytm-welcome-menu-bg {
