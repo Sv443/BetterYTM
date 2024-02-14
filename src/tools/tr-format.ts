@@ -8,6 +8,8 @@ const onlyLocalesRaw = process.argv.find((v) => v.startsWith("--only") || v.toLo
 const onlyLocales = onlyLocalesRaw?.split("=")[1]?.replace(/"/g, "")
   ?.replace(/\s/g, "")?.split(",") as TrLocale[] | undefined;
 
+const includeBased = Boolean(process.argv.find((v) => v.match(/--include-based/) || v.toLowerCase() === "-b"));
+
 async function run() {
   console.log("\nReformatting translation files...");
   const en_US = await readFile("./assets/translations/en_US.json", "utf-8");
@@ -26,6 +28,9 @@ async function run() {
 
     let localeFile = en_US;
     const localeObj = JSON.parse(await readFile(`./assets/translations/${locale}.json`, "utf-8"));
+
+    if(!includeBased && localeObj.base)
+      continue;
 
     for(const k of Object.keys(en_US_obj.translations)) {
       const val = localeObj?.translations?.[k];
