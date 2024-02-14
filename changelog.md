@@ -1,13 +1,31 @@
 ## 1.1.0
-- **Added Features:**
+- **Features / Changes:**
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
-  - Added an audio amplification button to the media controls
-  - Added feature to restore the song time when reloading or restoring the tab
-  - BetterYTM now sends a hint to the Dark Reader extension to disable itself if it isn't already
-- **Changes & Fixes:**
-  - Interval of arrow key skipping is configurable now
-  - Site switch hotkey is also configurable now
-  - Skipping to a specific point in the song is more reliable now
+  - Added an interface for user-created plugins ([see contributing guide for more info](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#developing-a-plugin-that-interfaces-with-betterytm))
+  - Made site switch hotkey customizable
+  - Userscript will now show a welcome page after first install / update
+  - Feature to restore last song's time on page reload
+  - Made interval of arrow key skip configurable
+  - A hint is now sent to Dark Reader to disable itself (see [this](https://github.com/darkreader/darkreader/discussions/6868#discussioncomment-3109841))
+  - Made volume slider scroll sensitivity configurable
+  - Added details / help dialog to menu feature list
+  - Added queue buttons to all types of song list
+  - Added manual version check (can be disabled in config menu)
+- **Fixes:**
+  - BetterYTM now uses a more reliable way to skip to a certain time
+  - Fixed resources not loading in Chrome
+  - Fixed album list spacing getting messed up by anchor improvements styling
+  - Fixed "Start at" option in share menu making tracking parameter reappear
+  - Fixed selector for player queue that was changed by a YTM update
+- **Internal Changes:**
+  - The license of the source code has been changed from MIT to [AGPL-3.0](https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt)
+  - Migrated to the Rollup bundler
+    - Now multiple versions of the script are compiled for the different hosts (GitHub, GreasyFork, OpenUserJS) with slight compatibility fixes each
+    - Target branch can now be specified while compiling instead of being tied to the bundler mode
+  - Added support for React JSX
+  - Added support for external libraries through `@require`
+
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/35)
 
 <div class="split"></div>
 <br>
@@ -52,6 +70,8 @@
   - Site switch with <kbd>F9</kbd> will now keep the video time
   - Moved lots of utility code to my new library [UserUtils](https://github.com/Sv443-Network/UserUtils)
 
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/9)
+
 <div class="split"></div>
 <br>
 
@@ -61,6 +81,8 @@
   - Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)
   - Search for song lyrics with new button in media controls
   - Remove "Upgrade to YTM Premium" tab
+
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/3)
 
 <div class="split"></div>
 <br>
