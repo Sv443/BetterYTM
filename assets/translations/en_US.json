@@ -79,7 +79,7 @@
     "welcome_text_line_4": "My work relies on donations so please consider %1donating ❤️%2",
     "welcome_text_line_5": "Found a bug or want to suggest a feature? Please %1open an issue on GitHub%2",
 
-    "list_button_placement_queue_only": "\"Up next\" queue only",
+    "list_button_placement_queue_only": "Currently playing queue only",
     "list_button_placement_everywhere": "In every song list",
 
     "remember_song_time_sites_all": "Both sites",
@@ -136,7 +136,7 @@
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
 
     "feature_desc_locale": "Language",
-    "feature_desc_versionCheck": "Check for updates every 24 hours?",
+    "feature_desc_versionCheck": "Check for updates every 24 hours",
     "feature_helptext_versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
     "feature_desc_logLevel": "How much information to log to the console",
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue."
