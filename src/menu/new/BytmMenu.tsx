@@ -217,7 +217,7 @@ export class BytmMenu extends NanoEmitter<{
 
     // TODO:
     return (
-      <div id={`bytm-${this.id}-menu`} className="bytm-menu" title="">
+      <div id={`bytm-${this.id}-menu`} className="bytm-menu" title="" aria-label="">
         <div className="bytm-menu-header">
           {header ? (
             <div className="bytm-menu-title-wrapper" role="heading" aria-level={1}>

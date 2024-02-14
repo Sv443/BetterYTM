@@ -112,7 +112,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
           const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
 
           imgElem.src = errorIconUrl;
-          imgElem.title = t("lyrics_not_found_click_open_search");
+          imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
           lyricsBtn.style.cursor = "pointer";
           lyricsBtn.style.pointerEvents = "all";
           lyricsBtn.style.display = "inline-flex";
@@ -123,7 +123,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
         lyricsBtn.href = url;
 
-        lyricsBtn.title = t("open_current_lyrics");
+        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
         lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "visible";
         lyricsBtn.style.display = "inline-flex";
@@ -264,7 +264,7 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-  linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
   if(geniusUrl)
     linkElem.href = geniusUrl;
   linkElem.role = "button";

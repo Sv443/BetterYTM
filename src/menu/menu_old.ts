@@ -56,7 +56,7 @@ export async function addCfgMenu() {
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
   backgroundElem.classList.add("bytm-menu-bg");
-  backgroundElem.title = t("close_menu_tooltip");
+  backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
   backgroundElem.addEventListener("click", (e) => {
@@ -69,7 +69,7 @@ export async function addCfgMenu() {
   });
 
   const menuContainer = document.createElement("div");
-  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-cfg-menu";
 
@@ -103,7 +103,7 @@ export async function addCfgMenu() {
     anchorElem.target = "_blank";
     anchorElem.tabIndex = 0;
     anchorElem.role = "button";
-    anchorElem.title = title;
+    anchorElem.ariaLabel = anchorElem.title = title;
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-menu-img";
@@ -136,7 +136,7 @@ export async function addCfgMenu() {
   closeElem.role = "button";
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
-  closeElem.title = t("close_menu_tooltip");
+  closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
   closeElem.addEventListener("click", closeCfgMenu);
   closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
 
@@ -160,7 +160,7 @@ export async function addCfgMenu() {
   reloadElem.classList.add("bytm-btn");
   reloadElem.style.marginLeft = "10px";
   reloadElem.innerText = t("reload_now");
-  reloadElem.title = t("reload_tooltip");
+  reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
   reloadElem.addEventListener("click", () => {
     closeCfgMenu();
     disableBeforeUnload();
@@ -172,7 +172,7 @@ export async function addCfgMenu() {
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-btn");
-  resetElem.title = t("reset_tooltip");
+  resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
   resetElem.innerText = t("reset");
   resetElem.addEventListener("click", async () => {
     if(confirm(t("reset_confirm"))) {
@@ -184,7 +184,7 @@ export async function addCfgMenu() {
   });
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
-  exportElem.title = t("export_tooltip");
+  exportElem.ariaLabel = exportElem.title = t("export_tooltip");
   exportElem.innerText = t("export");
   exportElem.addEventListener("click", async () => {
     closeCfgMenu();
@@ -192,7 +192,7 @@ export async function addCfgMenu() {
   });
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
-  importElem.title = t("import_tooltip");
+  importElem.ariaLabel = importElem.title = t("import_tooltip");
   importElem.innerText = t("import");
   importElem.addEventListener("click", async () => {
     closeCfgMenu();
@@ -511,7 +511,7 @@ export async function addCfgMenu() {
   scrollIndicator.id = "bytm-menu-scroll-indicator";
   scrollIndicator.src = await getResourceUrl("img-arrow_down");
   scrollIndicator.role = "button";
-  scrollIndicator.title = t("scroll_to_bottom");
+  scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
 
   featuresCont.appendChild(scrollIndicator);
 
@@ -553,7 +553,7 @@ export async function addCfgMenu() {
   versionElem.classList.add("bytm-link");
   versionElem.role = "button";
   versionElem.tabIndex = 0;
-  versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
+  versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
   versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
   const versionElemClicked = (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
@@ -686,7 +686,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     closeElem.role = "button";
     closeElem.tabIndex = 0;
     closeElem.src = await getResourceUrl("img-close");
-    closeElem.title = t("close_menu_tooltip");
+    closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
     closeElem.addEventListener("click", (e) => closeHelpDialog(e));
     closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
 
@@ -696,7 +696,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     menuBgElem = document.createElement("div");
     menuBgElem.id = "bytm-feat-help-menu-bg";
     menuBgElem.classList.add("bytm-menu-bg");
-    menuBgElem.title = t("close_menu_tooltip");
+    menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
     menuBgElem.style.visibility = "hidden";
     menuBgElem.style.display = "none";
     menuBgElem.addEventListener("click", (e) => {
@@ -709,7 +709,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     });
 
     const menuContainer = document.createElement("div");
-    menuContainer.title = ""; // prevent bg title from propagating downwards
+    menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
     menuContainer.classList.add("bytm-menu");
     menuContainer.id = "bytm-feat-help-menu";
 
@@ -784,7 +784,7 @@ async function addExportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-export-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = t("close_menu_tooltip");
+  menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -801,7 +801,7 @@ async function addExportMenu() {
   });
 
   const menuContainer = document.createElement("div");
-  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-export-menu";
 
@@ -823,7 +823,7 @@ async function addExportMenu() {
   closeElem.role = "button";
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
-  closeElem.title = t("close_menu_tooltip");
+  closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
   const closeExportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeExportMenu(e);
     openCfgMenu();
@@ -865,7 +865,7 @@ async function addExportMenu() {
   const copyBtnElem = document.createElement("button");
   copyBtnElem.classList.add("bytm-btn");
   copyBtnElem.innerText = t("copy_to_clipboard");
-  copyBtnElem.title = t("copy_config_tooltip");
+  copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
 
   const copiedTextElem = document.createElement("span");
   copiedTextElem.id = "bytm-export-menu-copied-txt";
@@ -959,7 +959,7 @@ async function addImportMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-import-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = t("close_menu_tooltip");
+  menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -976,7 +976,7 @@ async function addImportMenu() {
   });
 
   const menuContainer = document.createElement("div");
-  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-import-menu";
 
@@ -998,7 +998,7 @@ async function addImportMenu() {
   closeElem.role = "button";
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
-  closeElem.title = t("close_menu_tooltip");
+  closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
   const closeImportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeImportMenu(e);
     openCfgMenu();
@@ -1030,7 +1030,7 @@ async function addImportMenu() {
   const importBtnElem = document.createElement("button");
   importBtnElem.classList.add("bytm-btn");
   importBtnElem.innerText = t("import");
-  importBtnElem.title = t("start_import_tooltip");
+  importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
 
   importBtnElem.addEventListener("click", async (evt) => {
     evt?.bubbles && evt.stopPropagation();
@@ -1168,7 +1168,7 @@ async function addChangelogMenu() {
   const menuBgElem = document.createElement("div");
   menuBgElem.id = "bytm-changelog-menu-bg";
   menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.title = t("close_menu_tooltip");
+  menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
   menuBgElem.style.visibility = "hidden";
   menuBgElem.style.display = "none";
   menuBgElem.addEventListener("click", (e) => {
@@ -1187,7 +1187,7 @@ async function addChangelogMenu() {
   });
 
   const menuContainer = document.createElement("div");
-  menuContainer.title = ""; // prevent bg title from propagating downwards
+  menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
   menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-changelog-menu";
 
@@ -1209,7 +1209,7 @@ async function addChangelogMenu() {
   closeElem.role = "button";
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
-  closeElem.title = t("close_menu_tooltip");
+  closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
   const closeChangelogMenuClicked = (e: MouseEvent | KeyboardEvent) => {
     closeChangelogMenu(e);
     if(menuBgElem.dataset.returnTo === "cfgMenu")
@@ -1247,7 +1247,7 @@ async function addChangelogMenu() {
 
   const anchors = document.querySelectorAll<HTMLAnchorElement>("#bytm-changelog-menu-text a");
   for(const anchor of anchors) {
-    anchor.title = anchor.href;
+    anchor.ariaLabel = anchor.title = anchor.href;
     anchor.target = "_blank";
   }
 }

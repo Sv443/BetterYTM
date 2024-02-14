@@ -23,7 +23,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
   inputElem.dataset.state = "inactive";
   inputElem.value = initialValue?.code ?? t("hotkey_input_click_to_change");
-  inputElem.title = t("hotkey_input_click_to_change_tooltip");
+  inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
 
   const resetElem = document.createElement("span");
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
@@ -88,7 +88,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     inputElem.value = hotkey.code;
     inputElem.dataset.state = "inactive";
     infoElem.innerText = getHotkeyInfo(hotkey);
-    inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
     onChange(hotkey);
   });
 
@@ -97,7 +97,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     const curVal = getFeatures().switchSitesHotkey ?? initialValue;
     inputElem.value = curVal?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
-    inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
     infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
   };
 
@@ -105,7 +105,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     siteEvents.emit("hotkeyInputActive", true);
     inputElem.value = "< ... >";
     inputElem.dataset.state = "active";
-    inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
   };
 
   siteEvents.on("cfgMenuClosed", deactivate);

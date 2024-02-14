@@ -24,7 +24,7 @@ export async function addWatermark() {
   watermark.id = "bytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
-  watermark.title = t("open_menu_tooltip", scriptInfo.name);
+  watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
   watermark.tabIndex = 0;
 
   improveLogo();
@@ -411,7 +411,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
     anchorElem.role = "button";
     anchorElem.target = "_self";
     anchorElem.href = sidebarPaths[i] ?? "#";
-    anchorElem.title = t("middle_click_open_tab");
+    anchorElem.ariaLabel = anchorElem.title = t("middle_click_open_tab");
     anchorElem.addEventListener("click", (e) => {
       e.preventDefault();
     });
@@ -487,7 +487,7 @@ export async function addScrollToActiveBtn() {
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
       linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-      linkElem.title = t("scroll_to_playing");
+      linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
 
       const imgElem = document.createElement("img");
