@@ -1,5 +1,5 @@
 import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { error, getResourceUrl, log, onSelectorOld } from "../utils";
+import { clearInner, error, getResourceUrl, log, onSelectorOld, warn } from "../utils";
 import { t } from "../translations";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
@@ -130,7 +130,12 @@ async function addQueueButtons(
       }
       else if(listType === "genericQueue") {
         const songEl = queueItem.querySelector<HTMLElement>(".title-column yt-formatted-string a");
-        const artistEl = queueItem.querySelector<HTMLElement>(".secondary-flex-columns yt-formatted-string:first-child a");
+        let artistEl: HTMLElement | null = null;
+
+        if(location.pathname.startsWith("/playlist"))
+          artistEl = document.querySelector<HTMLElement>("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
+        else
+          artistEl = queueItem.querySelector<HTMLElement>(".secondary-flex-columns yt-formatted-string:first-child a");
 
         song = songEl?.innerText;
         artist = artistEl?.innerText;
@@ -138,7 +143,7 @@ async function addQueueButtons(
       else return;
 
       if(!song || !artist)
-        return;
+        return error("Couldn't get song or artist name from queue item - song:", song, "- artist:", artist);
 
       let lyricsUrl: string | undefined;
 
@@ -213,6 +218,10 @@ async function addQueueButtons(
     deleteBtnElem.tabIndex = 0;
     deleteBtnElem.style.visibility = "initial";
 
+    const imgElem = document.createElement("img");
+    imgElem.classList.add("bytm-generic-btn-img");
+    imgElem.src = deleteIconUrl;
+
     const deleteBtnClicked = async (e: MouseEvent | KeyboardEvent) => {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -221,24 +230,40 @@ async function addQueueButtons(
       let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
       try {
         // three dots button to open the popup menu of a queue item
-        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>("ytmusic-menu-renderer yt-button-shape button");
+        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>("ytmusic-menu-renderer yt-button-shape[id=\"button-shape\"] button");
 
-        if(queuePopupCont)
-          queuePopupCont.setAttribute("data-bytm-hidden", "true");
+        if(dotsBtnElem) {
+          if(queuePopupCont)
+            queuePopupCont.setAttribute("data-bytm-hidden", "true");
 
-        dotsBtnElem?.click();
-        await pauseFor(20);
+          dotsBtnElem.click();
+          await pauseFor(10);
 
-        queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-        queuePopupCont?.setAttribute("data-bytm-hidden", "true");
+          queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+          queuePopupCont?.setAttribute("data-bytm-hidden", "true");
 
-        // a little bit janky and unreliable but the only way afaik
-        // TODO:FIXME: if listType === "genericQueue", the index needs to be different
-        const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+          // a little bit janky and unreliable but the only way afaik
+          const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
 
-        await pauseFor(10);
+          await pauseFor(10);
 
-        removeFromQueueBtn?.click();
+          removeFromQueueBtn?.click();
+
+          // queue items aren't removed automatically outside of the current queue
+          if(removeFromQueueBtn && listType === "genericQueue") {
+            await pauseFor(500);
+            clearInner(queueItem);
+            queueItem.remove();
+          }
+
+          if(!removeFromQueueBtn) {
+            warn("Couldn't find 'remove from queue' button in queue item three dots menu");
+            dotsBtnElem.click();
+            imgElem.src = await getResourceUrl("img-error");
+            if(deleteBtnElem)
+              deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
+          }
+        }
       }
       catch(err) {
         error("Couldn't remove song from queue due to error:", err);
@@ -250,10 +275,6 @@ async function addQueueButtons(
 
     deleteBtnElem.addEventListener("click", deleteBtnClicked);
     deleteBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && deleteBtnClicked(e));
-
-    const imgElem = document.createElement("img");
-    imgElem.classList.add("bytm-generic-btn-img");
-    imgElem.src = deleteIconUrl;
 
     deleteBtnElem.appendChild(imgElem);
   }
