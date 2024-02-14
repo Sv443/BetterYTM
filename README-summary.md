@@ -11,19 +11,19 @@ All of these can be toggled and configured in the configuration menu.
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
   - Set a custom size and step resolution for the volume slider and show a percentage label next to it
-  - Boost the audio volume past 100%
   - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
+  - Remember the time of the last played song to resume playback after reloading or reopening the tab
   - Quickly scroll to the currently active song in the queue by clicking a button
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
   - Remove the premium tab in the sidebar
 - Input / Interaction:
-  - Use arrow keys to skip forward or backward by 10 seconds
+  - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
-  - Switch between YouTube and YouTube Music on a video by pressing a hotkey
+  - Press a hotkey on a video/song to switch between YouTube and YouTube Music, while keeping the video time
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
-... and more!
+... and these are just the notable features, there are many more smaller improvements and bugfixes!
 
 <br>
 
