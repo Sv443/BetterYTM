@@ -1,0 +1,7 @@
+ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
+  margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
+}
+
+ytmusic-carousel-shelf-renderer ytmusic-carousel {
+  --ytmusic-carousel-item-height: 60px !important;
+}

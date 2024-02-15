@@ -5,9 +5,12 @@
     "target": "ES2016",
     "outDir": "dist/out",
     "lib": [
+      "ES5",
+      "ES6",
       "DOM",
       "DOM.Iterable"
     ],
+    "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
@@ -30,11 +33,4 @@
     "**/*.js",
     "dist/**",
   ],
-  "typeAcquisition": {
-    "enable": true,
-    "include": [
-      "types.d.ts",
-      "global.d.ts",
-    ],
-  },
 }

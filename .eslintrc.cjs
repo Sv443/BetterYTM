@@ -6,7 +6,6 @@ module.exports = {
   },
   ignorePatterns: [
     "*.min.*",
-    "webpack.config.js",
     "*.user.js",
     "*.map",
     "dist/**",
@@ -14,6 +13,9 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
   ],
   globals: {
     Atomics: "readonly",
@@ -24,26 +26,49 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    sourceType: "module",
   },
   plugins: [
     "@typescript-eslint",
+    "react",
+    "react-hooks",
   ],
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
   rules: {
     "no-unreachable": "off",
     "quotes": [ "error", "double" ],
     "semi": [ "error", "always" ],
     "eol-last": [ "error", "always" ],
     "no-async-promise-executor": "off",
+    "no-cond-assign": "off",
     "indent": ["error", 2, { "ignoredNodes": ["VariableDeclaration[declarations.length=0]"] }],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "ignoreRestSiblings": true, "argsIgnorePattern": "^_" }],
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": ["error", {
+      types: {
+        "{}": false,
+      },
+      extendDefaults: true,
+    }],
+    "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": ["error", "only-multiline"],
     "no-misleading-character-class": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
   },
   overrides: [
     {
-      files: ["**.js"],
+      files: ["**.js", "**.mjs", "**.cjs"],
       rules: {
         "@typescript-eslint/no-var-requires": "off",
         "quotes": [ "error", "double" ],

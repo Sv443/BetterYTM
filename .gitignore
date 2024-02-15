@@ -6,4 +6,7 @@ node_modules/
 dist/*.map
 dist/out/
 dist/*.css
+dist/*_gf.user.js
+dist/*_oujs.user.js
 .build.json
+*.ignore.*

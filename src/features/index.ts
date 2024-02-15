@@ -1,42 +1,73 @@
-import { scriptInfo } from "../constants";
+import { t, tp } from "../translations";
+import { getPreferredLocale, resourceToHTMLString } from "../utils";
+import langMapping from "../../assets/locales.json" assert { type: "json" };
+import { remSongMinPlayTime } from "./behavior";
+import { FeatureInfo } from "../types";
 
-export * from "./input";
 export * from "./layout";
+export * from "./behavior";
+export * from "./input";
 export * from "./lyrics";
-export { initMenu } from "../menu/menu";
-export * from "../menu/menu_old";
+export * from "./songLists";
+export * from "./versionCheck";
 
-/** Union of all feature keys */
-export type FeatInfoKey = keyof typeof featInfo;
+type SelectOption = { value: number | string, label: string };
 
-/** Union of all feature categories */
-export type FeatureCategory = typeof featInfo[FeatInfoKey]["category"];
+//#MARKER feature dependencies
 
-/** Mapping of feature category identifiers to readable strings */
-export const categoryNames: Record<FeatureCategory, string> = {
-  input: "Input",
-  layout: "Layout",
-  lyrics: "Lyrics",
-  misc: "Other",
-} as const;
+const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
+  return [...a, {
+    value: locale,
+    label: name,
+  }];
+}, [] as SelectOption[])
+  .sort((a, b) => a.label.localeCompare(b.label));
 
-/** Contains all possible features with their default values and other configuration */
+//#MARKER features
+
+/**
+ * Contains all possible features with their default values and other configuration.  
+ *   
+ * **Required props:**
+ * | Property | Description |
+ * | :-- | :-- |
+ * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
+ * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
+ * | `default`            | default value of the feature - type of the value depends on the given `type` |
+ * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
+ *   
+ * **Optional props:**
+ * | Property | Description |
+ * | :-- | :-- |
+ * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+ * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
+ * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+ * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+ * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+ * | `unit`                                      | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ *   
+ * **Notes:**
+ * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
+ */
 export const featInfo = {
   //#SECTION layout
   removeUpgradeTab: {
-    desc: "Remove the Upgrade / Premium tab",
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
   },
   volumeSliderLabel: {
-    desc: "Add a percentage label next to the volume slider",
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   volumeSliderSize: {
-    desc: "The width of the volume slider in pixels",
     type: "number",
     category: "layout",
     min: 50,
@@ -44,124 +75,210 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   volumeSliderStep: {
-    desc: "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
     type: "slider",
     category: "layout",
     min: 1,
     max: 25,
     default: 2,
     unit: "%",
+    enable: () => void "TODO",
+    change: () => void "TODO",
+  },
+  volumeSliderScrollStep: {
+    type: "slider",
+    category: "layout",
+    min: 1,
+    max: 25,
+    default: 10,
+    unit: "%",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   watermarkEnabled: {
-    desc: `Show a ${scriptInfo.name} watermark under the site logo that opens this config menu`,
     type: "toggle",
     category: "layout",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  removeShareTrackingParam: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  fixSpacing: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  scrollToActiveSongBtn: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+
+  //#SECTION song lists
+  lyricsQueueButton: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   deleteFromQueueButton: {
-    desc: "Add a button to each song in the queue to quickly remove it",
     type: "toggle",
-    category: "layout",
+    category: "songLists",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  listButtonsPlacement: {
+    type: "select",
+    category: "songLists",
+    options: () => [
+      { value: "queueOnly", label: t("list_button_placement_queue_only") },
+      { value: "everywhere", label: t("list_button_placement_everywhere") },
+    ],
+    default: "everywhere",
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+
+  //#SECTION behavior
+  disableBeforeUnloadPopup: {
+    type: "toggle",
+    category: "behavior",
+    default: false,
+    enable: () => void "TODO",
   },
   closeToastsTimeout: {
-    desc: "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
     type: "number",
-    category: "layout",
+    category: "behavior",
     min: 0,
     max: 30,
     step: 0.5,
     default: 0,
     unit: "s",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
-  removeShareTrackingParam: {
-    desc: "Remove the tracking parameter (&si=...) from links in the share popup",
+  rememberSongTime: {
     type: "toggle",
-    category: "layout",
+    category: "behavior",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO", // TODO: feasible?
+    helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
   },
-  fixSpacing: {
-    desc: "Fix spacing issues in the layout",
-    type: "toggle",
-    category: "layout",
-    default: true,
-  },
-  scrollToActiveSongBtn: {
-    desc: "Add a button to the queue to scroll to the currently playing song",
-    type: "toggle",
-    category: "layout",
-    default: true,
+  rememberSongTimeSites: {
+    type: "select",
+    category: "behavior",
+    options: () => [
+      { value: "all", label: t("remember_song_time_sites_all") },
+      { value: "yt", label: t("remember_song_time_sites_yt") },
+      { value: "ytm", label: t("remember_song_time_sites_ytm") },
+    ],
+    default: "ytm",
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
 
   //#SECTION input
   arrowKeySupport: {
-    desc: "Use arrow keys to skip forwards and backwards by 10 seconds",
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  arrowKeySkipBy: {
+    type: "number",
+    category: "input",
+    min: 0.5,
+    max: 60,
+    step: 0.5,
+    default: 5,
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   switchBetweenSites: {
-    desc: "Add F9 as a hotkey to switch between the YT and YTM sites on a video / song",
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   switchSitesHotkey: {
-    hidden: true,
-    desc: "TODO(v1.1): Which hotkey needs to be pressed to switch sites?",
     type: "hotkey",
     category: "input",
     default: {
-      key: "F9",
+      code: "F9",
       shift: false,
       ctrl: false,
-      meta: false,
+      alt: false,
     },
-  },
-  disableBeforeUnloadPopup: {
-    desc: "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
-    type: "toggle",
-    category: "input",
-    default: false,
+    enable: () => void "TODO",
+    change: () => void "TODO",
   },
   anchorImprovements: {
-    desc: "Add and improve links all over the page so things can be opened in a new tab easier",
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
   numKeysSkipToTime: {
-    desc: "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     type: "toggle",
     category: "input",
     default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 
   //#SECTION lyrics
   geniusLyrics: {
-    desc: "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
     type: "toggle",
     category: "lyrics",
     default: true,
-  },
-  lyricsQueueButton: {
-    desc: "Add a button to each song in the queue to quickly open its lyrics page",
-    type: "toggle",
-    category: "lyrics",
-    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 
-  //#SECTION misc
-  logLevel: {
-    desc: "How much information to log to the console",
+  //#SECTION general
+  locale: {
     type: "select",
-    category: "misc",
-    options: [
-      { value: 0, label: "Debug (most)" },
-      { value: 1, label: "Info (only important)" },
+    category: "general",
+    options: localeOptions,
+    default: getPreferredLocale(),
+    enable: () => void "TODO",
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => await resourceToHTMLString("img-globe") ?? "",
+  },
+  versionCheck: {
+    type: "toggle",
+    category: "general",
+    default: true,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
+  },
+  logLevel: {
+    type: "select",
+    category: "general",
+    options: () => [
+      { value: 0, label: t("log_level_debug") },
+      { value: 1, label: t("log_level_info") },
     ],
     default: 1,
+    enable: () => void "TODO",
   },
-} as const;
+} as const satisfies FeatureInfo;

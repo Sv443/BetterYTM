@@ -1,0 +1,68 @@
+/* #MARKER queue buttons */
+
+#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+  position: relative;
+}
+
+#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+  display: none;
+  position: absolute;
+  right: 0;
+  padding-left: 25px;
+  height: 100%;
+}
+
+#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+.bytm-generic-list-queue-btn-container {
+  /* otherwise the queue buttons render over the currently playing song page */
+  z-index: 1;
+}
+
+#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
+ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
+  display: inline-block;
+}
+
+ytmusic-responsive-list-item-renderer .title-column {
+  align-items: center;
+}
+
+#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+  display: none !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+  visibility: hidden;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: hidden !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container {
+  visibility: visible;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: visible !important;
+}

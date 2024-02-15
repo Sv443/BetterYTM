@@ -1,11 +1,11 @@
-import { ConfigManager, ConfigMigrationsDict } from "@sv443-network/userutils";
+import { ConfigManager, type ConfigMigrationsDict } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
-import { FeatureConfig } from "./types";
 import { info, log } from "./utils";
-import { siteEvents } from "./events";
+import { emitSiteEvent } from "./siteEvents";
+import type { FeatureConfig } from "./types";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 3;
+export const formatVersion = 4;
 /** Config data format migration dictionary */
 export const migrations: ConfigMigrationsDict = {
   // 1 -> 2
@@ -21,13 +21,37 @@ export const migrations: ConfigMigrationsDict = {
   // 2 -> 3
   3: (oldData: Record<string, unknown>) => ({
     ...oldData,
-    removeShareTrackingParam: true,
-    numKeysSkipToTime: true,
-    fixSpacing: true,
-    scrollToActiveSongBtn: true,
-    logLevel: 1,
+    removeShareTrackingParam: getFeatureDefault("removeShareTrackingParam"),
+    numKeysSkipToTime: getFeatureDefault("numKeysSkipToTime"),
+    fixSpacing: getFeatureDefault("fixSpacing"),
+    scrollToActiveSongBtn: getFeatureDefault("scrollToActiveSongBtn"),
+    logLevel: getFeatureDefault("logLevel"),
   }),
+  // 3 -> 4
+  4: (oldData: Record<string, unknown>) => {
+    const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
+    return {
+      ...oldData,
+      rememberSongTime: getFeatureDefault("rememberSongTime"),
+      rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"),
+      arrowKeySkipBy: 10,
+      switchSitesHotkey: {
+        code: oldSwitchSitesHotkey.key ?? "F9",
+        shift: Boolean(oldSwitchSitesHotkey.shift ?? false),
+        ctrl: Boolean(oldSwitchSitesHotkey.ctrl ?? false),
+        alt: Boolean(oldSwitchSitesHotkey.meta ?? false),
+      },
+      listButtonsPlacement: "queueOnly",
+      volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"),
+      locale: getFeatureDefault("locale"),
+      versionCheck: getFeatureDefault("versionCheck"),
+    };
+  },
 };
+
+function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
+  return featInfo[key].default;
+}
 
 export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
@@ -60,17 +84,19 @@ export function getFeatures() {
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
-export async function saveFeatures(featureConf: FeatureConfig) {
-  await cfgMgr.setData(featureConf);
-  siteEvents.emit("configChanged", cfgMgr.getData());
+export function saveFeatures(featureConf: FeatureConfig) {
+  const res = cfgMgr.setData(featureConf);
+  emitSiteEvent("configChanged", cfgMgr.getData());
   info("Saved new feature config:", featureConf);
+  return res;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
-export async function setDefaultFeatures() {
-  await cfgMgr.saveDefaultData();
-  siteEvents.emit("configChanged", cfgMgr.getData());
+export function setDefaultFeatures() {
+  const res = cfgMgr.saveDefaultData();
+  emitSiteEvent("configChanged", cfgMgr.getData());
   info("Reset feature config to its default values");
+  return res;
 }
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */

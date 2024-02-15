@@ -1,11 +1,10 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, onSelector, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, warn } from "../utils";
-import { SiteEventsMap, siteEvents } from "../events";
-import { openMenu } from "../menu/menu_old";
-import { getGeniusUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
-import { featInfo } from "./index";
+import { error, getResourceUrl, log, onSelectorOld, warn } from "../utils";
+import { t } from "../translations";
+import { openCfgMenu } from "../menu/menu_old";
+import { featInfo } from ".";
 import "./layout.css";
 
 let features: FeatureConfig;
@@ -16,44 +15,33 @@ export function preInitLayout(feats: FeatureConfig) {
 
 //#MARKER BYTM-Config buttons
 
-let menuOpenAmt = 0, logoExchanged = false;
+let logoExchanged = false, improveLogoCalled = false;
 
 /** Adds a watermark beneath the logo */
-export function addWatermark() {
+export async function addWatermark() {
   const watermark = document.createElement("a");
   watermark.role = "button";
   watermark.id = "bytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
   watermark.innerText = scriptInfo.name;
-  watermark.title = "Open menu";
-  watermark.tabIndex = 1000;
+  watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
+  watermark.tabIndex = 0;
 
   improveLogo();
 
-  watermark.addEventListener("click", (e) => {
+  const watermarkOpenMenu = (e: MouseEvent | KeyboardEvent) => {
     e.stopPropagation();
-    menuOpenAmt++;
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-      openMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+      openCfgMenu();
+    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
-  });
+  };
 
-  // when using the tab key to navigate
-  watermark.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") {
-      e.stopPropagation();
-      menuOpenAmt++;
+  watermark.addEventListener("click", watermarkOpenMenu);
+  watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
 
-      if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-        openMenu();
-      if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
-        exchangeLogo();
-    }
-  });
-
-  onSelector("ytmusic-nav-bar #left-content", {
+  onSelectorOld("ytmusic-nav-bar #left-content", {
     listener: (logoElem) => insertAfter(logoElem, watermark),
   });
 
@@ -61,12 +49,16 @@ export function addWatermark() {
 }
 
 /** Turns the regular `<img>`-based logo into inline SVG to be able to animate and modify parts of it */
-async function improveLogo() {
+export async function improveLogo() {
   try {
+    if(improveLogoCalled)
+      return;
+    improveLogoCalled = true;
+
     const res = await fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
     const svg = await res.text();
-    
-    onSelector("ytmusic-logo a", {
+
+    onSelectorOld("ytmusic-logo a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
         logoElem.innerHTML = svg;
@@ -88,7 +80,7 @@ async function improveLogo() {
 
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-  onSelector(".bytm-mod-logo", {
+  onSelectorOld(".bytm-mod-logo", {
     listener: async (logoElem) => {
       if(logoElem.classList.contains("bytm-logo-exchanged"))
         return;
@@ -96,7 +88,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl("icon");
+      const iconUrl = await getResourceUrl("img-logo");
 
       const newLogo = document.createElement("img");
       newLogo.className = "bytm-mod-logo-img";
@@ -118,32 +110,34 @@ function exchangeLogo() {
 /** Called whenever the avatar popover menu exists to add a BYTM-Configuration button to the user menu popover */
 export async function addConfigMenuOption(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.role = "button";
   cfgOptElem.className = "bytm-cfg-menu-option";
   
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
-  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = "Click to open BetterYTM's configuration menu";
-  cfgOptItemElem.addEventListener("click", async (e) => {
+  cfgOptItemElem.role = "button";
+  cfgOptItemElem.tabIndex = 0;
+  cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
+  const cfgOptItemClicked = async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
-    menuOpenAmt++;
 
-    await pauseFor(100);
+    await pauseFor(20);
 
-    if((!e.shiftKey || logoExchanged) && menuOpenAmt !== 5)
-      openMenu();
-    if((!logoExchanged && e.shiftKey) || menuOpenAmt === 5)
+    if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+      openCfgMenu();
+    if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
-  });
+  };
+  cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
+  cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
-  cfgOptIconElem.src = await getResourceUrl("icon");
+  cfgOptIconElem.src = await getResourceUrl("img-logo");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-  cfgOptTextElem.innerText = "BetterYTM Configuration";
+  cfgOptTextElem.innerText = t("config_menu_option", scriptInfo.name);
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
   cfgOptItemElem.appendChild(cfgOptTextElem);
@@ -152,20 +146,22 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   container.appendChild(cfgOptElem);
 
+  improveLogo();
+
   log("Added BYTM-Configuration button to menu popover");
 }
 
 //#MARKER remove upgrade tab
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
-export function removeUpgradeTab() {
-  onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+export async function removeUpgradeTab() {
+  onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemLarge) => {
       tabElemLarge.remove();
       log("Removed large upgrade tab");
     },
   });
-  onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+  onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemSmall) => {
       tabElemSmall.remove();
       log("Removed small upgrade tab");
@@ -175,12 +171,34 @@ export function removeUpgradeTab() {
 
 //#MARKER volume slider
 
-export function initVolumeFeatures() {
+export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
-  onSelector<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
+  onSelectorOld<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
     listener: (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
+
+      if(features.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
+        for(const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+          volSliderCont.addEventListener(evtName, (e) => {
+            e.preventDefault();
+            // cancels all the other events that would be fired
+            e.stopImmediatePropagation();
+
+            const delta = (e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1;
+            const volumeDir = -Math.sign(delta);
+            const newVolume = String(Number(sliderElem.value) + (features.volumeSliderScrollStep * volumeDir));
+
+            sliderElem.value = newVolume;
+            sliderElem.setAttribute("aria-valuenow", newVolume);
+            // make the site actually change the volume
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+          }, {
+            // takes precedence over the slider's own event listener
+            capture: true,
+          });
+        }
+      }
 
       addParent(sliderElem, volSliderCont);
 
@@ -196,42 +214,37 @@ export function initVolumeFeatures() {
 }
 
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderCont: HTMLDivElement) {
+function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelElem = document.createElement("div");
-  labelElem.className = "bytm-vol-slider-label";
+  labelElem.id = "bytm-vol-slider-label";
   labelElem.innerText = `${sliderElem.value}%`;
 
   // prevent video from minimizing
   labelElem.addEventListener("click", (e) => e.stopPropagation());
 
-  const getLabelTexts = (slider: HTMLInputElement) => {
-    const labelShort = `${slider.value}%`;
-    const sensText = features.volumeSliderStep !== featInfo.volumeSliderStep.default ? ` (Sensitivity: ${slider.step}%)` : "";
-    const labelFull = `Volume: ${labelShort}${sensText}`;
+  const getLabelText = (slider: HTMLInputElement) =>
+    t("volume_tooltip", slider.value, features.volumeSliderStep ?? slider.step);
 
-    return { labelShort, labelFull };
-  };
-
-  const { labelFull } = getLabelTexts(sliderElem);
-  sliderCont.setAttribute("title", labelFull);
+  const labelFull = getLabelText(sliderElem);
+  sliderContainer.setAttribute("title", labelFull);
   sliderElem.setAttribute("title", labelFull);
   sliderElem.setAttribute("aria-valuetext", labelFull);
 
   const updateLabel = () => {
-    const { labelShort, labelFull } = getLabelTexts(sliderElem);
+    const labelFull = getLabelText(sliderElem);
 
-    sliderCont.setAttribute("title", labelFull);
+    sliderContainer.setAttribute("title", labelFull);
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
 
-    const labelElem2 = document.querySelector<HTMLDivElement>(".bytm-vol-slider-label");
+    const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label");
     if(labelElem2)
-      labelElem2.innerText = labelShort;
+      labelElem2.innerText = `${sliderElem.value}%`;
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
 
-  onSelector("#bytm-vol-slider-cont", {
+  onSelectorOld("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
       volumeCont.appendChild(labelElem);
     },
@@ -275,187 +288,18 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
   sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 
-//#MARKER queue buttons
-
-export function initQueueButtons() {
-  const addQueueBtns = (
-    evt: Parameters<SiteEventsMap["queueChanged" | "autoplayQueueChanged"]>[0],
-  ) => {
-    let amt = 0;
-    for(const queueItm of evt.childNodes as NodeListOf<HTMLElement>) {
-      if(!queueItm.classList.contains("bytm-has-queue-btns")) {
-        addQueueButtons(queueItm);
-        amt++;
-      }
-    }
-    if(amt > 0)
-      log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
-  };
-
-  siteEvents.on("queueChanged", addQueueBtns);
-  siteEvents.on("autoplayQueueChanged", addQueueBtns);
-
-  const queueItems = document.querySelectorAll<HTMLElement>("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
-  if(queueItems.length === 0)
-    return;
-
-  queueItems.forEach(itm => addQueueButtons(itm));
-
-  log(`Added buttons to ${queueItems.length} existing queue ${autoPlural("item", queueItems)}`);
-}
-
-/**
- * Adds the buttons to each item in the current song queue.  
- * Also observes for changes to add new buttons to new items in the queue.
- * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
- */
-async function addQueueButtons(queueItem: HTMLElement) {
-  //#SECTION general queue item stuff
-  const queueBtnsCont = document.createElement("div");
-  queueBtnsCont.className = "bytm-queue-btn-container";
-
-  const lyricsIconUrl = await getResourceUrl("lyrics");
-  const deleteIconUrl = await getResourceUrl("delete");
-
-  //#SECTION lyrics btn
-  let lyricsBtnElem: HTMLAnchorElement | undefined;
-
-  if(features.lyricsQueueButton) {
-    lyricsBtnElem = await createLyricsBtn(undefined, false);
-
-    lyricsBtnElem.title = "Open this song's lyrics in a new tab";
-    lyricsBtnElem.style.display = "inline-flex";
-    lyricsBtnElem.style.visibility = "initial";
-    lyricsBtnElem.style.pointerEvents = "initial";
-
-    lyricsBtnElem.addEventListener("click", async (e) => {
-      e.stopPropagation();
-
-      const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
-      if(!songInfo)
-        return;
-
-      const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
-      const song = songEl?.innerText;
-      const artist = artistEl?.innerText;
-      if(!song || !artist)
-        return;
-
-      let lyricsUrl: string | undefined;
-
-      const artistsSan = sanitizeArtists(artist);
-      const songSan = sanitizeSong(song);
-      const splitTitle = splitVideoTitle(songSan);
-
-      const cachedLyricsUrl = songSan.includes("-")
-        ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
-        : getLyricsCacheEntry(artistsSan, songSan);
-
-      if(cachedLyricsUrl)
-        lyricsUrl = cachedLyricsUrl;
-      else if(!songInfo.hasAttribute("data-bytm-loading")) {
-        const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement>("img");
-        if(!imgEl)
-          return;
-
-        if(!cachedLyricsUrl) {
-          songInfo.setAttribute("data-bytm-loading", "");
-
-          imgEl.src = await getResourceUrl("spinner");
-          imgEl.classList.add("bytm-spinner");
-        }
-
-        lyricsUrl = cachedLyricsUrl ?? await getGeniusUrl(artistsSan, songSan);
-
-        const resetImgElem = () => {
-          imgEl.src = lyricsIconUrl;
-          imgEl.classList.remove("bytm-spinner");
-        };
-
-        if(!cachedLyricsUrl) {
-          songInfo.removeAttribute("data-bytm-loading");
-
-          // so the new image doesn't "blink"
-          setTimeout(resetImgElem, 100);
-        }
-
-        if(!lyricsUrl) {
-          resetImgElem();
-          if(confirm("Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?"))
-            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} ${songSan}`)}`);
-          return;
-        }
-      }
-
-      lyricsUrl && openInNewTab(lyricsUrl);
-    });
-  }
-
-  //#SECTION delete from queue btn
-  let deleteBtnElem: HTMLAnchorElement | undefined;
-
-  if(features.deleteFromQueueButton) {
-    deleteBtnElem = document.createElement("a");
-    Object.assign(deleteBtnElem, {
-      title: "Remove this song from the queue",
-      className: "ytmusic-player-bar bytm-delete-from-queue bytm-generic-btn",
-      role: "button",
-    });
-    deleteBtnElem.style.visibility = "initial";
-
-    deleteBtnElem.addEventListener("click", async (e) => {
-      e.stopPropagation();
-
-      // container of the queue item popup menu - element gets reused for every queue item
-      let queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-      try {
-        // three dots button to open the popup menu of a queue item
-        const dotsBtnElem = queueItem.querySelector<HTMLButtonElement>("ytmusic-menu-renderer yt-button-shape button");
-
-        if(queuePopupCont)
-          queuePopupCont.setAttribute("data-bytm-hidden", "true");
-
-        dotsBtnElem?.click();
-        await pauseFor(20);
-
-        queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-        queuePopupCont?.setAttribute("data-bytm-hidden", "true");
-
-        // a little bit janky and unreliable but the only way afaik
-        const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-
-        await pauseFor(10);
-
-        removeFromQueueBtn?.click();
-      }
-      catch(err) {
-        error("Couldn't remove song from queue due to error:", err);
-      }
-      finally {
-        queuePopupCont?.removeAttribute("data-bytm-hidden");
-      }
-    });
-
-    const imgElem = document.createElement("img");
-    imgElem.className = "bytm-generic-btn-img";
-    imgElem.src = deleteIconUrl;
-
-    deleteBtnElem.appendChild(imgElem);
-  }
-
-  //#SECTION append elements to DOM
-
-  lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
-  deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);
-
-  queueItem.querySelector<HTMLElement>(".song-info")?.appendChild(queueBtnsCont);
-  queueItem.classList.add("bytm-has-queue-btns");
-}
-
 //#MARKER anchor improvements
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
-export function addAnchorImprovements() {
+export async function addAnchorImprovements() {
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl("css-anchor_improvements"))).text();
+    css && addGlobalStyle(css);
+  }
+  catch(err) {
+    error("Couldn't add anchor improvements CSS due to an error:", err);
+  }
+
   //#SECTION carousel shelves
   try {
     const preventDefault = (e: MouseEvent) => e.preventDefault();
@@ -488,7 +332,7 @@ export function addAnchorImprovements() {
 
     // home page
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -496,7 +340,7 @@ export function addAnchorImprovements() {
 
     // related tab in /watch
 
-    onSelector<HTMLElement>("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -504,7 +348,7 @@ export function addAnchorImprovements() {
 
     // playlists
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -512,7 +356,7 @@ export function addAnchorImprovements() {
 
     // generic shelves
 
-    onSelector<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+    onSelectorOld<HTMLElement>("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
       continuous: true,
       all: true,
       listener: addListItemAnchors,
@@ -531,14 +375,14 @@ export function addAnchorImprovements() {
       return items.length;
     };
 
-    onSelector("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+    onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
       listener: (sidebarCont) => {
         const itemsAmt = addSidebarAnchors(sidebarCont);
         log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
       },
     });
 
-    onSelector("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+    onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
       listener: (miniSidebarCont) => {
         const itemsAmt = addSidebarAnchors(miniSidebarCont);
         log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
@@ -567,7 +411,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
     anchorElem.role = "button";
     anchorElem.target = "_self";
     anchorElem.href = sidebarPaths[i] ?? "#";
-    anchorElem.title = "Middle click to open in a new tab";
+    anchorElem.ariaLabel = anchorElem.title = t("middle_click_open_tab");
     anchorElem.addEventListener("click", (e) => {
       e.preventDefault();
     });
@@ -576,65 +420,44 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#MARKER auto close toasts
-
-/** Closes toasts after a set amount of time */
-export function initAutoCloseToasts() {
-  try {
-    const animTimeout = 300;
-    const closeTimeout = Math.max(features.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-
-    onSelector("tp-yt-paper-toast#toast", {
-      all: true,
-      continuous: true,
-      listener: async (toastElems) => {
-        for(const toastElem of toastElems) {
-          if(!toastElem.hasAttribute("allow-click-through"))
-            continue;
-
-          if(toastElem.classList.contains("bytm-closing"))
-            continue;
-          toastElem.classList.add("bytm-closing");
-
-          await pauseFor(closeTimeout);
-
-          toastElem.classList.remove("paper-toast-open");
-          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
-
-          // wait for the transition to finish
-          await pauseFor(animTimeout);
-
-          toastElem.style.display = "none";
-        }
-      },
-    });
-
-    log("Initialized automatic toast closing");
-  }
-  catch(err) {
-    error("Error in automatic toast closing:", err);
-  }
-}
-
 //#MARKER remove share tracking param
 
-/** Continuously removes the ?si tracking parameter from share URLs */
-export function removeShareTrackingParam() {
-  onSelector<HTMLInputElement>("yt-copy-link-renderer input#share-url", {
-    continuous: true,
-    listener: (inputElem) => {
-      try {
-        const url = new URL(inputElem.value);
-        if(!url.searchParams.has("si"))
-          return;
+let lastShareVal = "";
 
-        url.searchParams.delete("si");
-        inputElem.value = String(url);
-        log(`Removed tracking parameter from share link: ${url}`);
-      }
-      catch(err) {
-        warn("Couldn't remove tracking parameter from share link due to error:", err);
-      }
+/** Removes the ?si tracking parameter from share URLs */
+export async function removeShareTrackingParam() {
+  const removeSiParam = (inputElem: HTMLInputElement) => {
+    try {
+      if(lastShareVal === inputElem.value)
+        return;
+
+      const url = new URL(inputElem.value);
+      if(!url.searchParams.has("si"))
+        return;
+
+      lastShareVal = inputElem.value;
+
+      url.searchParams.delete("si");
+      inputElem.value = String(url);
+      log(`Removed tracking parameter from share link: ${url}`);
+    }
+    catch(err) {
+      warn("Couldn't remove tracking parameter from share link due to error:", err);
+    }
+  };
+
+  onSelectorOld<HTMLInputElement>("tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", {
+    listener: (sharePanelEl) => {
+      const obs = new MutationObserver(() => {
+        const inputElem = sharePanelEl.querySelector<HTMLInputElement>("input#share-url");
+        inputElem && removeSiParam(inputElem);
+      });
+
+      obs.observe(sharePanelEl, {
+        childList: true,
+        subtree: true,
+        attributeFilter: ["aria-hidden", "checked"],
+      });
     },
   });
 }
@@ -642,20 +465,21 @@ export function removeShareTrackingParam() {
 //#MARKER fix margins
 
 /** Applies global CSS to fix various spacings */
-export function fixSpacing() {
-  addGlobalStyle(`\
-ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-renderer {
-  margin-bottom: var(--ytmusic-carousel-item-margin-bottom, 16px) !important;
+export async function fixSpacing() {
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl("css-fix_spacing"))).text();
+    css && addGlobalStyle(css);
+  }
+  catch(err) {
+    error("Couldn't fix spacing due to an error:", err);
+  }
 }
 
-ytmusic-carousel-shelf-renderer ytmusic-carousel {
-  --ytmusic-carousel-item-height: 60px !important;
-}`);
-}
+//#MARKER scroll to active song
 
 /** Adds a button to the queue to scroll to the active song */
-export function addScrollToActiveBtn() {
-  onSelector(".side-panel.modular #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+export async function addScrollToActiveBtn() {
+  onSelectorOld("#side-panel #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
     listener: async (tabElem) => {
       const containerElem = document.createElement("div");
       containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -663,15 +487,15 @@ export function addScrollToActiveBtn() {
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
       linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-      linkElem.title = "Click to scroll to the currently playing song";
+      linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
 
       const imgElem = document.createElement("img");
       imgElem.className = "bytm-generic-btn-img";
-      imgElem.src = await getResourceUrl("skip_to");
+      imgElem.src = await getResourceUrl("img-skip_to");
 
       linkElem.addEventListener("click", (e) => {
-        const activeItem = document.querySelector<HTMLElement>(".side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], .side-panel.modular .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+        const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
 

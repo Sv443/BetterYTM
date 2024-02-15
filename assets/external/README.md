@@ -4,3 +4,4 @@ They belong to their respective owners:
 - The GitHub logo is owned by GitHub Inc.
 - The GreasyFork logo is owned by Jason Barnabe.
 - The OpenUserJS logo is owned by OpenUserJS.
+- The Discord logo is owned by Discord Inc.

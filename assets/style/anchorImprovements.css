@@ -1,0 +1,7 @@
+ytmusic-responsive-list-item-renderer:not([unplayable_]) .left-items {
+  margin-right: 0 !important;
+}
+
+.bytm-carousel-shelf-anchor {
+  margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 24px);
+}

@@ -1,5 +1,8 @@
-import { clamp, fetchAdvanced, insertAfter, onSelector } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log, warn } from "../utils";
+import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn } from "../utils";
+import { t, tp } from "../translations";
+import { emitInterface } from "../interface";
+import { scriptInfo } from "../constants";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -15,7 +18,7 @@ const threshold = 0.55;
 const geniUrlRatelimitTimeframe = 30;
 
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
-void thresholdParam; // TODO: remove once geniURL 1.4 is released
+void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 
 //#MARKER cache
 
@@ -45,8 +48,8 @@ export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: st
 let currentSongTitle = "";
 
 /** Adds a lyrics button to the media controls bar */
-export function addMediaCtrlLyricsBtn(): void {
-  onSelector(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+export async function addMediaCtrlLyricsBtn() {
+  onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
@@ -70,9 +73,9 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
   currentSongTitle = songTitleElem.title;
 
-  const spinnerIconUrl = await getResourceUrl("spinner");
-  const lyricsIconUrl = await getResourceUrl("lyrics");
-  const errorIconUrl = await getResourceUrl("error");
+  const spinnerIconUrl = await getResourceUrl("img-spinner");
+  const lyricsIconUrl = await getResourceUrl("img-lyrics");
+  const errorIconUrl = await getResourceUrl("img-error");
 
   const onMutation = async (mutations: MutationRecord[]) => {
     for await(const mut of mutations) {
@@ -109,7 +112,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
           const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
 
           imgElem.src = errorIconUrl;
-          imgElem.title = "Couldn't find lyrics URL - click to open the manual lyrics search";
+          imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
           lyricsBtn.style.cursor = "pointer";
           lyricsBtn.style.pointerEvents = "all";
           lyricsBtn.style.display = "inline-flex";
@@ -120,7 +123,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
         lyricsBtn.href = url;
 
-        lyricsBtn.title = "Open the current song's lyrics in a new tab";
+        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
         lyricsBtn.style.cursor = "pointer";
         lyricsBtn.style.visibility = "visible";
         lyricsBtn.style.display = "inline-flex";
@@ -170,27 +173,34 @@ export async function getCurrentLyricsUrl() {
     const isVideo = typeof document.querySelector("ytmusic-player")?.hasAttribute("video-mode");
 
     const songTitleElem = document.querySelector<HTMLElement>(".content-info-wrapper > yt-formatted-string");
-    const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string:first-child");
+    const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string :first-child");
 
-    if(!songTitleElem || !songMetaElem || !songTitleElem.title)
+    if(!songTitleElem || !songMetaElem)
       return undefined;
 
     const songNameRaw = songTitleElem.title;
-    const songName = sanitizeSong(songNameRaw);
+    let songName = songNameRaw;
+    let artistName = songMetaElem.innerText;
 
-    const artistName = sanitizeArtists(songMetaElem.title);
+    if(isVideo) {
+      // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+      if(songName.includes("-")) {
+        const split = splitVideoTitle(songName);
+        songName = split.song;
+        artistName = split.artist;
+      }
+    }
 
-    /** Use when the current song is not a "real YTM song" with a static background, but rather a music video */
-    const getGeniusUrlVideo = async () => {
-      if(!songName.includes("-")) // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-        return await getGeniusUrl(artistName, songName);
-    
-      const { artist, song } = splitVideoTitle(songName);
+    const url = await fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
 
-      return await getGeniusUrl(artist, song);
-    };
-
-    const url = isVideo ? await getGeniusUrlVideo() : await getGeniusUrl(artistName, songName);
+    if(url) {
+      emitInterface("bytm:lyricsLoaded", {
+        type: "current",
+        artists: artistName,
+        title: songName,
+        url,
+      });
+    }
 
     return url;
   }
@@ -201,7 +211,7 @@ export async function getCurrentLyricsUrl() {
 }
 
 /** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-export async function getGeniusUrl(artist: string, song: string): Promise<string | undefined> {
+export async function fetchLyricsUrl(artist: string, song: string): Promise<string | undefined> {
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
@@ -210,13 +220,20 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
     }
 
     const startTs = Date.now();
-    const fetchUrl = `${geniURLSearchTopUrl}?disableFuzzy&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(song)}`;
+    const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+      disableFuzzy: null,
+      utm_source: "BetterYTM",
+      utm_content: `v${scriptInfo.version}`,
+      artist,
+      song,
+    });
 
     log(`Requesting URL from geniURL at '${fetchUrl}'`);
 
     const fetchRes = await fetchAdvanced(fetchUrl);
     if(fetchRes.status === 429) {
-      alert(`You are being rate limited.\nPlease wait ${fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe} seconds before requesting more lyrics.`);
+      const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
+      alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -247,7 +264,7 @@ export async function getGeniusUrl(artist: string, song: string): Promise<string
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
   linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-  linkElem.title = geniusUrl ? "Click to open this song's lyrics in a new tab" : "Loading lyrics URL...";
+  linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
   if(geniusUrl)
     linkElem.href = geniusUrl;
   linkElem.role = "button";
@@ -258,7 +275,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
 
   const imgElem = document.createElement("img");
   imgElem.className = "bytm-generic-btn-img";
-  imgElem.src = await getResourceUrl("lyrics");
+  imgElem.src = await getResourceUrl("img-lyrics");
 
   linkElem.appendChild(imgElem);
 

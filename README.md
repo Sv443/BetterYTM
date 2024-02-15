@@ -1,42 +1,44 @@
 <div style="text-align: center;" align="center">
 
-<h1><img src="./assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
+<h1><img src="./assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
-### Lots of configurable layout and UX improvements for YouTube Music
+### Lots of configurable layout and user experience improvements for YouTube Music
+Supported Languages: 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese
 
-[**Features**](#features) • [**Installation**](#installation) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+[**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
 
 </div>
 <br>
 
 ### Features:
 All of these can be toggled and configured in the configuration menu.
-- Layout:
+- Layout & User Experience:
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
   - Set a custom size and step resolution for the volume slider and show a percentage label next to it
   - Improvements to clickability of song titles and thumbnails when wanting to open them in a new tab
+  - Remember the time of the last played song to resume playback after reloading or reopening the tab
   - Quickly scroll to the currently active song in the queue by clicking a button
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
   - Remove the premium tab in the sidebar
-- Input:
-  - Use arrow keys to skip forward or backward by 10 seconds
+- Input / Interaction:
+  - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
-  - Switch between YouTube and YouTube Music on a video by pressing the hotkey F9 <!-- TODO(v1.1): make configurable -->
+  - Press a hotkey on a video/song to switch between YouTube and YouTube Music, while keeping the video time
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
-... and more!
-
-<br>
-
-To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
-Alternatively or if you disabled the watermark, you can open it through the menu you get by clicking on your avatar in the top right corner.  
-Note that the page needs to be reloaded for changes to take effect.  
-  
-My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
+... and these are just the notable features, there are many more smaller improvements and bugfixes!
 
 <br><br>
+
+To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
+Alternatively or if you disabled the watermark, you can open it through the popover menu opened by clicking your avatar in the top right corner.  
+  
+> [!NOTE]  
+> My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
+
+<br><br><br>
 
 ## Installation:
 <b>
@@ -59,11 +61,19 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 </sup>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/main/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
 
 </sup>
 
 <br><br><br>
+
+## Plugins:
+BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
+  
+Currently there are no available plugins, but you can [submit an issue here, using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose).  
+Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API.
+
+<br><br>
 
 ### Development:
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
@@ -99,6 +109,6 @@ Icons:
 Made with ❤️ by [Sv443](https://github.com/Sv443)  
 If you like this userscript, please consider [supporting me](https://github.com/sponsors/Sv443)  
   
-© 2022 Sv443 - [MIT license](./LICENSE.txt)
+© 2022 Sv443 - [AGPL-3.0](./LICENSE.txt)
 
 </div>
