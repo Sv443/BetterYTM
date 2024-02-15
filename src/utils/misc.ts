@@ -1,8 +1,7 @@
 import { fetchAdvanced, randomId } from "@sv443-network/userutils";
 import { branch, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
-import type { TrLocale } from "../translations";
-import { error, warn } from ".";
+import { error, type TrLocale, warn } from ".";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 
 //#SECTION misc

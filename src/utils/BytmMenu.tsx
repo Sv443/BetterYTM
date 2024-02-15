@@ -1,9 +1,9 @@
 import { createRoot } from "react-dom/client";
 import * as React from "react";
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "../../utils/NanoEmitter";
-import { clearInner, getResourceUrl, warn } from "../../utils";
-import { t } from "../../translations";
+import { NanoEmitter } from "./NanoEmitter";
+import { clearInner, getResourceUrl, warn } from ".";
+import { t } from "./translations";
 
 export interface BytmMenuOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
@@ -14,6 +14,8 @@ export interface BytmMenuOptions {
   closeOnEscPress?: boolean;
   /** Whether the close button should be enabled - defaults to true */
   closeBtnEnabled?: boolean;
+  /** Whether the menu should be destroyed when it's closed - defaults to false */
+  destroyOnClose?: boolean;
   /** Called to render the body of the menu */
   renderBody: () => React.ReactNode;
   /** Called to render the header of the menu - leave undefined for a blank header */
@@ -52,6 +54,7 @@ export class BytmMenu extends NanoEmitter<{
       closeOnBgClick: true,
       closeOnEscPress: true,
       closeBtnEnabled: true,
+      destroyOnClose: false,
       ...options,
     };
     this.id = options.id;
@@ -83,8 +86,8 @@ export class BytmMenu extends NanoEmitter<{
     this.events.emit("render");
   }
 
-  /** Clears all menu contents in preparation for a new rendering call */
-  public clear() {
+  /** Clears all menu contents (unmounts them from the DOM) in preparation for a new rendering call */
+  public unmount() {
     this.menuRendered = false;
 
     const clearSelectors = [
@@ -105,7 +108,7 @@ export class BytmMenu extends NanoEmitter<{
 
   /** Clears and then re-renders the menu */
   public async rerender() {
-    this.clear();
+    this.unmount();
     await this.render();
   }
 
@@ -164,6 +167,9 @@ export class BytmMenu extends NanoEmitter<{
       lastMenuId = null;
 
     this.events.emit("close");
+
+    if(this.options.destroyOnClose)
+      this.destroy();
   }
 
   /** Returns true if the menu is open */
@@ -179,7 +185,7 @@ export class BytmMenu extends NanoEmitter<{
   /** Clears the menu and removes all event listeners */
   public destroy() {
     this.events.emit("destroy");
-    this.clear();
+    this.unmount();
     this.unsubscribeAll();
   }
 

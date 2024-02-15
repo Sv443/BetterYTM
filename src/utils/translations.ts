@@ -1,8 +1,8 @@
 import { tr, Stringifiable, fetchAdvanced, FetchAdvancedOpts } from "@sv443-network/userutils";
-import { error, getResourceUrl, info } from "./utils";
-import langMapping from "../assets/locales.json" assert { type: "json" };
-import type tr_enUS from "../assets/translations/en_US.json";
-import { emitInterface, setGlobalProp } from "./interface";
+import { error, getResourceUrl, info } from ".";
+import langMapping from "../../assets/locales.json" assert { type: "json" };
+import type tr_enUS from "../../assets/translations/en_US.json";
+import { emitInterface, setGlobalProp } from "../interface";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
