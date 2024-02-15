@@ -86,7 +86,7 @@ export async function addCfgMenu() {
   titleElem.className = "bytm-menu-title";
 
   const titleTextElem = document.createElement("div");
-  titleTextElem.innerText = t("config_menu_title", scriptInfo.name);
+  titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
 
   titleElem.appendChild(titleTextElem);
 
@@ -153,12 +153,12 @@ export async function addCfgMenu() {
 
   const footerElem = document.createElement("div");
   footerElem.classList.add("bytm-menu-footer", "hidden");
-  footerElem.innerText = t("reload_hint");
+  footerElem.textContent = t("reload_hint");
 
   const reloadElem = document.createElement("button");
   reloadElem.classList.add("bytm-btn");
   reloadElem.style.marginLeft = "10px";
-  reloadElem.innerText = t("reload_now");
+  reloadElem.textContent = t("reload_now");
   reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
   reloadElem.addEventListener("click", () => {
     closeCfgMenu();
@@ -172,7 +172,7 @@ export async function addCfgMenu() {
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-btn");
   resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
-  resetElem.innerText = t("reset");
+  resetElem.textContent = t("reset");
   resetElem.addEventListener("click", async () => {
     if(confirm(t("reset_confirm"))) {
       await setDefaultFeatures();
@@ -184,7 +184,7 @@ export async function addCfgMenu() {
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
   exportElem.ariaLabel = exportElem.title = t("export_tooltip");
-  exportElem.innerText = t("export");
+  exportElem.textContent = t("export");
   exportElem.addEventListener("click", async () => {
     closeCfgMenu();
     openExportMenu();
@@ -192,7 +192,7 @@ export async function addCfgMenu() {
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
   importElem.ariaLabel = importElem.title = t("import_tooltip");
-  importElem.innerText = t("import");
+  importElem.textContent = t("import");
   importElem.addEventListener("click", async () => {
     closeCfgMenu();
     openImportMenu();
@@ -267,7 +267,7 @@ export async function addCfgMenu() {
     catHeaderElem.classList.add("bytm-ftconf-category-header");
     catHeaderElem.role = "heading";
     catHeaderElem.ariaLevel = "2";
-    catHeaderElem.innerText = `${t(`feature_category_${category}`)}:`;
+    catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
     featuresCont.appendChild(catHeaderElem);
 
     for(const featKey in featObj) {
@@ -293,7 +293,7 @@ export async function addCfgMenu() {
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
 
         const textElem = document.createElement("span");
-        textElem.innerText = t(`feature_desc_${featKey}`);
+        textElem.textContent = t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;
 
@@ -404,21 +404,21 @@ export async function addCfgMenu() {
           if(type === "slider") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-            labelElem.innerText = fmtVal(initialVal) + unitTxt;
+            labelElem.textContent = fmtVal(initialVal) + unitTxt;
 
             inputElem.addEventListener("input", () => {
               if(labelElem)
-                labelElem.innerText = fmtVal(Number(inputElem.value)) + unitTxt;
+                labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
             });
           }
           else if(type === "toggle") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-            labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+            labelElem.textContent = toggleLabelText(Boolean(initialVal)) + unitTxt;
 
             inputElem.addEventListener("input", () => {
               if(labelElem)
-                labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+                labelElem.textContent = toggleLabelText(inputElem.checked) + unitTxt;
             });
           }
           else if(type === "select") {
@@ -428,7 +428,7 @@ export async function addCfgMenu() {
             for(const { value, label } of ftOpts) {
               const optionElem = document.createElement("option");
               optionElem.value = String(value);
-              optionElem.innerText = label;
+              optionElem.textContent = label;
               if(value === initialVal)
                 optionElem.selected = true;
               inputElem.appendChild(optionElem);
@@ -498,9 +498,9 @@ export async function addCfgMenu() {
       // @ts-ignore
       const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
       if(ftInfo.type === "slider")
-        labelElem.innerText = fmtVal(Number(value)) + unitTxt;
+        labelElem.textContent = fmtVal(Number(value)) + unitTxt;
       else if(ftInfo.type === "toggle")
-        labelElem.innerText = toggleLabelText(Boolean(value)) + unitTxt;
+        labelElem.textContent = toggleLabelText(Boolean(value)) + unitTxt;
     }
     info("Rebuilt config menu");
   });
@@ -553,7 +553,7 @@ export async function addCfgMenu() {
   versionElem.role = "button";
   versionElem.tabIndex = 0;
   versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
-  versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
+  versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
   const versionElemClicked = (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -733,11 +733,11 @@ async function openHelpDialog(featureKey: FeatureKey) {
     const featDescElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-desc")!;
     const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
 
-    featDescElem.innerText = t(`feature_desc_${featureKey}`);
+    featDescElem.textContent = t(`feature_desc_${featureKey}`);
 
     // @ts-ignore
     const helpText: string | undefined = featInfo[featureKey]?.helpText?.();
-    helpTextElem.innerText = helpText ?? t(`feature_helptext_${featureKey}`);
+    helpTextElem.textContent = helpText ?? t(`feature_helptext_${featureKey}`);
   }
 
   // show menu
@@ -815,7 +815,7 @@ async function addExportMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.className = "bytm-menu-title";
-  titleElem.innerText = t("export_menu_title", scriptInfo.name);
+  titleElem.textContent = t("export_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
@@ -842,7 +842,7 @@ async function addExportMenu() {
 
   const textElem = document.createElement("div");
   textElem.id = "bytm-export-menu-text";
-  textElem.innerText = t("export_hint");
+  textElem.textContent = t("export_hint");
 
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-export-menu-textarea";
@@ -863,13 +863,13 @@ async function addExportMenu() {
 
   const copyBtnElem = document.createElement("button");
   copyBtnElem.classList.add("bytm-btn");
-  copyBtnElem.innerText = t("copy_to_clipboard");
+  copyBtnElem.textContent = t("copy_to_clipboard");
   copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
 
   const copiedTextElem = document.createElement("span");
   copiedTextElem.id = "bytm-export-menu-copied-txt";
   copiedTextElem.classList.add("bytm-menu-footer-copied");
-  copiedTextElem.innerText = t("copied_notice");
+  copiedTextElem.textContent = t("copied_notice");
   copiedTextElem.style.display = "none";
 
   copyBtnElem.addEventListener("click", async (evt) => {
@@ -990,7 +990,7 @@ async function addImportMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.className = "bytm-menu-title";
-  titleElem.innerText = t("import_menu_title", scriptInfo.name);
+  titleElem.textContent = t("import_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
@@ -1017,7 +1017,7 @@ async function addImportMenu() {
 
   const textElem = document.createElement("div");
   textElem.id = "bytm-import-menu-text";
-  textElem.innerText = t("import_hint");
+  textElem.textContent = t("import_hint");
 
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-import-menu-textarea";
@@ -1028,7 +1028,7 @@ async function addImportMenu() {
 
   const importBtnElem = document.createElement("button");
   importBtnElem.classList.add("bytm-btn");
-  importBtnElem.innerText = t("import");
+  importBtnElem.textContent = t("import");
   importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
 
   importBtnElem.addEventListener("click", async (evt) => {
@@ -1201,7 +1201,7 @@ async function addChangelogMenu() {
 
   const titleElem = document.createElement("h2");
   titleElem.className = "bytm-menu-title";
-  titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
+  titleElem.textContent = t("changelog_menu_title", scriptInfo.name);
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");

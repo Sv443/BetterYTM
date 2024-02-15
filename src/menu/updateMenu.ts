@@ -56,7 +56,7 @@ export function openUpdateMenu(newVersion: string) {
     return warn("Couldn't find update menu background element");
 
   const changes = {
-    "#update-menu-version": (el: HTMLElement) => el.innerText = newVersion,
+    "#update-menu-version": (el: HTMLElement) => el.textContent = newVersion,
     "#update-menu-changelog-url": (el: HTMLAnchorElement) => {
       el.href = `https://github.com/Sv443/BetterYTM/blob/main/changelog.md#${newVersion.replace(/\./g, "")}`;
     },

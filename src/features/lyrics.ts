@@ -179,7 +179,7 @@ export async function getCurrentLyricsUrl() {
 
     const songNameRaw = songTitleElem.title;
     let songName = songNameRaw;
-    let artistName = songMetaElem.innerText;
+    let artistName = songMetaElem.textContent;
 
     if(isVideo) {
       // for some fucking reason some music videos have YTM-like song title and artist separation, some don't

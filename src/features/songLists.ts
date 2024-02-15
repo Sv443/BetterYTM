@@ -124,8 +124,8 @@ async function addQueueButtons(
           return;
       
         const [songEl, artistEl] = songInfo.querySelectorAll<HTMLElement>("yt-formatted-string");
-        song = songEl?.innerText;
-        artist = artistEl?.innerText;
+        song = songEl?.textContent;
+        artist = artistEl?.textContent;
       }
       else if(listType === "genericQueue") {
         const songEl = queueItem.querySelector<HTMLElement>(".title-column yt-formatted-string a");
@@ -136,8 +136,8 @@ async function addQueueButtons(
         else
           artistEl = queueItem.querySelector<HTMLElement>(".secondary-flex-columns yt-formatted-string:first-child a");
 
-        song = songEl?.innerText;
-        artist = artistEl?.innerText;
+        song = songEl?.textContent;
+        artist = artistEl?.textContent;
       }
       else return;
 

@@ -72,7 +72,7 @@ export async function initAutoCloseToasts() {
           await pauseFor(closeTimeout);
 
           toastElem.classList.remove("paper-toast-open");
-          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.innerText}' after ${features.closeToastsTimeout * 1000}ms`);
+          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.textContent}' after ${features.closeToastsTimeout * 1000}ms`);
 
           // wait for the transition to finish
           await pauseFor(animTimeout);

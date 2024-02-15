@@ -97,7 +97,7 @@
       "changelog.md",
       "package.json"
     ],
-    "ext": "ts,tsx,mts,js,jsx,mjs,json,html,css,svg,png",
+    "ext": "ts,mts,js,jsx,mjs,json,html,css,svg,png",
     "ignore": [
       "dist/*",
       "dev/*"

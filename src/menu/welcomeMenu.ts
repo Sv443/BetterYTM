@@ -106,7 +106,7 @@ export async function addWelcomeMenu() {
   for(const [locale, { name }] of Object.entries(locales)) {
     const localeOptionElem = document.createElement("option");
     localeOptionElem.value = locale;
-    localeOptionElem.innerText = name;
+    localeOptionElem.textContent = name;
     localeSelectElem.appendChild(localeOptionElem);
   }
   localeSelectElem.value = getFeatures().locale;
@@ -197,18 +197,18 @@ function retranslateWelcomeMenu() {
   };
 
   const changes = {
-    "#bytm-welcome-menu-title": (e: HTMLElement) => e.innerText = t("welcome_menu_title", scriptInfo.name),
+    "#bytm-welcome-menu-title": (e: HTMLElement) => e.textContent = t("welcome_menu_title", scriptInfo.name),
     "#bytm-welcome-menu-title-close": (e: HTMLElement) => e.ariaLabel = e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-open-cfg": (e: HTMLElement) => {
-      e.innerText = t("config_menu");
+      e.textContent = t("config_menu");
       e.ariaLabel = e.title = t("open_config_menu_tooltip");
     },
     "#bytm-welcome-menu-open-changelog": (e: HTMLElement) => {
-      e.innerText = t("open_changelog");
+      e.textContent = t("open_changelog");
       e.ariaLabel = e.title = t("open_changelog_tooltip");
     },
     "#bytm-welcome-menu-footer-close": (e: HTMLElement) => {
-      e.innerText = t("close");
+      e.textContent = t("close");
       e.ariaLabel = e.title = t("close_menu_tooltip");
     },
     "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_1"),
