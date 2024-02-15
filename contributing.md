@@ -80,6 +80,7 @@ To edit an existing translation, please follow these steps:
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
 - **`npm run build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
+  Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
 - **`npm run build -- <arguments>`**  
   Builds the userscript with custom options  
@@ -90,8 +91,10 @@ To edit an existing translation, please follow these steps:
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
-  - `npm run build-prod` - Sets `--config-mode=production` and `--config-branch=main`
-  - `npm run build-develop` - Sets `--config-mode=development` and `--config-branch=develop`
+  - `npm run build-prod-base` - Sets `--config-mode=production` and `--config-branch=main`  
+    Used for building for production, targeting the main branch
+  - `npm run build-develop` - Sets `--config-mode=development` and `--config-branch=develop`  
+    Used for building for experimental versions, targeting the develop branch
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
 - **`npm run tr-progress`**  
