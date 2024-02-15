@@ -1,0 +1,3 @@
+The files in this folder are to be slowly migrated to use React JSX and the BytmMenu class.
+They will end up in the new "dialogs" folder.
+No more menus should be created in here.
