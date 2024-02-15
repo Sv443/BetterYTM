@@ -10,7 +10,6 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",

@@ -28,7 +28,7 @@ export interface BytmMenuOptions {
 let lastMenuId: string | null = null;
 
 /** Creates and manages a modal menu element */
-export class BytmMenu extends NanoEmitter<{
+export class BytmDialog extends NanoEmitter<{
   /** Emitted just after the menu is closed */
   close: () => void;
   /** Emitted just after the menu is opened */
@@ -163,7 +163,7 @@ export class BytmMenu extends NanoEmitter<{
     menuBg.style.display = "none";
     menuBg.inert = true;
 
-    if(BytmMenu.getLastMenuId() === this.id)
+    if(BytmDialog.getLastMenuId() === this.id)
       lastMenuId = null;
 
     this.events.emit("close");
@@ -209,7 +209,7 @@ export class BytmMenu extends NanoEmitter<{
 
     if(this.options.closeOnEscPress) {
       document.body.addEventListener("keydown", (e) => {
-        if(e.key === "Escape" && this.isOpen() && BytmMenu.getLastMenuId() === this.id)
+        if(e.key === "Escape" && this.isOpen() && BytmDialog.getLastMenuId() === this.id)
           this.close(e);
       });
     }
