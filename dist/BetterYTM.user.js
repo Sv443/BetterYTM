@@ -17,12 +17,12 @@
 // @license           AGPL-3.0
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
-// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
-// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -34,31 +34,31 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/arrow_down.svg
+// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/delete.svg
+// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/error.svg
+// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/globe.svg
+// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/help.svg
+// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/lyrics.svg
+// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/skip_to.svg
+// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/spinner.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/openuserjs.png
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/fixSpacing.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/anchorImprovements.css
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/zh_CN.json
 // @require           https://unpkg.com/react@18/umd/react.development.js
 // @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js
 // ==/UserScript==
@@ -823,7 +823,7 @@ I welcome every contribution on GitHub!
     })(LogLevel || (LogLevel = {}));
 
     const modeRaw = "production";
-    const branchRaw = "develop";
+    const branchRaw = "main";
     const hostRaw = "github";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
@@ -843,7 +843,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "059253f", // asserted as generic string instead of literal
+        buildNumber: "6bb7de4", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
