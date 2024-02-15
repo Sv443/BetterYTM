@@ -817,7 +817,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "b86580a", // asserted as generic string instead of literal
+        buildNumber: "47365e1", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -3474,7 +3474,7 @@ I welcome every contribution on GitHub!
     }
 
     let verNotifDialog = null;
-    /** Returns the dialog shown when a new version is available */
+    /** Creates and/or returns the dialog to be shown when a new version is available */
     function getVersionNotifDialog({ latestTag, }) {
         if (!verNotifDialog) {
             verNotifDialog = new BytmDialog({
@@ -3508,35 +3508,35 @@ I welcome every contribution on GitHub!
 
     const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
     function checkVersion() {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (getFeatures().versionCheck === false)
                     return info("Version check is disabled");
-                const lastCheck = yield GM.getValue("bytm-version-check", 0);
-                if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-                    return;
+                // const lastCheck = await GM.getValue("bytm-version-check", 0);
+                // if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+                //   return;
                 yield GM.setValue("bytm-version-check", Date.now());
                 const res = yield sendRequest({
                     method: "GET",
                     url: releaseURL,
                 });
-                const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
-                if (!latestTag)
-                    return;
+                // const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+                // if(!latestTag)
+                //   return;
+                const latestTag = "1.2.0";
                 const versionComp = compareVersions(scriptInfo.version, latestTag);
                 info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
                 if (versionComp < 0) {
-                    const platformNames = {
-                        github: "GitHub",
-                        greasyfork: "GreasyFork",
-                        openuserjs: "OpenUserJS",
-                    };
+                    // const platformNames: Record<typeof host, string> = {
+                    //   github: "GitHub",
+                    //   greasyfork: "GreasyFork",
+                    //   openuserjs: "OpenUserJS",
+                    // };
                     const dialog = getVersionNotifDialog({ latestTag });
                     yield dialog.open();
                     // TODO: replace with custom dialog
-                    if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-                        window.open(pkg.updates[host]);
+                    // if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
+                    //   window.open(pkg.updates[host]);
                 }
             }
             catch (err) {
@@ -4014,9 +4014,9 @@ I welcome every contribution on GitHub!
         return trans;
     }
 
-    /** ID of the last opened (top-most) menu */
-    let lastMenuId = null;
-    /** Creates and manages a modal menu element */
+    /** ID of the last opened (top-most) dialog */
+    let lastDialogId = null;
+    /** Creates and manages a modal dialog element */
     class BytmDialog extends NanoEmitter {
         constructor(options) {
             super();
@@ -4032,13 +4032,13 @@ I welcome every contribution on GitHub!
                 writable: true,
                 value: void 0
             });
-            Object.defineProperty(this, "menuOpen", {
+            Object.defineProperty(this, "dialogOpen", {
                 enumerable: true,
                 configurable: true,
                 writable: true,
                 value: false
             });
-            Object.defineProperty(this, "menuRendered", {
+            Object.defineProperty(this, "dialogRendered", {
                 enumerable: true,
                 configurable: true,
                 writable: true,
@@ -4053,43 +4053,36 @@ I welcome every contribution on GitHub!
             this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false }, options);
             this.id = options.id;
         }
-        /** Call after DOMContentLoaded to pre-render the menu (or call just before calling open()) */
+        /** Call after DOMContentLoaded to pre-render the dialog (or call just before calling open()) */
         render() {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.menuRendered)
+                if (this.dialogRendered)
                     return;
-                this.menuRendered = true;
+                this.dialogRendered = true;
                 const bgElem = document.createElement("div");
-                bgElem.id = `bytm-${this.id}-menu-bg`;
-                bgElem.classList.add("bytm-menu-bg");
+                bgElem.id = `bytm-${this.id}-dialog-bg`;
+                bgElem.classList.add("bytm-dialog-bg");
                 if (this.options.closeOnBgClick)
                     bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
                 bgElem.style.visibility = "hidden";
                 bgElem.style.display = "none";
                 bgElem.inert = true;
-                bgElem.appendChild(yield this.getMenuContent());
+                bgElem.appendChild(yield this.getDialogContent());
                 document.body.appendChild(bgElem);
                 this.attachListeners(bgElem);
                 this.events.emit("render");
             });
         }
-        /** Clears all menu contents (unmounts them from the DOM) in preparation for a new rendering call */
+        /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
         unmount() {
             var _a;
-            this.menuRendered = false;
-            const clearSelectors = [
-                `#bytm-${this.id}-menu-bg`,
-            ];
-            for (const selector of clearSelectors) {
-                const elem = document.querySelector(selector);
-                if (!elem)
-                    continue;
-                clearInner(elem);
-            }
-            (_a = document.querySelector(`#bytm-${this.id}-menu-bg`)) === null || _a === void 0 ? void 0 : _a.remove();
+            this.dialogRendered = false;
+            const elem = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+            elem && clearInner(elem);
+            (_a = document.querySelector(`#bytm-${this.id}-dialog-bg`)) === null || _a === void 0 ? void 0 : _a.remove();
             this.events.emit("clear");
         }
-        /** Clears and then re-renders the menu */
+        /** Clears and then re-renders the dialog */
         rerender() {
             return __awaiter(this, void 0, void 0, function* () {
                 this.unmount();
@@ -4097,7 +4090,7 @@ I welcome every contribution on GitHub!
             });
         }
         /**
-         * Opens the menu - renders it if it hasn't been rendered yet
+         * Opens the dialog - renders it if it hasn't been rendered yet
          * Prevents default action and immediate propagation of the passed event
          */
         open(e) {
@@ -4107,60 +4100,60 @@ I welcome every contribution on GitHub!
                 e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
                 if (this.isOpen())
                     return;
-                this.menuOpen = true;
+                this.dialogOpen = true;
                 if (!this.isRendered())
                     yield this.render();
                 document.body.classList.add("bytm-disable-scroll");
                 (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-                const menuBg = document.querySelector(`#bytm-${this.id}-menu-bg`);
-                if (!menuBg)
-                    return warn(`Couldn't find background element for menu with ID '${this.id}'`);
-                menuBg.style.visibility = "visible";
-                menuBg.style.display = "block";
-                menuBg.inert = false;
-                lastMenuId = this.id;
+                const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+                if (!dialogBg)
+                    return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+                dialogBg.style.visibility = "visible";
+                dialogBg.style.display = "block";
+                dialogBg.inert = false;
+                lastDialogId = this.id;
                 this.events.emit("open");
             });
         }
-        /** Closes the menu - prevents default action and immediate propagation of the passed event */
+        /** Closes the dialog - prevents default action and immediate propagation of the passed event */
         close(e) {
             var _a;
             e === null || e === void 0 ? void 0 : e.preventDefault();
             e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
             if (!this.isOpen())
                 return;
-            this.menuOpen = false;
+            this.dialogOpen = false;
             document.body.classList.remove("bytm-disable-scroll");
             (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
-            const menuBg = document.querySelector(`#bytm-${this.id}-menu-bg`);
-            if (!menuBg)
-                return warn(`Couldn't find background element for menu with ID '${this.id}'`);
-            menuBg.style.visibility = "hidden";
-            menuBg.style.display = "none";
-            menuBg.inert = true;
-            if (BytmDialog.getLastMenuId() === this.id)
-                lastMenuId = null;
+            const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+            if (!dialogBg)
+                return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+            dialogBg.style.visibility = "hidden";
+            dialogBg.style.display = "none";
+            dialogBg.inert = true;
+            if (BytmDialog.getLastDialogId() === this.id)
+                lastDialogId = null;
             this.events.emit("close");
             if (this.options.destroyOnClose)
                 this.destroy();
         }
-        /** Returns true if the menu is open */
+        /** Returns true if the dialog is open */
         isOpen() {
-            return this.menuOpen;
+            return this.dialogOpen;
         }
-        /** Returns true if the menu has been rendered */
+        /** Returns true if the dialog has been rendered */
         isRendered() {
-            return this.menuRendered;
+            return this.dialogRendered;
         }
-        /** Clears the menu and removes all event listeners */
+        /** Clears the dialog and removes all event listeners */
         destroy() {
             this.events.emit("destroy");
             this.unmount();
             this.unsubscribeAll();
         }
-        /** Returns the ID of the top-most menu (the menu that has been opened last) */
-        static getLastMenuId() {
-            return lastMenuId;
+        /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+        static getLastDialogId() {
+            return lastDialogId;
         }
         /** Called once to attach all generic event listeners */
         attachListeners(bgElem) {
@@ -4170,32 +4163,32 @@ I welcome every contribution on GitHub!
             if (this.options.closeOnBgClick) {
                 bgElem.addEventListener("click", (e) => {
                     var _a;
-                    if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-menu-bg`)
+                    if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-dialog-bg`)
                         this.close(e);
                 });
             }
             if (this.options.closeOnEscPress) {
                 document.body.addEventListener("keydown", (e) => {
-                    if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastMenuId() === this.id)
+                    if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
                         this.close(e);
                 });
             }
         }
-        getMenuContent() {
+        getDialogContent() {
             var _a, _b, _c, _d;
             return __awaiter(this, void 0, void 0, function* () {
                 const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
                 const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
-                const menuWrapperEl = document.createElement("div");
-                menuWrapperEl.id = `bytm-${this.id}-menu`;
-                menuWrapperEl.classList.add("bytm-menu");
-                menuWrapperEl.ariaLabel = menuWrapperEl.title = "";
+                const dialogWrapperEl = document.createElement("div");
+                dialogWrapperEl.id = `bytm-${this.id}-dialog`;
+                dialogWrapperEl.classList.add("bytm-dialog");
+                dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
                 //#SECTION header
                 const headerWrapperEl = document.createElement("div");
-                headerWrapperEl.classList.add("bytm-menu-header");
+                headerWrapperEl.classList.add("bytm-dialog-header");
                 if (header) {
                     const headerTitleWrapperEl = document.createElement("div");
-                    headerTitleWrapperEl.classList.add("bytm-menu-title-wrapper");
+                    headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
                     headerTitleWrapperEl.role = "heading";
                     headerTitleWrapperEl.ariaLevel = "1";
                     headerTitleWrapperEl.appendChild(header);
@@ -4203,24 +4196,24 @@ I welcome every contribution on GitHub!
                 }
                 if (this.options.closeBtnEnabled) {
                     const closeBtnEl = document.createElement("img");
-                    closeBtnEl.classList.add("bytm-menu-close");
+                    closeBtnEl.classList.add("bytm-dialog-close");
                     closeBtnEl.src = yield getResourceUrl("img-close");
                     closeBtnEl.role = "button";
                     closeBtnEl.tabIndex = 0;
                     closeBtnEl.addEventListener("click", () => this.close());
                     headerWrapperEl.appendChild(closeBtnEl);
                 }
-                menuWrapperEl.appendChild(headerWrapperEl);
+                dialogWrapperEl.appendChild(headerWrapperEl);
                 // TODO:
                 //#SECTION body
                 const bodyWrapperEl = document.createElement("div");
                 bodyWrapperEl.appendChild(this.options.renderBody());
-                menuWrapperEl.appendChild(bodyWrapperEl);
+                dialogWrapperEl.appendChild(bodyWrapperEl);
                 //#SECTION footer
                 if (footer) {
-                    menuWrapperEl.appendChild(footer);
+                    dialogWrapperEl.appendChild(footer);
                 }
-                return menuWrapperEl;
+                return dialogWrapperEl;
             });
         }
     }
@@ -5537,6 +5530,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
   visibility: visible !important;
 }
+
 
 #bytm-welcome-menu-bg {
   --bytm-menu-height-max: 500px;
