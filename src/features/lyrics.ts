@@ -1,6 +1,5 @@
 import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
-import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn } from "../utils";
-import { t, tp } from "../translations";
+import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
 import { emitInterface } from "../interface";
 import { scriptInfo } from "../constants";
 

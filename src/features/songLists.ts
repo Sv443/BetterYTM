@@ -1,6 +1,5 @@
 import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onSelectorOld, warn } from "../utils";
-import { t } from "../translations";
+import { clearInner, error, getResourceUrl, log, onSelectorOld, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";

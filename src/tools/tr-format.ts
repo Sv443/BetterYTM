@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import type { TrLocale } from "../translations";
+import type { TrLocale } from "../utils";
 import locales from "../../assets/locales.json" assert { type: "json" };
 
 const prepTranslate = process.argv.find((v) => v.match(/--prep(are)?/) || v.toLowerCase() === "-p");

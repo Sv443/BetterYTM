@@ -1,5 +1,4 @@
-import { t, tp } from "../translations";
-import { getPreferredLocale, resourceToHTMLString } from "../utils";
+import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
 import { FeatureInfo } from "../types";

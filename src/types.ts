@@ -1,10 +1,9 @@
-import type { TrLocale, t, tp } from "./translations";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
 import type { addSelectorListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type langMapping from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime } from "./utils";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
 import type { getFeatures, saveFeatures } from "./config";
 
 /** Custom CLI args passed to rollup */

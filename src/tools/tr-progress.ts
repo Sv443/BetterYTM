@@ -3,7 +3,7 @@ import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { autoPlural, mapRange } from "@sv443-network/userutils";
 import locales from "../../assets/locales.json" assert { type: "json" };
-import type { TrLocale } from "../translations";
+import type { TrLocale } from "../utils";
 
 const { exit } = process;
 

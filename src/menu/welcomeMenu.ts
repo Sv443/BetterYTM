@@ -1,5 +1,4 @@
-import { getResourceUrl, warn } from "../utils";
-import { TrLocale, initTranslations, setLocale, t } from "../translations";
+import { getResourceUrl, warn, type TrLocale, initTranslations, setLocale, t } from "../utils";
 import { getFeatures, saveFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { scriptInfo } from "../constants";

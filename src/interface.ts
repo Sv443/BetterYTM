@@ -1,7 +1,6 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, scriptInfo } from "./constants";
-import { getResourceUrl, getSessionId, getVideoTime, log } from "./utils";
-import { setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./translations";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
 import { fetchLyricsUrl, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
