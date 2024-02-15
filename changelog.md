@@ -1,3 +1,14 @@
+## 1.2.0
+- **Features / Changes:**
+  - TODO
+- **Fixes:**
+  - TODO
+
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
+
+<div class="split"></div>
+<br>
+
 ## 1.1.0
 - **Features / Changes:**
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
