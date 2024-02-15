@@ -57,7 +57,6 @@ import {
     `─ My song metadata API: ${geniUrlBase}`,
     "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
-    "─ The React library: https://github.com/facebook/react",
   ].join("\n"));
   console.log();
 }

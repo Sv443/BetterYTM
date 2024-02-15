@@ -13,6 +13,12 @@ export const repo = "Sv443/BetterYTM";
 /** Which host the userscript was installed from */
 export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github" | "greasyfork" | "openuserjs";
 
+export const platformNames: Record<typeof host, string> = {
+  github: "GitHub",
+  greasyfork: "GreasyFork",
+  openuserjs: "OpenUserJS",
+};
+
 /**
  * How much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)

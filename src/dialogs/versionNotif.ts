@@ -1,10 +1,8 @@
 import { host, scriptInfo } from "../constants";
-import { BytmMenu, t } from "../utils";
+import { BytmDialog, t } from "../utils";
 import pkg from "../../package.json" assert { type: "json" };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from "react";
 
-let verNotifDialog: BytmMenu | null = null;
+let verNotifDialog: BytmDialog | null = null;
 
 export type VersionNotifDialogRenderProps = {
   latestTag: string;
@@ -15,7 +13,7 @@ export function getVersionNotifDialog({
   latestTag,
 }: VersionNotifDialogRenderProps) {
   if(!verNotifDialog) {
-    verNotifDialog = new BytmMenu({
+    verNotifDialog = new BytmDialog({
       id: "version-notif",
       closeOnBgClick: false,
       closeOnEscPress: false,

@@ -149,11 +149,6 @@ I welcome every contribution on GitHub!
     else
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
-    // replace with arrow IIFE
-    userscript = userscript.replace(/\(function\s?\(ReactDOM,\s?React\)\s?\{/m, "((ReactDOM, React) => {");
-    userscript = userscript.replace(/\(function\s?\(\s*\)\s?\{/m, "(() => {");
-    userscript = userscript.replace(/\(function \(reactDom, React\) \{/m, "((reactDOM, React) => {");
-
     // insert userscript header and final newline
     const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 

@@ -1,4 +1,4 @@
-export * from "./BytmMenu";
+export * from "./BytmDialog";
 export * from "./dom";
 export * from "./logging";
 export * from "./misc";
