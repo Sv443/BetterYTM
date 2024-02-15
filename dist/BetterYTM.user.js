@@ -14,7 +14,7 @@
 // @description:zh-CN 可配置的布局和YouTube Music的用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0
+// @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
 // @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
@@ -843,7 +843,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "6bb7de4", // asserted as generic string instead of literal
+        buildNumber: "520689c", // asserted as generic string instead of literal
     };
 
     const fetchOpts = {
@@ -1438,7 +1438,7 @@ I welcome every contribution on GitHub!
     	name: "Sv443",
     	url: "https://github.com/Sv443"
     };
-    var license = "AGPL-3.0";
+    var license = "AGPL-3.0-only";
     var bugs = {
     	url: "https://github.com/Sv443/BetterYTM/issues"
     };
