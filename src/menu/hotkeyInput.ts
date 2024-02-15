@@ -29,7 +29,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
   resetElem.role = "button";
   resetElem.tabIndex = 0;
-  resetElem.innerText = `(${t("reset")})`;
+  resetElem.textContent = `(${t("reset")})`;
 
   const resetClicked = (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
@@ -38,14 +38,14 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     onChange(resetValue!);
     inputElem.value = resetValue!.code;
     inputElem.dataset.state = "inactive";
-    infoElem.innerText = getHotkeyInfo(resetValue!);
+    infoElem.textContent = getHotkeyInfo(resetValue!);
   };
 
   resetElem.addEventListener("click", resetClicked);
   resetElem.addEventListener("keydown", (e) => e.key === "Enter" && resetClicked(e));
 
   if(initialValue)
-    infoElem.innerText = getHotkeyInfo(initialValue);
+    infoElem.textContent = getHotkeyInfo(initialValue);
 
   let lastKeyDown: HotkeyObj | undefined;
 
@@ -65,7 +65,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     } as HotkeyObj;
     inputElem.value = hotkey.code;
     inputElem.dataset.state = "inactive";
-    infoElem.innerText = getHotkeyInfo(hotkey);
+    infoElem.textContent = getHotkeyInfo(hotkey);
     onChange(hotkey);
   });
 
@@ -87,7 +87,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
 
     inputElem.value = hotkey.code;
     inputElem.dataset.state = "inactive";
-    infoElem.innerText = getHotkeyInfo(hotkey);
+    infoElem.textContent = getHotkeyInfo(hotkey);
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
     onChange(hotkey);
   });
@@ -98,7 +98,7 @@ export function createHotkeyInput({ initialValue, resetValue, onChange }: Hotkey
     inputElem.value = curVal?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
-    infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
+    infoElem.textContent = curVal ? getHotkeyInfo(curVal) : "";
   };
 
   const activate = () => {

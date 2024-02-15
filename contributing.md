@@ -490,7 +490,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > const customConfigMenuTitle = document.createElement("div");
-> customConfigMenuTitle.innerText = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
+> customConfigMenuTitle.textContent = unsafeWindow.BYTM.t("config_menu_title", "My cool BYTM Plugin");
 > // translated text: "My cool BYTM Plugin - Configuration" (if locale is en_US or en_UK)
 > ```
 > </details>

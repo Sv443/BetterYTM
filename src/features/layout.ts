@@ -22,7 +22,7 @@ export async function addWatermark() {
   watermark.role = "button";
   watermark.id = "bytm-watermark";
   watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
-  watermark.innerText = scriptInfo.name;
+  watermark.textContent = scriptInfo.name;
   watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
   watermark.tabIndex = 0;
 
@@ -136,7 +136,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-  cfgOptTextElem.innerText = t("config_menu_option", scriptInfo.name);
+  cfgOptTextElem.textContent = t("config_menu_option", scriptInfo.name);
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
   cfgOptItemElem.appendChild(cfgOptTextElem);
@@ -216,7 +216,7 @@ export async function initVolumeFeatures() {
 function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
   const labelElem = document.createElement("div");
   labelElem.id = "bytm-vol-slider-label";
-  labelElem.innerText = `${sliderElem.value}%`;
+  labelElem.textContent = `${sliderElem.value}%`;
 
   // prevent video from minimizing
   labelElem.addEventListener("click", (e) => e.stopPropagation());
@@ -238,7 +238,7 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTM
 
     const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label");
     if(labelElem2)
-      labelElem2.innerText = `${sliderElem.value}%`;
+      labelElem2.textContent = `${sliderElem.value}%`;
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
