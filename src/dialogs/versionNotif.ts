@@ -8,7 +8,7 @@ export type VersionNotifDialogRenderProps = {
   latestTag: string;
 };
 
-/** Returns the dialog shown when a new version is available */
+/** Creates and/or returns the dialog to be shown when a new version is available */
 export function getVersionNotifDialog({
   latestTag,
 }: VersionNotifDialogRenderProps) {

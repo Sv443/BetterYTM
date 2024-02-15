@@ -11,9 +11,9 @@ export async function checkVersion() {
     if(getFeatures().versionCheck === false)
       return info("Version check is disabled");
 
-    const lastCheck = await GM.getValue("bytm-version-check", 0);
-    if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-      return;
+    // const lastCheck = await GM.getValue("bytm-version-check", 0);
+    // if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+    //   return;
 
     await GM.setValue("bytm-version-check", Date.now());
 
@@ -22,28 +22,30 @@ export async function checkVersion() {
       url: releaseURL,
     });
 
-    const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+    // const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
-    if(!latestTag)
-      return;
+    // if(!latestTag)
+    //   return;
+
+    const latestTag = "1.2.0";
 
     const versionComp = compareVersions(scriptInfo.version, latestTag);
 
     info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
 
     if(versionComp < 0) {
-      const platformNames: Record<typeof host, string> = {
-        github: "GitHub",
-        greasyfork: "GreasyFork",
-        openuserjs: "OpenUserJS",
-      };
+      // const platformNames: Record<typeof host, string> = {
+      //   github: "GitHub",
+      //   greasyfork: "GreasyFork",
+      //   openuserjs: "OpenUserJS",
+      // };
 
       const dialog = getVersionNotifDialog({ latestTag });
       await dialog.open();
 
       // TODO: replace with custom dialog
-      if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-        window.open(pkg.updates[host]);
+      // if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
+      //   window.open(pkg.updates[host]);
     }
   }
   catch(err) {
