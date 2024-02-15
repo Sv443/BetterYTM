@@ -1,4 +1,4 @@
-<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icon/icon_128.png" width="96" height="96" /><br>BetterYTM</h1>
+<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music
 Supported Languages: 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese
