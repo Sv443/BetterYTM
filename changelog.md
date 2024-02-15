@@ -1,8 +1,9 @@
-## 1.2.0
-- **Features / Changes:**
-  - TODO
+## 1.1.1
 - **Fixes:**
-  - TODO
+  - Fixed Chinese translations
+- **Internal Changes:**
+  - Removed React JSX support
+  - Small utility function refactoring
 
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
 
