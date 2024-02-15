@@ -190,6 +190,9 @@ export async function getCurrentLyricsUrl() {
       }
     }
 
+    if(!artistName)
+      return undefined;
+
     const url = await fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
 
     if(url) {
