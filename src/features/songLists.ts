@@ -115,8 +115,8 @@ async function addQueueButtons(
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      let song: string | undefined,
-        artist: string | undefined;
+      let song: string | null | undefined,
+        artist: string | null | undefined;
 
       if(listType === "currentQueue") {
         const songInfo = queueItem.querySelector<HTMLElement>(".song-info");
