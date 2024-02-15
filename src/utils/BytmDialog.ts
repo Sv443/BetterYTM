@@ -2,50 +2,51 @@
 import { NanoEmitter } from "./NanoEmitter";
 import { clearInner, getResourceUrl, warn } from ".";
 import { t } from "./translations";
+import "./BytmDialog.css";
 
-export interface BytmMenuOptions {
+export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
-  /** Whether the menu should close when the background is clicked - defaults to true */
+  /** Whether the dialog should close when the background is clicked - defaults to true */
   closeOnBgClick?: boolean;
-  /** Whether the menu should close when the escape key is pressed - defaults to true */
+  /** Whether the dialog should close when the escape key is pressed - defaults to true */
   closeOnEscPress?: boolean;
   /** Whether the close button should be enabled - defaults to true */
   closeBtnEnabled?: boolean;
-  /** Whether the menu should be destroyed when it's closed - defaults to false */
+  /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
-  /** Called to render the body of the menu */
+  /** Called to render the body of the dialog */
   renderBody: () => HTMLElement;
-  /** Called to render the header of the menu - leave undefined for a blank header */
+  /** Called to render the header of the dialog - leave undefined for a blank header */
   renderHeader?: () => HTMLElement;
-  /** Called to render the footer of the menu - leave undefined for no footer */
+  /** Called to render the footer of the dialog - leave undefined for no footer */
   renderFooter?: () => HTMLElement;
 }
 
-/** ID of the last opened (top-most) menu */
-let lastMenuId: string | null = null;
+/** ID of the last opened (top-most) dialog */
+let lastDialogId: string | null = null;
 
-/** Creates and manages a modal menu element */
+/** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<{
-  /** Emitted just after the menu is closed */
+  /** Emitted just after the dialog is closed */
   close: () => void;
-  /** Emitted just after the menu is opened */
+  /** Emitted just after the dialog is opened */
   open: () => void;
-  /** Emitted just after the menu contents are rendered */
+  /** Emitted just after the dialog contents are rendered */
   render: () => void;
-  /** Emitted just after the menu contents are cleared */
+  /** Emitted just after the dialog contents are cleared */
   clear: () => void;
-  /** Emitted just before the menu is destroyed and all listeners are removed */
+  /** Emitted just before the dialog is destroyed and all listeners are removed */
   destroy: () => void;
 }> {
   public readonly options;
   public readonly id;
 
-  private menuOpen = false;
-  private menuRendered = false;
+  private dialogOpen = false;
+  private dialogRendered = false;
   private listenersAttached = false;
 
-  constructor(options: BytmMenuOptions) {
+  constructor(options: BytmDialogOptions) {
     super();
 
     this.options = {
@@ -58,15 +59,15 @@ export class BytmDialog extends NanoEmitter<{
     this.id = options.id;
   }
 
-  /** Call after DOMContentLoaded to pre-render the menu (or call just before calling open()) */
+  /** Call after DOMContentLoaded to pre-render the dialog (or call just before calling open()) */
   public async render() {
-    if(this.menuRendered)
+    if(this.dialogRendered)
       return;
-    this.menuRendered = true;
+    this.dialogRendered = true;
 
     const bgElem = document.createElement("div");
-    bgElem.id = `bytm-${this.id}-menu-bg`;
-    bgElem.classList.add("bytm-menu-bg");
+    bgElem.id = `bytm-${this.id}-dialog-bg`;
+    bgElem.classList.add("bytm-dialog-bg");
     if(this.options.closeOnBgClick)
       bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
@@ -74,7 +75,7 @@ export class BytmDialog extends NanoEmitter<{
     bgElem.style.display = "none";
     bgElem.inert = true;
 
-    bgElem.appendChild(await this.getMenuContent());
+    bgElem.appendChild(await this.getDialogContent());
     document.body.appendChild(bgElem);
 
     this.attachListeners(bgElem);
@@ -82,34 +83,26 @@ export class BytmDialog extends NanoEmitter<{
     this.events.emit("render");
   }
 
-  /** Clears all menu contents (unmounts them from the DOM) in preparation for a new rendering call */
+  /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
   public unmount() {
-    this.menuRendered = false;
+    this.dialogRendered = false;
 
-    const clearSelectors = [
-      `#bytm-${this.id}-menu-bg`,
-    ];
+    const elem = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
+    elem && clearInner(elem);
 
-    for(const selector of clearSelectors) {
-      const elem = document.querySelector<HTMLElement>(selector);
-      if(!elem)
-        continue;
-      clearInner(elem);
-    }
-
-    document.querySelector(`#bytm-${this.id}-menu-bg`)?.remove();
+    document.querySelector(`#bytm-${this.id}-dialog-bg`)?.remove();
 
     this.events.emit("clear");
   }
 
-  /** Clears and then re-renders the menu */
+  /** Clears and then re-renders the dialog */
   public async rerender() {
     this.unmount();
     await this.render();
   }
 
   /**
-   * Opens the menu - renders it if it hasn't been rendered yet  
+   * Opens the dialog - renders it if it hasn't been rendered yet  
    * Prevents default action and immediate propagation of the passed event
    */
   public async open(e?: MouseEvent | KeyboardEvent) {
@@ -118,49 +111,49 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.isOpen())
       return;
-    this.menuOpen = true;
+    this.dialogOpen = true;
 
     if(!this.isRendered())
       await this.render();
 
     document.body.classList.add("bytm-disable-scroll");
     document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
-    const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
+    const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
-    if(!menuBg)
-      return warn(`Couldn't find background element for menu with ID '${this.id}'`);
+    if(!dialogBg)
+      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
-    menuBg.style.visibility = "visible";
-    menuBg.style.display = "block";
-    menuBg.inert = false;
+    dialogBg.style.visibility = "visible";
+    dialogBg.style.display = "block";
+    dialogBg.inert = false;
 
-    lastMenuId = this.id;
+    lastDialogId = this.id;
 
     this.events.emit("open");
   }
 
-  /** Closes the menu - prevents default action and immediate propagation of the passed event */
+  /** Closes the dialog - prevents default action and immediate propagation of the passed event */
   public close(e?: MouseEvent | KeyboardEvent) {
     e?.preventDefault();
     e?.stopImmediatePropagation();
 
     if(!this.isOpen())
       return;
-    this.menuOpen = false;
+    this.dialogOpen = false;
 
     document.body.classList.remove("bytm-disable-scroll");
     document.querySelector("ytmusic-app")?.removeAttribute("inert");
-    const menuBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-menu-bg`);
+    const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
-    if(!menuBg)
-      return warn(`Couldn't find background element for menu with ID '${this.id}'`);
+    if(!dialogBg)
+      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-    menuBg.inert = true;
+    dialogBg.style.visibility = "hidden";
+    dialogBg.style.display = "none";
+    dialogBg.inert = true;
 
-    if(BytmDialog.getLastMenuId() === this.id)
-      lastMenuId = null;
+    if(BytmDialog.getLastDialogId() === this.id)
+      lastDialogId = null;
 
     this.events.emit("close");
 
@@ -168,26 +161,26 @@ export class BytmDialog extends NanoEmitter<{
       this.destroy();
   }
 
-  /** Returns true if the menu is open */
+  /** Returns true if the dialog is open */
   public isOpen() {
-    return this.menuOpen;
+    return this.dialogOpen;
   }
 
-  /** Returns true if the menu has been rendered */
+  /** Returns true if the dialog has been rendered */
   public isRendered() {
-    return this.menuRendered;
+    return this.dialogRendered;
   }
 
-  /** Clears the menu and removes all event listeners */
+  /** Clears the dialog and removes all event listeners */
   public destroy() {
     this.events.emit("destroy");
     this.unmount();
     this.unsubscribeAll();
   }
 
-  /** Returns the ID of the top-most menu (the menu that has been opened last) */
-  public static getLastMenuId() {
-    return lastMenuId;
+  /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+  public static getLastDialogId() {
+    return lastDialogId;
   }
 
   /** Called once to attach all generic event listeners */
@@ -198,36 +191,36 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.options.closeOnBgClick) {
       bgElem.addEventListener("click", (e) => {
-        if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-menu-bg`)
+        if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-dialog-bg`)
           this.close(e);
       });
     }
 
     if(this.options.closeOnEscPress) {
       document.body.addEventListener("keydown", (e) => {
-        if(e.key === "Escape" && this.isOpen() && BytmDialog.getLastMenuId() === this.id)
+        if(e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
           this.close(e);
       });
     }
   }
 
-  private async getMenuContent() {
+  private async getDialogContent() {
     const header = this.options.renderHeader?.();
     const footer = this.options.renderFooter?.();
 
-    const menuWrapperEl = document.createElement("div");
-    menuWrapperEl.id = `bytm-${this.id}-menu`;
-    menuWrapperEl.classList.add("bytm-menu");
-    menuWrapperEl.ariaLabel = menuWrapperEl.title = "";
+    const dialogWrapperEl = document.createElement("div");
+    dialogWrapperEl.id = `bytm-${this.id}-dialog`;
+    dialogWrapperEl.classList.add("bytm-dialog");
+    dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
 
     //#SECTION header
 
     const headerWrapperEl = document.createElement("div");
-    headerWrapperEl.classList.add("bytm-menu-header");
+    headerWrapperEl.classList.add("bytm-dialog-header");
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
-      headerTitleWrapperEl.classList.add("bytm-menu-title-wrapper");
+      headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
 
@@ -237,7 +230,7 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.options.closeBtnEnabled) {
       const closeBtnEl = document.createElement("img");
-      closeBtnEl.classList.add("bytm-menu-close");
+      closeBtnEl.classList.add("bytm-dialog-close");
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
@@ -245,7 +238,7 @@ export class BytmDialog extends NanoEmitter<{
       headerWrapperEl.appendChild(closeBtnEl);
     }
 
-    menuWrapperEl.appendChild(headerWrapperEl);
+    dialogWrapperEl.appendChild(headerWrapperEl);
 
     // TODO:
     //#SECTION body
@@ -253,14 +246,14 @@ export class BytmDialog extends NanoEmitter<{
     const bodyWrapperEl = document.createElement("div");
     bodyWrapperEl.appendChild(this.options.renderBody());
 
-    menuWrapperEl.appendChild(bodyWrapperEl);
+    dialogWrapperEl.appendChild(bodyWrapperEl);
 
     //#SECTION footer
 
     if(footer) {
-      menuWrapperEl.appendChild(footer);
+      dialogWrapperEl.appendChild(footer);
     }
 
-    return menuWrapperEl;
+    return dialogWrapperEl;
   }
 }
