@@ -73,7 +73,7 @@
     "open_changelog": "更新日志",
     "open_changelog_tooltip": "点击打开更新日志",
     "feature_help_button_tooltip": "点击获取有关此功能的更多信息",
-    "welcome_text_line_1": "欢迎使用 %1！",
+    "welcome_text_line_1": "感谢您安装！",
     "welcome_text_line_2": "我希望您使用 %1 的过程中能够愉快 😃",
     "welcome_text_line_3": "如果您喜欢 %1，请在 %2GreasyFork%3 或 %4OpenUserJS%5 上留下评分",
     "welcome_text_line_4": "我的工作依赖于捐赠，所以请考虑 %1捐赠 ❤️%2",
