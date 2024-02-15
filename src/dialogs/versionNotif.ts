@@ -31,17 +31,18 @@ function renderBody(latestTag: string) {
     openuserjs: "OpenUserJS",
   };
 
-  return (
-    <div>
-      <p>
-        {t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])}
-      </p>
-      <button
-        className="bytm-btn"
-        onClick={() => window.open(pkg.updates[host])}
-      >
-        {t("update_now")}
-      </button>
-    </div>
-  );
+  // TODO:
+  const wrapperEl = document.createElement("div");
+
+  const pEl = document.createElement("p");
+  pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
+  wrapperEl.appendChild(pEl);
+
+  const btnEl = document.createElement("button");
+  btnEl.className = "bytm-btn";
+  btnEl.textContent = t("update_now");
+  btnEl.addEventListener("click", () => window.open(pkg.updates[host]));
+  wrapperEl.appendChild(btnEl);
+
+  return wrapperEl;
 }

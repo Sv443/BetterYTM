@@ -1,5 +1,3 @@
-import { createRoot } from "react-dom/client";
-import * as React from "react";
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "./NanoEmitter";
 import { clearInner, getResourceUrl, warn } from ".";
@@ -17,11 +15,11 @@ export interface BytmMenuOptions {
   /** Whether the menu should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
   /** Called to render the body of the menu */
-  renderBody: () => React.ReactNode;
+  renderBody: () => HTMLElement;
   /** Called to render the header of the menu - leave undefined for a blank header */
-  renderHeader?: () => React.ReactNode;
+  renderHeader?: () => HTMLElement;
   /** Called to render the footer of the menu - leave undefined for no footer */
-  renderFooter?: () => React.ReactNode;
+  renderFooter?: () => HTMLElement;
 }
 
 /** ID of the last opened (top-most) menu */
@@ -76,10 +74,8 @@ export class BytmDialog extends NanoEmitter<{
     bgElem.style.display = "none";
     bgElem.inert = true;
 
+    bgElem.appendChild(await this.getMenuContent());
     document.body.appendChild(bgElem);
-
-    const root = createRoot(bgElem);
-    root.render(await this.getMenuContent());
 
     this.attachListeners(bgElem);
 
@@ -216,33 +212,55 @@ export class BytmDialog extends NanoEmitter<{
   }
 
   private async getMenuContent() {
-    const closeSrc = await getResourceUrl("img-close");
-
     const header = this.options.renderHeader?.();
     const footer = this.options.renderFooter?.();
 
+    const menuWrapperEl = document.createElement("div");
+    menuWrapperEl.id = `bytm-${this.id}-menu`;
+    menuWrapperEl.classList.add("bytm-menu");
+    menuWrapperEl.ariaLabel = menuWrapperEl.title = "";
+
+    //#SECTION header
+
+    const headerWrapperEl = document.createElement("div");
+    headerWrapperEl.classList.add("bytm-menu-header");
+
+    if(header) {
+      const headerTitleWrapperEl = document.createElement("div");
+      headerTitleWrapperEl.classList.add("bytm-menu-title-wrapper");
+      headerTitleWrapperEl.role = "heading";
+      headerTitleWrapperEl.ariaLevel = "1";
+
+      headerTitleWrapperEl.appendChild(header);
+      headerWrapperEl.appendChild(headerTitleWrapperEl);
+    }
+
+    if(this.options.closeBtnEnabled) {
+      const closeBtnEl = document.createElement("img");
+      closeBtnEl.classList.add("bytm-menu-close");
+      closeBtnEl.src = await getResourceUrl("img-close");
+      closeBtnEl.role = "button";
+      closeBtnEl.tabIndex = 0;
+      closeBtnEl.addEventListener("click", () => this.close());
+      headerWrapperEl.appendChild(closeBtnEl);
+    }
+
+    menuWrapperEl.appendChild(headerWrapperEl);
+
     // TODO:
-    return (
-      <div id={`bytm-${this.id}-menu`} className="bytm-menu" title="" aria-label="">
-        <div className="bytm-menu-header">
-          {header ? (
-            <div className="bytm-menu-title-wrapper" role="heading" aria-level={1}>
-              {header}
-            </div>
-          ) : null}
-          {this.options.closeBtnEnabled ? (
-            <img className="bytm-menu-close" src={closeSrc} role="button" tabIndex={0} onClick={() => this.close()} />
-          ) : null}
-        </div>
-        <div>
-          {this.options.renderBody()}
-        </div>
-        {footer ? (
-          <div>
-            {footer}
-          </div>
-        ) : null}
-      </div>
-    );
+    //#SECTION body
+
+    const bodyWrapperEl = document.createElement("div");
+    bodyWrapperEl.appendChild(this.options.renderBody());
+
+    menuWrapperEl.appendChild(bodyWrapperEl);
+
+    //#SECTION footer
+
+    if(footer) {
+      menuWrapperEl.appendChild(footer);
+    }
+
+    return menuWrapperEl;
   }
 }
