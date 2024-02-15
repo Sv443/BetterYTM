@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           1.1.0
+// @version           1.1.1
 // @description       Configurable layout and user experience improvements for YouTube Music
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music
 // @description:en-US Configurable layout and user experience improvements for YouTube Music
@@ -17,12 +17,12 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
-// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
-// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -34,33 +34,31 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/arrow_down.svg
-// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/delete.svg
-// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/error.svg
-// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/globe.svg
-// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/help.svg
-// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/lyrics.svg
-// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/skip_to.svg
-// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/spinner.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/external/openuserjs.png
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/fixSpacing.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/anchorImprovements.css
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/zh_CN.json
-// @require           https://unpkg.com/react@18/umd/react.development.js
-// @require           https://unpkg.com/react-dom@18/umd/react-dom.development.js
+// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
+// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
+// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
+// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
+// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
+// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
+// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
+// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
 // ==/UserScript==
 /*
 ▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
@@ -76,9 +74,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-
-/* global React, ReactDOM */
-(() => {
+(function () {
     'use strict';
 
     /******************************************************************************
@@ -97,75 +93,40 @@ I welcome every contribution on GitHub!
     ***************************************************************************** */
     /* global Reflect, Promise, SuppressedError, Symbol */
 
+
     function __awaiter(thisArg, _arguments, P, generator) {
-      function adopt(value) {
-        return value instanceof P ? value : new P(function (resolve) {
-          resolve(value);
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
-      }
-      return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) {
-          try {
-            step(generator.next(value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-        function rejected(value) {
-          try {
-            step(generator["throw"](value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-        function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-        }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-      });
     }
+
     function __values(o) {
-      var s = typeof Symbol === "function" && Symbol.iterator,
-        m = s && o[s],
-        i = 0;
-      if (m) return m.call(o);
-      if (o && typeof o.length === "number") return {
-        next: function () {
-          if (o && i >= o.length) o = void 0;
-          return {
-            value: o && o[i++],
-            done: !o
-          };
-        }
-      };
-      throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-    }
-    function __asyncValues(o) {
-      if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-      var m = o[Symbol.asyncIterator],
-        i;
-      return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
-        return this;
-      }, i);
-      function verb(n) {
-        i[n] = o[n] && function (v) {
-          return new Promise(function (resolve, reject) {
-            v = o[n](v), settle(resolve, reject, v.done, v.value);
-          });
+        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+        if (m) return m.call(o);
+        if (o && typeof o.length === "number") return {
+            next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
         };
-      }
-      function settle(resolve, reject, d, v) {
-        Promise.resolve(v).then(function (v) {
-          resolve({
-            value: v,
-            done: d
-          });
-        }, reject);
-      }
+        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
     }
+
+    function __asyncValues(o) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var m = o[Symbol.asyncIterator], i;
+        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+    }
+
     typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
-      var e = new Error(message);
-      return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+        var e = new Error(message);
+        return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
     };
 
     var __defProp = Object.defineProperty;
@@ -174,17 +135,16 @@ I welcome every contribution on GitHub!
     var __getOwnPropSymbols = Object.getOwnPropertySymbols;
     var __hasOwnProp = Object.prototype.hasOwnProperty;
     var __propIsEnum = Object.prototype.propertyIsEnumerable;
-    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value
-    }) : obj[key] = value;
+    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
     var __spreadValues = (a, b) => {
-      for (var prop in b || (b = {})) if (__hasOwnProp.call(b, prop)) __defNormalProp(a, prop, b[prop]);
-      if (__getOwnPropSymbols) for (var prop of __getOwnPropSymbols(b)) {
-        if (__propIsEnum.call(b, prop)) __defNormalProp(a, prop, b[prop]);
-      }
+      for (var prop in b || (b = {}))
+        if (__hasOwnProp.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      if (__getOwnPropSymbols)
+        for (var prop of __getOwnPropSymbols(b)) {
+          if (__propIsEnum.call(b, prop))
+            __defNormalProp(a, prop, b[prop]);
+        }
       return a;
     };
     var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
@@ -194,21 +154,21 @@ I welcome every contribution on GitHub!
     };
     var __async = (__this, __arguments, generator) => {
       return new Promise((resolve, reject) => {
-        var fulfilled = value => {
+        var fulfilled = (value) => {
           try {
             step(generator.next(value));
           } catch (e) {
             reject(e);
           }
         };
-        var rejected = value => {
+        var rejected = (value) => {
           try {
             step(generator.throw(value));
           } catch (e) {
             reject(e);
           }
         };
-        var step = x => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+        var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
         step((generator = generator.apply(__this, __arguments)).next());
       });
     };
@@ -218,25 +178,34 @@ I welcome every contribution on GitHub!
       return Math.max(Math.min(value, max), min);
     }
     function mapRange(value, range1min, range1max, range2min, range2max) {
-      if (Number(range1min) === 0 && Number(range2min) === 0) return value * (range2max / range1max);
+      if (Number(range1min) === 0 && Number(range2min) === 0)
+        return value * (range2max / range1max);
       return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
     }
     function randRange(...args) {
       let min, max;
-      if (typeof args[0] === "number" && typeof args[1] === "number") [min, max] = args;else if (typeof args[0] === "number" && typeof args[1] !== "number") {
+      if (typeof args[0] === "number" && typeof args[1] === "number")
+        [min, max] = args;
+      else if (typeof args[0] === "number" && typeof args[1] !== "number") {
         min = 0;
         [max] = args;
-      } else throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
+      } else
+        throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
       min = Number(min);
       max = Number(max);
-      if (isNaN(min) || isNaN(max)) return NaN;
-      if (min > max) throw new TypeError(`Parameter "min" can't be bigger than "max"`);
+      if (isNaN(min) || isNaN(max))
+        return NaN;
+      if (min > max)
+        throw new TypeError(`Parameter "min" can't be bigger than "max"`);
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     function randomId(length = 16, radix = 16) {
       const arr = new Uint8Array(length);
       crypto.getRandomValues(arr);
-      return Array.from(arr, v => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)).join("");
+      return Array.from(
+        arr,
+        (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
+      ).join("");
     }
 
     // lib/array.ts
@@ -244,19 +213,22 @@ I welcome every contribution on GitHub!
       return randomItemIndex(array)[0];
     }
     function randomItemIndex(array) {
-      if (array.length === 0) return [void 0, void 0];
+      if (array.length === 0)
+        return [void 0, void 0];
       const idx = randRange(array.length - 1);
       return [array[idx], idx];
     }
     function takeRandomItem(arr) {
       const [itm, idx] = randomItemIndex(arr);
-      if (idx === void 0) return void 0;
+      if (idx === void 0)
+        return void 0;
       arr.splice(idx, 1);
       return itm;
     }
     function randomizeArray(array) {
       const retArray = [...array];
-      if (array.length === 0) return array;
+      if (array.length === 0)
+        return array;
       for (let i = retArray.length - 1; i > 0; i--) {
         const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
         [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
@@ -302,9 +274,11 @@ I welcome every contribution on GitHub!
               yield this.saveDefaultData();
               return this.defaultConfig;
             }
-            if (isNaN(gmFmtVer)) yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
+            if (isNaN(gmFmtVer))
+              yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
             let parsed = JSON.parse(gmData);
-            if (gmFmtVer < this.formatVersion && this.migrations) parsed = yield this.runMigrations(parsed, gmFmtVer);
+            if (gmFmtVer < this.formatVersion && this.migrations)
+              parsed = yield this.runMigrations(parsed, gmFmtVer);
             return this.cachedConfig = typeof parsed === "object" ? parsed : void 0;
           } catch (err) {
             yield this.saveDefaultData();
@@ -322,8 +296,11 @@ I welcome every contribution on GitHub!
       /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
       setData(data) {
         this.cachedConfig = data;
-        return new Promise(resolve => __async(this, null, function* () {
-          yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)), GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)]);
+        return new Promise((resolve) => __async(this, null, function* () {
+          yield Promise.all([
+            GM.setValue(`_uucfg-${this.id}`, JSON.stringify(data)),
+            GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
+          ]);
           resolve();
         }));
       }
@@ -331,8 +308,11 @@ I welcome every contribution on GitHub!
       saveDefaultData() {
         return __async(this, null, function* () {
           this.cachedConfig = this.defaultConfig;
-          return new Promise(resolve => __async(this, null, function* () {
-            yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)), GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)]);
+          return new Promise((resolve) => __async(this, null, function* () {
+            yield Promise.all([
+              GM.setValue(`_uucfg-${this.id}`, JSON.stringify(this.defaultConfig)),
+              GM.setValue(`_uucfgver-${this.id}`, this.formatVersion)
+            ]);
             resolve();
           }));
         });
@@ -346,13 +326,17 @@ I welcome every contribution on GitHub!
        */
       deleteConfig() {
         return __async(this, null, function* () {
-          yield Promise.all([GM.deleteValue(`_uucfg-${this.id}`), GM.deleteValue(`_uucfgver-${this.id}`)]);
+          yield Promise.all([
+            GM.deleteValue(`_uucfg-${this.id}`),
+            GM.deleteValue(`_uucfgver-${this.id}`)
+          ]);
         });
       }
       /** Runs all necessary migration functions consecutively - may be overwritten in a subclass */
       runMigrations(oldData, oldFmtVer) {
         return __async(this, null, function* () {
-          if (!this.migrations) return oldData;
+          if (!this.migrations)
+            return oldData;
           let newData = oldData;
           const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
           let lastFmtVer = oldFmtVer;
@@ -368,7 +352,10 @@ I welcome every contribution on GitHub!
               }
             }
           }
-          yield Promise.all([GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)), GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)]);
+          yield Promise.all([
+            GM.setValue(`_uucfg-${this.id}`, JSON.stringify(newData)),
+            GM.setValue(`_uucfgver-${this.id}`, lastFmtVer)
+          ]);
           return newData;
         });
       }
@@ -393,7 +380,8 @@ I welcome every contribution on GitHub!
     }
     function addParent(element, newParent) {
       const oldParent = element.parentNode;
-      if (!oldParent) throw new Error("Element doesn't have a parent node");
+      if (!oldParent)
+        throw new Error("Element doesn't have a parent node");
       oldParent.replaceChild(newParent, element);
       newParent.appendChild(element);
       return newParent;
@@ -404,11 +392,11 @@ I welcome every contribution on GitHub!
       document.head.appendChild(styleElem);
     }
     function preloadImages(srcUrls, rejects = false) {
-      const promises = srcUrls.map(src => new Promise((res, rej) => {
+      const promises = srcUrls.map((src) => new Promise((res, rej) => {
         const image = new Image();
         image.src = src;
         image.addEventListener("load", () => res(image));
-        image.addEventListener("error", evt => rejects && rej(evt));
+        image.addEventListener("error", (evt) => rejects && rej(evt));
       }));
       return Promise.allSettled(promises);
     }
@@ -429,12 +417,15 @@ I welcome every contribution on GitHub!
       if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
         Error.stackTraceLimit = 1e3;
       }
-      (function (original) {
-        eventObject.__proto__.addEventListener = function (...args) {
+      (function(original) {
+        eventObject.__proto__.addEventListener = function(...args) {
           var _a, _b;
           const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
-          args[1] = function (...a) {
-            if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a)) return;else return origListener.apply(this, a);
+          args[1] = function(...a) {
+            if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
+              return;
+            else
+              return origListener.apply(this, a);
           };
           original.apply(this, args);
         };
@@ -444,10 +435,7 @@ I welcome every contribution on GitHub!
       return interceptEvent(getUnsafeWindow$1(), eventName, predicate);
     }
     function isScrollable(element) {
-      const {
-        overflowX,
-        overflowY
-      } = getComputedStyle(element);
+      const { overflowX, overflowY } = getComputedStyle(element);
       return {
         vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
         horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
@@ -458,11 +446,11 @@ I welcome every contribution on GitHub!
       if (elementPrototype.hasOwnProperty(property)) {
         const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
         Object.defineProperty(element, property, {
-          get: function () {
+          get: function() {
             var _a;
             return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
           },
-          set: function () {
+          set: function() {
             var _a;
             const oldValue = this[property];
             (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
@@ -478,26 +466,25 @@ I welcome every contribution on GitHub!
 
     // lib/misc.ts
     function autoPlural(word, num) {
-      if (Array.isArray(num) || num instanceof NodeList) num = num.length;
+      if (Array.isArray(num) || num instanceof NodeList)
+        num = num.length;
       return `${word}${num === 1 ? "" : "s"}`;
     }
     function pauseFor(time) {
-      return new Promise(res => {
+      return new Promise((res) => {
         setTimeout(() => res(), time);
       });
     }
     function debounce(func, timeout = 300) {
       let timer;
-      return function (...args) {
+      return function(...args) {
         clearTimeout(timer);
         timer = setTimeout(() => func.apply(this, args), timeout);
       };
     }
     function fetchAdvanced(_0) {
       return __async(this, arguments, function* (url, options = {}) {
-        const {
-          timeout = 1e4
-        } = options;
+        const { timeout = 1e4 } = options;
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
         const res = yield fetch(url, __spreadProps(__spreadValues({}, options), {
@@ -508,7 +495,7 @@ I welcome every contribution on GitHub!
       });
     }
     function insertValues(input, ...values) {
-      return input.replace(/%\d/gm, match => {
+      return input.replace(/%\d/gm, (match) => {
         var _a, _b;
         const argIndex = Number(match.substring(1)) - 1;
         return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
@@ -537,10 +524,12 @@ I welcome every contribution on GitHub!
       });
     }
     function ab2str(buf) {
-      return getUnsafeWindow$1().btoa(new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), ""));
+      return getUnsafeWindow$1().btoa(
+        new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
+      );
     }
     function str2ab(str) {
-      return Uint8Array.from(getUnsafeWindow$1().atob(str), c => c.charCodeAt(0));
+      return Uint8Array.from(getUnsafeWindow$1().atob(str), (c) => c.charCodeAt(0));
     }
 
     // lib/SelectorObserver.ts
@@ -552,7 +541,7 @@ I welcome every contribution on GitHub!
         __publicField(this, "observerOptions");
         __publicField(this, "listenerMap");
         this.baseElement = baseElement;
-        this.listenerMap = /* @__PURE__ */new Map();
+        this.listenerMap = /* @__PURE__ */ new Map();
         this.observer = new MutationObserver(() => this.checkAllSelectors());
         this.observerOptions = __spreadValues({
           childList: true,
@@ -560,35 +549,41 @@ I welcome every contribution on GitHub!
         }, options);
       }
       checkAllSelectors() {
-        for (const [selector, listeners] of this.listenerMap.entries()) this.checkSelector(selector, listeners);
+        for (const [selector, listeners] of this.listenerMap.entries())
+          this.checkSelector(selector, listeners);
       }
       checkSelector(selector, listeners) {
         var _a;
-        if (!this.enabled) return;
+        if (!this.enabled)
+          return;
         const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-        if (!baseElement) return;
-        const all = listeners.some(listener => listener.all);
-        const one = listeners.some(listener => !listener.all);
+        if (!baseElement)
+          return;
+        const all = listeners.some((listener) => listener.all);
+        const one = listeners.some((listener) => !listener.all);
         const allElements = all ? baseElement.querySelectorAll(selector) : null;
         const oneElement = one ? baseElement.querySelector(selector) : null;
         for (const options of listeners) {
           if (options.all) {
             if (allElements && allElements.length > 0) {
               options.listener(allElements);
-              if (!options.continuous) this.removeListener(selector, options);
+              if (!options.continuous)
+                this.removeListener(selector, options);
             }
           } else {
             if (oneElement) {
               options.listener(oneElement);
-              if (!options.continuous) this.removeListener(selector, options);
+              if (!options.continuous)
+                this.removeListener(selector, options);
             }
           }
-          if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0) this.listenerMap.delete(selector);
+          if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
+            this.listenerMap.delete(selector);
         }
       }
       debounce(func, time) {
         let timeout;
-        return function (...args) {
+        return function(...args) {
           clearTimeout(timeout);
           timeout = setTimeout(() => func.apply(this, args), time);
         };
@@ -603,20 +598,23 @@ I welcome every contribution on GitHub!
        * @param [options.debounce] Whether to debounce the listener to reduce calls to `querySelector` or `querySelectorAll` - set undefined or <=0 to disable (default)
        */
       addListener(selector, options) {
-        options = __spreadValues({
-          all: false,
-          continuous: false,
-          debounce: 0
-        }, options);
+        options = __spreadValues({ all: false, continuous: false, debounce: 0 }, options);
         if (options.debounce && options.debounce > 0 || this.observerOptions.defaultDebounce && this.observerOptions.defaultDebounce > 0) {
-          options.listener = this.debounce(options.listener, options.debounce || this.observerOptions.defaultDebounce);
+          options.listener = this.debounce(
+            options.listener,
+            options.debounce || this.observerOptions.defaultDebounce
+          );
         }
-        if (this.listenerMap.has(selector)) this.listenerMap.get(selector).push(options);else this.listenerMap.set(selector, [options]);
+        if (this.listenerMap.has(selector))
+          this.listenerMap.get(selector).push(options);
+        else
+          this.listenerMap.set(selector, [options]);
         this.checkSelector(selector, [options]);
       }
       /** Disables the observation of the child elements */
       disable() {
-        if (!this.enabled) return;
+        if (!this.enabled)
+          return;
         this.enabled = false;
         this.observer.disconnect();
       }
@@ -627,10 +625,12 @@ I welcome every contribution on GitHub!
        */
       enable(immediatelyCheckSelectors = true) {
         const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-        if (this.enabled || !baseElement) return false;
+        if (this.enabled || !baseElement)
+          return false;
         this.enabled = true;
         this.observer.observe(baseElement, this.observerOptions);
-        if (immediatelyCheckSelectors) this.checkAllSelectors();
+        if (immediatelyCheckSelectors)
+          this.checkAllSelectors();
         return true;
       }
       /** Returns whether the observation of the child elements is currently enabled */
@@ -654,7 +654,8 @@ I welcome every contribution on GitHub!
        */
       removeListener(selector, options) {
         const listeners = this.listenerMap.get(selector);
-        if (!listeners) return false;
+        if (!listeners)
+          return false;
         const index = listeners.indexOf(options);
         if (index > -1) {
           listeners.splice(index, 1);
@@ -677,9 +678,11 @@ I welcome every contribution on GitHub!
     var curLang;
     function tr(key, ...args) {
       var _a;
-      if (!curLang) return key;
+      if (!curLang)
+        return key;
       const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
-      if (!trText) return key;
+      if (!trText)
+        return key;
       if (args.length > 0 && trText.match(/%\d/)) {
         return insertValues(trText, ...args);
       }
@@ -688,7 +691,7 @@ I welcome every contribution on GitHub!
     tr.addLanguage = (language, translations) => {
       trans[language] = translations;
     };
-    tr.setLanguage = language => {
+    tr.setLanguage = (language) => {
       curLang = language;
     };
     tr.getLanguage = () => {
@@ -727,92 +730,63 @@ I welcome every contribution on GitHub!
         tr: tr
     });
 
-    //#SECTION video time
-    const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
-    /**
-     * Returns the current video time in seconds
-     * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
-     * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
-     */
-    function getVideoTime() {
-        return new Promise((res) => {
-            const domain = getDomain();
-            try {
-                if (domain === "ytm") {
-                    const vidElem = document.querySelector(videoSelector);
-                    if (vidElem)
-                        return res(Math.floor(vidElem.currentTime));
-                    onSelectorOld("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-                        listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
-                    });
-                }
-                else if (domain === "yt") {
-                    const vidElem = document.querySelector(videoSelector);
-                    if (vidElem)
-                        return res(Math.floor(vidElem.currentTime));
-                    // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
-                    ytForceShowVideoTime();
-                    const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
-                    let videoTime = -1;
-                    const mut = new MutationObserver(() => {
-                        // .observe() is only called when the element exists - no need to check for null
-                        videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
-                    });
-                    const observe = (progElem) => {
-                        mut.observe(progElem, {
-                            attributes: true,
-                            attributeFilter: ["aria-valuenow"],
-                        });
-                        if (videoTime >= 0 && !isNaN(videoTime)) {
-                            res(Math.floor(videoTime));
-                            mut.disconnect();
-                        }
-                        else
-                            setTimeout(() => {
-                                res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
-                                mut.disconnect();
-                            }, 500);
-                    };
-                    onSelectorOld(pbSelector, { listener: observe });
-                }
-            }
-            catch (err) {
-                error("Couldn't get video time due to error:", err);
-                res(null);
-            }
-        });
-    }
-    /**
-     * Sends events that force the video controls to become visible for about 3 seconds.
-     * This only works once (for some reason), then the page needs to be reloaded!
-     */
-    function ytForceShowVideoTime() {
-        const player = document.querySelector("#movie_player");
-        if (!player)
-            return false;
-        const defaultProps = {
-            // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-            view: getUnsafeWindow$1(),
-            bubbles: true,
-            cancelable: false,
-        };
-        player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
-        const { x, y, width, height } = player.getBoundingClientRect();
-        const screenY = Math.round(y + height / 2);
-        const screenX = x + Math.min(50, Math.round(width / 3));
-        player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
-            screenX, movementX: 5, movementY: 0 })));
-        return true;
-    }
-    /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
-    function clearInner(element) {
-        while (element.hasChildNodes())
-            clearNode(element.firstChild);
-    }
-    function clearNode(element) {
-        while (element.hasChildNodes())
-            clearNode(element.firstChild);
-        element.parentNode.removeChild(element);
+    let createNanoEvents = () => ({
+      emit(event, ...args) {
+        for (
+          let i = 0,
+            callbacks = this.events[event] || [],
+            length = callbacks.length;
+          i < length;
+          i++
+        ) {
+          callbacks[i](...args);
+        }
+      },
+      events: {},
+      on(event, cb) {
+    (this.events[event] ||= []).push(cb);
+        return () => {
+          this.events[event] = this.events[event]?.filter(i => cb !== i);
+        }
+      }
+    });
+
+    /** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
+    class NanoEmitter {
+        constructor() {
+            Object.defineProperty(this, "events", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: createNanoEvents()
+            });
+            Object.defineProperty(this, "unsubscribers", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: []
+            });
+        }
+        /** Subscribes to an event - returns a function that unsubscribes the event listener */
+        on(event, cb) {
+            // eslint-disable-next-line prefer-const
+            let unsub;
+            const unsubProxy = () => {
+                if (!unsub)
+                    return;
+                unsub();
+                this.unsubscribers = this.unsubscribers.filter(u => u !== unsub);
+            };
+            unsub = this.events.on(event, cb);
+            this.unsubscribers.push(unsub);
+            return unsubProxy;
+        }
+        /** Unsubscribes all event listeners */
+        unsubscribeAll() {
+            for (const unsub of this.unsubscribers)
+                unsub();
+            this.unsubscribers = [];
+        }
     }
 
     // I know TS enums are impure but it doesn't really matter here, plus they look cooler
@@ -823,7 +797,7 @@ I welcome every contribution on GitHub!
     })(LogLevel || (LogLevel = {}));
 
     const modeRaw = "production";
-    const branchRaw = "main";
+    const branchRaw = "develop";
     const hostRaw = "github";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
@@ -843,77 +817,8 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "520689c", // asserted as generic string instead of literal
+        buildNumber: "b86580a", // asserted as generic string instead of literal
     };
-
-    const fetchOpts = {
-        timeout: 10000,
-    };
-    /** Contains all translation keys of all initialized and loaded translations */
-    const allTrKeys = new Map();
-    /** Contains the identifiers of all initialized and loaded translation locales */
-    const initializedLocales = new Set();
-    /** Initializes the translations */
-    function initTranslations(locale) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            if (initializedLocales.has(locale))
-                return;
-            initializedLocales.add(locale);
-            try {
-                const transUrl = yield getResourceUrl(`trans-${locale}`);
-                const transFile = yield (yield fetchAdvanced(transUrl, fetchOpts)).json();
-                // merge with base translations if specified
-                const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
-                const baseTransFile = baseTransUrl ? yield (yield fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
-                const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
-                tr.addLanguage(locale, translations);
-                allTrKeys.set(locale, new Set(Object.keys(translations)));
-                info(`Loaded translations for locale '${locale}'`);
-            }
-            catch (err) {
-                const errStr = `Couldn't load translations for locale '${locale}'`;
-                error(errStr, err);
-                throw new Error(errStr);
-            }
-        });
-    }
-    /** Sets the current language for translations */
-    function setLocale(locale) {
-        tr.setLanguage(locale);
-        setGlobalProp("locale", locale);
-        emitInterface("bytm:setLocale", { locale });
-    }
-    /** Returns the currently set language */
-    function getLocale() {
-        return tr.getLanguage();
-    }
-    /** Returns whether the given translation key exists in the current locale */
-    function hasKey(key) {
-        return hasKeyFor(getLocale(), key);
-    }
-    /** Returns whether the given translation key exists in the given locale */
-    function hasKeyFor(locale, key) {
-        var _a, _b;
-        return (_b = (_a = allTrKeys.get(locale)) === null || _a === void 0 ? void 0 : _a.has(key)) !== null && _b !== void 0 ? _b : false;
-    }
-    /** Returns the translated string for the given key, after optionally inserting values */
-    function t(key, ...values) {
-        return tr(key, ...values);
-    }
-    /**
-     * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
-     * Tries to fall back to the non-pluralized syntax if no translation was found
-     */
-    function tp(key, num, ...values) {
-        if (typeof num !== "number")
-            num = num.length;
-        const plNum = num === 1 ? "1" : "n";
-        const trans = t(`${key}-${plNum}`, ...values);
-        if (trans === key)
-            return t(key, ...values);
-        return trans;
-    }
 
     /** Options that are applied to every SelectorObserver instance */
     const defaultObserverOptions = {
@@ -1093,7 +998,7 @@ I welcome every contribution on GitHub!
                             toastElem.classList.add("bytm-closing");
                             yield pauseFor(closeTimeout);
                             toastElem.classList.remove("paper-toast-open");
-                            log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.innerText}' after ${features$3.closeToastsTimeout * 1000}ms`);
+                            log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent}' after ${features$3.closeToastsTimeout * 1000}ms`);
                             // wait for the transition to finish
                             yield pauseFor(animTimeout);
                             toastElem.style.display = "none";
@@ -1228,21 +1133,6 @@ I welcome every contribution on GitHub!
         }
     }
 
-    let createNanoEvents = () => ({
-      emit(event, ...args) {
-        for (let i = 0, callbacks = this.events[event] || [], length = callbacks.length; i < length; i++) {
-          callbacks[i](...args);
-        }
-      },
-      events: {},
-      on(event, cb) {
-        (this.events[event] ||= []).push(cb);
-        return () => {
-          this.events[event] = this.events[event]?.filter(i => cb !== i);
-        };
-      }
-    });
-
     /** EventEmitter instance that is used to detect changes to the site */
     const siteEvents = createNanoEvents();
     let observers = [];
@@ -1288,7 +1178,7 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
-    var changelog = {"html":"<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Features / Changes:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an interface for user-created plugins (<a href=\"https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#developing-a-plugin-that-interfaces-with-betterytm\">see contributing guide for more info</a>)</li>\n<li>Made site switch hotkey customizable</li>\n<li>Userscript will now show a welcome page after first install / update</li>\n<li>Feature to restore last song's time on page reload</li>\n<li>Made interval of arrow key skip configurable</li>\n<li>A hint is now sent to Dark Reader to disable itself (see <a href=\"https://github.com/darkreader/darkreader/discussions/6868#discussioncomment-3109841\">this</a>)</li>\n<li>Made volume slider scroll sensitivity configurable</li>\n<li>Added details / help dialog to menu feature list</li>\n<li>Added queue buttons to all types of song list</li>\n<li>Added manual version check (can be disabled in config menu)</li></ul></li>\n<li><strong>Fixes:</strong><ul>\n<li>BetterYTM now uses a more reliable way to skip to a certain time</li>\n<li>Fixed resources not loading in Chrome</li>\n<li>Fixed album list spacing getting messed up by anchor improvements styling</li>\n<li>Fixed \"Start at\" option in share menu making tracking parameter reappear</li>\n<li>Fixed selector for player queue that was changed by a YTM update</li></ul></li>\n<li><strong>Internal Changes:</strong><ul>\n<li>The license of the source code has been changed from MIT to <a href=\"https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt\">AGPL-3.0</a></li>\n<li>Migrated to the Rollup bundler</li>\n<li>Now multiple versions of the script are compiled for the different hosts (GitHub, GreasyFork, OpenUserJS) with slight compatibility fixes each</li>\n<li>Target branch can now be specified while compiling instead of being tied to the bundler mode</li>\n<li>Added support for React JSX</li>\n<li>Added support for external libraries through <code>@require</code></li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/35\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/9\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/3\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"C:\\Users\\sven1\\code\\sv443\\BetterYTM\\changelog.md"};
+    var changelog = {"html":"<h2 id=\"111\">1.1.1</h2>\n<ul>\n<li><strong>Fixes:</strong><ul>\n<li>Fixed Chinese translations</li></ul></li>\n<li><strong>Internal Changes:</strong><ul>\n<li>Removed React JSX support</li>\n<li>Small utility function refactoring</li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/TODO\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"110\">1.1.0</h2>\n<ul>\n<li><strong>Features / Changes:</strong><ul>\n<li>The userscript is now available in 9 languages! To submit or edit translations, please <a href=\"https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations\">view this guide</a></li>\n<li>Added an interface for user-created plugins (<a href=\"https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#developing-a-plugin-that-interfaces-with-betterytm\">see contributing guide for more info</a>)</li>\n<li>Made site switch hotkey customizable</li>\n<li>Userscript will now show a welcome page after first install / update</li>\n<li>Feature to restore last song's time on page reload</li>\n<li>Made interval of arrow key skip configurable</li>\n<li>A hint is now sent to Dark Reader to disable itself (see <a href=\"https://github.com/darkreader/darkreader/discussions/6868#discussioncomment-3109841\">this</a>)</li>\n<li>Made volume slider scroll sensitivity configurable</li>\n<li>Added details / help dialog to menu feature list</li>\n<li>Added queue buttons to all types of song list</li>\n<li>Added manual version check (can be disabled in config menu)</li></ul></li>\n<li><strong>Fixes:</strong><ul>\n<li>BetterYTM now uses a more reliable way to skip to a certain time</li>\n<li>Fixed resources not loading in Chrome</li>\n<li>Fixed album list spacing getting messed up by anchor improvements styling</li>\n<li>Fixed \"Start at\" option in share menu making tracking parameter reappear</li>\n<li>Fixed selector for player queue that was changed by a YTM update</li></ul></li>\n<li><strong>Internal Changes:</strong><ul>\n<li>The license of the source code has been changed from MIT to <a href=\"https://github.com/Sv443/BetterYTM/blob/main/LICENSE.txt\">AGPL-3.0</a></li>\n<li>Migrated to the Rollup bundler</li>\n<li>Now multiple versions of the script are compiled for the different hosts (GitHub, GreasyFork, OpenUserJS) with slight compatibility fixes each</li>\n<li>Target branch can now be specified while compiling instead of being tied to the bundler mode</li>\n<li>Added support for React JSX</li>\n<li>Added support for external libraries through <code>@require</code></li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/35\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"102\">1.0.2</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to OpenUserJS!</li>\n<li>Added a OpenUserJS link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"101\">1.0.1</h2>\n<ul>\n<li><strong>Changes:</strong><ul>\n<li>Script is now published to GreasyFork!</li>\n<li>Added a GreasyFork link to the configuration menu</li></ul></li>\n</ul>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"100\">1.0.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Added configuration menu to toggle and configure all features</li>\n<li>Added lyrics button to each song in the queue</li>\n<li>Added \"remove from queue\" button to each song in the queue</li>\n<li>Use number keys to skip to a specific point in the song</li>\n<li>Added feature to make volume slider bigger and volume control finer</li>\n<li>Added percentage label next to the volume slider &amp; title on hover</li>\n<li>Improvements to link hitboxes &amp; more links in general</li>\n<li>Permanent toast notifications can be automatically closed now</li>\n<li>Remove tracking parameter <code>&amp;si</code> from links in the share menu</li>\n<li>Fix spacing issues throughout the site</li>\n<li>Added a button to scroll to the currently active song in the queue</li>\n<li>Added an easter egg to the watermark and config menu option :)</li></ul></li>\n<li><strong>Changes & Fixes:</strong><ul>\n<li>Now the lyrics button will directly link to the lyrics (using my API <a href=\"https://github.com/Sv443/geniURL\">geniURL</a>)</li>\n<li>Video time is now kept when switching site on regular YT too</li>\n<li>Fixed compatibility with the new site design</li>\n<li>A loading indicator is shown while the lyrics are loading</li>\n<li>Images are now smaller and cached by the userscript extension</li>\n<li>Song names with hyphens are now resolved better for lyrics lookup</li>\n<li>Site switch with <kbd>F9</kbd> will now keep the video time</li>\n<li>Moved lots of utility code to my new library <a href=\"https://github.com/Sv443-Network/UserUtils\">UserUtils</a></li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/9\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"020\">0.2.0</h2>\n<ul>\n<li><strong>Added Features:</strong><ul>\n<li>Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)</li>\n<li>Search for song lyrics with new button in media controls</li>\n<li>Remove \"Upgrade to YTM Premium\" tab</li></ul></li>\n</ul>\n<p><a href=\"https://github.com/Sv443/BetterYTM/pull/3\">See pull request for more info</a></p>\n<div class=\"split\"></div>\n<p><br></p>\n<h2 id=\"010\">0.1.0</h2>\n<ul>\n<li>Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)</li>\n</ul>","metadata":{},"filename":"changelog.md","path":"/Users/svenfehler/Code/sv443/BetterYTM/changelog.md"};
 
     /** Creates a hotkey input element */
     function createHotkeyInput({ initialValue, resetValue, onChange }) {
@@ -1307,19 +1197,19 @@ I welcome every contribution on GitHub!
         resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
         resetElem.role = "button";
         resetElem.tabIndex = 0;
-        resetElem.innerText = `(${t("reset")})`;
+        resetElem.textContent = `(${t("reset")})`;
         const resetClicked = (e) => {
             e.preventDefault();
             e.stopImmediatePropagation();
             onChange(resetValue);
             inputElem.value = resetValue.code;
             inputElem.dataset.state = "inactive";
-            infoElem.innerText = getHotkeyInfo(resetValue);
+            infoElem.textContent = getHotkeyInfo(resetValue);
         };
         resetElem.addEventListener("click", resetClicked);
         resetElem.addEventListener("keydown", (e) => e.key === "Enter" && resetClicked(e));
         if (initialValue)
-            infoElem.innerText = getHotkeyInfo(initialValue);
+            infoElem.textContent = getHotkeyInfo(initialValue);
         let lastKeyDown;
         document.addEventListener("keypress", (e) => {
             if (inputElem.dataset.state !== "active")
@@ -1336,7 +1226,7 @@ I welcome every contribution on GitHub!
             };
             inputElem.value = hotkey.code;
             inputElem.dataset.state = "inactive";
-            infoElem.innerText = getHotkeyInfo(hotkey);
+            infoElem.textContent = getHotkeyInfo(hotkey);
             onChange(hotkey);
         });
         document.addEventListener("keydown", (e) => {
@@ -1355,7 +1245,7 @@ I welcome every contribution on GitHub!
             lastKeyDown = hotkey;
             inputElem.value = hotkey.code;
             inputElem.dataset.state = "inactive";
-            infoElem.innerText = getHotkeyInfo(hotkey);
+            infoElem.textContent = getHotkeyInfo(hotkey);
             inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
             onChange(hotkey);
         });
@@ -1366,7 +1256,7 @@ I welcome every contribution on GitHub!
             inputElem.value = (_b = curVal === null || curVal === void 0 ? void 0 : curVal.code) !== null && _b !== void 0 ? _b : t("hotkey_input_click_to_change");
             inputElem.dataset.state = "inactive";
             inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
-            infoElem.innerText = curVal ? getHotkeyInfo(curVal) : "";
+            infoElem.textContent = curVal ? getHotkeyInfo(curVal) : "";
         };
         const activate = () => {
             siteEvents.emit("hotkeyInputActive", true);
@@ -1402,7 +1292,7 @@ I welcome every contribution on GitHub!
 
     var name = "betterytm";
     var userscriptName = "BetterYTM";
-    var version = "1.1.0";
+    var version = "1.1.1";
     var description = "Configurable layout and user experience improvements for YouTube Music";
     var homepage = "https://github.com/Sv443/BetterYTM";
     var main = "./src/index.ts";
@@ -1461,35 +1351,22 @@ I welcome every contribution on GitHub!
     	nanoevents: "^9.0.0"
     };
     var devDependencies = {
-    	"@babel/cli": "^7.23.9",
-    	"@babel/core": "^7.23.9",
-    	"@babel/plugin-transform-class-properties": "^7.23.3",
-    	"@babel/preset-react": "^7.23.3",
     	"@jackfranklin/rollup-plugin-markdown": "^0.4.0",
-    	"@rollup/plugin-babel": "^6.0.4",
     	"@rollup/plugin-json": "^6.0.1",
     	"@rollup/plugin-node-resolve": "^15.2.3",
-    	"@rollup/plugin-replace": "^5.0.5",
     	"@rollup/plugin-terser": "^0.4.4",
     	"@rollup/plugin-typescript": "^11.1.5",
     	"@types/express": "^4.17.17",
     	"@types/greasemonkey": "^4.0.4",
     	"@types/node": "^20.2.4",
-    	"@types/react": "^18.2.55",
-    	"@types/react-dom": "^18.2.19",
     	"@typescript-eslint/eslint-plugin": "^6.7.4",
     	"@typescript-eslint/parser": "^6.7.4",
     	concurrently: "^8.1.0",
     	dotenv: "^16.4.1",
     	eslint: "^8.51.0",
-    	"eslint-plugin-react": "^7.33.2",
-    	"eslint-plugin-react-hooks": "^4.6.0",
     	express: "^4.18.2",
     	nodemon: "^3.0.1",
-    	react: "^18.2.0",
-    	"react-dom": "^18.2.0",
     	rollup: "^4.6.0",
-    	"rollup-plugin-commonjs": "^10.1.0",
     	"rollup-plugin-execute": "^1.1.1",
     	"rollup-plugin-html": "^0.2.1",
     	"rollup-plugin-import-css": "^3.3.5",
@@ -1511,7 +1388,7 @@ I welcome every contribution on GitHub!
     		"changelog.md",
     		"package.json"
     	],
-    	ext: "ts,tsx,mts,js,jsx,mjs,json,html,css,svg,png",
+    	ext: "ts,mts,js,jsx,mjs,json,html,css,svg,png",
     	ignore: [
     		"dist/*",
     		"dev/*"
@@ -1607,7 +1484,7 @@ I welcome every contribution on GitHub!
             const titleElem = document.createElement("h2");
             titleElem.className = "bytm-menu-title";
             const titleTextElem = document.createElement("div");
-            titleTextElem.innerText = t("config_menu_title", scriptInfo.name);
+            titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
             titleElem.appendChild(titleTextElem);
             const linksCont = document.createElement("div");
             linksCont.id = "bytm-menu-linkscont";
@@ -1658,11 +1535,11 @@ I welcome every contribution on GitHub!
             const footerElemCont = document.createElement("div");
             const footerElem = document.createElement("div");
             footerElem.classList.add("bytm-menu-footer", "hidden");
-            footerElem.innerText = t("reload_hint");
+            footerElem.textContent = t("reload_hint");
             const reloadElem = document.createElement("button");
             reloadElem.classList.add("bytm-btn");
             reloadElem.style.marginLeft = "10px";
-            reloadElem.innerText = t("reload_now");
+            reloadElem.textContent = t("reload_now");
             reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
             reloadElem.addEventListener("click", () => {
                 closeCfgMenu();
@@ -1674,7 +1551,7 @@ I welcome every contribution on GitHub!
             const resetElem = document.createElement("button");
             resetElem.classList.add("bytm-btn");
             resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
-            resetElem.innerText = t("reset");
+            resetElem.textContent = t("reset");
             resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 if (confirm(t("reset_confirm"))) {
                     yield setDefaultFeatures();
@@ -1686,7 +1563,7 @@ I welcome every contribution on GitHub!
             const exportElem = document.createElement("button");
             exportElem.classList.add("bytm-btn");
             exportElem.ariaLabel = exportElem.title = t("export_tooltip");
-            exportElem.innerText = t("export");
+            exportElem.textContent = t("export");
             exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 closeCfgMenu();
                 openExportMenu();
@@ -1694,7 +1571,7 @@ I welcome every contribution on GitHub!
             const importElem = document.createElement("button");
             importElem.classList.add("bytm-btn");
             importElem.ariaLabel = importElem.title = t("import_tooltip");
-            importElem.innerText = t("import");
+            importElem.textContent = t("import");
             importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 closeCfgMenu();
                 openImportMenu();
@@ -1750,7 +1627,7 @@ I welcome every contribution on GitHub!
                 catHeaderElem.classList.add("bytm-ftconf-category-header");
                 catHeaderElem.role = "heading";
                 catHeaderElem.ariaLevel = "2";
-                catHeaderElem.innerText = `${t(`feature_category_${category}`)}:`;
+                catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
                 featuresCont.appendChild(catHeaderElem);
                 for (const featKey in featObj) {
                     const ftInfo = featInfo[featKey];
@@ -1768,7 +1645,7 @@ I welcome every contribution on GitHub!
                         const featLeftSideElem = document.createElement("div");
                         featLeftSideElem.classList.add("bytm-ftitem-leftside");
                         const textElem = document.createElement("span");
-                        textElem.innerText = t(`feature_desc_${featKey}`);
+                        textElem.textContent = t(`feature_desc_${featKey}`);
                         let adornmentElem;
                         const adornContent = (_c = ftInfo.textAdornment) === null || _c === void 0 ? void 0 : _c.call(ftInfo);
                         if (typeof adornContent === "string" || adornContent instanceof Promise) {
@@ -1859,19 +1736,19 @@ I welcome every contribution on GitHub!
                             if (type === "slider") {
                                 labelElem = document.createElement("label");
                                 labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-                                labelElem.innerText = fmtVal(initialVal) + unitTxt;
+                                labelElem.textContent = fmtVal(initialVal) + unitTxt;
                                 inputElem.addEventListener("input", () => {
                                     if (labelElem)
-                                        labelElem.innerText = fmtVal(Number(inputElem.value)) + unitTxt;
+                                        labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
                                 });
                             }
                             else if (type === "toggle") {
                                 labelElem = document.createElement("label");
                                 labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-                                labelElem.innerText = toggleLabelText(Boolean(initialVal)) + unitTxt;
+                                labelElem.textContent = toggleLabelText(Boolean(initialVal)) + unitTxt;
                                 inputElem.addEventListener("input", () => {
                                     if (labelElem)
-                                        labelElem.innerText = toggleLabelText(inputElem.checked) + unitTxt;
+                                        labelElem.textContent = toggleLabelText(inputElem.checked) + unitTxt;
                                 });
                             }
                             else if (type === "select") {
@@ -1881,7 +1758,7 @@ I welcome every contribution on GitHub!
                                 for (const { value, label } of ftOpts) {
                                     const optionElem = document.createElement("option");
                                     optionElem.value = String(value);
-                                    optionElem.innerText = label;
+                                    optionElem.textContent = label;
                                     if (value === initialVal)
                                         optionElem.selected = true;
                                     inputElem.appendChild(optionElem);
@@ -1940,9 +1817,9 @@ I welcome every contribution on GitHub!
                     // @ts-ignore
                     const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
                     if (ftInfo.type === "slider")
-                        labelElem.innerText = fmtVal(Number(value)) + unitTxt;
+                        labelElem.textContent = fmtVal(Number(value)) + unitTxt;
                     else if (ftInfo.type === "toggle")
-                        labelElem.innerText = toggleLabelText(Boolean(value)) + unitTxt;
+                        labelElem.textContent = toggleLabelText(Boolean(value)) + unitTxt;
                 }
                 info("Rebuilt config menu");
             });
@@ -1985,7 +1862,7 @@ I welcome every contribution on GitHub!
             versionElem.role = "button";
             versionElem.tabIndex = 0;
             versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
-            versionElem.innerText = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
+            versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
             const versionElemClicked = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -2134,10 +2011,10 @@ I welcome every contribution on GitHub!
                 // update help text
                 const featDescElem = menuBgElem.querySelector("#bytm-feat-help-menu-desc");
                 const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
-                featDescElem.innerText = t(`feature_desc_${featureKey}`);
+                featDescElem.textContent = t(`feature_desc_${featureKey}`);
                 // @ts-ignore
                 const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
-                helpTextElem.innerText = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
+                helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
             }
             // show menu
             const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
@@ -2201,7 +2078,7 @@ I welcome every contribution on GitHub!
             titleCont.ariaLevel = "1";
             const titleElem = document.createElement("h2");
             titleElem.className = "bytm-menu-title";
-            titleElem.innerText = t("export_menu_title", scriptInfo.name);
+            titleElem.textContent = t("export_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
             closeElem.role = "button";
@@ -2222,7 +2099,7 @@ I welcome every contribution on GitHub!
             menuBodyElem.classList.add("bytm-menu-body");
             const textElem = document.createElement("div");
             textElem.id = "bytm-export-menu-text";
-            textElem.innerText = t("export_hint");
+            textElem.textContent = t("export_hint");
             const textAreaElem = document.createElement("textarea");
             textAreaElem.id = "bytm-export-menu-textarea";
             textAreaElem.readOnly = true;
@@ -2239,12 +2116,12 @@ I welcome every contribution on GitHub!
             footerElem.classList.add("bytm-menu-footer-right");
             const copyBtnElem = document.createElement("button");
             copyBtnElem.classList.add("bytm-btn");
-            copyBtnElem.innerText = t("copy_to_clipboard");
+            copyBtnElem.textContent = t("copy_to_clipboard");
             copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
             const copiedTextElem = document.createElement("span");
             copiedTextElem.id = "bytm-export-menu-copied-txt";
             copiedTextElem.classList.add("bytm-menu-footer-copied");
-            copiedTextElem.innerText = t("copied_notice");
+            copiedTextElem.textContent = t("copied_notice");
             copiedTextElem.style.display = "none";
             copyBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
                 (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
@@ -2347,7 +2224,7 @@ I welcome every contribution on GitHub!
             titleCont.ariaLevel = "1";
             const titleElem = document.createElement("h2");
             titleElem.className = "bytm-menu-title";
-            titleElem.innerText = t("import_menu_title", scriptInfo.name);
+            titleElem.textContent = t("import_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
             closeElem.role = "button";
@@ -2368,7 +2245,7 @@ I welcome every contribution on GitHub!
             menuBodyElem.classList.add("bytm-menu-body");
             const textElem = document.createElement("div");
             textElem.id = "bytm-import-menu-text";
-            textElem.innerText = t("import_hint");
+            textElem.textContent = t("import_hint");
             const textAreaElem = document.createElement("textarea");
             textAreaElem.id = "bytm-import-menu-textarea";
             //#SECTION footer
@@ -2376,7 +2253,7 @@ I welcome every contribution on GitHub!
             footerElem.classList.add("bytm-menu-footer-right");
             const importBtnElem = document.createElement("button");
             importBtnElem.classList.add("bytm-btn");
-            importBtnElem.innerText = t("import");
+            importBtnElem.textContent = t("import");
             importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
             importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
                 (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
@@ -2525,7 +2402,7 @@ I welcome every contribution on GitHub!
             titleCont.ariaLevel = "1";
             const titleElem = document.createElement("h2");
             titleElem.className = "bytm-menu-title";
-            titleElem.innerText = t("changelog_menu_title", scriptInfo.name);
+            titleElem.textContent = t("changelog_menu_title", scriptInfo.name);
             const closeElem = document.createElement("img");
             closeElem.classList.add("bytm-menu-close");
             closeElem.role = "button";
@@ -2610,7 +2487,7 @@ I welcome every contribution on GitHub!
             watermark.role = "button";
             watermark.id = "bytm-watermark";
             watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
-            watermark.innerText = scriptInfo.name;
+            watermark.textContent = scriptInfo.name;
             watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
             watermark.tabIndex = 0;
             improveLogo();
@@ -2704,7 +2581,7 @@ I welcome every contribution on GitHub!
             cfgOptIconElem.src = yield getResourceUrl("img-logo");
             const cfgOptTextElem = document.createElement("div");
             cfgOptTextElem.className = "bytm-cfg-menu-option-text";
-            cfgOptTextElem.innerText = t("config_menu_option", scriptInfo.name);
+            cfgOptTextElem.textContent = t("config_menu_option", scriptInfo.name);
             cfgOptItemElem.appendChild(cfgOptIconElem);
             cfgOptItemElem.appendChild(cfgOptTextElem);
             cfgOptElem.appendChild(cfgOptItemElem);
@@ -2773,7 +2650,7 @@ I welcome every contribution on GitHub!
     function addVolumeSliderLabel(sliderElem, sliderContainer) {
         const labelElem = document.createElement("div");
         labelElem.id = "bytm-vol-slider-label";
-        labelElem.innerText = `${sliderElem.value}%`;
+        labelElem.textContent = `${sliderElem.value}%`;
         // prevent video from minimizing
         labelElem.addEventListener("click", (e) => e.stopPropagation());
         const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
@@ -2788,7 +2665,7 @@ I welcome every contribution on GitHub!
             sliderElem.setAttribute("aria-valuetext", labelFull);
             const labelElem2 = document.querySelector("#bytm-vol-slider-label");
             if (labelElem2)
-                labelElem2.innerText = `${sliderElem.value}%`;
+                labelElem2.textContent = `${sliderElem.value}%`;
         };
         sliderElem.addEventListener("change", () => updateLabel());
         onSelectorOld("#bytm-vol-slider-cont", {
@@ -3275,7 +3152,7 @@ I welcome every contribution on GitHub!
                     return undefined;
                 const songNameRaw = songTitleElem.title;
                 let songName = songNameRaw;
-                let artistName = songMetaElem.innerText;
+                let artistName = songMetaElem.textContent;
                 if (isVideo) {
                     // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
                     if (songName.includes("-")) {
@@ -3284,6 +3161,8 @@ I welcome every contribution on GitHub!
                         artistName = split.artist;
                     }
                 }
+                if (!artistName)
+                    return undefined;
                 const url = yield fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
                 if (url) {
                     emitInterface("bytm:lyricsLoaded", {
@@ -3464,8 +3343,8 @@ I welcome every contribution on GitHub!
                         if (!songInfo)
                             return;
                         const [songEl, artistEl] = songInfo.querySelectorAll("yt-formatted-string");
-                        song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
-                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
+                        song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
+                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
                     }
                     else if (listType === "genericQueue") {
                         const songEl = queueItem.querySelector(".title-column yt-formatted-string a");
@@ -3474,8 +3353,8 @@ I welcome every contribution on GitHub!
                             artistEl = document.querySelector("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
                         else
                             artistEl = queueItem.querySelector(".secondary-flex-columns yt-formatted-string:first-child a");
-                        song = songEl === null || songEl === void 0 ? void 0 : songEl.innerText;
-                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.innerText;
+                        song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
+                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
                     }
                     else
                         return;
@@ -3594,6 +3473,39 @@ I welcome every contribution on GitHub!
         });
     }
 
+    let verNotifDialog = null;
+    /** Returns the dialog shown when a new version is available */
+    function getVersionNotifDialog({ latestTag, }) {
+        if (!verNotifDialog) {
+            verNotifDialog = new BytmDialog({
+                id: "version-notif",
+                closeOnBgClick: false,
+                closeOnEscPress: false,
+                destroyOnClose: true,
+                renderBody: () => renderBody(latestTag),
+            });
+        }
+        return verNotifDialog;
+    }
+    function renderBody(latestTag) {
+        const platformNames = {
+            github: "GitHub",
+            greasyfork: "GreasyFork",
+            openuserjs: "OpenUserJS",
+        };
+        // TODO:
+        const wrapperEl = document.createElement("div");
+        const pEl = document.createElement("p");
+        pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
+        wrapperEl.appendChild(pEl);
+        const btnEl = document.createElement("button");
+        btnEl.className = "bytm-btn";
+        btnEl.textContent = t("update_now");
+        btnEl.addEventListener("click", () => window.open(pkg.updates[host]));
+        wrapperEl.appendChild(btnEl);
+        return wrapperEl;
+    }
+
     const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
     function checkVersion() {
         var _a;
@@ -3620,28 +3532,8 @@ I welcome every contribution on GitHub!
                         greasyfork: "GreasyFork",
                         openuserjs: "OpenUserJS",
                     };
-                    // const menu = new BytmMenu({
-                    //   id: "version-check",
-                    //   closeOnBgClick: false,
-                    //   closeOnEscPress: false,
-                    //   renderBody() {
-                    //     return (
-                    //       <div>
-                    //         <p>
-                    //           {t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])}
-                    //         </p>
-                    //         <button
-                    //           className="bytm-btn"
-                    //           onClick={() => window.open(pkg.updates[host])}
-                    //         >
-                    //           {t("update_now")}
-                    //         </button>
-                    //       </div>
-                    //     );
-                    //   },
-                    // });
-                    // menu.on("close", () => menu.destroy());
-                    // await menu.open();
+                    const dialog = getVersionNotifDialog({ latestTag });
+                    yield dialog.open();
                     // TODO: replace with custom dialog
                     if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
                         window.open(pkg.updates[host]);
@@ -4053,6 +3945,374 @@ I welcome every contribution on GitHub!
         getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
     }
 
+    const fetchOpts = {
+        timeout: 10000,
+    };
+    /** Contains all translation keys of all initialized and loaded translations */
+    const allTrKeys = new Map();
+    /** Contains the identifiers of all initialized and loaded translation locales */
+    const initializedLocales = new Set();
+    /** Initializes the translations */
+    function initTranslations(locale) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (initializedLocales.has(locale))
+                return;
+            initializedLocales.add(locale);
+            try {
+                const transUrl = yield getResourceUrl(`trans-${locale}`);
+                const transFile = yield (yield fetchAdvanced(transUrl, fetchOpts)).json();
+                // merge with base translations if specified
+                const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
+                const baseTransFile = baseTransUrl ? yield (yield fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
+                const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
+                tr.addLanguage(locale, translations);
+                allTrKeys.set(locale, new Set(Object.keys(translations)));
+                info(`Loaded translations for locale '${locale}'`);
+            }
+            catch (err) {
+                const errStr = `Couldn't load translations for locale '${locale}'`;
+                error(errStr, err);
+                throw new Error(errStr);
+            }
+        });
+    }
+    /** Sets the current language for translations */
+    function setLocale(locale) {
+        tr.setLanguage(locale);
+        setGlobalProp("locale", locale);
+        emitInterface("bytm:setLocale", { locale });
+    }
+    /** Returns the currently set language */
+    function getLocale() {
+        return tr.getLanguage();
+    }
+    /** Returns whether the given translation key exists in the current locale */
+    function hasKey(key) {
+        return hasKeyFor(getLocale(), key);
+    }
+    /** Returns whether the given translation key exists in the given locale */
+    function hasKeyFor(locale, key) {
+        var _a, _b;
+        return (_b = (_a = allTrKeys.get(locale)) === null || _a === void 0 ? void 0 : _a.has(key)) !== null && _b !== void 0 ? _b : false;
+    }
+    /** Returns the translated string for the given key, after optionally inserting values */
+    function t(key, ...values) {
+        return tr(key, ...values);
+    }
+    /**
+     * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
+     * Tries to fall back to the non-pluralized syntax if no translation was found
+     */
+    function tp(key, num, ...values) {
+        if (typeof num !== "number")
+            num = num.length;
+        const plNum = num === 1 ? "1" : "n";
+        const trans = t(`${key}-${plNum}`, ...values);
+        if (trans === key)
+            return t(key, ...values);
+        return trans;
+    }
+
+    /** ID of the last opened (top-most) menu */
+    let lastMenuId = null;
+    /** Creates and manages a modal menu element */
+    class BytmDialog extends NanoEmitter {
+        constructor(options) {
+            super();
+            Object.defineProperty(this, "options", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: void 0
+            });
+            Object.defineProperty(this, "id", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: void 0
+            });
+            Object.defineProperty(this, "menuOpen", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: false
+            });
+            Object.defineProperty(this, "menuRendered", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: false
+            });
+            Object.defineProperty(this, "listenersAttached", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: false
+            });
+            this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false }, options);
+            this.id = options.id;
+        }
+        /** Call after DOMContentLoaded to pre-render the menu (or call just before calling open()) */
+        render() {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.menuRendered)
+                    return;
+                this.menuRendered = true;
+                const bgElem = document.createElement("div");
+                bgElem.id = `bytm-${this.id}-menu-bg`;
+                bgElem.classList.add("bytm-menu-bg");
+                if (this.options.closeOnBgClick)
+                    bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
+                bgElem.style.visibility = "hidden";
+                bgElem.style.display = "none";
+                bgElem.inert = true;
+                bgElem.appendChild(yield this.getMenuContent());
+                document.body.appendChild(bgElem);
+                this.attachListeners(bgElem);
+                this.events.emit("render");
+            });
+        }
+        /** Clears all menu contents (unmounts them from the DOM) in preparation for a new rendering call */
+        unmount() {
+            var _a;
+            this.menuRendered = false;
+            const clearSelectors = [
+                `#bytm-${this.id}-menu-bg`,
+            ];
+            for (const selector of clearSelectors) {
+                const elem = document.querySelector(selector);
+                if (!elem)
+                    continue;
+                clearInner(elem);
+            }
+            (_a = document.querySelector(`#bytm-${this.id}-menu-bg`)) === null || _a === void 0 ? void 0 : _a.remove();
+            this.events.emit("clear");
+        }
+        /** Clears and then re-renders the menu */
+        rerender() {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.unmount();
+                yield this.render();
+            });
+        }
+        /**
+         * Opens the menu - renders it if it hasn't been rendered yet
+         * Prevents default action and immediate propagation of the passed event
+         */
+        open(e) {
+            var _a;
+            return __awaiter(this, void 0, void 0, function* () {
+                e === null || e === void 0 ? void 0 : e.preventDefault();
+                e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+                if (this.isOpen())
+                    return;
+                this.menuOpen = true;
+                if (!this.isRendered())
+                    yield this.render();
+                document.body.classList.add("bytm-disable-scroll");
+                (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+                const menuBg = document.querySelector(`#bytm-${this.id}-menu-bg`);
+                if (!menuBg)
+                    return warn(`Couldn't find background element for menu with ID '${this.id}'`);
+                menuBg.style.visibility = "visible";
+                menuBg.style.display = "block";
+                menuBg.inert = false;
+                lastMenuId = this.id;
+                this.events.emit("open");
+            });
+        }
+        /** Closes the menu - prevents default action and immediate propagation of the passed event */
+        close(e) {
+            var _a;
+            e === null || e === void 0 ? void 0 : e.preventDefault();
+            e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+            if (!this.isOpen())
+                return;
+            this.menuOpen = false;
+            document.body.classList.remove("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+            const menuBg = document.querySelector(`#bytm-${this.id}-menu-bg`);
+            if (!menuBg)
+                return warn(`Couldn't find background element for menu with ID '${this.id}'`);
+            menuBg.style.visibility = "hidden";
+            menuBg.style.display = "none";
+            menuBg.inert = true;
+            if (BytmDialog.getLastMenuId() === this.id)
+                lastMenuId = null;
+            this.events.emit("close");
+            if (this.options.destroyOnClose)
+                this.destroy();
+        }
+        /** Returns true if the menu is open */
+        isOpen() {
+            return this.menuOpen;
+        }
+        /** Returns true if the menu has been rendered */
+        isRendered() {
+            return this.menuRendered;
+        }
+        /** Clears the menu and removes all event listeners */
+        destroy() {
+            this.events.emit("destroy");
+            this.unmount();
+            this.unsubscribeAll();
+        }
+        /** Returns the ID of the top-most menu (the menu that has been opened last) */
+        static getLastMenuId() {
+            return lastMenuId;
+        }
+        /** Called once to attach all generic event listeners */
+        attachListeners(bgElem) {
+            if (this.listenersAttached)
+                return;
+            this.listenersAttached = true;
+            if (this.options.closeOnBgClick) {
+                bgElem.addEventListener("click", (e) => {
+                    var _a;
+                    if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-menu-bg`)
+                        this.close(e);
+                });
+            }
+            if (this.options.closeOnEscPress) {
+                document.body.addEventListener("keydown", (e) => {
+                    if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastMenuId() === this.id)
+                        this.close(e);
+                });
+            }
+        }
+        getMenuContent() {
+            var _a, _b, _c, _d;
+            return __awaiter(this, void 0, void 0, function* () {
+                const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
+                const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
+                const menuWrapperEl = document.createElement("div");
+                menuWrapperEl.id = `bytm-${this.id}-menu`;
+                menuWrapperEl.classList.add("bytm-menu");
+                menuWrapperEl.ariaLabel = menuWrapperEl.title = "";
+                //#SECTION header
+                const headerWrapperEl = document.createElement("div");
+                headerWrapperEl.classList.add("bytm-menu-header");
+                if (header) {
+                    const headerTitleWrapperEl = document.createElement("div");
+                    headerTitleWrapperEl.classList.add("bytm-menu-title-wrapper");
+                    headerTitleWrapperEl.role = "heading";
+                    headerTitleWrapperEl.ariaLevel = "1";
+                    headerTitleWrapperEl.appendChild(header);
+                    headerWrapperEl.appendChild(headerTitleWrapperEl);
+                }
+                if (this.options.closeBtnEnabled) {
+                    const closeBtnEl = document.createElement("img");
+                    closeBtnEl.classList.add("bytm-menu-close");
+                    closeBtnEl.src = yield getResourceUrl("img-close");
+                    closeBtnEl.role = "button";
+                    closeBtnEl.tabIndex = 0;
+                    closeBtnEl.addEventListener("click", () => this.close());
+                    headerWrapperEl.appendChild(closeBtnEl);
+                }
+                menuWrapperEl.appendChild(headerWrapperEl);
+                // TODO:
+                //#SECTION body
+                const bodyWrapperEl = document.createElement("div");
+                bodyWrapperEl.appendChild(this.options.renderBody());
+                menuWrapperEl.appendChild(bodyWrapperEl);
+                //#SECTION footer
+                if (footer) {
+                    menuWrapperEl.appendChild(footer);
+                }
+                return menuWrapperEl;
+            });
+        }
+    }
+
+    //#SECTION video time
+    const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
+    /**
+     * Returns the current video time in seconds
+     * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+     * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
+     */
+    function getVideoTime() {
+        return new Promise((res) => {
+            const domain = getDomain();
+            try {
+                if (domain === "ytm") {
+                    const vidElem = document.querySelector(videoSelector);
+                    if (vidElem)
+                        return res(Math.floor(vidElem.currentTime));
+                    onSelectorOld("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+                        listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
+                    });
+                }
+                else if (domain === "yt") {
+                    const vidElem = document.querySelector(videoSelector);
+                    if (vidElem)
+                        return res(Math.floor(vidElem.currentTime));
+                    // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
+                    ytForceShowVideoTime();
+                    const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+                    let videoTime = -1;
+                    const mut = new MutationObserver(() => {
+                        // .observe() is only called when the element exists - no need to check for null
+                        videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
+                    });
+                    const observe = (progElem) => {
+                        mut.observe(progElem, {
+                            attributes: true,
+                            attributeFilter: ["aria-valuenow"],
+                        });
+                        if (videoTime >= 0 && !isNaN(videoTime)) {
+                            res(Math.floor(videoTime));
+                            mut.disconnect();
+                        }
+                        else
+                            setTimeout(() => {
+                                res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
+                                mut.disconnect();
+                            }, 500);
+                    };
+                    onSelectorOld(pbSelector, { listener: observe });
+                }
+            }
+            catch (err) {
+                error("Couldn't get video time due to error:", err);
+                res(null);
+            }
+        });
+    }
+    /**
+     * Sends events that force the video controls to become visible for about 3 seconds.
+     * This only works once (for some reason), then the page needs to be reloaded!
+     */
+    function ytForceShowVideoTime() {
+        const player = document.querySelector("#movie_player");
+        if (!player)
+            return false;
+        const defaultProps = {
+            // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+            view: getUnsafeWindow$1(),
+            bubbles: true,
+            cancelable: false,
+        };
+        player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
+        const { x, y, width, height } = player.getBoundingClientRect();
+        const screenY = Math.round(y + height / 2);
+        const screenX = x + Math.min(50, Math.round(width / 3));
+        player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
+            screenX, movementX: 5, movementY: 0 })));
+        return true;
+    }
+    /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
+    function clearInner(element) {
+        while (element.hasChildNodes())
+            clearNode(element.firstChild);
+    }
+    function clearNode(element) {
+        while (element.hasChildNodes())
+            clearNode(element.firstChild);
+        element.parentNode.removeChild(element);
+    }
+
     let curLogLevel = LogLevel.Info;
     /** Common prefix to be able to tell logged messages apart and filter them in devtools */
     const consPrefix = `[${scriptInfo.name}]`;
@@ -4339,7 +4599,7 @@ I welcome every contribution on GitHub!
             for (const [locale, { name }] of Object.entries(locales)) {
                 const localeOptionElem = document.createElement("option");
                 localeOptionElem.value = locale;
-                localeOptionElem.innerText = name;
+                localeOptionElem.textContent = name;
                 localeSelectElem.appendChild(localeOptionElem);
             }
             localeSelectElem.value = getFeatures().locale;
@@ -4407,18 +4667,18 @@ I welcome every contribution on GitHub!
             return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
         };
         const changes = {
-            "#bytm-welcome-menu-title": (e) => e.innerText = t("welcome_menu_title", scriptInfo.name),
+            "#bytm-welcome-menu-title": (e) => e.textContent = t("welcome_menu_title", scriptInfo.name),
             "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
             "#bytm-welcome-menu-open-cfg": (e) => {
-                e.innerText = t("config_menu");
+                e.textContent = t("config_menu");
                 e.ariaLabel = e.title = t("open_config_menu_tooltip");
             },
             "#bytm-welcome-menu-open-changelog": (e) => {
-                e.innerText = t("open_changelog");
+                e.textContent = t("open_changelog");
                 e.ariaLabel = e.title = t("open_changelog_tooltip");
             },
             "#bytm-welcome-menu-footer-close": (e) => {
-                e.innerText = t("close");
+                e.textContent = t("close");
                 e.ariaLabel = e.title = t("close_menu_tooltip");
             },
             "#bytm-welcome-text-line1": (e) => e.innerHTML = t("welcome_text_line_1"),
@@ -4490,7 +4750,6 @@ I welcome every contribution on GitHub!
             `─ My song metadata API: ${geniUrlBase}`,
             "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
             "─ This tiny event listener library: https://github.com/ai/nanoevents",
-            "─ The React library: https://github.com/facebook/react",
         ].join("\n"));
         console.log();
     }
