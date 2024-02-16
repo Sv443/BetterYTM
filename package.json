@@ -56,7 +56,6 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
-    "@sv443-network/userutils": "^4.1.0",
     "nanoevents": "^9.0.0"
   },
   "devDependencies": {
@@ -64,6 +63,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
+    "@sv443-network/userutils": "^4.2.1",
     "@types/express": "^4.17.17",
     "@types/greasemonkey": "^4.0.4",
     "@types/node": "^20.2.4",

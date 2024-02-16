@@ -1,5 +1,8 @@
 [
   {
+    "url": "https://cdn.jsdelivr.net/npm/@sv443-network/userutils/dist/index.global.js"
+  },
+  {
     "url": "https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"
   }
 ]
