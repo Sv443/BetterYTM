@@ -2,7 +2,7 @@ import { getResourceUrl, warn, type TrLocale, initTranslations, setLocale, t } f
 import { getFeatures, saveFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { scriptInfo } from "../constants";
-import { addCfgMenu, openCfgMenu, openChangelogMenu } from "./menu_old";
+import { openCfgMenu, openChangelogMenu } from "./menu_old";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 import "./welcomeMenu.css";
@@ -65,7 +65,6 @@ export async function addWelcomeMenu() {
   openChangelogElem.id = "bytm-welcome-menu-open-changelog";
   openChangelogElem.classList.add("bytm-btn");
   openChangelogElem.addEventListener("click", async () => {
-    await addCfgMenu();
     await openChangelogMenu("exit");
     closeWelcomeMenu();
   });

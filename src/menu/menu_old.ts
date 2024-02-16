@@ -39,7 +39,7 @@ let initConfig: string | undefined;
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
-export async function addCfgMenu() {
+async function addCfgMenu() {
   if(isCfgMenuAdded)
     return;
   isCfgMenuAdded = true;
@@ -186,7 +186,7 @@ export async function addCfgMenu() {
   exportElem.textContent = t("export");
   exportElem.addEventListener("click", async () => {
     await openExportMenu();
-    closeCfgMenu();
+    closeCfgMenu(undefined, false);
   });
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
@@ -194,7 +194,7 @@ export async function addCfgMenu() {
   importElem.textContent = t("import");
   importElem.addEventListener("click", async () => {
     await openImportMenu();
-    closeCfgMenu();
+    closeCfgMenu(undefined, false);
   });
 
   const buttonsCont = document.createElement("div");
@@ -558,7 +558,7 @@ export async function addCfgMenu() {
     e.stopPropagation();
 
     await openChangelogMenu("cfgMenu");
-    closeCfgMenu();
+    closeCfgMenu(undefined, false);
   };
   versionElem.addEventListener("click", versionElemClicked);
   versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
@@ -584,14 +584,16 @@ export async function addCfgMenu() {
 }
 
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent) {
+export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
   if(!isCfgMenuOpen)
     return;
   isCfgMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.removeAttribute("inert");
+  if(enableScroll) {
+    document.body.classList.remove("bytm-disable-scroll");
+    document.querySelector("ytmusic-app")?.removeAttribute("inert");
+  }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   siteEvents.emit("cfgMenuClosed");
@@ -908,8 +910,6 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
   isExportMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-export-menu-bg");
 
   if(!menuBg)
@@ -1127,8 +1127,6 @@ function closeImportMenu(evt?: MouseEvent | KeyboardEvent) {
   isImportMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-import-menu-bg");
 
   const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-import-menu-textarea");
@@ -1274,8 +1272,6 @@ function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
   isChangelogMenuOpen = false;
   evt?.bubbles && evt.stopPropagation();
 
-  document.body.classList.remove("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.removeAttribute("inert");
   const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
 
   if(!menuBg)

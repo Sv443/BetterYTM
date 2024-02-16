@@ -5,7 +5,6 @@ import { defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
 import { initSiteEvents, siteEvents } from "./siteEvents";
 import { emitInterface, initInterface } from "./interface";
-import { addCfgMenu } from "./menu/menu_old";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import { initObservers, observers } from "./observers";
 import {
@@ -154,13 +153,6 @@ async function onDomLoad() {
         info("Showing welcome menu");
         await showWelcomeMenu();
         await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
-      }
-
-      try {
-        ftInit.push(addCfgMenu()); // TODO(v1.2): remove
-      }
-      catch(err) {
-        error("Couldn't add menu:", err);
       }
 
       observers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
