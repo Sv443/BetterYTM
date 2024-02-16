@@ -3,7 +3,6 @@ import pluginNodeResolve from "@rollup/plugin-node-resolve";
 import pluginJson from "@rollup/plugin-json";
 import pluginHtml from "rollup-plugin-html";
 import pluginCss from "rollup-plugin-import-css";
-import pluginMarkdown from "@jackfranklin/rollup-plugin-markdown";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
 
@@ -37,7 +36,6 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       pluginCss({
         output: "global.css",
       }),
-      pluginMarkdown(),
       pluginExecute([
         `npm run --silent post-build -- --mode=${mode} --branch=${branch} --host=${host} --suffix=${suffix}`,
         ...(mode === "development" ? ["npm run --silent invisible -- \"npm run tr-progress\""] : []),
@@ -48,6 +46,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       format: "iife",
       sourcemap: mode === "development",
       compact: mode === "development",
+      globals: {
+        "marked": "marked",
+      },
     },
     onwarn(warning) {
       // ignore circular dependency warnings
@@ -56,6 +57,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         console.error(`\x1b[33m(!)\x1b[0m ${message}\n`, rest);
       }
     },
+    external: [
+      "marked",
+    ],
   };
 
   return config;
