@@ -26,7 +26,8 @@
 #side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
 ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
 ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 ytmusic-responsive-list-item-renderer .title-column {
