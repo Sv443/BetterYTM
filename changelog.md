@@ -1,6 +1,7 @@
 ## 1.1.1
 - **Fixes:**
   - Fixed Chinese translations
+  - Fixed queue button container alignment
 - **Internal Changes:**
   - Removed React JSX support
   - Small utility function refactoring
