@@ -1,7 +1,9 @@
 ## 1.1.1
-- **Fixes / Changes:**
+- **Features / Changes:**
+  - A new version notification dialog is now shown with the latest version's changes
   - Menus are now only created when needed
   - Moved dependencies to `@require` to reduce script size
+- **Fixes:**
   - Fixed queue button container alignment
   - Fixed Chinese translations
 - **Internal Changes:**
