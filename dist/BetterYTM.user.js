@@ -172,44 +172,6 @@ I welcome every contribution on GitHub!
       }
     });
 
-    /** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
-    class NanoEmitter {
-        constructor() {
-            Object.defineProperty(this, "events", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: createNanoEvents()
-            });
-            Object.defineProperty(this, "unsubscribers", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: []
-            });
-        }
-        /** Subscribes to an event - returns a function that unsubscribes the event listener */
-        on(event, cb) {
-            // eslint-disable-next-line prefer-const
-            let unsub;
-            const unsubProxy = () => {
-                if (!unsub)
-                    return;
-                unsub();
-                this.unsubscribers = this.unsubscribers.filter(u => u !== unsub);
-            };
-            unsub = this.events.on(event, cb);
-            this.unsubscribers.push(unsub);
-            return unsubProxy;
-        }
-        /** Unsubscribes all event listeners */
-        unsubscribeAll() {
-            for (const unsub of this.unsubscribers)
-                unsub();
-            this.unsubscribers = [];
-        }
-    }
-
     // I know TS enums are impure but it doesn't really matter here, plus they look cooler
     var LogLevel;
     (function (LogLevel) {
@@ -228,6 +190,11 @@ I welcome every contribution on GitHub!
     const repo = "Sv443/BetterYTM";
     /** Which host the userscript was installed from */
     const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
+    const platformNames = {
+        github: "GitHub",
+        greasyfork: "GreasyFork",
+        openuserjs: "OpenUserJS",
+    };
     /**
      * How much info should be logged to the devtools console
      * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -238,7 +205,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "f16b0ce", // asserted as generic string instead of literal
+        buildNumber: "e5722da", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -984,16 +951,16 @@ I welcome every contribution on GitHub!
             exportElem.ariaLabel = exportElem.title = t("export_tooltip");
             exportElem.textContent = t("export");
             exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                yield openExportMenu();
                 closeCfgMenu();
-                openExportMenu();
             }));
             const importElem = document.createElement("button");
             importElem.classList.add("bytm-btn");
             importElem.ariaLabel = importElem.title = t("import_tooltip");
             importElem.textContent = t("import");
             importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                yield openImportMenu();
                 closeCfgMenu();
-                openImportMenu();
             }));
             const buttonsCont = document.createElement("div");
             buttonsCont.id = "bytm-menu-footer-buttons-cont";
@@ -1282,12 +1249,12 @@ I welcome every contribution on GitHub!
             versionElem.tabIndex = 0;
             versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
             versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
-            const versionElemClicked = (e) => {
+            const versionElemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
                 e.preventDefault();
                 e.stopPropagation();
+                yield openChangelogMenu("cfgMenu");
                 closeCfgMenu();
-                openChangelogMenu("cfgMenu");
-            };
+            });
             versionElem.addEventListener("click", versionElemClicked);
             versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
             menuContainer.appendChild(footerCont);
@@ -1296,9 +1263,6 @@ I welcome every contribution on GitHub!
             backgroundElem.appendChild(menuContainer);
             document.body.appendChild(backgroundElem);
             window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 150));
-            yield addChangelogMenu();
-            yield addExportMenu();
-            yield addImportMenu();
             log("Added menu element");
             // ensure stuff is reset if menu was opened before being added
             isCfgMenuOpen = false;
@@ -1459,6 +1423,7 @@ I welcome every contribution on GitHub!
         (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
     }
     //#MARKER export menu
+    let isExportMenuAdded = false;
     let isExportMenuOpen = false;
     let copiedTxtTimeout = undefined;
     /** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
@@ -1595,18 +1560,24 @@ I welcome every contribution on GitHub!
     /** Opens the export menu if it is closed */
     function openExportMenu() {
         var _a;
-        if (isExportMenuOpen)
-            return;
-        isExportMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-export-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find export menu background element");
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!isExportMenuAdded)
+                yield addExportMenu();
+            isExportMenuAdded = true;
+            if (isExportMenuOpen)
+                return;
+            isExportMenuOpen = true;
+            document.body.classList.add("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+            const menuBg = document.querySelector("#bytm-export-menu-bg");
+            if (!menuBg)
+                return warn("Couldn't find export menu background element");
+            menuBg.style.visibility = "visible";
+            menuBg.style.display = "block";
+        });
     }
     //#MARKER import menu
+    let isImportMenuAdded = false;
     let isImportMenuOpen = false;
     /** Adds a menu to import a configuration from compressed or uncompressed JSON (hidden by default) */
     function addImportMenu() {
@@ -1771,18 +1742,24 @@ I welcome every contribution on GitHub!
     /** Opens the import menu if it is closed */
     function openImportMenu() {
         var _a;
-        if (isImportMenuOpen)
-            return;
-        isImportMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-import-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find import menu background element");
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!isImportMenuAdded)
+                yield addImportMenu();
+            isImportMenuAdded = true;
+            if (isImportMenuOpen)
+                return;
+            isImportMenuOpen = true;
+            document.body.classList.add("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+            const menuBg = document.querySelector("#bytm-import-menu-bg");
+            if (!menuBg)
+                return warn("Couldn't find import menu background element");
+            menuBg.style.visibility = "visible";
+            menuBg.style.display = "block";
+        });
     }
     //#MARKER changelog menu
+    let isChangelogMenuAdded = false;
     let isChangelogMenuOpen = false;
     /** Adds a changelog menu (hidden by default) */
     function addChangelogMenu() {
@@ -1889,17 +1866,22 @@ I welcome every contribution on GitHub!
      */
     function openChangelogMenu(returnTo = "cfgMenu") {
         var _a;
-        if (isChangelogMenuOpen)
-            return;
-        isChangelogMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-changelog-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find changelog menu background element");
-        menuBg.dataset.returnTo = returnTo;
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!isChangelogMenuAdded)
+                yield addChangelogMenu();
+            isChangelogMenuAdded = true;
+            if (isChangelogMenuOpen)
+                return;
+            isChangelogMenuOpen = true;
+            document.body.classList.add("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+            const menuBg = document.querySelector("#bytm-changelog-menu-bg");
+            if (!menuBg)
+                return warn("Couldn't find changelog menu background element");
+            menuBg.dataset.returnTo = returnTo;
+            menuBg.style.visibility = "visible";
+            menuBg.style.display = "block";
+        });
     }
 
     let features$2;
@@ -2908,70 +2890,33 @@ I welcome every contribution on GitHub!
         });
     }
 
-    let verNotifDialog = null;
-    /** Creates and/or returns the dialog to be shown when a new version is available */
-    function getVersionNotifDialog({ latestTag, }) {
-        if (!verNotifDialog) {
-            verNotifDialog = new BytmDialog({
-                id: "version-notif",
-                closeOnBgClick: false,
-                closeOnEscPress: false,
-                destroyOnClose: true,
-                renderBody: () => renderBody(latestTag),
-            });
-        }
-        return verNotifDialog;
-    }
-    function renderBody(latestTag) {
-        const platformNames = {
-            github: "GitHub",
-            greasyfork: "GreasyFork",
-            openuserjs: "OpenUserJS",
-        };
-        // TODO:
-        const wrapperEl = document.createElement("div");
-        const pEl = document.createElement("p");
-        pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
-        wrapperEl.appendChild(pEl);
-        const btnEl = document.createElement("button");
-        btnEl.className = "bytm-btn";
-        btnEl.textContent = t("update_now");
-        btnEl.addEventListener("click", () => window.open(pkg.updates[host]));
-        wrapperEl.appendChild(btnEl);
-        return wrapperEl;
-    }
-
     const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
     function checkVersion() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (getFeatures().versionCheck === false)
                     return info("Version check is disabled");
-                // const lastCheck = await GM.getValue("bytm-version-check", 0);
-                // if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-                //   return;
+                const lastCheck = yield GM.getValue("bytm-version-check", 0);
+                if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+                    return;
                 yield GM.setValue("bytm-version-check", Date.now());
                 const res = yield sendRequest({
                     method: "GET",
                     url: releaseURL,
                 });
-                // const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-                // if(!latestTag)
-                //   return;
-                const latestTag = "1.2.0";
+                const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
+                if (!latestTag)
+                    return;
+                // const latestTag = "1.2.0";
                 const versionComp = compareVersions(scriptInfo.version, latestTag);
                 info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
                 if (versionComp < 0) {
-                    // const platformNames: Record<typeof host, string> = {
-                    //   github: "GitHub",
-                    //   greasyfork: "GreasyFork",
-                    //   openuserjs: "OpenUserJS",
-                    // };
-                    const dialog = getVersionNotifDialog({ latestTag });
-                    yield dialog.open();
+                    // const dialog = getVersionNotifDialog({ latestTag });
+                    // await dialog.open();
                     // TODO: replace with custom dialog
-                    // if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-                    //   window.open(pkg.updates[host]);
+                    if (confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
+                        window.open(pkg.updates[host]);
                 }
             }
             catch (err) {
@@ -3449,210 +3394,6 @@ I welcome every contribution on GitHub!
         return trans;
     }
 
-    /** ID of the last opened (top-most) dialog */
-    let lastDialogId = null;
-    /** Creates and manages a modal dialog element */
-    class BytmDialog extends NanoEmitter {
-        constructor(options) {
-            super();
-            Object.defineProperty(this, "options", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: void 0
-            });
-            Object.defineProperty(this, "id", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: void 0
-            });
-            Object.defineProperty(this, "dialogOpen", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: false
-            });
-            Object.defineProperty(this, "dialogRendered", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: false
-            });
-            Object.defineProperty(this, "listenersAttached", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: false
-            });
-            this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false }, options);
-            this.id = options.id;
-        }
-        /** Call after DOMContentLoaded to pre-render the dialog (or call just before calling open()) */
-        render() {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (this.dialogRendered)
-                    return;
-                this.dialogRendered = true;
-                const bgElem = document.createElement("div");
-                bgElem.id = `bytm-${this.id}-dialog-bg`;
-                bgElem.classList.add("bytm-dialog-bg");
-                if (this.options.closeOnBgClick)
-                    bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
-                bgElem.style.visibility = "hidden";
-                bgElem.style.display = "none";
-                bgElem.inert = true;
-                bgElem.appendChild(yield this.getDialogContent());
-                document.body.appendChild(bgElem);
-                this.attachListeners(bgElem);
-                this.events.emit("render");
-            });
-        }
-        /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
-        unmount() {
-            var _a;
-            this.dialogRendered = false;
-            const elem = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-            elem && clearInner(elem);
-            (_a = document.querySelector(`#bytm-${this.id}-dialog-bg`)) === null || _a === void 0 ? void 0 : _a.remove();
-            this.events.emit("clear");
-        }
-        /** Clears and then re-renders the dialog */
-        rerender() {
-            return __awaiter(this, void 0, void 0, function* () {
-                this.unmount();
-                yield this.render();
-            });
-        }
-        /**
-         * Opens the dialog - renders it if it hasn't been rendered yet
-         * Prevents default action and immediate propagation of the passed event
-         */
-        open(e) {
-            var _a;
-            return __awaiter(this, void 0, void 0, function* () {
-                e === null || e === void 0 ? void 0 : e.preventDefault();
-                e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
-                if (this.isOpen())
-                    return;
-                this.dialogOpen = true;
-                if (!this.isRendered())
-                    yield this.render();
-                document.body.classList.add("bytm-disable-scroll");
-                (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-                const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-                if (!dialogBg)
-                    return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-                dialogBg.style.visibility = "visible";
-                dialogBg.style.display = "block";
-                dialogBg.inert = false;
-                lastDialogId = this.id;
-                this.events.emit("open");
-            });
-        }
-        /** Closes the dialog - prevents default action and immediate propagation of the passed event */
-        close(e) {
-            var _a;
-            e === null || e === void 0 ? void 0 : e.preventDefault();
-            e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
-            if (!this.isOpen())
-                return;
-            this.dialogOpen = false;
-            document.body.classList.remove("bytm-disable-scroll");
-            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
-            const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-            if (!dialogBg)
-                return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-            dialogBg.style.visibility = "hidden";
-            dialogBg.style.display = "none";
-            dialogBg.inert = true;
-            if (BytmDialog.getLastDialogId() === this.id)
-                lastDialogId = null;
-            this.events.emit("close");
-            if (this.options.destroyOnClose)
-                this.destroy();
-        }
-        /** Returns true if the dialog is open */
-        isOpen() {
-            return this.dialogOpen;
-        }
-        /** Returns true if the dialog has been rendered */
-        isRendered() {
-            return this.dialogRendered;
-        }
-        /** Clears the dialog and removes all event listeners */
-        destroy() {
-            this.events.emit("destroy");
-            this.unmount();
-            this.unsubscribeAll();
-        }
-        /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-        static getLastDialogId() {
-            return lastDialogId;
-        }
-        /** Called once to attach all generic event listeners */
-        attachListeners(bgElem) {
-            if (this.listenersAttached)
-                return;
-            this.listenersAttached = true;
-            if (this.options.closeOnBgClick) {
-                bgElem.addEventListener("click", (e) => {
-                    var _a;
-                    if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-dialog-bg`)
-                        this.close(e);
-                });
-            }
-            if (this.options.closeOnEscPress) {
-                document.body.addEventListener("keydown", (e) => {
-                    if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
-                        this.close(e);
-                });
-            }
-        }
-        getDialogContent() {
-            var _a, _b, _c, _d;
-            return __awaiter(this, void 0, void 0, function* () {
-                const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
-                const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
-                const dialogWrapperEl = document.createElement("div");
-                dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-                dialogWrapperEl.classList.add("bytm-dialog");
-                dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
-                //#SECTION header
-                const headerWrapperEl = document.createElement("div");
-                headerWrapperEl.classList.add("bytm-dialog-header");
-                if (header) {
-                    const headerTitleWrapperEl = document.createElement("div");
-                    headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
-                    headerTitleWrapperEl.role = "heading";
-                    headerTitleWrapperEl.ariaLevel = "1";
-                    headerTitleWrapperEl.appendChild(header);
-                    headerWrapperEl.appendChild(headerTitleWrapperEl);
-                }
-                if (this.options.closeBtnEnabled) {
-                    const closeBtnEl = document.createElement("img");
-                    closeBtnEl.classList.add("bytm-dialog-close");
-                    closeBtnEl.src = yield getResourceUrl("img-close");
-                    closeBtnEl.role = "button";
-                    closeBtnEl.tabIndex = 0;
-                    closeBtnEl.addEventListener("click", () => this.close());
-                    headerWrapperEl.appendChild(closeBtnEl);
-                }
-                dialogWrapperEl.appendChild(headerWrapperEl);
-                // TODO:
-                //#SECTION body
-                const bodyWrapperEl = document.createElement("div");
-                bodyWrapperEl.appendChild(this.options.renderBody());
-                dialogWrapperEl.appendChild(bodyWrapperEl);
-                //#SECTION footer
-                if (footer) {
-                    dialogWrapperEl.appendChild(footer);
-                }
-                return dialogWrapperEl;
-            });
-        }
-    }
-
     //#SECTION video time
     const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
     /**
@@ -4003,9 +3744,9 @@ I welcome every contribution on GitHub!
             openChangelogElem.id = "bytm-welcome-menu-open-changelog";
             openChangelogElem.classList.add("bytm-btn");
             openChangelogElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-                closeWelcomeMenu();
                 yield addCfgMenu();
-                openChangelogMenu("exit");
+                yield openChangelogMenu("exit");
+                closeWelcomeMenu();
             }));
             const closeBtnElem = document.createElement("button");
             closeBtnElem.id = "bytm-welcome-menu-footer-close";
