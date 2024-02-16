@@ -1,8 +1,7 @@
-import { scriptInfo, host, platformNames } from "../constants";
+import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { error, info, sendRequest, t } from "../utils";
+import { error, info, sendRequest } from "../utils";
 import { getVersionNotifDialog } from "../dialogs";
-import pkg from "../../package.json" assert { type: "json" };
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
@@ -27,19 +26,13 @@ export async function checkVersion() {
     if(!latestTag)
       return;
 
-    // const latestTag = "1.2.0";
-
     const versionComp = compareVersions(scriptInfo.version, latestTag);
 
     info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
 
     if(versionComp < 0) {
-      // const dialog = getVersionNotifDialog({ latestTag });
-      // await dialog.open();
-
-      // TODO: replace with custom dialog
-      if(confirm(t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host])))
-        window.open(pkg.updates[host]);
+      const dialog = await getVersionNotifDialog({ latestTag });
+      await dialog.open();
     }
   }
   catch(err) {

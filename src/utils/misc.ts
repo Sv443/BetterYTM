@@ -104,3 +104,8 @@ export function parseMarkdown(md: string) {
     gfm: true,
   });
 }
+
+/** Returns the content of the changelog markdown file */
+export async function getChangelogMd() {
+  return await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+}

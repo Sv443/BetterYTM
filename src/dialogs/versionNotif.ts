@@ -1,5 +1,5 @@
 import { host, scriptInfo } from "../constants";
-import { BytmDialog, t } from "../utils";
+import { BytmDialog, getChangelogMd, parseMarkdown, t } from "../utils";
 import pkg from "../../package.json" assert { type: "json" };
 
 let verNotifDialog: BytmDialog | null = null;
@@ -9,22 +9,32 @@ export type VersionNotifDialogRenderProps = {
 };
 
 /** Creates and/or returns the dialog to be shown when a new version is available */
-export function getVersionNotifDialog({
+export async function getVersionNotifDialog({
   latestTag,
 }: VersionNotifDialogRenderProps) {
   if(!verNotifDialog) {
+    const changelogMdFull = await getChangelogMd();
+    const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
+    const changelogHtml = await parseMarkdown(changelogMd);
+
     verNotifDialog = new BytmDialog({
       id: "version-notif",
       closeOnBgClick: false,
       closeOnEscPress: false,
       destroyOnClose: true,
-      renderBody: () => renderBody(latestTag),
+      renderBody: () => renderBody({ latestTag, changelogHtml }),
     });
   }
   return verNotifDialog!;
 }
 
-function renderBody(latestTag: string) {
+function renderBody({
+  latestTag,
+  changelogHtml,
+}: {
+  latestTag: string;
+  changelogHtml: string;
+}) {
   const platformNames: Record<typeof host, string> = {
     github: "GitHub",
     greasyfork: "GreasyFork",
@@ -32,6 +42,8 @@ function renderBody(latestTag: string) {
   };
 
   // TODO:
+  void changelogHtml;
+
   const wrapperEl = document.createElement("div");
 
   const pEl = document.createElement("p");

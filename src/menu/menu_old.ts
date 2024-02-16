@@ -1,8 +1,8 @@
-import { compress, decompress, debounce, isScrollable, fetchAdvanced } from "@sv443-network/userutils";
+import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { host, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown, getChangelogMd } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -1232,8 +1232,8 @@ async function addChangelogMenu() {
 
   const getChangelogHtml = (async () => {
     try {
-      const changelogHtmlFull = await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
-      return await parseMarkdown(changelogHtmlFull);
+      const changelogMd = await getChangelogMd();
+      return await parseMarkdown(changelogMd);
     }
     catch(err) {
       return `Error: ${err}`;
