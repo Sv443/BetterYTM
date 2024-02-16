@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "f5f1df1", // asserted as generic string instead of literal
+        buildNumber: "d893781", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -985,7 +985,7 @@ I welcome every contribution on GitHub!
             exportElem.textContent = t("export");
             exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 yield openExportMenu();
-                closeCfgMenu();
+                closeCfgMenu(undefined, false);
             }));
             const importElem = document.createElement("button");
             importElem.classList.add("bytm-btn");
@@ -993,7 +993,7 @@ I welcome every contribution on GitHub!
             importElem.textContent = t("import");
             importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
                 yield openImportMenu();
-                closeCfgMenu();
+                closeCfgMenu(undefined, false);
             }));
             const buttonsCont = document.createElement("div");
             buttonsCont.id = "bytm-menu-footer-buttons-cont";
@@ -1286,7 +1286,7 @@ I welcome every contribution on GitHub!
                 e.preventDefault();
                 e.stopPropagation();
                 yield openChangelogMenu("cfgMenu");
-                closeCfgMenu();
+                closeCfgMenu(undefined, false);
             });
             versionElem.addEventListener("click", versionElemClicked);
             versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
@@ -1306,14 +1306,16 @@ I welcome every contribution on GitHub!
         });
     }
     /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-    function closeCfgMenu(evt) {
+    function closeCfgMenu(evt, enableScroll = true) {
         var _a;
         if (!isCfgMenuOpen)
             return;
         isCfgMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-        document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+        if (enableScroll) {
+            document.body.classList.remove("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+        }
         const menuBg = document.querySelector("#bytm-cfg-menu-bg");
         siteEvents.emit("cfgMenuClosed");
         if (!menuBg)
@@ -1569,13 +1571,10 @@ I welcome every contribution on GitHub!
     }
     /** Closes the export menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeExportMenu(evt) {
-        var _a;
         if (!isExportMenuOpen)
             return;
         isExportMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-        document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-export-menu-bg");
         if (!menuBg)
             return warn("Couldn't find export menu background element");
@@ -1756,13 +1755,10 @@ I welcome every contribution on GitHub!
     }
     /** Closes the import menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeImportMenu(evt) {
-        var _a;
         if (!isImportMenuOpen)
             return;
         isImportMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-        document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-import-menu-bg");
         const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
         if (textAreaElem)
@@ -1880,13 +1876,10 @@ I welcome every contribution on GitHub!
     }
     /** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
     function closeChangelogMenu(evt) {
-        var _a;
         if (!isChangelogMenuOpen)
             return;
         isChangelogMenuOpen = false;
         (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-        document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
         const menuBg = document.querySelector("#bytm-changelog-menu-bg");
         if (!menuBg)
             return warn("Couldn't find changelog menu background element");
@@ -4020,7 +4013,6 @@ I welcome every contribution on GitHub!
             openChangelogElem.id = "bytm-welcome-menu-open-changelog";
             openChangelogElem.classList.add("bytm-btn");
             openChangelogElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-                yield addCfgMenu();
                 yield openChangelogMenu("exit");
                 closeWelcomeMenu();
             }));
@@ -5058,12 +5050,6 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
                         info("Showing welcome menu");
                         yield showWelcomeMenu();
                         yield GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
-                    }
-                    try {
-                        ftInit.push(addCfgMenu()); // TODO(v1.2): remove
-                    }
-                    catch (err) {
-                        error("Couldn't add menu:", err);
                     }
                     observers$1.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
                         listener: addConfigMenuOption,
