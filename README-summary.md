@@ -60,11 +60,19 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 
 <br><br><br>
 
+## Support:
+If you have any questions, issues, or feature requests, please [open an issue here](https://github.com/Sv443/BetterYTM/issues/new/choose).  
+You can also join the Discord server and ask your questions there or just hang out with other community members and me:  
+  
+[![Discord](https://img.shields.io/discord/565933531214118942)](https://discord.gg/aBH4uRG)
+
+<br><br>
+
 ### Development:
 This project is based on my extensive template for making a userscript with TypeScript and many modern language and convenience features.  
 [Check it out here](https://github.com/Sv443/Userscript.ts) if you want to make your own userscripts!  
   
-**For information on how to contribute to this project, see [the contributing guide](https://github.com/Sv443/BetterYTM/tree/main/contributing.md)**
+**For information on how to contribute to this project or how to develop a plugin for BetterYTM, see [the contributing guide](https://github.com/Sv443/BetterYTM/tree/main/contributing.md)**
 
 <br><br>
 
