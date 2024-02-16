@@ -10,7 +10,7 @@
   - Removed React JSX support
   - Small utility function refactoring
   
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/47)
 
 <div class="split"></div>
 <br>
