@@ -5,7 +5,9 @@
 ### Lots of configurable layout and user experience improvements for YouTube Music
 Supported Languages: 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese
 
-[**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+[**Features**](#features) • [**Installation**](#installation) • [**Support**](#support) • [**Plugins**](#plugins) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+  
+---
 
 </div>
 <br>
@@ -67,11 +69,19 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 
 <br><br><br>
 
+## Support:
+If you have any questions, issues, or feature requests, please [open an issue here](https://github.com/Sv443/BetterYTM/issues/new/choose).  
+You can also join the Discord server and ask your questions there or just hang out with other community members and me:  
+  
+[![Discord](https://img.shields.io/discord/565933531214118942)](https://discord.gg/aBH4uRG)
+
+<br><br>
+
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
   
-Currently there are no available plugins, but you can [submit an issue here, using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose).  
-Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API.
+Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
+Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.
 
 <br><br>
 
