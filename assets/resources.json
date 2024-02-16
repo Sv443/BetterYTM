@@ -15,5 +15,7 @@
   "img-openuserjs": "external/openuserjs.png",
 
   "css-fix_spacing": "style/fixSpacing.css",
-  "css-anchor_improvements": "style/anchorImprovements.css"
+  "css-anchor_improvements": "style/anchorImprovements.css",
+
+  "doc-changelog": "/changelog.md"
 }

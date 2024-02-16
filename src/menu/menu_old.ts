@@ -1,12 +1,11 @@
-import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
+import { compress, decompress, debounce, isScrollable, fetchAdvanced } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { host, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
-import changelog from "../../changelog.md";
 import "./menu_old.css";
 import { createHotkeyInput } from "./hotkeyInput";
 import pkg from "../../package.json" assert { type: "json" };
@@ -1224,6 +1223,16 @@ async function addChangelogMenu() {
 
   //#SECTION body
 
+  const getChangelogHtml = (async () => {
+    try {
+      const changelogHtmlFull = await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+      return await parseMarkdown(changelogHtmlFull);
+    }
+    catch(err) {
+      return `Error: ${err}`;
+    }
+  });
+
   const menuBodyElem = document.createElement("div");
   menuBodyElem.id = "bytm-changelog-menu-body";
   menuBodyElem.classList.add("bytm-menu-body");
@@ -1231,7 +1240,7 @@ async function addChangelogMenu() {
   const textElem = document.createElement("div");
   textElem.id = "bytm-changelog-menu-text";
   textElem.classList.add("bytm-markdown-container");
-  textElem.innerHTML = changelog.html;
+  textElem.innerHTML = await getChangelogHtml();
 
   //#SECTION finalize
 

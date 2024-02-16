@@ -57,10 +57,10 @@
   },
   "dependencies": {
     "@sv443-network/userutils": "^4.1.0",
+    "marked": "^12.0.0",
     "nanoevents": "^9.0.0"
   },
   "devDependencies": {
-    "@jackfranklin/rollup-plugin-markdown": "^0.4.0",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",

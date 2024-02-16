@@ -5,7 +5,7 @@
 - **Internal Changes:**
   - Removed React JSX support
   - Small utility function refactoring
-
+  
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
 
 <div class="split"></div>
@@ -37,7 +37,7 @@
     - Target branch can now be specified while compiling instead of being tied to the bundler mode
   - Added support for React JSX
   - Added support for external libraries through `@require`
-
+  
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/35)
 
 <div class="split"></div>
@@ -82,7 +82,7 @@
   - Song names with hyphens are now resolved better for lyrics lookup
   - Site switch with <kbd>F9</kbd> will now keep the video time
   - Moved lots of utility code to my new library [UserUtils](https://github.com/Sv443-Network/UserUtils)
-
+  
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/9)
 
 <div class="split"></div>
@@ -94,7 +94,7 @@
   - Switch between YouTube and YT Music (with <kbd>F9</kbd> by default)
   - Search for song lyrics with new button in media controls
   - Remove "Upgrade to YTM Premium" tab
-
+  
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/3)
 
 <div class="split"></div>

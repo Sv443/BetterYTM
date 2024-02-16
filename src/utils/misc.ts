@@ -1,4 +1,5 @@
 import { fetchAdvanced, randomId } from "@sv443-network/userutils";
+import { marked } from "marked";
 import { branch, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
 import { error, type TrLocale, warn } from ".";
@@ -94,4 +95,12 @@ export async function resourceToHTMLString(resource: ResourceKey) {
     error("Couldn't get SVG element from resource:", err);
     return null;
   }
+}
+
+/** Parses a markdown string and turns it into an HTML string - doesn't sanitize against XSS! */
+export function parseMarkdown(md: string) {
+  return marked.parse(md, {
+    async: true,
+    gfm: true,
+  });
 }

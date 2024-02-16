@@ -85,7 +85,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getAssetUrl("logo/logo_48.png")}
+// @icon              ${getResourceUrl("logo/logo_48.png")}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -256,7 +256,7 @@ async function getResourceDirectives() {
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getAssetUrl(path)
+          : getResourceUrl(path)
       }`);
     }
 
@@ -297,11 +297,17 @@ function getLocalizedDescriptions() {
   }
 }
 
-/** Returns the full URL for a given relative asset path, based on the current mode */
-function getAssetUrl(relativePath: string) {
+/**
+ * Returns the full URL for a given resource path, based on the current mode and branch
+ * @path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
+ */
+function getResourceUrl(path: string) {
+  let assetPath = "/assets/";
+  if(path.startsWith("/"))
+    assetPath = "";
   return mode === "development"
-    ? `http://localhost:${devServerPort}/assets/${relativePath}?t=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${branch}/assets/${relativePath}`;
+    ? `http://localhost:${devServerPort}${assetPath}${path}?t=${buildUuid}`
+    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */

@@ -1,1 +1,5 @@
-[]
+[
+  {
+    "url": "https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"
+  }
+]
