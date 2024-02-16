@@ -185,16 +185,16 @@ export async function addCfgMenu() {
   exportElem.ariaLabel = exportElem.title = t("export_tooltip");
   exportElem.textContent = t("export");
   exportElem.addEventListener("click", async () => {
+    await openExportMenu();
     closeCfgMenu();
-    openExportMenu();
   });
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
   importElem.ariaLabel = importElem.title = t("import_tooltip");
   importElem.textContent = t("import");
   importElem.addEventListener("click", async () => {
+    await openImportMenu();
     closeCfgMenu();
-    openImportMenu();
   });
 
   const buttonsCont = document.createElement("div");
@@ -553,12 +553,12 @@ export async function addCfgMenu() {
   versionElem.tabIndex = 0;
   versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
   versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
-  const versionElemClicked = (e: MouseEvent | KeyboardEvent) => {
+  const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
+    await openChangelogMenu("cfgMenu");
     closeCfgMenu();
-    openChangelogMenu("cfgMenu");
   };
   versionElem.addEventListener("click", versionElemClicked);
   versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
@@ -572,10 +572,6 @@ export async function addCfgMenu() {
   document.body.appendChild(backgroundElem);
 
   window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
-
-  await addChangelogMenu();
-  await addExportMenu();
-  await addImportMenu();
 
   log("Added menu element");
 
@@ -772,6 +768,7 @@ function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
 
 //#MARKER export menu
 
+let isExportMenuAdded = false;
 let isExportMenuOpen = false;
 let copiedTxtTimeout: number | undefined = undefined;
 
@@ -932,7 +929,11 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
 }
 
 /** Opens the export menu if it is closed */
-function openExportMenu() {
+async function openExportMenu() {
+  if(!isExportMenuAdded)
+    await addExportMenu();
+  isExportMenuAdded = true;
+
   if(isExportMenuOpen)
     return;
   isExportMenuOpen = true;
@@ -950,6 +951,7 @@ function openExportMenu() {
 
 //#MARKER import menu
 
+let isImportMenuAdded = false;
 let isImportMenuOpen = false;
 
 /** Adds a menu to import a configuration from compressed or uncompressed JSON (hidden by default) */
@@ -1141,7 +1143,11 @@ function closeImportMenu(evt?: MouseEvent | KeyboardEvent) {
 }
 
 /** Opens the import menu if it is closed */
-function openImportMenu() {
+async function openImportMenu() {
+  if(!isImportMenuAdded)
+    await addImportMenu();
+  isImportMenuAdded = true;
+
   if(isImportMenuOpen)
     return;
   isImportMenuOpen = true;
@@ -1159,6 +1165,7 @@ function openImportMenu() {
 
 //#MARKER changelog menu
 
+let isChangelogMenuAdded = false;
 let isChangelogMenuOpen = false;
 
 /** Adds a changelog menu (hidden by default) */
@@ -1282,7 +1289,11 @@ function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
  * Opens the changelog menu if it is closed
  * @param returnTo What menu to open after the changelog menu is closed
  */
-export function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu") {
+export async function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu") {
+  if(!isChangelogMenuAdded)
+    await addChangelogMenu();
+  isChangelogMenuAdded = true;
+
   if(isChangelogMenuOpen)
     return;
   isChangelogMenuOpen = true;

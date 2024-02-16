@@ -65,9 +65,9 @@ export async function addWelcomeMenu() {
   openChangelogElem.id = "bytm-welcome-menu-open-changelog";
   openChangelogElem.classList.add("bytm-btn");
   openChangelogElem.addEventListener("click", async () => {
-    closeWelcomeMenu();
     await addCfgMenu();
-    openChangelogMenu("exit");
+    await openChangelogMenu("exit");
+    closeWelcomeMenu();
   });
 
   const closeBtnElem = document.createElement("button");
