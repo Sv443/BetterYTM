@@ -2,6 +2,7 @@
 - **Fixes:**
   - Fixed Chinese translations
   - Fixed queue button container alignment
+  - Moved dependencies to `@require` to reduce script size
 - **Internal Changes:**
   - Removed React JSX support
   - Small utility function refactoring
