@@ -53,10 +53,11 @@ import {
   );
   console.log([
     "Powered by:",
-    "─ Lots of ambition",
+    "─ Lots of ambition and dedication",
     `─ My song metadata API: ${geniUrlBase}`,
     "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
+    "─ This markdown parser library: https://github.com/markedjs/marked",
   ].join("\n"));
   console.log();
 }
