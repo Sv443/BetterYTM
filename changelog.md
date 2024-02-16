@@ -1,8 +1,9 @@
 ## 1.1.1
-- **Fixes:**
-  - Fixed Chinese translations
-  - Fixed queue button container alignment
+- **Fixes / Changes:**
+  - Menus are now only created when needed
   - Moved dependencies to `@require` to reduce script size
+  - Fixed queue button container alignment
+  - Fixed Chinese translations
 - **Internal Changes:**
   - Removed React JSX support
   - Small utility function refactoring
