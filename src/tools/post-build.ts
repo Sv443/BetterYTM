@@ -18,8 +18,8 @@ type RequireObjUrl = {
   url: string;
 };
 type RequireObjPkg = {
-  baseUrl: string;
   pkgName: keyof (typeof pkg)["dependencies"] | keyof (typeof pkg)["devDependencies"];
+  baseUrl?: string;
   path?: string;
 };
 
@@ -286,6 +286,8 @@ async function getRequireDirectives() {
 }
 
 function getRequireEntry(entry: RequireObjPkg) {
+  const baseUrl = entry.baseUrl ?? "https://cdn.jsdelivr.net/npm/";
+
   let version: string;
   const deps = {
     ...pkg.dependencies,
@@ -297,7 +299,7 @@ function getRequireEntry(entry: RequireObjPkg) {
   else
     throw new Error(`Library '${entry.pkgName}', referenced in 'assets/require.json' not found in dependencies or devDependencies`);
 
-  return `// @require           ${entry.baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
+  return `// @require           ${baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
 
 /** Returns the @description directive block for each defined locale in `assets/locales.json` */
