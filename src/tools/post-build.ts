@@ -13,10 +13,15 @@ import type { RollupArgs } from "../types";
 type Stringifiable = string | { toString(): string; };
 
 /** An entry in the file `assets/require.json` */
-type RequireObj = (
-  | { version: string; npm: string; }
-  | { url: string; }
-);
+type RequireObj = RequireObjPkg | RequireObjUrl;
+type RequireObjUrl = {
+  url: string;
+};
+type RequireObjPkg = {
+  baseUrl: string;
+  pkgName: keyof (typeof pkg)["dependencies"] | keyof (typeof pkg)["devDependencies"];
+  path?: string;
+};
 
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
@@ -267,17 +272,32 @@ async function getResourceDirectives() {
   }
 }
 
-export async function getRequireDirectives() {
+async function getRequireDirectives() {
   const directives: string[] = [];
   const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
   const require = JSON.parse(requireFile) as RequireObj[];
 
   for(const entry of require) {
-    "npm" in entry && "version" in entry && directives.push(`// @require           https://cdn.jsdelivr.net/npm/${entry.npm}@${entry.version}`);
+    "pkgName" in entry && directives.push(getRequireEntry(entry));
     "url" in entry && directives.push(`// @require           ${entry.url}`);
   }
 
   return directives.length > 0 ? directives.join("\n") : undefined;
+}
+
+function getRequireEntry(entry: RequireObjPkg) {
+  let version: string;
+  const deps = {
+    ...pkg.dependencies,
+    ...pkg.devDependencies,
+  };
+
+  if(entry.pkgName in deps)
+    version = deps[entry.pkgName].replace(/[^0-9.]/g, "");
+  else
+    throw new Error(`Library '${entry.pkgName}', referenced in 'assets/require.json' not found in dependencies or devDependencies`);
+
+  return `// @require           ${entry.baseUrl}${entry.pkgName}@${version}${entry.path ? `${entry.path.startsWith("/") ? "" : "/"}${entry.path}` : ""}`;
 }
 
 /** Returns the @description directive block for each defined locale in `assets/locales.json` */
