@@ -1,11 +1,9 @@
 [
   {
-    "baseUrl": "https://cdn.jsdelivr.net/npm/",
     "pkgName": "@sv443-network/userutils",
     "path": "dist/index.global.js"
   },
   {
-    "baseUrl": "https://cdn.jsdelivr.net/npm/",
     "pkgName": "marked",
     "path": "lib/marked.umd.js"
   }
