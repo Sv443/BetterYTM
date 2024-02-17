@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "d893781", // asserted as generic string instead of literal
+        buildNumber: "34e73c1", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -1461,6 +1461,7 @@ I welcome every contribution on GitHub!
     let isExportMenuAdded = false;
     let isExportMenuOpen = false;
     let copiedTxtTimeout = undefined;
+    let lastUncompressedCfgString;
     /** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
     function addExportMenu() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -1523,10 +1524,12 @@ I welcome every contribution on GitHub!
             textAreaElem.id = "bytm-export-menu-textarea";
             textAreaElem.readOnly = true;
             const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
+            lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
             textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat) : cfgString;
             siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
                 const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
                 const cfgString = JSON.stringify({ formatVersion, data });
+                lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
                 if (textAreaElem)
                     textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat) : cfgString;
             }));
@@ -1542,20 +1545,22 @@ I welcome every contribution on GitHub!
             copiedTextElem.classList.add("bytm-menu-footer-copied");
             copiedTextElem.textContent = t("copied_notice");
             copiedTextElem.style.display = "none";
-            copyBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
+            const copyBtnClicked = (evt) => __awaiter(this, void 0, void 0, function* () {
                 (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
                 const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
                 if (textAreaElem) {
-                    GM.setClipboard(textAreaElem.value);
+                    GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) || (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) ? lastUncompressedCfgString : textAreaElem.value));
                     copiedTextElem.style.display = "inline-block";
-                    if (typeof copiedTxtTimeout !== "number") {
+                    if (typeof copiedTxtTimeout === "undefined") {
                         copiedTxtTimeout = setTimeout(() => {
                             copiedTextElem.style.display = "none";
                             copiedTxtTimeout = undefined;
                         }, 3000);
                     }
                 }
-            }));
+            });
+            copyBtnElem.addEventListener("click", copyBtnClicked);
+            copyBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && copyBtnClicked(e));
             // flex-direction is row-reverse
             footerElem.appendChild(copyBtnElem);
             footerElem.appendChild(copiedTextElem);
@@ -1703,7 +1708,7 @@ I welcome every contribution on GitHub!
                         return alert(t("import_error_invalid"));
                     if (typeof parsed.formatVersion !== "number")
                         return alert(t("import_error_no_format_version"));
-                    if (typeof parsed.data !== "object")
+                    if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
                         return alert(t("import_error_no_data"));
                     if (parsed.formatVersion < formatVersion) {
                         let newData = JSON.parse(JSON.stringify(parsed.data));
@@ -2133,7 +2138,7 @@ I welcome every contribution on GitHub!
         UserUtils.addGlobalStyle(`\
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
-}`);
+}`).id = "bytm-style-vol-slider-size";
     }
     /** Sets the `step` attribute of the volume slider */
     function setVolSliderStep(sliderElem) {
@@ -2145,7 +2150,8 @@ I welcome every contribution on GitHub!
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-anchor_improvements"))).text();
-                css && UserUtils.addGlobalStyle(css);
+                if (css)
+                    UserUtils.addGlobalStyle(css).id = "bytm-style-anchor-improvements";
             }
             catch (err) {
                 error("Couldn't add anchor improvements CSS due to an error:", err);
@@ -2292,7 +2298,8 @@ I welcome every contribution on GitHub!
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-fix_spacing"))).text();
-                css && UserUtils.addGlobalStyle(css);
+                if (css)
+                    UserUtils.addGlobalStyle(css).id = "bytm-style-fix-spacing";
             }
             catch (err) {
                 error("Couldn't fix spacing due to an error:", err);
@@ -3492,8 +3499,8 @@ I welcome every contribution on GitHub!
             this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false }, options);
             this.id = options.id;
         }
-        /** Call after DOMContentLoaded to pre-render the dialog (or call just before calling open()) */
-        render() {
+        /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
+        mount() {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.dialogRendered)
                     return;
@@ -3525,11 +3532,11 @@ I welcome every contribution on GitHub!
         rerender() {
             return __awaiter(this, void 0, void 0, function* () {
                 this.unmount();
-                yield this.render();
+                yield this.mount();
             });
         }
         /**
-         * Opens the dialog - renders it if it hasn't been rendered yet
+         * Opens the dialog - also mounts it if it hasn't been mounted yet
          * Prevents default action and immediate propagation of the passed event
          */
         open(e) {
@@ -3541,7 +3548,7 @@ I welcome every contribution on GitHub!
                     return;
                 this.dialogOpen = true;
                 if (!this.isRendered())
-                    yield this.render();
+                    yield this.mount();
                 document.body.classList.add("bytm-disable-scroll");
                 (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
                 const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
@@ -5033,7 +5040,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 #bytm-welcome-menu-footer-cont {
   border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
   padding: 20px;
-}`);
+}`).id = "bytm-style-global";
             initObservers();
             initOnSelector();
             const features = getFeatures();
