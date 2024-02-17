@@ -305,6 +305,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the unique session ID that is generated on every page load.  
 > It should persist between history navigations, but not between page reloads.  
+>  
+> ⚠️ On privacy-focused browsers or if cookies are disabled, this function will return null since sessionStorage is not available.
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
