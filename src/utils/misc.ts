@@ -20,14 +20,20 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
-/** Returns a pseudo-random ID unique to each session */
-export function getSessionId(): string {
-  let sesId = window.sessionStorage.getItem("_bytm-session-id");
+/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+export function getSessionId(): string | null {
+  try {
+    let sesId = window.sessionStorage.getItem("_bytm-session-id");
 
-  if(!sesId)
-    window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
+    if(!sesId)
+      window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
 
-  return sesId;
+    return sesId;
+  }
+  catch(err) {
+    warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+    return null;
+  }
 }
 
 //#SECTION resources
