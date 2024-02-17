@@ -773,6 +773,7 @@ function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
 let isExportMenuAdded = false;
 let isExportMenuOpen = false;
 let copiedTxtTimeout: number | undefined = undefined;
+let lastUncompressedCfgString: string | undefined;
 
 /** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
 async function addExportMenu() {
@@ -846,11 +847,13 @@ async function addExportMenu() {
   textAreaElem.id = "bytm-export-menu-textarea";
   textAreaElem.readOnly = true;
   const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
+  lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
   textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
 
   siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     const cfgString = JSON.stringify({ formatVersion, data });
+    lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
     if(textAreaElem)
       textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
   });
@@ -870,20 +873,22 @@ async function addExportMenu() {
   copiedTextElem.textContent = t("copied_notice");
   copiedTextElem.style.display = "none";
 
-  copyBtnElem.addEventListener("click", async (evt) => {
+  const copyBtnClicked = async (evt: MouseEvent | KeyboardEvent) => {
     evt?.bubbles && evt.stopPropagation();
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     if(textAreaElem) {
-      GM.setClipboard(textAreaElem.value);
+      GM.setClipboard(String(evt?.shiftKey || evt?.ctrlKey ? lastUncompressedCfgString : textAreaElem.value));
       copiedTextElem.style.display = "inline-block";
-      if(typeof copiedTxtTimeout !== "number") {
+      if(typeof copiedTxtTimeout === "undefined") {
         copiedTxtTimeout = setTimeout(() => {
           copiedTextElem.style.display = "none";
           copiedTxtTimeout = undefined;
         }, 3000) as unknown as number;
       }
     }
-  });
+  };
+  copyBtnElem.addEventListener("click", copyBtnClicked);
+  copyBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && copyBtnClicked(e));
 
   // flex-direction is row-reverse
   footerElem.appendChild(copyBtnElem);
@@ -1058,7 +1063,7 @@ async function addImportMenu() {
         return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
         return alert(t("import_error_no_format_version"));
-      if(typeof parsed.data !== "object")
+      if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
         return alert(t("import_error_no_data"));
       if(parsed.formatVersion < formatVersion) {
         let newData = JSON.parse(JSON.stringify(parsed.data));
