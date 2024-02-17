@@ -59,8 +59,8 @@ export class BytmDialog extends NanoEmitter<{
     this.id = options.id;
   }
 
-  /** Call after DOMContentLoaded to pre-render the dialog (or call just before calling open()) */
-  public async render() {
+  /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
+  public async mount() {
     if(this.dialogRendered)
       return;
     this.dialogRendered = true;
@@ -98,11 +98,11 @@ export class BytmDialog extends NanoEmitter<{
   /** Clears and then re-renders the dialog */
   public async rerender() {
     this.unmount();
-    await this.render();
+    await this.mount();
   }
 
   /**
-   * Opens the dialog - renders it if it hasn't been rendered yet  
+   * Opens the dialog - also mounts it if it hasn't been mounted yet  
    * Prevents default action and immediate propagation of the passed event
    */
   public async open(e?: MouseEvent | KeyboardEvent) {
@@ -114,7 +114,7 @@ export class BytmDialog extends NanoEmitter<{
     this.dialogOpen = true;
 
     if(!this.isRendered())
-      await this.render();
+      await this.mount();
 
     document.body.classList.add("bytm-disable-scroll");
     document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
