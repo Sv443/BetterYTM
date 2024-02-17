@@ -129,7 +129,7 @@ async function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
   // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-  addGlobalStyle("#{{GLOBAL_STYLE}}");
+  addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
 
   initObservers();
   initOnSelector();

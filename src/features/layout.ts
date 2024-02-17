@@ -279,7 +279,7 @@ function setVolSliderSize() {
   addGlobalStyle(`\
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
-}`);
+}`).id = "bytm-style-vol-slider-size";
 }
 
 /** Sets the `step` attribute of the volume slider */
@@ -293,7 +293,8 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 export async function addAnchorImprovements() {
   try {
     const css = await (await fetchAdvanced(await getResourceUrl("css-anchor_improvements"))).text();
-    css && addGlobalStyle(css);
+    if(css)
+      addGlobalStyle(css).id = "bytm-style-anchor-improvements";
   }
   catch(err) {
     error("Couldn't add anchor improvements CSS due to an error:", err);
@@ -467,7 +468,8 @@ export async function removeShareTrackingParam() {
 export async function fixSpacing() {
   try {
     const css = await (await fetchAdvanced(await getResourceUrl("css-fix_spacing"))).text();
-    css && addGlobalStyle(css);
+    if(css)
+      addGlobalStyle(css).id = "bytm-style-fix-spacing";
   }
   catch(err) {
     error("Couldn't fix spacing due to an error:", err);
