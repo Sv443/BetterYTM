@@ -86,10 +86,11 @@
     "remember_song_time_sites_yt": "Only YouTube",
     "remember_song_time_sites_ytm": "Only YouTube Music",
 
-    "new_version_available": "A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3\n\nDo you want to open %4 to install it manually?",
-    "open_update_page": "Open %1",
+    "new_version_available": "A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3",
+    "open_update_page_install_manually": "Install on %1",
     "disable_update_check": "Disable automatic update checks",
     "ignore_for_24h": "Ignore for 24h",
+    "expand_release_notes": "Click to expand the latest release notes",
 
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
