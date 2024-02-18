@@ -83,8 +83,6 @@
     "remember_song_time_sites_all": "दोनों साइटें",
     "remember_song_time_sites_yt": "केवल YouTube",
     "remember_song_time_sites_ytm": "केवल YouTube Music",
-    "new_version_available": "एक नया संस्करण %1 उपलब्ध है!\nवर्तमान में स्थापित: %2 - नया संस्करण: %3\n(आप इस सूचना को कॉन्फ़िग मेनू में अक्षम कर सकते हैं)\n\nक्या आप %4 को खोलकर इसे मैन्युअल रूप से स्थापित करना चाहते हैं?",
-
     "feature_category_layout": "लेआउट",
     "feature_category_songLists": "गीत सूचियाँ",
     "feature_category_behavior": "व्यवहार",

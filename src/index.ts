@@ -13,21 +13,21 @@ import {
 
   // features:
   // layout
-  preInitLayout,
+  setLayoutConfig,
   addWatermark,
   removeUpgradeTab, initVolumeFeatures,
   removeShareTrackingParam, fixSpacing,
   addScrollToActiveBtn,
   // song lists
-  preInitSongLists,
+  setSongListsConfig,
   initQueueButtons,
   // behavior
-  preInitBehavior,
+  setBehaviorConfig,
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
   disableDarkReader,
   // input
-  preInitInput,
+  setInputConfig,
   initArrowKeySkip, initSiteSwitch,
   addAnchorImprovements, initNumKeysSkip,
   // lyrics
@@ -96,10 +96,10 @@ async function init() {
 
     setLogLevel(features.logLevel);
 
-    preInitLayout(features);
-    preInitBehavior(features);
-    preInitInput(features);
-    preInitSongLists(features);
+    setLayoutConfig(features);
+    setBehaviorConfig(features);
+    setInputConfig(features);
+    setSongListsConfig(features);
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
@@ -128,8 +128,7 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-  addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
+  insertGlobalStyle();
 
   initObservers();
   initOnSelector();
@@ -209,7 +208,7 @@ async function onDomLoad() {
   }
 }
 
-void ["TODO:", initFeatures];
+void ["TODO(v1.2):", initFeatures];
 async function initFeatures() {
   const ftInit = [] as Promise<void>[];
 
@@ -260,6 +259,12 @@ async function initFeatures() {
   Promise.all(ftInit).then(() => {
     emitInterface("bytm:ready");
   });
+}
+
+/** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
+function insertGlobalStyle() {
+  // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
+  addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
 }
 
 function registerMenuCommands() {

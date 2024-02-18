@@ -3,10 +3,15 @@ import { NanoEmitter } from "./NanoEmitter";
 import { clearInner, getResourceUrl, warn } from ".";
 import { t } from "./translations";
 import "./BytmDialog.css";
+import { addGlobalStyle } from "@sv443-network/userutils";
 
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
+  /** Maximum width of the dialog in pixels */
+  maxWidth: number;
+  /** Maximum height of the dialog in pixels */
+  maxHeight: number;
   /** Whether the dialog should close when the background is clicked - defaults to true */
   closeOnBgClick?: boolean;
   /** Whether the dialog should close when the escape key is pressed - defaults to true */
@@ -15,6 +20,8 @@ export interface BytmDialogOptions {
   closeBtnEnabled?: boolean;
   /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
+  /** Whether the menu should have a smaller overall appearance - defaults to false */
+  smallMenu?: boolean;
   /** Called to render the body of the dialog */
   renderBody: () => HTMLElement;
   /** Called to render the header of the dialog - leave undefined for a blank header */
@@ -54,6 +61,7 @@ export class BytmDialog extends NanoEmitter<{
       closeOnEscPress: true,
       closeBtnEnabled: true,
       destroyOnClose: false,
+      smallHeader: false,
       ...options,
     };
     this.id = options.id;
@@ -80,17 +88,30 @@ export class BytmDialog extends NanoEmitter<{
 
     this.attachListeners(bgElem);
 
+    addGlobalStyle(`\
+#bytm-${this.id}-dialog-bg {
+  --bytm-dialog-width-max: ${this.options.maxWidth}px;
+  --bytm-dialog-height-max: ${this.options.maxHeight}px;
+}`).id = `bytm-style-dialog-${this.id}`;
+
     this.events.emit("render");
+    return bgElem;
   }
 
   /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
   public unmount() {
     this.dialogRendered = false;
 
-    const elem = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
-    elem && clearInner(elem);
+    const clearSelectors = [
+      `#bytm-${this.id}-dialog-bg`,
+      `#bytm-style-dialog-${this.id}`,
+    ];
 
-    document.querySelector(`#bytm-${this.id}-dialog-bg`)?.remove();
+    for(const sel of clearSelectors) {
+      const elem = document.querySelector<HTMLElement>(sel);
+      elem?.hasChildNodes() && clearInner(elem);
+      document.querySelector(sel)?.remove();
+    }
 
     this.events.emit("clear");
   }
@@ -130,6 +151,7 @@ export class BytmDialog extends NanoEmitter<{
     lastDialogId = this.id;
 
     this.events.emit("open");
+    return dialogBg;
   }
 
   /** Closes the dialog - prevents default action and immediate propagation of the passed event */
@@ -184,7 +206,7 @@ export class BytmDialog extends NanoEmitter<{
   }
 
   /** Called once to attach all generic event listeners */
-  private attachListeners(bgElem: HTMLElement) {
+  public attachListeners(bgElem: HTMLElement) {
     if(this.listenersAttached)
       return;
     this.listenersAttached = true;
@@ -217,6 +239,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
+    this.options.smallMenu && headerWrapperEl.classList.add("small");
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
@@ -227,10 +250,13 @@ export class BytmDialog extends NanoEmitter<{
       headerTitleWrapperEl.appendChild(header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
+    else
+      headerWrapperEl.appendChild(document.createElement("div"));
 
     if(this.options.closeBtnEnabled) {
       const closeBtnEl = document.createElement("img");
       closeBtnEl.classList.add("bytm-dialog-close");
+      this.options.smallMenu && closeBtnEl.classList.add("small");
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
@@ -240,18 +266,23 @@ export class BytmDialog extends NanoEmitter<{
 
     dialogWrapperEl.appendChild(headerWrapperEl);
 
-    // TODO:
     //#SECTION body
 
-    const bodyWrapperEl = document.createElement("div");
-    bodyWrapperEl.appendChild(this.options.renderBody());
+    const menuBodyElem = document.createElement("div");
+    menuBodyElem.id = `bytm-${this.id}-dialog-body`;
+    menuBodyElem.classList.add("bytm-dialog-body");
+    this.options.smallMenu && menuBodyElem.classList.add("small");
 
-    dialogWrapperEl.appendChild(bodyWrapperEl);
+    menuBodyElem.appendChild(this.options.renderBody());
+    dialogWrapperEl.appendChild(menuBodyElem);
 
     //#SECTION footer
 
     if(footer) {
-      dialogWrapperEl.appendChild(footer);
+      const footerWrapper = document.createElement("div");
+      footerWrapper.classList.add("bytm-dialog-footer-cont");
+      dialogWrapperEl.appendChild(footerWrapper);
+      footerWrapper.appendChild(footer);
     }
 
     return dialogWrapperEl;

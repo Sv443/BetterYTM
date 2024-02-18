@@ -83,8 +83,6 @@
     "remember_song_time_sites_all": "所有网站",
     "remember_song_time_sites_yt": "仅 YouTube",
     "remember_song_time_sites_ytm": "仅 YouTube Music",
-    "new_version_available": "%1 的新版本可用！\n当前安装: %2 - 新版本: %3\n(您可以在配置菜单中禁用此通知)\n\n是否要打开 %4 来手动安装它?",
-
     "feature_category_layout": "布局",
     "feature_category_songLists": "歌曲列表",
     "feature_category_behavior": "行为",

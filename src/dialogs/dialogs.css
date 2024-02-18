@@ -1,0 +1,15 @@
+#bytm-version-notif-dialog-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  margin-top: 15px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 8px;
+}

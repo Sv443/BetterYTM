@@ -83,8 +83,6 @@
     "remember_song_time_sites_all": "すべてのサイト",
     "remember_song_time_sites_yt": "YouTube のみ",
     "remember_song_time_sites_ytm": "YouTube Music のみ",
-    "new_version_available": "新しいバージョンの %1 が利用可能です！\n現在のバージョン: %2 - 新しいバージョン: %3\n（この通知を構成メニューで無効にすることができます）\n\n%4 を開いて手動でインストールしますか？",
-
     "feature_category_layout": "レイアウト",
     "feature_category_songLists": "曲リスト",
     "feature_category_behavior": "動作",

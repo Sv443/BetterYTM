@@ -223,7 +223,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.4em;
+  font-size: 1.4rem;
   padding: 8px 20px;
   transition: background-color 0.15s ease-out;
 }
