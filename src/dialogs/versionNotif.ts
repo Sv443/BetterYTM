@@ -26,7 +26,10 @@ export async function getVersionNotifDialog({
       closeOnEscPress: true,
       destroyOnClose: true,
       smallMenu: true,
-      renderBody: () => renderBody({ latestTag, changelogHtml }),
+      renderBody: () => renderBody({
+        latestTag,
+        changelogHtml,
+      }),
     });
   }
   return verNotifDialog!;
@@ -45,14 +48,32 @@ function renderBody({
     openuserjs: "OpenUserJS",
   };
 
-  // TODO:
-  void changelogHtml;
-
   const wrapperEl = document.createElement("div");
 
   const pEl = document.createElement("p");
   pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
   wrapperEl.appendChild(pEl);
+
+  const changelogDetailsEl = document.createElement("details");
+  changelogDetailsEl.id = "bytm-version-notif-changelog-details";
+  changelogDetailsEl.open = false;
+
+  const changelogSummaryEl = document.createElement("summary");
+  changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
+  changelogDetailsEl.appendChild(changelogSummaryEl);
+
+  const changelogEl = document.createElement("p");
+  changelogEl.id = "bytm-version-notif-changelog-cont";
+  changelogEl.classList.add("bytm-markdown-container");
+  changelogEl.innerHTML = changelogHtml;
+
+  changelogEl.querySelectorAll("a").forEach((a) => {
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+  });
+
+  changelogDetailsEl.appendChild(changelogEl);
+  wrapperEl.appendChild(changelogDetailsEl);
 
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
@@ -60,6 +81,7 @@ function renderBody({
   const checkboxEl = document.createElement("input");
   checkboxEl.type = "checkbox";
   checkboxEl.id = "bytm-disable-update-check-chkbox";
+  checkboxEl.tabIndex = 0;
   checkboxEl.checked = false;
 
   const labelEl = document.createElement("label");
@@ -71,7 +93,7 @@ function renderBody({
 
   wrapperEl.appendChild(disableUpdCheckEl);
 
-  verNotifDialog!.on("close", async () => {
+  verNotifDialog?.on("close", async () => {
     const config = getFeatures();
     if(checkboxEl.checked)
       config.versionCheck = false;
@@ -83,19 +105,32 @@ function renderBody({
 
   const btnUpdate = document.createElement("button");
   btnUpdate.className = "bytm-btn";
-  btnUpdate.textContent = t("open_update_page", hostPlatformNames[host]);
-  btnUpdate.addEventListener("click", () => {
+  btnUpdate.tabIndex = 0;
+  btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
+  const btnUpdateClicked = () => {
     window.open(pkg.updates[host]);
-    verNotifDialog!.close();
+    verNotifDialog?.close();
+  };
+  btnUpdate.addEventListener("click", btnUpdateClicked);
+  btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
+
+  const btnClose = document.createElement("button");
+  btnClose.className = "bytm-btn";
+  btnClose.tabIndex = 0;
+  btnClose.textContent = t("ignore_for_24h");
+
+  checkboxEl.addEventListener("change", () => {
+    if(checkboxEl.checked)
+      btnClose.textContent = t("close");
+    else
+      btnClose.textContent = t("ignore_for_24h");
   });
 
-  const btnIgnore = document.createElement("button");
-  btnIgnore.className = "bytm-btn";
-  btnIgnore.textContent = t("ignore_for_24h");
-  btnIgnore.addEventListener("click", () => verNotifDialog!.close());
+  btnClose.addEventListener("click", () => verNotifDialog?.close());
+  btnClose.addEventListener("keydown", (e) => e.key === "Enter" && verNotifDialog?.close());
 
   btnWrapper.appendChild(btnUpdate);
-  btnWrapper.appendChild(btnIgnore);
+  btnWrapper.appendChild(btnClose);
 
   wrapperEl.appendChild(btnWrapper);
 
