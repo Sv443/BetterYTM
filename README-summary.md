@@ -93,6 +93,7 @@ This project is based on my extensive template for making a userscript with Type
 
 ### Attributions:
 This userscript depends on these runtime libraries:
+- [marked](https://npmjs.org/package/marked)
 - [nanoevents](https://npmjs.org/package/nanoevents)
 - [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
   
