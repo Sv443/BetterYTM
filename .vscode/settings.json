@@ -29,6 +29,11 @@
       "color": "white",
       "overviewRulerColor": "#44f",
     },
+    "((<!--\\s*)?#\\{\\{/?[A-Z_-]+\\}\\}(\\s*-->)?)": { // #{{SECTION}} and #{{/SECTION}}
+      "overviewRulerColor": "#2ae",
+      "backgroundColor": "#2ae",
+      "color": "#002",
+    },
     "(#?(DEBUG|DBG)#?)": { // #DEBUG or DEBUG or #DBG or #DBG#
       "backgroundColor": "#ff0",
       "color": "blue",

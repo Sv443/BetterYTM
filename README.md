@@ -2,11 +2,11 @@
 <!-- #{{HEADER}} -->
 <h1><img src="./assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
-### Lots of configurable layout and user experience improvements for YouTube Music
-Supported Languages: 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese
-
-[**Features**](#features) • [**Installation**](#installation) • [**Support**](#support) • [**Plugins**](#plugins) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+### Configurable layout and user experience improvements for YouTube Music
+Supported Languages: 🇩🇪 German, 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese (simpl.)
 <!-- #{{/HEADER}} -->
+[**Features**](#features) • [**Installation**](#installation) • [**Support**](#support) • [**Plugins**](#plugins) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+  
 ---
 
 </div>
