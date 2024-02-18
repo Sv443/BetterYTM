@@ -21,8 +21,7 @@ export async function checkVersion() {
       url: releaseURL,
     });
 
-    // const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-    const latestTag = "1.2.3";
+    const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
     if(!latestTag)
       return;
