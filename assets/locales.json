@@ -57,7 +57,7 @@
   },
   "zh_CN": {
     "name": "中文（简化，中国）",
-    "nameEnglish": "Chinese (smpl.)",
+    "nameEnglish": "Chinese (simpl.)",
     "emoji": "🇨🇳",
     "userscriptDesc": "可配置的布局和YouTube Music的用户体验改进",
     "authors": ["Sv443"]
