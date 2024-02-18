@@ -97,6 +97,8 @@ To edit an existing translation, please follow these steps:
     Used for building for experimental versions, targeting the develop branch
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
+- **`npm run gen-readme`**  
+  Updates the README files by inserting different parts of generated sections into them.
 - **`npm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
 - **`npm run tr-format -- <arguments>`**  

@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import locales from "../../assets/locales.json" assert { type: "json" };
+import pluginsJson from "../../assets/plugins.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
 
 const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
@@ -9,7 +10,35 @@ const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-
 
 const changes = {
   HEADER: genHeader,
+  PLUGINS: genPluginList,
 };
+
+type PluginObj = {
+  /** Name of the plugin */
+  pluginName: string;
+  /**
+   * Descriptions of at least en_US and optionally any other existing locale  
+   * When an unspecified locale is set, the description will default to either the base locale's value or en_US' value
+   */
+  pluginDescription: Partial<Record<keyof typeof locales, string>> & {
+    en_US: string;
+  };
+  /** Path relative to the project root */
+  pluginIconPath: string;
+  /** URL to the plugin's homepage or GitHub repo */
+  pluginUrl: string;
+  /** URL to the plugin's GreasyFork page */
+  pluginUrlGF?: string;
+  /** URL to the plugin's OpenUserJS page */
+  pluginUrlOUJS?: string;
+  /** Name of the plugin's author */
+  authorName: string;
+  /** URL to the plugin author's homepage / GitHub profile */
+  authorUrl?: string;
+};
+
+const pluginList = pluginsJson as PluginObj[];
+void ["TODO:", pluginList];
 
 async function run() {
   const readmeFiles = [
@@ -37,29 +66,34 @@ async function run() {
 }
 
 async function modifyReadme(readmeLines: string[], changes: Record<string, () => Promise<string>>) {
-  const lines = [];
+  let lines = [...readmeLines];
+  let retLines = [] as string[];
   for(const [name, getContent] of Object.entries(changes)) {
-    const beginRegex = new RegExp(`<!--\\s?#\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}\\s?-->`, "gm");
-    const endRegex = new RegExp(`<!--\\s?#\\{\\{\\s?/${name.toUpperCase()}\\s?\\}\\}\\s?-->`, "gm");
+    retLines = [];
+
+    const beginRegex = new RegExp(`<!--\\s?<\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->`, "gm");
+    const endRegex = new RegExp(`<!--\\s?</\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->`, "gm");
 
     // find line number that matches beginRegex
-    const beginLine = readmeLines.findIndex((line) => beginRegex.test(line));
+    const beginLine = lines.findIndex((line) => beginRegex.test(line));
     if(beginLine === -1)
       continue;
 
     // find line number that matches endRegex
-    const endLine = readmeLines.findIndex((line) => endRegex.test(line));
+    const endLine = lines.findIndex((line) => endRegex.test(line));
     if(endLine === -1)
       throw new Error(`No end tag found for ${name.toUpperCase()}`);
 
     // replace the content between the two lines
     const newContent = await getContent();
-    lines.push(...readmeLines.splice(0, beginLine + 1));
-    lines.push(...newContent.split(/\r?\n/gm));
-    lines.push(...readmeLines.splice(endLine - beginLine - 1));
+    retLines.push(...lines.splice(0, beginLine + 1));
+    retLines.push(...newContent.split(/\r?\n/gm));
+    retLines.push(...lines.splice(endLine - beginLine - 1));
+
+    lines = [...retLines];
   }
 
-  return lines.length > 0 ? lines.join("\n") : readmeLines.join("\n");
+  return retLines.length > 0 ? retLines.join("\n") : readmeLines.join("\n");
 }
 
 async function genHeader() {
@@ -71,6 +105,13 @@ async function genHeader() {
 
 ### ${pkg.description}
 Supported Languages: ${langStr}\
+`;
+}
+
+async function genPluginList() {
+  return `\
+Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
+Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.\
 `;
 }
 
