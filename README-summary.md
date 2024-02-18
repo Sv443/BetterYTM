@@ -1,7 +1,12 @@
-<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
+<!-- <{{HEADER}}> -->
+<h1><img src="./assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music
-Supported Languages: 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese
+Supported Languages: 🇩🇪 German, 🇺🇸 English, 🇩🇪 German, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese (simpl.)
+<!-- </{{HEADER}}> -->
+[**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+  
+---
 
 <br>
 
@@ -59,6 +64,16 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 </sup>
 
 <br><br><br>
+
+## Plugins:
+BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
+  
+<!-- <{{PLUGINS}}> -->
+Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
+Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.
+<!-- </{{PLUGINS}}> -->
+
+<br><br>
 
 ## Support:
 If you have any questions, issues, or feature requests, please [open an issue here](https://github.com/Sv443/BetterYTM/issues/new/choose).  

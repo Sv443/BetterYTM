@@ -29,7 +29,7 @@
       "color": "white",
       "overviewRulerColor": "#44f",
     },
-    "((<!--\\s*)?#\\{\\{/?[A-Z_-]+\\}\\}(\\s*-->)?)": { // #{{SECTION}} and #{{/SECTION}}
+    "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
       "overviewRulerColor": "#2ae",
       "backgroundColor": "#2ae",
       "color": "#002",
