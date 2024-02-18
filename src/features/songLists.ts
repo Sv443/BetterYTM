@@ -8,7 +8,7 @@ import "./songLists.css";
 
 let features: FeatureConfig;
 
-export function preInitSongLists(feats: FeatureConfig) {
+export function setSongListsConfig(feats: FeatureConfig) {
   features = feats;
 }
 

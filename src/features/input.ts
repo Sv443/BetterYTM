@@ -8,7 +8,7 @@ import { featInfo } from "./index";
 
 let features: FeatureConfig;
 
-export function preInitInput(feats: FeatureConfig) {
+export function setInputConfig(feats: FeatureConfig) {
   features = feats;
 }
 

@@ -8,7 +8,7 @@ import "./layout.css";
 
 let features: FeatureConfig;
 
-export function preInitLayout(feats: FeatureConfig) {
+export function setLayoutConfig(feats: FeatureConfig) {
   features = feats;
 }
 

@@ -1,0 +1,404 @@
+.bytm-dialog-bg {
+  --bytm-dialog-bg: #333333;
+  --bytm-dialog-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-dialog-separator-color: #797979;
+  --bytm-dialog-border-radius: 10px;
+}
+
+#bytm-cfg-dialog-bg {
+  --bytm-dialog-height-max: 750px;
+  --bytm-dialog-width-max: 1000px;
+}
+
+#bytm-changelog-dialog-bg {
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 800px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg {
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg {
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+}
+
+.bytm-dialog-bg {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bytm-dialog {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
+  border-radius: var(--bytm-dialog-border-radius);
+  height: auto;
+  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  color: #fff;
+  background-color: var(--bytm-dialog-bg);
+}
+
+.bytm-dialog-body {
+  font-size: 1.4rem;
+  padding: 20px;
+}
+
+.bytm-dialog-body.small {
+  padding: 15px;
+}
+
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+#bytm-dialog-opts {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 30px 0px;
+  overflow-y: auto;
+}
+
+.bytm-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-dialog-bg);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
+}
+
+.bytm-dialog-header.small {
+  padding: 10px 15px;
+}
+
+.bytm-dialog-titlecont {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-dialog-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bytm-dialog-title {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;
+}
+
+#bytm-dialog-version {
+  position: absolute;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  font-size: 10px;
+  font-weight: normal;
+  z-index: 7;
+}
+
+#bytm-dialog-version .bytm-link {
+  color: #c6d2db;
+}
+
+#bytm-dialog-linkscont {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+
+.bytm-dialog-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bytm-dialog-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.bytm-dialog-link .bytm-dialog-img {
+  position: relative;
+  border-radius: 50%;
+  bottom: 0px;
+  transition: bottom 0.15s ease-out;
+}
+
+.bytm-dialog-link:hover .bytm-dialog-img {
+  bottom: 5px;
+}
+
+.bytm-dialog-close {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.bytm-dialog-close.small {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-dialog-footer {
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.bytm-dialog-footer.hidden {
+  display: none;
+}
+
+.bytm-dialog-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 15px 20px;
+  background: var(--bytm-dialog-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: solid none none none;
+  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
+}
+
+#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-dialog-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#bytm-dialog-footer-left-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#bytm-dialog-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
+  position: sticky;
+  bottom: -15px;
+  left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 7;
+  background-color: var(--bytm-scroll-indicator-bg);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0px 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.bytm-ftitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4em;
+  padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-ftitem:hover {
+  background-color: var(--bytm-dialog-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.bytm-ftconf-label {
+  user-select: none;
+}
+
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-toggle-label {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
+  min-width: 50px;
+}
+
+.bytm-ftconf-input[type=number] {
+  width: 75px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
+}
+
+#bytm-export-dialog-text, #bytm-import-dialog-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+.bytm-dialog-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
+#bytm-changelog-dialog-body {
+  overflow-y: auto;
+}
+
+#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
+}
+
+.bytm-markdown-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1.5em;
+  line-height: 20px;
+}
+
+/* Markdown stuff */
+
+.bytm-markdown-container kbd {
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 11px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+}
+
+.bytm-markdown-container kbd:active {
+  padding-bottom: 2px;
+  box-shadow: inset 0 0 0 initial;
+}
+
+.bytm-markdown-container kbd::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
+  margin-bottom: 5px;
+}
+
+.bytm-markdown-container h2:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.bytm-markdown-container ul li::before {
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li::before {
+  white-space: pre;
+  content: "    • ";
+  font-weight: bolder;
+}
+
+#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+#bytm-feat-help-dialog-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
+}
+
+.bytm-ftitem-adornment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 8px;
+}
+
+#bytm-ftitem-locale-adornment svg path {
+  fill: #4595c7;
+}

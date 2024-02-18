@@ -4,7 +4,7 @@ import { LogLevel, type FeatureConfig } from "../types";
 
 let features: FeatureConfig;
 
-export function preInitBehavior(feats: FeatureConfig) {
+export function setBehaviorConfig(feats: FeatureConfig) {
   features = feats;
 }
 

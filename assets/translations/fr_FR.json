@@ -83,8 +83,6 @@
     "remember_song_time_sites_all": "Les deux sites",
     "remember_song_time_sites_yt": "Seulement YouTube",
     "remember_song_time_sites_ytm": "Seulement YouTube Music",
-    "new_version_available": "Une nouvelle version de %1 est disponible!\nActuellement installée: %2 - nouvelle version: %3\n(Vous pouvez désactiver cette notification dans le menu de configuration)\n\nVoulez-vous ouvrir",
-
     "feature_category_layout": "Disposition",
     "feature_category_songLists": "Listes de chansons",
     "feature_category_behavior": "Comportement",

@@ -143,7 +143,7 @@ button.bytm-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 16px;
+  font-size: 1.4rem;
   font-weight: 400;
   line-height: 24px;
   padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
