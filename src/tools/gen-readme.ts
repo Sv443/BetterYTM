@@ -101,7 +101,7 @@ async function genHeader() {
     return `${acc}${i > 0 ? ", " : ""}${emoji} ${nameEnglish}`;
   }, "");
   return `\
-<h1><img src="./assets/logo/logo_128.png" width="96" height="96" /><br>${pkg.userscriptName}</h1>
+<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_128.png" width="96" height="96" /><br>${pkg.userscriptName}</h1>
 
 ### ${pkg.description}
 Supported Languages: ${langStr}\
