@@ -3,6 +3,7 @@
   - A new version notification dialog is now shown with the latest version's changes
   - Menus are now only created when needed
   - Moved dependencies to `@require` to reduce script size
+  - Improved UX of the hotkey input in the config menu
 - **Fixes:**
   - Fixed queue button container alignment
   - Fixed Chinese translations
