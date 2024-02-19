@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "0ae03bb", // asserted as generic string instead of literal
+        buildNumber: "6fbd169", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -719,8 +719,8 @@ I welcome every contribution on GitHub!
             else
                 deactivate();
         });
-        inputElem.addEventListener("keydown", (e) => {
-            if (inputElem.dataset.state === "inactive" && ["Enter", " ", "Space"].includes(e.key))
+        inputElem.addEventListener("keydown", () => {
+            if (inputElem.dataset.state === "inactive")
                 activate();
         });
         wrapperElem.appendChild(resetElem);
