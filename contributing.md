@@ -88,12 +88,13 @@ To edit an existing translation, please follow these steps:
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
   - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local` or `github` (default)
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
   - `npm run build-prod-base` - Sets `--config-mode=production` and `--config-branch=main`  
     Used for building for production, targeting the main branch
-  - `npm run build-develop` - Sets `--config-mode=development` and `--config-branch=develop`  
+  - `npm run build-develop` - Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`  
     Used for building for experimental versions, targeting the develop branch
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!

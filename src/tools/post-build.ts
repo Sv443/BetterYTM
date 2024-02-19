@@ -35,6 +35,7 @@ type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TNa
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
 const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
 const host = getCliArg<CliArg<"config-host">>("host", "github");
+const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "github");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
 
 const envPort = Number(env.DEV_SERVER_PORT);
@@ -327,7 +328,7 @@ function getResourceUrl(path: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
-  return mode === "development"
+  return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?t=${buildUuid}`
     : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}`;
 }
