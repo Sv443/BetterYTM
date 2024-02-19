@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "1ac3d61", // asserted as generic string instead of literal
+        buildNumber: "a993461", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -617,9 +617,11 @@ I welcome every contribution on GitHub!
         emitInterface(`bytm:siteEvent:${key}`, args);
     }
 
+    let initialHotkey;
     /** Creates a hotkey input element */
-    function createHotkeyInput({ initialValue, resetValue, onChange }) {
+    function createHotkeyInput({ initialValue, onChange }) {
         var _a;
+        initialHotkey = initialValue;
         const wrapperElem = document.createElement("div");
         wrapperElem.classList.add("bytm-hotkey-wrapper");
         const infoElem = document.createElement("span");
@@ -631,22 +633,39 @@ I welcome every contribution on GitHub!
         inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
         inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
         const resetElem = document.createElement("span");
-        resetElem.classList.add("bytm-hotkey-reset", "bytm-link");
+        resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
         resetElem.role = "button";
         resetElem.tabIndex = 0;
         resetElem.textContent = `(${t("reset")})`;
+        resetElem.ariaLabel = resetElem.title = t("reset");
+        const deactivate = () => {
+            var _a, _b;
+            siteEvents.emit("hotkeyInputActive", false);
+            const curVal = (_a = getFeatures().switchSitesHotkey) !== null && _a !== void 0 ? _a : initialValue;
+            inputElem.value = (_b = curVal === null || curVal === void 0 ? void 0 : curVal.code) !== null && _b !== void 0 ? _b : t("hotkey_input_click_to_change");
+            inputElem.dataset.state = "inactive";
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
+            infoElem.innerHTML = curVal ? getHotkeyInfoHtml(curVal) : "";
+        };
+        const activate = () => {
+            siteEvents.emit("hotkeyInputActive", true);
+            inputElem.value = "< ... >";
+            inputElem.dataset.state = "active";
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+        };
         const resetClicked = (e) => {
             e.preventDefault();
             e.stopImmediatePropagation();
-            onChange(resetValue);
-            inputElem.value = resetValue.code;
-            inputElem.dataset.state = "inactive";
-            infoElem.textContent = getHotkeyInfo(resetValue);
+            onChange(initialValue);
+            deactivate();
+            inputElem.value = initialValue.code;
+            infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
+            resetElem.classList.add("bytm-hidden");
         };
         resetElem.addEventListener("click", resetClicked);
-        resetElem.addEventListener("keydown", (e) => e.key === "Enter" && resetClicked(e));
+        resetElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && resetClicked(e));
         if (initialValue)
-            infoElem.textContent = getHotkeyInfo(initialValue);
+            infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
         let lastKeyDown;
         document.addEventListener("keypress", (e) => {
             if (inputElem.dataset.state !== "active")
@@ -663,7 +682,8 @@ I welcome every contribution on GitHub!
             };
             inputElem.value = hotkey.code;
             inputElem.dataset.state = "inactive";
-            infoElem.textContent = getHotkeyInfo(hotkey);
+            infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
+            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
             onChange(hotkey);
         });
         document.addEventListener("keydown", (e) => {
@@ -679,46 +699,41 @@ I welcome every contribution on GitHub!
                 ctrl: e.ctrlKey,
                 alt: e.altKey,
             };
+            const keyChanged = (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.code) !== hotkey.code || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.shift) !== hotkey.shift || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.ctrl) !== hotkey.ctrl || (initialHotkey === null || initialHotkey === void 0 ? void 0 : initialHotkey.alt) !== hotkey.alt;
             lastKeyDown = hotkey;
+            onChange(hotkey);
+            if (keyChanged) {
+                deactivate();
+                resetElem.classList.remove("bytm-hidden");
+            }
+            else
+                resetElem.classList.add("bytm-hidden");
             inputElem.value = hotkey.code;
             inputElem.dataset.state = "inactive";
-            infoElem.textContent = getHotkeyInfo(hotkey);
-            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
-            onChange(hotkey);
+            infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
         });
-        const deactivate = () => {
-            var _a, _b;
-            siteEvents.emit("hotkeyInputActive", false);
-            const curVal = (_a = getFeatures().switchSitesHotkey) !== null && _a !== void 0 ? _a : initialValue;
-            inputElem.value = (_b = curVal === null || curVal === void 0 ? void 0 : curVal.code) !== null && _b !== void 0 ? _b : t("hotkey_input_click_to_change");
-            inputElem.dataset.state = "inactive";
-            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
-            infoElem.textContent = curVal ? getHotkeyInfo(curVal) : "";
-        };
-        const activate = () => {
-            siteEvents.emit("hotkeyInputActive", true);
-            inputElem.value = "< ... >";
-            inputElem.dataset.state = "active";
-            inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
-        };
         siteEvents.on("cfgMenuClosed", deactivate);
         inputElem.addEventListener("click", () => {
-            if (inputElem.dataset.state === "active")
-                deactivate();
+            if (inputElem.dataset.state === "inactive")
+                activate();
             else
+                deactivate();
+        });
+        inputElem.addEventListener("keydown", (e) => {
+            if (inputElem.dataset.state === "inactive" && ["Enter", " ", "Space"].includes(e.key))
                 activate();
         });
+        wrapperElem.appendChild(resetElem);
         wrapperElem.appendChild(infoElem);
         wrapperElem.appendChild(inputElem);
-        resetValue && wrapperElem.appendChild(resetElem);
         return wrapperElem;
     }
-    function getHotkeyInfo(hotkey) {
+    function getHotkeyInfoHtml(hotkey) {
         const modifiers = [];
-        hotkey.ctrl && modifiers.push(t("hotkey_key_ctrl"));
-        hotkey.shift && modifiers.push(t("hotkey_key_shift"));
-        hotkey.alt && modifiers.push(getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt"));
-        return modifiers.reduce((a, c) => a += `${c} + `, "");
+        hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
+        hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
+        hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
+        return `${modifiers.join(" ")}${modifiers.length > 0 ? " + " : ""}`;
     }
     /** Crude OS detection for keyboard layout purposes */
     function getOS() {
@@ -1223,7 +1238,6 @@ I welcome every contribution on GitHub!
                                 case "hotkey":
                                     wrapperElem = createHotkeyInput({
                                         initialValue: initialVal,
-                                        resetValue: featInfo.switchSitesHotkey.default,
                                         onChange: (hotkey) => {
                                             confChanged(featKey, initialVal, hotkey);
                                         },
@@ -4836,7 +4850,7 @@ hr {
 
 .bytm-hotkey-reset {
   font-size: 0.9em;
-  margin-left: 5px;
+  margin-right: 10px;
 }
 
 .bytm-hotkey-info {
@@ -5421,7 +5435,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   margin-top: 0;
 }
 
-.bytm-ftitem {
+.bytm-dialog .bytm-ftitem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -5431,7 +5445,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   transition: background-color 0.15s ease-out;
 }
 
-.bytm-ftitem:hover {
+.bytm-dialog .bytm-ftitem:hover {
   background-color: var(--bytm-dialog-bg-highlight);
 }
 
@@ -5504,7 +5518,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 
 /* Markdown stuff */
 
-.bytm-markdown-container kbd {
+.bytm-markdown-container kbd, .bytm-kbd {
   --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
@@ -5519,12 +5533,12 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
 }
 
-.bytm-markdown-container kbd:active {
+.bytm-markdown-container kbd:active, .bytm-kbd:active {
   padding-bottom: 2px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection {
+.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
