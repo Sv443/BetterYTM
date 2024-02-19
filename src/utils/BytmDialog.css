@@ -306,7 +306,7 @@
 
 /* Markdown stuff */
 
-.bytm-markdown-container kbd {
+.bytm-markdown-container kbd, .bytm-kbd {
   --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
@@ -321,12 +321,12 @@
   transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
 }
 
-.bytm-markdown-container kbd:active {
+.bytm-markdown-container kbd:active, .bytm-kbd:active {
   padding-bottom: 2px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection {
+.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
