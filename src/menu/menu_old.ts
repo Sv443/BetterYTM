@@ -7,7 +7,7 @@ import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
-import { createHotkeyInput } from "./hotkeyInput";
+import { createHotkeyInput } from "../utils/hotkeyInput";
 import pkg from "../../package.json" assert { type: "json" };
 
 //#MARKER create menu elements

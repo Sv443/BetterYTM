@@ -1,6 +1,6 @@
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
-import { t } from "../utils";
+import { t } from ".";
 import type { HotkeyObj } from "../types";
 import "./hotkeyInput.css";
 
