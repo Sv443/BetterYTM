@@ -11,7 +11,7 @@
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "lint": "tsc --noEmit && eslint .",
     "build": "rollup -c",
-    "build-watch": "rollup -c --config-mode development --config-host github --config-branch develop",
+    "build-watch": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
     "build-develop": "rollup -c --config-mode development --config-host github --config-branch develop",
     "build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     "build-prod-base": "rollup -c --config-mode production --config-branch main",

@@ -15,10 +15,16 @@ function getOutputFileName(suffix) {
 }
 
 export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async () => {
-  const mode = args["config-mode"] ?? (process.env.NODE_ENV === "production" ? "production" : "development");
-  const branch = args["config-branch"] ?? "develop";
-  const host = args["config-host"] ?? "github";
-  const suffix = args["config-suffix"] ?? "";
+  const passCliArgs = {
+    mode: args["config-mode"] ?? (process.env.NODE_ENV === "production" ? "production" : "development"),
+    branch: args["config-branch"] ?? "develop",
+    host: args["config-host"] ?? "github",
+    assetSource: args["config-assetSource"] ?? "github",
+    suffix: args["config-suffix"] ?? "",
+  };
+  const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");
+
+  const { mode, suffix } = passCliArgs;
 
   /** @type {import("rollup").RollupOptions} */
   const config = {
@@ -37,7 +43,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         output: "global.css",
       }),
       pluginExecute([
-        `npm run --silent post-build -- --mode=${mode} --branch=${branch} --host=${host} --suffix=${suffix}`,
+        `npm run --silent post-build -- ${passCliArgsStr}`,
         ...(mode === "development" ? ["npm run --silent invisible -- \"npm run tr-progress\""] : []),
       ]),
     ],
