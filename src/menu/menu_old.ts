@@ -457,7 +457,6 @@ async function addCfgMenu() {
           case "hotkey":
             wrapperElem = createHotkeyInput({
               initialValue: initialVal as HotkeyObj,
-              resetValue: featInfo.switchSitesHotkey.default,
               onChange: (hotkey) => {
                 confChanged(featKey as keyof FeatureConfig, initialVal, hotkey);
               },
