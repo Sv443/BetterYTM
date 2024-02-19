@@ -5,3 +5,7 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel ytmusic-responsive-list-item-re
 ytmusic-carousel-shelf-renderer ytmusic-carousel {
   --ytmusic-carousel-item-height: 60px !important;
 }
+
+ytmusic-responsive-list-item-renderer div.left-items:not(a.bytm-anchor > div.left-items) {
+  margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) !important;
+}
