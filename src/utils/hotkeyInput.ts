@@ -148,7 +148,15 @@ function getHotkeyInfoHtml(hotkey: HotkeyObj) {
   hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
   hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
   hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
-  return `${modifiers.join(" ")}${modifiers.length > 0 ? " + " : ""}`;
+  return `\
+<div style="display: flex; align-items: center;">
+  <span>
+    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
+  </span>
+  <span style="padding: 0px 5px;">
+    ${modifiers.length > 0 ? "+" : ""}
+  </span>
+</div>`;
 }
 
 /** Crude OS detection for keyboard layout purposes */
