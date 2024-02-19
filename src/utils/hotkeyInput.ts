@@ -131,8 +131,8 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     else
       deactivate();
   });
-  inputElem.addEventListener("keydown", (e) => {
-    if(inputElem.dataset.state === "inactive" && ["Enter", " ", "Space"].includes(e.key))
+  inputElem.addEventListener("keydown", () => {
+    if(inputElem.dataset.state === "inactive")
       activate();
   });
 
