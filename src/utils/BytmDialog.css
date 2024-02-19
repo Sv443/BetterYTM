@@ -223,7 +223,7 @@
   margin-top: 0;
 }
 
-.bytm-ftitem {
+.bytm-dialog .bytm-ftitem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -233,7 +233,7 @@
   transition: background-color 0.15s ease-out;
 }
 
-.bytm-ftitem:hover {
+.bytm-dialog .bytm-ftitem:hover {
   background-color: var(--bytm-dialog-bg-highlight);
 }
 
