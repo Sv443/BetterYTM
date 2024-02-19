@@ -5,6 +5,8 @@
   - Moved dependencies to `@require` to reduce script size
   - Improved UX of the hotkey input in the config menu
 - **Fixes:**
+  - Fixed fatal error when cookies / session storage was unavailable or disabled
+  - Fixed spacing around thumbnails in search results being inconsistent
   - Fixed queue button container alignment
   - Fixed Chinese translations
 - **Internal Changes:**
