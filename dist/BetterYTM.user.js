@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              BetterYTM
 // @namespace         https://github.com/Sv443/BetterYTM
-// @version           1.1.0
+// @version           1.1.1
 // @description       Lots of configurable layout and user experience improvements for YouTube Music
 // @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music
 // @description:en-US Configurable layout and user experience improvements for YouTube Music
@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "6fbd169", // asserted as generic string instead of literal
+        buildNumber: "2b743f5", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -752,7 +752,7 @@ I welcome every contribution on GitHub!
 
     var name = "betterytm";
     var userscriptName = "BetterYTM";
-    var version = "1.1.0";
+    var version = "1.1.1";
     var description = "Lots of configurable layout and user experience improvements for YouTube Music";
     var homepage = "https://github.com/Sv443/BetterYTM";
     var main = "./src/index.ts";
