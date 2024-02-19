@@ -238,7 +238,7 @@ I welcome every contribution on GitHub!
         name: GM.info.script.name,
         version: GM.info.script.version,
         namespace: GM.info.script.namespace,
-        buildNumber: "1239bb2", // asserted as generic string instead of literal
+        buildNumber: "0ae03bb", // asserted as generic string instead of literal
     };
 
     /** Options that are applied to every SelectorObserver instance */
@@ -733,7 +733,15 @@ I welcome every contribution on GitHub!
         hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
         hotkey.shift && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_shift")}</kbd>`);
         hotkey.alt && modifiers.push(`<kbd class="bytm-kbd">${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}</kbd>`);
-        return `${modifiers.join(" ")}${modifiers.length > 0 ? " + " : ""}`;
+        return `\
+<div style="display: flex; align-items: center;">
+  <span>
+    ${modifiers.reduce((a, c) => `${a ? a + " " : ""}${c}`, "")}
+  </span>
+  <span style="padding: 0px 5px;">
+    ${modifiers.length > 0 ? "+" : ""}
+  </span>
+</div>`;
     }
     /** Crude OS detection for keyboard layout purposes */
     function getOS() {
@@ -4855,7 +4863,6 @@ hr {
 
 .bytm-hotkey-info {
   font-size: 0.9em;
-  margin-right: 5px;
   white-space: nowrap;
 }
 
@@ -5530,11 +5537,12 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
 }
 
 .bytm-markdown-container kbd:active, .bytm-kbd:active {
   padding-bottom: 2px;
+  margin-top: 2px;
   box-shadow: inset 0 0 0 initial;
 }
 
