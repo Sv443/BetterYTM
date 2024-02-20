@@ -1,8 +1,8 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
-import { host, scriptInfo } from "../constants";
+import { compressionFormat, host, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown, getChangelogMd } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown, getChangelogMd, compressionSupported } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -14,18 +14,6 @@ import pkg from "../../package.json" assert { type: "json" };
 
 let isCfgMenuAdded = false;
 export let isCfgMenuOpen = false;
-
-const compressionFormat: CompressionFormat = "deflate-raw";
-
-async function compressionSupported() {
-  try {
-    await compress(".", compressionFormat);
-    return true;
-  }
-  catch(e) {
-    return false;
-  }
-}
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
 const scrollIndicatorOffsetThreshold = 30;
