@@ -243,7 +243,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "2f84fc4", // asserted as generic string instead of literal
+    buildNumber: "ca7a449", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -3777,6 +3777,8 @@ const cfgMgr = new UserUtils.ConfigManager({
     formatVersion,
     defaultConfig,
     migrations,
+    encodeData: (data) => UserUtils.compress(data, compressionFormat, "string"),
+    decodeData: (data) => UserUtils.decompress(data, compressionFormat, "string"),
 });
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 function initConfig() {
@@ -4332,11 +4334,6 @@ function init() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            registerMenuCommands();
-        }
-        catch (e) {
-        }
-        try {
             document.addEventListener("DOMContentLoaded", () => {
                 domLoaded = true;
             });
@@ -4425,6 +4422,12 @@ function onDomLoad() {
             }
             Promise.allSettled(ftInit).then(() => {
                 emitInterface("bytm:ready");
+                try {
+                    registerMenuCommands();
+                }
+                catch (e) {
+                    void e;
+                }
             });
         }
         catch (err) {
