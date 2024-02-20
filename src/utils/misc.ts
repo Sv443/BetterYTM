@@ -43,7 +43,7 @@ export async function compressionSupported() {
   if(typeof isCompressionSupported === "boolean")
     return isCompressionSupported;
   try {
-    await compress(".", compressionFormat, "base64");
+    await compress(".", compressionFormat, "string");
     return isCompressionSupported = true;
   }
   catch(e) {
