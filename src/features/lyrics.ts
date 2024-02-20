@@ -23,9 +23,9 @@ void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 //#MARKER new cache
 
 /** How many cache entries can exist at a time - this is used to cap memory usage */
-const maxLyricsCacheSize = 300;
+const maxLyricsCacheSize = 1000;
 /** Maximum time before a cache entry is force deleted */
-const cacheTTL = 1000 * 60 * 60 * 24 * 7 * 2; // 2 weeks
+const cacheTTL = 1000 * 60 * 60 * 24 * 30; // 30 days
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];
