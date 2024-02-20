@@ -1,7 +1,7 @@
-import { addGlobalStyle } from "@sv443-network/userutils";
+import { addGlobalStyle, decompress, type Stringifiable } from "@sv443-network/userutils";
 import { initOnSelector } from "./utils";
 import { clearConfig, getFeatures, initConfig } from "./config";
-import { defaultLogLevel, mode, scriptInfo } from "./constants";
+import { compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
 import { initSiteEvents, siteEvents } from "./siteEvents";
 import { emitInterface, initInterface } from "./interface";
@@ -284,8 +284,20 @@ function registerMenuCommands() {
       console.log("GM values:");
       if(keys.length === 0)
         console.log("  No values found.");
-      for(const key of keys)
-        console.log(`  ${key} -> ${await GM.getValue(key)}`);
+
+      const values = {} as Record<string, Stringifiable | undefined>;
+      let longestKey = 0;
+
+      for(const key of keys) {
+        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+        const val = await GM.getValue(key, undefined);
+        values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
+        longestKey = Math.max(longestKey, key.length);
+      }
+      for(const [key, val] of Object.entries(values)) {
+        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${val}`);
+      }
       alert("See console.");
     }, "l");
 
