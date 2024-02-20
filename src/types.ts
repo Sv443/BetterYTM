@@ -40,6 +40,13 @@ export type HotkeyObj = {
 
 export type ObserverName = "body" | "playerBar" | "playerBarInfo";
 
+export type LyricsCacheEntry = {
+  artist: string;
+  song: string;
+  url: string;
+  added: number;
+};
+
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   /** Adds a listener to one of the already present SelectorObserver instances */
