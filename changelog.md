@@ -1,6 +1,6 @@
 ## 1.2.0
 - **Features / Changes:**
-  - Added a persistent cache to save lyrics in. Within a 2 week period, 300 lyric URLs are cached throughout sessions to save time and reduce server load.
+  - Added a persistent cache to save lyrics in. Up to 1000 of the most listened to songs are cached throughout sessions for 30 days to save time and reduce server load.
 
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
 
