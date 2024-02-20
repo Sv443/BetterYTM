@@ -279,7 +279,7 @@ function registerMenuCommands() {
       }
     }, "r");
 
-    GM.registerMenuCommand("List GM values", async () => {
+    GM.registerMenuCommand("List GM values in console with decompression", async () => {
       const keys = await GM.listValues();
       console.log("GM values:");
       if(keys.length === 0)
@@ -294,12 +294,32 @@ function registerMenuCommands() {
         values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
         longestKey = Math.max(longestKey, key.length);
       }
-      for(const [key, val] of Object.entries(values)) {
+      for(const [key, finalVal] of Object.entries(values)) {
         const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${val}`);
+        const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
       }
-      alert("See console.");
     }, "l");
+
+    GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+      const keys = await GM.listValues();
+      console.log("GM values:");
+      if(keys.length === 0)
+        console.log("  No values found.");
+
+      const values = {} as Record<string, Stringifiable | undefined>;
+      let longestKey = 0;
+
+      for(const key of keys) {
+        const val = await GM.getValue(key, undefined);
+        values[key] = val;
+        longestKey = Math.max(longestKey, key.length);
+      }
+      for(const [key, val] of Object.entries(values)) {
+        const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
+        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+      }
+    });
 
     GM.registerMenuCommand("Delete all GM values", async () => {
       if(confirm("Clear all GM values?\nSee console for details.")) {
@@ -333,7 +353,7 @@ function registerMenuCommands() {
       console.log("Reset version check time.");
     }, "v");
 
-    GM.registerMenuCommand("List active selector listeners", async () => {
+    GM.registerMenuCommand("List active selector listeners in console", async () => {
       const lines = [] as string[];
       let listenersAmt = 0;
       for(const [obsName, obs] of Object.entries(observers)) {
@@ -348,7 +368,6 @@ function registerMenuCommands() {
         });
       }
       console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-      alert("See console.");
     }, "s");
   }
 }
