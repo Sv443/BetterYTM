@@ -1,7 +1,7 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "./NanoEmitter";
-import { clearInner, getResourceUrl, warn } from ".";
-import { t } from "./translations";
+import { NanoEmitter } from "../utils/NanoEmitter";
+import { clearInner, getResourceUrl, warn } from "../utils";
+import { t } from "../utils/translations";
 import "./BytmDialog.css";
 import { addGlobalStyle } from "@sv443-network/userutils";
 
