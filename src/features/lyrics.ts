@@ -1,5 +1,5 @@
 import { ConfigManager, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
-import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
+import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp, compressionSupported } from "../utils";
 import { emitInterface } from "../interface";
 import { compressionFormat, scriptInfo } from "../constants";
 import type { LyricsCacheEntry } from "../types";
@@ -22,17 +22,20 @@ export type LyricsCache = {
   cache: LyricsCacheEntry[];
 };
 
+let canCompress = true;
+
 const lyricsCache = new ConfigManager<LyricsCache>({
   id: "bytm-lyrics-cache",
   defaultConfig: {
     cache: [],
   },
   formatVersion: 1,
-  encodeData: (data) => compress(data, compressionFormat, "string"),
-  decodeData: (data) => decompress(data, compressionFormat, "string"),
+  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
+  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
 
 export async function initLyricsCache() {
+  canCompress = await compressionSupported();
   const data = await lyricsCache.loadData();
   log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
   return data;

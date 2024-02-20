@@ -1,6 +1,6 @@
 import { ConfigManager, compress, type ConfigMigrationsDict, decompress } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
-import { info, log } from "./utils";
+import { compressionSupported, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat } from "./constants";
 import type { FeatureConfig } from "./types";
@@ -60,17 +60,20 @@ export const defaultConfig = (Object.keys(featInfo) as (keyof typeof featInfo)[]
     return acc;
   }, {}) as FeatureConfig;
 
+let canCompress = true;
+
 const cfgMgr = new ConfigManager({
   id: "bytm-config",
   formatVersion,
   defaultConfig,
   migrations,
-  encodeData: (data) => compress(data, compressionFormat, "string"),
-  decodeData: (data) => decompress(data, compressionFormat, "string"),
+  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
+  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
 
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 export async function initConfig() {
+  canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgMgr.id}`, NaN));
   const data = await cfgMgr.loadData();
   log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
