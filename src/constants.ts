@@ -13,11 +13,15 @@ export const repo = "Sv443/BetterYTM";
 /** Which host the userscript was installed from */
 export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github" | "greasyfork" | "openuserjs";
 
+/** Names of platforms by value of {@linkcode host} */
 export const platformNames: Record<typeof host, string> = {
   github: "GitHub",
   greasyfork: "GreasyFork",
   openuserjs: "OpenUserJS",
 };
+
+/** Default compression format used throughout BYTM */
+export const compressionFormat: CompressionFormat = "deflate-raw";
 
 /**
  * How much info should be logged to the devtools console  

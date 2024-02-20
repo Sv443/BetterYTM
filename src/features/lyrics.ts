@@ -1,4 +1,4 @@
-import { clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { ConfigManager, clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
 import { emitInterface } from "../interface";
 import { scriptInfo } from "../constants";
@@ -19,27 +19,64 @@ const geniUrlRatelimitTimeframe = 30;
 const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
 void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 
-//#MARKER cache
+//#MARKER new cache
 
-/** Cache with key format `ARTIST - SONG` (sanitized) and lyrics URLs as values. Used to prevent extraneous requests to geniURL. */
-const lyricsUrlCache = new Map<string, string>();
 /** How many cache entries can exist at a time - this is used to cap memory usage */
-const maxLyricsCacheSize = 100;
+const maxLyricsCacheSize = 300;
 
-/**
- * Returns the lyrics URL from the passed un-/sanitized artist and song name, or undefined if the entry doesn't exist yet.  
- * **The passed parameters need to be sanitized first!**
- */
-export function getLyricsCacheEntry(artists: string, song: string) {
-  return lyricsUrlCache.get(`${artists} - ${song}`);
+export type LyricsCacheEntry = {
+  artist: string;
+  song: string;
+  url: string;
+  added: number;
+};
+
+export type LyricsCache = {
+  cache: LyricsCacheEntry[];
+};
+
+const lyricsCache = new ConfigManager<LyricsCache>({
+  id: "bytm-lyrics-cache",
+  defaultConfig: {
+    cache: [],
+  },
+  formatVersion: 1,
+  // migrations: {
+  //   // 1 -> 2
+  //   2: (oldData: Record<string, unknown>) => {
+  //     return {
+  //       ...oldData,
+  //     };
+  //   },
+  // }
+});
+
+export async function initLyricsCacheNew() {
+  const data = await lyricsCache.loadData();
+  log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
+  return data;
 }
 
-/** Adds the provided entry into the lyrics URL cache */
-export function addLyricsCacheEntry(artists: string, song: string, lyricsUrl: string) {
-  lyricsUrlCache.set(`${sanitizeArtists(artists)} - ${sanitizeSong(song)}`, lyricsUrl);
-  // delete oldest entry if cache gets too big
-  if(lyricsUrlCache.size > maxLyricsCacheSize)
-    lyricsUrlCache.delete([...lyricsUrlCache.keys()].at(-1)!);
+/**
+ * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet  
+ * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ */
+export function getLyricsCacheEntry(artist: string, song: string) {
+  const { cache } = lyricsCache.getData();
+  return cache.find(e => e.artist === artist && e.song === song);
+}
+
+/**
+ * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
+ * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ */
+export function addLyricsCacheEntry(artist: string, song: string, lyricsUrl: string) {
+  const { cache } = lyricsCache.getData();
+  cache.push({ artist, song, url: lyricsUrl, added: Date.now() } satisfies LyricsCacheEntry);
+  cache.sort((a, b) => b.added - a.added);
+  if(cache.length > maxLyricsCacheSize)
+    cache.pop();
+  return lyricsCache.setData({ cache });
 }
 
 //#MARKER media control bar
@@ -218,7 +255,7 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
       info(`Found lyrics URL in cache: ${cacheEntry}`);
-      return cacheEntry;
+      return cacheEntry.url;
     }
 
     const startTs = Date.now();

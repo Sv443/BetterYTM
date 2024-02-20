@@ -1,6 +1,6 @@
-import { fetchAdvanced, randomId } from "@sv443-network/userutils";
+import { compress, fetchAdvanced, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, repo } from "../constants";
+import { branch, compressionFormat, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
 import { error, type TrLocale, warn } from ".";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
@@ -33,6 +33,17 @@ export function getSessionId(): string | null {
   catch(err) {
     warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
     return null;
+  }
+}
+
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported */
+export async function compressionSupported() {
+  try {
+    await compress(".", compressionFormat);
+    return true;
+  }
+  catch(e) {
+    return false;
   }
 }
 
