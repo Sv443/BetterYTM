@@ -60,7 +60,7 @@
 // @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
 // @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
 // @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@4.2.1/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
@@ -212,7 +212,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "88d5c88", // asserted as generic string instead of literal
+    buildNumber: "6c446fa", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -770,6 +770,8 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
+	"@sv443-network/userutils": "^5.0.0",
+	marked: "^12.0.0",
 	nanoevents: "^9.0.0"
 };
 var devDependencies = {
@@ -777,7 +779,6 @@ var devDependencies = {
 	"@rollup/plugin-node-resolve": "^15.2.3",
 	"@rollup/plugin-terser": "^0.4.4",
 	"@rollup/plugin-typescript": "^11.1.5",
-	"@sv443-network/userutils": "^4.2.1",
 	"@types/express": "^4.17.17",
 	"@types/greasemonkey": "^4.0.4",
 	"@types/node": "^20.2.4",
@@ -787,7 +788,6 @@ var devDependencies = {
 	dotenv: "^16.4.1",
 	eslint: "^8.51.0",
 	express: "^4.18.2",
-	marked: "^12.0.0",
 	nodemon: "^3.0.1",
 	rollup: "^4.6.0",
 	"rollup-plugin-execute": "^1.1.1",
