@@ -1,5 +1,9 @@
 [
   {
+    "pkgName": "@sv443-network/userutils",
+    "path": "dist/index.global.js"
+  },
+  {
     "pkgName": "marked",
     "path": "lib/marked.umd.js"
   }
