@@ -13,6 +13,8 @@ If you have any questions or need help, feel free to contact me, [see my homepag
   - [CLI commands](#these-are-the-cli-commands-available-after-setting-up-the-project)
   - [Extras](#extras)
 - [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
+  - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
+  - [Global functions on the plugin interface](#global-functions)
 
 <br><br>
 
@@ -263,10 +265,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
 - Lyrics:
-  - [fetchLyricsUrl](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
-  - [getLyricsCacheEntry](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
-  - [sanitizeArtists](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
-  - [sanitizeSong](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+  - [fetchLyricsUrl()](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
+  - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
+  - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
+  - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 
 <br>
 
@@ -302,7 +304,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getSessionId()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getSessionId(): string
+> unsafeWindow.BYTM.getSessionId(): string | null
 > ```
 >   
 > Description:  
@@ -638,11 +640,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getLyricsCacheEntry()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): string | undefined
+> unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): LyricsCacheEntry | undefined
 > ```
 >   
 > Description:  
 > Tries to find an entry in the in-memory cache for the specified song.  
+> You can find the structure of the `LyricsCacheEntry` type in the file [`src/types.ts`](src/types.ts)  
 > Contrary to [`fetchLyricsUrl()`](#fetchlyricsurl), this function does not fetch anything new if there is no entry in the cache.  
 >   
 > Arguments:  
@@ -655,10 +658,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > function tryToGetLyricsUrl() {
->   const lyricsUrl = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
+>   const lyricsEntry = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
 > 
->   if(lyricsUrl)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>   if(lyricsEntry)
+>     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsEntry.url}'`);
 >   else
 >     console.log("Couldn't find the lyrics URL for this song in cache");
 > }

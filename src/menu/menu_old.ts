@@ -835,14 +835,14 @@ async function addExportMenu() {
   textAreaElem.readOnly = true;
   const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
   lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-  textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
+  textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "base64") : cfgString;
 
   siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     const cfgString = JSON.stringify({ formatVersion, data });
     lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
     if(textAreaElem)
-      textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat) : cfgString;
+      textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "base64") : cfgString;
   });
 
   //#SECTION footer
@@ -1037,7 +1037,7 @@ async function addImportMenu() {
         }
         catch {
           try {
-            return JSON.parse(await decompress(input, compressionFormat));
+            return JSON.parse(await decompress(input, compressionFormat, "base64"));
           }
           catch(err) {
             warn("Couldn't import configuration:", err);

@@ -150,25 +150,25 @@ async function addQueueButtons(
       const songSan = sanitizeSong(song);
       const splitTitle = splitVideoTitle(songSan);
 
-      const cachedLyricsUrl = songSan.includes("-")
+      const cachedLyricsEntry = songSan.includes("-")
         ? getLyricsCacheEntry(splitTitle.artist, splitTitle.song)
         : getLyricsCacheEntry(artistsSan, songSan);
 
-      if(cachedLyricsUrl)
-        lyricsUrl = cachedLyricsUrl;
+      if(cachedLyricsEntry)
+        lyricsUrl = cachedLyricsEntry.url;
       else if(!queueItem.hasAttribute("data-bytm-loading")) {
         const imgEl = lyricsBtnElem?.querySelector<HTMLImageElement>("img");
         if(!imgEl)
           return;
 
-        if(!cachedLyricsUrl) {
+        if(!cachedLyricsEntry) {
           queueItem.setAttribute("data-bytm-loading", "");
 
           imgEl.src = await getResourceUrl("img-spinner");
           imgEl.classList.add("bytm-spinner");
         }
 
-        lyricsUrl = cachedLyricsUrl ?? await fetchLyricsUrl(artistsSan, songSan);
+        lyricsUrl = cachedLyricsEntry ?? await fetchLyricsUrl(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {
@@ -184,7 +184,7 @@ async function addQueueButtons(
           imgEl.classList.remove("bytm-spinner");
         };
 
-        if(!cachedLyricsUrl) {
+        if(!cachedLyricsEntry) {
           queueItem.removeAttribute("data-bytm-loading");
 
           // so the new image doesn't "blink"
