@@ -1,7 +1,7 @@
 import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import type { ObserverName } from "./types";
 import { emitInterface } from "./interface";
-import { error } from "./utils";
+import { error, log } from "./utils";
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
@@ -28,7 +28,7 @@ export function initObservers() {
     });
     observers.body.addListener(playerBarSelector, {
       listener: () => {
-        console.log("#DBG-UU enabling playerBar observer");
+        log("#DBG-UU enabling playerBar observer");
         observers.playerBar.enable();
       },
     });
@@ -42,7 +42,7 @@ export function initObservers() {
     });
     observers.playerBarInfo.addListener(playerBarInfoSelector, {
       listener: () => {
-        console.log("#DBG-UU enabling playerBarTitle observer");
+        log("#DBG-UU enabling playerBarTitle observer");
         observers.playerBarInfo.enable();
       },
     });
@@ -51,7 +51,7 @@ export function initObservers() {
     observers.playerBarInfo.addListener("yt-formatted-string.title", {
       continuous: true,
       listener: (titleElem) => {
-        console.log("#DBG-UU >>>>> title changed", titleElem.title);
+        log("#DBG-UU >>>>> title changed", titleElem.title);
       },
     });
 
