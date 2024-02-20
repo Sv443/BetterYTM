@@ -129,61 +129,92 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};let createNanoEvents = () => ({
-  emit(event, ...args) {
-    for (
-      let i = 0,
-        callbacks = this.events[event] || [],
-        length = callbacks.length;
-      i < length;
-      i++
-    ) {
-      callbacks[i](...args);
-    }
-  },
-  events: {},
-  on(event, cb) {
-(this.events[event] ||= []).push(cb);
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i);
-    }
-  }
-});/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
-class NanoEmitter {
-    constructor() {
-        Object.defineProperty(this, "events", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: createNanoEvents()
-        });
-        Object.defineProperty(this, "unsubscribers", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: []
-        });
-    }
-    /** Subscribes to an event - returns a function that unsubscribes the event listener */
-    on(event, cb) {
-        // eslint-disable-next-line prefer-const
-        let unsub;
-        const unsubProxy = () => {
-            if (!unsub)
-                return;
-            unsub();
-            this.unsubscribers = this.unsubscribers.filter(u => u !== unsub);
-        };
-        unsub = this.events.on(event, cb);
-        this.unsubscribers.push(unsub);
-        return unsubProxy;
-    }
-    /** Unsubscribes all event listeners */
-    unsubscribeAll() {
-        for (const unsub of this.unsubscribers)
-            unsub();
-        this.unsubscribers = [];
-    }
+};//#SECTION video time
+const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
+/**
+ * Returns the current video time in seconds
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
+ */
+function getVideoTime() {
+    return new Promise((res) => {
+        const domain = getDomain();
+        try {
+            if (domain === "ytm") {
+                const vidElem = document.querySelector(videoSelector);
+                if (vidElem)
+                    return res(Math.floor(vidElem.currentTime));
+                onSelectorOld("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
+                });
+            }
+            else if (domain === "yt") {
+                const vidElem = document.querySelector(videoSelector);
+                if (vidElem)
+                    return res(Math.floor(vidElem.currentTime));
+                // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
+                ytForceShowVideoTime();
+                const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+                let videoTime = -1;
+                const mut = new MutationObserver(() => {
+                    // .observe() is only called when the element exists - no need to check for null
+                    videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
+                });
+                const observe = (progElem) => {
+                    mut.observe(progElem, {
+                        attributes: true,
+                        attributeFilter: ["aria-valuenow"],
+                    });
+                    if (videoTime >= 0 && !isNaN(videoTime)) {
+                        res(Math.floor(videoTime));
+                        mut.disconnect();
+                    }
+                    else
+                        setTimeout(() => {
+                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
+                            mut.disconnect();
+                        }, 500);
+                };
+                onSelectorOld(pbSelector, { listener: observe });
+            }
+        }
+        catch (err) {
+            error("Couldn't get video time due to error:", err);
+            res(null);
+        }
+    });
+}
+/**
+ * Sends events that force the video controls to become visible for about 3 seconds.
+ * This only works once (for some reason), then the page needs to be reloaded!
+ */
+function ytForceShowVideoTime() {
+    const player = document.querySelector("#movie_player");
+    if (!player)
+        return false;
+    const defaultProps = {
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+        view: UserUtils.getUnsafeWindow(),
+        bubbles: true,
+        cancelable: false,
+    };
+    player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
+    const { x, y, width, height } = player.getBoundingClientRect();
+    const screenY = Math.round(y + height / 2);
+    const screenX = x + Math.min(50, Math.round(width / 3));
+    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
+        screenX, movementX: 5, movementY: 0 })));
+    return true;
+}
+/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
+function clearInner(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+}
+function clearNode(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+    element.parentNode.removeChild(element);
 }// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 var LogLevel;
 (function (LogLevel) {
@@ -212,7 +243,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "48eb305", // asserted as generic string instead of literal
+    buildNumber: "df8c24d", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -538,7 +569,26 @@ function disableDarkReader() {
         document.head.appendChild(metaElem);
         info("Sent hint to Dark Reader to disable itself");
     }
-}/** EventEmitter instance that is used to detect changes to the site */
+}let createNanoEvents = () => ({
+  emit(event, ...args) {
+    for (
+      let i = 0,
+        callbacks = this.events[event] || [],
+        length = callbacks.length;
+      i < length;
+      i++
+    ) {
+      callbacks[i](...args);
+    }
+  },
+  events: {},
+  on(event, cb) {
+(this.events[event] ||= []).push(cb);
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i);
+    }
+  }
+});/** EventEmitter instance that is used to detect changes to the site */
 const siteEvents = createNanoEvents();
 let observers = [];
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
@@ -581,6 +631,333 @@ function initSiteEvents() {
 function emitSiteEvent(key, ...args) {
     siteEvents.emit(key, ...args);
     emitInterface(`bytm:siteEvent:${key}`, args);
+}/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
+class NanoEmitter {
+    constructor() {
+        Object.defineProperty(this, "events", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: createNanoEvents()
+        });
+        Object.defineProperty(this, "unsubscribers", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: []
+        });
+    }
+    /** Subscribes to an event - returns a function that unsubscribes the event listener */
+    on(event, cb) {
+        // eslint-disable-next-line prefer-const
+        let unsub;
+        const unsubProxy = () => {
+            if (!unsub)
+                return;
+            unsub();
+            this.unsubscribers = this.unsubscribers.filter(u => u !== unsub);
+        };
+        unsub = this.events.on(event, cb);
+        this.unsubscribers.push(unsub);
+        return unsubProxy;
+    }
+    /** Unsubscribes all event listeners */
+    unsubscribeAll() {
+        for (const unsub of this.unsubscribers)
+            unsub();
+        this.unsubscribers = [];
+    }
+}const fetchOpts = {
+    timeout: 10000,
+};
+/** Contains all translation keys of all initialized and loaded translations */
+const allTrKeys = new Map();
+/** Contains the identifiers of all initialized and loaded translation locales */
+const initializedLocales = new Set();
+/** Initializes the translations */
+function initTranslations(locale) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        if (initializedLocales.has(locale))
+            return;
+        initializedLocales.add(locale);
+        try {
+            const transUrl = yield getResourceUrl(`trans-${locale}`);
+            const transFile = yield (yield UserUtils.fetchAdvanced(transUrl, fetchOpts)).json();
+            // merge with base translations if specified
+            const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
+            const baseTransFile = baseTransUrl ? yield (yield UserUtils.fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
+            const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
+            UserUtils.tr.addLanguage(locale, translations);
+            allTrKeys.set(locale, new Set(Object.keys(translations)));
+            info(`Loaded translations for locale '${locale}'`);
+        }
+        catch (err) {
+            const errStr = `Couldn't load translations for locale '${locale}'`;
+            error(errStr, err);
+            throw new Error(errStr);
+        }
+    });
+}
+/** Sets the current language for translations */
+function setLocale(locale) {
+    UserUtils.tr.setLanguage(locale);
+    setGlobalProp("locale", locale);
+    emitInterface("bytm:setLocale", { locale });
+}
+/** Returns the currently set language */
+function getLocale() {
+    return UserUtils.tr.getLanguage();
+}
+/** Returns whether the given translation key exists in the current locale */
+function hasKey(key) {
+    return hasKeyFor(getLocale(), key);
+}
+/** Returns whether the given translation key exists in the given locale */
+function hasKeyFor(locale, key) {
+    var _a, _b;
+    return (_b = (_a = allTrKeys.get(locale)) === null || _a === void 0 ? void 0 : _a.has(key)) !== null && _b !== void 0 ? _b : false;
+}
+/** Returns the translated string for the given key, after optionally inserting values */
+function t(key, ...values) {
+    return UserUtils.tr(key, ...values);
+}
+/**
+ * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
+ * Tries to fall back to the non-pluralized syntax if no translation was found
+ */
+function tp(key, num, ...values) {
+    if (typeof num !== "number")
+        num = num.length;
+    const plNum = num === 1 ? "1" : "n";
+    const trans = t(`${key}-${plNum}`, ...values);
+    if (trans === key)
+        return t(key, ...values);
+    return trans;
+}/** ID of the last opened (top-most) dialog */
+let lastDialogId = null;
+/** Creates and manages a modal dialog element */
+class BytmDialog extends NanoEmitter {
+    constructor(options) {
+        super();
+        Object.defineProperty(this, "options", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "id", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "dialogOpen", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
+        Object.defineProperty(this, "dialogRendered", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
+        Object.defineProperty(this, "listenersAttached", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
+        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, smallHeader: false }, options);
+        this.id = options.id;
+    }
+    /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
+    mount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.dialogRendered)
+                return;
+            this.dialogRendered = true;
+            const bgElem = document.createElement("div");
+            bgElem.id = `bytm-${this.id}-dialog-bg`;
+            bgElem.classList.add("bytm-dialog-bg");
+            if (this.options.closeOnBgClick)
+                bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
+            bgElem.style.visibility = "hidden";
+            bgElem.style.display = "none";
+            bgElem.inert = true;
+            bgElem.appendChild(yield this.getDialogContent());
+            document.body.appendChild(bgElem);
+            this.attachListeners(bgElem);
+            UserUtils.addGlobalStyle(`\
+#bytm-${this.id}-dialog-bg {
+  --bytm-dialog-width-max: ${this.options.maxWidth}px;
+  --bytm-dialog-height-max: ${this.options.maxHeight}px;
+}`).id = `bytm-style-dialog-${this.id}`;
+            this.events.emit("render");
+            return bgElem;
+        });
+    }
+    /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
+    unmount() {
+        var _a;
+        this.dialogRendered = false;
+        const clearSelectors = [
+            `#bytm-${this.id}-dialog-bg`,
+            `#bytm-style-dialog-${this.id}`,
+        ];
+        for (const sel of clearSelectors) {
+            const elem = document.querySelector(sel);
+            (elem === null || elem === void 0 ? void 0 : elem.hasChildNodes()) && clearInner(elem);
+            (_a = document.querySelector(sel)) === null || _a === void 0 ? void 0 : _a.remove();
+        }
+        this.events.emit("clear");
+    }
+    /** Clears and then re-renders the dialog */
+    rerender() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.unmount();
+            yield this.mount();
+        });
+    }
+    /**
+     * Opens the dialog - also mounts it if it hasn't been mounted yet
+     * Prevents default action and immediate propagation of the passed event
+     */
+    open(e) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            e === null || e === void 0 ? void 0 : e.preventDefault();
+            e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+            if (this.isOpen())
+                return;
+            this.dialogOpen = true;
+            if (!this.isRendered())
+                yield this.mount();
+            document.body.classList.add("bytm-disable-scroll");
+            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+            const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+            if (!dialogBg)
+                return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+            dialogBg.style.visibility = "visible";
+            dialogBg.style.display = "block";
+            dialogBg.inert = false;
+            lastDialogId = this.id;
+            this.events.emit("open");
+            return dialogBg;
+        });
+    }
+    /** Closes the dialog - prevents default action and immediate propagation of the passed event */
+    close(e) {
+        var _a;
+        e === null || e === void 0 ? void 0 : e.preventDefault();
+        e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
+        if (!this.isOpen())
+            return;
+        this.dialogOpen = false;
+        document.body.classList.remove("bytm-disable-scroll");
+        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+        const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+        if (!dialogBg)
+            return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+        dialogBg.style.visibility = "hidden";
+        dialogBg.style.display = "none";
+        dialogBg.inert = true;
+        if (BytmDialog.getLastDialogId() === this.id)
+            lastDialogId = null;
+        this.events.emit("close");
+        if (this.options.destroyOnClose)
+            this.destroy();
+    }
+    /** Returns true if the dialog is open */
+    isOpen() {
+        return this.dialogOpen;
+    }
+    /** Returns true if the dialog has been rendered */
+    isRendered() {
+        return this.dialogRendered;
+    }
+    /** Clears the dialog and removes all event listeners */
+    destroy() {
+        this.events.emit("destroy");
+        this.unmount();
+        this.unsubscribeAll();
+    }
+    /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+    static getLastDialogId() {
+        return lastDialogId;
+    }
+    /** Called once to attach all generic event listeners */
+    attachListeners(bgElem) {
+        if (this.listenersAttached)
+            return;
+        this.listenersAttached = true;
+        if (this.options.closeOnBgClick) {
+            bgElem.addEventListener("click", (e) => {
+                var _a;
+                if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-dialog-bg`)
+                    this.close(e);
+            });
+        }
+        if (this.options.closeOnEscPress) {
+            document.body.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
+                    this.close(e);
+            });
+        }
+    }
+    getDialogContent() {
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function* () {
+            const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
+            const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
+            const dialogWrapperEl = document.createElement("div");
+            dialogWrapperEl.id = `bytm-${this.id}-dialog`;
+            dialogWrapperEl.classList.add("bytm-dialog");
+            dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
+            //#SECTION header
+            const headerWrapperEl = document.createElement("div");
+            headerWrapperEl.classList.add("bytm-dialog-header");
+            this.options.smallMenu && headerWrapperEl.classList.add("small");
+            if (header) {
+                const headerTitleWrapperEl = document.createElement("div");
+                headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
+                headerTitleWrapperEl.role = "heading";
+                headerTitleWrapperEl.ariaLevel = "1";
+                headerTitleWrapperEl.appendChild(header);
+                headerWrapperEl.appendChild(headerTitleWrapperEl);
+            }
+            else
+                headerWrapperEl.appendChild(document.createElement("div"));
+            if (this.options.closeBtnEnabled) {
+                const closeBtnEl = document.createElement("img");
+                closeBtnEl.classList.add("bytm-dialog-close");
+                this.options.smallMenu && closeBtnEl.classList.add("small");
+                closeBtnEl.src = yield getResourceUrl("img-close");
+                closeBtnEl.role = "button";
+                closeBtnEl.tabIndex = 0;
+                closeBtnEl.addEventListener("click", () => this.close());
+                headerWrapperEl.appendChild(closeBtnEl);
+            }
+            dialogWrapperEl.appendChild(headerWrapperEl);
+            //#SECTION body
+            const menuBodyElem = document.createElement("div");
+            menuBodyElem.id = `bytm-${this.id}-dialog-body`;
+            menuBodyElem.classList.add("bytm-dialog-body");
+            this.options.smallMenu && menuBodyElem.classList.add("small");
+            menuBodyElem.appendChild(this.options.renderBody());
+            dialogWrapperEl.appendChild(menuBodyElem);
+            //#SECTION footer
+            if (footer) {
+                const footerWrapper = document.createElement("div");
+                footerWrapper.classList.add("bytm-dialog-footer-cont");
+                dialogWrapperEl.appendChild(footerWrapper);
+                footerWrapper.appendChild(footer);
+            }
+            return dialogWrapperEl;
+        });
+    }
 }let initialHotkey;
 /** Creates a hotkey input element */
 function createHotkeyInput({ initialValue, onChange }) {
@@ -631,8 +1008,9 @@ function createHotkeyInput({ initialValue, onChange }) {
     if (initialValue)
         infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
     let lastKeyDown;
+    const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
     document.addEventListener("keypress", (e) => {
-        if (inputElem.dataset.state !== "active")
+        if (inputElem.dataset.state === "inactive")
             return;
         if ((lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.code) === e.code && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.shift) === e.shiftKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.ctrl) === e.ctrlKey && (lastKeyDown === null || lastKeyDown === void 0 ? void 0 : lastKeyDown.alt) === e.altKey)
             return;
@@ -651,8 +1029,14 @@ function createHotkeyInput({ initialValue, onChange }) {
         onChange(hotkey);
     });
     document.addEventListener("keydown", (e) => {
+        if (reservedKeys.filter(k => k !== "Tab").includes(e.code))
+            return;
         if (inputElem.dataset.state !== "active")
             return;
+        if (e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+            deactivate();
+            return;
+        }
         if (["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
             return;
         e.preventDefault();
@@ -683,7 +1067,9 @@ function createHotkeyInput({ initialValue, onChange }) {
         else
             deactivate();
     });
-    inputElem.addEventListener("keydown", () => {
+    inputElem.addEventListener("keydown", (e) => {
+        if (reservedKeys.includes(e.code))
+            return deactivate();
         if (inputElem.dataset.state === "inactive")
             activate();
     });
@@ -3482,383 +3868,6 @@ function setGlobalProp(key, value) {
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...data) {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
-}const fetchOpts = {
-    timeout: 10000,
-};
-/** Contains all translation keys of all initialized and loaded translations */
-const allTrKeys = new Map();
-/** Contains the identifiers of all initialized and loaded translation locales */
-const initializedLocales = new Set();
-/** Initializes the translations */
-function initTranslations(locale) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (initializedLocales.has(locale))
-            return;
-        initializedLocales.add(locale);
-        try {
-            const transUrl = yield getResourceUrl(`trans-${locale}`);
-            const transFile = yield (yield UserUtils.fetchAdvanced(transUrl, fetchOpts)).json();
-            // merge with base translations if specified
-            const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
-            const baseTransFile = baseTransUrl ? yield (yield UserUtils.fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
-            const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
-            UserUtils.tr.addLanguage(locale, translations);
-            allTrKeys.set(locale, new Set(Object.keys(translations)));
-            info(`Loaded translations for locale '${locale}'`);
-        }
-        catch (err) {
-            const errStr = `Couldn't load translations for locale '${locale}'`;
-            error(errStr, err);
-            throw new Error(errStr);
-        }
-    });
-}
-/** Sets the current language for translations */
-function setLocale(locale) {
-    UserUtils.tr.setLanguage(locale);
-    setGlobalProp("locale", locale);
-    emitInterface("bytm:setLocale", { locale });
-}
-/** Returns the currently set language */
-function getLocale() {
-    return UserUtils.tr.getLanguage();
-}
-/** Returns whether the given translation key exists in the current locale */
-function hasKey(key) {
-    return hasKeyFor(getLocale(), key);
-}
-/** Returns whether the given translation key exists in the given locale */
-function hasKeyFor(locale, key) {
-    var _a, _b;
-    return (_b = (_a = allTrKeys.get(locale)) === null || _a === void 0 ? void 0 : _a.has(key)) !== null && _b !== void 0 ? _b : false;
-}
-/** Returns the translated string for the given key, after optionally inserting values */
-function t(key, ...values) {
-    return UserUtils.tr(key, ...values);
-}
-/**
- * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
- * Tries to fall back to the non-pluralized syntax if no translation was found
- */
-function tp(key, num, ...values) {
-    if (typeof num !== "number")
-        num = num.length;
-    const plNum = num === 1 ? "1" : "n";
-    const trans = t(`${key}-${plNum}`, ...values);
-    if (trans === key)
-        return t(key, ...values);
-    return trans;
-}/** ID of the last opened (top-most) dialog */
-let lastDialogId = null;
-/** Creates and manages a modal dialog element */
-class BytmDialog extends NanoEmitter {
-    constructor(options) {
-        super();
-        Object.defineProperty(this, "options", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "dialogOpen", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: false
-        });
-        Object.defineProperty(this, "dialogRendered", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: false
-        });
-        Object.defineProperty(this, "listenersAttached", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: false
-        });
-        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, smallHeader: false }, options);
-        this.id = options.id;
-    }
-    /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
-    mount() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.dialogRendered)
-                return;
-            this.dialogRendered = true;
-            const bgElem = document.createElement("div");
-            bgElem.id = `bytm-${this.id}-dialog-bg`;
-            bgElem.classList.add("bytm-dialog-bg");
-            if (this.options.closeOnBgClick)
-                bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
-            bgElem.style.visibility = "hidden";
-            bgElem.style.display = "none";
-            bgElem.inert = true;
-            bgElem.appendChild(yield this.getDialogContent());
-            document.body.appendChild(bgElem);
-            this.attachListeners(bgElem);
-            UserUtils.addGlobalStyle(`\
-#bytm-${this.id}-dialog-bg {
-  --bytm-dialog-width-max: ${this.options.maxWidth}px;
-  --bytm-dialog-height-max: ${this.options.maxHeight}px;
-}`).id = `bytm-style-dialog-${this.id}`;
-            this.events.emit("render");
-            return bgElem;
-        });
-    }
-    /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
-    unmount() {
-        var _a;
-        this.dialogRendered = false;
-        const clearSelectors = [
-            `#bytm-${this.id}-dialog-bg`,
-            `#bytm-style-dialog-${this.id}`,
-        ];
-        for (const sel of clearSelectors) {
-            const elem = document.querySelector(sel);
-            (elem === null || elem === void 0 ? void 0 : elem.hasChildNodes()) && clearInner(elem);
-            (_a = document.querySelector(sel)) === null || _a === void 0 ? void 0 : _a.remove();
-        }
-        this.events.emit("clear");
-    }
-    /** Clears and then re-renders the dialog */
-    rerender() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.unmount();
-            yield this.mount();
-        });
-    }
-    /**
-     * Opens the dialog - also mounts it if it hasn't been mounted yet
-     * Prevents default action and immediate propagation of the passed event
-     */
-    open(e) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            e === null || e === void 0 ? void 0 : e.preventDefault();
-            e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
-            if (this.isOpen())
-                return;
-            this.dialogOpen = true;
-            if (!this.isRendered())
-                yield this.mount();
-            document.body.classList.add("bytm-disable-scroll");
-            (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-            const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-            if (!dialogBg)
-                return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-            dialogBg.style.visibility = "visible";
-            dialogBg.style.display = "block";
-            dialogBg.inert = false;
-            lastDialogId = this.id;
-            this.events.emit("open");
-            return dialogBg;
-        });
-    }
-    /** Closes the dialog - prevents default action and immediate propagation of the passed event */
-    close(e) {
-        var _a;
-        e === null || e === void 0 ? void 0 : e.preventDefault();
-        e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
-        if (!this.isOpen())
-            return;
-        this.dialogOpen = false;
-        document.body.classList.remove("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
-        const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
-        if (!dialogBg)
-            return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-        dialogBg.style.visibility = "hidden";
-        dialogBg.style.display = "none";
-        dialogBg.inert = true;
-        if (BytmDialog.getLastDialogId() === this.id)
-            lastDialogId = null;
-        this.events.emit("close");
-        if (this.options.destroyOnClose)
-            this.destroy();
-    }
-    /** Returns true if the dialog is open */
-    isOpen() {
-        return this.dialogOpen;
-    }
-    /** Returns true if the dialog has been rendered */
-    isRendered() {
-        return this.dialogRendered;
-    }
-    /** Clears the dialog and removes all event listeners */
-    destroy() {
-        this.events.emit("destroy");
-        this.unmount();
-        this.unsubscribeAll();
-    }
-    /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-    static getLastDialogId() {
-        return lastDialogId;
-    }
-    /** Called once to attach all generic event listeners */
-    attachListeners(bgElem) {
-        if (this.listenersAttached)
-            return;
-        this.listenersAttached = true;
-        if (this.options.closeOnBgClick) {
-            bgElem.addEventListener("click", (e) => {
-                var _a;
-                if (this.isOpen() && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === `bytm-${this.id}-dialog-bg`)
-                    this.close(e);
-            });
-        }
-        if (this.options.closeOnEscPress) {
-            document.body.addEventListener("keydown", (e) => {
-                if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
-                    this.close(e);
-            });
-        }
-    }
-    getDialogContent() {
-        var _a, _b, _c, _d;
-        return __awaiter(this, void 0, void 0, function* () {
-            const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
-            const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
-            const dialogWrapperEl = document.createElement("div");
-            dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-            dialogWrapperEl.classList.add("bytm-dialog");
-            dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
-            //#SECTION header
-            const headerWrapperEl = document.createElement("div");
-            headerWrapperEl.classList.add("bytm-dialog-header");
-            this.options.smallMenu && headerWrapperEl.classList.add("small");
-            if (header) {
-                const headerTitleWrapperEl = document.createElement("div");
-                headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
-                headerTitleWrapperEl.role = "heading";
-                headerTitleWrapperEl.ariaLevel = "1";
-                headerTitleWrapperEl.appendChild(header);
-                headerWrapperEl.appendChild(headerTitleWrapperEl);
-            }
-            else
-                headerWrapperEl.appendChild(document.createElement("div"));
-            if (this.options.closeBtnEnabled) {
-                const closeBtnEl = document.createElement("img");
-                closeBtnEl.classList.add("bytm-dialog-close");
-                this.options.smallMenu && closeBtnEl.classList.add("small");
-                closeBtnEl.src = yield getResourceUrl("img-close");
-                closeBtnEl.role = "button";
-                closeBtnEl.tabIndex = 0;
-                closeBtnEl.addEventListener("click", () => this.close());
-                headerWrapperEl.appendChild(closeBtnEl);
-            }
-            dialogWrapperEl.appendChild(headerWrapperEl);
-            //#SECTION body
-            const menuBodyElem = document.createElement("div");
-            menuBodyElem.id = `bytm-${this.id}-dialog-body`;
-            menuBodyElem.classList.add("bytm-dialog-body");
-            this.options.smallMenu && menuBodyElem.classList.add("small");
-            menuBodyElem.appendChild(this.options.renderBody());
-            dialogWrapperEl.appendChild(menuBodyElem);
-            //#SECTION footer
-            if (footer) {
-                const footerWrapper = document.createElement("div");
-                footerWrapper.classList.add("bytm-dialog-footer-cont");
-                dialogWrapperEl.appendChild(footerWrapper);
-                footerWrapper.appendChild(footer);
-            }
-            return dialogWrapperEl;
-        });
-    }
-}//#SECTION video time
-const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
-/**
- * Returns the current video time in seconds
- * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
- * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
- */
-function getVideoTime() {
-    return new Promise((res) => {
-        const domain = getDomain();
-        try {
-            if (domain === "ytm") {
-                const vidElem = document.querySelector(videoSelector);
-                if (vidElem)
-                    return res(Math.floor(vidElem.currentTime));
-                onSelectorOld("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
-                });
-            }
-            else if (domain === "yt") {
-                const vidElem = document.querySelector(videoSelector);
-                if (vidElem)
-                    return res(Math.floor(vidElem.currentTime));
-                // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
-                ytForceShowVideoTime();
-                const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
-                let videoTime = -1;
-                const mut = new MutationObserver(() => {
-                    // .observe() is only called when the element exists - no need to check for null
-                    videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
-                });
-                const observe = (progElem) => {
-                    mut.observe(progElem, {
-                        attributes: true,
-                        attributeFilter: ["aria-valuenow"],
-                    });
-                    if (videoTime >= 0 && !isNaN(videoTime)) {
-                        res(Math.floor(videoTime));
-                        mut.disconnect();
-                    }
-                    else
-                        setTimeout(() => {
-                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
-                            mut.disconnect();
-                        }, 500);
-                };
-                onSelectorOld(pbSelector, { listener: observe });
-            }
-        }
-        catch (err) {
-            error("Couldn't get video time due to error:", err);
-            res(null);
-        }
-    });
-}
-/**
- * Sends events that force the video controls to become visible for about 3 seconds.
- * This only works once (for some reason), then the page needs to be reloaded!
- */
-function ytForceShowVideoTime() {
-    const player = document.querySelector("#movie_player");
-    if (!player)
-        return false;
-    const defaultProps = {
-        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: UserUtils.getUnsafeWindow(),
-        bubbles: true,
-        cancelable: false,
-    };
-    player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
-    const { x, y, width, height } = player.getBoundingClientRect();
-    const screenY = Math.round(y + height / 2);
-    const screenX = x + Math.min(50, Math.round(width / 3));
-    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
-        screenX, movementX: 5, movementY: 0 })));
-    return true;
-}
-/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
-function clearInner(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-}
-function clearNode(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-    element.parentNode.removeChild(element);
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -4836,374 +4845,6 @@ hr {
   fill: #4595c7;
 }
 
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-/* #MARKER misc */
-
-.bytm-disable-scroll {
-  overflow: hidden !important;
-}
-
-.bytm-generic-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  vertical-align: middle;
-  cursor: pointer;
-  margin-left: 8px;
-
-  width: 36px;
-  height: 36px;
-
-  border: 1px solid transparent;
-  border-radius: 100%;
-  background-color: transparent;
-
-  transition: background-color 0.2s ease;
-}
-
-.bytm-generic-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn:active {
-  background-color: #5f5f5f;
-  animation: flashBorder 0.4s ease 1;
-}
-
-@keyframes flashBorder {
-  0% {
-    border: 1px solid transparent;
-  }
-  20% {
-    border: 1px solid #727272;
-  }
-  100% {
-    border: 1px solid transparent;
-  }
-}
-
-.bytm-generic-btn-img {
-  display: inline-block;
-  z-index: 10;
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-spinner {
-  animation: rotate 1.2s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.bytm-anchor {
-  all: unset;
-  cursor: pointer;
-}
-
-/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out infinite;
-} */
-
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out;
-}
-
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
-  width: 24px;
-  height: 24px;
-  z-index: 1000;
-  position: absolute;
-  animation: rotate-fade-in 1s ease-in-out;
-}
-
-@keyframes rotate-fade-in {
-  0% {
-    opacity: 0;
-    transform: rotate(0deg);
-  }
-  30% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.bytm-no-select {
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-}
-
-/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
-button.bytm-btn {
-  padding: revert;
-  border: revert;
-  outline: revert;
-  font: revert;
-  text-transform: revert;
-  color: revert;
-  background: revert;
-  line-height: 1.4em;
-}
-
-.bytm-link, .bytm-markdown-container a {
-  color: #369bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.bytm-link:hover, .bytm-markdown-container a:hover {
-  text-decoration: underline;
-}
-
-/* #MARKER menu */
-
-.bytm-cfg-menu-option {
-  display: block;
-  padding: 8px 0;
-}
-
-.bytm-cfg-menu-option-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 24px;
-  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
-  min-height: var(--paper-item-min-height, 40px);
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.bytm-cfg-menu-option-item:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
-}
-
-.bytm-cfg-menu-option-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 16px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex: none;
-}
-
-.bytm-cfg-menu-option-text {
-  font-size: 1.4rem;
-  line-height: 2rem;
-}
-
-yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
-  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
-}
-
-/* #MARKER watermark */
-
-#bytm-watermark {
-  font-size: 10px;
-  display: inline-block;
-  position: absolute;
-  left: 97px;
-  top: 45px;
-  z-index: 10;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#bytm-watermark:hover {
-  text-decoration: underline;
-}
-
-/* #MARKER volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  font-size: 15px;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-/* #MARKER scroll to active */
-
-#bytm-scroll-to-active-btn-cont {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: 5px;
-  top: 0;
-  height: 100%;
-}
-
-#bytm-scroll-to-active-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-#bytm-scroll-to-active-btn {
-  width: revert;
-  height: revert;
-}
-
-#bytm-scroll-to-active-btn .bytm-generic-btn-img {
-  padding: 4px;
-}
-
-/* #MARKER queue buttons */
-
-#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-  position: relative;
-}
-
-#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-  display: none;
-  position: absolute;
-  right: 0;
-  padding-left: 25px;
-  height: 100%;
-}
-
-#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-.bytm-generic-list-queue-btn-container {
-  /* otherwise the queue buttons render over the currently playing song page */
-  z-index: 1;
-}
-
-#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
-ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
-ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
-  display: inline-flex;
-  align-items: center;
-}
-
-ytmusic-responsive-list-item-renderer .title-column {
-  align-items: center;
-}
-
-#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-}
-
-#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
-  display: none !important;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
-  visibility: hidden;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
-  visibility: hidden !important;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container {
-  visibility: visible;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
-  visibility: visible !important;
-}
-
-.bytm-dialog-body p {
-  overflow-wrap: break-word;
-}
-
-.bytm-dialog-body details summary {
-  cursor: pointer;
-  font-style: italic;
-}
-
-#bytm-version-notif-dialog-btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-#bytm-disable-update-check-wrapper {
-  margin-top: 15px;
-}
-
-#bytm-disable-update-check-wrapper label {
-  padding-left: 8px;
-}
-
-#bytm-version-notif-changelog-cont {
-  max-height: 400px;
-  overflow-y: auto;
-  margin: 10px 0px;
-}
-
-#bytm-version-notif-changelog-details {
-  margin-top: 15px;
-}
-
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -5603,6 +5244,374 @@ hr {
 
 #bytm-ftitem-locale-adornment svg path {
   fill: #4595c7;
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+/* #MARKER misc */
+
+.bytm-disable-scroll {
+  overflow: hidden !important;
+}
+
+.bytm-generic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 8px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid transparent;
+  border-radius: 100%;
+  background-color: transparent;
+
+  transition: background-color 0.2s ease;
+}
+
+.bytm-generic-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn:active {
+  background-color: #5f5f5f;
+  animation: flashBorder 0.4s ease 1;
+}
+
+@keyframes flashBorder {
+  0% {
+    border: 1px solid transparent;
+  }
+  20% {
+    border: 1px solid #727272;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
+}
+
+.bytm-generic-btn-img {
+  display: inline-block;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-spinner {
+  animation: rotate 1.2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-anchor {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out infinite;
+} */
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
+  width: 24px;
+  height: 24px;
+  z-index: 1000;
+  position: absolute;
+  animation: rotate-fade-in 1s ease-in-out;
+}
+
+@keyframes rotate-fade-in {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+  30% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+button.bytm-btn {
+  padding: revert;
+  border: revert;
+  outline: revert;
+  font: revert;
+  text-transform: revert;
+  color: revert;
+  background: revert;
+  line-height: 1.4em;
+}
+
+.bytm-link, .bytm-markdown-container a {
+  color: #369bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bytm-link:hover, .bytm-markdown-container a:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER menu */
+
+.bytm-cfg-menu-option {
+  display: block;
+  padding: 8px 0;
+}
+
+.bytm-cfg-menu-option-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 24px;
+  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
+  min-height: var(--paper-item-min-height, 40px);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bytm-cfg-menu-option-item:hover {
+  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+}
+
+.bytm-cfg-menu-option-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: none;
+}
+
+.bytm-cfg-menu-option-text {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
+  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
+}
+
+/* #MARKER watermark */
+
+#bytm-watermark {
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 97px;
+  top: 45px;
+  z-index: 10;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#bytm-watermark:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  font-size: 15px;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+/* #MARKER scroll to active */
+
+#bytm-scroll-to-active-btn-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  height: 100%;
+}
+
+#bytm-scroll-to-active-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#bytm-scroll-to-active-btn {
+  width: revert;
+  height: revert;
+}
+
+#bytm-scroll-to-active-btn .bytm-generic-btn-img {
+  padding: 4px;
+}
+
+/* #MARKER queue buttons */
+
+#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+  position: relative;
+}
+
+#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+  display: none;
+  position: absolute;
+  right: 0;
+  padding-left: 25px;
+  height: 100%;
+}
+
+#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+.bytm-generic-list-queue-btn-container {
+  /* otherwise the queue buttons render over the currently playing song page */
+  z-index: 1;
+}
+
+#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
+ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+ytmusic-responsive-list-item-renderer .title-column {
+  align-items: center;
+}
+
+#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+  display: none !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+  visibility: hidden;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: hidden !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container {
+  visibility: visible;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: visible !important;
+}
+
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
+}
+
+.bytm-dialog-body details summary {
+  cursor: pointer;
+  font-style: italic;
+}
+
+#bytm-version-notif-dialog-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  margin-top: 15px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 8px;
+}
+
+#bytm-version-notif-changelog-cont {
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 10px 0px;
+}
+
+#bytm-version-notif-changelog-details {
+  margin-top: 15px;
 }
 
 #bytm-welcome-menu-bg {
