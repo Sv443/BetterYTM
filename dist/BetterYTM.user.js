@@ -243,7 +243,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "ca7a449", // asserted as generic string instead of literal
+    buildNumber: "eaa284e", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -2831,17 +2831,19 @@ const geniUrlRatelimitTimeframe = 30;
 const maxLyricsCacheSize = 1000;
 /** Maximum time before a cache entry is force deleted */
 const cacheTTL = 1000 * 60 * 60 * 24 * 30; // 30 days
+let canCompress$1 = true;
 const lyricsCache = new UserUtils.ConfigManager({
     id: "bytm-lyrics-cache",
     defaultConfig: {
         cache: [],
     },
     formatVersion: 1,
-    encodeData: (data) => UserUtils.compress(data, compressionFormat, "string"),
-    decodeData: (data) => UserUtils.decompress(data, compressionFormat, "string"),
+    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
+    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
 });
 function initLyricsCache() {
     return __awaiter(this, void 0, void 0, function* () {
+        canCompress$1 = yield compressionSupported();
         const data = yield lyricsCache.loadData();
         log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
         return data;
@@ -3772,17 +3774,19 @@ const defaultConfig = Object.keys(featInfo)
     acc[key] = featInfo[key].default;
     return acc;
 }, {});
+let canCompress = true;
 const cfgMgr = new UserUtils.ConfigManager({
     id: "bytm-config",
     formatVersion,
     defaultConfig,
     migrations,
-    encodeData: (data) => UserUtils.compress(data, compressionFormat, "string"),
-    decodeData: (data) => UserUtils.decompress(data, compressionFormat, "string"),
+    encodeData: (data) => canCompress ? UserUtils.compress(data, compressionFormat, "string") : data,
+    decodeData: (data) => canCompress ? UserUtils.decompress(data, compressionFormat, "string") : data,
 });
 /** Initializes the ConfigManager instance and loads persistent data into memory */
 function initConfig() {
     return __awaiter(this, void 0, void 0, function* () {
+        canCompress = yield compressionSupported();
         const oldFmtVer = Number(yield GM.getValue(`_uucfgver-${cfgMgr.id}`, NaN));
         const data = yield cfgMgr.loadData();
         log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
