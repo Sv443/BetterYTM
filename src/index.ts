@@ -79,13 +79,6 @@ function preInit() {
 
 async function init() {
   try {
-    registerMenuCommands();
-  }
-  catch(e) {
-    void e;
-  }
-
-  try {
     document.addEventListener("DOMContentLoaded", () => {
       domLoaded = true;
     });
@@ -203,6 +196,13 @@ async function onDomLoad() {
 
     Promise.allSettled(ftInit).then(() => {
       emitInterface("bytm:ready");
+
+      try {
+        registerMenuCommands();
+      }
+      catch(e) {
+        void e;
+      }
     });
   }
   catch(err) {
