@@ -36,14 +36,18 @@ export function getSessionId(): string | null {
   }
 }
 
+let isCompressionSupported: boolean | undefined;
+
 /** Tests whether compression via the predefined {@linkcode compressionFormat} is supported */
 export async function compressionSupported() {
+  if(typeof isCompressionSupported === "boolean")
+    return isCompressionSupported;
   try {
-    await compress(".", compressionFormat);
-    return true;
+    await compress(".", compressionFormat, "base64");
+    return isCompressionSupported = true;
   }
   catch(e) {
-    return false;
+    return isCompressionSupported = false;
   }
 }
 

@@ -36,6 +36,7 @@ import {
   addConfigMenuOption,
   // other
   checkVersion,
+  initLyricsCache,
 } from "./features/index";
 
 {
@@ -90,6 +91,7 @@ async function init() {
     });
 
     const features = await initConfig();
+    await initLyricsCache();
 
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");

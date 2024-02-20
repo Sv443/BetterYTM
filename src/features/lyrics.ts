@@ -1,7 +1,8 @@
-import { ConfigManager, clamp, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { ConfigManager, clamp, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
 import { emitInterface } from "../interface";
-import { scriptInfo } from "../constants";
+import { compressionFormat, scriptInfo } from "../constants";
+import type { LyricsCacheEntry } from "../types";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -24,13 +25,6 @@ void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 300;
 
-export type LyricsCacheEntry = {
-  artist: string;
-  song: string;
-  url: string;
-  added: number;
-};
-
 export type LyricsCache = {
   cache: LyricsCacheEntry[];
 };
@@ -41,17 +35,19 @@ const lyricsCache = new ConfigManager<LyricsCache>({
     cache: [],
   },
   formatVersion: 1,
+  encodeData: (data) => compress(data, compressionFormat, "base64"),
+  decodeData: (data) => decompress(data, compressionFormat, "base64"),
   // migrations: {
   //   // 1 -> 2
   //   2: (oldData: Record<string, unknown>) => {
   //     return {
-  //       ...oldData,
+  //       cache: oldData.cache,
   //     };
   //   },
   // }
 });
 
-export async function initLyricsCacheNew() {
+export async function initLyricsCache() {
   const data = await lyricsCache.loadData();
   log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
   return data;
@@ -64,6 +60,11 @@ export async function initLyricsCacheNew() {
 export function getLyricsCacheEntry(artist: string, song: string) {
   const { cache } = lyricsCache.getData();
   return cache.find(e => e.artist === artist && e.song === song);
+}
+
+/** Returns the full lyrics cache array */
+export function getLyricsCache() {
+  return lyricsCache.getData().cache;
 }
 
 /**
