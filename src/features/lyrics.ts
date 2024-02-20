@@ -35,8 +35,8 @@ const lyricsCache = new ConfigManager<LyricsCache>({
     cache: [],
   },
   formatVersion: 1,
-  encodeData: (data) => compress(data, compressionFormat, "base64"),
-  decodeData: (data) => decompress(data, compressionFormat, "base64"),
+  encodeData: (data) => compress(data, compressionFormat, "string"),
+  decodeData: (data) => decompress(data, compressionFormat, "string"),
   // migrations: {
   //   // 1 -> 2
   //   2: (oldData: Record<string, unknown>) => {
@@ -71,9 +71,11 @@ export function getLyricsCache() {
  * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
-export function addLyricsCacheEntry(artist: string, song: string, lyricsUrl: string) {
+export function addLyricsCacheEntry(artist: string, song: string, url: string) {
   const { cache } = lyricsCache.getData();
-  cache.push({ artist, song, url: lyricsUrl, added: Date.now() } satisfies LyricsCacheEntry);
+  cache.push({
+    artist, song, url, added: Date.now(),
+  } satisfies LyricsCacheEntry);
   cache.sort((a, b) => b.added - a.added);
   if(cache.length > maxLyricsCacheSize)
     cache.pop();
