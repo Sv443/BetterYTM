@@ -1,4 +1,4 @@
-import { ConfigManager, clamp, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { ConfigManager, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
 import { emitInterface } from "../interface";
 import { compressionFormat, scriptInfo } from "../constants";
@@ -8,17 +8,8 @@ import type { LyricsCacheEntry } from "../types";
 export const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
-/**
- * The threshold to pass to geniURL's fuzzy filtering.  
- * From fuse.js docs: At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.  
- * Set to undefined to use the default.
- */
-const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
-
-const thresholdParam = threshold ? `&threshold=${clamp(threshold, 0, 1)}` : "";
-void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 
 //#MARKER new cache
 
@@ -39,14 +30,6 @@ const lyricsCache = new ConfigManager<LyricsCache>({
   formatVersion: 1,
   encodeData: (data) => compress(data, compressionFormat, "string"),
   decodeData: (data) => decompress(data, compressionFormat, "string"),
-  // migrations: {
-  //   // 1 -> 2
-  //   2: (oldData: Record<string, unknown>) => {
-  //     return {
-  //       cache: oldData.cache,
-  //     };
-  //   },
-  // }
 });
 
 export async function initLyricsCache() {
