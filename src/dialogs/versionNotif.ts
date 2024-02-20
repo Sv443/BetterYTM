@@ -1,5 +1,6 @@
 import { host, scriptInfo } from "../constants";
-import { BytmDialog, getChangelogMd, parseMarkdown, t } from "../utils";
+import { getChangelogMd, parseMarkdown, t } from "../utils";
+import { BytmDialog } from "../components";
 import { getFeatures, saveFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
 
