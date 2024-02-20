@@ -60,6 +60,7 @@
 // @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
 // @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
 // @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@4.2.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
@@ -78,7 +79,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(marked){'use strict';/******************************************************************************
+(function(UserUtils,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -128,640 +129,7 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};var __defProp = Object.defineProperty;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __objRest = (source, exclude) => {
-  var target = {};
-  for (var prop in source)
-    if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
-      target[prop] = source[prop];
-  if (source != null && __getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(source)) {
-      if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
-        target[prop] = source[prop];
-    }
-  return target;
-};
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
-
-// lib/math.ts
-function clamp(value, min, max) {
-  return Math.max(Math.min(value, max), min);
-}
-function mapRange(value, range1min, range1max, range2min, range2max) {
-  if (Number(range1min) === 0 && Number(range2min) === 0)
-    return value * (range2max / range1max);
-  return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
-}
-function randRange(...args) {
-  let min, max;
-  if (typeof args[0] === "number" && typeof args[1] === "number")
-    [min, max] = args;
-  else if (typeof args[0] === "number" && typeof args[1] !== "number") {
-    min = 0;
-    [max] = args;
-  } else
-    throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
-  min = Number(min);
-  max = Number(max);
-  if (isNaN(min) || isNaN(max))
-    return NaN;
-  if (min > max)
-    throw new TypeError(`Parameter "min" can't be bigger than "max"`);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function randomId(length = 16, radix = 16) {
-  const arr = new Uint8Array(length);
-  crypto.getRandomValues(arr);
-  return Array.from(
-    arr,
-    (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
-  ).join("");
-}
-
-// lib/array.ts
-function randomItem(array) {
-  return randomItemIndex(array)[0];
-}
-function randomItemIndex(array) {
-  if (array.length === 0)
-    return [void 0, void 0];
-  const idx = randRange(array.length - 1);
-  return [array[idx], idx];
-}
-function takeRandomItem(arr) {
-  const [itm, idx] = randomItemIndex(arr);
-  if (idx === void 0)
-    return void 0;
-  arr.splice(idx, 1);
-  return itm;
-}
-function randomizeArray(array) {
-  const retArray = [...array];
-  if (array.length === 0)
-    return retArray;
-  for (let i = retArray.length - 1; i > 0; i--) {
-    const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
-    [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
-  }
-  return retArray;
-}
-
-// lib/ConfigManager.ts
-var ConfigManager = class {
-  /**
-   * Creates an instance of ConfigManager to manage a user configuration that is cached in memory and persistently saved across sessions.  
-   * Supports migrating data from older versions of the configuration to newer ones and populating the cache with default data if no persistent data is found.  
-   *   
-   * ⚠️ Requires the directives `@grant GM.getValue` and `@grant GM.setValue`  
-   * ⚠️ Make sure to call {@linkcode loadData()} at least once after creating an instance, or the returned data will be the same as `options.defaultConfig`
-   * 
-   * @template TData The type of the data that is saved in persistent storage (will be automatically inferred from `config.defaultConfig`) - this should also be the type of the data format associated with the current `options.formatVersion`
-   * @param options The options for this ConfigManager instance
-  */
-  constructor(options) {
-    __publicField(this, "id");
-    __publicField(this, "formatVersion");
-    __publicField(this, "defaultConfig");
-    __publicField(this, "cachedConfig");
-    __publicField(this, "migrations");
-    __publicField(this, "encodeData");
-    __publicField(this, "decodeData");
-    this.id = options.id;
-    this.formatVersion = options.formatVersion;
-    this.defaultConfig = options.defaultConfig;
-    this.cachedConfig = options.defaultConfig;
-    this.migrations = options.migrations;
-    this.encodeData = options.encodeData;
-    this.decodeData = options.decodeData;
-  }
-  /**
-   * Loads the data saved in persistent storage into the in-memory cache and also returns it.  
-   * Automatically populates persistent storage with default data if it doesn't contain any data yet.  
-   * Also runs all necessary migration functions if the data format has changed since the last time the data was saved.
-   */
-  loadData() {
-    return __async(this, null, function* () {
-      try {
-        const gmData = yield GM.getValue(`_uucfg-${this.id}`, this.defaultConfig);
-        let gmFmtVer = Number(yield GM.getValue(`_uucfgver-${this.id}`));
-        if (typeof gmData !== "string") {
-          yield this.saveDefaultData();
-          return this.defaultConfig;
-        }
-        const isEncoded = yield GM.getValue(`_uucfgenc-${this.id}`, false);
-        if (isNaN(gmFmtVer))
-          yield GM.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
-        let parsed = yield this.deserializeData(gmData, isEncoded);
-        if (gmFmtVer < this.formatVersion && this.migrations)
-          parsed = yield this.runMigrations(parsed, gmFmtVer);
-        return this.cachedConfig = parsed;
-      } catch (err) {
-        console.warn("Error while loading config data, resetting it to the default value.", err);
-        yield this.saveDefaultData();
-        return this.defaultConfig;
-      }
-    });
-  }
-  /**
-   * Returns a copy of the data from the in-memory cache.  
-   * Use {@linkcode loadData()} to get fresh data from persistent storage (usually not necessary since the cache should always exactly reflect persistent storage).
-   */
-  getData() {
-    return this.deepCopy(this.cachedConfig);
-  }
-  /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
-  setData(data) {
-    this.cachedConfig = data;
-    const useEncoding = Boolean(this.encodeData && this.decodeData);
-    return new Promise((resolve) => __async(this, null, function* () {
-      yield Promise.all([
-        GM.setValue(`_uucfg-${this.id}`, yield this.serializeData(data, useEncoding)),
-        GM.setValue(`_uucfgver-${this.id}`, this.formatVersion),
-        GM.setValue(`_uucfgenc-${this.id}`, useEncoding)
-      ]);
-      resolve();
-    }));
-  }
-  /** Saves the default configuration data passed in the constructor synchronously to the in-memory cache and asynchronously to persistent storage */
-  saveDefaultData() {
-    return __async(this, null, function* () {
-      this.cachedConfig = this.defaultConfig;
-      const useEncoding = Boolean(this.encodeData && this.decodeData);
-      return new Promise((resolve) => __async(this, null, function* () {
-        yield Promise.all([
-          GM.setValue(`_uucfg-${this.id}`, yield this.serializeData(this.defaultConfig, useEncoding)),
-          GM.setValue(`_uucfgver-${this.id}`, this.formatVersion),
-          GM.setValue(`_uucfgenc-${this.id}`, useEncoding)
-        ]);
-        resolve();
-      }));
-    });
-  }
-  /**
-   * Call this method to clear all persistently stored data associated with this ConfigManager instance.  
-   * The in-memory cache will be left untouched, so you may still access the data with {@linkcode getData()}  
-   * Calling {@linkcode loadData()} or {@linkcode setData()} after this method was called will recreate persistent storage with the cached or default data.  
-   *   
-   * ⚠️ This requires the additional directive `@grant GM.deleteValue`
-   */
-  deleteConfig() {
-    return __async(this, null, function* () {
-      yield Promise.all([
-        GM.deleteValue(`_uucfg-${this.id}`),
-        GM.deleteValue(`_uucfgver-${this.id}`),
-        GM.deleteValue(`_uucfgenc-${this.id}`)
-      ]);
-    });
-  }
-  /** Runs all necessary migration functions consecutively - may be overwritten in a subclass */
-  runMigrations(oldData, oldFmtVer) {
-    return __async(this, null, function* () {
-      if (!this.migrations)
-        return oldData;
-      let newData = oldData;
-      const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
-      let lastFmtVer = oldFmtVer;
-      for (const [fmtVer, migrationFunc] of sortedMigrations) {
-        const ver = Number(fmtVer);
-        if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
-          try {
-            const migRes = migrationFunc(newData);
-            newData = migRes instanceof Promise ? yield migRes : migRes;
-            lastFmtVer = oldFmtVer = ver;
-          } catch (err) {
-            console.error(`Error while running migration function for format version '${fmtVer}' - resetting to the default value.`, err);
-            yield this.saveDefaultData();
-            return this.getData();
-          }
-        }
-      }
-      yield Promise.all([
-        GM.setValue(`_uucfg-${this.id}`, yield this.serializeData(newData)),
-        GM.setValue(`_uucfgver-${this.id}`, lastFmtVer),
-        GM.setValue(`_uucfgenc-${this.id}`, Boolean(this.encodeData && this.decodeData))
-      ]);
-      return newData;
-    });
-  }
-  /** Serializes the data using the optional this.encodeData() and returns it as a string */
-  serializeData(data, useEncoding = true) {
-    return __async(this, null, function* () {
-      const stringData = JSON.stringify(data);
-      if (!this.encodeData || !this.decodeData || !useEncoding)
-        return stringData;
-      const encRes = this.encodeData(stringData);
-      if (encRes instanceof Promise)
-        return yield encRes;
-      return encRes;
-    });
-  }
-  /** Deserializes the data using the optional this.decodeData() and returns it as a JSON object */
-  deserializeData(data, useEncoding = true) {
-    return __async(this, null, function* () {
-      let decRes = this.decodeData && this.encodeData && useEncoding ? this.decodeData(data) : void 0;
-      if (decRes instanceof Promise)
-        decRes = yield decRes;
-      return JSON.parse(decRes != null ? decRes : data);
-    });
-  }
-  /** Copies a JSON-compatible object and loses its internal references */
-  deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-  }
-};
-
-// lib/dom.ts
-function getUnsafeWindow$1() {
-  try {
-    return unsafeWindow;
-  } catch (e) {
-    return window;
-  }
-}
-function insertAfter(beforeElement, afterElement) {
-  var _a;
-  (_a = beforeElement.parentNode) == null ? void 0 : _a.insertBefore(afterElement, beforeElement.nextSibling);
-  return afterElement;
-}
-function addParent(element, newParent) {
-  const oldParent = element.parentNode;
-  if (!oldParent)
-    throw new Error("Element doesn't have a parent node");
-  oldParent.replaceChild(newParent, element);
-  newParent.appendChild(element);
-  return newParent;
-}
-function addGlobalStyle(style) {
-  const styleElem = document.createElement("style");
-  styleElem.innerHTML = style;
-  document.head.appendChild(styleElem);
-  return styleElem;
-}
-function preloadImages(srcUrls, rejects = false) {
-  const promises = srcUrls.map((src) => new Promise((res, rej) => {
-    const image = new Image();
-    image.src = src;
-    image.addEventListener("load", () => res(image));
-    image.addEventListener("error", (evt) => rejects && rej(evt));
-  }));
-  return Promise.allSettled(promises);
-}
-function openInNewTab(href) {
-  const openElem = document.createElement("a");
-  Object.assign(openElem, {
-    className: "userutils-open-in-new-tab",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    href
-  });
-  openElem.style.display = "none";
-  document.body.appendChild(openElem);
-  openElem.click();
-  setTimeout(openElem.remove, 50);
-}
-function interceptEvent(eventObject, eventName, predicate = () => true) {
-  if (typeof Error.stackTraceLimit === "number" && Error.stackTraceLimit < 1e3) {
-    Error.stackTraceLimit = 1e3;
-  }
-  (function(original) {
-    eventObject.__proto__.addEventListener = function(...args) {
-      var _a, _b;
-      const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
-      args[1] = function(...a) {
-        if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
-          return;
-        else
-          return origListener.apply(this, a);
-      };
-      original.apply(this, args);
-    };
-  })(eventObject.__proto__.addEventListener);
-}
-function interceptWindowEvent(eventName, predicate = () => true) {
-  return interceptEvent(getUnsafeWindow$1(), eventName, predicate);
-}
-function isScrollable(element) {
-  const { overflowX, overflowY } = getComputedStyle(element);
-  return {
-    vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
-    horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
-  };
-}
-function observeElementProp(element, property, callback) {
-  const elementPrototype = Object.getPrototypeOf(element);
-  if (elementPrototype.hasOwnProperty(property)) {
-    const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
-    Object.defineProperty(element, property, {
-      get: function() {
-        var _a;
-        return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
-      },
-      set: function() {
-        var _a;
-        const oldValue = this[property];
-        (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
-        const newValue = this[property];
-        if (typeof callback === "function") {
-          callback.bind(this, oldValue, newValue);
-        }
-        return newValue;
-      }
-    });
-  }
-}
-
-// lib/misc.ts
-function autoPlural(word, num) {
-  if (Array.isArray(num) || num instanceof NodeList)
-    num = num.length;
-  return `${word}${num === 1 ? "" : "s"}`;
-}
-function pauseFor(time) {
-  return new Promise((res) => {
-    setTimeout(() => res(), time);
-  });
-}
-function debounce(func, timeout = 300) {
-  let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), timeout);
-  };
-}
-function fetchAdvanced(_0) {
-  return __async(this, arguments, function* (input, options = {}) {
-    const { timeout = 1e4 } = options;
-    let signalOpts = {}, id = void 0;
-    if (timeout >= 0) {
-      const controller = new AbortController();
-      id = setTimeout(() => controller.abort(), timeout);
-      signalOpts = { signal: controller.signal };
-    }
-    const res = yield fetch(input, __spreadValues(__spreadValues({}, options), signalOpts));
-    clearTimeout(id);
-    return res;
-  });
-}
-function insertValues(input, ...values) {
-  return input.replace(/%\d/gm, (match) => {
-    var _a, _b;
-    const argIndex = Number(match.substring(1)) - 1;
-    return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
-  });
-}
-function compress(input, compressionFormat, outputType = "string") {
-  return __async(this, null, function* () {
-    const byteArray = typeof input === "string" ? new TextEncoder().encode(input) : input;
-    const comp = new CompressionStream(compressionFormat);
-    const writer = comp.writable.getWriter();
-    writer.write(byteArray);
-    writer.close();
-    const buf = yield new Response(comp.readable).arrayBuffer();
-    return outputType === "arrayBuffer" ? buf : ab2str(buf);
-  });
-}
-function decompress(input, compressionFormat, outputType = "string") {
-  return __async(this, null, function* () {
-    const byteArray = typeof input === "string" ? str2ab(input) : input;
-    const decomp = new DecompressionStream(compressionFormat);
-    const writer = decomp.writable.getWriter();
-    writer.write(byteArray);
-    writer.close();
-    const buf = yield new Response(decomp.readable).arrayBuffer();
-    return outputType === "arrayBuffer" ? buf : new TextDecoder().decode(buf);
-  });
-}
-function ab2str(buf) {
-  return getUnsafeWindow$1().btoa(
-    new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
-  );
-}
-function str2ab(str) {
-  return Uint8Array.from(getUnsafeWindow$1().atob(str), (c) => c.charCodeAt(0));
-}
-
-// lib/SelectorObserver.ts
-var SelectorObserver = class {
-  constructor(baseElement, options = {}) {
-    __publicField(this, "enabled", false);
-    __publicField(this, "baseElement");
-    __publicField(this, "observer");
-    __publicField(this, "observerOptions");
-    __publicField(this, "customOptions");
-    __publicField(this, "listenerMap");
-    this.baseElement = baseElement;
-    this.listenerMap = /* @__PURE__ */ new Map();
-    this.observer = new MutationObserver(() => this.checkAllSelectors());
-    const _a = options, {
-      defaultDebounce,
-      disableOnNoListeners,
-      enableOnAddListener
-    } = _a, observerOptions = __objRest(_a, [
-      "defaultDebounce",
-      "disableOnNoListeners",
-      "enableOnAddListener"
-    ]);
-    this.observerOptions = __spreadValues({
-      childList: true,
-      subtree: true
-    }, observerOptions);
-    this.customOptions = {
-      defaultDebounce: defaultDebounce != null ? defaultDebounce : 0,
-      disableOnNoListeners: disableOnNoListeners != null ? disableOnNoListeners : false,
-      enableOnAddListener: enableOnAddListener != null ? enableOnAddListener : true
-    };
-  }
-  checkAllSelectors() {
-    for (const [selector, listeners] of this.listenerMap.entries())
-      this.checkSelector(selector, listeners);
-  }
-  checkSelector(selector, listeners) {
-    var _a;
-    if (!this.enabled)
-      return;
-    const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-    if (!baseElement)
-      return;
-    const all = listeners.some((listener) => listener.all);
-    const one = listeners.some((listener) => !listener.all);
-    const allElements = all ? baseElement.querySelectorAll(selector) : null;
-    const oneElement = one ? baseElement.querySelector(selector) : null;
-    for (const options of listeners) {
-      if (options.all) {
-        if (allElements && allElements.length > 0) {
-          options.listener(allElements);
-          if (!options.continuous)
-            this.removeListener(selector, options);
-        }
-      } else {
-        if (oneElement) {
-          options.listener(oneElement);
-          if (!options.continuous)
-            this.removeListener(selector, options);
-        }
-      }
-      if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
-        this.listenerMap.delete(selector);
-      if (this.listenerMap.size === 0 && this.customOptions.disableOnNoListeners)
-        this.disable();
-    }
-  }
-  debounce(func, time) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), time);
-    };
-  }
-  /**
-   * Starts observing the children of the base element for changes to the given {@linkcode selector} according to the set {@linkcode options}
-   * @param selector The selector to observe
-   * @param options Options for the selector observation
-   * @param options.listener Gets called whenever the selector was found in the DOM
-   * @param [options.all] Whether to use `querySelectorAll()` instead - default is false
-   * @param [options.continuous] Whether to call the listener continuously instead of just once - default is false
-   * @param [options.debounce] Whether to debounce the listener to reduce calls to `querySelector` or `querySelectorAll` - set undefined or <=0 to disable (default)
-   */
-  addListener(selector, options) {
-    options = __spreadValues({ all: false, continuous: false, debounce: 0 }, options);
-    if (options.debounce && options.debounce > 0 || this.customOptions.defaultDebounce && this.customOptions.defaultDebounce > 0) {
-      options.listener = this.debounce(
-        options.listener,
-        options.debounce || this.customOptions.defaultDebounce
-      );
-    }
-    if (this.listenerMap.has(selector))
-      this.listenerMap.get(selector).push(options);
-    else
-      this.listenerMap.set(selector, [options]);
-    if (this.enabled === false && this.customOptions.enableOnAddListener)
-      this.enable();
-    this.checkSelector(selector, [options]);
-  }
-  /** Disables the observation of the child elements */
-  disable() {
-    if (!this.enabled)
-      return;
-    this.enabled = false;
-    this.observer.disconnect();
-  }
-  /**
-   * Enables or reenables the observation of the child elements.
-   * @param immediatelyCheckSelectors Whether to immediately check if all previously registered selectors exist (default is true)
-   * @returns Returns true when the observation was enabled, false otherwise (e.g. when the base element wasn't found)
-   */
-  enable(immediatelyCheckSelectors = true) {
-    const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-    if (this.enabled || !baseElement)
-      return false;
-    this.enabled = true;
-    this.observer.observe(baseElement, this.observerOptions);
-    if (immediatelyCheckSelectors)
-      this.checkAllSelectors();
-    return true;
-  }
-  /** Returns whether the observation of the child elements is currently enabled */
-  isEnabled() {
-    return this.enabled;
-  }
-  /** Removes all listeners that have been registered with {@linkcode addListener()} */
-  clearListeners() {
-    this.listenerMap.clear();
-  }
-  /**
-   * Removes all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()}
-   * @returns Returns true when all listeners for the associated selector were found and removed, false otherwise
-   */
-  removeAllListeners(selector) {
-    return this.listenerMap.delete(selector);
-  }
-  /**
-   * Removes a single listener for the given {@linkcode selector} and {@linkcode options} that has been registered with {@linkcode addListener()}
-   * @returns Returns true when the listener was found and removed, false otherwise
-   */
-  removeListener(selector, options) {
-    const listeners = this.listenerMap.get(selector);
-    if (!listeners)
-      return false;
-    const index = listeners.indexOf(options);
-    if (index > -1) {
-      listeners.splice(index, 1);
-      return true;
-    }
-    return false;
-  }
-  /** Returns all listeners that have been registered with {@linkcode addListener()} */
-  getAllListeners() {
-    return this.listenerMap;
-  }
-  /** Returns all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()} */
-  getListeners(selector) {
-    return this.listenerMap.get(selector);
-  }
-};
-
-// lib/translation.ts
-var trans = {};
-var curLang;
-function tr(key, ...args) {
-  var _a;
-  if (!curLang)
-    return key;
-  const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
-  if (!trText)
-    return key;
-  if (args.length > 0 && trText.match(/%\d/)) {
-    return insertValues(trText, ...args);
-  }
-  return trText;
-}
-tr.addLanguage = (language, translations) => {
-  trans[language] = translations;
-};
-tr.setLanguage = (language) => {
-  curLang = language;
-};
-tr.getLanguage = () => {
-  return curLang;
-};var UserUtils=/*#__PURE__*/Object.freeze({__proto__:null,ConfigManager:ConfigManager,SelectorObserver:SelectorObserver,addGlobalStyle:addGlobalStyle,addParent:addParent,autoPlural:autoPlural,clamp:clamp,compress:compress,debounce:debounce,decompress:decompress,fetchAdvanced:fetchAdvanced,getUnsafeWindow:getUnsafeWindow$1,insertAfter:insertAfter,insertValues:insertValues,interceptEvent:interceptEvent,interceptWindowEvent:interceptWindowEvent,isScrollable:isScrollable,mapRange:mapRange,observeElementProp:observeElementProp,openInNewTab:openInNewTab,pauseFor:pauseFor,preloadImages:preloadImages,randRange:randRange,randomId:randomId,randomItem:randomItem,randomItemIndex:randomItemIndex,randomizeArray:randomizeArray,takeRandomItem:takeRandomItem,tr:tr});let createNanoEvents = () => ({
+};let createNanoEvents = () => ({
   emit(event, ...args) {
     for (
       let i = 0,
@@ -844,7 +212,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "a3ec05f", // asserted as generic string instead of literal
+    buildNumber: "88d5c88", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -854,11 +222,11 @@ const observers$1 = {};
 function initObservers() {
     try {
         // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-        observers$1.body = new SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        observers$1.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
         observers$1.body.enable();
         // #SECTION playerBar = media controls bar at the bottom of the page
         const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        observers$1.playerBar = new SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+        observers$1.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
         observers$1.body.addListener(playerBarSelector, {
             listener: () => {
                 console.log("#DBG-UU enabling playerBar observer");
@@ -867,7 +235,7 @@ function initObservers() {
         });
         // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
         const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        observers$1.playerBarInfo = new SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+        observers$1.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
         observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
             listener: () => {
                 console.log("#DBG-UU enabling playerBarTitle observer");
@@ -1035,11 +403,11 @@ function initAutoCloseToasts() {
                         if (toastElem.classList.contains("bytm-closing"))
                             continue;
                         toastElem.classList.add("bytm-closing");
-                        yield pauseFor(closeTimeout);
+                        yield UserUtils.pauseFor(closeTimeout);
                         toastElem.classList.remove("paper-toast-open");
                         log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent}' after ${features$3.closeToastsTimeout * 1000}ms`);
                         // wait for the transition to finish
-                        yield pauseFor(animTimeout);
+                        yield UserUtils.pauseFor(animTimeout);
                         toastElem.style.display = "none";
                     }
                 }),
@@ -1093,7 +461,7 @@ function restoreSongTime() {
                                 const applyTime = () => __awaiter(this, void 0, void 0, function* () {
                                     if (isNaN(entry.songTime))
                                         return;
-                                    vidElem.currentTime = clamp(Math.max(entry.songTime, 0), 0, vidElem.duration);
+                                    vidElem.currentTime = UserUtils.clamp(Math.max(entry.songTime, 0), 0, vidElem.duration);
                                     yield delRemSongData(entry.watchID);
                                     info(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, LogLevel.Info);
                                 });
@@ -1628,7 +996,7 @@ function addCfgMenu() {
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
         /** Gets called whenever the feature config is changed */
-        const confChanged = debounce((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
+        const confChanged = UserUtils.debounce((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
@@ -1916,7 +1284,7 @@ function addCfgMenu() {
         titleElem.appendChild(versionElemCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
-        window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
+        window.addEventListener("resize", UserUtils.debounce(checkToggleScrollIndicator, 150));
         log("Added menu element");
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
@@ -1969,7 +1337,7 @@ function checkToggleScrollIndicator() {
     const scrollIndicator = document.querySelector("#bytm-menu-scroll-indicator");
     // disable scroll indicator if container doesn't scroll
     if (featuresCont && scrollIndicator) {
-        const verticalScroll = isScrollable(featuresCont).vertical;
+        const verticalScroll = UserUtils.isScrollable(featuresCont).vertical;
         /** If true, the indicator's threshold is under the available scrollable space and so it should be disabled */
         const underThreshold = featuresCont.scrollHeight - featuresCont.clientHeight <= scrollIndicatorOffsetThreshold;
         if (!underThreshold && verticalScroll && !scrollIndicatorEnabled) {
@@ -2146,13 +1514,13 @@ function addExportMenu() {
         textAreaElem.readOnly = true;
         const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
         lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-        textAreaElem.value = canCompress ? yield compress(cfgString, compressionFormat, "string") : cfgString;
+        textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
         siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
             const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
             const cfgString = JSON.stringify({ formatVersion, data });
             lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
             if (textAreaElem)
-                textAreaElem.value = canCompress ? yield compress(cfgString, compressionFormat, "string") : cfgString;
+                textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
         }));
         //#SECTION footer
         const footerElem = document.createElement("div");
@@ -2316,7 +1684,7 @@ function addImportMenu() {
                     }
                     catch (_a) {
                         try {
-                            return JSON.parse(yield decompress(input, compressionFormat, "string"));
+                            return JSON.parse(yield UserUtils.decompress(input, compressionFormat, "string"));
                         }
                         catch (err) {
                             warn("Couldn't import configuration:", err);
@@ -2561,7 +1929,7 @@ function addWatermark() {
         watermark.addEventListener("click", watermarkOpenMenu);
         watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
         onSelectorOld("ytmusic-nav-bar #left-content", {
-            listener: (logoElem) => insertAfter(logoElem, watermark),
+            listener: (logoElem) => UserUtils.insertAfter(logoElem, watermark),
         });
         log("Added watermark element");
     });
@@ -2573,7 +1941,7 @@ function improveLogo() {
             if (improveLogoCalled)
                 return;
             improveLogoCalled = true;
-            const res = yield fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
+            const res = yield UserUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
             const svg = yield res.text();
             onSelectorOld("ytmusic-logo a", {
                 listener: (logoElem) => {
@@ -2628,7 +1996,7 @@ function addConfigMenuOption(container) {
         const cfgOptItemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
-            yield pauseFor(20);
+            yield UserUtils.pauseFor(20);
             if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
                 openCfgMenu();
             if (!logoExchanged && (e.shiftKey || e.ctrlKey))
@@ -2696,7 +2064,7 @@ function initVolumeFeatures() {
                         });
                     }
                 }
-                addParent(sliderElem, volSliderCont);
+                UserUtils.addParent(sliderElem, volSliderCont);
                 if (typeof features$2.volumeSliderSize === "number")
                     setVolSliderSize();
                 if (features$2.volumeSliderLabel)
@@ -2754,7 +2122,7 @@ function setVolSliderSize() {
     const { volumeSliderSize: size } = features$2;
     if (typeof size !== "number" || isNaN(Number(size)))
         return;
-    addGlobalStyle(`\
+    UserUtils.addGlobalStyle(`\
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
 }`).id = "bytm-style-vol-slider-size";
@@ -2768,9 +2136,9 @@ function setVolSliderStep(sliderElem) {
 function addAnchorImprovements() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const css = yield (yield fetchAdvanced(yield getResourceUrl("css-anchor_improvements"))).text();
+            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-anchor_improvements"))).text();
             if (css)
-                addGlobalStyle(css).id = "bytm-style-anchor-improvements";
+                UserUtils.addGlobalStyle(css).id = "bytm-style-anchor-improvements";
         }
         catch (err) {
             error("Couldn't add anchor improvements CSS due to an error:", err);
@@ -2795,7 +2163,7 @@ function addAnchorImprovements() {
                     anchorElem.target = "_self";
                     anchorElem.role = "button";
                     anchorElem.addEventListener("click", preventDefault);
-                    addParent(thumbnailElem, anchorElem);
+                    UserUtils.addParent(thumbnailElem, anchorElem);
                 }
             };
             // home page
@@ -2836,13 +2204,13 @@ function addAnchorImprovements() {
             onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
                 listener: (sidebarCont) => {
                     const itemsAmt = addSidebarAnchors(sidebarCont);
-                    log(`Added anchors around ${itemsAmt} sidebar ${autoPlural("item", itemsAmt)}`);
+                    log(`Added anchors around ${itemsAmt} sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
                 },
             });
             onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
                 listener: (miniSidebarCont) => {
                     const itemsAmt = addSidebarAnchors(miniSidebarCont);
-                    log(`Added anchors around ${itemsAmt} mini sidebar ${autoPlural("item", itemsAmt)}`);
+                    log(`Added anchors around ${itemsAmt} mini sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
                 },
             });
         }
@@ -2872,7 +2240,7 @@ function improveSidebarAnchors(sidebarItems) {
         anchorElem.addEventListener("click", (e) => {
             e.preventDefault();
         });
-        addParent(item, anchorElem);
+        UserUtils.addParent(item, anchorElem);
     });
 }
 //#MARKER remove share tracking param
@@ -2916,9 +2284,9 @@ function removeShareTrackingParam() {
 function fixSpacing() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const css = yield (yield fetchAdvanced(yield getResourceUrl("css-fix_spacing"))).text();
+            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-fix_spacing"))).text();
             if (css)
-                addGlobalStyle(css).id = "bytm-style-fix-spacing";
+                UserUtils.addGlobalStyle(css).id = "bytm-style-fix-spacing";
         }
         catch (err) {
             error("Couldn't fix spacing due to an error:", err);
@@ -2981,7 +2349,7 @@ function initArrowKeySkip() {
             log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
             const vidElem = document.querySelector(videoSelector);
             if (vidElem)
-                vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
+                vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
         });
         log("Added arrow key press listener");
     });
@@ -3070,21 +2438,28 @@ function initNumKeysSkip() {
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+/**
+ * The threshold to pass to geniURL's fuzzy filtering.
+ * From fuse.js docs: At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.
+ * Set to undefined to use the default.
+ */
+const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
+`&threshold=${UserUtils.clamp(threshold, 0, 1)}` ;
 //#MARKER new cache
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 300;
 /** Maximum time before a cache entry is force deleted */
 const cacheTTL = 1000 * 60 * 60 * 24 * 7 * 2; // 2 weeks
-const lyricsCache = new ConfigManager({
+const lyricsCache = new UserUtils.ConfigManager({
     id: "bytm-lyrics-cache",
     defaultConfig: {
         cache: [],
     },
     formatVersion: 1,
-    encodeData: (data) => compress(data, compressionFormat, "string"),
-    decodeData: (data) => decompress(data, compressionFormat, "string"),
+    encodeData: (data) => UserUtils.compress(data, compressionFormat, "string"),
+    decodeData: (data) => UserUtils.decompress(data, compressionFormat, "string"),
     // migrations: {
     //   // 1 -> 2
     //   2: (oldData: Record<string, unknown>) => {
@@ -3169,7 +2544,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
             const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
             linkElem.id = "betterytm-lyrics-button";
             log("Inserted lyrics button into media controls bar");
-            insertAfter(likeContainer, linkElem);
+            UserUtils.insertAfter(likeContainer, linkElem);
         }))();
         currentSongTitle = songTitleElem.title;
         const spinnerIconUrl = yield getResourceUrl("img-spinner");
@@ -3315,7 +2690,7 @@ function fetchLyricsUrl(artist, song) {
                 song,
             });
             log(`Requesting URL from geniURL at '${fetchUrl}'`);
-            const fetchRes = yield fetchAdvanced(fetchUrl);
+            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl);
             if (fetchRes.status === 429) {
                 const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
                 alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
@@ -3381,7 +2756,7 @@ function initQueueButtons() {
                 }
             }
             if (amt > 0)
-                log(`Added buttons to ${amt} new queue ${autoPlural("item", amt)}`);
+                log(`Added buttons to ${amt} new queue ${UserUtils.autoPlural("item", amt)}`);
         };
         // current queue
         siteEvents.on("queueChanged", addCurrentQueueBtns);
@@ -3389,7 +2764,7 @@ function initQueueButtons() {
         const queueItems = document.querySelectorAll("#contents.ytmusic-player-queue > ytmusic-player-queue-item");
         if (queueItems.length > 0) {
             queueItems.forEach(itm => addQueueButtons(itm, undefined, "currentQueue"));
-            log(`Added buttons to ${queueItems.length} existing "current song queue" ${autoPlural("item", queueItems)}`);
+            log(`Added buttons to ${queueItems.length} existing "current song queue" ${UserUtils.autoPlural("item", queueItems)}`);
         }
         // generic lists
         // TODO:FIXME: dragging the items around removes the queue buttons
@@ -3401,7 +2776,7 @@ function initQueueButtons() {
                 return;
             listElem.classList.add("bytm-list-has-queue-btns");
             queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", "genericQueue", ["bytm-generic-list-queue-btn-container"]));
-            log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
+            log(`Added buttons to ${queueItems.length} new "generic song list" ${UserUtils.autoPlural("item", queueItems)}`);
         };
         const listSelectors = [
             "ytmusic-playlist-shelf-renderer #contents",
@@ -3514,11 +2889,11 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                     if (!lyricsUrl) {
                         resetImgElem();
                         if (confirm(t("lyrics_not_found_confirm_open_search")))
-                            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
+                            UserUtils.openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
                         return;
                     }
                 }
-                lyricsUrl && openInNewTab(lyricsUrl);
+                lyricsUrl && UserUtils.openInNewTab(lyricsUrl);
             });
             lyricsBtnElem.addEventListener("click", lyricsBtnClicked);
             lyricsBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && lyricsBtnClicked(e));
@@ -3547,16 +2922,16 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                         if (queuePopupCont)
                             queuePopupCont.setAttribute("data-bytm-hidden", "true");
                         dotsBtnElem.click();
-                        yield pauseFor(10);
+                        yield UserUtils.pauseFor(10);
                         queuePopupCont = document.querySelector("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
                         queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.setAttribute("data-bytm-hidden", "true");
                         // a little bit janky and unreliable but the only way afaik
                         const removeFromQueueBtn = queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.querySelector("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-                        yield pauseFor(10);
+                        yield UserUtils.pauseFor(10);
                         removeFromQueueBtn === null || removeFromQueueBtn === void 0 ? void 0 : removeFromQueueBtn.click();
                         // queue items aren't removed automatically outside of the current queue
                         if (removeFromQueueBtn && listType === "genericQueue") {
-                            yield pauseFor(500);
+                            yield UserUtils.pauseFor(500);
                             clearInner(queueItem);
                             queueItem.remove();
                         }
@@ -4026,7 +3401,7 @@ const defaultConfig = Object.keys(featInfo)
     acc[key] = featInfo[key].default;
     return acc;
 }, {});
-const cfgMgr = new ConfigManager({
+const cfgMgr = new UserUtils.ConfigManager({
     id: "bytm-config",
     formatVersion,
     defaultConfig,
@@ -4069,7 +3444,7 @@ function clearConfig() {
         yield cfgMgr.deleteConfig();
         info("Deleted config from persistent storage");
     });
-}const { getUnsafeWindow } = UserUtils;
+}const { getUnsafeWindow } = UserUtils__namespace;
 const globalFuncs = {
     addSelectorListener,
     getResourceUrl,
@@ -4091,7 +3466,7 @@ const globalFuncs = {
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ mode,
-        branch }, scriptInfo), globalFuncs), { UserUtils });
+        branch }, scriptInfo), globalFuncs), { UserUtils: UserUtils__namespace });
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
     log("Initialized BYTM interface");
@@ -4123,12 +3498,12 @@ function initTranslations(locale) {
         initializedLocales.add(locale);
         try {
             const transUrl = yield getResourceUrl(`trans-${locale}`);
-            const transFile = yield (yield fetchAdvanced(transUrl, fetchOpts)).json();
+            const transFile = yield (yield UserUtils.fetchAdvanced(transUrl, fetchOpts)).json();
             // merge with base translations if specified
             const baseTransUrl = transFile.base ? yield getResourceUrl(`trans-${transFile.base}`) : undefined;
-            const baseTransFile = baseTransUrl ? yield (yield fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
+            const baseTransFile = baseTransUrl ? yield (yield UserUtils.fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
             const translations = Object.assign(Object.assign({}, ((_a = baseTransFile === null || baseTransFile === void 0 ? void 0 : baseTransFile.translations) !== null && _a !== void 0 ? _a : {})), transFile.translations);
-            tr.addLanguage(locale, translations);
+            UserUtils.tr.addLanguage(locale, translations);
             allTrKeys.set(locale, new Set(Object.keys(translations)));
             info(`Loaded translations for locale '${locale}'`);
         }
@@ -4141,13 +3516,13 @@ function initTranslations(locale) {
 }
 /** Sets the current language for translations */
 function setLocale(locale) {
-    tr.setLanguage(locale);
+    UserUtils.tr.setLanguage(locale);
     setGlobalProp("locale", locale);
     emitInterface("bytm:setLocale", { locale });
 }
 /** Returns the currently set language */
 function getLocale() {
-    return tr.getLanguage();
+    return UserUtils.tr.getLanguage();
 }
 /** Returns whether the given translation key exists in the current locale */
 function hasKey(key) {
@@ -4160,7 +3535,7 @@ function hasKeyFor(locale, key) {
 }
 /** Returns the translated string for the given key, after optionally inserting values */
 function t(key, ...values) {
-    return tr(key, ...values);
+    return UserUtils.tr(key, ...values);
 }
 /**
  * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`
@@ -4230,7 +3605,7 @@ class BytmDialog extends NanoEmitter {
             bgElem.appendChild(yield this.getDialogContent());
             document.body.appendChild(bgElem);
             this.attachListeners(bgElem);
-            addGlobalStyle(`\
+            UserUtils.addGlobalStyle(`\
 #bytm-${this.id}-dialog-bg {
   --bytm-dialog-width-max: ${this.options.maxWidth}px;
   --bytm-dialog-height-max: ${this.options.maxHeight}px;
@@ -4463,7 +3838,7 @@ function ytForceShowVideoTime() {
         return false;
     const defaultProps = {
         // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: getUnsafeWindow$1(),
+        view: UserUtils.getUnsafeWindow(),
         bubbles: true,
         cancelable: false,
     };
@@ -4499,7 +3874,7 @@ function setLogLevel(level) {
 function getLogLevel(args) {
     const minLogLvl = 0, maxLogLvl = 1;
     if (typeof args.at(-1) === "number")
-        return clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+        return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
     return LogLevel.Debug;
 }
 /**
@@ -4543,7 +3918,7 @@ function getSessionId() {
     try {
         let sesId = window.sessionStorage.getItem("_bytm-session-id");
         if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = randomId(8, 36));
+            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(8, 36));
         return sesId;
     }
     catch (err) {
@@ -4558,7 +3933,7 @@ function compressionSupported() {
         if (typeof isCompressionSupported === "boolean")
             return isCompressionSupported;
         try {
-            yield compress(".", compressionFormat, "string");
+            yield UserUtils.compress(".", compressionFormat, "string");
             return isCompressionSupported = true;
         }
         catch (e) {
@@ -4623,7 +3998,7 @@ function resourceToHTMLString(resource) {
             const resourceUrl = yield getResourceUrl(resource);
             if (!resourceUrl)
                 throw new Error(`Couldn't find URL for resource '${resource}'`);
-            return yield (yield fetchAdvanced(resourceUrl)).text();
+            return yield (yield UserUtils.fetchAdvanced(resourceUrl)).text();
         }
         catch (err) {
             error("Couldn't get SVG element from resource:", err);
@@ -4641,7 +4016,7 @@ function parseMarkdown(md) {
 /** Returns the content of the changelog markdown file */
 function getChangelogMd() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield (yield fetchAdvanced(yield getResourceUrl("doc-changelog"))).text();
+        return yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("doc-changelog"))).text();
     });
 }const selectorMap = new Map();
 /**
@@ -5066,7 +4441,7 @@ function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-    addGlobalStyle(`.bytm-menu-bg {
+    UserUtils.addGlobalStyle(`.bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
   --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
@@ -6299,7 +5674,7 @@ function registerMenuCommands() {
             for (const key of keys) {
                 const isEncoded = key.startsWith("_uucfg-") ? yield GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
                 const val = yield GM.getValue(key, undefined);
-                values[key] = typeof val !== "undefined" && isEncoded ? yield decompress(val, compressionFormat, "string") : val;
+                values[key] = typeof val !== "undefined" && isEncoded ? yield UserUtils.decompress(val, compressionFormat, "string") : val;
                 longestKey = Math.max(longestKey, key.length);
             }
             for (const [key, finalVal] of Object.entries(values)) {
@@ -6371,4 +5746,4 @@ function registerMenuCommands() {
         }), "s");
     }
 }
-preInit();})(marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
