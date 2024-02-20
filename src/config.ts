@@ -1,7 +1,8 @@
-import { ConfigManager, type ConfigMigrationsDict } from "@sv443-network/userutils";
+import { ConfigManager, compress, type ConfigMigrationsDict, decompress } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
+import { compressionFormat } from "./constants";
 import type { FeatureConfig } from "./types";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -64,6 +65,8 @@ const cfgMgr = new ConfigManager({
   formatVersion,
   defaultConfig,
   migrations,
+  encodeData: (data) => compress(data, compressionFormat, "string"),
+  decodeData: (data) => decompress(data, compressionFormat, "string"),
 });
 
 /** Initializes the ConfigManager instance and loads persistent data into memory */
