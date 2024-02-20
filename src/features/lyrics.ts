@@ -24,6 +24,8 @@ void thresholdParam; // TODO: re-add once geniURL 1.4 is released
 
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 300;
+/** Maximum time before a cache entry is force deleted */
+const cacheTTL = 1000 * 60 * 60 * 24 * 7 * 2; // 2 weeks
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];
@@ -56,10 +58,39 @@ export async function initLyricsCache() {
 /**
  * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet  
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * @param refreshEntry If true, the timestamp of the entry will be set to the current time
  */
-export function getLyricsCacheEntry(artist: string, song: string) {
+export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
   const { cache } = lyricsCache.getData();
-  return cache.find(e => e.artist === artist && e.song === song);
+  const entry = cache.find(e => e.artist === artist && e.song === song);
+  if(entry && Date.now() - entry?.added > cacheTTL) {
+    deleteLyricsCacheEntry(artist, song);
+    return undefined;
+  }
+
+  // refresh timestamp of the entry by mutating cache
+  if(entry && refreshEntry)
+    updateLyricsCacheEntry(artist, song);
+  return entry;
+}
+
+function updateLyricsCacheEntry(artist: string, song: string) {
+  const { cache } = lyricsCache.getData();
+  const idx = cache.findIndex(e => e.artist === artist && e.song === song);
+  if(idx !== -1) {
+    const newEntry = cache.splice(idx, 1)[0]!;
+    newEntry.viewed = Date.now();
+    lyricsCache.setData({ cache: [ newEntry, ...cache ] });
+  }
+}
+
+function deleteLyricsCacheEntry(artist: string, song: string) {
+  const { cache } = lyricsCache.getData();
+  const idx = cache.findIndex(e => e.artist === artist && e.song === song);
+  if(idx !== -1) {
+    cache.splice(idx, 1);
+    lyricsCache.setData({ cache });
+  }
 }
 
 /** Returns the full lyrics cache array */
@@ -74,9 +105,9 @@ export function getLyricsCache() {
 export function addLyricsCacheEntry(artist: string, song: string, url: string) {
   const { cache } = lyricsCache.getData();
   cache.push({
-    artist, song, url, added: Date.now(),
+    artist, song, url, viewed: Date.now(), added: Date.now(),
   } satisfies LyricsCacheEntry);
-  cache.sort((a, b) => b.added - a.added);
+  cache.sort((a, b) => b.viewed - a.viewed);
   if(cache.length > maxLyricsCacheSize)
     cache.pop();
   return lyricsCache.setData({ cache });
@@ -257,7 +288,7 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
-      info(`Found lyrics URL in cache: ${cacheEntry}`);
+      info(`Found lyrics URL in cache: ${cacheEntry.url}`);
       return cacheEntry.url;
     }
 

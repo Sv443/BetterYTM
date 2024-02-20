@@ -44,6 +44,7 @@ export type LyricsCacheEntry = {
   artist: string;
   song: string;
   url: string;
+  viewed: number;
   added: number;
 };
 

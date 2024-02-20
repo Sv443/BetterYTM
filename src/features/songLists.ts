@@ -3,7 +3,7 @@ import { clearInner, error, getResourceUrl, log, onSelectorOld, t, warn } from "
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
-import type { FeatureConfig } from "../types";
+import type { FeatureConfig, LyricsCacheEntry } from "../types";
 import "./songLists.css";
 
 let features: FeatureConfig;
@@ -168,7 +168,7 @@ async function addQueueButtons(
           imgEl.classList.add("bytm-spinner");
         }
 
-        lyricsUrl = cachedLyricsEntry ?? await fetchLyricsUrl(artistsSan, songSan);
+        lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrl(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {
