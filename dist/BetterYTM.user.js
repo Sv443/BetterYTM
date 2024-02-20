@@ -243,7 +243,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "df8c24d", // asserted as generic string instead of literal
+    buildNumber: "2f84fc4", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -260,7 +260,7 @@ function initObservers() {
         observers$1.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
         observers$1.body.addListener(playerBarSelector, {
             listener: () => {
-                console.log("#DBG-UU enabling playerBar observer");
+                log("#DBG-UU enabling playerBar observer");
                 observers$1.playerBar.enable();
             },
         });
@@ -269,7 +269,7 @@ function initObservers() {
         observers$1.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
         observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
             listener: () => {
-                console.log("#DBG-UU enabling playerBarTitle observer");
+                log("#DBG-UU enabling playerBarTitle observer");
                 observers$1.playerBarInfo.enable();
             },
         });
@@ -277,7 +277,7 @@ function initObservers() {
         observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
             continuous: true,
             listener: (titleElem) => {
-                console.log("#DBG-UU >>>>> title changed", titleElem.title);
+                log("#DBG-UU >>>>> title changed", titleElem.title);
             },
         });
         emitInterface("bytm:observersReady");
@@ -2824,15 +2824,8 @@ function initNumKeysSkip() {
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
 const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
-/**
- * The threshold to pass to geniURL's fuzzy filtering.
- * From fuse.js docs: At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.
- * Set to undefined to use the default.
- */
-const threshold = 0.55;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
-`&threshold=${UserUtils.clamp(threshold, 0, 1)}` ;
 //#MARKER new cache
 /** How many cache entries can exist at a time - this is used to cap memory usage */
 const maxLyricsCacheSize = 1000;
@@ -2846,14 +2839,6 @@ const lyricsCache = new UserUtils.ConfigManager({
     formatVersion: 1,
     encodeData: (data) => UserUtils.compress(data, compressionFormat, "string"),
     decodeData: (data) => UserUtils.decompress(data, compressionFormat, "string"),
-    // migrations: {
-    //   // 1 -> 2
-    //   2: (oldData: Record<string, unknown>) => {
-    //     return {
-    //       cache: oldData.cache,
-    //     };
-    //   },
-    // }
 });
 function initLyricsCache() {
     return __awaiter(this, void 0, void 0, function* () {
