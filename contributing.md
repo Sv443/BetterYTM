@@ -265,7 +265,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
 - Lyrics:
-  - [fetchLyricsUrl()](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
+  - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
   - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
@@ -601,14 +601,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### fetchLyricsUrl()
+> #### fetchLyricsUrlTop()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.fetchLyricsUrl(artist: string, song: string): Promise<string | undefined>
+> unsafeWindow.BYTM.fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined>
 > ```
 >   
 > Description:  
-> Fetches the URL to the lyrics page for the specified song.  
+> Fetches the top result's URL to the lyrics page for the specified song.  
 > If there is already an entry in the in-memory cache for the song, it will be returned without fetching anything new.  
 > URLs that are returned by this function are added to the cache automatically.  
 > Returns undefined if there was an error while fetching the URL.  
@@ -623,7 +623,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > async function getLyricsUrl() {
->   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrl("Michael Jackson", "Thriller");
+>   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop("Michael Jackson", "Thriller");
 > 
 >   if(lyricsUrl)
 >     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
@@ -646,7 +646,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Tries to find an entry in the in-memory cache for the specified song.  
 > You can find the structure of the `LyricsCacheEntry` type in the file [`src/types.ts`](src/types.ts)  
-> Contrary to [`fetchLyricsUrl()`](#fetchlyricsurl), this function does not fetch anything new if there is no entry in the cache.  
+> Contrary to [`fetchLyricsUrlTop()`](#fetchlyricsurltop), this function does not fetch anything new if there is no entry in the cache.  
 >   
 > Arguments:  
 > - `artist` - The main artist of the song to grab the lyrics URL for.  
