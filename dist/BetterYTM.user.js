@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,33 +34,34 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          img-arrow_down          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          img-delete              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          img-error               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          img-globe               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          img-help                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          img-arrow_down          http://localhost:8710/assets/icons/arrow_down.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-delete              http://localhost:8710/assets/icons/delete.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-error               http://localhost:8710/assets/icons/error.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-globe               http://localhost:8710/assets/icons/globe.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-help                http://localhost:8710/assets/icons/help.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-lyrics              http://localhost:8710/assets/icons/lyrics.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-skip_to             http://localhost:8710/assets/icons/skip_to.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-spinner             http://localhost:8710/assets/icons/spinner.svg?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-logo                http://localhost:8710/assets/logo/logo_48.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-close               http://localhost:8710/assets/icons/close.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-discord             http://localhost:8710/assets/external/discord.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-github              http://localhost:8710/assets/external/github.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-greasyfork          http://localhost:8710/assets/external/greasyfork.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          img-openuserjs          http://localhost:8710/assets/external/openuserjs.png?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          doc-changelog           http://localhost:8710/changelog.md?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?t=dc821ae4-0c37-4e41-90be-5bd832283b17
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.0/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
@@ -79,7 +80,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);/******************************************************************************
+(function(UserUtils,marked,Fuse){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -95,6 +96,18 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise, SuppressedError, Symbol */
 
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
 
 function __awaiter(thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -243,7 +256,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "7536b9e", // asserted as generic string instead of literal
+    buildNumber: "c62fd41", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -1196,6 +1209,7 @@ var updates = {
 };
 var dependencies = {
 	"@sv443-network/userutils": "^5.0.0",
+	"fuse.js": "^7.0.0",
 	marked: "^12.0.0",
 	nanoevents: "^9.0.0"
 };
@@ -2860,7 +2874,7 @@ function initNumKeysSkip() {
 }/** Base URL of geniURL */
 const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+const geniURLSearchUrl = `${geniUrlBase}/search`;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 //#MARKER new cache
@@ -2922,12 +2936,22 @@ function deleteLyricsCacheEntry(artist, song) {
 }
 /**
  * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
- * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
+ *
+ * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
  */
-function addLyricsCacheEntry(artist, song, url) {
+function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     const { cache } = lyricsCache.getData();
+    penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
+    const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
+    const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
     cache.push({
-        artist, song, url, viewed: Date.now(), added: Date.now(),
+        artist,
+        song,
+        url,
+        viewed: Date.now() - viewedPenalty,
+        added: Date.now() - addedPenalty,
     });
     cache.sort((a, b) => b.viewed - a.viewed);
     if (cache.length > maxLyricsCacheSize)
@@ -3023,6 +3047,8 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
 //#MARKER utils
 /** Removes everything in parentheses from the passed song name */
 function sanitizeSong(songName) {
+    if (typeof songName !== "string")
+        return songName;
     const parensRegex = /\(.+\)/gmi;
     const squareParensRegex = /\[.+\]/gmi;
     // trim right after the song name:
@@ -3064,7 +3090,7 @@ function getCurrentLyricsUrl() {
             }
             if (!artistName)
                 return undefined;
-            const url = yield fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+            const url = yield fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
             if (url) {
                 emitInterface("bytm:lyricsLoaded", {
                     type: "current",
@@ -3081,25 +3107,41 @@ function getCurrentLyricsUrl() {
         }
     });
 }
-/** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-function fetchLyricsUrl(artist, song) {
+/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
+function fetchLyricsUrlTop(artist, song) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
+        }
+        catch (err) {
+            error("Couldn't get lyrics URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+/**
+ * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search
+ * **the passed parameters need to be sanitized first!**
+ */
+function fetchLyricsUrls(artist, song) {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
             if (cacheEntry) {
                 info(`Found lyrics URL in cache: ${cacheEntry.url}`);
-                return cacheEntry.url;
+                return [cacheEntry];
             }
             const startTs = Date.now();
-            const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+            const fetchUrl = constructUrlString(geniURLSearchUrl, {
                 disableFuzzy: null,
                 utm_source: "BetterYTM",
                 utm_content: `v${scriptInfo.version}`,
                 artist,
                 song,
             });
-            log(`Requesting URL from geniURL at '${fetchUrl}'`);
+            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
             const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl);
             if (fetchRes.status === 429) {
                 const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
@@ -3107,18 +3149,90 @@ function fetchLyricsUrl(artist, song) {
                 return undefined;
             }
             else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
                 return undefined;
             }
             const result = yield fetchRes.json();
-            if (typeof result === "object" && result.error) {
+            if (typeof result === "object" && result.error || !result || !result.all) {
                 error("Couldn't fetch lyrics URL:", result.message);
                 return undefined;
             }
-            const url = result.url;
-            info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
-            addLyricsCacheEntry(artist, song, url);
-            return url;
+            const allResults = result.all;
+            if (allResults.length === 0) {
+                warn("No lyrics URL found for the provided song");
+                return undefined;
+            }
+            const exactish = (input) => {
+                return input.toLowerCase()
+                    .replace(/[\s\-_&,.()[\]]+/gm, "");
+            };
+            const allResultsSan = allResults
+                .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
+                .map(({ meta, url }) => {
+                var _a;
+                return ({
+                    meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
+                    url,
+                });
+            });
+            // exact-ish matches, best matching one first
+            const exactishResults = [...allResultsSan].sort((a, b) => {
+                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
+                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
+                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
+                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
+                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
+            });
+            // use fuse.js for fuzzy match
+            // search song title and artist separately, then combine the scores
+            const titleFuse = new Fuse([...allResultsSan], {
+                keys: ["title"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            const artistFuse = new Fuse([...allResultsSan], {
+                keys: ["primaryArtist.name"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            let fuzzyResults = allResultsSan.map(r => {
+                var _a, _b, _c, _d;
+                const titleRes = titleFuse.search(r.meta.title);
+                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
+                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
+                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
+                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
+            });
+            // I love TS
+            fuzzyResults = fuzzyResults
+                .map((_a) => {
+                var { score } = _a, rest = __rest(_a, ["score"]);
+                return rest;
+            });
+            const hasExactMatch = exactishResults.slice(0, 3).includes(fuzzyResults[0]);
+            const finalResults = [
+                ...(hasExactMatch
+                    ? [fuzzyResults[0]]
+                    : []),
+                ...fuzzyResults.slice(1),
+            ].slice(0, 5);
+            // add results to the cache with a penalty to their time to live
+            // so every entry is deleted faster if it's not considered as relevant
+            finalResults.forEach(({ meta: { artists, title }, url }, i) => {
+                const penaltyFraction = hasExactMatch
+                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
+                    ? i === 0 ? 0 : 1
+                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
+                    : 0.6;
+                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
+            });
+            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
+            // returns search results sorted by relevance
+            return finalResults.map(r => ({
+                artist: r.meta.primaryArtist.name,
+                song: r.meta.title,
+                url: r.url,
+            }));
         }
         catch (err) {
             error("Couldn't get lyrics URL due to error:", err);
@@ -3177,7 +3291,6 @@ function initQueueButtons() {
             log(`Added buttons to ${queueItems.length} existing "current song queue" ${UserUtils.autoPlural("item", queueItems)}`);
         }
         // generic lists
-        // TODO:FIXME: dragging the items around removes the queue buttons
         const addGenericListQueueBtns = (listElem) => {
             if (listElem.classList.contains("bytm-list-has-queue-btns"))
                 return;
@@ -3278,7 +3391,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                         imgEl.src = yield getResourceUrl("img-spinner");
                         imgEl.classList.add("bytm-spinner");
                     }
-                    lyricsUrl = (_b = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.url) !== null && _b !== void 0 ? _b : yield fetchLyricsUrl(artistsSan, songSan);
+                    lyricsUrl = (_b = cachedLyricsEntry === null || cachedLyricsEntry === void 0 ? void 0 : cachedLyricsEntry.url) !== null && _b !== void 0 ? _b : yield fetchLyricsUrlTop(artistsSan, songSan);
                     if (lyricsUrl) {
                         emitInterface("bytm:lyricsLoaded", {
                             type: "queue",
@@ -3872,7 +3985,7 @@ const globalFuncs = {
     tp,
     getFeatures,
     saveFeatures,
-    fetchLyricsUrl,
+    fetchLyricsUrlTop,
     getLyricsCacheEntry,
     sanitizeArtists,
     sanitizeSong,
@@ -5849,4 +5962,4 @@ function registerMenuCommands() {
         }), "s");
     }
 }
-preInit();})(UserUtils,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
