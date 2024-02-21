@@ -23,11 +23,11 @@ export interface BytmDialogOptions {
   /** Whether the menu should have a smaller overall appearance - defaults to false */
   smallMenu?: boolean;
   /** Called to render the body of the dialog */
-  renderBody: () => HTMLElement;
+  renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
-  renderHeader?: () => HTMLElement;
+  renderHeader?: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
-  renderFooter?: () => HTMLElement;
+  renderFooter?: () => HTMLElement | Promise<HTMLElement>;
 }
 
 /** ID of the last opened (top-most) dialog */
@@ -247,7 +247,7 @@ export class BytmDialog extends NanoEmitter<{
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
 
-      headerTitleWrapperEl.appendChild(header);
+      headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
     else
@@ -273,7 +273,9 @@ export class BytmDialog extends NanoEmitter<{
     menuBodyElem.classList.add("bytm-dialog-body");
     this.options.smallMenu && menuBodyElem.classList.add("small");
 
-    menuBodyElem.appendChild(this.options.renderBody());
+    const body = this.options.renderBody();
+
+    menuBodyElem.appendChild(body instanceof Promise ? await body : body);
     dialogWrapperEl.appendChild(menuBodyElem);
 
     //#SECTION footer
@@ -282,7 +284,7 @@ export class BytmDialog extends NanoEmitter<{
       const footerWrapper = document.createElement("div");
       footerWrapper.classList.add("bytm-dialog-footer-cont");
       dialogWrapperEl.appendChild(footerWrapper);
-      footerWrapper.appendChild(footer);
+      footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
     }
 
     return dialogWrapperEl;

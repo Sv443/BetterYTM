@@ -390,5 +390,5 @@ hr {
 }
 
 #bytm-ftitem-locale-adornment svg path {
-  fill: #4595c7;
+  fill: var(--bytm-dialog-accent-col, #4595c7);
 }
