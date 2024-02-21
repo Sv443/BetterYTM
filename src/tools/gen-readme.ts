@@ -98,7 +98,7 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
 
 async function genHeader() {
   const langStr = Object.values(locales).reduce((acc, { nameEnglish, emoji }, i) => {
-    return `${acc}${i > 0 ? ", " : ""}${emoji} ${nameEnglish}`;
+    return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
   }, "");
   return `\
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_128.png" width="96" height="96" /><br>${pkg.userscriptName}</h1>
