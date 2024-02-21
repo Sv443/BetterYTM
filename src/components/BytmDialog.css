@@ -1,3 +1,7 @@
+:root {
+  --bytm-dialog-accent-col: #3683d4;
+}
+
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -258,14 +262,9 @@
   margin-right: 10px;
 }
 
-.bytm-toggle-label {
-  padding-left: 10px;
-  padding-right: 5px;
-}
-
 .bytm-ftconf-input.bytm-hotkey-input {
   cursor: pointer;
-  min-width: 50px;
+  min-width: 80px;
 }
 
 .bytm-ftconf-input[type=number] {
@@ -396,5 +395,5 @@ hr {
 }
 
 #bytm-ftitem-locale-adornment svg path {
-  fill: #4595c7;
+  fill: var(--bytm-dialog-accent-col, #4595c7);
 }
