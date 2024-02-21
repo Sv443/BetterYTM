@@ -3,7 +3,7 @@ import { mode, branch, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
-import { fetchLyricsUrl, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
+import { fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
 import type { SiteEventsMap } from "./siteEvents";
 
 const { getUnsafeWindow } = UserUtils;
@@ -39,7 +39,7 @@ const globalFuncs = {
   tp,
   getFeatures,
   saveFeatures,
-  fetchLyricsUrl,
+  fetchLyricsUrlTop,
   getLyricsCacheEntry,
   sanitizeArtists,
   sanitizeSong,

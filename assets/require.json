@@ -4,6 +4,10 @@
     "path": "dist/index.global.js"
   },
   {
+    "pkgName": "fuse.js",
+    "path": "dist/fuse.basic.js"
+  },
+  {
     "pkgName": "marked",
     "path": "lib/marked.umd.js"
   }

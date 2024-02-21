@@ -1,4 +1,5 @@
-import { ConfigManager, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { ConfigManager, autoPlural, clamp, compress, decompress, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import Fuse from "fuse.js";
 import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp, compressionSupported } from "../utils";
 import { emitInterface } from "../interface";
 import { compressionFormat, scriptInfo } from "../constants";
@@ -7,7 +8,7 @@ import type { LyricsCacheEntry } from "../types";
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
 /** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchTopUrl = `${geniUrlBase}/search/top`;
+const geniURLSearchUrl = `${geniUrlBase}/search`;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 
@@ -96,6 +97,35 @@ export function addLyricsCacheEntry(artist: string, song: string, url: string) {
   cache.sort((a, b) => b.viewed - a.viewed);
   if(cache.length > maxLyricsCacheSize)
     cache.pop();
+  return lyricsCache.setData({ cache });
+}
+
+/**
+ * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
+ * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache  
+ *   
+ * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
+ */
+export function addLyricsCacheEntryPenalized(artist: string, song: string, url: string, penaltyFr = 0) {
+  const { cache } = lyricsCache.getData();
+
+  penaltyFr = clamp(penaltyFr, 0, 1);
+
+  const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
+  const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
+  cache.push({
+    artist,
+    song,
+    url,
+    viewed: Date.now() - viewedPenalty,
+    added: Date.now() - addedPenalty,
+  } satisfies LyricsCacheEntry);
+
+  cache.sort((a, b) => b.viewed - a.viewed);
+  if(cache.length > maxLyricsCacheSize)
+    cache.pop();
+
   return lyricsCache.setData({ cache });
 }
 
@@ -198,6 +228,9 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
 
 /** Removes everything in parentheses from the passed song name */
 export function sanitizeSong(songName: string) {
+  if(typeof songName !== "string")
+    return songName;
+
   const parensRegex = /\(.+\)/gmi;
   const squareParensRegex = /\[.+\]/gmi;
 
@@ -250,7 +283,7 @@ export async function getCurrentLyricsUrl() {
     if(!artistName)
       return undefined;
 
-    const url = await fetchLyricsUrl(sanitizeArtists(artistName), sanitizeSong(songName));
+    const url = await fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
 
     if(url) {
       emitInterface("bytm:lyricsLoaded", {
@@ -269,17 +302,31 @@ export async function getCurrentLyricsUrl() {
   }
 }
 
-/** Fetches the actual lyrics URL from geniURL - **the passed parameters need to be sanitized first!** */
-export async function fetchLyricsUrl(artist: string, song: string): Promise<string | undefined> {
+/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
+export async function fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined> {
+  try {
+    return (await fetchLyricsUrls(artist, song))?.[0]?.url;
+  }
+  catch(err) {
+    error("Couldn't get lyrics URL due to error:", err);
+    return undefined;
+  }
+}
+
+/**
+ * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search  
+ * **the passed parameters need to be sanitized first!**
+ */
+export async function fetchLyricsUrls(artist: string, song: string): Promise<Omit<LyricsCacheEntry, "added" | "viewed">[] | undefined> {
   try {
     const cacheEntry = getLyricsCacheEntry(artist, song);
     if(cacheEntry) {
       info(`Found lyrics URL in cache: ${cacheEntry.url}`);
-      return cacheEntry.url;
+      return [cacheEntry];
     }
 
     const startTs = Date.now();
-    const fetchUrl = constructUrlString(geniURLSearchTopUrl, {
+    const fetchUrl = constructUrlString(geniURLSearchUrl, {
       disableFuzzy: null,
       utm_source: "BetterYTM",
       utm_content: `v${scriptInfo.version}`,
@@ -287,7 +334,7 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
       song,
     });
 
-    log(`Requesting URL from geniURL at '${fetchUrl}'`);
+    log(`Requesting URLs from geniURL at '${fetchUrl}'`);
 
     const fetchRes = await fetchAdvanced(fetchUrl);
     if(fetchRes.status === 429) {
@@ -296,22 +343,119 @@ export async function fetchLyricsUrl(artist: string, song: string): Promise<stri
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      error(`Couldn't fetch lyrics URL from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
+      error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
       return undefined;
     }
     const result = await fetchRes.json();
 
-    if(typeof result === "object" && result.error) {
+    if(typeof result === "object" && result.error || !result || !result.all) {
       error("Couldn't fetch lyrics URL:", result.message);
       return undefined;
     }
 
-    const url = result.url;
+    const allResults = result.all as {
+      url: string;
+      meta: {
+        title: string;
+        fullTitle: string;
+        artists: string;
+        primaryArtist: {
+          name: string;
+        };
+      };
+    }[];
 
-    info(`Found lyrics URL (after ${Date.now() - startTs}ms): ${url}`);
-    addLyricsCacheEntry(artist, song, url);
+    if(allResults.length === 0) {
+      warn("No lyrics URL found for the provided song");
+      return undefined;
+    }
 
-    return url;
+    const exactish = (input: string) => {
+      return input.toLowerCase()
+        .replace(/[\s\-_&,.()[\]]+/gm, "");
+    };
+
+    const allResultsSan = allResults
+      .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
+      .map(({ meta, url }) => ({
+        meta: {
+          ...meta,
+          title: sanitizeSong(String(meta.title ?? meta.fullTitle)),
+          artists: sanitizeArtists(String(meta.artists)),
+        },
+        url,
+      }));
+
+    // exact-ish matches, best matching one first
+    const exactishResults = [...allResultsSan].sort((a, b) => {
+      const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
+      const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
+      const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
+      const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
+
+      return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
+    });
+
+    // use fuse.js for fuzzy match
+    // search song title and artist separately, then combine the scores
+    const titleFuse = new Fuse([...allResultsSan], {
+      keys: ["title"],
+      includeScore: true,
+      threshold: 0.4,
+    });
+
+    const artistFuse = new Fuse([...allResultsSan], {
+      keys: ["primaryArtist.name"],
+      includeScore: true,
+      threshold: 0.4,
+    });
+
+    let fuzzyResults: typeof allResultsSan = allResultsSan.map(r => {
+      const titleRes = titleFuse.search(r.meta.title);
+      const artistRes = artistFuse.search(r.meta.primaryArtist.name);
+
+      const titleScore = titleRes[0]?.score ?? 0;
+      const artistScore = artistRes[0]?.score ?? 0;
+
+      return {
+        ...r,
+        score: titleScore + artistScore,
+      };
+    });
+    // I love TS
+    fuzzyResults = (fuzzyResults as (typeof allResultsSan[0] & { score: number })[])
+      .map(({ score, ...rest }) => rest as typeof allResultsSan[0]);
+
+    const hasExactMatch = exactishResults.slice(0, 3).includes(fuzzyResults[0]);
+
+    const finalResults = [
+      ...(
+        hasExactMatch
+          ? [fuzzyResults[0]]
+          : []
+      ),
+      ...fuzzyResults.slice(1),
+    ].slice(0, 5);
+
+    // add results to the cache with a penalty to their time to live
+    // so every entry is deleted faster if it's not considered as relevant
+    finalResults.forEach(({ meta: { artists, title }, url }, i) => {
+      const penaltyFraction = hasExactMatch
+        // if there's an exact match, give it 0 penalty and penalize all other results with the full value
+        ? i === 0 ? 0 : 1
+        // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
+        : 0.6;
+      addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
+    });
+
+    finalResults.length > 0 && log("Found", finalResults.length, "lyrics", autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
+
+    // returns search results sorted by relevance
+    return finalResults.map(r => ({
+      artist: r.meta.primaryArtist.name,
+      song: r.meta.title,
+      url: r.url,
+    }));
   }
   catch(err) {
     error("Couldn't get lyrics URL due to error:", err);

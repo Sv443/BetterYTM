@@ -53,8 +53,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       sourcemap: mode === "development",
       compact: mode === "development",
       globals: {
-        "marked": "marked",
         "@sv443-network/userutils": "UserUtils",
+        "fuse.js": "Fuse",
+        "marked": "marked",
       },
     },
     onwarn(warning) {
@@ -65,8 +66,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       }
     },
     external: [
-      "marked",
       "@sv443-network/userutils",
+      "fuse.js",
+      "marked",
     ],
   };
 
