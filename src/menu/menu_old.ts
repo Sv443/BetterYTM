@@ -7,7 +7,7 @@ import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
-import { createHotkeyInput } from "../components";
+import { createHotkeyInput, createToggle } from "../components";
 import pkg from "../../package.json" assert { type: "json" };
 
 //#MARKER create menu elements
@@ -335,7 +335,8 @@ async function addCfgMenu() {
         switch(type)
         {
         case "toggle":
-          inputType = "checkbox";
+          inputTag = undefined;
+          inputType = undefined;
           break;
         case "slider":
           inputType = "range";
@@ -398,16 +399,6 @@ async function addCfgMenu() {
                 labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
             });
           }
-          else if(type === "toggle") {
-            labelElem = document.createElement("label");
-            labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-            labelElem.textContent = toggleLabelText(Boolean(initialVal)) + unitTxt;
-
-            inputElem.addEventListener("input", () => {
-              if(labelElem)
-                labelElem.textContent = toggleLabelText(inputElem.checked) + unitTxt;
-            });
-          }
           else if(type === "select") {
             const ftOpts = typeof ftInfo.options === "function"
               ? ftInfo.options()
@@ -445,9 +436,15 @@ async function addCfgMenu() {
           case "hotkey":
             wrapperElem = createHotkeyInput({
               initialValue: initialVal as HotkeyObj,
-              onChange: (hotkey) => {
-                confChanged(featKey as keyof FeatureConfig, initialVal, hotkey);
-              },
+              onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
+            });
+            break;
+          case "toggle":
+            wrapperElem = await createToggle({
+              onChange: (checked) => confChanged(featKey as keyof FeatureConfig, initialVal, checked),
+              id: `ftconf-${featKey}`,
+              initialValue: Boolean(initialVal),
+              labelPos: "left",
             });
             break;
           }
