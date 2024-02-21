@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@sv443-network/userutils": "^5.0.0",
+    "fuse.js": "^7.0.0",
     "marked": "^12.0.0",
     "nanoevents": "^9.0.0"
   },

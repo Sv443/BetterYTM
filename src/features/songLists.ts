@@ -2,7 +2,7 @@ import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { clearInner, error, getResourceUrl, log, onSelectorOld, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
-import { fetchLyricsUrl, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
 import type { FeatureConfig, LyricsCacheEntry } from "../types";
 import "./songLists.css";
 
@@ -40,8 +40,6 @@ export async function initQueueButtons() {
   }
 
   // generic lists
-  // TODO:FIXME: dragging the items around removes the queue buttons
-
   const addGenericListQueueBtns = (listElem: HTMLElement) => {
     if(listElem.classList.contains("bytm-list-has-queue-btns"))
       return;
@@ -168,7 +166,7 @@ async function addQueueButtons(
           imgEl.classList.add("bytm-spinner");
         }
 
-        lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrl(artistsSan, songSan);
+        lyricsUrl = (cachedLyricsEntry as unknown as LyricsCacheEntry)?.url ?? await fetchLyricsUrlTop(artistsSan, songSan);
 
         if(lyricsUrl) {
           emitInterface("bytm:lyricsLoaded", {
