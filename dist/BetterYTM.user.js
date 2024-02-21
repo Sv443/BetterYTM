@@ -243,7 +243,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "eaa284e", // asserted as generic string instead of literal
+    buildNumber: "7536b9e", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -309,8 +309,8 @@ var en_US = {
 };
 var en_UK = {
 	name: "English (United Kingdom)",
-	nameEnglish: "German",
-	emoji: "🇩🇪",
+	nameEnglish: "English",
+	emoji: "🇬🇧",
 	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music",
 	authors: [
 		"Sv443"
@@ -925,7 +925,7 @@ class BytmDialog extends NanoEmitter {
                 headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
                 headerTitleWrapperEl.role = "heading";
                 headerTitleWrapperEl.ariaLevel = "1";
-                headerTitleWrapperEl.appendChild(header);
+                headerTitleWrapperEl.appendChild(header instanceof Promise ? yield header : header);
                 headerWrapperEl.appendChild(headerTitleWrapperEl);
             }
             else
@@ -946,14 +946,15 @@ class BytmDialog extends NanoEmitter {
             menuBodyElem.id = `bytm-${this.id}-dialog-body`;
             menuBodyElem.classList.add("bytm-dialog-body");
             this.options.smallMenu && menuBodyElem.classList.add("small");
-            menuBodyElem.appendChild(this.options.renderBody());
+            const body = this.options.renderBody();
+            menuBodyElem.appendChild(body instanceof Promise ? yield body : body);
             dialogWrapperEl.appendChild(menuBodyElem);
             //#SECTION footer
             if (footer) {
                 const footerWrapper = document.createElement("div");
                 footerWrapper.classList.add("bytm-dialog-footer-cont");
                 dialogWrapperEl.appendChild(footerWrapper);
-                footerWrapper.appendChild(footer);
+                footerWrapper.appendChild(footer instanceof Promise ? yield footer : footer);
             }
             return dialogWrapperEl;
         });
@@ -1098,6 +1099,44 @@ function getOS() {
     if (navigator.userAgent.match(/mac(\s?os|intel)/i))
         return "mac";
     return "other";
+}/** Creates a simple toggle element */
+function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(8, 24), labelPos = "left", }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wrapperEl = document.createElement("div");
+        wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
+        wrapperEl.role = "switch";
+        wrapperEl.tabIndex = 0;
+        wrapperEl.ariaValueText = t(`toggled_${initialValue ? "on" : "off"}`);
+        const labelEl = document.createElement("label");
+        labelEl.classList.add("bytm-toggle-label");
+        labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
+        if (id)
+            labelEl.htmlFor = `bytm-toggle-${id}`;
+        const toggleEl = document.createElement("input");
+        toggleEl.classList.add("bytm-toggle");
+        toggleEl.type = "checkbox";
+        toggleEl.checked = initialValue;
+        toggleEl.tabIndex = -1;
+        if (id)
+            toggleEl.id = `bytm-toggle-${id}`;
+        const toggleElClicked = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onChange(toggleEl.checked);
+            labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+        };
+        toggleEl.addEventListener("change", toggleElClicked);
+        wrapperEl.addEventListener("keydown", (e) => {
+            if (["Space", " ", "Enter"].includes(e.code)) {
+                toggleEl.checked = !toggleEl.checked;
+                toggleElClicked(e);
+            }
+        });
+        labelPos === "left" && wrapperEl.appendChild(labelEl);
+        wrapperEl.appendChild(toggleEl);
+        labelPos === "right" && wrapperEl.appendChild(labelEl);
+        return wrapperEl;
+    });
 }var name = "betterytm";
 var userscriptName = "BetterYTM";
 var version = "1.1.1";
@@ -1485,7 +1524,8 @@ function addCfgMenu() {
                     let inputTag = "input";
                     switch (type) {
                         case "toggle":
-                            inputType = "checkbox";
+                            inputTag = undefined;
+                            inputType = undefined;
                             break;
                         case "slider":
                             inputType = "range";
@@ -1537,15 +1577,6 @@ function addCfgMenu() {
                                     labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
                             });
                         }
-                        else if (type === "toggle") {
-                            labelElem = document.createElement("label");
-                            labelElem.classList.add("bytm-ftconf-label", "bytm-toggle-label");
-                            labelElem.textContent = toggleLabelText(Boolean(initialVal)) + unitTxt;
-                            inputElem.addEventListener("input", () => {
-                                if (labelElem)
-                                    labelElem.textContent = toggleLabelText(inputElem.checked) + unitTxt;
-                            });
-                        }
                         else if (type === "select") {
                             const ftOpts = typeof ftInfo.options === "function"
                                 ? ftInfo.options()
@@ -1580,9 +1611,15 @@ function addCfgMenu() {
                             case "hotkey":
                                 wrapperElem = createHotkeyInput({
                                     initialValue: initialVal,
-                                    onChange: (hotkey) => {
-                                        confChanged(featKey, initialVal, hotkey);
-                                    },
+                                    onChange: (hotkey) => confChanged(featKey, initialVal, hotkey),
+                                });
+                                break;
+                            case "toggle":
+                                wrapperElem = yield createToggle({
+                                    onChange: (checked) => confChanged(featKey, initialVal, checked),
+                                    id: `ftconf-${featKey}`,
+                                    initialValue: Boolean(initialVal),
+                                    labelPos: "left",
                                 });
                                 break;
                         }
@@ -4834,7 +4871,11 @@ hr {
 }
 
 #bytm-ftitem-locale-adornment svg path {
-  fill: #4595c7;
+  fill: var(--bytm-dialog-accent-col, #4595c7);
+}
+
+:root {
+  --bytm-dialog-accent-col: #3683d4;
 }
 
 .bytm-dialog-bg {
@@ -5097,14 +5138,9 @@ hr {
   margin-right: 10px;
 }
 
-.bytm-toggle-label {
-  padding-left: 10px;
-  padding-right: 5px;
-}
-
 .bytm-ftconf-input.bytm-hotkey-input {
   cursor: pointer;
-  min-width: 50px;
+  min-width: 80px;
 }
 
 .bytm-ftconf-input[type=number] {
@@ -5235,7 +5271,7 @@ hr {
 }
 
 #bytm-ftitem-locale-adornment svg path {
-  fill: #4595c7;
+  fill: var(--bytm-dialog-accent-col, #4595c7);
 }
 
 .bytm-hotkey-wrapper {
@@ -5253,6 +5289,72 @@ hr {
 .bytm-hotkey-info {
   font-size: 0.9em;
   white-space: nowrap;
+}
+
+.bytm-toggle-wrapper {
+  --toggle-height: 24px;
+  --toggle-width: 48px;
+  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
+  --toggle-color-off: #707070;
+
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-wrapper .bytm-toggle-label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+}
+
+/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
+
+.bytm-toggle {
+  appearance: none;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  display: inline-block;
+  position: relative;
+  border-radius: 50px;
+  margin: 0px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: var(--toggle-color-off);
+  transition: background-color ease 0.2s;
+}
+
+.bytm-toggle:before {
+  content: " ";
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: calc(var(--toggle-height) - 4px);
+  height: calc(var(--toggle-height) - 4px);
+  background: #fff;
+  border-radius: 50%;
+  font: 10px/28px Helvetica;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-indent: -22px;
+  word-spacing: 37px;
+  color: #fff;
+  left: 2px;
+  top: 2px;
+  text-shadow: -1px -1px rgba(0,0,0,0.15);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: all ease 0.2s;
+}
+
+.bytm-toggle:checked {
+  background-color: var(--toggle-color-on);
+}
+
+.bytm-toggle:checked:before {
+  left: calc(var(--toggle-width) - 22px);
 }
 
 /* #MARKER misc */
