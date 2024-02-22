@@ -5,7 +5,7 @@
   - Improved accessibility of hotkey inputs
   - Remade the toggle buttons in the config menu to look cool and still be just as accessible
 
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/TODO)
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/52)
 
 <div class="split"></div>
 <br>
