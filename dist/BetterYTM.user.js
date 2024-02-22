@@ -256,7 +256,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "8debcf0", // asserted as generic string instead of literal
+    buildNumber: "bccce1c", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -3209,12 +3209,11 @@ function fetchLyricsUrls(artist, song) {
                 var { score } = _a, rest = __rest(_a, ["score"]);
                 return rest;
             });
-            const hasExactMatch = exactishResults.slice(0, 3).includes(fuzzyResults[0]);
+            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
             const finalResults = [
                 ...(hasExactMatch
-                    ? [fuzzyResults[0]]
-                    : []),
-                ...fuzzyResults.slice(1),
+                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
+                    : [...allResultsSan]),
             ].slice(0, 5);
             // add results to the cache with a penalty to their time to live
             // so every entry is deleted faster if it's not considered as relevant
