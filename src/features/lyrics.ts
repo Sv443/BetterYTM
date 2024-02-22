@@ -426,15 +426,13 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     fuzzyResults = (fuzzyResults as (typeof allResultsSan[0] & { score: number })[])
       .map(({ score, ...rest }) => rest as typeof allResultsSan[0]);
 
-    const hasExactMatch = exactishResults.slice(0, 3).includes(fuzzyResults[0]);
-
+    const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
     const finalResults = [
       ...(
         hasExactMatch
-          ? [fuzzyResults[0]]
-          : []
+          ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
+          : [...allResultsSan]
       ),
-      ...fuzzyResults.slice(1),
     ].slice(0, 5);
 
     // add results to the cache with a penalty to their time to live
