@@ -2,7 +2,7 @@ import { ConfigManager, autoPlural, clamp, compress, decompress, fetchAdvanced, 
 import Fuse from "fuse.js";
 import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp, compressionSupported } from "../utils";
 import { emitInterface } from "../interface";
-import { compressionFormat, scriptInfo } from "../constants";
+import { compressionFormat, mode, scriptInfo } from "../constants";
 import type { LyricsCacheEntry } from "../types";
 
 /** Base URL of geniURL */
@@ -328,8 +328,8 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     const startTs = Date.now();
     const fetchUrl = constructUrlString(geniURLSearchUrl, {
       disableFuzzy: null,
-      utm_source: "BetterYTM",
-      utm_content: `v${scriptInfo.version}`,
+      utm_source: scriptInfo.name,
+      utm_content: mode === "development" ? "dev" : `v${scriptInfo.version}`,
       artist,
       song,
     });

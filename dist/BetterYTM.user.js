@@ -256,7 +256,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "bccce1c", // asserted as generic string instead of literal
+    buildNumber: "84f187b", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -3136,8 +3136,8 @@ function fetchLyricsUrls(artist, song) {
             const startTs = Date.now();
             const fetchUrl = constructUrlString(geniURLSearchUrl, {
                 disableFuzzy: null,
-                utm_source: "BetterYTM",
-                utm_content: `v${scriptInfo.version}`,
+                utm_source: scriptInfo.name,
+                utm_content: mode === "development" ? "dev" : `v${scriptInfo.version}`,
                 artist,
                 song,
             });
