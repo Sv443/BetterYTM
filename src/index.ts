@@ -335,12 +335,17 @@ function registerMenuCommands() {
       }
     }, "d");
 
-    GM.registerMenuCommand("Delete GM value by name", async () => {
-      const key = prompt("Enter the name of the GM value to delete.\nEmpty input cancels the operation.");
-      if(key && key.length > 0) {
-        const oldVal = await GM.getValue(key);
-        await GM.deleteValue(key);
-        console.log(`Deleted GM value '${key}' with previous value '${oldVal}'`);
+    GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
+      const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+      if(!keys)
+        return;
+      for(const key of keys?.split(",") ?? []) {
+        if(key && key.length > 0) {
+          const truncLength = 400;
+          const oldVal = await GM.getValue(key);
+          await GM.deleteValue(key);
+          console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
+        }
       }
     }, "n");
 
