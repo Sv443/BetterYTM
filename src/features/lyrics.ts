@@ -4,6 +4,7 @@ import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, wa
 import { emitInterface } from "../interface";
 import { compressionFormat, mode, scriptInfo } from "../constants";
 import type { LyricsCacheEntry } from "../types";
+import { getFeatures } from "src/config";
 
 /** Base URL of geniURL */
 export const geniUrlBase = "https://api.sv443.net/geniurl";
@@ -13,11 +14,6 @@ const geniURLSearchUrl = `${geniUrlBase}/search`;
 const geniUrlRatelimitTimeframe = 30;
 
 //#MARKER new cache
-
-/** How many cache entries can exist at a time - this is used to cap memory usage */
-const maxLyricsCacheSize = 500;
-/** Maximum time before a cache entry is force deleted */
-const cacheTTL = 1000 * 60 * 60 * 24 * 21; // 21 days
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];
@@ -50,7 +46,7 @@ export async function initLyricsCache() {
 export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
   const { cache } = lyricsCache.getData();
   const entry = cache.find(e => e.artist === artist && e.song === song);
-  if(entry && Date.now() - entry?.added > cacheTTL) {
+  if(entry && Date.now() - entry?.added > getFeatures().lyricsCacheTTL * 1000 * 60 * 60 * 24) {
     deleteLyricsCacheEntry(artist, song);
     return undefined;
   }
@@ -95,7 +91,7 @@ export function addLyricsCacheEntry(artist: string, song: string, url: string) {
     artist, song, url, viewed: Date.now(), added: Date.now(),
   } satisfies LyricsCacheEntry);
   cache.sort((a, b) => b.viewed - a.viewed);
-  if(cache.length > maxLyricsCacheSize)
+  if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
   return lyricsCache.setData({ cache });
 }
@@ -123,7 +119,7 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   } satisfies LyricsCacheEntry);
 
   cache.sort((a, b) => b.viewed - a.viewed);
-  if(cache.length > maxLyricsCacheSize)
+  if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
 
   return lyricsCache.setData({ cache });

@@ -261,6 +261,10 @@
   width: 75px;
 }
 
+.bytm-ftconf-input[type=range] {
+  width: 240px;
+}
+
 .bytm-ftconf-input[type=checkbox] {
   margin-left: 5px;
 }

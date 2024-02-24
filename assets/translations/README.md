@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 133 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `133/133` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `125/133` (94.0%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `125/133` (94.0%) | ─ |
+| [`en_US`](./en_US.json) | 137 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `137/137` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `125/137` (91.2%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `125/137` (91.2%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -37,10 +37,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -52,10 +56,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -67,10 +75,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -82,10 +94,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -97,10 +113,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -112,10 +132,14 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 8 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -127,5 +151,9 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `unit_entries-1` | `entry` |
+| `unit_entries-n` | `entries` |
+| `unit_days-1` | `day` |
+| `unit_days-n` | `days` |
 
 <br></details>
