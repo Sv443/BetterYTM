@@ -4,6 +4,8 @@
   - Added filtering algorithm to lyrics fetching to yield more accurate results
   - Improved accessibility of hotkey inputs
   - Remade the toggle buttons in the config menu to look cool and still be just as accessible
+- **Internal Changes:**
+  - Implemented new class BytmMenu for less duplicate code and better accessibility, and to enable the improved configuration menu
 
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/52)
 
