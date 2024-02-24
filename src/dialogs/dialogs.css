@@ -1,3 +1,23 @@
+#bytm-cfg-dialog-bg {
+  --bytm-dialog-height-max: 750px;
+  --bytm-dialog-width-max: 1000px;
+}
+
+#bytm-changelog-dialog-bg {
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 800px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg {
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg {
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+}
+
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
@@ -16,19 +36,33 @@
 }
 
 #bytm-disable-update-check-wrapper {
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
 }
 
 #bytm-disable-update-check-wrapper label {
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
 #bytm-version-notif-changelog-cont {
-  max-height: 400px;
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
   overflow-y: auto;
   margin: 10px 0px;
 }
 
 #bytm-version-notif-changelog-details {
   margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
 }

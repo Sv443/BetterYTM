@@ -9,8 +9,8 @@ export interface ToggleProps {
   initialValue?: boolean;
   /** If unspecified, a random ID is generated */
   id?: string;
-  /** Position of the label relative to the toggle */
-  labelPos?: "left" | "right";
+  /** Toggle label off or change position of the label relative to the toggle */
+  labelPos?: "off" | "left" | "right";
 }
 
 /** Creates a simple toggle element */
@@ -26,11 +26,13 @@ export async function createToggle({
   wrapperEl.tabIndex = 0;
   wrapperEl.ariaValueText = t(`toggled_${initialValue ? "on" : "off"}`);
 
-  const labelEl = document.createElement("label");
-  labelEl.classList.add("bytm-toggle-label");
-  labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
-  if(id)
-    labelEl.htmlFor = `bytm-toggle-${id}`;
+  const labelEl = labelPos !== "off" && document.createElement("label");
+  if(labelEl) {
+    labelEl.classList.add("bytm-toggle-label");
+    labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
+    if(id)
+      labelEl.htmlFor = `bytm-toggle-${id}`;
+  }
 
   const toggleEl = document.createElement("input");
   toggleEl.classList.add("bytm-toggle");
@@ -45,7 +47,8 @@ export async function createToggle({
     e.stopPropagation();
 
     onChange(toggleEl.checked);
-    labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+    if(labelEl)
+      labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
   };
 
   toggleEl.addEventListener("change", toggleElClicked);
@@ -56,9 +59,9 @@ export async function createToggle({
     }
   });
 
-  labelPos === "left" && wrapperEl.appendChild(labelEl);
+  labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
   wrapperEl.appendChild(toggleEl);
-  labelPos === "right" && wrapperEl.appendChild(labelEl);
+  labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
 
   return wrapperEl;
 }
