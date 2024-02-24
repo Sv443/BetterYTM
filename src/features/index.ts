@@ -262,7 +262,7 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
+    textAdornment: getAdvancedModeAdornment,
   },
   lyricsCacheMaxSize: {
     type: "slider",
@@ -276,7 +276,7 @@ export const featInfo = {
     change: () => void "TODO",
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
+    textAdornment: getAdvancedModeAdornment,
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -290,7 +290,7 @@ export const featInfo = {
     change: () => void "TODO",
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
+    textAdornment: getAdvancedModeAdornment,
   },
   clearLyricsCache: {
     type: "button",
@@ -305,7 +305,7 @@ export const featInfo = {
     },
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
+    textAdornment: getAdvancedModeAdornment,
   },
 
   //#SECTION general
@@ -342,6 +342,10 @@ export const featInfo = {
     enable: () => void "TODO",
     disable: () => void "TODO",
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => getFeatures().advancedMode ? `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>` : undefined,
+    textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
   },
 } as const satisfies FeatureInfo;
+
+async function getAdvancedModeAdornment() {
+  return `<span class="advanced-mode-icon" title="${t("advanced_mode_tooltip")}">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`;
+}

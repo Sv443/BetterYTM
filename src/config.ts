@@ -52,11 +52,11 @@ export const migrations: ConfigMigrationsDict = {
   5: (oldData: Record<string, unknown>) => {
     return {
       ...oldData,
+      geniUrlBase: getFeatureDefault("geniUrlBase"),
       lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
       lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
       clearLyricsCache: undefined,
       advancedMode: getFeatureDefault("advancedMode"),
-      geniUrlBase: getFeatureDefault("geniUrlBase"),
     };
   },
 };
