@@ -15,9 +15,9 @@ const geniUrlRatelimitTimeframe = 30;
 //#MARKER new cache
 
 /** How many cache entries can exist at a time - this is used to cap memory usage */
-const maxLyricsCacheSize = 1000;
+const maxLyricsCacheSize = 500;
 /** Maximum time before a cache entry is force deleted */
-const cacheTTL = 1000 * 60 * 60 * 24 * 30; // 30 days
+const cacheTTL = 1000 * 60 * 60 * 24 * 21; // 21 days
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];
@@ -252,6 +252,15 @@ export function sanitizeArtists(artists: string) {
   if(artists.match(/,/))
     artists = artists.split(/,\s*/gm)[0];
 
+  if(artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
+    const parensRegex = /\(.+\)/gmi;
+    const squareParensRegex = /\[.+\]/gmi;
+
+    artists = artists
+      .replace(parensRegex, "")
+      .replace(squareParensRegex, "");
+  }
+
   return artists.trim();
 }
 
@@ -435,9 +444,9 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       ),
     ].slice(0, 5);
 
-    // add results to the cache with a penalty to their time to live
+    // add top 3 results to the cache with a penalty to their time to live
     // so every entry is deleted faster if it's not considered as relevant
-    finalResults.forEach(({ meta: { artists, title }, url }, i) => {
+    finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
       const penaltyFraction = hasExactMatch
         // if there's an exact match, give it 0 penalty and penalize all other results with the full value
         ? i === 0 ? 0 : 1

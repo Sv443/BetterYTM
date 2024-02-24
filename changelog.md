@@ -1,6 +1,6 @@
 ## 1.2.0
 - **Features / Changes:**
-  - Added a persistent cache to save lyrics in. Up to 1000 of the most listened to songs are cached throughout sessions for 30 days to save time and reduce server load.
+  - Added a persistent cache to save lyrics in. Up to 500 of the most listened to songs are cached throughout sessions for 3 weeks to save time and reduce server load.
   - Added filtering algorithm to lyrics fetching to yield more accurate results
   - Improved accessibility of hotkey inputs
   - Remade the toggle buttons in the config menu to look cool and still be just as accessible
