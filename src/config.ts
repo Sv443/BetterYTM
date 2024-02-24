@@ -49,15 +49,16 @@ export const migrations: ConfigMigrationsDict = {
     };
   },
   // 4 -> 5
-  5: (oldData: Record<string, unknown>) => {
+  5: (oldData: FeatureConfig) => {
     return {
       ...oldData,
       geniUrlBase: getFeatureDefault("geniUrlBase"),
+      geniUrlToken: getFeatureDefault("geniUrlToken"),
       lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
       lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
       clearLyricsCache: getFeatureDefault("clearLyricsCache"),
       advancedMode: getFeatureDefault("advancedMode"),
-    };
+    } satisfies FeatureConfig;
   },
 };
 
