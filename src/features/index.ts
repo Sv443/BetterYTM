@@ -2,8 +2,9 @@ import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
 import { clearLyricsCache, getLyricsCache } from "./lyrics";
+import { mode } from "../constants";
+import { getFeatures } from "../config";
 import { FeatureInfo } from "../types";
-import { getFeatures } from "src/config";
 
 export * from "./layout";
 export * from "./behavior";
@@ -338,7 +339,7 @@ export const featInfo = {
   advancedMode: {
     type: "toggle",
     category: "general",
-    default: false,
+    default: mode === "development",
     enable: () => void "TODO",
     disable: () => void "TODO",
     // TODO: to be reworked or removed in the big menu rework

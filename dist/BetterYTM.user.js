@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "84d41a8";
+const buildNumberRaw = "13d0aa6";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -4027,7 +4027,7 @@ const featInfo = {
     advancedMode: {
         type: "toggle",
         category: "general",
-        default: false,
+        default: mode === "development",
         enable: () => void "TODO",
         disable: () => void "TODO",
         // TODO: to be reworked or removed in the big menu rework
@@ -4064,7 +4064,7 @@ const migrations = {
     },
     // 4 -> 5
     5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode") });
+        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode") });
     },
 };
 function getFeatureDefault(key) {
