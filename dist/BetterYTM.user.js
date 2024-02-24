@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "52f4c66";
+const buildNumberRaw = "114ce58";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -4758,26 +4758,6 @@ function insertGlobalStyle() {
   --bytm-menu-border-radius: 10px;
 }
 
-#bytm-cfg-menu-bg {
-  --bytm-menu-height-max: 750px;
-  --bytm-menu-width-max: 1000px;
-}
-
-#bytm-changelog-menu-bg {
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 800px;
-}
-
-#bytm-export-menu-bg, #bytm-import-menu-bg {
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 600px;
-}
-
-#bytm-feat-help-menu-bg {
-  --bytm-menu-height-max: 400px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-menu-bg {
   display: block;
   position: fixed;
@@ -5930,22 +5910,30 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   visibility: visible !important;
 }
 
-#bytm-cfg-dialog-bg {
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg
+{
   --bytm-dialog-height-max: 900px;
   --bytm-dialog-width-max: 1000px;
 }
 
-#bytm-changelog-dialog-bg {
+#bytm-changelog-dialog-bg,
+#bytm-changelog-menu-bg
+{
   --bytm-dialog-height-max: 800px;
   --bytm-dialog-width-max: 800px;
 }
 
-#bytm-export-dialog-bg, #bytm-import-dialog-bg {
+#bytm-export-dialog-bg, #bytm-import-dialog-bg,
+#bytm-export-menu-bg, #bytm-import-menu-bg
+{
   --bytm-dialog-height-max: 500px;
   --bytm-dialog-width-max: 600px;
 }
 
-#bytm-feat-help-dialog-bg {
+#bytm-feat-help-dialog-bg,
+#bytm-feat-help-menu-bg
+{
   --bytm-dialog-height-max: 400px;
   --bytm-dialog-width-max: 600px;
 }

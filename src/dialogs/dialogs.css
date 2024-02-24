@@ -1,19 +1,27 @@
-#bytm-cfg-dialog-bg {
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg
+{
   --bytm-dialog-height-max: 900px;
   --bytm-dialog-width-max: 1000px;
 }
 
-#bytm-changelog-dialog-bg {
+#bytm-changelog-dialog-bg,
+#bytm-changelog-menu-bg
+{
   --bytm-dialog-height-max: 800px;
   --bytm-dialog-width-max: 800px;
 }
 
-#bytm-export-dialog-bg, #bytm-import-dialog-bg {
+#bytm-export-dialog-bg, #bytm-import-dialog-bg,
+#bytm-export-menu-bg, #bytm-import-menu-bg
+{
   --bytm-dialog-height-max: 500px;
   --bytm-dialog-width-max: 600px;
 }
 
-#bytm-feat-help-dialog-bg {
+#bytm-feat-help-dialog-bg,
+#bytm-feat-help-menu-bg
+{
   --bytm-dialog-height-max: 400px;
   --bytm-dialog-width-max: 600px;
 }
