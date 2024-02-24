@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "0cfff38";
+const buildNumberRaw = "30d87c2";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -862,7 +862,12 @@ function fetchLyricsUrls(artist, song) {
                 song,
             });
             log(`Requesting URLs from geniURL at '${fetchUrl}'`);
-            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl);
+            const { geniUrlToken } = getFeatures();
+            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (geniUrlToken ? {
+                headers: {
+                    Authorization: `Bearer ${geniUrlToken}`,
+                },
+            } : {})));
             if (fetchRes.status === 429) {
                 const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
                 alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
@@ -3954,6 +3959,15 @@ const featInfo = {
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: getAdvancedModeAdornment,
     },
+    geniUrlToken: {
+        type: "text",
+        category: "lyrics",
+        default: "",
+        normalize: (val) => val.trim(),
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: getAdvancedModeAdornment,
+    },
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
@@ -4064,7 +4078,7 @@ const migrations = {
     },
     // 4 -> 5
     5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode") });
+        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), geniUrlToken: getFeatureDefault("geniUrlToken"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode") });
     },
 };
 function getFeatureDefault(key) {
