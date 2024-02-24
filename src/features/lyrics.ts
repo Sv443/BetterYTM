@@ -21,7 +21,7 @@ export type LyricsCache = {
 
 let canCompress = true;
 
-const lyricsCache = new ConfigManager<LyricsCache>({
+const lyricsCacheMgr = new ConfigManager<LyricsCache>({
   id: "bytm-lyrics-cache",
   defaultConfig: {
     cache: [],
@@ -33,7 +33,7 @@ const lyricsCache = new ConfigManager<LyricsCache>({
 
 export async function initLyricsCache() {
   canCompress = await compressionSupported();
-  const data = await lyricsCache.loadData();
+  const data = await lyricsCacheMgr.loadData();
   log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
   return data;
 }
@@ -44,7 +44,7 @@ export async function initLyricsCache() {
  * @param refreshEntry If true, the timestamp of the entry will be set to the current time
  */
 export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
-  const { cache } = lyricsCache.getData();
+  const { cache } = lyricsCacheMgr.getData();
   const entry = cache.find(e => e.artist === artist && e.song === song);
   if(entry && Date.now() - entry?.added > getFeatures().lyricsCacheTTL * 1000 * 60 * 60 * 24) {
     deleteLyricsCacheEntry(artist, song);
@@ -58,27 +58,37 @@ export function getLyricsCacheEntry(artist: string, song: string, refreshEntry =
 }
 
 function updateLyricsCacheEntry(artist: string, song: string) {
-  const { cache } = lyricsCache.getData();
+  const { cache } = lyricsCacheMgr.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
     newEntry.viewed = Date.now();
-    lyricsCache.setData({ cache: [ newEntry, ...cache ] });
+    lyricsCacheMgr.setData({ cache: [ newEntry, ...cache ] });
   }
 }
 
 function deleteLyricsCacheEntry(artist: string, song: string) {
-  const { cache } = lyricsCache.getData();
+  const { cache } = lyricsCacheMgr.getData();
   const idx = cache.findIndex(e => e.artist === artist && e.song === song);
   if(idx !== -1) {
     cache.splice(idx, 1);
-    lyricsCache.setData({ cache });
+    lyricsCacheMgr.setData({ cache });
   }
+}
+
+/** Clears the lyrics cache locally and deletes it from persistent storage - the window should be reloaded right after! */
+export function deleteLyricsCache() {
+  return lyricsCacheMgr.deleteConfig();
+}
+
+/** Clears the lyrics cache locally and clears it in persistent storage */
+export function clearLyricsCache() {
+  return lyricsCacheMgr.setData({ cache: [] });
 }
 
 /** Returns the full lyrics cache array */
 export function getLyricsCache() {
-  return lyricsCache.getData().cache;
+  return lyricsCacheMgr.getData().cache;
 }
 
 /**
@@ -86,14 +96,14 @@ export function getLyricsCache() {
  * {@linkcode artist} and {@linkcode song} need to be sanitized first!
  */
 export function addLyricsCacheEntry(artist: string, song: string, url: string) {
-  const { cache } = lyricsCache.getData();
+  const { cache } = lyricsCacheMgr.getData();
   cache.push({
     artist, song, url, viewed: Date.now(), added: Date.now(),
   } satisfies LyricsCacheEntry);
   cache.sort((a, b) => b.viewed - a.viewed);
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
-  return lyricsCache.setData({ cache });
+  return lyricsCacheMgr.setData({ cache });
 }
 
 /**
@@ -104,7 +114,7 @@ export function addLyricsCacheEntry(artist: string, song: string, url: string) {
  * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
  */
 export function addLyricsCacheEntryPenalized(artist: string, song: string, url: string, penaltyFr = 0) {
-  const { cache } = lyricsCache.getData();
+  const { cache } = lyricsCacheMgr.getData();
 
   penaltyFr = clamp(penaltyFr, 0, 1);
 
@@ -122,7 +132,7 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
 
-  return lyricsCache.setData({ cache });
+  return lyricsCacheMgr.setData({ cache });
 }
 
 //#MARKER media control bar

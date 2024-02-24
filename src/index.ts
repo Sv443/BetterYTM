@@ -219,7 +219,8 @@ async function initFeatures() {
 
   for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
     try {
-      const res = ftInfo.enable() as void | Promise<void>;
+      // @ts-ignore
+      const res = ftInfo?.enable?.() as undefined | Promise<void>;
       if(res instanceof Promise)
         ftInit.push(res);
       else
@@ -241,10 +242,10 @@ async function initFeatures() {
       else if(featInfo[ftKey].disable) {
         // @ts-ignore
         const disableRes = featInfo[ftKey].disable();
-        if(disableRes instanceof Promise)
-          disableRes.then(() => featInfo[ftKey].enable());
-        else
-          featInfo[ftKey].enable();
+        if(disableRes instanceof Promise) // @ts-ignore
+          disableRes.then(() => featInfo[ftKey]?.enable?.());
+        else // @ts-ignore
+          featInfo[ftKey]?.enable?.();
       }
       else {
         // TODO: set "page reload required" flag in new menu

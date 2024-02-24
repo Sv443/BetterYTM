@@ -1,6 +1,7 @@
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
+import { clearLyricsCache, getLyricsCache } from "./lyrics";
 import { FeatureInfo } from "../types";
 
 export * from "./layout";
@@ -40,13 +41,14 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * | :-- | :-- |
  * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
  * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `click: () => void`                         | for type `button` only - function that will be called when the button is clicked |
  * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
  * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
  * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
  * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `unit`                                      | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `unit: string / (val: number) => string`    | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
  *   
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -256,23 +258,38 @@ export const featInfo = {
     type: "slider",
     category: "lyrics",
     default: 500,
-    min: 0,
+    min: 50,
     max: 2000,
     step: 50,
     unit: (val: number) => tp("unit_entries", val),
     enable: () => void "TODO",
     change: () => void "TODO",
+    advanced: true,
   },
   lyricsCacheTTL: {
     type: "slider",
     category: "lyrics",
     default: 21,
-    min: 1,
+    min: 3,
     max: 100,
     step: 1,
     unit: (val: number) => tp("unit_days", val),
     enable: () => void "TODO",
     change: () => void "TODO",
+    advanced: true,
+  },
+  clearLyricsCache: {
+    type: "button",
+    category: "lyrics",
+    default: undefined,
+    click() {
+      const entries = getLyricsCache().length;
+      if(confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
+        clearLyricsCache();
+        alert(t("lyrics_clear_cache_success"));
+      }
+    },
+    advanced: true,
   },
 
   //#SECTION general
@@ -301,5 +318,12 @@ export const featInfo = {
     ],
     default: 1,
     enable: () => void "TODO",
+  },
+  advancedMode: {
+    type: "toggle",
+    category: "general",
+    default: false,
+    enable: () => void "TODO",
+    disable: () => void "TODO",
   },
 } as const satisfies FeatureInfo;
