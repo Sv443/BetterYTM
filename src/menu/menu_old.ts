@@ -7,7 +7,7 @@ import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
-import { createHotkeyInput, createToggle } from "../components";
+import { createHotkeyInput, createToggleInput } from "../components";
 import pkg from "../../package.json" assert { type: "json" };
 
 //#MARKER create menu elements
@@ -435,15 +435,15 @@ async function addCfgMenu() {
           switch(type) {
           case "hotkey":
             wrapperElem = createHotkeyInput({
-              initialValue: initialVal as HotkeyObj,
+              initialValue: typeof initialVal === "object" ? initialVal as HotkeyObj : undefined,
               onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
             });
             break;
           case "toggle":
-            wrapperElem = await createToggle({
+            wrapperElem = await createToggleInput({
+              initialValue: Boolean(initialVal),
               onChange: (checked) => confChanged(featKey as keyof FeatureConfig, initialVal, checked),
               id: `ftconf-${featKey}`,
-              initialValue: Boolean(initialVal),
               labelPos: "left",
             });
             break;

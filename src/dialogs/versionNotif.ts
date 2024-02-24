@@ -1,6 +1,6 @@
 import { host, scriptInfo } from "../constants";
 import { getChangelogMd, parseMarkdown, t } from "../utils";
-import { BytmDialog, createToggle } from "../components";
+import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, saveFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
 
@@ -90,7 +90,7 @@ async function renderBody({
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
-  const disableToggleEl = await createToggle({
+  const disableToggleEl = await createToggleInput({
     id: "disable-update-check",
     initialValue: false,
     labelPos: "off",
