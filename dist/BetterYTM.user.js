@@ -236,7 +236,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "6f054ae";
+const buildNumberRaw = "12bf4b4";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -584,6 +584,408 @@ function disableDarkReader() {
         document.head.appendChild(metaElem);
         info("Sent hint to Dark Reader to disable itself");
     }
+}/** Base URL of geniURL */
+const geniUrlBase = "https://api.sv443.net/geniurl";
+/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
+const geniURLSearchUrl = `${geniUrlBase}/search`;
+/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+const geniUrlRatelimitTimeframe = 30;
+let canCompress$1 = true;
+const lyricsCacheMgr = new UserUtils.ConfigManager({
+    id: "bytm-lyrics-cache",
+    defaultConfig: {
+        cache: [],
+    },
+    formatVersion: 1,
+    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
+    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
+});
+function initLyricsCache() {
+    return __awaiter(this, void 0, void 0, function* () {
+        canCompress$1 = yield compressionSupported();
+        const data = yield lyricsCacheMgr.loadData();
+        log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
+        return data;
+    });
+}
+/**
+ * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet
+ * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * @param refreshEntry If true, the timestamp of the entry will be set to the current time
+ */
+function getLyricsCacheEntry(artist, song, refreshEntry = true) {
+    const { cache } = lyricsCacheMgr.getData();
+    const entry = cache.find(e => e.artist === artist && e.song === song);
+    if (entry && Date.now() - (entry === null || entry === void 0 ? void 0 : entry.added) > getFeatures().lyricsCacheTTL * 1000 * 60 * 60 * 24) {
+        deleteLyricsCacheEntry(artist, song);
+        return undefined;
+    }
+    // refresh timestamp of the entry by mutating cache
+    if (entry && refreshEntry)
+        updateLyricsCacheEntry(artist, song);
+    return entry;
+}
+function updateLyricsCacheEntry(artist, song) {
+    const { cache } = lyricsCacheMgr.getData();
+    const idx = cache.findIndex(e => e.artist === artist && e.song === song);
+    if (idx !== -1) {
+        const newEntry = cache.splice(idx, 1)[0];
+        newEntry.viewed = Date.now();
+        lyricsCacheMgr.setData({ cache: [newEntry, ...cache] });
+    }
+}
+function deleteLyricsCacheEntry(artist, song) {
+    const { cache } = lyricsCacheMgr.getData();
+    const idx = cache.findIndex(e => e.artist === artist && e.song === song);
+    if (idx !== -1) {
+        cache.splice(idx, 1);
+        lyricsCacheMgr.setData({ cache });
+    }
+}
+/** Clears the lyrics cache locally and clears it in persistent storage */
+function clearLyricsCache() {
+    return lyricsCacheMgr.setData({ cache: [] });
+}
+/** Returns the full lyrics cache array */
+function getLyricsCache() {
+    return lyricsCacheMgr.getData().cache;
+}
+/**
+ * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
+ * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
+ *
+ * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
+ */
+function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
+    const { cache } = lyricsCacheMgr.getData();
+    penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
+    const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
+    const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
+    cache.push({
+        artist,
+        song,
+        url,
+        viewed: Date.now() - viewedPenalty,
+        added: Date.now() - addedPenalty,
+    });
+    cache.sort((a, b) => b.viewed - a.viewed);
+    if (cache.length > getFeatures().lyricsCacheMaxSize)
+        cache.pop();
+    return lyricsCacheMgr.setData({ cache });
+}
+//#MARKER media control bar
+let currentSongTitle = "";
+/** Adds a lyrics button to the media controls bar */
+function addMediaCtrlLyricsBtn() {
+    return __awaiter(this, void 0, void 0, function* () {
+        onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+    });
+}
+/** Actually adds the lyrics button after the like button renderer has been verified to exist */
+function addActualMediaCtrlLyricsBtn(likeContainer) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+        if (!songTitleElem)
+            return warn("Couldn't find song title element");
+        // run parallel without awaiting so the MutationObserver below can observe the title element in time
+        (() => __awaiter(this, void 0, void 0, function* () {
+            const gUrl = yield getCurrentLyricsUrl();
+            const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+            linkElem.id = "betterytm-lyrics-button";
+            log("Inserted lyrics button into media controls bar");
+            UserUtils.insertAfter(likeContainer, linkElem);
+        }))();
+        currentSongTitle = songTitleElem.title;
+        const spinnerIconUrl = yield getResourceUrl("img-spinner");
+        const lyricsIconUrl = yield getResourceUrl("img-lyrics");
+        const errorIconUrl = yield getResourceUrl("img-error");
+        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+            var _b, e_1, _c, _d;
+            try {
+                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
+                    _d = mutations_1_1.value;
+                    _a = false;
+                    const mut = _d;
+                    const newTitle = mut.target.title;
+                    if (newTitle !== currentSongTitle && newTitle.length > 0) {
+                        const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                        if (!lyricsBtn)
+                            continue;
+                        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
+                        lyricsBtn.style.cursor = "wait";
+                        lyricsBtn.style.pointerEvents = "none";
+                        const imgElem = lyricsBtn.querySelector("img");
+                        imgElem.src = spinnerIconUrl;
+                        imgElem.classList.add("bytm-spinner");
+                        currentSongTitle = newTitle;
+                        const url = yield getCurrentLyricsUrl(); // can take a second or two
+                        imgElem.src = lyricsIconUrl;
+                        imgElem.classList.remove("bytm-spinner");
+                        if (!url) {
+                            let artist, song;
+                            if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+                                artist = navigator.mediaSession.metadata.artist;
+                                song = navigator.mediaSession.metadata.title;
+                            }
+                            const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+                            imgElem.src = errorIconUrl;
+                            imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.pointerEvents = "all";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.visibility = "visible";
+                            lyricsBtn.href = `https://genius.com/search${query}`;
+                            continue;
+                        }
+                        lyricsBtn.href = url;
+                        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
+                        lyricsBtn.style.cursor = "pointer";
+                        lyricsBtn.style.visibility = "visible";
+                        lyricsBtn.style.display = "inline-flex";
+                        lyricsBtn.style.pointerEvents = "initial";
+                    }
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+        }); };
+        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+        const obs = new MutationObserver(onMutation);
+        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+    });
+}
+//#MARKER utils
+/** Removes everything in parentheses from the passed song name */
+function sanitizeSong(songName) {
+    if (typeof songName !== "string")
+        return songName;
+    const parensRegex = /\(.+\)/gmi;
+    const squareParensRegex = /\[.+\]/gmi;
+    // trim right after the song name:
+    const sanitized = songName
+        .replace(parensRegex, "")
+        .replace(squareParensRegex, "");
+    return sanitized.trim();
+}
+/** Removes the secondary artist (if it exists) from the passed artists string */
+function sanitizeArtists(artists) {
+    artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+    if (artists.match(/&/))
+        artists = artists.split(/\s*&\s*/gm)[0];
+    if (artists.match(/,/))
+        artists = artists.split(/,\s*/gm)[0];
+    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
+        const parensRegex = /\(.+\)/gmi;
+        const squareParensRegex = /\[.+\]/gmi;
+        artists = artists
+            .replace(parensRegex, "")
+            .replace(squareParensRegex, "");
+    }
+    return artists.trim();
+}
+/** Returns the lyrics URL from genius for the currently selected song */
+function getCurrentLyricsUrl() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
+            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
+            if (!songTitleElem || !songMetaElem)
+                return undefined;
+            const songNameRaw = songTitleElem.title;
+            let songName = songNameRaw;
+            let artistName = songMetaElem.textContent;
+            if (isVideo) {
+                // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                if (songName.includes("-")) {
+                    const split = splitVideoTitle(songName);
+                    songName = split.song;
+                    artistName = split.artist;
+                }
+            }
+            if (!artistName)
+                return undefined;
+            const url = yield fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
+            if (url) {
+                emitInterface("bytm:lyricsLoaded", {
+                    type: "current",
+                    artists: artistName,
+                    title: songName,
+                    url,
+                });
+            }
+            return url;
+        }
+        catch (err) {
+            error("Couldn't resolve lyrics URL:", err);
+            return undefined;
+        }
+    });
+}
+/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
+function fetchLyricsUrlTop(artist, song) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
+        }
+        catch (err) {
+            error("Couldn't get lyrics URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+/**
+ * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search
+ * **the passed parameters need to be sanitized first!**
+ */
+function fetchLyricsUrls(artist, song) {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const cacheEntry = getLyricsCacheEntry(artist, song);
+            if (cacheEntry) {
+                info(`Found lyrics URL in cache: ${cacheEntry.url}`);
+                return [cacheEntry];
+            }
+            const startTs = Date.now();
+            const fetchUrl = constructUrlString(geniURLSearchUrl, {
+                disableFuzzy: null,
+                utm_source: scriptInfo.name,
+                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
+                artist,
+                song,
+            });
+            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
+            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl);
+            if (fetchRes.status === 429) {
+                const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+                alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+                return undefined;
+            }
+            else if (fetchRes.status < 200 || fetchRes.status >= 300) {
+                error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                return undefined;
+            }
+            const result = yield fetchRes.json();
+            if (typeof result === "object" && result.error || !result || !result.all) {
+                error("Couldn't fetch lyrics URL:", result.message);
+                return undefined;
+            }
+            const allResults = result.all;
+            if (allResults.length === 0) {
+                warn("No lyrics URL found for the provided song");
+                return undefined;
+            }
+            const exactish = (input) => {
+                return input.toLowerCase()
+                    .replace(/[\s\-_&,.()[\]]+/gm, "");
+            };
+            const allResultsSan = allResults
+                .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
+                .map(({ meta, url }) => {
+                var _a;
+                return ({
+                    meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
+                    url,
+                });
+            });
+            // exact-ish matches, best matching one first
+            const exactishResults = [...allResultsSan].sort((a, b) => {
+                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
+                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
+                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
+                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
+                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
+            });
+            // use fuse.js for fuzzy match
+            // search song title and artist separately, then combine the scores
+            const titleFuse = new Fuse([...allResultsSan], {
+                keys: ["title"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            const artistFuse = new Fuse([...allResultsSan], {
+                keys: ["primaryArtist.name"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            let fuzzyResults = allResultsSan.map(r => {
+                var _a, _b, _c, _d;
+                const titleRes = titleFuse.search(r.meta.title);
+                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
+                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
+                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
+                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
+            });
+            // I love TS
+            fuzzyResults = fuzzyResults
+                .map((_a) => {
+                var { score } = _a, rest = __rest(_a, ["score"]);
+                return rest;
+            });
+            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
+            const finalResults = [
+                ...(hasExactMatch
+                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
+                    : [...allResultsSan]),
+            ].slice(0, 5);
+            // add top 3 results to the cache with a penalty to their time to live
+            // so every entry is deleted faster if it's not considered as relevant
+            finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
+                const penaltyFraction = hasExactMatch
+                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
+                    ? i === 0 ? 0 : 1
+                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
+                    : 0.6;
+                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
+            });
+            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
+            // returns search results sorted by relevance
+            return finalResults.map(r => ({
+                artist: r.meta.primaryArtist.name,
+                song: r.meta.title,
+                url: r.url,
+            }));
+        }
+        catch (err) {
+            error("Couldn't get lyrics URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+/** Creates the base lyrics button element */
+function createLyricsBtn(geniusUrl, hideIfLoading = true) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const linkElem = document.createElement("a");
+        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+        linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+        if (geniusUrl)
+            linkElem.href = geniusUrl;
+        linkElem.role = "button";
+        linkElem.target = "_blank";
+        linkElem.rel = "noopener noreferrer";
+        linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+        linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+        const imgElem = document.createElement("img");
+        imgElem.className = "bytm-generic-btn-img";
+        imgElem.src = yield getResourceUrl("img-lyrics");
+        linkElem.appendChild(imgElem);
+        return linkElem;
+    });
+}
+/** Splits a video title that contains a hyphen into an artist and song */
+function splitVideoTitle(title) {
+    const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+    return { artist, song: rest.join("-") };
 }let createNanoEvents = () => ({
   emit(event, ...args) {
     for (
@@ -1119,21 +1521,21 @@ function getOS() {
         return "mac";
     return "other";
 }/** Creates a simple toggle element */
-function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
+function createToggleInput({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
     return __awaiter(this, void 0, void 0, function* () {
         const wrapperEl = document.createElement("div");
-        wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
+        wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
         wrapperEl.role = "switch";
         wrapperEl.tabIndex = 0;
         const labelEl = labelPos !== "off" && document.createElement("label");
         if (labelEl) {
-            labelEl.classList.add("bytm-toggle-label");
+            labelEl.classList.add("bytm-toggle-input-label");
             labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
             if (id)
-                labelEl.htmlFor = `bytm-toggle-${id}`;
+                labelEl.htmlFor = `bytm-toggle-input-${id}`;
         }
         const toggleWrapperEl = document.createElement("div");
-        toggleWrapperEl.classList.add("bytm-toggle");
+        toggleWrapperEl.classList.add("bytm-toggle-input");
         toggleWrapperEl.tabIndex = -1;
         const toggleEl = document.createElement("input");
         toggleEl.type = "checkbox";
@@ -1141,9 +1543,9 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
         toggleEl.dataset.toggled = String(Boolean(initialValue));
         toggleEl.tabIndex = -1;
         if (id)
-            toggleEl.id = `bytm-toggle-${id}`;
+            toggleEl.id = `bytm-toggle-input-${id}`;
         const toggleKnobEl = document.createElement("div");
-        toggleKnobEl.classList.add("bytm-toggle-knob");
+        toggleKnobEl.classList.add("bytm-toggle-input-knob");
         toggleKnobEl.innerHTML = "&nbsp;";
         const toggleElClicked = (e) => {
             e.preventDefault();
@@ -1318,8 +1720,6 @@ function addCfgMenu() {
         initLocale = getFeatures().locale;
         initConfig$1 = JSON.stringify(getFeatures());
         const initLangReloadText = t("lang_changed_prompt_reload");
-        const toggled_on = t("toggled_on");
-        const toggled_off = t("toggled_off");
         //#SECTION backdrop & menu container
         const backgroundElem = document.createElement("div");
         backgroundElem.id = "bytm-cfg-menu-bg";
@@ -1486,7 +1886,6 @@ function addCfgMenu() {
             return acc;
         }, {});
         const fmtVal = (v) => String(v).trim();
-        const toggleLabelText = (toggled) => toggled ? toggled_on : toggled_off;
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const catHeaderElem = document.createElement("h3");
@@ -1500,6 +1899,8 @@ function addCfgMenu() {
                 // @ts-ignore
                 if (!ftInfo || ftInfo.hidden === true)
                     continue;
+                if (ftInfo.advanced && !featureCfg.advancedMode)
+                    continue;
                 const { type, default: ftDefault } = ftInfo;
                 // @ts-ignore
                 const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
@@ -1511,7 +1912,7 @@ function addCfgMenu() {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
                     const textElem = document.createElement("span");
-                    textElem.textContent = t(`feature_desc_${featKey}`);
+                    textElem.textContent = ftInfo.advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featKey}`)) : t(`feature_desc_${featKey}`);
                     let adornmentElem;
                     const adornContent = (_c = ftInfo.textAdornment) === null || _c === void 0 ? void 0 : _c.call(ftInfo);
                     if (typeof adornContent === "string" || adornContent instanceof Promise) {
@@ -1573,6 +1974,10 @@ function addCfgMenu() {
                             inputTag = undefined;
                             inputType = undefined;
                             break;
+                        case "button":
+                            inputTag = undefined;
+                            inputType = undefined;
+                            break;
                     }
                     const inputElemId = `bytm-ftconf-${featKey}-input`;
                     const ctrlElem = document.createElement("span");
@@ -1585,12 +1990,11 @@ function addCfgMenu() {
                         if (inputType)
                             inputElem.type = inputType;
                         // @ts-ignore
-                        if (typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-                            // @ts-ignore
+                        if (typeof ftInfo.min !== "undefined") // @ts-ignore
                             inputElem.min = ftInfo.min;
-                            // @ts-ignore
+                        // @ts-ignore
+                        if (ftInfo.max !== "undefined") // @ts-ignore
                             inputElem.max = ftInfo.max;
-                        }
                         if (typeof initialVal !== "undefined")
                             inputElem.value = String(initialVal);
                         if (type === "number" || type === "slider" && step)
@@ -1598,15 +2002,20 @@ function addCfgMenu() {
                         if (type === "toggle" && typeof initialVal !== "undefined")
                             inputElem.checked = Boolean(initialVal);
                         // @ts-ignore
-                        const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+                        const unitTxt = (typeof ftInfo.unit === "string" ? ftInfo.unit : (
+                        // @ts-ignore
+                        typeof ftInfo.unit === "function" ? ftInfo.unit(Number(inputElem.value)) : ""));
                         let labelElem;
+                        let lastDisplayedVal;
                         if (type === "slider") {
                             labelElem = document.createElement("label");
                             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-                            labelElem.textContent = fmtVal(initialVal) + unitTxt;
+                            labelElem.textContent = `${fmtVal(initialVal)} ${unitTxt}`;
                             inputElem.addEventListener("input", () => {
-                                if (labelElem)
-                                    labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
+                                if (labelElem && lastDisplayedVal !== inputElem.value) {
+                                    labelElem.textContent = `${fmtVal(inputElem.value)} ${unitTxt}`;
+                                    lastDisplayedVal = inputElem.value;
+                                }
                             });
                         }
                         else if (type === "select") {
@@ -1642,17 +2051,23 @@ function addCfgMenu() {
                         switch (type) {
                             case "hotkey":
                                 wrapperElem = createHotkeyInput({
-                                    initialValue: initialVal,
+                                    initialValue: typeof initialVal === "object" ? initialVal : undefined,
                                     onChange: (hotkey) => confChanged(featKey, initialVal, hotkey),
                                 });
                                 break;
                             case "toggle":
-                                wrapperElem = yield createToggle({
+                                wrapperElem = yield createToggleInput({
+                                    initialValue: Boolean(initialVal),
                                     onChange: (checked) => confChanged(featKey, initialVal, checked),
                                     id: `ftconf-${featKey}`,
-                                    initialValue: Boolean(initialVal),
                                     labelPos: "left",
                                 });
+                                break;
+                            case "button":
+                                wrapperElem = document.createElement("button");
+                                wrapperElem.tabIndex = 0;
+                                wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                wrapperElem.addEventListener("click", () => ftInfo.click());
                                 break;
                         }
                         ctrlElem.appendChild(wrapperElem);
@@ -1678,11 +2093,11 @@ function addCfgMenu() {
                 if (!labelElem)
                     continue;
                 // @ts-ignore
-                const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+                const unitTxt = " " + (typeof ftInfo.unit === "string" ? ftInfo.unit : (
+                // @ts-ignore
+                typeof ftInfo.unit === "function" ? ftInfo.unit(Number(ftElem.value)) : ""));
                 if (ftInfo.type === "slider")
-                    labelElem.textContent = fmtVal(Number(value)) + unitTxt;
-                else if (ftInfo.type === "toggle")
-                    labelElem.textContent = toggleLabelText(Boolean(value)) + unitTxt;
+                    labelElem.textContent = `${fmtVal(Number(value))} ${unitTxt}`;
             }
             info("Rebuilt config menu");
         });
@@ -1873,7 +2288,8 @@ function openHelpDialog(featureKey) {
             // update help text
             const featDescElem = menuBgElem.querySelector("#bytm-feat-help-menu-desc");
             const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
-            featDescElem.textContent = t(`feature_desc_${featureKey}`);
+            // @ts-ignore
+            featDescElem.textContent = featInfo[featureKey].advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featureKey}`)) : t(`feature_desc_${featureKey}`);
             // @ts-ignore
             const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
             helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
@@ -2889,398 +3305,6 @@ function initNumKeysSkip() {
         });
         log("Added number key press listener");
     });
-}/** Base URL of geniURL */
-const geniUrlBase = "https://api.sv443.net/geniurl";
-/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchUrl = `${geniUrlBase}/search`;
-/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
-const geniUrlRatelimitTimeframe = 30;
-//#MARKER new cache
-/** How many cache entries can exist at a time - this is used to cap memory usage */
-const maxLyricsCacheSize = 1000;
-/** Maximum time before a cache entry is force deleted */
-const cacheTTL = 1000 * 60 * 60 * 24 * 30; // 30 days
-let canCompress$1 = true;
-const lyricsCache = new UserUtils.ConfigManager({
-    id: "bytm-lyrics-cache",
-    defaultConfig: {
-        cache: [],
-    },
-    formatVersion: 1,
-    encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
-    decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
-});
-function initLyricsCache() {
-    return __awaiter(this, void 0, void 0, function* () {
-        canCompress$1 = yield compressionSupported();
-        const data = yield lyricsCache.loadData();
-        log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
-        return data;
-    });
-}
-/**
- * Returns the cache entry for the passed artist and song, or undefined if it doesn't exist yet
- * {@linkcode artist} and {@linkcode song} need to be sanitized first!
- * @param refreshEntry If true, the timestamp of the entry will be set to the current time
- */
-function getLyricsCacheEntry(artist, song, refreshEntry = true) {
-    const { cache } = lyricsCache.getData();
-    const entry = cache.find(e => e.artist === artist && e.song === song);
-    if (entry && Date.now() - (entry === null || entry === void 0 ? void 0 : entry.added) > cacheTTL) {
-        deleteLyricsCacheEntry(artist, song);
-        return undefined;
-    }
-    // refresh timestamp of the entry by mutating cache
-    if (entry && refreshEntry)
-        updateLyricsCacheEntry(artist, song);
-    return entry;
-}
-function updateLyricsCacheEntry(artist, song) {
-    const { cache } = lyricsCache.getData();
-    const idx = cache.findIndex(e => e.artist === artist && e.song === song);
-    if (idx !== -1) {
-        const newEntry = cache.splice(idx, 1)[0];
-        newEntry.viewed = Date.now();
-        lyricsCache.setData({ cache: [newEntry, ...cache] });
-    }
-}
-function deleteLyricsCacheEntry(artist, song) {
-    const { cache } = lyricsCache.getData();
-    const idx = cache.findIndex(e => e.artist === artist && e.song === song);
-    if (idx !== -1) {
-        cache.splice(idx, 1);
-        lyricsCache.setData({ cache });
-    }
-}
-/**
- * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
- * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
- *
- * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
- * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
- */
-function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
-    const { cache } = lyricsCache.getData();
-    penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
-    const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
-    const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
-    cache.push({
-        artist,
-        song,
-        url,
-        viewed: Date.now() - viewedPenalty,
-        added: Date.now() - addedPenalty,
-    });
-    cache.sort((a, b) => b.viewed - a.viewed);
-    if (cache.length > maxLyricsCacheSize)
-        cache.pop();
-    return lyricsCache.setData({ cache });
-}
-//#MARKER media control bar
-let currentSongTitle = "";
-/** Adds a lyrics button to the media controls bar */
-function addMediaCtrlLyricsBtn() {
-    return __awaiter(this, void 0, void 0, function* () {
-        onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
-    });
-}
-/** Actually adds the lyrics button after the like button renderer has been verified to exist */
-function addActualMediaCtrlLyricsBtn(likeContainer) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-        if (!songTitleElem)
-            return warn("Couldn't find song title element");
-        // run parallel without awaiting so the MutationObserver below can observe the title element in time
-        (() => __awaiter(this, void 0, void 0, function* () {
-            const gUrl = yield getCurrentLyricsUrl();
-            const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
-            linkElem.id = "betterytm-lyrics-button";
-            log("Inserted lyrics button into media controls bar");
-            UserUtils.insertAfter(likeContainer, linkElem);
-        }))();
-        currentSongTitle = songTitleElem.title;
-        const spinnerIconUrl = yield getResourceUrl("img-spinner");
-        const lyricsIconUrl = yield getResourceUrl("img-lyrics");
-        const errorIconUrl = yield getResourceUrl("img-error");
-        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
-            var _b, e_1, _c, _d;
-            try {
-                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
-                    _d = mutations_1_1.value;
-                    _a = false;
-                    const mut = _d;
-                    const newTitle = mut.target.title;
-                    if (newTitle !== currentSongTitle && newTitle.length > 0) {
-                        const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                        if (!lyricsBtn)
-                            continue;
-                        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
-                        lyricsBtn.style.cursor = "wait";
-                        lyricsBtn.style.pointerEvents = "none";
-                        const imgElem = lyricsBtn.querySelector("img");
-                        imgElem.src = spinnerIconUrl;
-                        imgElem.classList.add("bytm-spinner");
-                        currentSongTitle = newTitle;
-                        const url = yield getCurrentLyricsUrl(); // can take a second or two
-                        imgElem.src = lyricsIconUrl;
-                        imgElem.classList.remove("bytm-spinner");
-                        if (!url) {
-                            let artist, song;
-                            if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                                artist = navigator.mediaSession.metadata.artist;
-                                song = navigator.mediaSession.metadata.title;
-                            }
-                            const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                            imgElem.src = errorIconUrl;
-                            imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
-                            lyricsBtn.style.cursor = "pointer";
-                            lyricsBtn.style.pointerEvents = "all";
-                            lyricsBtn.style.display = "inline-flex";
-                            lyricsBtn.style.visibility = "visible";
-                            lyricsBtn.href = `https://genius.com/search${query}`;
-                            continue;
-                        }
-                        lyricsBtn.href = url;
-                        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
-                        lyricsBtn.style.cursor = "pointer";
-                        lyricsBtn.style.visibility = "visible";
-                        lyricsBtn.style.display = "inline-flex";
-                        lyricsBtn.style.pointerEvents = "initial";
-                    }
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
-        }); };
-        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
-        const obs = new MutationObserver(onMutation);
-        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
-    });
-}
-//#MARKER utils
-/** Removes everything in parentheses from the passed song name */
-function sanitizeSong(songName) {
-    if (typeof songName !== "string")
-        return songName;
-    const parensRegex = /\(.+\)/gmi;
-    const squareParensRegex = /\[.+\]/gmi;
-    // trim right after the song name:
-    const sanitized = songName
-        .replace(parensRegex, "")
-        .replace(squareParensRegex, "");
-    return sanitized.trim();
-}
-/** Removes the secondary artist (if it exists) from the passed artists string */
-function sanitizeArtists(artists) {
-    artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
-    if (artists.match(/&/))
-        artists = artists.split(/\s*&\s*/gm)[0];
-    if (artists.match(/,/))
-        artists = artists.split(/,\s*/gm)[0];
-    return artists.trim();
-}
-/** Returns the lyrics URL from genius for the currently selected song */
-function getCurrentLyricsUrl() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
-            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
-            if (!songTitleElem || !songMetaElem)
-                return undefined;
-            const songNameRaw = songTitleElem.title;
-            let songName = songNameRaw;
-            let artistName = songMetaElem.textContent;
-            if (isVideo) {
-                // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                if (songName.includes("-")) {
-                    const split = splitVideoTitle(songName);
-                    songName = split.song;
-                    artistName = split.artist;
-                }
-            }
-            if (!artistName)
-                return undefined;
-            const url = yield fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
-            if (url) {
-                emitInterface("bytm:lyricsLoaded", {
-                    type: "current",
-                    artists: artistName,
-                    title: songName,
-                    url,
-                });
-            }
-            return url;
-        }
-        catch (err) {
-            error("Couldn't resolve lyrics URL:", err);
-            return undefined;
-        }
-    });
-}
-/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
-function fetchLyricsUrlTop(artist, song) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
-        }
-        catch (err) {
-            error("Couldn't get lyrics URL due to error:", err);
-            return undefined;
-        }
-    });
-}
-/**
- * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search
- * **the passed parameters need to be sanitized first!**
- */
-function fetchLyricsUrls(artist, song) {
-    var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const cacheEntry = getLyricsCacheEntry(artist, song);
-            if (cacheEntry) {
-                info(`Found lyrics URL in cache: ${cacheEntry.url}`);
-                return [cacheEntry];
-            }
-            const startTs = Date.now();
-            const fetchUrl = constructUrlString(geniURLSearchUrl, {
-                disableFuzzy: null,
-                utm_source: scriptInfo.name,
-                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
-                artist,
-                song,
-            });
-            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
-            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl);
-            if (fetchRes.status === 429) {
-                const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-                alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
-                return undefined;
-            }
-            else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
-                return undefined;
-            }
-            const result = yield fetchRes.json();
-            if (typeof result === "object" && result.error || !result || !result.all) {
-                error("Couldn't fetch lyrics URL:", result.message);
-                return undefined;
-            }
-            const allResults = result.all;
-            if (allResults.length === 0) {
-                warn("No lyrics URL found for the provided song");
-                return undefined;
-            }
-            const exactish = (input) => {
-                return input.toLowerCase()
-                    .replace(/[\s\-_&,.()[\]]+/gm, "");
-            };
-            const allResultsSan = allResults
-                .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
-                .map(({ meta, url }) => {
-                var _a;
-                return ({
-                    meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
-                    url,
-                });
-            });
-            // exact-ish matches, best matching one first
-            const exactishResults = [...allResultsSan].sort((a, b) => {
-                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
-                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
-                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
-                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
-                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
-            });
-            // use fuse.js for fuzzy match
-            // search song title and artist separately, then combine the scores
-            const titleFuse = new Fuse([...allResultsSan], {
-                keys: ["title"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            const artistFuse = new Fuse([...allResultsSan], {
-                keys: ["primaryArtist.name"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            let fuzzyResults = allResultsSan.map(r => {
-                var _a, _b, _c, _d;
-                const titleRes = titleFuse.search(r.meta.title);
-                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
-                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
-                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
-                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
-            });
-            // I love TS
-            fuzzyResults = fuzzyResults
-                .map((_a) => {
-                var { score } = _a, rest = __rest(_a, ["score"]);
-                return rest;
-            });
-            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
-            const finalResults = [
-                ...(hasExactMatch
-                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
-                    : [...allResultsSan]),
-            ].slice(0, 5);
-            // add results to the cache with a penalty to their time to live
-            // so every entry is deleted faster if it's not considered as relevant
-            finalResults.forEach(({ meta: { artists, title }, url }, i) => {
-                const penaltyFraction = hasExactMatch
-                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
-                    ? i === 0 ? 0 : 1
-                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
-                    : 0.6;
-                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
-            });
-            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
-            // returns search results sorted by relevance
-            return finalResults.map(r => ({
-                artist: r.meta.primaryArtist.name,
-                song: r.meta.title,
-                url: r.url,
-            }));
-        }
-        catch (err) {
-            error("Couldn't get lyrics URL due to error:", err);
-            return undefined;
-        }
-    });
-}
-/** Creates the base lyrics button element */
-function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const linkElem = document.createElement("a");
-        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-        linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-        if (geniusUrl)
-            linkElem.href = geniusUrl;
-        linkElem.role = "button";
-        linkElem.target = "_blank";
-        linkElem.rel = "noopener noreferrer";
-        linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-        linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-        const imgElem = document.createElement("img");
-        imgElem.className = "bytm-generic-btn-img";
-        imgElem.src = yield getResourceUrl("img-lyrics");
-        linkElem.appendChild(imgElem);
-        return linkElem;
-    });
-}
-/** Splits a video title that contains a hyphen into an artist and song */
-function splitVideoTitle(title) {
-    const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
-    return { artist, song: rest.join("-") };
 }let features;
 function setSongListsConfig(feats) {
     features = feats;
@@ -3563,7 +3587,7 @@ function renderBody({ latestTag, changelogHtml, }) {
         wrapperEl.appendChild(changelogDetailsEl);
         const disableUpdCheckEl = document.createElement("div");
         disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
-        const disableToggleEl = yield createToggle({
+        const disableToggleEl = yield createToggleInput({
             id: "disable-update-check",
             initialValue: false,
             labelPos: "off",
@@ -3691,13 +3715,14 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
  * | :-- | :-- |
  * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
  * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `click: () => void`                         | for type `button` only - function that will be called when the button is clicked |
  * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
  * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
  * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
  * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `unit`                                      | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `unit: string / (val: number) => string`    | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
  *
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -3899,6 +3924,43 @@ const featInfo = {
         enable: () => void "TODO",
         disable: () => void "TODO",
     },
+    lyricsCacheMaxSize: {
+        type: "slider",
+        category: "lyrics",
+        default: 500,
+        min: 50,
+        max: 2000,
+        step: 50,
+        unit: (val) => tp("unit_entries", val),
+        enable: () => void "TODO",
+        change: () => void "TODO",
+        advanced: true,
+    },
+    lyricsCacheTTL: {
+        type: "slider",
+        category: "lyrics",
+        default: 21,
+        min: 3,
+        max: 100,
+        step: 1,
+        unit: (val) => tp("unit_days", val),
+        enable: () => void "TODO",
+        change: () => void "TODO",
+        advanced: true,
+    },
+    clearLyricsCache: {
+        type: "button",
+        category: "lyrics",
+        default: undefined,
+        click() {
+            const entries = getLyricsCache().length;
+            if (confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
+                clearLyricsCache();
+                alert(t("lyrics_clear_cache_success"));
+            }
+        },
+        advanced: true,
+    },
     //#SECTION general
     locale: {
         type: "select",
@@ -3926,8 +3988,15 @@ const featInfo = {
         default: 1,
         enable: () => void "TODO",
     },
+    advancedMode: {
+        type: "toggle",
+        category: "general",
+        default: false,
+        enable: () => void "TODO",
+        disable: () => void "TODO",
+    },
 };/** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 4;
+const formatVersion = 5;
 /** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2
@@ -3948,6 +4017,10 @@ const migrations = {
                 ctrl: Boolean((_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false),
                 alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
             }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"), locale: getFeatureDefault("locale"), versionCheck: getFeatureDefault("versionCheck") });
+    },
+    // 4 -> 5
+    5: (oldData) => {
+        return Object.assign(Object.assign({}, oldData), { lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode") });
     },
 };
 function getFeatureDefault(key) {
@@ -3978,7 +4051,7 @@ function initConfig() {
             info("Config data initialized with default values");
         else if (oldFmtVer !== cfgMgr.formatVersion)
             info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
-        return data;
+        return Object.assign({}, data);
     });
 }
 /** Returns the current feature config from the in-memory cache as a copy */
@@ -5291,6 +5364,10 @@ hr {
   width: 75px;
 }
 
+.bytm-ftconf-input[type=range] {
+  width: 240px;
+}
+
 .bytm-ftconf-input[type=checkbox] {
   margin-left: 5px;
 }
@@ -5435,9 +5512,7 @@ hr {
   white-space: nowrap;
 }
 
-/* #MARKER toggle */
-
-.bytm-toggle-wrapper {
+.bytm-toggle-input-wrapper {
   --toggle-height: 24px;
   --toggle-width: 48px;
   --toggle-knob-offset: 4px;
@@ -5449,7 +5524,7 @@ hr {
   align-items: center;
 }
 
-.bytm-toggle-wrapper .bytm-toggle-label {
+.bytm-toggle-input-wrapper .bytm-toggle-input-label {
   cursor: pointer;
   font-size: 1.5rem;
   padding: 3px 12px;
@@ -5457,12 +5532,12 @@ hr {
 
 /* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
 
-.bytm-toggle {
+.bytm-toggle-input {
   display: flex;
   align-items: center;
 }
 
-.bytm-toggle input {
+.bytm-toggle-input input {
   appearance: none;
   display: inline-block;
   width: var(--toggle-width);
@@ -5479,11 +5554,11 @@ hr {
   transition: justify-content 0.2s ease, background-color 0.2s ease;
 }
 
-.bytm-toggle input[data-toggled="true"] {
+.bytm-toggle-input input[data-toggled="true"] {
   background-color: var(--toggle-color-on);
 }
 
-.bytm-toggle input .bytm-toggle-knob {
+.bytm-toggle-input input .bytm-toggle-input-knob {
   --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
   --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
   width: var(--toggle-knob-calc-width);
@@ -5497,7 +5572,7 @@ hr {
   transition: left 0.2s ease;
 }
 
-.bytm-toggle input[data-toggled="true"] .bytm-toggle-knob {
+.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }
 /* #MARKER misc */
@@ -5992,12 +6067,18 @@ function registerMenuCommands() {
                 }
             }
         }), "d");
-        GM.registerMenuCommand("Delete GM value by name", () => __awaiter(this, void 0, void 0, function* () {
-            const key = prompt("Enter the name of the GM value to delete.\nEmpty input cancels the operation.");
-            if (key && key.length > 0) {
-                const oldVal = yield GM.getValue(key);
-                yield GM.deleteValue(key);
-                console.log(`Deleted GM value '${key}' with previous value '${oldVal}'`);
+        GM.registerMenuCommand("Delete GM values by name (comma separated)", () => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+            if (!keys)
+                return;
+            for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
+                if (key && key.length > 0) {
+                    const truncLength = 400;
+                    const oldVal = yield GM.getValue(key);
+                    yield GM.deleteValue(key);
+                    console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
+                }
             }
         }), "n");
         GM.registerMenuCommand("Reset install timestamp", () => __awaiter(this, void 0, void 0, function* () {
