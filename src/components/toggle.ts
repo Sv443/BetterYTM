@@ -17,14 +17,13 @@ export interface ToggleProps {
 export async function createToggle({
   onChange,
   initialValue = false,
-  id = randomId(8, 24),
+  id = randomId(8, 26),
   labelPos = "left",
 }: ToggleProps) {
   const wrapperEl = document.createElement("div");
   wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
-  wrapperEl.ariaValueText = t(`toggled_${initialValue ? "on" : "off"}`);
 
   const labelEl = labelPos !== "off" && document.createElement("label");
   if(labelEl) {
@@ -34,21 +33,28 @@ export async function createToggle({
       labelEl.htmlFor = `bytm-toggle-${id}`;
   }
 
+  const toggleWrapperEl = document.createElement("div");
+  toggleWrapperEl.classList.add("bytm-toggle");
+  toggleWrapperEl.tabIndex = -1;
+
   const toggleEl = document.createElement("input");
-  toggleEl.classList.add("bytm-toggle");
   toggleEl.type = "checkbox";
   toggleEl.checked = initialValue;
+  toggleEl.dataset.toggled = String(Boolean(initialValue));
   toggleEl.tabIndex = -1;
   if(id)
     toggleEl.id = `bytm-toggle-${id}`;
+
+  const toggleKnobEl = document.createElement("div");
+  toggleKnobEl.classList.add("bytm-toggle-knob");
+  toggleKnobEl.innerHTML = "&nbsp;";
 
   const toggleElClicked = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
 
     onChange(toggleEl.checked);
-    if(labelEl)
-      labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+    toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
   };
 
   toggleEl.addEventListener("change", toggleElClicked);
@@ -59,8 +65,11 @@ export async function createToggle({
     }
   });
 
+  toggleEl.appendChild(toggleKnobEl);
+  toggleWrapperEl.appendChild(toggleEl);
+
   labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
-  wrapperEl.appendChild(toggleEl);
+  wrapperEl.appendChild(toggleWrapperEl);
   labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
 
   return wrapperEl;

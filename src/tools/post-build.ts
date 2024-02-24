@@ -23,6 +23,12 @@ type RequireObjPkg = {
   path?: string;
 };
 
+type BuildStats = {
+  sizeKiB: number;
+  mode: string;
+  timestamp: number;
+};
+
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUuid = randomUUID();
@@ -60,12 +66,6 @@ const scriptUrl = (() => {
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
-
-type BuildStats = {
-  sizeKiB: number;
-  mode: string;
-  timestamp: number;
-};
 
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `\
