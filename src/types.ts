@@ -260,6 +260,8 @@ export interface FeatureConfig {
   geniusLyrics: boolean;
   /** Base URL to use for GeniURL */
   geniUrlBase: string;
+  /** Token to use for GeniURL */
+  geniUrlToken: string;
   /** Max size of lyrics cache */
   lyricsCacheMaxSize: number;
   /** Max TTL of lyrics cache entries, in ms */

@@ -347,7 +347,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     log(`Requesting URLs from geniURL at '${fetchUrl}'`);
 
-    const fetchRes = await fetchAdvanced(fetchUrl);
+    const { geniUrlToken } = getFeatures();
+    const fetchRes = await fetchAdvanced(fetchUrl, {
+      ...(geniUrlToken ? {
+        headers: {
+          Authorization: `Bearer ${geniUrlToken}`,
+        },
+      } : {}),
+    });
     if(fetchRes.status === 429) {
       const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
       alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
