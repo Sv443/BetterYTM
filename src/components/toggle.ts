@@ -54,7 +54,11 @@ export async function createToggle({
     e.stopPropagation();
 
     onChange(toggleEl.checked);
+
     toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
+    if(labelEl)
+      labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+    wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
   };
 
   toggleEl.addEventListener("change", toggleElClicked);
