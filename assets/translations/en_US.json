@@ -95,6 +95,11 @@
     "expand_release_notes": "Click to expand the latest release notes",
     "collapse_release_notes": "Click to collapse the latest release notes",
 
+    "unit_entries-1": "entry",
+    "unit_entries-n": "entries",
+    "unit_days-1": "day",
+    "unit_days-n": "days",
+
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
     "feature_category_behavior": "Behavior",

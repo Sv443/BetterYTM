@@ -130,9 +130,9 @@ type FeatureTypeProps =
     type: "number",
     default: number,
     min: number,
-    max: number,
+    max?: number,
     step?: number,
-    unit?: string,
+    unit?: string | ((val: number) => string),
   }
   | {
     type: "select",
@@ -145,7 +145,7 @@ type FeatureTypeProps =
     min: number,
     max: number,
     step?: number,
-    unit?: string,
+    unit?: string | ((val: number) => string),
   }
   | {
     type: "hotkey",
@@ -247,6 +247,10 @@ export interface FeatureConfig {
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
+  /** Max size of lyrics cache */
+  lyricsCacheMaxSize: number;
+  /** Max TTL of lyrics cache entries, in ms */
+  lyricsCacheTTL: number;
 
   //#SECTION misc
   /** The locale to use for translations */

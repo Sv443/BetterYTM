@@ -252,6 +252,28 @@ export const featInfo = {
     enable: () => void "TODO",
     disable: () => void "TODO",
   },
+  lyricsCacheMaxSize: {
+    type: "slider",
+    category: "lyrics",
+    default: 500,
+    min: 0,
+    max: 2000,
+    step: 50,
+    unit: (val: number) => tp("unit_entries", val),
+    enable: () => void "TODO",
+    change: () => void "TODO",
+  },
+  lyricsCacheTTL: {
+    type: "slider",
+    category: "lyrics",
+    default: 21,
+    min: 1,
+    max: 100,
+    step: 1,
+    unit: (val: number) => tp("unit_days", val),
+    enable: () => void "TODO",
+    change: () => void "TODO",
+  },
 
   //#SECTION general
   locale: {
