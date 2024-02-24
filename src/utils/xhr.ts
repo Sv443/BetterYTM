@@ -8,7 +8,12 @@ import type { HttpUrlString } from "../types";
  * @returns Returns a string instead of a URL object
  */
 export function constructUrlString(baseUrl: HttpUrlString, params: Record<string, Stringifiable | null>) {
-  return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+  return `${baseUrl}?${
+    Object.entries(params)
+      .filter(([,v]) => v !== undefined)
+      .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+      .join("&")
+  }`;
 }
 
 /**
@@ -28,6 +33,7 @@ export function constructUrl(base: HttpUrlString, params: Record<string, Stringi
 export function sendRequest<T = any>(details: GM.Request<T>) {
   return new Promise<GM.Response<T>>((resolve, reject) => {
     GM.xmlHttpRequest({
+      timeout: 10_000,
       ...details,
       onload: resolve,
       onerror: reject,

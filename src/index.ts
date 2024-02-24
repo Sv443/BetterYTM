@@ -1,7 +1,7 @@
 import { addGlobalStyle, decompress, type Stringifiable } from "@sv443-network/userutils";
 import { initOnSelector } from "./utils";
 import { clearConfig, getFeatures, initConfig } from "./config";
-import { compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
+import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
 import { initSiteEvents, siteEvents } from "./siteEvents";
 import { emitInterface, initInterface } from "./interface";
@@ -46,7 +46,7 @@ import {
 
   console.log();
   console.log(
-    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`,
+    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${buildNumber} ─ ${scriptInfo.namespace}`,
     `font-weight: bold; ${styleCommon} ${styleGradient}`,
     `background-color: #333; ${styleCommon}`,
     "padding: initial;",

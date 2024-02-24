@@ -1,6 +1,6 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
-import { compressionFormat, host, scriptInfo } from "../constants";
+import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown, getChangelogMd, compressionSupported } from "../utils";
 import { formatVersion } from "../config";
@@ -535,8 +535,8 @@ async function addCfgMenu() {
   versionElem.classList.add("bytm-link");
   versionElem.role = "button";
   versionElem.tabIndex = 0;
-  versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
-  versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
+  versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, buildNumber);
+  versionElem.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
   const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
