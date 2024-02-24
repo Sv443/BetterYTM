@@ -236,7 +236,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "c9f55a6";
+const buildNumberRaw = "6f054ae";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1119,13 +1119,12 @@ function getOS() {
         return "mac";
     return "other";
 }/** Creates a simple toggle element */
-function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(8, 24), labelPos = "left", }) {
+function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
     return __awaiter(this, void 0, void 0, function* () {
         const wrapperEl = document.createElement("div");
         wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
         wrapperEl.role = "switch";
         wrapperEl.tabIndex = 0;
-        wrapperEl.ariaValueText = t(`toggled_${initialValue ? "on" : "off"}`);
         const labelEl = labelPos !== "off" && document.createElement("label");
         if (labelEl) {
             labelEl.classList.add("bytm-toggle-label");
@@ -1133,19 +1132,27 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
             if (id)
                 labelEl.htmlFor = `bytm-toggle-${id}`;
         }
+        const toggleWrapperEl = document.createElement("div");
+        toggleWrapperEl.classList.add("bytm-toggle");
+        toggleWrapperEl.tabIndex = -1;
         const toggleEl = document.createElement("input");
-        toggleEl.classList.add("bytm-toggle");
         toggleEl.type = "checkbox";
         toggleEl.checked = initialValue;
+        toggleEl.dataset.toggled = String(Boolean(initialValue));
         toggleEl.tabIndex = -1;
         if (id)
             toggleEl.id = `bytm-toggle-${id}`;
+        const toggleKnobEl = document.createElement("div");
+        toggleKnobEl.classList.add("bytm-toggle-knob");
+        toggleKnobEl.innerHTML = "&nbsp;";
         const toggleElClicked = (e) => {
             e.preventDefault();
             e.stopPropagation();
             onChange(toggleEl.checked);
+            toggleEl.dataset.toggled = String(Boolean(toggleEl.checked));
             if (labelEl)
-                labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+                labelEl.textContent = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+            wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
         };
         toggleEl.addEventListener("change", toggleElClicked);
         wrapperEl.addEventListener("keydown", (e) => {
@@ -1154,8 +1161,10 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
                 toggleElClicked(e);
             }
         });
+        toggleEl.appendChild(toggleKnobEl);
+        toggleWrapperEl.appendChild(toggleEl);
         labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
-        wrapperEl.appendChild(toggleEl);
+        wrapperEl.appendChild(toggleWrapperEl);
         labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
         return wrapperEl;
     });
@@ -5426,11 +5435,15 @@ hr {
   white-space: nowrap;
 }
 
+/* #MARKER toggle */
+
 .bytm-toggle-wrapper {
   --toggle-height: 24px;
   --toggle-width: 48px;
+  --toggle-knob-offset: 4px;
   --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
   --toggle-color-off: #707070;
+  --toggle-knob-color: #f5f5f5;
 
   display: flex;
   align-items: center;
@@ -5439,59 +5452,54 @@ hr {
 .bytm-toggle-wrapper .bytm-toggle-label {
   cursor: pointer;
   font-size: 1.5rem;
-  padding: 5px 10px;
+  padding: 3px 12px;
 }
 
 /* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
 
 .bytm-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle input {
   appearance: none;
+  display: inline-block;
   width: var(--toggle-width);
   height: var(--toggle-height);
-  display: inline-block;
   position: relative;
   border-radius: 50px;
-  margin: 0px;
   overflow: hidden;
   outline: none;
   border: none;
+  margin: 0;
+  padding: var(--toggle-knob-offset);
   cursor: pointer;
   background-color: var(--toggle-color-off);
-  transition: background-color ease 0.2s;
+  transition: justify-content 0.2s ease, background-color 0.2s ease;
 }
 
-.bytm-toggle:before {
-  content: " ";
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  z-index: 2;
-  width: calc(var(--toggle-height) - 4px);
-  height: calc(var(--toggle-height) - 4px);
-  background: #fff;
-  border-radius: 50%;
-  font: 10px/28px Helvetica;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-indent: -22px;
-  word-spacing: 37px;
-  color: #fff;
-  left: 2px;
-  top: 2px;
-  text-shadow: -1px -1px rgba(0,0,0,0.15);
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  transition: all ease 0.2s;
-}
-
-.bytm-toggle:checked {
+.bytm-toggle input[data-toggled="true"] {
   background-color: var(--toggle-color-on);
 }
 
-.bytm-toggle:checked:before {
-  left: calc(var(--toggle-width) - 22px);
+.bytm-toggle input .bytm-toggle-knob {
+  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  width: var(--toggle-knob-calc-width);
+  height: var(--toggle-knob-calc-height);
+  background-color: var(--toggle-knob-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--toggle-knob-offset);
+  transition: left 0.2s ease;
 }
 
+.bytm-toggle input[data-toggled="true"] .bytm-toggle-knob {
+  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
+}
 /* #MARKER misc */
 
 .bytm-disable-scroll {
