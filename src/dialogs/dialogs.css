@@ -66,3 +66,12 @@
   padding-left: 12px;
   font-size: 1.3rem;
 }
+
+.advanced-mode-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.advanced-mode-icon svg path {
+  fill: #c5a73b;
+}
