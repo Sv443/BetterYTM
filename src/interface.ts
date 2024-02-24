@@ -1,5 +1,5 @@
 import * as UserUtils from "@sv443-network/userutils";
-import { mode, branch, scriptInfo } from "./constants";
+import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
@@ -50,6 +50,9 @@ export function initInterface() {
   const props = {
     mode,
     branch,
+    host,
+    buildNumber,
+    compressionFormat,
     ...scriptInfo,
     ...globalFuncs,
     UserUtils,
