@@ -42,6 +42,7 @@
 // @resource          img-lyrics              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
 // @resource          img-skip_to             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
 // @resource          img-spinner             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
+// @resource          img-add_circle_small    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/add_circle_small.svg
 // @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
 // @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
 // @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
@@ -236,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "12bf4b4";
+const buildNumberRaw = "4a25140";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -584,11 +585,7 @@ function disableDarkReader() {
         document.head.appendChild(metaElem);
         info("Sent hint to Dark Reader to disable itself");
     }
-}/** Base URL of geniURL */
-const geniUrlBase = "https://api.sv443.net/geniurl";
-/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchUrl = `${geniUrlBase}/search`;
-/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+}/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 let canCompress$1 = true;
 const lyricsCacheMgr = new UserUtils.ConfigManager({
@@ -857,7 +854,7 @@ function fetchLyricsUrls(artist, song) {
                 return [cacheEntry];
             }
             const startTs = Date.now();
-            const fetchUrl = constructUrlString(geniURLSearchUrl, {
+            const fetchUrl = constructUrlString(`${getFeatures().geniUrlBase}/search`, {
                 disableFuzzy: null,
                 utm_source: scriptInfo.name,
                 utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
@@ -1885,7 +1882,7 @@ function addCfgMenu() {
             acc[category][key] = featureCfg[key];
             return acc;
         }, {});
-        const fmtVal = (v) => String(v).trim();
+        const fmtVal = (v) => typeof v === "object" ? JSON.stringify(v) : String(v).trim();
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const catHeaderElem = document.createElement("h3");
@@ -1911,15 +1908,18 @@ function addCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
+                    if (getFeatures().advancedMode)
+                        featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${fmtVal(ftDefault)}`;
                     const textElem = document.createElement("span");
-                    textElem.textContent = ftInfo.advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featKey}`)) : t(`feature_desc_${featKey}`);
+                    textElem.textContent = t(`feature_desc_${featKey}`);
                     let adornmentElem;
                     const adornContent = (_c = ftInfo.textAdornment) === null || _c === void 0 ? void 0 : _c.call(ftInfo);
-                    if (typeof adornContent === "string" || adornContent instanceof Promise) {
+                    const adornContentAw = adornContent instanceof Promise ? yield adornContent : adornContent;
+                    if ((typeof adornContent === "string" || adornContent instanceof Promise) && typeof adornContentAw !== "undefined") {
                         adornmentElem = document.createElement("span");
                         adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
                         adornmentElem.classList.add("bytm-ftitem-adornment");
-                        adornmentElem.innerHTML = adornContent instanceof Promise ? yield adornContent : adornContent;
+                        adornmentElem.innerHTML = adornContentAw;
                     }
                     let helpElem;
                     // @ts-ignore
@@ -1947,8 +1947,8 @@ function addCfgMenu() {
                             error(`Couldn't create help button SVG element for feature '${featKey}'`);
                         }
                     }
-                    featLeftSideElem.appendChild(textElem);
                     adornmentElem && featLeftSideElem.appendChild(adornmentElem);
+                    featLeftSideElem.appendChild(textElem);
                     helpElem && featLeftSideElem.appendChild(helpElem);
                     ftConfElem.appendChild(featLeftSideElem);
                 }
@@ -1965,6 +1965,9 @@ function addCfgMenu() {
                             break;
                         case "number":
                             inputType = "number";
+                            break;
+                        case "text":
+                            inputType = "text";
                             break;
                         case "select":
                             inputTag = "select";
@@ -2031,13 +2034,32 @@ function addCfgMenu() {
                                 inputElem.appendChild(optionElem);
                             }
                         }
-                        inputElem.addEventListener("input", () => {
-                            let v = String(inputElem.value).trim();
-                            if (["number", "slider"].includes(type) || v.match(/^-?\d+$/))
-                                v = Number(v);
-                            if (typeof initialVal !== "undefined")
-                                confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
-                        });
+                        if (type === "text") {
+                            let lastValue = inputElem.value && inputElem.value.length > 0 ? inputElem.value : ftInfo.default;
+                            const textInputUpdate = () => {
+                                let v = String(inputElem.value).trim();
+                                if (type === "text" && ftInfo.normalize)
+                                    v = inputElem.value = ftInfo.normalize(String(v));
+                                if (v === lastValue)
+                                    return;
+                                lastValue = v;
+                                if (v === "")
+                                    v = ftInfo.default;
+                                if (typeof initialVal !== "undefined")
+                                    confChanged(featKey, initialVal, v);
+                            };
+                            inputElem.addEventListener("blur", () => textInputUpdate());
+                            inputElem.addEventListener("keydown", (e) => e.key === "Tab" && textInputUpdate());
+                        }
+                        else {
+                            inputElem.addEventListener("input", () => {
+                                let v = String(inputElem.value).trim();
+                                if (["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+                                    v = Number(v);
+                                if (typeof initialVal !== "undefined")
+                                    confChanged(featKey, initialVal, (type !== "toggle" ? v : inputElem.checked));
+                            });
+                        }
                         if (labelElem) {
                             labelElem.id = `bytm-ftconf-${featKey}-label`;
                             labelElem.htmlFor = inputElemId;
@@ -2288,8 +2310,7 @@ function openHelpDialog(featureKey) {
             // update help text
             const featDescElem = menuBgElem.querySelector("#bytm-feat-help-menu-desc");
             const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
-            // @ts-ignore
-            featDescElem.textContent = featInfo[featureKey].advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featureKey}`)) : t(`feature_desc_${featureKey}`);
+            featDescElem.textContent = t(`feature_desc_${featureKey}`);
             // @ts-ignore
             const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
             helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
@@ -3924,6 +3945,15 @@ const featInfo = {
         enable: () => void "TODO",
         disable: () => void "TODO",
     },
+    geniUrlBase: {
+        type: "text",
+        category: "lyrics",
+        default: "https://api.sv443.net/geniurl",
+        normalize: (val) => val.trim().replace(/\/+$/, ""),
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="advanced-mode-icon">${(_a = yield resourceToHTMLString("img-add_circle_small")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
+    },
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
@@ -3935,6 +3965,8 @@ const featInfo = {
         enable: () => void "TODO",
         change: () => void "TODO",
         advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="advanced-mode-icon">${(_b = yield resourceToHTMLString("img-add_circle_small")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
     },
     lyricsCacheTTL: {
         type: "slider",
@@ -3947,6 +3979,8 @@ const featInfo = {
         enable: () => void "TODO",
         change: () => void "TODO",
         advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _c; return `<span class="advanced-mode-icon">${(_c = yield resourceToHTMLString("img-add_circle_small")) !== null && _c !== void 0 ? _c : ""}</span>`; }),
     },
     clearLyricsCache: {
         type: "button",
@@ -3960,6 +3994,8 @@ const featInfo = {
             }
         },
         advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _d; return `<span class="advanced-mode-icon">${(_d = yield resourceToHTMLString("img-add_circle_small")) !== null && _d !== void 0 ? _d : ""}</span>`; }),
     },
     //#SECTION general
     locale: {
@@ -3969,7 +4005,7 @@ const featInfo = {
         default: getPreferredLocale(),
         enable: () => void "TODO",
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("img-globe")) !== null && _a !== void 0 ? _a : ""; }),
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _e; return (_e = yield resourceToHTMLString("img-globe")) !== null && _e !== void 0 ? _e : ""; }),
     },
     versionCheck: {
         type: "toggle",
@@ -3994,6 +4030,8 @@ const featInfo = {
         default: false,
         enable: () => void "TODO",
         disable: () => void "TODO",
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _f; return getFeatures().advancedMode ? `<span class="advanced-mode-icon">${(_f = yield resourceToHTMLString("img-add_circle_small")) !== null && _f !== void 0 ? _f : ""}</span>` : undefined; }),
     },
 };/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 5;
@@ -4020,7 +4058,7 @@ const migrations = {
     },
     // 4 -> 5
     5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode") });
+        return Object.assign(Object.assign({}, oldData), { lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode"), geniUrlBase: getFeatureDefault("geniUrlBase") });
     },
 };
 function getFeatureDefault(key) {
@@ -4579,7 +4617,7 @@ function showWelcomeMenu() {
     console.log([
         "Powered by:",
         "─ Lots of ambition and dedication",
-        `─ My song metadata API: ${geniUrlBase}`,
+        "─ My song metadata API: https://api.sv443.net/geniurl",
         "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
         "─ The fuse.js library: https://github.com/krisk/Fuse",
         "─ This markdown parser library: https://github.com/markedjs/marked",
@@ -5090,17 +5128,6 @@ hr {
   border: revert;
 }
 
-.bytm-ftitem-adornment {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-left: 8px;
-}
-
-#bytm-ftitem-locale-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #4595c7);
-}
-
 :root {
   --bytm-dialog-accent-col: #3683d4;
 }
@@ -5368,6 +5395,10 @@ hr {
   width: 240px;
 }
 
+.bytm-ftconf-input[type=text] {
+  width: 240px;
+}
+
 .bytm-ftconf-input[type=checkbox] {
   margin-left: 5px;
 }
@@ -5488,10 +5519,12 @@ hr {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 8px;
+  margin-right: 6px;
 }
 
-#bytm-ftitem-locale-adornment svg path {
+.bytm-ftitem-adornment svg path,
+.advancedModeIcon svg path
+{
   fill: var(--bytm-dialog-accent-col, #4595c7);
 }
 
@@ -5513,8 +5546,8 @@ hr {
 }
 
 .bytm-toggle-input-wrapper {
-  --toggle-height: 24px;
-  --toggle-width: 48px;
+  --toggle-height: 20px;
+  --toggle-width: 40px;
   --toggle-knob-offset: 4px;
   --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
   --toggle-color-off: #707070;
@@ -5958,6 +5991,15 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 .bytm-secondary-label {
   padding-left: 12px;
   font-size: 1.3rem;
+}
+
+.advanced-mode-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.advanced-mode-icon svg path {
+  fill: #c5a73b;
 }
 
 #bytm-welcome-menu-bg {
