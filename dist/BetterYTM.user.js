@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "13d0aa6";
+const buildNumberRaw = "71e7217";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -5398,11 +5398,11 @@ hr {
 }
 
 .bytm-ftconf-input[type=range] {
-  width: 240px;
+  width: 200px;
 }
 
 .bytm-ftconf-input[type=text] {
-  width: 240px;
+  width: 200px;
 }
 
 .bytm-ftconf-input[type=checkbox] {
