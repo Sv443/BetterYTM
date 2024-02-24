@@ -6,26 +6,6 @@
   --bytm-menu-border-radius: 10px;
 }
 
-#bytm-cfg-menu-bg {
-  --bytm-menu-height-max: 750px;
-  --bytm-menu-width-max: 1000px;
-}
-
-#bytm-changelog-menu-bg {
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 800px;
-}
-
-#bytm-export-menu-bg, #bytm-import-menu-bg {
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 600px;
-}
-
-#bytm-feat-help-menu-bg {
-  --bytm-menu-height-max: 400px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-menu-bg {
   display: block;
   position: fixed;
