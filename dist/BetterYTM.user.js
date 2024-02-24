@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "71e7217";
+const buildNumberRaw = "52f4c66";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -5931,7 +5931,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 }
 
 #bytm-cfg-dialog-bg {
-  --bytm-dialog-height-max: 750px;
+  --bytm-dialog-height-max: 900px;
   --bytm-dialog-width-max: 1000px;
 }
 
