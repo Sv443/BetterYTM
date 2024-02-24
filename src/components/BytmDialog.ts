@@ -21,7 +21,7 @@ export interface BytmDialogOptions {
   /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
   /** Whether the menu should have a smaller overall appearance - defaults to false */
-  smallMenu?: boolean;
+  smallDialog?: boolean;
   /** Called to render the body of the dialog */
   renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
@@ -239,7 +239,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
-    this.options.smallMenu && headerWrapperEl.classList.add("small");
+    this.options.smallDialog && headerWrapperEl.classList.add("small");
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
@@ -250,13 +250,17 @@ export class BytmDialog extends NanoEmitter<{
       headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
-    else
-      headerWrapperEl.appendChild(document.createElement("div"));
+    else {
+      // insert element to pad the header height
+      const padEl = document.createElement("div");
+      padEl.classList.add("bytm-dialog-header-pad", this.options.smallDialog ? "small" : "");
+      headerWrapperEl.appendChild(padEl);
+    }
 
     if(this.options.closeBtnEnabled) {
       const closeBtnEl = document.createElement("img");
       closeBtnEl.classList.add("bytm-dialog-close");
-      this.options.smallMenu && closeBtnEl.classList.add("small");
+      this.options.smallDialog && closeBtnEl.classList.add("small");
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
@@ -271,7 +275,7 @@ export class BytmDialog extends NanoEmitter<{
     const menuBodyElem = document.createElement("div");
     menuBodyElem.id = `bytm-${this.id}-dialog-body`;
     menuBodyElem.classList.add("bytm-dialog-body");
-    this.options.smallMenu && menuBodyElem.classList.add("small");
+    this.options.smallDialog && menuBodyElem.classList.add("small");
 
     const body = this.options.renderBody();
 

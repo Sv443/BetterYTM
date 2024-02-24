@@ -1,6 +1,6 @@
 import { host, scriptInfo } from "../constants";
 import { getChangelogMd, parseMarkdown, t } from "../utils";
-import { BytmDialog } from "../components";
+import { BytmDialog, createToggle } from "../components";
 import { getFeatures, saveFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
 
@@ -23,10 +23,11 @@ export async function getVersionNotifDialog({
       id: "version-notif",
       maxWidth: 600,
       maxHeight: 800,
+      closeBtnEnabled: false,
       closeOnBgClick: false,
       closeOnEscPress: true,
       destroyOnClose: true,
-      smallMenu: true,
+      smallDialog: true,
       renderBody: () => renderBody({
         latestTag,
         changelogHtml,
@@ -36,13 +37,17 @@ export async function getVersionNotifDialog({
   return verNotifDialog!;
 }
 
-function renderBody({
+let disableUpdateCheck = false;
+
+async function renderBody({
   latestTag,
   changelogHtml,
 }: {
   latestTag: string;
   changelogHtml: string;
 }) {
+  disableUpdateCheck = false;
+
   const hostPlatformNames: Record<typeof host, string> = {
     github: "GitHub",
     greasyfork: "GreasyFork",
@@ -60,8 +65,14 @@ function renderBody({
   changelogDetailsEl.open = false;
 
   const changelogSummaryEl = document.createElement("summary");
+  changelogSummaryEl.role = "button";
+  changelogSummaryEl.tabIndex = 0;
   changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
   changelogDetailsEl.appendChild(changelogSummaryEl);
+
+  changelogDetailsEl.addEventListener("toggle", () => {
+    changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
+  });
 
   const changelogEl = document.createElement("p");
   changelogEl.id = "bytm-version-notif-changelog-cont";
@@ -79,25 +90,41 @@ function renderBody({
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
-  const checkboxEl = document.createElement("input");
-  checkboxEl.type = "checkbox";
-  checkboxEl.id = "bytm-disable-update-check-chkbox";
-  checkboxEl.tabIndex = 0;
-  checkboxEl.checked = false;
+  const disableToggleEl = await createToggle({
+    id: "disable-update-check",
+    initialValue: false,
+    labelPos: "off",
+    onChange(checked) {
+      disableUpdateCheck = checked;
+      if(checked)
+        btnClose.textContent = t("close_and_ignore_until_reenabled");
+      else
+        btnClose.textContent = t("close_and_ignore_for_24h");
+    },
+  });
+
+  const labelWrapperEl = document.createElement("div");
+  labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
 
   const labelEl = document.createElement("label");
-  labelEl.htmlFor = "bytm-disable-update-check-chkbox";
+  labelEl.htmlFor = "bytm-toggle-disable-update-check";
   labelEl.textContent = t("disable_update_check");
 
-  disableUpdCheckEl.appendChild(checkboxEl);
-  disableUpdCheckEl.appendChild(labelEl);
+  const secondaryLabelEl = document.createElement("span");
+  secondaryLabelEl.classList.add("bytm-secondary-label");
+  secondaryLabelEl.textContent = t("reenable_in_config_menu");
+
+  labelWrapperEl.appendChild(labelEl);
+  labelWrapperEl.appendChild(secondaryLabelEl);
+
+  disableUpdCheckEl.appendChild(disableToggleEl);
+  disableUpdCheckEl.appendChild(labelWrapperEl);
 
   wrapperEl.appendChild(disableUpdCheckEl);
 
   verNotifDialog?.on("close", async () => {
     const config = getFeatures();
-    if(checkboxEl.checked)
-      config.versionCheck = false;
+    config.versionCheck = !disableUpdateCheck;
     await saveFeatures(config);
   });
 
@@ -118,14 +145,7 @@ function renderBody({
   const btnClose = document.createElement("button");
   btnClose.className = "bytm-btn";
   btnClose.tabIndex = 0;
-  btnClose.textContent = t("ignore_for_24h");
-
-  checkboxEl.addEventListener("change", () => {
-    if(checkboxEl.checked)
-      btnClose.textContent = t("close");
-    else
-      btnClose.textContent = t("ignore_for_24h");
-  });
+  btnClose.textContent = t("close_and_ignore_for_24h");
 
   btnClose.addEventListener("click", () => verNotifDialog?.close());
   btnClose.addEventListener("keydown", (e) => e.key === "Enter" && verNotifDialog?.close());
