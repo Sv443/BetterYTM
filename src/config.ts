@@ -55,7 +55,7 @@ export const migrations: ConfigMigrationsDict = {
       geniUrlBase: getFeatureDefault("geniUrlBase"),
       lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
       lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
-      clearLyricsCache: undefined,
+      clearLyricsCache: getFeatureDefault("clearLyricsCache"),
       advancedMode: getFeatureDefault("advancedMode"),
     };
   },
