@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 151 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `151/151` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `125/151` (82.8%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `125/151` (82.8%) | ─ |
+| [`en_US`](./en_US.json) | 152 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `152/152` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `125/152` (82.2%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `125/152` (82.2%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -45,7 +45,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -58,7 +59,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -78,7 +79,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -91,7 +93,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -111,7 +113,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -124,7 +127,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -144,7 +147,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -157,7 +161,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -177,7 +181,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -190,7 +195,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -210,7 +215,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
@@ -223,7 +229,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 26 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 27 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -243,7 +249,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
-| `advanced_feature_desc_template` | `[Advanced] %1` |
+| `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
+| `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_lyricsCacheMaxSize` | `Maximum amount of lyrics to keep in the cache` |
 | `feature_helptext_lyricsCacheMaxSize` | `The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.` |
 | `feature_desc_lyricsCacheTTL` | `Max amount of days to keep a lyrics entry in the cache` |
