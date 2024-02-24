@@ -1,8 +1,11 @@
+/* TODO(v1.2): leave only dialog */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
 {
   --bytm-dialog-height-max: 900px;
   --bytm-dialog-width-max: 1000px;
+  --bytm-menu-height-max: 900px;
+  --bytm-menu-width-max: 1000px;
 }
 
 #bytm-changelog-dialog-bg,
@@ -10,6 +13,8 @@
 {
   --bytm-dialog-height-max: 800px;
   --bytm-dialog-width-max: 800px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 800px;
 }
 
 #bytm-export-dialog-bg, #bytm-import-dialog-bg,
@@ -17,6 +22,8 @@
 {
   --bytm-dialog-height-max: 500px;
   --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
 }
 
 #bytm-feat-help-dialog-bg,
@@ -24,6 +31,8 @@
 {
   --bytm-dialog-height-max: 400px;
   --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
 }
 
 .bytm-dialog-body p {
