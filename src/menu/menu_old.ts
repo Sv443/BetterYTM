@@ -35,8 +35,6 @@ async function addCfgMenu() {
   initConfig = JSON.stringify(getFeatures());
 
   const initLangReloadText = t("lang_changed_prompt_reload");
-  const toggled_on = t("toggled_on");
-  const toggled_off = t("toggled_off");
 
   //#SECTION backdrop & menu container
   const backgroundElem = document.createElement("div");
@@ -245,7 +243,6 @@ async function addCfgMenu() {
     );
 
   const fmtVal = (v: unknown) => String(v).trim();
-  const toggleLabelText = (toggled: boolean) => toggled ? toggled_on : toggled_off;
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -369,12 +366,11 @@ async function addCfgMenu() {
             inputElem.type = inputType;
 
           // @ts-ignore
-          if(typeof ftInfo.min !== "undefined" && ftInfo.max !== "undefined") {
-            // @ts-ignore
+          if(typeof ftInfo.min !== "undefined")// @ts-ignore
             inputElem.min = ftInfo.min;
-            // @ts-ignore
+          // @ts-ignore
+          if(ftInfo.max !== "undefined") // @ts-ignore
             inputElem.max = ftInfo.max;
-          }
 
           if(typeof initialVal !== "undefined")
             inputElem.value = String(initialVal);
@@ -386,17 +382,23 @@ async function addCfgMenu() {
             inputElem.checked = Boolean(initialVal);
 
           // @ts-ignore
-          const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+          const unitTxt = (typeof ftInfo.unit === "string" ? ftInfo.unit : (
+            // @ts-ignore
+            typeof ftInfo.unit === "function" ? ftInfo.unit(Number(inputElem.value)) : ""
+          ));
 
           let labelElem: HTMLLabelElement | undefined;
+          let lastDisplayedVal: string | undefined;
           if(type === "slider") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-            labelElem.textContent = fmtVal(initialVal) + unitTxt;
+            labelElem.textContent = `${fmtVal(initialVal)} ${unitTxt}`;
 
             inputElem.addEventListener("input", () => {
-              if(labelElem)
-                labelElem.textContent = fmtVal(Number(inputElem.value)) + unitTxt;
+              if(labelElem && lastDisplayedVal !== inputElem.value) {
+                labelElem.textContent = `${fmtVal(inputElem.value)} ${unitTxt}`;
+                lastDisplayedVal = inputElem.value;
+              }
             });
           }
           else if(type === "select") {
@@ -477,13 +479,14 @@ async function addCfgMenu() {
 
       if(!labelElem)
         continue;
-        
+
       // @ts-ignore
-      const unitTxt = typeof ftInfo.unit === "string" ? " " + ftInfo.unit : "";
+      const unitTxt = " " + (typeof ftInfo.unit === "string" ? ftInfo.unit : (
+        // @ts-ignore
+        typeof ftInfo.unit === "function" ? ftInfo.unit(Number(ftElem.value)) : ""
+      ));
       if(ftInfo.type === "slider")
-        labelElem.textContent = fmtVal(Number(value)) + unitTxt;
-      else if(ftInfo.type === "toggle")
-        labelElem.textContent = toggleLabelText(Boolean(value)) + unitTxt;
+        labelElem.textContent = `${fmtVal(Number(value))} ${unitTxt}`;
     }
     info("Rebuilt config menu");
   });

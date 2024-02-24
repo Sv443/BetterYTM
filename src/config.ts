@@ -6,7 +6,7 @@ import { compressionFormat } from "./constants";
 import type { FeatureConfig } from "./types";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 4;
+export const formatVersion = 5;
 /** Config data format migration dictionary */
 export const migrations: ConfigMigrationsDict = {
   // 1 -> 2
@@ -48,6 +48,14 @@ export const migrations: ConfigMigrationsDict = {
       versionCheck: getFeatureDefault("versionCheck"),
     };
   },
+  // 4 -> 5
+  5: (oldData: Record<string, unknown>) => {
+    return {
+      ...oldData,
+      lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
+      lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
+    };
+  },
 };
 
 function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
@@ -81,7 +89,7 @@ export async function initConfig() {
     info("Config data initialized with default values");
   else if(oldFmtVer !== cfgMgr.formatVersion)
     info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
-  return data;
+  return { ...data };
 }
 
 /** Returns the current feature config from the in-memory cache as a copy */
