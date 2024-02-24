@@ -40,6 +40,7 @@
     "log_level_info": "Info (only important)",
     "toggled_on": "On",
     "toggled_off": "Off",
+    "trigger_btn_action": "Trigger",
     "remove_from_queue": "Remove this song from the queue",
     "delete_from_list": "Delete this song from the list",
     "couldnt_remove_from_queue": "Couldn't remove this song from the queue",
@@ -58,6 +59,9 @@
     "lyrics_rate_limited-n": "You are being rate limited.\nPlease wait %1 seconds before requesting more lyrics.",
     "lyrics_not_found_confirm_open_search": "Couldn't find a lyrics page for this song.\nDo you want to open genius.com to manually search for it?",
     "lyrics_not_found_click_open_search": "Couldn't find lyrics URL - click to open the manual lyrics search",
+    "lyrics_clear_cache_confirm_prompt-1": "The lyrics cache currently has %1 entry.\nDo you really want to delete them?",
+    "lyrics_clear_cache_confirm_prompt-n": "The lyrics cache currently has %1 entries.\nDo you really want to delete them?",
+    "lyrics_clear_cache_success": "Lyrics cache was cleared successfully.",
 
     "hotkey_input_click_to_change": "Click to change",
     "hotkey_input_click_to_change_tooltip": "Click, then press the desired key combination",
@@ -99,6 +103,8 @@
     "unit_entries-n": "entries",
     "unit_days-1": "day",
     "unit_days-n": "days",
+
+    "advanced_feature_desc_template": "[Advanced] %1",
 
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
@@ -146,11 +152,20 @@
     "feature_helptext_anchorImprovements": "Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.",
 
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
+    "feature_desc_lyricsCacheMaxSize": "Maximum amount of lyrics to keep in the cache",
+    "feature_helptext_lyricsCacheMaxSize": "The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.",
+    "feature_desc_lyricsCacheTTL": "Max amount of days to keep a lyrics entry in the cache",
+    "feature_helptext_lyricsCacheTTL": "The cache that lyrics are stored in will automatically delete them after this amount of time to ensure that updates to the source are being fetched sooner or later.\nIf you wanna make sure that you always have the most recent lyrics, set this to a low value like 4 days.",
+    "feature_desc_clearLyricsCache": "Clear the lyrics cache manually",
+    "feature_helptext_clearLyricsCache": "If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.",
+    "feature_btn_clearLyricsCache": "Clear cache",
 
     "feature_desc_locale": "Language",
     "feature_desc_versionCheck": "Check for updates every 24 hours",
     "feature_helptext_versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
     "feature_desc_logLevel": "How much information to log to the console",
-    "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue."
+    "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
+    "feature_desc_advancedMode": "Show advanced settings (after reload)",
+    "feature_helptext_advancedMode": "Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior."
   }
 }
