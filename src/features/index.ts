@@ -265,6 +265,15 @@ export const featInfo = {
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: getAdvancedModeAdornment,
   },
+  geniUrlToken: {
+    type: "text",
+    category: "lyrics",
+    default: "",
+    normalize: (val: string) => val.trim(),
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: getAdvancedModeAdornment,
+  },
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
