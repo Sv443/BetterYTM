@@ -84,7 +84,7 @@ export async function initConfig() {
   return data;
 }
 
-/** Returns the current feature config from the in-memory cache */
+/** Returns the current feature config from the in-memory cache as a copy */
 export function getFeatures() {
   return cfgMgr.getData();
 }
