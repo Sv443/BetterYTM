@@ -151,6 +151,11 @@ type FeatureTypeProps = ({
     default: HotkeyObj;
   } & FeatureFuncProps)
   | {
+    type: "text";
+    default: string;
+    normalize?: (val: string) => string;
+  }
+  | {
     type: "button";
     default: undefined;
     click: () => void;
@@ -188,7 +193,7 @@ export type FeatureInfo = Record<
      * HTML string that is appended to the end of a feature's text description
      * @deprecated TODO:FIXME: To be removed or changed in the big menu rework
      */
-    textAdornment?: () => (Promise<string> | string);
+    textAdornment?: () => (Promise<string | undefined> | string | undefined);
 
     /** Whether to only show this feature when advanced mode is activated (default false) */
     advanced?: boolean;
@@ -253,6 +258,8 @@ export interface FeatureConfig {
   //#SECTION lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
+  /** Base URL to use for GeniURL */
+  geniUrlBase: string;
   /** Max size of lyrics cache */
   lyricsCacheMaxSize: number;
   /** Max TTL of lyrics cache entries, in ms */

@@ -31,7 +31,7 @@ import {
   initArrowKeySkip, initSiteSwitch,
   addAnchorImprovements, initNumKeysSkip,
   // lyrics
-  addMediaCtrlLyricsBtn, geniUrlBase,
+  addMediaCtrlLyricsBtn,
   // menu
   addConfigMenuOption,
   // other
@@ -54,7 +54,7 @@ import {
   console.log([
     "Powered by:",
     "─ Lots of ambition and dedication",
-    `─ My song metadata API: ${geniUrlBase}`,
+    "─ My song metadata API: https://api.sv443.net/geniurl",
     "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
     "─ The fuse.js library: https://github.com/krisk/Fuse",
     "─ This markdown parser library: https://github.com/markedjs/marked",

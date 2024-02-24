@@ -6,10 +6,6 @@ import { compressionFormat, mode, scriptInfo } from "../constants";
 import type { LyricsCacheEntry } from "../types";
 import { getFeatures } from "src/config";
 
-/** Base URL of geniURL */
-export const geniUrlBase = "https://api.sv443.net/geniurl";
-/** GeniURL endpoint that gives song metadata when provided with a `?q` or `?artist` and `?song` parameter - [more info](https://api.sv443.net/geniurl) */
-const geniURLSearchUrl = `${geniUrlBase}/search`;
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 
@@ -341,7 +337,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }
 
     const startTs = Date.now();
-    const fetchUrl = constructUrlString(geniURLSearchUrl, {
+    const fetchUrl = constructUrlString(`${getFeatures().geniUrlBase}/search`, {
       disableFuzzy: null,
       utm_source: scriptInfo.name,
       utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,

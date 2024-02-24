@@ -104,8 +104,6 @@
     "unit_days-1": "day",
     "unit_days-n": "days",
 
-    "advanced_feature_desc_template": "[Advanced] %1",
-
     "feature_category_layout": "Layout",
     "feature_category_songLists": "Song Lists",
     "feature_category_behavior": "Behavior",
@@ -152,6 +150,8 @@
     "feature_helptext_anchorImprovements": "Some elements on the page are only clickable with the left mouse button, which means you can't open them in a new tab by middle-clicking or through the context menu using shift + right-click. This feature adds links to a lot of them or enlarges existing ones to make clicking easier.",
 
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
+    "feature_desc_geniUrlBase": "Base URL of your geniURL instance, see https://github.com/Sv443/geniURL",
+    "feature_helptext_geniUrlBase": "If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.",
     "feature_desc_lyricsCacheMaxSize": "Maximum amount of lyrics to keep in the cache",
     "feature_helptext_lyricsCacheMaxSize": "The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.",
     "feature_desc_lyricsCacheTTL": "Max amount of days to keep a lyrics entry in the cache",

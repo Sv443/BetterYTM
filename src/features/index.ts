@@ -3,6 +3,7 @@ import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
 import { clearLyricsCache, getLyricsCache } from "./lyrics";
 import { FeatureInfo } from "../types";
+import { getFeatures } from "src/config";
 
 export * from "./layout";
 export * from "./behavior";
@@ -254,6 +255,15 @@ export const featInfo = {
     enable: () => void "TODO",
     disable: () => void "TODO",
   },
+  geniUrlBase: {
+    type: "text",
+    category: "lyrics",
+    default: "https://api.sv443.net/geniurl",
+    normalize: (val: string) => val.trim().replace(/\/+$/, ""),
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
+  },
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
@@ -265,6 +275,8 @@ export const featInfo = {
     enable: () => void "TODO",
     change: () => void "TODO",
     advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -277,6 +289,8 @@ export const featInfo = {
     enable: () => void "TODO",
     change: () => void "TODO",
     advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
   },
   clearLyricsCache: {
     type: "button",
@@ -290,6 +304,8 @@ export const featInfo = {
       }
     },
     advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`,
   },
 
   //#SECTION general
@@ -325,5 +341,7 @@ export const featInfo = {
     default: false,
     enable: () => void "TODO",
     disable: () => void "TODO",
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: async () => getFeatures().advancedMode ? `<span class="advanced-mode-icon">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>` : undefined,
   },
 } as const satisfies FeatureInfo;

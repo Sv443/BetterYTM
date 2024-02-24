@@ -265,6 +265,10 @@
   width: 240px;
 }
 
+.bytm-ftconf-input[type=text] {
+  width: 240px;
+}
+
 .bytm-ftconf-input[type=checkbox] {
   margin-left: 5px;
 }
@@ -385,9 +389,11 @@ hr {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 8px;
+  margin-right: 6px;
 }
 
-#bytm-ftitem-locale-adornment svg path {
+.bytm-ftitem-adornment svg path,
+.advancedModeIcon svg path
+{
   fill: var(--bytm-dialog-accent-col, #4595c7);
 }

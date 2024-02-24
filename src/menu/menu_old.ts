@@ -242,7 +242,7 @@ async function addCfgMenu() {
     {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
-  const fmtVal = (v: unknown) => String(v).trim();
+  const fmtVal = (v: unknown) => typeof v === "object" ? JSON.stringify(v) : String(v).trim();
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -278,18 +278,21 @@ async function addCfgMenu() {
       {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
+        if(getFeatures().advancedMode)
+          featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${fmtVal(ftDefault)}`;
 
         const textElem = document.createElement("span");
-        textElem.textContent = ftInfo.advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featKey}`)) : t(`feature_desc_${featKey}`);
+        textElem.textContent = t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;
 
         const adornContent = ftInfo.textAdornment?.();
-        if(typeof adornContent === "string" || adornContent instanceof Promise) {
+        const adornContentAw = adornContent instanceof Promise ? await adornContent : adornContent;
+        if((typeof adornContent === "string" || adornContent instanceof Promise) && typeof adornContentAw !== "undefined") {
           adornmentElem = document.createElement("span");
           adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
           adornmentElem.classList.add("bytm-ftitem-adornment");
-          adornmentElem.innerHTML = adornContent instanceof Promise ? await adornContent : adornContent;
+          adornmentElem.innerHTML = adornContentAw;
         }
 
         let helpElem: undefined | HTMLDivElement;
@@ -322,8 +325,8 @@ async function addCfgMenu() {
           }
         }
 
-        featLeftSideElem.appendChild(textElem);
         adornmentElem && featLeftSideElem.appendChild(adornmentElem);
+        featLeftSideElem.appendChild(textElem);
         helpElem && featLeftSideElem.appendChild(helpElem);
 
         ftConfElem.appendChild(featLeftSideElem);
@@ -343,6 +346,9 @@ async function addCfgMenu() {
           break;
         case "number":
           inputType = "number";
+          break;
+        case "text":
+          inputType = "text";
           break;
         case "select":
           inputTag = "select";
@@ -422,13 +428,32 @@ async function addCfgMenu() {
             }
           }
 
-          inputElem.addEventListener("input", () => {
-            let v: string | number = String(inputElem.value).trim();
-            if(["number", "slider"].includes(type) || v.match(/^-?\d+$/))
-              v = Number(v);
-            if(typeof initialVal !== "undefined")
-              confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
-          });
+          if(type === "text") {
+            let lastValue: string | undefined = inputElem.value && inputElem.value.length > 0 ? inputElem.value : ftInfo.default;
+            const textInputUpdate = () => {
+              let v: string | number = String(inputElem.value).trim();
+              if(type === "text" && ftInfo.normalize)
+                v = inputElem.value = ftInfo.normalize(String(v));
+              if(v === lastValue)
+                return;
+              lastValue = v;
+              if(v === "")
+                v = ftInfo.default;
+              if(typeof initialVal !== "undefined")
+                confChanged(featKey as keyof FeatureConfig, initialVal, v);
+            };
+            inputElem.addEventListener("blur", () => textInputUpdate());
+            inputElem.addEventListener("keydown", (e) => e.key === "Tab" && textInputUpdate());
+          }
+          else {
+            inputElem.addEventListener("input", () => {
+              let v: string | number = String(inputElem.value).trim();
+              if(["number", "slider"].includes(type) || v.match(/^-?\d+$/))
+                v = Number(v);
+              if(typeof initialVal !== "undefined")
+                confChanged(featKey as keyof FeatureConfig, initialVal, (type !== "toggle" ? v : inputElem.checked));
+            });
+          }
 
           if(labelElem) {
             labelElem.id = `bytm-ftconf-${featKey}-label`;
@@ -730,8 +755,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     const featDescElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-desc")!;
     const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
 
-    // @ts-ignore
-    featDescElem.textContent = featInfo[featureKey].advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featureKey}`)) : t(`feature_desc_${featureKey}`);
+    featDescElem.textContent = t(`feature_desc_${featureKey}`);
 
     // @ts-ignore
     const helpText: string | undefined = featInfo[featureKey]?.helpText?.();
