@@ -117,40 +117,44 @@ export type FeatureCategory =
   | "general";
 
 type SelectOption = {
-  value: string | number,
-  label: string,
+  value: string | number;
+  label: string;
 };
 
-type FeatureTypeProps = 
+type FeatureTypeProps = ({
+    type: "toggle";
+    default: boolean;
+  } & FeatureFuncProps)
+  | ({
+    type: "number";
+    default: number;
+    min: number;
+    max?: number;
+    step?: number;
+    unit?: string | ((val: number) => string);
+  } & FeatureFuncProps)
+  | ({
+    type: "select";
+    default: string | number;
+    options: SelectOption[] | (() => SelectOption[]);
+  } & FeatureFuncProps)
+  | ({
+    type: "slider";
+    default: number;
+    min: number;
+    max: number;
+    step?: number;
+    unit?: string | ((val: number) => string);
+  } & FeatureFuncProps)
+  | ({
+    type: "hotkey";
+    default: HotkeyObj;
+  } & FeatureFuncProps)
   | {
-    type: "toggle",
-    default: boolean,
+    type: "button";
+    default: undefined;
+    click: () => void;
   }
-  | {
-    type: "number",
-    default: number,
-    min: number,
-    max?: number,
-    step?: number,
-    unit?: string | ((val: number) => string),
-  }
-  | {
-    type: "select",
-    default: string | number,
-    options: SelectOption[] | (() => SelectOption[]),
-  }
-  | {
-    type: "slider",
-    default: number,
-    min: number,
-    max: number,
-    step?: number,
-    unit?: string | ((val: number) => string),
-  }
-  | {
-    type: "hotkey",
-    default: HotkeyObj,
-  };
 
 type FeatureFuncProps = {
   /** Called to instantiate the feature on the page */
@@ -185,9 +189,11 @@ export type FeatureInfo = Record<
      * @deprecated TODO:FIXME: To be removed or changed in the big menu rework
      */
     textAdornment?: () => (Promise<string> | string);
+
+    /** Whether to only show this feature when advanced mode is activated (default false) */
+    advanced?: boolean;
   }
-    & FeatureTypeProps
-    & FeatureFuncProps
+  & FeatureTypeProps
 >;
 
 /** Feature configuration */
@@ -251,6 +257,8 @@ export interface FeatureConfig {
   lyricsCacheMaxSize: number;
   /** Max TTL of lyrics cache entries, in ms */
   lyricsCacheTTL: number;
+  /** Button to clear lyrics cache */
+  clearLyricsCache: undefined;
 
   //#SECTION misc
   /** The locale to use for translations */
@@ -259,4 +267,6 @@ export interface FeatureConfig {
   versionCheck: boolean;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
+  /** Whether to show advanced settings in the config menu */
+  advancedMode: boolean;
 }

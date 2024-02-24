@@ -261,6 +261,9 @@ async function addCfgMenu() {
       if(!ftInfo || ftInfo.hidden === true)
         continue;
 
+      if(ftInfo.advanced && !featureCfg.advancedMode)
+        continue;
+
       const { type, default: ftDefault } = ftInfo;
 
       // @ts-ignore
@@ -277,7 +280,7 @@ async function addCfgMenu() {
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
 
         const textElem = document.createElement("span");
-        textElem.textContent = t(`feature_desc_${featKey}`);
+        textElem.textContent = ftInfo.advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featKey}`)) : t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;
 
@@ -346,6 +349,10 @@ async function addCfgMenu() {
           inputType = undefined;
           break;
         case "hotkey":
+          inputTag = undefined;
+          inputType = undefined;
+          break;
+        case "button":
           inputTag = undefined;
           inputType = undefined;
           break;
@@ -448,6 +455,12 @@ async function addCfgMenu() {
               id: `ftconf-${featKey}`,
               labelPos: "left",
             });
+            break;
+          case "button":
+            wrapperElem = document.createElement("button");
+            wrapperElem.tabIndex = 0;
+            wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+            wrapperElem.addEventListener("click", () => ftInfo.click());
             break;
           }
 
@@ -717,7 +730,8 @@ async function openHelpDialog(featureKey: FeatureKey) {
     const featDescElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-desc")!;
     const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
 
-    featDescElem.textContent = t(`feature_desc_${featureKey}`);
+    // @ts-ignore
+    featDescElem.textContent = featInfo[featureKey].advanced ? t("advanced_feature_desc_template", t(`feature_desc_${featureKey}`)) : t(`feature_desc_${featureKey}`);
 
     // @ts-ignore
     const helpText: string | undefined = featInfo[featureKey]?.helpText?.();

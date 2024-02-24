@@ -54,6 +54,8 @@ export const migrations: ConfigMigrationsDict = {
       ...oldData,
       lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
       lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
+      clearLyricsCache: undefined,
+      advancedMode: getFeatureDefault("advancedMode"),
     };
   },
 };
