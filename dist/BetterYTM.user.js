@@ -236,6 +236,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
+const buildNumberRaw = "c9f55a6";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -244,6 +245,8 @@ const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw);
 const repo = "Sv443/BetterYTM";
 /** Which host the userscript was installed from */
 const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
+/** The build number of the userscript */
+const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw); // asserted as generic string instead of literal
 /** Default compression format used throughout BYTM */
 const compressionFormat = "deflate-raw";
 /**
@@ -256,7 +259,6 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-    buildNumber: "84f187b", // asserted as generic string instead of literal
 };/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
@@ -932,7 +934,7 @@ class BytmDialog extends NanoEmitter {
             //#SECTION header
             const headerWrapperEl = document.createElement("div");
             headerWrapperEl.classList.add("bytm-dialog-header");
-            this.options.smallMenu && headerWrapperEl.classList.add("small");
+            this.options.smallDialog && headerWrapperEl.classList.add("small");
             if (header) {
                 const headerTitleWrapperEl = document.createElement("div");
                 headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
@@ -941,12 +943,16 @@ class BytmDialog extends NanoEmitter {
                 headerTitleWrapperEl.appendChild(header instanceof Promise ? yield header : header);
                 headerWrapperEl.appendChild(headerTitleWrapperEl);
             }
-            else
-                headerWrapperEl.appendChild(document.createElement("div"));
+            else {
+                // insert element to pad the header height
+                const padEl = document.createElement("div");
+                padEl.classList.add("bytm-dialog-header-pad", this.options.smallDialog ? "small" : "");
+                headerWrapperEl.appendChild(padEl);
+            }
             if (this.options.closeBtnEnabled) {
                 const closeBtnEl = document.createElement("img");
                 closeBtnEl.classList.add("bytm-dialog-close");
-                this.options.smallMenu && closeBtnEl.classList.add("small");
+                this.options.smallDialog && closeBtnEl.classList.add("small");
                 closeBtnEl.src = yield getResourceUrl("img-close");
                 closeBtnEl.role = "button";
                 closeBtnEl.tabIndex = 0;
@@ -958,7 +964,7 @@ class BytmDialog extends NanoEmitter {
             const menuBodyElem = document.createElement("div");
             menuBodyElem.id = `bytm-${this.id}-dialog-body`;
             menuBodyElem.classList.add("bytm-dialog-body");
-            this.options.smallMenu && menuBodyElem.classList.add("small");
+            this.options.smallDialog && menuBodyElem.classList.add("small");
             const body = this.options.renderBody();
             menuBodyElem.appendChild(body instanceof Promise ? yield body : body);
             dialogWrapperEl.appendChild(menuBodyElem);
@@ -1120,11 +1126,13 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
         wrapperEl.role = "switch";
         wrapperEl.tabIndex = 0;
         wrapperEl.ariaValueText = t(`toggled_${initialValue ? "on" : "off"}`);
-        const labelEl = document.createElement("label");
-        labelEl.classList.add("bytm-toggle-label");
-        labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
-        if (id)
-            labelEl.htmlFor = `bytm-toggle-${id}`;
+        const labelEl = labelPos !== "off" && document.createElement("label");
+        if (labelEl) {
+            labelEl.classList.add("bytm-toggle-label");
+            labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
+            if (id)
+                labelEl.htmlFor = `bytm-toggle-${id}`;
+        }
         const toggleEl = document.createElement("input");
         toggleEl.classList.add("bytm-toggle");
         toggleEl.type = "checkbox";
@@ -1136,7 +1144,8 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
             e.preventDefault();
             e.stopPropagation();
             onChange(toggleEl.checked);
-            labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
+            if (labelEl)
+                labelEl.textContent = wrapperEl.ariaValueText = t(`toggled_${toggleEl.checked ? "on" : "off"}`);
         };
         toggleEl.addEventListener("change", toggleElClicked);
         wrapperEl.addEventListener("keydown", (e) => {
@@ -1145,9 +1154,9 @@ function createToggle({ onChange, initialValue = false, id = UserUtils.randomId(
                 toggleElClicked(e);
             }
         });
-        labelPos === "left" && wrapperEl.appendChild(labelEl);
+        labelEl && labelPos === "left" && wrapperEl.appendChild(labelEl);
         wrapperEl.appendChild(toggleEl);
-        labelPos === "right" && wrapperEl.appendChild(labelEl);
+        labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
         return wrapperEl;
     });
 }var name = "betterytm";
@@ -1706,8 +1715,8 @@ function addCfgMenu() {
         versionElem.classList.add("bytm-link");
         versionElem.role = "button";
         versionElem.tabIndex = 0;
-        versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, scriptInfo.buildNumber);
-        versionElem.textContent = `v${scriptInfo.version} (${scriptInfo.buildNumber})`;
+        versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, buildNumber);
+        versionElem.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
         const versionElemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopPropagation();
@@ -3137,7 +3146,7 @@ function fetchLyricsUrls(artist, song) {
             const fetchUrl = constructUrlString(geniURLSearchUrl, {
                 disableFuzzy: null,
                 utm_source: scriptInfo.name,
-                utm_content: mode === "development" ? "dev" : `v${scriptInfo.version}`,
+                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
                 artist,
                 song,
             });
@@ -3495,10 +3504,11 @@ function getVersionNotifDialog({ latestTag, }) {
                 id: "version-notif",
                 maxWidth: 600,
                 maxHeight: 800,
+                closeBtnEnabled: false,
                 closeOnBgClick: false,
                 closeOnEscPress: true,
                 destroyOnClose: true,
-                smallMenu: true,
+                smallDialog: true,
                 renderBody: () => renderBody({
                     latestTag,
                     changelogHtml,
@@ -3508,79 +3518,95 @@ function getVersionNotifDialog({ latestTag, }) {
         return verNotifDialog;
     });
 }
+let disableUpdateCheck = false;
 function renderBody({ latestTag, changelogHtml, }) {
-    const hostPlatformNames = {
-        github: "GitHub",
-        greasyfork: "GreasyFork",
-        openuserjs: "OpenUserJS",
-    };
-    const wrapperEl = document.createElement("div");
-    const pEl = document.createElement("p");
-    pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
-    wrapperEl.appendChild(pEl);
-    const changelogDetailsEl = document.createElement("details");
-    changelogDetailsEl.id = "bytm-version-notif-changelog-details";
-    changelogDetailsEl.open = false;
-    const changelogSummaryEl = document.createElement("summary");
-    changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
-    changelogDetailsEl.appendChild(changelogSummaryEl);
-    const changelogEl = document.createElement("p");
-    changelogEl.id = "bytm-version-notif-changelog-cont";
-    changelogEl.classList.add("bytm-markdown-container");
-    changelogEl.innerHTML = changelogHtml;
-    changelogEl.querySelectorAll("a").forEach((a) => {
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
+    return __awaiter(this, void 0, void 0, function* () {
+        disableUpdateCheck = false;
+        const hostPlatformNames = {
+            github: "GitHub",
+            greasyfork: "GreasyFork",
+            openuserjs: "OpenUserJS",
+        };
+        const wrapperEl = document.createElement("div");
+        const pEl = document.createElement("p");
+        pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
+        wrapperEl.appendChild(pEl);
+        const changelogDetailsEl = document.createElement("details");
+        changelogDetailsEl.id = "bytm-version-notif-changelog-details";
+        changelogDetailsEl.open = false;
+        const changelogSummaryEl = document.createElement("summary");
+        changelogSummaryEl.role = "button";
+        changelogSummaryEl.tabIndex = 0;
+        changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
+        changelogDetailsEl.appendChild(changelogSummaryEl);
+        changelogDetailsEl.addEventListener("toggle", () => {
+            changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
+        });
+        const changelogEl = document.createElement("p");
+        changelogEl.id = "bytm-version-notif-changelog-cont";
+        changelogEl.classList.add("bytm-markdown-container");
+        changelogEl.innerHTML = changelogHtml;
+        changelogEl.querySelectorAll("a").forEach((a) => {
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+        });
+        changelogDetailsEl.appendChild(changelogEl);
+        wrapperEl.appendChild(changelogDetailsEl);
+        const disableUpdCheckEl = document.createElement("div");
+        disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
+        const disableToggleEl = yield createToggle({
+            id: "disable-update-check",
+            initialValue: false,
+            labelPos: "off",
+            onChange(checked) {
+                disableUpdateCheck = checked;
+                if (checked)
+                    btnClose.textContent = t("close_and_ignore_until_reenabled");
+                else
+                    btnClose.textContent = t("close_and_ignore_for_24h");
+            },
+        });
+        const labelWrapperEl = document.createElement("div");
+        labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
+        const labelEl = document.createElement("label");
+        labelEl.htmlFor = "bytm-toggle-disable-update-check";
+        labelEl.textContent = t("disable_update_check");
+        const secondaryLabelEl = document.createElement("span");
+        secondaryLabelEl.classList.add("bytm-secondary-label");
+        secondaryLabelEl.textContent = t("reenable_in_config_menu");
+        labelWrapperEl.appendChild(labelEl);
+        labelWrapperEl.appendChild(secondaryLabelEl);
+        disableUpdCheckEl.appendChild(disableToggleEl);
+        disableUpdCheckEl.appendChild(labelWrapperEl);
+        wrapperEl.appendChild(disableUpdCheckEl);
+        verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", () => __awaiter(this, void 0, void 0, function* () {
+            const config = getFeatures();
+            config.versionCheck = !disableUpdateCheck;
+            yield saveFeatures(config);
+        }));
+        const btnWrapper = document.createElement("div");
+        btnWrapper.id = "bytm-version-notif-dialog-btns";
+        const btnUpdate = document.createElement("button");
+        btnUpdate.className = "bytm-btn";
+        btnUpdate.tabIndex = 0;
+        btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
+        const btnUpdateClicked = () => {
+            window.open(pkg.updates[host]);
+            verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
+        };
+        btnUpdate.addEventListener("click", btnUpdateClicked);
+        btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
+        const btnClose = document.createElement("button");
+        btnClose.className = "bytm-btn";
+        btnClose.tabIndex = 0;
+        btnClose.textContent = t("close_and_ignore_for_24h");
+        btnClose.addEventListener("click", () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
+        btnClose.addEventListener("keydown", (e) => e.key === "Enter" && (verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close()));
+        btnWrapper.appendChild(btnUpdate);
+        btnWrapper.appendChild(btnClose);
+        wrapperEl.appendChild(btnWrapper);
+        return wrapperEl;
     });
-    changelogDetailsEl.appendChild(changelogEl);
-    wrapperEl.appendChild(changelogDetailsEl);
-    const disableUpdCheckEl = document.createElement("div");
-    disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
-    const checkboxEl = document.createElement("input");
-    checkboxEl.type = "checkbox";
-    checkboxEl.id = "bytm-disable-update-check-chkbox";
-    checkboxEl.tabIndex = 0;
-    checkboxEl.checked = false;
-    const labelEl = document.createElement("label");
-    labelEl.htmlFor = "bytm-disable-update-check-chkbox";
-    labelEl.textContent = t("disable_update_check");
-    disableUpdCheckEl.appendChild(checkboxEl);
-    disableUpdCheckEl.appendChild(labelEl);
-    wrapperEl.appendChild(disableUpdCheckEl);
-    verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", () => __awaiter(this, void 0, void 0, function* () {
-        const config = getFeatures();
-        if (checkboxEl.checked)
-            config.versionCheck = false;
-        yield saveFeatures(config);
-    }));
-    const btnWrapper = document.createElement("div");
-    btnWrapper.id = "bytm-version-notif-dialog-btns";
-    const btnUpdate = document.createElement("button");
-    btnUpdate.className = "bytm-btn";
-    btnUpdate.tabIndex = 0;
-    btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
-    const btnUpdateClicked = () => {
-        window.open(pkg.updates[host]);
-        verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
-    };
-    btnUpdate.addEventListener("click", btnUpdateClicked);
-    btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
-    const btnClose = document.createElement("button");
-    btnClose.className = "bytm-btn";
-    btnClose.tabIndex = 0;
-    btnClose.textContent = t("ignore_for_24h");
-    checkboxEl.addEventListener("change", () => {
-        if (checkboxEl.checked)
-            btnClose.textContent = t("close");
-        else
-            btnClose.textContent = t("ignore_for_24h");
-    });
-    btnClose.addEventListener("click", () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
-    btnClose.addEventListener("keydown", (e) => e.key === "Enter" && (verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close()));
-    btnWrapper.appendChild(btnUpdate);
-    btnWrapper.appendChild(btnClose);
-    wrapperEl.appendChild(btnWrapper);
-    return wrapperEl;
 }const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 function checkVersion() {
     var _a;
@@ -3946,7 +3972,7 @@ function initConfig() {
         return data;
     });
 }
-/** Returns the current feature config from the in-memory cache */
+/** Returns the current feature config from the in-memory cache as a copy */
 function getFeatures() {
     return cfgMgr.getData();
 }
@@ -3992,7 +4018,10 @@ const globalFuncs = {
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ mode,
-        branch }, scriptInfo), globalFuncs), { UserUtils: UserUtils__namespace });
+        branch,
+        host,
+        buildNumber,
+        compressionFormat }, scriptInfo), globalFuncs), { UserUtils: UserUtils__namespace });
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
     log("Initialized BYTM interface");
@@ -4232,7 +4261,10 @@ function initOnSelector(options = {}) {
  * @returns Returns a string instead of a URL object
  */
 function constructUrlString(baseUrl, params) {
-    return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+    return `${baseUrl}?${Object.entries(params)
+        .filter(([, v]) => v !== undefined)
+        .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+        .join("&")}`;
 }
 /**
  * Sends a request with the specified parameters and returns the response as a Promise.
@@ -4240,7 +4272,7 @@ function constructUrlString(baseUrl, params) {
  */
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
-        GM.xmlHttpRequest(Object.assign(Object.assign({}, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
+        GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
     });
 }//#MARKER menu
 let isWelcomeMenuOpen = false;
@@ -4461,7 +4493,7 @@ function showWelcomeMenu() {
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
     const styleCommon = "color: #fff; font-size: 1.5em; padding-left: 6px; padding-right: 6px;";
     console.log();
-    console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${scriptInfo.buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+    console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
     console.log([
         "Powered by:",
         "─ Lots of ambition and dedication",
@@ -4999,26 +5031,6 @@ hr {
   --bytm-dialog-border-radius: 10px;
 }
 
-#bytm-cfg-dialog-bg {
-  --bytm-dialog-height-max: 750px;
-  --bytm-dialog-width-max: 1000px;
-}
-
-#bytm-changelog-dialog-bg {
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 800px;
-}
-
-#bytm-export-dialog-bg, #bytm-import-dialog-bg {
-  --bytm-dialog-height-max: 500px;
-  --bytm-dialog-width-max: 600px;
-}
-
-#bytm-feat-help-dialog-bg {
-  --bytm-dialog-height-max: 400px;
-  --bytm-dialog-width-max: 600px;
-}
-
 .bytm-dialog-bg {
   display: block;
   position: fixed;
@@ -5031,13 +5043,14 @@ hr {
 }
 
 .bytm-dialog {
-  position: fixed;
+  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
+  position: absolute;
   display: flex;
   flex-direction: column;
   width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-dialog-border-radius);
   height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
+  max-height: var(--calc-max-height);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -5047,7 +5060,7 @@ hr {
 }
 
 .bytm-dialog-body {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   padding: 20px;
 }
 
@@ -5077,6 +5090,15 @@ hr {
 
 .bytm-dialog-header.small {
   padding: 10px 15px;
+}
+
+.bytm-dialog-header-pad {
+  content: " ";
+  min-height: 32px;
+}
+
+.bytm-dialog-header-pad.small {
+  min-height: 24px;
 }
 
 .bytm-dialog-titlecont {
@@ -5786,6 +5808,26 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   visibility: visible !important;
 }
 
+#bytm-cfg-dialog-bg {
+  --bytm-dialog-height-max: 750px;
+  --bytm-dialog-width-max: 1000px;
+}
+
+#bytm-changelog-dialog-bg {
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 800px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg {
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg {
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+}
+
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
@@ -5804,21 +5846,35 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 }
 
 #bytm-disable-update-check-wrapper {
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
 }
 
 #bytm-disable-update-check-wrapper label {
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
 #bytm-version-notif-changelog-cont {
-  max-height: 400px;
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
   overflow-y: auto;
   margin: 10px 0px;
 }
 
 #bytm-version-notif-changelog-details {
   margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
 }
 
 #bytm-welcome-menu-bg {
