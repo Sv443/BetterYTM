@@ -1,6 +1,4 @@
-/* #MARKER toggle */
-
-.bytm-toggle-wrapper {
+.bytm-toggle-input-wrapper {
   --toggle-height: 24px;
   --toggle-width: 48px;
   --toggle-knob-offset: 4px;
@@ -12,7 +10,7 @@
   align-items: center;
 }
 
-.bytm-toggle-wrapper .bytm-toggle-label {
+.bytm-toggle-input-wrapper .bytm-toggle-input-label {
   cursor: pointer;
   font-size: 1.5rem;
   padding: 3px 12px;
@@ -20,12 +18,12 @@
 
 /* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
 
-.bytm-toggle {
+.bytm-toggle-input {
   display: flex;
   align-items: center;
 }
 
-.bytm-toggle input {
+.bytm-toggle-input input {
   appearance: none;
   display: inline-block;
   width: var(--toggle-width);
@@ -42,11 +40,11 @@
   transition: justify-content 0.2s ease, background-color 0.2s ease;
 }
 
-.bytm-toggle input[data-toggled="true"] {
+.bytm-toggle-input input[data-toggled="true"] {
   background-color: var(--toggle-color-on);
 }
 
-.bytm-toggle input .bytm-toggle-knob {
+.bytm-toggle-input input .bytm-toggle-input-knob {
   --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
   --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
   width: var(--toggle-knob-calc-width);
@@ -60,6 +58,6 @@
   transition: left 0.2s ease;
 }
 
-.bytm-toggle input[data-toggled="true"] .bytm-toggle-knob {
+.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }

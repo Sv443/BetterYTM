@@ -1,8 +1,8 @@
 import { randomId } from "@sv443-network/userutils";
 import { t } from "../utils";
-import "./toggle.css";
+import "./toggleInput.css";
 
-export interface ToggleProps {
+export interface ToggleInputProps {
   /** Callback function that is called when the toggle is changed */
   onChange: (value: boolean) => void;
   /** Initial value of the toggle - defaults to false */
@@ -14,27 +14,27 @@ export interface ToggleProps {
 }
 
 /** Creates a simple toggle element */
-export async function createToggle({
+export async function createToggleInput({
   onChange,
   initialValue = false,
   id = randomId(8, 26),
   labelPos = "left",
-}: ToggleProps) {
+}: ToggleInputProps) {
   const wrapperEl = document.createElement("div");
-  wrapperEl.classList.add("bytm-toggle-wrapper", "bytm-no-select");
+  wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
   wrapperEl.role = "switch";
   wrapperEl.tabIndex = 0;
 
   const labelEl = labelPos !== "off" && document.createElement("label");
   if(labelEl) {
-    labelEl.classList.add("bytm-toggle-label");
+    labelEl.classList.add("bytm-toggle-input-label");
     labelEl.textContent = t(`toggled_${initialValue ? "on" : "off"}`);
     if(id)
-      labelEl.htmlFor = `bytm-toggle-${id}`;
+      labelEl.htmlFor = `bytm-toggle-input-${id}`;
   }
 
   const toggleWrapperEl = document.createElement("div");
-  toggleWrapperEl.classList.add("bytm-toggle");
+  toggleWrapperEl.classList.add("bytm-toggle-input");
   toggleWrapperEl.tabIndex = -1;
 
   const toggleEl = document.createElement("input");
@@ -43,10 +43,10 @@ export async function createToggle({
   toggleEl.dataset.toggled = String(Boolean(initialValue));
   toggleEl.tabIndex = -1;
   if(id)
-    toggleEl.id = `bytm-toggle-${id}`;
+    toggleEl.id = `bytm-toggle-input-${id}`;
 
   const toggleKnobEl = document.createElement("div");
-  toggleKnobEl.classList.add("bytm-toggle-knob");
+  toggleKnobEl.classList.add("bytm-toggle-input-knob");
   toggleKnobEl.innerHTML = "&nbsp;";
 
   const toggleElClicked = (e: Event) => {
