@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4a25140";
+const buildNumberRaw = "84d41a8";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3952,7 +3952,7 @@ const featInfo = {
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="advanced-mode-icon">${(_a = yield resourceToHTMLString("img-add_circle_small")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
+        textAdornment: getAdvancedModeAdornment,
     },
     lyricsCacheMaxSize: {
         type: "slider",
@@ -3966,7 +3966,7 @@ const featInfo = {
         change: () => void "TODO",
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="advanced-mode-icon">${(_b = yield resourceToHTMLString("img-add_circle_small")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
+        textAdornment: getAdvancedModeAdornment,
     },
     lyricsCacheTTL: {
         type: "slider",
@@ -3980,7 +3980,7 @@ const featInfo = {
         change: () => void "TODO",
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _c; return `<span class="advanced-mode-icon">${(_c = yield resourceToHTMLString("img-add_circle_small")) !== null && _c !== void 0 ? _c : ""}</span>`; }),
+        textAdornment: getAdvancedModeAdornment,
     },
     clearLyricsCache: {
         type: "button",
@@ -3995,7 +3995,7 @@ const featInfo = {
         },
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _d; return `<span class="advanced-mode-icon">${(_d = yield resourceToHTMLString("img-add_circle_small")) !== null && _d !== void 0 ? _d : ""}</span>`; }),
+        textAdornment: getAdvancedModeAdornment,
     },
     //#SECTION general
     locale: {
@@ -4005,7 +4005,7 @@ const featInfo = {
         default: getPreferredLocale(),
         enable: () => void "TODO",
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _e; return (_e = yield resourceToHTMLString("img-globe")) !== null && _e !== void 0 ? _e : ""; }),
+        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("img-globe")) !== null && _a !== void 0 ? _a : ""; }),
     },
     versionCheck: {
         type: "toggle",
@@ -4031,9 +4031,15 @@ const featInfo = {
         enable: () => void "TODO",
         disable: () => void "TODO",
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _f; return getFeatures().advancedMode ? `<span class="advanced-mode-icon">${(_f = yield resourceToHTMLString("img-add_circle_small")) !== null && _f !== void 0 ? _f : ""}</span>` : undefined; }),
+        textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
     },
-};/** If this number is incremented, the features object data will be migrated to the new format */
+};
+function getAdvancedModeAdornment() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        return `<span class="advanced-mode-icon" title="${t("advanced_mode_tooltip")}">${(_a = yield resourceToHTMLString("img-add_circle_small")) !== null && _a !== void 0 ? _a : ""}</span>`;
+    });
+}/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 5;
 /** Config data format migration dictionary */
 const migrations = {
@@ -4058,7 +4064,7 @@ const migrations = {
     },
     // 4 -> 5
     5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode"), geniUrlBase: getFeatureDefault("geniUrlBase") });
+        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: undefined, advancedMode: getFeatureDefault("advancedMode") });
     },
 };
 function getFeatureDefault(key) {
