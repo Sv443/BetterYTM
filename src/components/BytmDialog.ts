@@ -50,7 +50,7 @@ export class BytmDialog extends NanoEmitter<{
   public readonly id;
 
   private dialogOpen = false;
-  private dialogRendered = false;
+  private dialogMounted = false;
   private listenersAttached = false;
 
   constructor(options: BytmDialogOptions) {
@@ -67,11 +67,13 @@ export class BytmDialog extends NanoEmitter<{
     this.id = options.id;
   }
 
+  //#MARKER public
+
   /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
   public async mount() {
-    if(this.dialogRendered)
+    if(this.dialogMounted)
       return;
-    this.dialogRendered = true;
+    this.dialogMounted = true;
 
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
@@ -100,7 +102,7 @@ export class BytmDialog extends NanoEmitter<{
 
   /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
   public unmount() {
-    this.dialogRendered = false;
+    this.dialogMounted = false;
 
     const clearSelectors = [
       `#bytm-${this.id}-dialog-bg`,
@@ -116,8 +118,8 @@ export class BytmDialog extends NanoEmitter<{
     this.events.emit("clear");
   }
 
-  /** Clears and then re-renders the dialog */
-  public async rerender() {
+  /** Clears the DOM of the dialog and then renders it again */
+  public async remount() {
     this.unmount();
     await this.mount();
   }
@@ -134,7 +136,7 @@ export class BytmDialog extends NanoEmitter<{
       return;
     this.dialogOpen = true;
 
-    if(!this.isRendered())
+    if(!this.isMounted())
       await this.mount();
 
     document.body.classList.add("bytm-disable-scroll");
@@ -183,26 +185,21 @@ export class BytmDialog extends NanoEmitter<{
       this.destroy();
   }
 
-  /** Returns true if the dialog is open */
+  /** Returns true if the dialog is currently open */
   public isOpen() {
     return this.dialogOpen;
   }
 
-  /** Returns true if the dialog has been rendered */
-  public isRendered() {
-    return this.dialogRendered;
+  /** Returns true if the dialog is currently mounted */
+  public isMounted() {
+    return this.dialogMounted;
   }
 
-  /** Clears the dialog and removes all event listeners */
+  /** Clears the DOM of the dialog and removes all event listeners */
   public destroy() {
     this.events.emit("destroy");
     this.unmount();
     this.unsubscribeAll();
-  }
-
-  /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-  public static getLastDialogId() {
-    return lastDialogId;
   }
 
   /** Called once to attach all generic event listeners */
@@ -226,6 +223,16 @@ export class BytmDialog extends NanoEmitter<{
     }
   }
 
+  //#MARKER static
+
+  /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+  public static getLastDialogId() {
+    return lastDialogId;
+  }
+
+  //#MARKER private
+
+  /** Returns the dialog content element and all its children */
   private async getDialogContent() {
     const header = this.options.renderHeader?.();
     const footer = this.options.renderFooter?.();
