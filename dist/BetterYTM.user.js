@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -46,12 +46,13 @@
 // @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
 // @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
 // @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png
 // @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
 // @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
 // @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
@@ -237,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e436a15";
+const buildNumberRaw = "8d7536a";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -585,6 +586,58 @@ function disableDarkReader() {
         document.head.appendChild(metaElem);
         info("Sent hint to Dark Reader to disable itself");
     }
+}
+//#MARKER lock volume
+let volumeSliderObserverActive = false;
+let sliderElem;
+function overrideVolValues() {
+    if (!sliderElem || !getFeatures().lockVolume)
+        return;
+    volumeSliderObserverActive = false;
+    setTimeout(() => {
+        const vidElem = document.querySelector(videoSelector);
+        if (vidElem)
+            vidElem.volume = getFeatures().lockVolumeLevel / 100;
+        if (!sliderElem) {
+            volumeSliderObserverActive = true;
+            return;
+        }
+        sliderElem.value = String(getFeatures().lockVolumeLevel);
+        sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
+        const knobElem = document.querySelector("#volume-slider #sliderKnobContainer #sliderKnob");
+        if (knobElem)
+            knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
+        const labelElem = document.querySelector("#bytm-vol-slider-label .label");
+        const newLabelContent = `${getFeatures().lockVolumeLevel}%`;
+        if (labelElem && labelElem.textContent !== newLabelContent)
+            labelElem.textContent = newLabelContent;
+        volumeSliderObserverActive = true;
+    }, 10);
+}
+/** Locks the volume slider at a specific level */
+function enableLockVolume() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (!volumeSliderObserverActive)
+                    return;
+                if (mutation.target.id === "sliderBar" && mutation.type === "attributes") {
+                    if (mutation.attributeName === "value" || mutation.attributeName === "aria-valuenow")
+                        overrideVolValues();
+                }
+            }
+        });
+        onSelectorOld("#volume-slider tp-yt-paper-progress#sliderBar", {
+            listener: (elem) => {
+                sliderElem = elem;
+                overrideVolValues();
+                volumeSliderObserverActive = true;
+                observer.observe(elem, {
+                    attributeFilter: ["value", "aria-valuenow"],
+                });
+            }
+        });
+    });
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 let canCompress$1 = true;
@@ -1909,11 +1962,14 @@ function addCfgMenu() {
         featuresCont.id = "bytm-menu-opts";
         /** Gets called whenever the feature config is changed */
         const confChanged = UserUtils.debounce((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
+            var _f, _g;
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
             featConf[key] = newVal;
             yield saveFeatures(featConf);
+            // @ts-ignore
+            (_g = (_f = featInfo[key]) === null || _f === void 0 ? void 0 : _f.change) === null || _g === void 0 ? void 0 : _g.call(_f, featConf);
             if (initConfig$1 !== JSON.stringify(featConf))
                 footerElem.classList.remove("hidden");
             else
@@ -2684,7 +2740,7 @@ function addImportMenu() {
                                 curFmtVer = ver;
                             }
                             catch (err) {
-                                console.error(`Error while running migration function for format version ${fmtVer}:`, err);
+                                error(`Error while running migration function for format version ${fmtVer}:`, err);
                             }
                         }
                     }
@@ -3003,7 +3059,7 @@ function initVolumeFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         // not technically an input element but behaves pretty much the same
         onSelectorOld("tp-yt-paper-slider#volume-slider", {
-            listener: (sliderElem) => {
+            listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
                 if (features$2.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
@@ -3030,53 +3086,67 @@ function initVolumeFeatures() {
                 if (typeof features$2.volumeSliderSize === "number")
                     setVolSliderSize();
                 if (features$2.volumeSliderLabel)
-                    addVolumeSliderLabel(sliderElem, volSliderCont);
+                    yield addVolumeSliderLabel(sliderElem, volSliderCont);
                 setVolSliderStep(sliderElem);
-            },
+            }),
         });
     });
 }
 /** Adds a percentage label to the volume slider and tooltip */
 function addVolumeSliderLabel(sliderElem, sliderContainer) {
-    const labelElem = document.createElement("div");
-    labelElem.id = "bytm-vol-slider-label";
-    labelElem.textContent = `${sliderElem.value}%`;
-    // prevent video from minimizing
-    labelElem.addEventListener("click", (e) => e.stopPropagation());
-    const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
-    const labelFull = getLabelText(sliderElem);
-    sliderContainer.setAttribute("title", labelFull);
-    sliderElem.setAttribute("title", labelFull);
-    sliderElem.setAttribute("aria-valuetext", labelFull);
-    const updateLabel = () => {
+    return __awaiter(this, void 0, void 0, function* () {
+        const labelContElem = document.createElement("div");
+        labelContElem.id = "bytm-vol-slider-label";
+        const getLabel = (value) => `${getFeatures().lockVolume ? getFeatures().lockVolumeLevel : value}%`;
+        const labelElem = document.createElement("div");
+        labelElem.classList.add("label");
+        labelElem.textContent = getLabel(sliderElem.value);
+        // prevent video from minimizing
+        labelContElem.addEventListener("click", (e) => e.stopPropagation());
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
         const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
-        const labelElem2 = document.querySelector("#bytm-vol-slider-label");
-        if (labelElem2)
-            labelElem2.textContent = `${sliderElem.value}%`;
-    };
-    sliderElem.addEventListener("change", () => updateLabel());
-    onSelectorOld("#bytm-vol-slider-cont", {
-        listener: (volumeCont) => {
-            volumeCont.appendChild(labelElem);
-        },
-    });
-    let lastSliderVal = Number(sliderElem.value);
-    // show label if hovering over slider or slider is focused
-    const sliderHoverObserver = new MutationObserver(() => {
-        if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-            labelElem.classList.add("bytm-visible");
-        else if (labelElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-            labelElem.classList.remove("bytm-visible");
-        if (Number(sliderElem.value) !== lastSliderVal) {
-            lastSliderVal = Number(sliderElem.value);
-            updateLabel();
+        const updateLabel = () => {
+            const labelFull = getLabelText(sliderElem);
+            sliderContainer.setAttribute("title", labelFull);
+            sliderElem.setAttribute("title", labelFull);
+            sliderElem.setAttribute("aria-valuetext", labelFull);
+            const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
+            if (labelElem2)
+                labelElem2.textContent = getLabel(sliderElem.value);
+        };
+        sliderElem.addEventListener("change", () => updateLabel());
+        let lockIconElem;
+        const lockIconHtml = yield resourceToHTMLString("icon-lock");
+        if (getFeatures().lockVolume && lockIconHtml) {
+            lockIconElem = document.createElement("span");
+            lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
+            lockIconElem.innerHTML = lockIconHtml;
         }
-    });
-    sliderHoverObserver.observe(sliderElem, {
-        attributes: true,
+        onSelectorOld("#bytm-vol-slider-cont", {
+            listener: (volumeCont) => {
+                lockIconElem && labelContElem.appendChild(lockIconElem);
+                labelContElem.appendChild(labelElem);
+                volumeCont.appendChild(labelContElem);
+            },
+        });
+        let lastSliderVal = Number(sliderElem.value);
+        // show label if hovering over slider or slider is focused
+        const sliderHoverObserver = new MutationObserver(() => {
+            if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+                labelContElem.classList.add("bytm-visible");
+            else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+                labelContElem.classList.remove("bytm-visible");
+            if (Number(sliderElem.value) !== lastSliderVal) {
+                lastSliderVal = Number(sliderElem.value);
+                updateLabel();
+            }
+        });
+        sliderHoverObserver.observe(sliderElem, {
+            attributes: true,
+        });
     });
 }
 /** Sets the volume slider to a set size */
@@ -3824,14 +3894,14 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
+        enable: noopTODO,
     },
     volumeSliderLabel: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     volumeSliderSize: {
         type: "number",
@@ -3841,8 +3911,8 @@ const featInfo = {
         step: 5,
         default: 150,
         unit: "px",
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     volumeSliderStep: {
         type: "slider",
@@ -3851,8 +3921,8 @@ const featInfo = {
         max: 25,
         default: 2,
         unit: "%",
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     volumeSliderScrollStep: {
         type: "slider",
@@ -3861,51 +3931,51 @@ const featInfo = {
         max: 25,
         default: 10,
         unit: "%",
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     fixSpacing: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     //#SECTION song lists
     lyricsQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     listButtonsPlacement: {
         type: "select",
@@ -3915,15 +3985,15 @@ const featInfo = {
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     //#SECTION behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
         default: false,
-        enable: () => void "TODO",
+        enable: noopTODO,
     },
     closeToastsTimeout: {
         type: "number",
@@ -3933,15 +4003,15 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO", // TODO: feasible?
+        enable: noopTODO,
+        disable: noopTODO, // TODO: feasible?
         helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
     },
     rememberSongTimeSites: {
@@ -3953,16 +4023,34 @@ const featInfo = {
             { value: "ytm", label: t("remember_song_time_sites_ytm") },
         ],
         default: "ytm",
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
+    },
+    lockVolume: {
+        type: "toggle",
+        category: "behavior",
+        default: false,
+        enable: () => noopTODO,
+        disable: () => noopTODO,
+    },
+    lockVolumeLevel: {
+        type: "slider",
+        category: "behavior",
+        min: 0,
+        max: 100,
+        step: 1,
+        default: 100,
+        unit: "%",
+        enable: noop,
+        change: () => noopTODO,
     },
     //#SECTION input
     arrowKeySupport: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     arrowKeySkipBy: {
         type: "number",
@@ -3971,15 +4059,15 @@ const featInfo = {
         max: 60,
         step: 0.5,
         default: 5,
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     switchSitesHotkey: {
         type: "hotkey",
@@ -3990,30 +4078,30 @@ const featInfo = {
             ctrl: false,
             alt: false,
         },
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
     },
     anchorImprovements: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     numKeysSkipToTime: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     //#SECTION lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     geniUrlBase: {
         type: "text",
@@ -4042,8 +4130,8 @@ const featInfo = {
         max: 2000,
         step: 50,
         unit: (val) => tp("unit_entries", val),
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: getAdvancedModeAdornment,
@@ -4056,8 +4144,8 @@ const featInfo = {
         max: 100,
         step: 1,
         unit: (val) => tp("unit_days", val),
-        enable: () => void "TODO",
-        change: () => void "TODO",
+        enable: noopTODO,
+        change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: getAdvancedModeAdornment,
@@ -4083,7 +4171,7 @@ const featInfo = {
         category: "general",
         options: localeOptions,
         default: getPreferredLocale(),
-        enable: () => void "TODO",
+        enable: noopTODO,
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("icon-globe")) !== null && _a !== void 0 ? _a : ""; }),
     },
@@ -4091,8 +4179,8 @@ const featInfo = {
         type: "toggle",
         category: "general",
         default: true,
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
     },
     logLevel: {
         type: "select",
@@ -4102,14 +4190,14 @@ const featInfo = {
             { value: 1, label: t("log_level_info") },
         ],
         default: 1,
-        enable: () => void "TODO",
+        enable: noopTODO,
     },
     advancedMode: {
         type: "toggle",
         category: "general",
         default: mode === "development",
-        enable: () => void "TODO",
-        disable: () => void "TODO",
+        enable: noopTODO,
+        disable: noopTODO,
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
     },
@@ -4119,6 +4207,10 @@ function getAdvancedModeAdornment() {
     return __awaiter(this, void 0, void 0, function* () {
         return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`;
     });
+}
+function noop() {
+}
+function noopTODO() {
 }/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 5;
 /** Config data format migration dictionary */
@@ -4144,7 +4236,7 @@ const migrations = {
     },
     // 4 -> 5
     5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), geniUrlToken: getFeatureDefault("geniUrlToken"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode") });
+        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), geniUrlToken: getFeatureDefault("geniUrlToken"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode"), lockVolume: getFeatureDefault("lockVolume"), lockVolumeLevel: getFeatureDefault("lockVolumeLevel") });
     },
 };
 function getFeatureDefault(key) {
@@ -4842,11 +4934,40 @@ function onDomLoad() {
                     ftInit.push(fixSpacing());
                 if (features.scrollToActiveSongBtn)
                     ftInit.push(addScrollToActiveBtn());
+                if (features.lockVolume)
+                    ftInit.push(enableLockVolume());
                 ftInit.push(initVolumeFeatures());
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
                     ftInit.push(initSiteSwitch(domain));
+                // TODO: for hot reloading features
+                // ftInit.push(new Promise((resolve) => {
+                //   for(const [k, v] of Object.entries(featInfo)) {
+                //     try {
+                //       const featVal = features[k as keyof typeof featInfo];
+                //       // @ts-ignore
+                //       if(v.enable && featVal === true) {
+                //         console.log("###> enable", k);
+                //         // @ts-ignore
+                //         v.enable(features);
+                //         console.log("###>> enable ok");
+                //       }
+                //       // @ts-ignore
+                //       else if(v.disable && featVal === false) {
+                //         console.log("###> disable", k);
+                //         // @ts-ignore
+                //         v.disable(features);
+                //         console.log("###>> disable ok");
+                //       }
+                //     }
+                //     catch(err) {
+                //       error(`Couldn't initialize feature "${k}" due to error:`, err);
+                //     }
+                //   }
+                //   console.log("###>>> done for loop");
+                //   resolve();
+                // }));
             }
             Promise.allSettled(ftInit).then(() => {
                 emitInterface("bytm:ready");
@@ -5980,12 +6101,24 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 #bytm-vol-slider-label {
   opacity: 0.000001;
   position: absolute;
-  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
   top: 50%;
   left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
+  transform: translate(calc(-50% - 35px), -50%);
   text-align: right;
   transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+#bytm-vol-slider-label svg path {
+  fill: #909090;
 }
 
 #bytm-vol-slider-label.bytm-visible {
