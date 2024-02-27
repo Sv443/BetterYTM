@@ -48,7 +48,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -88,7 +88,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -128,7 +128,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -168,7 +168,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -208,7 +208,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -248,7 +248,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -288,7 +288,7 @@ This means you need to manually check against the base translations for missing 
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
 | `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
-| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the volume slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
