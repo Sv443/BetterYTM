@@ -4,6 +4,7 @@ import { compressionSupported, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat } from "./constants";
 import type { FeatureConfig } from "./types";
+import { emitInterface, getFeaturesInterface } from "./interface";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 5;
@@ -93,6 +94,9 @@ export async function initConfig() {
     info("Config data initialized with default values");
   else if(oldFmtVer !== cfgMgr.formatVersion)
     info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
+
+  emitInterface("bytm:configReady", getFeaturesInterface());
+
   return { ...data };
 }
 

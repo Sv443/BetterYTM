@@ -31,6 +31,7 @@ export async function initLyricsCache() {
   canCompress = await compressionSupported();
   const data = await lyricsCacheMgr.loadData();
   log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
+  emitInterface("bytm:lyricsCacheReady", data);
   return data;
 }
 
@@ -74,11 +75,13 @@ function deleteLyricsCacheEntry(artist: string, song: string) {
 
 /** Clears the lyrics cache locally and deletes it from persistent storage - the window should be reloaded right after! */
 export function deleteLyricsCache() {
+  emitInterface("bytm:lyricsCacheCleared");
   return lyricsCacheMgr.deleteConfig();
 }
 
 /** Clears the lyrics cache locally and clears it in persistent storage */
 export function clearLyricsCache() {
+  emitInterface("bytm:lyricsCacheCleared");
   return lyricsCacheMgr.setData({ cache: [] });
 }
 
@@ -93,12 +96,18 @@ export function getLyricsCache() {
  */
 export function addLyricsCacheEntry(artist: string, song: string, url: string) {
   const { cache } = lyricsCacheMgr.getData();
-  cache.push({
+  const entry = {
     artist, song, url, viewed: Date.now(), added: Date.now(),
-  } satisfies LyricsCacheEntry);
+  } satisfies LyricsCacheEntry;
+
+  cache.push(entry);
   cache.sort((a, b) => b.viewed - a.viewed);
+
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
+
+  emitInterface("bytm:lyricsCacheEntryAdded", entry);
+
   return lyricsCacheMgr.setData({ cache });
 }
 
@@ -116,17 +125,20 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
 
   const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
   const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
-  cache.push({
+  const entry = {
     artist,
     song,
     url,
     viewed: Date.now() - viewedPenalty,
     added: Date.now() - addedPenalty,
-  } satisfies LyricsCacheEntry);
+  } satisfies LyricsCacheEntry;
 
+  cache.push(entry);
   cache.sort((a, b) => b.viewed - a.viewed);
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
+
+  emitInterface("bytm:lyricsCacheEntryAdded", entry);
 
   return lyricsCacheMgr.setData({ cache });
 }
