@@ -1,11 +1,11 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor, type Stringifiable } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log, onSelectorOld, warn, t, resourceToHTMLString } from "../utils";
 import { openCfgMenu } from "../menu/menu_old";
+import { getFeatures } from "../config";
 import { featInfo } from ".";
 import "./layout.css";
-import { getFeatures } from "src/config";
 
 let features: FeatureConfig;
 
@@ -218,11 +218,11 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   const labelContElem = document.createElement("div");
   labelContElem.id = "bytm-vol-slider-label";
 
-  const constantLabel = getFeatures().lockVolume ? getFeatures().lockVolumeLevel : undefined;
+  const getLabel = (value: Stringifiable) => `${getFeatures().lockVolume ? getFeatures().lockVolumeLevel : value}%`;
 
   const labelElem = document.createElement("div");
   labelElem.classList.add("label");
-  labelElem.textContent = `${constantLabel ?? sliderElem.value}%`;
+  labelElem.textContent = getLabel(sliderElem.value);
 
   // prevent video from minimizing
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
@@ -244,7 +244,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
 
     const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label div.label");
     if(labelElem2)
-      labelElem2.textContent = `${constantLabel ?? sliderElem.value}%`;
+      labelElem2.textContent = getLabel(sliderElem.value);
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
