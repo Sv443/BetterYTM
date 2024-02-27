@@ -90,7 +90,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl("logo/logo_48.png")}
+// @icon              ${getResourceUrl("images/logo/logo_48.png")}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
