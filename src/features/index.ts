@@ -267,6 +267,7 @@ export const featInfo = {
   },
   geniUrlToken: {
     type: "text",
+    valueHidden: true,
     category: "lyrics",
     default: "",
     normalize: (val: string) => val.trim(),

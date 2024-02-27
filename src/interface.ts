@@ -3,8 +3,10 @@ import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
+import { featInfo } from "./features";
 import { fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/lyrics";
 import type { SiteEventsMap } from "./siteEvents";
+import type { FeatureConfig, FeatureInfo } from "./types";
 
 const { getUnsafeWindow } = UserUtils;
 
@@ -37,7 +39,7 @@ const globalFuncs = {
   hasKeyFor,
   t,
   tp,
-  getFeatures,
+  getFeatures: getFeaturesInterface,
   saveFeatures,
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
@@ -88,4 +90,16 @@ export function emitInterface<
   ...data: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
   getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+}
+
+//#MARKER proxy functions
+
+function getFeaturesInterface() {
+  const features = getFeatures();
+  for(const [key] of Object.entries(features)) {
+    const info = featInfo[key as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
+    if(info && info.valueHidden) // @ts-ignore
+      features[key as keyof typeof features] = undefined;
+  }
+  return features as FeatureConfig;
 }
