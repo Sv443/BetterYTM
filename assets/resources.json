@@ -1,22 +1,20 @@
 {
-  "img-arrow_down": "icons/arrow_down.svg",
-  "img-delete": "icons/delete.svg",
-  "img-error": "icons/error.svg",
-  "img-globe": "icons/globe.svg",
-  "img-help": "icons/help.svg",
-  "img-lyrics": "icons/lyrics.svg",
-  "img-skip_to": "icons/skip_to.svg",
-  "img-spinner": "icons/spinner.svg",
-  "img-add_circle_small": "icons/add_circle_small.svg",
+  "css-fix_spacing": "style/fixSpacing.css",
+  "css-anchor_improvements": "style/anchorImprovements.css",
+  "doc-changelog": "/changelog.md",
+  "icon-arrow_down": "icons/arrow_down.svg",
+  "icon-delete": "icons/delete.svg",
+  "icon-error": "icons/error.svg",
+  "icon-globe": "icons/globe.svg",
+  "icon-help": "icons/help.svg",
+  "icon-lyrics": "icons/lyrics.svg",
+  "icon-skip_to": "icons/skip_to.svg",
+  "icon-spinner": "icons/spinner.svg",
+  "icon-advanced_mode": "icons/plus_circle_small.svg",
   "img-logo": "logo/logo_48.png",
   "img-close": "icons/close.png",
   "img-discord": "external/discord.png",
   "img-github": "external/github.png",
   "img-greasyfork": "external/greasyfork.png",
-  "img-openuserjs": "external/openuserjs.png",
-
-  "css-fix_spacing": "style/fixSpacing.css",
-  "css-anchor_improvements": "style/anchorImprovements.css",
-
-  "doc-changelog": "/changelog.md"
+  "img-openuserjs": "external/openuserjs.png"
 }

@@ -326,7 +326,7 @@ export const featInfo = {
     default: getPreferredLocale(),
     enable: () => void "TODO",
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => await resourceToHTMLString("img-globe") ?? "",
+    textAdornment: async () => await resourceToHTMLString("icon-globe") ?? "",
   },
   versionCheck: {
     type: "toggle",
@@ -357,5 +357,5 @@ export const featInfo = {
 } as const satisfies FeatureInfo;
 
 async function getAdvancedModeAdornment() {
-  return `<span class="advanced-mode-icon" title="${t("advanced_mode_tooltip")}">${await resourceToHTMLString("img-add_circle_small") ?? ""}</span>`;
+  return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`;
 }
