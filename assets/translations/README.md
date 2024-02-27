@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 153 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `153/153` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `123/153` (80.4%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `123/153` (80.4%) | ─ |
+| [`en_US`](./en_US.json) | 156 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `156/156` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `123/156` (78.8%) | ─ |
 
 <br>
 
@@ -25,11 +25,12 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -46,6 +47,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -62,11 +65,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -83,6 +87,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -99,11 +105,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -120,6 +127,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -136,11 +145,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -157,6 +167,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -173,11 +185,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -194,6 +207,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -210,11 +225,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -231,6 +247,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |
@@ -247,11 +265,12 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 33 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
+| `volume_locked` | `Volume is locked at %1% - you can change this in the config menu.` |
 | `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
@@ -268,6 +287,8 @@ This means you need to manually check against the base translations for missing 
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
 | `unit_days-n` | `days` |
+| `feature_desc_lockVolume` | `Force the volume slider to stay at a specific level` |
+| `feature_desc_lockVolumeLevel` | `What volume level to lock the slider at` |
 | `feature_desc_geniUrlBase` | `Base URL of your geniURL instance, see https://github.com/Sv443/geniURL` |
 | `feature_helptext_geniUrlBase` | `If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.` |
 | `feature_desc_geniUrlToken` | `Auth token for your geniURL instance` |

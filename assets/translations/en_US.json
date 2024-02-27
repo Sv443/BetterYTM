@@ -48,6 +48,7 @@
     "scroll_to_playing": "Scroll to the currently playing song",
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
+    "volume_locked": "Volume is locked at %1% - you can change this in the config menu.",
     "middle_click_open_tab": "Middle-click to open in a new tab",
     "advanced_mode": "Advanced mode",
 
@@ -138,6 +139,8 @@
     "feature_helptext_rememberSongTime-1": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.",
     "feature_helptext_rememberSongTime-n": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.",
     "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
+    "feature_desc_lockVolume": "Force the volume slider to stay at a specific level",
+    "feature_desc_lockVolumeLevel": "What volume level to lock the slider at",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
     "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",

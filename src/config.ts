@@ -59,6 +59,8 @@ export const migrations: ConfigMigrationsDict = {
       lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
       clearLyricsCache: getFeatureDefault("clearLyricsCache"),
       advancedMode: getFeatureDefault("advancedMode"),
+      lockVolume: getFeatureDefault("lockVolume"),
+      lockVolumeLevel: getFeatureDefault("lockVolumeLevel"),
     } satisfies FeatureConfig;
   },
 };

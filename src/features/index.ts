@@ -61,14 +61,14 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
+    enable: noopTODO,
   },
   volumeSliderLabel: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   volumeSliderSize: {
     type: "number",
@@ -78,8 +78,8 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   volumeSliderStep: {
     type: "slider",
@@ -88,8 +88,8 @@ export const featInfo = {
     max: 25,
     default: 2,
     unit: "%",
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   volumeSliderScrollStep: {
     type: "slider",
@@ -98,36 +98,36 @@ export const featInfo = {
     max: 25,
     default: 10,
     unit: "%",
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
 
   //#SECTION song lists
@@ -135,15 +135,15 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   listButtonsPlacement: {
     type: "select",
@@ -153,8 +153,8 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
 
   //#SECTION behavior
@@ -162,7 +162,7 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: false,
-    enable: () => void "TODO",
+    enable: noopTODO,
   },
   closeToastsTimeout: {
     type: "number",
@@ -172,15 +172,15 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO", // TODO: feasible?
+    enable: noopTODO,
+    disable: noopTODO, // TODO: feasible?
     helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
   },
   rememberSongTimeSites: {
@@ -192,8 +192,26 @@ export const featInfo = {
       { value: "ytm", label: t("remember_song_time_sites_ytm") },
     ],
     default: "ytm",
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
+  },
+  lockVolume: {
+    type: "toggle",
+    category: "behavior",
+    default: false,
+    enable: () => noopTODO,
+    disable: () => noopTODO,
+  },
+  lockVolumeLevel: {
+    type: "slider",
+    category: "behavior",
+    min: 0,
+    max: 100,
+    step: 1,
+    default: 100,
+    unit: "%",
+    enable: noop,
+    change: () => noopTODO,
   },
 
   //#SECTION input
@@ -201,8 +219,8 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   arrowKeySkipBy: {
     type: "number",
@@ -211,15 +229,15 @@ export const featInfo = {
     max: 60,
     step: 0.5,
     default: 5,
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   switchBetweenSites: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -230,22 +248,22 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
   },
   anchorImprovements: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
 
   //#SECTION lyrics
@@ -253,8 +271,8 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   geniUrlBase: {
     type: "text",
@@ -283,8 +301,8 @@ export const featInfo = {
     max: 2000,
     step: 50,
     unit: (val: number) => tp("unit_entries", val),
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: getAdvancedModeAdornment,
@@ -297,8 +315,8 @@ export const featInfo = {
     max: 100,
     step: 1,
     unit: (val: number) => tp("unit_days", val),
-    enable: () => void "TODO",
-    change: () => void "TODO",
+    enable: noopTODO,
+    change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: getAdvancedModeAdornment,
@@ -325,7 +343,7 @@ export const featInfo = {
     category: "general",
     options: localeOptions,
     default: getPreferredLocale(),
-    enable: () => void "TODO",
+    enable: noopTODO,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: async () => await resourceToHTMLString("icon-globe") ?? "",
   },
@@ -333,8 +351,8 @@ export const featInfo = {
     type: "toggle",
     category: "general",
     default: true,
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
   },
   logLevel: {
     type: "select",
@@ -344,14 +362,14 @@ export const featInfo = {
       { value: 1, label: t("log_level_info") },
     ],
     default: 1,
-    enable: () => void "TODO",
+    enable: noopTODO,
   },
   advancedMode: {
     type: "toggle",
     category: "general",
     default: mode === "development",
-    enable: () => void "TODO",
-    disable: () => void "TODO",
+    enable: noopTODO,
+    disable: noopTODO,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
   },
@@ -359,4 +377,12 @@ export const featInfo = {
 
 async function getAdvancedModeAdornment() {
   return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`;
+}
+
+function noop() {
+  void 0;
+}
+
+function noopTODO() {
+  void 0;
 }

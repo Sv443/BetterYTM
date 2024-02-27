@@ -162,15 +162,15 @@ type FeatureTypeProps = ({
 
 type FeatureFuncProps = {
   /** Called to instantiate the feature on the page */
-  enable: () => void,
+  enable: (featCfg: FeatureConfig) => void,
 } & (
   {
     /** Called to remove all traces of the feature from the page and memory (includes event listeners) */
-    disable?: () => void,
+    disable?: (feats: FeatureConfig) => void,
   }
   | {
     /** Called to update the feature's behavior when the config changes */
-    change?: () => void,
+    change?: (feats: FeatureConfig) => void,
   }
 )
 
@@ -243,6 +243,10 @@ export interface FeatureConfig {
   rememberSongTime: boolean;
   /** Where to remember the song time */
   rememberSongTimeSites: Domain | "all";
+  /** Lock the volume slider at a specific level */
+  lockVolume: boolean;
+  /** The volume level to lock the slider at */
+  lockVolumeLevel: number;
 
   //#SECTION input
   /** Arrow keys skip forwards and backwards */

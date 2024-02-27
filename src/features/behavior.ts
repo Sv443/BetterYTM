@@ -1,6 +1,7 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
 import { error, getDomain, getVideoTime, info, log, onSelectorOld, videoSelector } from "../utils";
 import { LogLevel, type FeatureConfig } from "../types";
+import { getFeatures } from "src/config";
 
 let features: FeatureConfig;
 
@@ -229,4 +230,57 @@ export function disableDarkReader() {
 
     info("Sent hint to Dark Reader to disable itself");
   }
+}
+
+//#MARKER lock volume
+
+let volumeSliderObserverActive = false;
+
+let sliderElem: HTMLInputElement | undefined;
+function overrideVolValues() {
+  if(!sliderElem)
+    return;
+
+  volumeSliderObserverActive = false;
+
+  setTimeout(() => {
+    const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
+    if(vidElem)
+      vidElem.volume = getFeatures().lockVolumeLevel / 100;
+    if(!sliderElem) {
+      volumeSliderObserverActive = true;
+      return;
+    }
+    sliderElem.value = String(getFeatures().lockVolumeLevel);
+    sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
+    const knobElem = document.querySelector<HTMLElement>("#volume-slider #sliderKnobContainer #sliderKnob");
+    if(knobElem)
+      knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
+    volumeSliderObserverActive = true;
+  }, 10);
+}
+
+/** Locks the volume slider at a specific level */
+export async function enableLockVolume() {
+  const observer = new MutationObserver((mutations) => {
+    for(const mutation of mutations) {
+      if(!volumeSliderObserverActive)
+        return;
+      if((mutation.target as HTMLElement).id === "sliderBar" && mutation.type === "attributes") {
+        if(mutation.attributeName === "value" || mutation.attributeName === "aria-valuenow")
+          overrideVolValues();
+      }
+    }
+  });
+
+  onSelectorOld<HTMLInputElement>("#volume-slider tp-yt-paper-progress#sliderBar", {
+    listener: (elem) => {
+      sliderElem = elem;
+      overrideVolValues();
+      volumeSliderObserverActive = true;
+      observer.observe(elem, {
+        attributeFilter: ["value", "aria-valuenow"],
+      });
+    }
+  });
 }

@@ -224,6 +224,9 @@ async function addCfgMenu() {
 
     await saveFeatures(featConf);
 
+    // @ts-ignore
+    featInfo[key]?.change?.(featConf);
+
     if(initConfig !== JSON.stringify(featConf))
       footerElem.classList.remove("hidden");
     else
@@ -1147,7 +1150,7 @@ async function addImportMenu() {
               curFmtVer = ver;
             }
             catch(err) {
-              console.error(`Error while running migration function for format version ${fmtVer}:`, err);
+              error(`Error while running migration function for format version ${fmtVer}:`, err);
             }
           }
         }
