@@ -96,10 +96,10 @@ export function emitInterface<
 
 function getFeaturesInterface() {
   const features = getFeatures();
-  for(const [key] of Object.entries(features)) {
-    const info = featInfo[key as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
+  for(const ftKey of Object.keys(features)) {
+    const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
     if(info && info.valueHidden) // @ts-ignore
-      features[key as keyof typeof features] = undefined;
+      features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;
 }

@@ -37,4 +37,4 @@ export const scriptInfo = {
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
-};
+} as const;
