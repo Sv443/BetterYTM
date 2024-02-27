@@ -238,7 +238,7 @@ let volumeSliderObserverActive = false;
 
 let sliderElem: HTMLInputElement | undefined;
 function overrideVolValues() {
-  if(!sliderElem)
+  if(!sliderElem || !getFeatures().lockVolume)
     return;
 
   volumeSliderObserverActive = false;
@@ -247,15 +247,23 @@ function overrideVolValues() {
     const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
     if(vidElem)
       vidElem.volume = getFeatures().lockVolumeLevel / 100;
+  
     if(!sliderElem) {
       volumeSliderObserverActive = true;
       return;
     }
     sliderElem.value = String(getFeatures().lockVolumeLevel);
     sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
+
     const knobElem = document.querySelector<HTMLElement>("#volume-slider #sliderKnobContainer #sliderKnob");
     if(knobElem)
       knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
+
+    const labelElem = document.querySelector<HTMLElement>("#bytm-vol-slider-label .label");
+    const newLabelContent = `${getFeatures().lockVolumeLevel}%`;
+    if(labelElem && labelElem.textContent !== newLabelContent)
+      labelElem.textContent = newLabelContent;
+
     volumeSliderObserverActive = true;
   }, 10);
 }
