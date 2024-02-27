@@ -80,7 +80,6 @@ export type InterfaceFunctions = {
 
 // shim for the BYTM interface properties
 export type BytmObject =
-  // properties defined and modified by BYTM at runtime
   {
     [key: string]: unknown;
     locale: TrLocale;

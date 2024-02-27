@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e00f898";
+const buildNumberRaw = "dc43f1b";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -2048,10 +2048,12 @@ function addCfgMenu() {
                         if (typeof ftInfo.min !== "undefined") // @ts-ignore
                             inputElem.min = ftInfo.min;
                         // @ts-ignore
-                        if (ftInfo.max !== "undefined") // @ts-ignore
+                        if (typeof ftInfo.max !== "undefined") // @ts-ignore
                             inputElem.max = ftInfo.max;
                         if (typeof initialVal !== "undefined")
                             inputElem.value = String(initialVal);
+                        if (type === "text" && ftInfo.valueHidden)
+                            inputElem.value = String(initialVal).replace(/./g, "•");
                         if (type === "number" || type === "slider" && step)
                             inputElem.step = String(step);
                         if (type === "toggle" && typeof initialVal !== "undefined")
@@ -2100,6 +2102,10 @@ function addCfgMenu() {
                                 if (typeof initialVal !== "undefined")
                                     confChanged(featKey, initialVal, v);
                             };
+                            const unsub = siteEvents.on("cfgMenuClosed", () => {
+                                unsub();
+                                textInputUpdate();
+                            });
                             inputElem.addEventListener("blur", () => textInputUpdate());
                             inputElem.addEventListener("keydown", (e) => e.key === "Tab" && textInputUpdate());
                         }
@@ -4023,6 +4029,7 @@ const featInfo = {
     },
     geniUrlToken: {
         type: "text",
+        valueHidden: true,
         category: "lyrics",
         default: "",
         normalize: (val) => val.trim(),
@@ -4210,7 +4217,7 @@ const globalFuncs = {
     hasKeyFor,
     t,
     tp,
-    getFeatures,
+    getFeatures: getFeaturesInterface,
     saveFeatures,
     fetchLyricsUrlTop,
     getLyricsCacheEntry,
@@ -4239,6 +4246,16 @@ function setGlobalProp(key, value) {
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...data) {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+}
+//#MARKER proxy functions
+function getFeaturesInterface() {
+    const features = getFeatures();
+    for (const ftKey of Object.keys(features)) {
+        const info = featInfo[ftKey];
+        if (info && info.valueHidden) // @ts-ignore
+            features[ftKey] = undefined;
+    }
+    return features;
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
