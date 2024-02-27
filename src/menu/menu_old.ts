@@ -79,7 +79,14 @@ async function addCfgMenu() {
   linksCont.id = "bytm-menu-linkscont";
   linksCont.role = "navigation";
 
-  const addLink = (imgSrc: string, href: string, title: string) => {
+  const linkTitlesShort = {
+    discord: "Discord",
+    github: "GitHub",
+    greasyfork: "GreasyFork",
+    openuserjs: "OpenUserJS",
+  };
+
+  const addLink = (imgSrc: string, href: string, title: string, titleKey: keyof typeof linkTitlesShort) => {
     const anchorElem = document.createElement("a");
     anchorElem.className = "bytm-menu-link bytm-no-select";
     anchorElem.rel = "noopener noreferrer";
@@ -89,6 +96,14 @@ async function addCfgMenu() {
     anchorElem.role = "button";
     anchorElem.ariaLabel = anchorElem.title = title;
 
+    const extendedAnchorEl = document.createElement("a");
+    extendedAnchorEl.className = "bytm-menu-link extended-link bytm-no-select";
+    extendedAnchorEl.rel = "noopener noreferrer";
+    extendedAnchorEl.href = href;
+    extendedAnchorEl.target = "_blank";
+    extendedAnchorEl.tabIndex = -1;
+    extendedAnchorEl.textContent = extendedAnchorEl.ariaLabel = extendedAnchorEl.title = linkTitlesShort[titleKey];
+
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-menu-img";
     imgElem.src = imgSrc;
@@ -96,15 +111,16 @@ async function addCfgMenu() {
     imgElem.style.height = "32px";
 
     anchorElem.appendChild(imgElem);
+    anchorElem.appendChild(extendedAnchorEl);
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"));
+  addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
 
   const links: [name: string, ...Parameters<typeof addLink>][] = [
-    ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name)],
-    ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name)],
-    ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name)],
+    ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
+    ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
+    ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
   ];
 
   const hostLink = links.find(([name]) => name === host);
@@ -303,7 +319,7 @@ async function addCfgMenu() {
         const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
         if(hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
-          const helpElemImgHtml = await resourceToHTMLString("img-help");
+          const helpElemImgHtml = await resourceToHTMLString("icon-help");
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
@@ -532,7 +548,7 @@ async function addCfgMenu() {
   //#SECTION scroll indicator
   const scrollIndicator = document.createElement("img");
   scrollIndicator.id = "bytm-menu-scroll-indicator";
-  scrollIndicator.src = await getResourceUrl("img-arrow_down");
+  scrollIndicator.src = await getResourceUrl("icon-arrow_down");
   scrollIndicator.role = "button";
   scrollIndicator.ariaLabel = scrollIndicator.title = t("scroll_to_bottom");
 
@@ -569,15 +585,15 @@ async function addCfgMenu() {
   menuContainer.appendChild(headerElem);
   menuContainer.appendChild(featuresCont);
 
-  const versionElemCont = document.createElement("div");
-  versionElemCont.id = "bytm-menu-version";
+  const subtitleElemCont = document.createElement("div");
+  subtitleElemCont.id = "bytm-menu-subtitle-cont";
 
-  const versionElem = document.createElement("a");
-  versionElem.classList.add("bytm-link");
-  versionElem.role = "button";
-  versionElem.tabIndex = 0;
-  versionElem.ariaLabel = versionElem.title = t("version_tooltip", scriptInfo.version, buildNumber);
-  versionElem.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
+  const versionEl = document.createElement("a");
+  versionEl.classList.add("bytm-link");
+  versionEl.role = "button";
+  versionEl.tabIndex = 0;
+  versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
+  versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
   const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -585,13 +601,31 @@ async function addCfgMenu() {
     await openChangelogMenu("cfgMenu");
     closeCfgMenu(undefined, false);
   };
-  versionElem.addEventListener("click", versionElemClicked);
-  versionElem.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
+  versionEl.addEventListener("click", versionElemClicked);
+  versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
+
+  let advancedIndicatorEl: HTMLSpanElement | undefined;
+  if(getFeatures().advancedMode) {
+    const indicatorIconHtml = await resourceToHTMLString("icon-advanced_mode");
+    const advancedIndicatorIconEl = document.createElement("span");
+    advancedIndicatorIconEl.classList.add("bytm-advanced-mode-icon");
+    if(indicatorIconHtml)
+      advancedIndicatorIconEl.innerHTML = indicatorIconHtml;
+
+    const advancedIndicatorLabelEl = document.createElement("span");
+    advancedIndicatorLabelEl.classList.add("bytm-advanced-mode-indicator-label");
+    advancedIndicatorLabelEl.textContent = t("advanced_mode");
+
+    advancedIndicatorEl = document.createElement("span");
+    advancedIndicatorEl.appendChild(advancedIndicatorIconEl);
+    advancedIndicatorEl.appendChild(advancedIndicatorLabelEl);
+  }
+
+  subtitleElemCont.appendChild(versionEl);
+  advancedIndicatorEl && subtitleElemCont.appendChild(advancedIndicatorEl);
+  titleElem.appendChild(subtitleElemCont);
 
   menuContainer.appendChild(footerCont);
-  versionElemCont.appendChild(versionElem);
-  titleElem.appendChild(versionElemCont);
-
   backgroundElem.appendChild(menuContainer);
 
   document.body.appendChild(backgroundElem);
@@ -698,7 +732,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     titleCont.role = "heading";
     titleCont.ariaLevel = "1";
 
-    const helpIconSvg = await resourceToHTMLString("img-help");
+    const helpIconSvg = await resourceToHTMLString("icon-help");
     if(helpIconSvg)
       titleCont.innerHTML = helpIconSvg;
 
