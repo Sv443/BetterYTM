@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "8d7536a";
+const buildNumberRaw = "d481fd3";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1870,7 +1870,8 @@ function addCfgMenu() {
             extendedAnchorEl.href = href;
             extendedAnchorEl.target = "_blank";
             extendedAnchorEl.tabIndex = -1;
-            extendedAnchorEl.textContent = extendedAnchorEl.ariaLabel = extendedAnchorEl.title = linkTitlesShort[titleKey];
+            extendedAnchorEl.textContent = linkTitlesShort[titleKey];
+            extendedAnchorEl.ariaLabel = extendedAnchorEl.title = title;
             const imgElem = document.createElement("img");
             imgElem.className = "bytm-menu-img";
             imgElem.src = imgSrc;
