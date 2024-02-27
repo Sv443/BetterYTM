@@ -30,7 +30,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -67,7 +67,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -104,7 +104,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -141,7 +141,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -178,7 +178,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -215,7 +215,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
@@ -252,7 +252,7 @@ This means you need to manually check against the base translations for missing 
 | Key | English text |
 | --- | ------------ |
 | `trigger_btn_action` | `Trigger` |
-| `advanced_mode_tooltip` | `Advanced mode` |
+| `advanced_mode` | `Advanced mode` |
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |

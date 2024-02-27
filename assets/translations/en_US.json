@@ -49,7 +49,7 @@
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
     "middle_click_open_tab": "Middle-click to open in a new tab",
-    "advanced_mode_tooltip": "Advanced mode",
+    "advanced_mode": "Advanced mode",
 
     "open_current_lyrics": "Open the current song's lyrics in a new tab",
     "open_lyrics": "Open this song's lyrics in a new tab",

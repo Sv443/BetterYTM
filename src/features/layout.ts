@@ -493,7 +493,7 @@ export async function addScrollToActiveBtn() {
 
       const imgElem = document.createElement("img");
       imgElem.className = "bytm-generic-btn-img";
-      imgElem.src = await getResourceUrl("img-skip_to");
+      imgElem.src = await getResourceUrl("icon-skip_to");
 
       linkElem.addEventListener("click", (e) => {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");

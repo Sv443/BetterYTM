@@ -93,8 +93,8 @@ async function addQueueButtons(
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
 
-  const lyricsIconUrl = await getResourceUrl("img-lyrics");
-  const deleteIconUrl = await getResourceUrl("img-delete");
+  const lyricsIconUrl = await getResourceUrl("icon-lyrics");
+  const deleteIconUrl = await getResourceUrl("icon-delete");
 
   //#SECTION lyrics btn
   let lyricsBtnElem: HTMLAnchorElement | undefined;
@@ -162,7 +162,7 @@ async function addQueueButtons(
         if(!cachedLyricsEntry) {
           queueItem.setAttribute("data-bytm-loading", "");
 
-          imgEl.src = await getResourceUrl("img-spinner");
+          imgEl.src = await getResourceUrl("icon-spinner");
           imgEl.classList.add("bytm-spinner");
         }
 
@@ -256,7 +256,7 @@ async function addQueueButtons(
           if(!removeFromQueueBtn) {
             warn("Couldn't find 'remove from queue' button in queue item three dots menu");
             dotsBtnElem.click();
-            imgElem.src = await getResourceUrl("img-error");
+            imgElem.src = await getResourceUrl("icon-error");
             if(deleteBtnElem)
               deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
           }
