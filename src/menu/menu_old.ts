@@ -2,7 +2,7 @@ import { compress, decompress, debounce, isScrollable } from "@sv443-network/use
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, parseMarkdown, getChangelogMd, compressionSupported } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -1262,7 +1262,7 @@ async function addChangelogMenu() {
 
   const menuContainer = document.createElement("div");
   menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.classList.add("bytm-menu");
+  menuContainer.classList.add("bytm-menu", "top-aligned");
   menuContainer.id = "bytm-changelog-menu";
 
   //#SECTION title bar
@@ -1299,16 +1299,6 @@ async function addChangelogMenu() {
 
   //#SECTION body
 
-  const getChangelogHtml = (async () => {
-    try {
-      const changelogMd = await getChangelogMd();
-      return await parseMarkdown(changelogMd);
-    }
-    catch(err) {
-      return `Error: ${err}`;
-    }
-  });
-
   const menuBodyElem = document.createElement("div");
   menuBodyElem.id = "bytm-changelog-menu-body";
   menuBodyElem.classList.add("bytm-menu-body");
@@ -1316,7 +1306,7 @@ async function addChangelogMenu() {
   const textElem = document.createElement("div");
   textElem.id = "bytm-changelog-menu-text";
   textElem.classList.add("bytm-markdown-container");
-  textElem.innerHTML = await getChangelogHtml();
+  textElem.innerHTML = await getChangelogHtmlWithDetails();
 
   //#SECTION finalize
 
