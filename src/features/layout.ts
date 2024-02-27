@@ -1,10 +1,11 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, onSelectorOld, warn, t } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, resourceToHTMLString } from "../utils";
 import { openCfgMenu } from "../menu/menu_old";
 import { featInfo } from ".";
 import "./layout.css";
+import { getFeatures } from "src/config";
 
 let features: FeatureConfig;
 
@@ -173,7 +174,7 @@ export async function removeUpgradeTab() {
 export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
   onSelectorOld<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
-    listener: (sliderElem) => {
+    listener: async (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
 
@@ -205,7 +206,7 @@ export async function initVolumeFeatures() {
         setVolSliderSize();
 
       if(features.volumeSliderLabel)
-        addVolumeSliderLabel(sliderElem, volSliderCont);
+        await addVolumeSliderLabel(sliderElem, volSliderCont);
 
       setVolSliderStep(sliderElem);
     },
@@ -213,13 +214,18 @@ export async function initVolumeFeatures() {
 }
 
 /** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
+async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
+  const labelContElem = document.createElement("div");
+  labelContElem.id = "bytm-vol-slider-label";
+
+  const constantLabel = getFeatures().lockVolume ? getFeatures().lockVolumeLevel : undefined;
+
   const labelElem = document.createElement("div");
-  labelElem.id = "bytm-vol-slider-label";
-  labelElem.textContent = `${sliderElem.value}%`;
+  labelElem.classList.add("label");
+  labelElem.textContent = `${constantLabel ?? sliderElem.value}%`;
 
   // prevent video from minimizing
-  labelElem.addEventListener("click", (e) => e.stopPropagation());
+  labelContElem.addEventListener("click", (e) => e.stopPropagation());
 
   const getLabelText = (slider: HTMLInputElement) =>
     t("volume_tooltip", slider.value, features.volumeSliderStep ?? slider.step);
@@ -236,16 +242,27 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTM
     sliderElem.setAttribute("title", labelFull);
     sliderElem.setAttribute("aria-valuetext", labelFull);
 
-    const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label");
+    const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label div.label");
     if(labelElem2)
-      labelElem2.textContent = `${sliderElem.value}%`;
+      labelElem2.textContent = `${constantLabel ?? sliderElem.value}%`;
   };
 
   sliderElem.addEventListener("change", () => updateLabel());
 
+  let lockIconElem: HTMLElement | undefined;
+  const lockIconHtml = await resourceToHTMLString("icon-lock");
+  if(getFeatures().lockVolume && lockIconHtml) {
+    lockIconElem = document.createElement("span");
+    lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
+    lockIconElem.innerHTML = lockIconHtml;
+  }
+
   onSelectorOld("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
-      volumeCont.appendChild(labelElem);
+      lockIconElem && labelContElem.appendChild(lockIconElem);
+      labelContElem.appendChild(labelElem);
+
+      volumeCont.appendChild(labelContElem);
     },
   });
 
@@ -254,9 +271,9 @@ function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTM
   // show label if hovering over slider or slider is focused
   const sliderHoverObserver = new MutationObserver(() => {
     if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-      labelElem.classList.add("bytm-visible");
-    else if(labelElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-      labelElem.classList.remove("bytm-visible");
+      labelContElem.classList.add("bytm-visible");
+    else if(labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+      labelContElem.classList.remove("bytm-visible");
 
     if(Number(sliderElem.value) !== lastSliderVal) {
       lastSliderVal = Number(sliderElem.value);
