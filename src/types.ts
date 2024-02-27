@@ -89,7 +89,7 @@ export type BytmObject =
   // information from the userscript header
   & typeof scriptInfo
   // certain variables from `src/constants.ts`
-  & Pick<typeof consts, "mode" | "branch">
+  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
   // global functions exposed through the interface in `src/interface.ts`
   & InterfaceFunctions
   // others
@@ -101,7 +101,7 @@ export type BytmObject =
 declare global {
   interface Window {
     // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts"
-    // and hover over the "BytmObject" just below:
+    // and hover over the property just below:
     BYTM: BytmObject;
   }
 }
