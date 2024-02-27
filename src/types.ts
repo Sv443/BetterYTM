@@ -189,6 +189,8 @@ export type FeatureInfo = Record<
      * Specifying a function is useful for pluralizing or inserting values into the translation at runtime
      */
     helpText?: string | (() => string);
+    /** Whether the value should be hidden in the config menu and from plugins */
+    valueHidden?: boolean;
     /**
      * HTML string that is appended to the end of a feature's text description
      * @deprecated TODO:FIXME: To be removed or changed in the big menu rework
