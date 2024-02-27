@@ -97,7 +97,7 @@ export async function addWelcomeMenu() {
   const localeImg = document.createElement("img");
   localeImg.id = "bytm-welcome-menu-locale-img";
   localeImg.classList.add("bytm-no-select");
-  localeImg.src = await getResourceUrl("img-globe");
+  localeImg.src = await getResourceUrl("icon-globe");
 
   const localeSelectElem = document.createElement("select");
   localeSelectElem.id = "bytm-welcome-menu-locale-select";
