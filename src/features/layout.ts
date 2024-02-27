@@ -256,6 +256,11 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
     lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
     lockIconElem.innerHTML = lockIconHtml;
   }
+  else {
+    lockIconElem = document.createElement("div");
+    lockIconElem.textContent = " ";
+    lockIconElem.style.minWidth = "32px";
+  }
 
   onSelectorOld("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
