@@ -102,7 +102,8 @@ async function addCfgMenu() {
     extendedAnchorEl.href = href;
     extendedAnchorEl.target = "_blank";
     extendedAnchorEl.tabIndex = -1;
-    extendedAnchorEl.textContent = extendedAnchorEl.ariaLabel = extendedAnchorEl.title = linkTitlesShort[titleKey];
+    extendedAnchorEl.textContent = linkTitlesShort[titleKey];
+    extendedAnchorEl.ariaLabel = extendedAnchorEl.title = title;
 
     const imgElem = document.createElement("img");
     imgElem.className = "bytm-menu-img";
