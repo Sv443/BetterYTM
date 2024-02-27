@@ -130,3 +130,33 @@ export function parseMarkdown(md: string) {
 export async function getChangelogMd() {
   return await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
 }
+
+/** Returns the changelog as HTML with a details element for each version */
+export async function getChangelogHtmlWithDetails() {
+  try {
+    const changelogMd = await getChangelogMd();
+    let changelogHtml = await parseMarkdown(changelogMd);
+
+    const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
+
+    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+
+    console.log("changelogHtml", changelogHtml);
+
+    const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+    for(const match of h2Matches) {
+      const [fullMatch, , verStr] = match;
+      const verId = getVerId(verStr);
+      const h2Elem = `<h2 id="${verId}">${verStr}</h2>`;
+      const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
+      changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
+    }
+
+    changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+
+    return changelogHtml;
+  }
+  catch(err) {
+    return `Error: ${err}`;
+  }
+}
