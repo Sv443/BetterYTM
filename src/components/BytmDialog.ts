@@ -1,9 +1,10 @@
+import { addGlobalStyle } from "@sv443-network/userutils";
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "../utils/NanoEmitter";
 import { clearInner, getResourceUrl, warn } from "../utils";
 import { t } from "../utils/translations";
+import { emitInterface } from "../interface";
 import "./BytmDialog.css";
-import { addGlobalStyle } from "@sv443-network/userutils";
 
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
@@ -153,6 +154,9 @@ export class BytmDialog extends NanoEmitter<{
     lastDialogId = this.id;
 
     this.events.emit("open");
+    emitInterface("bytm:dialogOpened", this as BytmDialog);
+    emitInterface(`bytm:dialogOpened:${this.id}` as "bytm:dialogOpened:id", this as BytmDialog);
+
     return dialogBg;
   }
 
