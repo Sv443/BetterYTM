@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
+// @icon              http://localhost:8710/assets/logo/logo_48.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,33 +34,33 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          doc-changelog           http://localhost:8710/changelog.md?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-logo                http://localhost:8710/assets/logo/logo_48.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-close               http://localhost:8710/assets/icons/close.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-discord             http://localhost:8710/assets/external/discord.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-github              http://localhost:8710/assets/external/github.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-greasyfork          http://localhost:8710/assets/external/greasyfork.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          img-openuserjs          http://localhost:8710/assets/external/openuserjs.png?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?t=da9f1d9d-3d3b-4fa7-af94-17d54063c2d2
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -237,7 +237,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "dc43f1b";
+const buildNumberRaw = "0b31c5a";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -602,6 +602,7 @@ function initLyricsCache() {
         canCompress$1 = yield compressionSupported();
         const data = yield lyricsCacheMgr.loadData();
         log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
+        emitInterface("bytm:lyricsCacheReady", data);
         return data;
     });
 }
@@ -641,6 +642,7 @@ function deleteLyricsCacheEntry(artist, song) {
 }
 /** Clears the lyrics cache locally and clears it in persistent storage */
 function clearLyricsCache() {
+    emitInterface("bytm:lyricsCacheCleared");
     return lyricsCacheMgr.setData({ cache: [] });
 }
 /** Returns the full lyrics cache array */
@@ -659,16 +661,18 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
     const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
     const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
-    cache.push({
+    const entry = {
         artist,
         song,
         url,
         viewed: Date.now() - viewedPenalty,
         added: Date.now() - addedPenalty,
-    });
+    };
+    cache.push(entry);
     cache.sort((a, b) => b.viewed - a.viewed);
     if (cache.length > getFeatures().lyricsCacheMaxSize)
         cache.pop();
+    emitInterface("bytm:lyricsCacheEntryAdded", entry);
     return lyricsCacheMgr.setData({ cache });
 }
 //#MARKER media control bar
@@ -1294,6 +1298,8 @@ class BytmDialog extends NanoEmitter {
             dialogBg.inert = false;
             lastDialogId = this.id;
             this.events.emit("open");
+            emitInterface("bytm:dialogOpened", this);
+            emitInterface(`bytm:dialogOpened:${this.id}`, this);
             return dialogBg;
         });
     }
@@ -2775,7 +2781,7 @@ function addChangelogMenu() {
         });
         const menuContainer = document.createElement("div");
         menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.classList.add("bytm-menu");
+        menuContainer.classList.add("bytm-menu", "top-aligned");
         menuContainer.id = "bytm-changelog-menu";
         //#SECTION title bar
         const headerElem = document.createElement("div");
@@ -2804,22 +2810,13 @@ function addChangelogMenu() {
         headerElem.appendChild(titleCont);
         headerElem.appendChild(closeElem);
         //#SECTION body
-        const getChangelogHtml = (() => __awaiter(this, void 0, void 0, function* () {
-            try {
-                const changelogMd = yield getChangelogMd();
-                return yield parseMarkdown(changelogMd);
-            }
-            catch (err) {
-                return `Error: ${err}`;
-            }
-        }));
         const menuBodyElem = document.createElement("div");
         menuBodyElem.id = "bytm-changelog-menu-body";
         menuBodyElem.classList.add("bytm-menu-body");
         const textElem = document.createElement("div");
         textElem.id = "bytm-changelog-menu-text";
         textElem.classList.add("bytm-markdown-container");
-        textElem.innerHTML = yield getChangelogHtml();
+        textElem.innerHTML = yield getChangelogHtmlWithDetails();
         //#SECTION finalize
         menuBodyElem.appendChild(textElem);
         menuContainer.appendChild(headerElem);
@@ -4178,6 +4175,7 @@ function initConfig() {
             info("Config data initialized with default values");
         else if (oldFmtVer !== cfgMgr.formatVersion)
             info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
+        emitInterface("bytm:configReady", getFeaturesInterface());
         return Object.assign({}, data);
     });
 }
@@ -4414,6 +4412,31 @@ function parseMarkdown(md) {
 function getChangelogMd() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("doc-changelog"))).text();
+    });
+}
+/** Returns the changelog as HTML with a details element for each version */
+function getChangelogHtmlWithDetails() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const changelogMd = yield getChangelogMd();
+            let changelogHtml = yield parseMarkdown(changelogMd);
+            const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
+            changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+            console.log("changelogHtml", changelogHtml);
+            const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+            for (const match of h2Matches) {
+                const [fullMatch, , verStr] = match;
+                const verId = getVerId(verStr);
+                const h2Elem = `<h2 id="${verId}">${verStr}</h2>`;
+                const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
+                changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
+            }
+            changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+            return changelogHtml;
+        }
+        catch (err) {
+            return `Error: ${err}`;
+        }
     });
 }const selectorMap = new Map();
 /**
@@ -4878,6 +4901,11 @@ function insertGlobalStyle() {
   background-color: var(--bytm-menu-bg);
 }
 
+.bytm-menu.top-aligned {
+  top: 0;
+  transform: translate(-50%, 40px);
+}
+
 .bytm-menu-body {
   padding: 20px;
 }
@@ -5153,6 +5181,22 @@ function insertGlobalStyle() {
 
 #bytm-changelog-menu-body {
   overflow-y: auto;
+}
+
+.bytm-changelog-version-details:not(:first-of-type) {
+  margin-top: 15px;
+}
+
+.bytm-changelog-version-details summary h2 {
+  display: inline-block;
+}
+
+.bytm-changelog-version-details summary {
+  cursor: pointer;
+}
+
+.bytm-changelog-version-details summary::marker {
+  font-size: 2rem;
 }
 
 #bytm-export-menu-textarea, #bytm-import-menu-textarea {
@@ -6052,19 +6096,19 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
 {
-  --bytm-dialog-height-max: 900px;
-  --bytm-dialog-width-max: 1000px;
-  --bytm-menu-height-max: 900px;
-  --bytm-menu-width-max: 1000px;
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 1150px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 1150px;
 }
 
 #bytm-changelog-dialog-bg,
 #bytm-changelog-menu-bg
 {
   --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 800px;
+  --bytm-dialog-width-max: 900px;
   --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 800px;
+  --bytm-menu-width-max: 900px;
 }
 
 #bytm-export-dialog-bg, #bytm-import-dialog-bg,
