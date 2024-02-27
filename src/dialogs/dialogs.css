@@ -84,11 +84,11 @@
   font-size: 1.3rem;
 }
 
-.advanced-mode-icon {
+.bytm-advanced-mode-icon {
   display: inline-flex;
   align-items: center;
 }
 
-.advanced-mode-icon svg path {
+.bytm-advanced-mode-icon svg path {
   fill: #c5a73b;
 }

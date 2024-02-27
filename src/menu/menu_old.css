@@ -78,18 +78,42 @@
   font-size: 22px;
 }
 
-#bytm-menu-version {
+#bytm-cfg-menu-bg .bytm-menu-title {
+  transform: translate(0px, -5px);
+}
+
+#bytm-menu-subtitle-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
   position: absolute;
   width: 100%;
-  bottom: -10px;
+  bottom: -12px;
   left: 0;
   font-size: 10px;
   font-weight: normal;
   z-index: 7;
 }
 
-#bytm-menu-version .bytm-link {
-  color: #c6d2db;
+#bytm-cfg-menu {
+  --bytm-menu-subtitle-color: #c6d2db;
+}
+
+#bytm-menu-subtitle-cont .bytm-link {
+  color: var(--bytm-menu-subtitle-color);
+}
+
+#bytm-menu-subtitle-cont .bytm-advanced-mode-indicator-label {
+  display: inline-block;
+  transform: translate(0px, 1px);
+  color: var(--bytm-menu-subtitle-color);
+}
+
+#bytm-menu-subtitle-cont .bytm-advanced-mode-icon svg {
+  width: 19px;
+  height: 19px;
+  transform: translate(1px, 6px);
 }
 
 #bytm-menu-linkscont {
@@ -100,6 +124,8 @@
 
 .bytm-menu-link {
   display: inline-flex;
+  position: relative;
+  flex-direction: column;
   align-items: center;
   cursor: pointer;
 }
@@ -116,7 +142,26 @@
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
-  bottom: 5px;
+  bottom: 6px;
+}
+
+.bytm-menu-link .extended-link {
+  visibility: hidden;
+  position: absolute;
+  top: 14px;
+  padding-top: 14px;
+  padding-bottom: 6px;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--bytm-menu-subtitle-color);
+  white-space: pre;
+  font-size: 1.1rem;
+  transition: visibility 0s, opacity 0.35s ease-out;
+}
+
+.bytm-menu-link:hover .extended-link {
+  visibility: visible;
+  opacity: 1;
 }
 
 .bytm-menu-close {
