@@ -398,11 +398,14 @@ async function addCfgMenu() {
           if(typeof ftInfo.min !== "undefined")// @ts-ignore
             inputElem.min = ftInfo.min;
           // @ts-ignore
-          if(ftInfo.max !== "undefined") // @ts-ignore
+          if(typeof ftInfo.max !== "undefined") // @ts-ignore
             inputElem.max = ftInfo.max;
 
           if(typeof initialVal !== "undefined")
             inputElem.value = String(initialVal);
+
+          if(type === "text" && ftInfo.valueHidden)
+            inputElem.value = String(initialVal).replace(/./g, "•");
 
           if(type === "number" || type === "slider" && step)
             inputElem.step = String(step);
@@ -458,6 +461,10 @@ async function addCfgMenu() {
               if(typeof initialVal !== "undefined")
                 confChanged(featKey as keyof FeatureConfig, initialVal, v);
             };
+            const unsub = siteEvents.on("cfgMenuClosed", () => {
+              unsub();
+              textInputUpdate();
+            });
             inputElem.addEventListener("blur", () => textInputUpdate());
             inputElem.addEventListener("keydown", (e) => e.key === "Tab" && textInputUpdate());
           }

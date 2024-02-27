@@ -553,6 +553,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
+> If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
