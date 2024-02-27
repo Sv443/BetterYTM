@@ -33,6 +33,11 @@
   background-color: var(--bytm-menu-bg);
 }
 
+.bytm-menu.top-aligned {
+  top: 0;
+  transform: translate(-50%, 40px);
+}
+
 .bytm-menu-body {
   padding: 20px;
 }
@@ -308,6 +313,22 @@
 
 #bytm-changelog-menu-body {
   overflow-y: auto;
+}
+
+.bytm-changelog-version-details:not(:first-of-type) {
+  margin-top: 15px;
+}
+
+.bytm-changelog-version-details summary h2 {
+  display: inline-block;
+}
+
+.bytm-changelog-version-details summary {
+  cursor: pointer;
+}
+
+.bytm-changelog-version-details summary::marker {
+  font-size: 2rem;
 }
 
 #bytm-export-menu-textarea, #bytm-import-menu-textarea {

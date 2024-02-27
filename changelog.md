@@ -123,4 +123,5 @@
 
 ## 0.1.0
 
-- Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)
+- **Features:**
+  - Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)
