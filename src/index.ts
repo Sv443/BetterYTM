@@ -25,7 +25,7 @@ import {
   setBehaviorConfig,
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
-  disableDarkReader,
+  disableDarkReader, enableLockVolume,
   // input
   setInputConfig,
   initArrowKeySkip, initSiteSwitch,
@@ -187,12 +187,44 @@ async function onDomLoad() {
       if(features.scrollToActiveSongBtn)
         ftInit.push(addScrollToActiveBtn());
 
+      if(features.lockVolume)
+        ftInit.push(enableLockVolume());
+
       ftInit.push(initVolumeFeatures());
     }
 
     if(["ytm", "yt"].includes(domain)) {
       if(features.switchBetweenSites)
         ftInit.push(initSiteSwitch(domain));
+
+      // TODO: for hot reloading features
+      // ftInit.push(new Promise((resolve) => {
+      //   for(const [k, v] of Object.entries(featInfo)) {
+      //     try {
+      //       const featVal = features[k as keyof typeof featInfo];
+      
+      //       // @ts-ignore
+      //       if(v.enable && featVal === true) {
+      //         console.log("###> enable", k);
+      //         // @ts-ignore
+      //         v.enable(features);
+      //         console.log("###>> enable ok");
+      //       }
+      //       // @ts-ignore
+      //       else if(v.disable && featVal === false) {
+      //         console.log("###> disable", k);
+      //         // @ts-ignore
+      //         v.disable(features);
+      //         console.log("###>> disable ok");
+      //       }
+      //     }
+      //     catch(err) {
+      //       error(`Couldn't initialize feature "${k}" due to error:`, err);
+      //     }
+      //   }
+      //   console.log("###>>> done for loop");
+      //   resolve();
+      // }));
     }
 
     Promise.allSettled(ftInit).then(() => {
