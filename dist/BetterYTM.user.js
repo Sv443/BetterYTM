@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d481fd3";
+const buildNumberRaw = "4d85141";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3125,6 +3125,11 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
             lockIconElem = document.createElement("span");
             lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
             lockIconElem.innerHTML = lockIconHtml;
+        }
+        else {
+            lockIconElem = document.createElement("div");
+            lockIconElem.textContent = " ";
+            lockIconElem.style.minWidth = "32px";
         }
         onSelectorOld("#bytm-vol-slider-cont", {
             listener: (volumeCont) => {
