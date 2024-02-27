@@ -12,10 +12,10 @@
   "icon-spinner": "icons/spinner.svg",
   "icon-advanced_mode": "icons/plus_circle_small.svg",
   "icon-lock": "icons/lock.svg",
-  "img-logo": "logo/logo_48.png",
-  "img-close": "icons/close.png",
-  "img-discord": "external/discord.png",
-  "img-github": "external/github.png",
-  "img-greasyfork": "external/greasyfork.png",
-  "img-openuserjs": "external/openuserjs.png"
+  "img-logo": "images/logo/logo_48.png",
+  "img-close": "images/close.png",
+  "img-discord": "images/external/discord.png",
+  "img-github": "images/external/github.png",
+  "img-greasyfork": "images/external/greasyfork.png",
+  "img-openuserjs": "images/external/openuserjs.png"
 }
