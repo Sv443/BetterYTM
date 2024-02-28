@@ -720,5 +720,257 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 > </details>
 
+<br>
+
+> #### NanoEmitter
+> Usage:  
+> ```ts
+> new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
+> ```
+>   
+> Abstract class that can be extended to create custom event emitting classes.  
+> The methods are fully typed through the generic `TEventMap`, which is an object map of event names to a callback function signature (the type is `Record<string, (...args: any) => void>`)  
+> 
+> <br>
+> 
+> Options properties:  
+> | Property | Description |
+> | :--- | :--- |
+> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method emit() |
+> 
+> <br>
+> 
+> Methods:
+> - `on(event: string, callback: Function<any>): Function`  
+>   Registers a callback for the specified event.  
+>   Returns a function that can be called to unsubscribe from the event at any time.
+> - `once(event: string, callback?: Function<any>): Promise<any[]>`  
+>   Registers a callback for the specified event that gets called only once.  
+>   The callback is called and the Promise is resolved at the same time.
+> - `emit(event: string, ...args: any[]): boolean`  
+>   Emits the specified event with the passed arguments.  
+>   Has to be enabled through the `publicEmit` option in the constructor.  
+>   Returns true if the event was emitted successfully, false if not.
+> - `unsubscribeAll(): void`  
+>   Unsubscribes all listeners from all events and clears the internal listener map.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> interface MyEvents {
+>   /** Emitted when the foo is bar */
+>   foo: (bar: string) => void;
+> }
+> 
+> class MyEmitter extends unsafeWindow.BYTM.NanoEmitter<MyEvents> {
+>   constructor() {
+>     // allow calling emit() from outside this class instance
+>     super({ publicEmit: true });
+>   }
+> 
+>   public doSomething() {
+>     this.emit("foo", "baz");
+>   }
+> }
+> 
+> function run() {
+>   const emitter = new MyEmitter();
+> 
+>   emitter.on("foo", (bar) => {
+>     //                ^ automatically typed as string
+>     console.log(`The bar is ${bar}`);
+>   });
+> 
+>   // will log "The bar is baz" to the console, see above
+>   emitter.doSomething();
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### BytmDialog
+> Usage:  
+> ```ts
+> new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
+> ```
+>   
+> A class that can be used to create a dialog with a custom header, body and footer.  
+> The dialog is fully customizable and can be used to display any kind of content.  
+> It has many helper methods and events to make it flexible and easy to work with.  
+> The CSS style is uniform and can be overridden if a different theme is needed.  
+>   
+> Options properties:
+> | Property | Description |
+> | :--- | :--- |
+> | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
+> | `maxWidth: number` | Maximum width of the dialog in pixels |
+> | `maxHeight: number` | Maximum height of the dialog in pixels |
+> | `closeOnBgClick?: boolean` | Whether the dialog should close when the background is clicked - defaults to true |
+> | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
+> | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
+> | `destroyOnClose?: boolean` | Whether the dialog should be destroyed when it's closed - defaults to false |
+> | `smallDialog?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
+> | `renderBody: () => HTMLElement │ Promise<HTMLElement>` | Called to render the body of the dialog |
+> | `renderHeader?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the header of the dialog - leave undefined for a blank header |
+> | `renderFooter?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the footer of the dialog - leave undefined for no footer |
+> 
+> <br>
+> 
+> Methods:  
+> The methods from the [`NanoEmitter`](#nanoemitter) class are also available here.  
+> These are the additional methods that are exclusive to the `BytmDialog` class:  
+> - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
+>   Opens the dialog - also mounts it if it hasn't been mounted yet.  
+>   Prevents default action and immediate propagation if an event is passed.  
+>   Resolves once the dialog is fully mounted and opened.
+> - `close(e?: MouseEvent | KeyboardEvent): void`  
+>   Closes the dialog - also unmounts and destroys it if the `destroyOnClose` option is set to true.  
+>   Prevents default action and immediate propagation if an event is passed.  
+> - `isOpen(): boolean`  
+>   Returns true if the dialog is currently open, false if not.
+> - `isMounted(): boolean`  
+>   Returns true if the dialog is currently mounted, false if not.
+> - `mount(): Promise<void>`  
+>   Mounts the dialog to the DOM without making it visible - can be called before opening the dialog for the first time to pre-load all elements.  
+>   Resolves once the dialog is fully mounted in the DOM.
+> - `unmount(): void`  
+>   Removes the dialog from the DOM.  
+> - `remount(): Promise<void>`  
+>   Unmounts and mounts the dialog again.  
+>   This can be used to re-render the dialog's contents with new information.  
+>   Resolves once the dialog is fully mounted in the DOM.
+> - `destroy(): void`  
+>   Unmounts and removes the dialog from the DOM and removes all event listeners.  
+>   Should be called when the dialog is no longer needed.
+> - `static getLastDialogId(): string`  
+>   Returns the ID of the last dialog that was opened.  
+>   This can be used to check if a dialog is currently open and to get its ID for further use.  
+>   Static method usage: `BytmDialog.getLastDialogId()`
+> 
+> <br>
+> 
+> Events:  
+> | Event | Description |
+> | :--- | :--- |
+> | on(`close`, () => void) | Called just after the dialog is closed |
+> | on(`open`, () => void) | Called just after the dialog is opened |
+> | on(`render`, () => void) | Called just after the dialog contents are rendered |
+> | on(`clear`, () => void) | Called just after the dialog contents are cleared |
+> | on(`destroy`, () => void) | Called just before the dialog is destroyed and all listeners are removed |
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const dialog = new unsafeWindow.BYTM.BytmDialog({
+>   id: "my-dialog",
+>   maxWidth: 500,
+>   maxHeight: 300,
+>   closeOnBgClick: true,
+>   closeOnEscPress: true,
+>   closeBtnEnabled: true,
+>   destroyOnClose: false,
+>   smallDialog: true,
+>   // add more elements to the header, body and footer here, with one of these methods:
+>   // - body.appendChild(document.createElement("..."));
+>   // - body.innerHTML = "..."
+>   // - ReactDOM.render(<MyComponent />, body);
+>   // - etc.
+>   renderHeader: () => {
+>     const header = document.createElement("div");
+>     header.textContent = "My Dialog";
+>     return header;
+>   },
+>   renderBody: () => {
+>     const body = document.createElement("div");
+>     body.textContent = "This is the body of my dialog";
+>     return body;
+>   },
+>   renderFooter: () => {
+>     const footer = document.createElement("div");
+>     footer.textContent = "This is the footer of my dialog";
+>     return footer;
+>   },
+> });
+> 
+> async function run() {
+>   dialog.on("close", () => {
+>     console.log("The dialog was closed");
+>   });
+> 
+>   await dialog.open();
+>   console.log("The dialog is now open");
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### createHotkeyInput()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createHotkeyInput(inputProps: {
+>   initialValue?: HotkeyObj,
+>   onChange: (hotkey: HotkeyObj) => void,
+> }): HTMLElement
+> ```
+>   
+> Creates a hotkey input element that can be used to let the user set a hotkey.  
+> The HotkeyObj type has the properties `code: string`, `shift: boolean`, `ctrl: boolean` and `alt: boolean`  
+> The function `onChange` is called whenever the hotkey was changed.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const hotkeyInput = unsafeWindow.BYTM.createHotkeyInput({
+>   initialValue: { code: "KeyA", shift: true, ctrl: false, alt: false },
+>   onChange: (hotkey) => {
+>     console.log(`The hotkey was changed to ${hotkey.code} with shift: ${hotkey.shift}, ctrl: ${hotkey.ctrl} and alt: ${hotkey.alt}`);
+>   },
+> });
+> 
+> document.querySelector("#my-element").appendChild(hotkeyInput);
+> ```
+> </details>
+
+<br>
+
+> #### createToggleInput()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createToggleInput(toggleProps: {
+>   onChange: (value: boolean) => void,
+>   initialValue?: boolean,
+>   id?: string,
+>   labelPos?: "off" | "left" | "right",
+> })
+> ```
+>   
+> Creates a toggle input element that behaves like a checkbox but looks better.  
+> - `onChange` - Callback function that is called when the toggle is changed, gets passed the new value of the toggle as a boolean.
+> - `initialValue` - Initial value of the toggle - defaults to false (toggled off).
+> - `id` - Useful for getting a unique selector - if unspecified, a random ID is generated.
+> - `labelPos` - Toggle builtin label "off" or change position of the label to "right" or "left", relative to the toggle.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const toggleInput = unsafeWindow.BYTM.createToggleInput({
+>   onChange: (value) => {
+>     console.log(`The toggle was changed to ${value}`);
+>   },
+>   initialValue: true,
+>   id: "my-toggle",
+>   labelPos: "left",
+> });
+> 
+> document.querySelector("#my-element").appendChild(toggleInput);
+> ```
+> </details>
+
 
 <br><br><br><br><br><br>
