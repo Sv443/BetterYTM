@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4d85141";
+const buildNumberRaw = "a42c986";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1392,6 +1392,12 @@ class BytmDialog extends NanoEmitter {
         this.unmount();
         this.unsubscribeAll();
     }
+    //#MARKER static
+    /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+    static getLastDialogId() {
+        return lastDialogId;
+    }
+    //#MARKER protected
     /** Called once to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.listenersAttached)
@@ -1410,11 +1416,6 @@ class BytmDialog extends NanoEmitter {
                     this.close(e);
             });
         }
-    }
-    //#MARKER static
-    /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-    static getLastDialogId() {
-        return lastDialogId;
     }
     //#MARKER private
     /** Returns the dialog content element and all its children */
@@ -4326,7 +4327,11 @@ function initInterface() {
         branch,
         host,
         buildNumber,
-        compressionFormat }, scriptInfo), globalFuncs), { UserUtils: UserUtils__namespace });
+        compressionFormat }, scriptInfo), globalFuncs), { UserUtils: UserUtils__namespace,
+        NanoEmitter,
+        BytmDialog,
+        createHotkeyInput,
+        createToggleInput });
     for (const [key, value] of Object.entries(props))
         setGlobalProp(key, value);
     log("Initialized BYTM interface");
