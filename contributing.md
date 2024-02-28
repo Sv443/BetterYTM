@@ -18,6 +18,8 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 <br><br>
 
+<!-- #MARKER translations -->
+
 ### Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
 Before submitting a translation, please check on [this document](./assets/translations/README.md) if the language you want to translate to has already been translated and how many strings are still missing.
@@ -59,6 +61,8 @@ To edit an existing translation, please follow these steps:
 11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged
 
 <br><br><br>
+
+<!-- #MARKER local dev -->
 
 ### Setting up the project for local development:
 #### Requirements:
@@ -126,6 +130,8 @@ This makes it so the userscript automatically updates when the code changes.
 Note: the tab needs to stay open on Firefox or the script will not update itself.
 
 <br><br><br>
+
+<!-- #MARKER plugin interface -->
 
 ### Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
@@ -244,6 +250,8 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 
 <br><br>
 
+<!-- #MARKER global interface functions -->
+
 ### Global functions:
 These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
@@ -254,6 +262,9 @@ The usage and example blocks on each are written in TypeScript but can be used i
 - DOM:
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
+  - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
+  - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
 - Translations:
   - [setLocale()](#setlocale) - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -269,6 +280,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
   - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+- Other:
+  - [NanoEmitter](#nanoemitte) - Abstract class for creating lightweight, type safe event emitting classes
 
 <br>
 
