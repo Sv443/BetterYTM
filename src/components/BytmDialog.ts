@@ -206,8 +206,17 @@ export class BytmDialog extends NanoEmitter<{
     this.unsubscribeAll();
   }
 
+  //#MARKER static
+
+  /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
+  public static getLastDialogId() {
+    return lastDialogId;
+  }
+
+  //#MARKER protected
+
   /** Called once to attach all generic event listeners */
-  public attachListeners(bgElem: HTMLElement) {
+  protected attachListeners(bgElem: HTMLElement) {
     if(this.listenersAttached)
       return;
     this.listenersAttached = true;
@@ -225,13 +234,6 @@ export class BytmDialog extends NanoEmitter<{
           this.close(e);
       });
     }
-  }
-
-  //#MARKER static
-
-  /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-  public static getLastDialogId() {
-    return lastDialogId;
   }
 
   //#MARKER private
