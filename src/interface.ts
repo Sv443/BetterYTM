@@ -1,13 +1,13 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
-import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, t, tp, type TrLocale } from "./utils";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
 import { featInfo } from "./features";
 import { fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features/lyrics";
 import type { SiteEventsMap } from "./siteEvents";
 import type { FeatureConfig, FeatureInfo, LyricsCacheEntry } from "./types";
-import type { BytmDialog } from "./components";
+import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
 
 const { getUnsafeWindow } = UserUtils;
 
@@ -74,6 +74,10 @@ export function initInterface() {
     ...scriptInfo,
     ...globalFuncs,
     UserUtils,
+    NanoEmitter,
+    BytmDialog,
+    createHotkeyInput,
+    createToggleInput,
   };
 
   for(const [key, value] of Object.entries(props))
