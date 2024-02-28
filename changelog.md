@@ -6,6 +6,7 @@
   - Remade the toggle buttons in the config menu to look cool and still be just as accessible
 - **Internal Changes:**
   - Implemented new class BytmMenu for less duplicate code and better accessibility, and to enable the improved configuration menu
+  - Plugin interface now has access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#nanoemitter), and functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createhotkeyinput) and [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createtoggleinput)
 
 [See pull request for more info](https://github.com/Sv443/BetterYTM/pull/52)
 
