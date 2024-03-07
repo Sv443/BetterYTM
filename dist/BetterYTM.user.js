@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "63aa23f";
+const buildNumberRaw = "74c22fa";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -2918,6 +2918,9 @@ function openChangelogMenu(returnTo = "cfgMenu") {
         const menuBg = document.querySelector("#bytm-changelog-menu-bg");
         if (!menuBg)
             return warn("Couldn't find changelog menu background element");
+        const firstDetails = menuBg.querySelector("#bytm-changelog-menu-text details");
+        if (firstDetails)
+            firstDetails.open = true;
         menuBg.dataset.returnTo = returnTo;
         menuBg.style.visibility = "visible";
         menuBg.style.display = "block";
@@ -4525,12 +4528,11 @@ function getChangelogHtmlWithDetails() {
             let changelogHtml = yield parseMarkdown(changelogMd);
             const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
             changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
-            console.log("changelogHtml", changelogHtml);
             const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
             for (const match of h2Matches) {
                 const [fullMatch, , verStr] = match;
                 const verId = getVerId(verStr);
-                const h2Elem = `<h2 id="${verId}">${verStr}</h2>`;
+                const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">Version ${verStr}</h2>`;
                 const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
                 changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
             }
