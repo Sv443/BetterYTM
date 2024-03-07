@@ -141,13 +141,11 @@ export async function getChangelogHtmlWithDetails() {
 
     changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
 
-    console.log("changelogHtml", changelogHtml);
-
     const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
     for(const match of h2Matches) {
       const [fullMatch, , verStr] = match;
       const verId = getVerId(verStr);
-      const h2Elem = `<h2 id="${verId}">${verStr}</h2>`;
+      const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">Version ${verStr}</h2>`;
       const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
       changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
     }

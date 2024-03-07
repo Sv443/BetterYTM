@@ -1366,6 +1366,10 @@ export async function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu"
   if(!menuBg)
     return warn("Couldn't find changelog menu background element");
 
+  const firstDetails = menuBg.querySelector<HTMLDetailsElement>("#bytm-changelog-menu-text details");
+  if(firstDetails)
+    firstDetails.open = true;
+
   menuBg.dataset.returnTo = returnTo;
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
