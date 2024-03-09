@@ -273,6 +273,8 @@ export interface FeatureConfig {
   lyricsCacheTTL: number;
   /** Button to clear lyrics cache */
   clearLyricsCache: undefined;
+  /** Whether to use fuzzy filtering when searching for lyrics */
+  lyricsFuzzyFilter: boolean;
 
   //#SECTION misc
   /** The locale to use for translations */

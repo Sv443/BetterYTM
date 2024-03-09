@@ -62,6 +62,7 @@
     "lyrics_clear_cache_confirm_prompt-1": "The lyrics cache currently has %1 entry.\nDo you really want to delete them?",
     "lyrics_clear_cache_confirm_prompt-n": "The lyrics cache currently has %1 entries.\nDo you really want to delete them?",
     "lyrics_clear_cache_success": "Lyrics cache was cleared successfully.",
+    "lyrics_cache_changed_clear_confirm": "You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?",
 
     "hotkey_input_click_to_change": "Click to change",
     "hotkey_input_click_to_change_tooltip": "Click, then press the desired key combination",
@@ -164,6 +165,8 @@
     "feature_desc_clearLyricsCache": "Clear the lyrics cache manually",
     "feature_helptext_clearLyricsCache": "If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.",
     "feature_btn_clearLyricsCache": "Clear cache",
+    "feature_desc_lyricsFuzzyFilter": "Experimental: Enable fuzzy filtering for the lyrics search",
+    "feature_helptext_lyricsFuzzyFilter": "Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.",
 
     "feature_desc_locale": "Language",
     "feature_desc_versionCheck": "Check for updates every 24 hours",
