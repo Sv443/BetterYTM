@@ -9,6 +9,11 @@ export type LyricsCache = {
   cache: LyricsCacheEntry[];
 };
 
+/** A fraction of this max value will be removed from the "last viewed" timestamp when adding penalized cache entries */
+const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
+/** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
+const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
+
 let canCompress = true;
 
 const lyricsCacheMgr = new ConfigManager<LyricsCache>({
@@ -100,7 +105,7 @@ export function addLyricsCacheEntry(artist: string, song: string, url: string) {
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
 
-  emitInterface("bytm:lyricsCacheEntryAdded", entry);
+  emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
 
   return lyricsCacheMgr.setData({ cache });
 }
@@ -117,8 +122,9 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
 
   penaltyFr = clamp(penaltyFr, 0, 1);
 
-  const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
-  const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
+  const viewedPenalty = maxViewedPenalty * penaltyFr;
+  const addedPenalty = maxAddedPenalty * penaltyFr;
+
   const entry = {
     artist,
     song,
@@ -129,10 +135,11 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
 
   cache.push(entry);
   cache.sort((a, b) => b.viewed - a.viewed);
+
   if(cache.length > getFeatures().lyricsCacheMaxSize)
     cache.pop();
 
-  emitInterface("bytm:lyricsCacheEntryAdded", entry);
+  emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
 
   return lyricsCacheMgr.setData({ cache });
 }
