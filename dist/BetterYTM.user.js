@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "74c22fa";
+const buildNumberRaw = "992640c";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -638,8 +638,10 @@ function enableLockVolume() {
             }
         });
     });
-}/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
-const geniUrlRatelimitTimeframe = 30;
+}/** A fraction of this max value will be removed from the "last viewed" timestamp when adding penalized cache entries */
+const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
+/** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
+const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 let canCompress$1 = true;
 const lyricsCacheMgr = new UserUtils.ConfigManager({
     id: "bytm-lyrics-cache",
@@ -712,8 +714,8 @@ function getLyricsCache() {
 function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     const { cache } = lyricsCacheMgr.getData();
     penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
-    const viewedPenalty = 1000 * 60 * 60 * 24 * 5 * penaltyFr; // 5 days
-    const addedPenalty = 1000 * 60 * 60 * 24 * 15 * penaltyFr; // 15 days
+    const viewedPenalty = maxViewedPenalty * penaltyFr;
+    const addedPenalty = maxAddedPenalty * penaltyFr;
     const entry = {
         artist,
         song,
@@ -725,326 +727,8 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     cache.sort((a, b) => b.viewed - a.viewed);
     if (cache.length > getFeatures().lyricsCacheMaxSize)
         cache.pop();
-    emitInterface("bytm:lyricsCacheEntryAdded", entry);
+    emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
-}
-//#MARKER media control bar
-let currentSongTitle = "";
-/** Adds a lyrics button to the media controls bar */
-function addMediaCtrlLyricsBtn() {
-    return __awaiter(this, void 0, void 0, function* () {
-        onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
-    });
-}
-/** Actually adds the lyrics button after the like button renderer has been verified to exist */
-function addActualMediaCtrlLyricsBtn(likeContainer) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-        if (!songTitleElem)
-            return warn("Couldn't find song title element");
-        // run parallel without awaiting so the MutationObserver below can observe the title element in time
-        (() => __awaiter(this, void 0, void 0, function* () {
-            const gUrl = yield getCurrentLyricsUrl();
-            const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
-            linkElem.id = "betterytm-lyrics-button";
-            log("Inserted lyrics button into media controls bar");
-            UserUtils.insertAfter(likeContainer, linkElem);
-        }))();
-        currentSongTitle = songTitleElem.title;
-        const spinnerIconUrl = yield getResourceUrl("icon-spinner");
-        const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
-        const errorIconUrl = yield getResourceUrl("icon-error");
-        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
-            var _b, e_1, _c, _d;
-            try {
-                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
-                    _d = mutations_1_1.value;
-                    _a = false;
-                    const mut = _d;
-                    const newTitle = mut.target.title;
-                    if (newTitle !== currentSongTitle && newTitle.length > 0) {
-                        const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
-                        if (!lyricsBtn)
-                            continue;
-                        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
-                        lyricsBtn.style.cursor = "wait";
-                        lyricsBtn.style.pointerEvents = "none";
-                        const imgElem = lyricsBtn.querySelector("img");
-                        imgElem.src = spinnerIconUrl;
-                        imgElem.classList.add("bytm-spinner");
-                        currentSongTitle = newTitle;
-                        const url = yield getCurrentLyricsUrl(); // can take a second or two
-                        imgElem.src = lyricsIconUrl;
-                        imgElem.classList.remove("bytm-spinner");
-                        if (!url) {
-                            let artist, song;
-                            if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
-                                artist = navigator.mediaSession.metadata.artist;
-                                song = navigator.mediaSession.metadata.title;
-                            }
-                            const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
-                            imgElem.src = errorIconUrl;
-                            imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
-                            lyricsBtn.style.cursor = "pointer";
-                            lyricsBtn.style.pointerEvents = "all";
-                            lyricsBtn.style.display = "inline-flex";
-                            lyricsBtn.style.visibility = "visible";
-                            lyricsBtn.href = `https://genius.com/search${query}`;
-                            continue;
-                        }
-                        lyricsBtn.href = url;
-                        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
-                        lyricsBtn.style.cursor = "pointer";
-                        lyricsBtn.style.visibility = "visible";
-                        lyricsBtn.style.display = "inline-flex";
-                        lyricsBtn.style.pointerEvents = "initial";
-                    }
-                }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
-                }
-                finally { if (e_1) throw e_1.error; }
-            }
-        }); };
-        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
-        const obs = new MutationObserver(onMutation);
-        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
-    });
-}
-//#MARKER utils
-/** Removes everything in parentheses from the passed song name */
-function sanitizeSong(songName) {
-    if (typeof songName !== "string")
-        return songName;
-    const parensRegex = /\(.+\)/gmi;
-    const squareParensRegex = /\[.+\]/gmi;
-    // trim right after the song name:
-    const sanitized = songName
-        .replace(parensRegex, "")
-        .replace(squareParensRegex, "");
-    return sanitized.trim();
-}
-/** Removes the secondary artist (if it exists) from the passed artists string */
-function sanitizeArtists(artists) {
-    artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
-    if (artists.match(/&/))
-        artists = artists.split(/\s*&\s*/gm)[0];
-    if (artists.match(/,/))
-        artists = artists.split(/,\s*/gm)[0];
-    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
-        const parensRegex = /\(.+\)/gmi;
-        const squareParensRegex = /\[.+\]/gmi;
-        artists = artists
-            .replace(parensRegex, "")
-            .replace(squareParensRegex, "");
-    }
-    return artists.trim();
-}
-/** Returns the lyrics URL from genius for the currently selected song */
-function getCurrentLyricsUrl() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
-            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
-            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
-            if (!songTitleElem || !songMetaElem)
-                return undefined;
-            const songNameRaw = songTitleElem.title;
-            let songName = songNameRaw;
-            let artistName = songMetaElem.textContent;
-            if (isVideo) {
-                // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
-                if (songName.includes("-")) {
-                    const split = splitVideoTitle(songName);
-                    songName = split.song;
-                    artistName = split.artist;
-                }
-            }
-            if (!artistName)
-                return undefined;
-            const url = yield fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
-            if (url) {
-                emitInterface("bytm:lyricsLoaded", {
-                    type: "current",
-                    artists: artistName,
-                    title: songName,
-                    url,
-                });
-            }
-            return url;
-        }
-        catch (err) {
-            error("Couldn't resolve lyrics URL:", err);
-            return undefined;
-        }
-    });
-}
-/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
-function fetchLyricsUrlTop(artist, song) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
-        }
-        catch (err) {
-            error("Couldn't get lyrics URL due to error:", err);
-            return undefined;
-        }
-    });
-}
-/**
- * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search
- * **the passed parameters need to be sanitized first!**
- */
-function fetchLyricsUrls(artist, song) {
-    var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const cacheEntry = getLyricsCacheEntry(artist, song);
-            if (cacheEntry) {
-                info(`Found lyrics URL in cache: ${cacheEntry.url}`);
-                return [cacheEntry];
-            }
-            const startTs = Date.now();
-            const fetchUrl = constructUrlString(`${getFeatures().geniUrlBase}/search`, {
-                disableFuzzy: null,
-                utm_source: scriptInfo.name,
-                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
-                artist,
-                song,
-            });
-            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
-            const { geniUrlToken } = getFeatures();
-            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (geniUrlToken ? {
-                headers: {
-                    Authorization: `Bearer ${geniUrlToken}`,
-                },
-            } : {})));
-            if (fetchRes.status === 429) {
-                const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-                alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
-                return undefined;
-            }
-            else if (fetchRes.status < 200 || fetchRes.status >= 300) {
-                error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
-                return undefined;
-            }
-            const result = yield fetchRes.json();
-            if (typeof result === "object" && result.error || !result || !result.all) {
-                error("Couldn't fetch lyrics URL:", result.message);
-                return undefined;
-            }
-            const allResults = result.all;
-            if (allResults.length === 0) {
-                warn("No lyrics URL found for the provided song");
-                return undefined;
-            }
-            const exactish = (input) => {
-                return input.toLowerCase()
-                    .replace(/[\s\-_&,.()[\]]+/gm, "");
-            };
-            const allResultsSan = allResults
-                .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
-                .map(({ meta, url }) => {
-                var _a;
-                return ({
-                    meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
-                    url,
-                });
-            });
-            // exact-ish matches, best matching one first
-            const exactishResults = [...allResultsSan].sort((a, b) => {
-                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
-                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
-                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
-                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
-                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
-            });
-            // use fuse.js for fuzzy match
-            // search song title and artist separately, then combine the scores
-            const titleFuse = new Fuse([...allResultsSan], {
-                keys: ["title"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            const artistFuse = new Fuse([...allResultsSan], {
-                keys: ["primaryArtist.name"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            let fuzzyResults = allResultsSan.map(r => {
-                var _a, _b, _c, _d;
-                const titleRes = titleFuse.search(r.meta.title);
-                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
-                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
-                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
-                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
-            });
-            // I love TS
-            fuzzyResults = fuzzyResults
-                .map((_a) => {
-                var { score } = _a, rest = __rest(_a, ["score"]);
-                return rest;
-            });
-            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
-            const finalResults = [
-                ...(hasExactMatch
-                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
-                    : [...allResultsSan]),
-            ].slice(0, 5);
-            // add top 3 results to the cache with a penalty to their time to live
-            // so every entry is deleted faster if it's not considered as relevant
-            finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
-                const penaltyFraction = hasExactMatch
-                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
-                    ? i === 0 ? 0 : 1
-                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
-                    : 0.6;
-                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
-            });
-            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
-            // returns search results sorted by relevance
-            return finalResults.map(r => ({
-                artist: r.meta.primaryArtist.name,
-                song: r.meta.title,
-                url: r.url,
-            }));
-        }
-        catch (err) {
-            error("Couldn't get lyrics URL due to error:", err);
-            return undefined;
-        }
-    });
-}
-/** Creates the base lyrics button element */
-function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const linkElem = document.createElement("a");
-        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
-        linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
-        if (geniusUrl)
-            linkElem.href = geniusUrl;
-        linkElem.role = "button";
-        linkElem.target = "_blank";
-        linkElem.rel = "noopener noreferrer";
-        linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
-        linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
-        const imgElem = document.createElement("img");
-        imgElem.className = "bytm-generic-btn-img";
-        imgElem.src = yield getResourceUrl("icon-lyrics");
-        linkElem.appendChild(imgElem);
-        return linkElem;
-    });
-}
-/** Splits a video title that contains a hyphen into an artist and song */
-function splitVideoTitle(title) {
-    const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
-    return { artist, song: rest.join("-") };
 }let createNanoEvents = () => ({
   emit(event, ...args) {
     for (
@@ -1064,50 +748,7 @@ function splitVideoTitle(title) {
       this.events[event] = this.events[event]?.filter(i => cb !== i);
     }
   }
-});/** EventEmitter instance that is used to detect changes to the site */
-const siteEvents = createNanoEvents();
-let observers = [];
-/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
-function initSiteEvents() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            //#SECTION queue
-            // the queue container always exists so it doesn't need an extra init function
-            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("queueChanged", target);
-                }
-            });
-            // only observe added or removed elements
-            queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue"), {
-                childList: true,
-            });
-            const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
-                if (addedNodes.length > 0 || removedNodes.length > 0) {
-                    info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-                    emitSiteEvent("autoplayQueueChanged", target);
-                }
-            });
-            autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents"), {
-                childList: true,
-            });
-            info("Successfully initialized SiteEvents observers");
-            observers = observers.concat([
-                queueObs,
-                autoplayObs,
-            ]);
-        }
-        catch (err) {
-            error("Couldn't initialize SiteEvents observers due to an error:\n", err);
-        }
-    });
-}
-/** Emits a site event with the given key and arguments */
-function emitSiteEvent(key, ...args) {
-    siteEvents.emit(key, ...args);
-    emitInterface(`bytm:siteEvent:${key}`, args);
-}/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
+});/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
 class NanoEmitter {
     constructor(settings = {}) {
         Object.defineProperty(this, "events", {
@@ -1475,6 +1116,49 @@ class BytmDialog extends NanoEmitter {
             return dialogWrapperEl;
         });
     }
+}/** EventEmitter instance that is used to detect changes to the site */
+const siteEvents = createNanoEvents();
+let observers = [];
+/** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
+function initSiteEvents() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            //#SECTION queue
+            // the queue container always exists so it doesn't need an extra init function
+            const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    emitSiteEvent("queueChanged", target);
+                }
+            });
+            // only observe added or removed elements
+            queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue"), {
+                childList: true,
+            });
+            const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
+                if (addedNodes.length > 0 || removedNodes.length > 0) {
+                    info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+                    emitSiteEvent("autoplayQueueChanged", target);
+                }
+            });
+            autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents"), {
+                childList: true,
+            });
+            info("Successfully initialized SiteEvents observers");
+            observers = observers.concat([
+                queueObs,
+                autoplayObs,
+            ]);
+        }
+        catch (err) {
+            error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+        }
+    });
+}
+/** Emits a site event with the given key and arguments */
+function emitSiteEvent(key, ...args) {
+    siteEvents.emit(key, ...args);
+    emitInterface(`bytm:siteEvent:${key}`, args);
 }let initialHotkey;
 /** Creates a hotkey input element */
 function createHotkeyInput({ initialValue, onChange }) {
@@ -1792,7 +1476,180 @@ var pkg = {
 	devDependencies: devDependencies,
 	browserslist: browserslist,
 	nodemonConfig: nodemonConfig
-};//#MARKER create menu elements
+};let verNotifDialog = null;
+/** Creates and/or returns the dialog to be shown when a new version is available */
+function getVersionNotifDialog({ latestTag, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!verNotifDialog) {
+            const changelogMdFull = yield getChangelogMd();
+            const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
+            const changelogHtml = yield parseMarkdown(changelogMd);
+            verNotifDialog = new BytmDialog({
+                id: "version-notif",
+                maxWidth: 600,
+                maxHeight: 800,
+                closeBtnEnabled: false,
+                closeOnBgClick: false,
+                closeOnEscPress: true,
+                destroyOnClose: true,
+                smallDialog: true,
+                renderBody: () => renderBody({
+                    latestTag,
+                    changelogHtml,
+                }),
+            });
+        }
+        return verNotifDialog;
+    });
+}
+let disableUpdateCheck = false;
+function renderBody({ latestTag, changelogHtml, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        disableUpdateCheck = false;
+        const hostPlatformNames = {
+            github: "GitHub",
+            greasyfork: "GreasyFork",
+            openuserjs: "OpenUserJS",
+        };
+        const wrapperEl = document.createElement("div");
+        const pEl = document.createElement("p");
+        pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
+        wrapperEl.appendChild(pEl);
+        const changelogDetailsEl = document.createElement("details");
+        changelogDetailsEl.id = "bytm-version-notif-changelog-details";
+        changelogDetailsEl.open = false;
+        const changelogSummaryEl = document.createElement("summary");
+        changelogSummaryEl.role = "button";
+        changelogSummaryEl.tabIndex = 0;
+        changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
+        changelogDetailsEl.appendChild(changelogSummaryEl);
+        changelogDetailsEl.addEventListener("toggle", () => {
+            changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
+        });
+        const changelogEl = document.createElement("p");
+        changelogEl.id = "bytm-version-notif-changelog-cont";
+        changelogEl.classList.add("bytm-markdown-container");
+        changelogEl.innerHTML = changelogHtml;
+        changelogEl.querySelectorAll("a").forEach((a) => {
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+        });
+        changelogDetailsEl.appendChild(changelogEl);
+        wrapperEl.appendChild(changelogDetailsEl);
+        const disableUpdCheckEl = document.createElement("div");
+        disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
+        const disableToggleEl = yield createToggleInput({
+            id: "disable-update-check",
+            initialValue: false,
+            labelPos: "off",
+            onChange(checked) {
+                disableUpdateCheck = checked;
+                if (checked)
+                    btnClose.textContent = t("close_and_ignore_until_reenabled");
+                else
+                    btnClose.textContent = t("close_and_ignore_for_24h");
+            },
+        });
+        const labelWrapperEl = document.createElement("div");
+        labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
+        const labelEl = document.createElement("label");
+        labelEl.htmlFor = "bytm-toggle-disable-update-check";
+        labelEl.textContent = t("disable_update_check");
+        const secondaryLabelEl = document.createElement("span");
+        secondaryLabelEl.classList.add("bytm-secondary-label");
+        secondaryLabelEl.textContent = t("reenable_in_config_menu");
+        labelWrapperEl.appendChild(labelEl);
+        labelWrapperEl.appendChild(secondaryLabelEl);
+        disableUpdCheckEl.appendChild(disableToggleEl);
+        disableUpdCheckEl.appendChild(labelWrapperEl);
+        wrapperEl.appendChild(disableUpdCheckEl);
+        verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", () => __awaiter(this, void 0, void 0, function* () {
+            const config = getFeatures();
+            config.versionCheck = !disableUpdateCheck;
+            yield saveFeatures(config);
+        }));
+        const btnWrapper = document.createElement("div");
+        btnWrapper.id = "bytm-version-notif-dialog-btns";
+        const btnUpdate = document.createElement("button");
+        btnUpdate.className = "bytm-btn";
+        btnUpdate.tabIndex = 0;
+        btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
+        const btnUpdateClicked = () => {
+            window.open(pkg.updates[host]);
+            verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
+        };
+        btnUpdate.addEventListener("click", btnUpdateClicked);
+        btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
+        const btnClose = document.createElement("button");
+        btnClose.className = "bytm-btn";
+        btnClose.tabIndex = 0;
+        btnClose.textContent = t("close_and_ignore_for_24h");
+        btnClose.addEventListener("click", () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
+        btnClose.addEventListener("keydown", (e) => e.key === "Enter" && (verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close()));
+        btnWrapper.appendChild(btnUpdate);
+        btnWrapper.appendChild(btnClose);
+        wrapperEl.appendChild(btnWrapper);
+        return wrapperEl;
+    });
+}const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
+function initVersionCheck() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            if (getFeatures().versionCheck === false)
+                return info("Version check is disabled");
+            const lastCheck = yield GM.getValue("bytm-version-check", 0);
+            if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+                return;
+            yield doVersionCheck(false);
+        }
+        catch (err) {
+            error("Version check failed:", err);
+        }
+    });
+}
+function doVersionCheck(notifyNoUpdatesFound = false) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        yield GM.setValue("bytm-version-check", Date.now());
+        const res = yield sendRequest({
+            method: "GET",
+            url: releaseURL,
+        });
+        // TODO: small dialog for "no update found" message?
+        const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+        const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
+        if (!latestTag)
+            return noUpdateFound();
+        const versionComp = compareVersions(scriptInfo.version, latestTag);
+        info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+        if (versionComp < 0) {
+            const dialog = yield getVersionNotifDialog({ latestTag });
+            return yield dialog.open();
+        }
+        return noUpdateFound();
+    });
+}
+/**
+ * Crudely compares two semver version strings.
+ * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
+ */
+function compareVersions(a, b) {
+    const pa = a.split(".");
+    const pb = b.split(".");
+    for (let i = 0; i < 3; i++) {
+        const na = Number(pa[i]);
+        const nb = Number(pb[i]);
+        if (na > nb)
+            return 1;
+        if (nb > na)
+            return -1;
+        if (!isNaN(na) && isNaN(nb))
+            return 1;
+        if (isNaN(na) && !isNaN(nb))
+            return -1;
+    }
+    return 0;
+}//#MARKER create menu elements
 let isCfgMenuAdded = false;
 let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
@@ -3476,6 +3333,325 @@ function initNumKeysSkip() {
         });
         log("Added number key press listener");
     });
+}/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
+const geniUrlRatelimitTimeframe = 30;
+//#MARKER media control bar
+let currentSongTitle = "";
+/** Adds a lyrics button to the media controls bar */
+function addMediaCtrlLyricsBtn() {
+    return __awaiter(this, void 0, void 0, function* () {
+        onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+    });
+}
+/** Actually adds the lyrics button after the like button renderer has been verified to exist */
+function addActualMediaCtrlLyricsBtn(likeContainer) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+        if (!songTitleElem)
+            return warn("Couldn't find song title element");
+        // run parallel without awaiting so the MutationObserver below can observe the title element in time
+        (() => __awaiter(this, void 0, void 0, function* () {
+            const gUrl = yield getCurrentLyricsUrl();
+            const linkElem = yield createLyricsBtn(gUrl !== null && gUrl !== void 0 ? gUrl : undefined);
+            linkElem.id = "betterytm-lyrics-button";
+            log("Inserted lyrics button into media controls bar");
+            UserUtils.insertAfter(likeContainer, linkElem);
+        }))();
+        currentSongTitle = songTitleElem.title;
+        const spinnerIconUrl = yield getResourceUrl("icon-spinner");
+        const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
+        const errorIconUrl = yield getResourceUrl("icon-error");
+        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+            var _b, e_1, _c, _d;
+            try {
+                for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
+                    _d = mutations_1_1.value;
+                    _a = false;
+                    const mut = _d;
+                    const newTitle = mut.target.title;
+                    if (newTitle !== currentSongTitle && newTitle.length > 0) {
+                        const lyricsBtn = document.querySelector("#betterytm-lyrics-button");
+                        if (!lyricsBtn)
+                            continue;
+                        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
+                        lyricsBtn.style.cursor = "wait";
+                        lyricsBtn.style.pointerEvents = "none";
+                        const imgElem = lyricsBtn.querySelector("img");
+                        imgElem.src = spinnerIconUrl;
+                        imgElem.classList.add("bytm-spinner");
+                        currentSongTitle = newTitle;
+                        const url = yield getCurrentLyricsUrl(); // can take a second or two
+                        imgElem.src = lyricsIconUrl;
+                        imgElem.classList.remove("bytm-spinner");
+                        if (!url) {
+                            let artist, song;
+                            if ("mediaSession" in navigator && navigator.mediaSession.metadata) {
+                                artist = navigator.mediaSession.metadata.artist;
+                                song = navigator.mediaSession.metadata.title;
+                            }
+                            const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
+                            imgElem.src = errorIconUrl;
+                            imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
+                            lyricsBtn.style.cursor = "pointer";
+                            lyricsBtn.style.pointerEvents = "all";
+                            lyricsBtn.style.display = "inline-flex";
+                            lyricsBtn.style.visibility = "visible";
+                            lyricsBtn.href = `https://genius.com/search${query}`;
+                            continue;
+                        }
+                        lyricsBtn.href = url;
+                        lyricsBtn.ariaLabel = lyricsBtn.title = t("open_current_lyrics");
+                        lyricsBtn.style.cursor = "pointer";
+                        lyricsBtn.style.visibility = "visible";
+                        lyricsBtn.style.display = "inline-flex";
+                        lyricsBtn.style.pointerEvents = "initial";
+                    }
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (!_a && !_b && (_c = mutations_1.return)) yield _c.call(mutations_1);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+        }); };
+        // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
+        const obs = new MutationObserver(onMutation);
+        obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
+    });
+}
+//#MARKER utils
+/** Removes everything in parentheses from the passed song name */
+function sanitizeSong(songName) {
+    if (typeof songName !== "string")
+        return songName;
+    const parensRegex = /\(.+\)/gmi;
+    const squareParensRegex = /\[.+\]/gmi;
+    // trim right after the song name:
+    const sanitized = songName
+        .replace(parensRegex, "")
+        .replace(squareParensRegex, "");
+    return sanitized.trim();
+}
+/** Removes the secondary artist (if it exists) from the passed artists string */
+function sanitizeArtists(artists) {
+    artists = artists.split(/\s*\u2022\s*/gmiu)[0]; // split at &bull; [•] character
+    if (artists.match(/&/))
+        artists = artists.split(/\s*&\s*/gm)[0];
+    if (artists.match(/,/))
+        artists = artists.split(/,\s*/gm)[0];
+    if (artists.match(/(f(ea)?t\.?|Remix|Edit|Flip|Cover|Night\s?Core|Bass\s?Boost|pro?d\.?)/i)) {
+        const parensRegex = /\(.+\)/gmi;
+        const squareParensRegex = /\[.+\]/gmi;
+        artists = artists
+            .replace(parensRegex, "")
+            .replace(squareParensRegex, "");
+    }
+    return artists.trim();
+}
+/** Returns the lyrics URL from genius for the currently selected song */
+function getCurrentLyricsUrl() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
+            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
+            const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
+            const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
+            if (!songTitleElem || !songMetaElem)
+                return undefined;
+            const songNameRaw = songTitleElem.title;
+            let songName = songNameRaw;
+            let artistName = songMetaElem.textContent;
+            if (isVideo) {
+                // for some fucking reason some music videos have YTM-like song title and artist separation, some don't
+                if (songName.includes("-")) {
+                    const split = splitVideoTitle(songName);
+                    songName = split.song;
+                    artistName = split.artist;
+                }
+            }
+            if (!artistName)
+                return undefined;
+            const url = yield fetchLyricsUrlTop(sanitizeArtists(artistName), sanitizeSong(songName));
+            if (url) {
+                emitInterface("bytm:lyricsLoaded", {
+                    type: "current",
+                    artists: artistName,
+                    title: songName,
+                    url,
+                });
+            }
+            return url;
+        }
+        catch (err) {
+            error("Couldn't resolve lyrics URL:", err);
+            return undefined;
+        }
+    });
+}
+/** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
+function fetchLyricsUrlTop(artist, song) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
+        }
+        catch (err) {
+            error("Couldn't get lyrics URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+/**
+ * Fetches the 5 best matching lyrics URLs from geniURL using a combo exact-ish and fuzzy search
+ * **the passed parameters need to be sanitized first!**
+ */
+function fetchLyricsUrls(artist, song) {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const cacheEntry = getLyricsCacheEntry(artist, song);
+            if (cacheEntry) {
+                info(`Found lyrics URL in cache: ${cacheEntry.url}`);
+                return [cacheEntry];
+            }
+            const startTs = Date.now();
+            const fetchUrl = constructUrlString(`${getFeatures().geniUrlBase}/search`, {
+                disableFuzzy: null,
+                utm_source: scriptInfo.name,
+                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
+                artist,
+                song,
+            });
+            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
+            const { geniUrlToken } = getFeatures();
+            const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (geniUrlToken ? {
+                headers: {
+                    Authorization: `Bearer ${geniUrlToken}`,
+                },
+            } : {})));
+            if (fetchRes.status === 429) {
+                const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
+                alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+                return undefined;
+            }
+            else if (fetchRes.status < 200 || fetchRes.status >= 300) {
+                error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(_c = (_b = (yield fetchRes.json()).message) !== null && _b !== void 0 ? _b : yield fetchRes.text()) !== null && _c !== void 0 ? _c : "(none)"}`);
+                return undefined;
+            }
+            const result = yield fetchRes.json();
+            if (typeof result === "object" && result.error || !result || !result.all) {
+                error("Couldn't fetch lyrics URL:", result.message);
+                return undefined;
+            }
+            const allResults = result.all;
+            if (allResults.length === 0) {
+                warn("No lyrics URL found for the provided song");
+                return undefined;
+            }
+            const exactish = (input) => {
+                return input.toLowerCase()
+                    .replace(/[\s\-_&,.()[\]]+/gm, "");
+            };
+            const allResultsSan = allResults
+                .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
+                .map(({ meta, url }) => {
+                var _a;
+                return ({
+                    meta: Object.assign(Object.assign({}, meta), { title: sanitizeSong(String((_a = meta.title) !== null && _a !== void 0 ? _a : meta.fullTitle)), artists: sanitizeArtists(String(meta.artists)) }),
+                    url,
+                });
+            });
+            // exact-ish matches, best matching one first
+            const exactishResults = [...allResultsSan].sort((a, b) => {
+                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
+                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
+                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
+                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
+                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
+            });
+            // use fuse.js for fuzzy match
+            // search song title and artist separately, then combine the scores
+            const titleFuse = new Fuse([...allResultsSan], {
+                keys: ["title"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            const artistFuse = new Fuse([...allResultsSan], {
+                keys: ["primaryArtist.name"],
+                includeScore: true,
+                threshold: 0.4,
+            });
+            let fuzzyResults = allResultsSan.map(r => {
+                var _a, _b, _c, _d;
+                const titleRes = titleFuse.search(r.meta.title);
+                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
+                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
+                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
+                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
+            });
+            // I love TS
+            fuzzyResults = fuzzyResults
+                .map((_a) => {
+                var { score } = _a, rest = __rest(_a, ["score"]);
+                return rest;
+            });
+            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
+            const finalResults = [
+                ...(hasExactMatch
+                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
+                    : [...allResultsSan]),
+            ].slice(0, 5);
+            // add top 3 results to the cache with a penalty to their time to live
+            // so every entry is deleted faster if it's not considered as relevant
+            finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
+                const penaltyFraction = hasExactMatch
+                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
+                    ? i === 0 ? 0 : 1
+                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
+                    : 0.6;
+                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
+            });
+            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
+            // returns search results sorted by relevance
+            return finalResults.map(r => ({
+                artist: r.meta.primaryArtist.name,
+                song: r.meta.title,
+                url: r.url,
+            }));
+        }
+        catch (err) {
+            error("Couldn't get lyrics URL due to error:", err);
+            return undefined;
+        }
+    });
+}
+/** Creates the base lyrics button element */
+function createLyricsBtn(geniusUrl, hideIfLoading = true) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const linkElem = document.createElement("a");
+        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+        linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
+        if (geniusUrl)
+            linkElem.href = geniusUrl;
+        linkElem.role = "button";
+        linkElem.target = "_blank";
+        linkElem.rel = "noopener noreferrer";
+        linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
+        linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
+        const imgElem = document.createElement("img");
+        imgElem.className = "bytm-generic-btn-img";
+        imgElem.src = yield getResourceUrl("icon-lyrics");
+        linkElem.appendChild(imgElem);
+        return linkElem;
+    });
+}
+/** Splits a video title that contains a hyphen into an artist and song */
+function splitVideoTitle(title) {
+    const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
+    return { artist, song: rest.join("-") };
 }let features;
 function setSongListsConfig(feats) {
     features = feats;
@@ -3696,171 +3872,6 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
         (_a = queueItem.querySelector(containerParentSelector)) === null || _a === void 0 ? void 0 : _a.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
     });
-}let verNotifDialog = null;
-/** Creates and/or returns the dialog to be shown when a new version is available */
-function getVersionNotifDialog({ latestTag, }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!verNotifDialog) {
-            const changelogMdFull = yield getChangelogMd();
-            const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
-            const changelogHtml = yield parseMarkdown(changelogMd);
-            verNotifDialog = new BytmDialog({
-                id: "version-notif",
-                maxWidth: 600,
-                maxHeight: 800,
-                closeBtnEnabled: false,
-                closeOnBgClick: false,
-                closeOnEscPress: true,
-                destroyOnClose: true,
-                smallDialog: true,
-                renderBody: () => renderBody({
-                    latestTag,
-                    changelogHtml,
-                }),
-            });
-        }
-        return verNotifDialog;
-    });
-}
-let disableUpdateCheck = false;
-function renderBody({ latestTag, changelogHtml, }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        disableUpdateCheck = false;
-        const hostPlatformNames = {
-            github: "GitHub",
-            greasyfork: "GreasyFork",
-            openuserjs: "OpenUserJS",
-        };
-        const wrapperEl = document.createElement("div");
-        const pEl = document.createElement("p");
-        pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
-        wrapperEl.appendChild(pEl);
-        const changelogDetailsEl = document.createElement("details");
-        changelogDetailsEl.id = "bytm-version-notif-changelog-details";
-        changelogDetailsEl.open = false;
-        const changelogSummaryEl = document.createElement("summary");
-        changelogSummaryEl.role = "button";
-        changelogSummaryEl.tabIndex = 0;
-        changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = t("expand_release_notes");
-        changelogDetailsEl.appendChild(changelogSummaryEl);
-        changelogDetailsEl.addEventListener("toggle", () => {
-            changelogSummaryEl.ariaLabel = changelogSummaryEl.title = changelogSummaryEl.textContent = changelogDetailsEl.open ? t("collapse_release_notes") : t("expand_release_notes");
-        });
-        const changelogEl = document.createElement("p");
-        changelogEl.id = "bytm-version-notif-changelog-cont";
-        changelogEl.classList.add("bytm-markdown-container");
-        changelogEl.innerHTML = changelogHtml;
-        changelogEl.querySelectorAll("a").forEach((a) => {
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-        });
-        changelogDetailsEl.appendChild(changelogEl);
-        wrapperEl.appendChild(changelogDetailsEl);
-        const disableUpdCheckEl = document.createElement("div");
-        disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
-        const disableToggleEl = yield createToggleInput({
-            id: "disable-update-check",
-            initialValue: false,
-            labelPos: "off",
-            onChange(checked) {
-                disableUpdateCheck = checked;
-                if (checked)
-                    btnClose.textContent = t("close_and_ignore_until_reenabled");
-                else
-                    btnClose.textContent = t("close_and_ignore_for_24h");
-            },
-        });
-        const labelWrapperEl = document.createElement("div");
-        labelWrapperEl.classList.add("bytm-disable-update-check-toggle-label-wrapper");
-        const labelEl = document.createElement("label");
-        labelEl.htmlFor = "bytm-toggle-disable-update-check";
-        labelEl.textContent = t("disable_update_check");
-        const secondaryLabelEl = document.createElement("span");
-        secondaryLabelEl.classList.add("bytm-secondary-label");
-        secondaryLabelEl.textContent = t("reenable_in_config_menu");
-        labelWrapperEl.appendChild(labelEl);
-        labelWrapperEl.appendChild(secondaryLabelEl);
-        disableUpdCheckEl.appendChild(disableToggleEl);
-        disableUpdCheckEl.appendChild(labelWrapperEl);
-        wrapperEl.appendChild(disableUpdCheckEl);
-        verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", () => __awaiter(this, void 0, void 0, function* () {
-            const config = getFeatures();
-            config.versionCheck = !disableUpdateCheck;
-            yield saveFeatures(config);
-        }));
-        const btnWrapper = document.createElement("div");
-        btnWrapper.id = "bytm-version-notif-dialog-btns";
-        const btnUpdate = document.createElement("button");
-        btnUpdate.className = "bytm-btn";
-        btnUpdate.tabIndex = 0;
-        btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
-        const btnUpdateClicked = () => {
-            window.open(pkg.updates[host]);
-            verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
-        };
-        btnUpdate.addEventListener("click", btnUpdateClicked);
-        btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
-        const btnClose = document.createElement("button");
-        btnClose.className = "bytm-btn";
-        btnClose.tabIndex = 0;
-        btnClose.textContent = t("close_and_ignore_for_24h");
-        btnClose.addEventListener("click", () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
-        btnClose.addEventListener("keydown", (e) => e.key === "Enter" && (verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close()));
-        btnWrapper.appendChild(btnUpdate);
-        btnWrapper.appendChild(btnClose);
-        wrapperEl.appendChild(btnWrapper);
-        return wrapperEl;
-    });
-}const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
-function checkVersion() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            if (getFeatures().versionCheck === false)
-                return info("Version check is disabled");
-            const lastCheck = yield GM.getValue("bytm-version-check", 0);
-            if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-                return;
-            yield GM.setValue("bytm-version-check", Date.now());
-            const res = yield sendRequest({
-                method: "GET",
-                url: releaseURL,
-            });
-            const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
-            if (!latestTag)
-                return;
-            const versionComp = compareVersions(scriptInfo.version, latestTag);
-            info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
-            if (versionComp < 0) {
-                const dialog = yield getVersionNotifDialog({ latestTag });
-                yield dialog.open();
-            }
-        }
-        catch (err) {
-            error("Version check failed:", err);
-        }
-    });
-}
-/**
- * Crudely compares two semver version strings.
- * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
- */
-function compareVersions(a, b) {
-    const pa = a.split(".");
-    const pb = b.split(".");
-    for (let i = 0; i < 3; i++) {
-        const na = Number(pa[i]);
-        const nb = Number(pb[i]);
-        if (na > nb)
-            return 1;
-        if (nb > na)
-            return -1;
-        if (!isNaN(na) && isNaN(nb))
-            return 1;
-        if (isNaN(na) && !isNaN(nb))
-            return -1;
-    }
-    return 0;
 }//#MARKER feature dependencies
 const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => {
     return [...a, {
@@ -4192,6 +4203,12 @@ const featInfo = {
         enable: noopTODO,
         disable: noopTODO,
     },
+    checkVersionNow: {
+        type: "button",
+        category: "general",
+        default: undefined,
+        click: UserUtils.debounce(() => doVersionCheck(true), 750),
+    },
     logLevel: {
         type: "select",
         category: "general",
@@ -4232,23 +4249,42 @@ const migrations = {
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
     // 2 -> 3
-    3: (oldData) => (Object.assign(Object.assign({}, oldData), { removeShareTrackingParam: getFeatureDefault("removeShareTrackingParam"), numKeysSkipToTime: getFeatureDefault("numKeysSkipToTime"), fixSpacing: getFeatureDefault("fixSpacing"), scrollToActiveSongBtn: getFeatureDefault("scrollToActiveSongBtn"), logLevel: getFeatureDefault("logLevel") })),
+    3: (oldData) => useDefaultConfig([
+        "removeShareTrackingParam", "numKeysSkipToTime",
+        "fixSpacing", "scrollToActiveSongBtn",
+        "logLevel",
+    ], oldData),
     // 3 -> 4
     4: (oldData) => {
         var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
-        return Object.assign(Object.assign({}, oldData), { rememberSongTime: getFeatureDefault("rememberSongTime"), rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"), arrowKeySkipBy: 10, switchSitesHotkey: {
+        return Object.assign(Object.assign(Object.assign({}, oldData), { arrowKeySkipBy: 10, switchSitesHotkey: {
                 code: (_a = oldSwitchSitesHotkey.key) !== null && _a !== void 0 ? _a : "F9",
                 shift: Boolean((_b = oldSwitchSitesHotkey.shift) !== null && _b !== void 0 ? _b : false),
                 ctrl: Boolean((_c = oldSwitchSitesHotkey.ctrl) !== null && _c !== void 0 ? _c : false),
                 alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
-            }, listButtonsPlacement: "queueOnly", volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"), locale: getFeatureDefault("locale"), versionCheck: getFeatureDefault("versionCheck") });
+            }, listButtonsPlacement: "queueOnly" }), useDefaultConfig([
+            "rememberSongTime", "rememberSongTimeSites",
+            "volumeSliderScrollStep", "locale",
+            "versionCheck",
+        ], oldData));
     },
     // 4 -> 5
-    5: (oldData) => {
-        return Object.assign(Object.assign({}, oldData), { geniUrlBase: getFeatureDefault("geniUrlBase"), geniUrlToken: getFeatureDefault("geniUrlToken"), lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"), lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"), clearLyricsCache: getFeatureDefault("clearLyricsCache"), advancedMode: getFeatureDefault("advancedMode"), lockVolume: getFeatureDefault("lockVolume"), lockVolumeLevel: getFeatureDefault("lockVolumeLevel") });
-    },
+    5: (oldData) => useDefaultConfig([
+        "geniUrlBase", "geniUrlToken",
+        "lyricsCacheMaxSize", "lyricsCacheTTL",
+        "clearLyricsCache", "advancedMode",
+        "lockVolume", "lockVolumeLevel",
+        "checkVersionNow",
+    ], oldData),
 };
+/** Uses the passed `oldData` as the base and sets all passed `keys` to their feature default - returns a copy of the object */
+function useDefaultConfig(keys, oldData) {
+    const newData = Object.assign({}, oldData);
+    for (const key of keys)
+        newData[key] = getFeatureDefault(key);
+    return newData;
+}
 function getFeatureDefault(key) {
     return featInfo[key].default;
 }
@@ -4909,7 +4945,7 @@ function onDomLoad() {
         initOnSelector();
         const features = getFeatures();
         const ftInit = [];
-        yield checkVersion();
+        yield initVersionCheck();
         log(`DOM loaded. Initializing features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
@@ -5000,7 +5036,581 @@ function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-    UserUtils.addGlobalStyle(`.bytm-menu-bg {
+    UserUtils.addGlobalStyle(`/* TODO(v1.2): leave only dialog */
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 1150px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 1150px;
+}
+
+#bytm-changelog-dialog-bg,
+#bytm-changelog-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 900px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 900px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg,
+#bytm-export-menu-bg, #bytm-import-menu-bg
+{
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg,
+#bytm-feat-help-menu-bg
+{
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
+}
+
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
+}
+
+.bytm-dialog-body details summary {
+  cursor: pointer;
+  font-style: italic;
+}
+
+#bytm-version-notif-dialog-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 12px;
+}
+
+#bytm-version-notif-changelog-cont {
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
+  overflow-y: auto;
+  margin: 10px 0px;
+}
+
+#bytm-version-notif-changelog-details {
+  margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
+}
+
+.bytm-advanced-mode-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+:root {
+  --bytm-dialog-accent-col: #3683d4;
+  --bytm-advanced-mode-color: #c5a73b;
+}
+
+.bytm-dialog-bg {
+  --bytm-dialog-bg: #333333;
+  --bytm-dialog-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-dialog-separator-color: #797979;
+  --bytm-dialog-border-radius: 10px;
+}
+
+.bytm-dialog-bg {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bytm-dialog {
+  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
+  border-radius: var(--bytm-dialog-border-radius);
+  height: auto;
+  max-height: var(--calc-max-height);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  color: #fff;
+  background-color: var(--bytm-dialog-bg);
+}
+
+.bytm-dialog-body {
+  font-size: 1.5rem;
+  padding: 20px;
+}
+
+.bytm-dialog-body.small {
+  padding: 15px;
+}
+
+#bytm-dialog-opts {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 30px 0px;
+  overflow-y: auto;
+}
+
+.bytm-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-dialog-bg);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
+}
+
+.bytm-dialog-header.small {
+  padding: 10px 15px;
+}
+
+.bytm-dialog-header-pad {
+  content: " ";
+  min-height: 32px;
+}
+
+.bytm-dialog-header-pad.small {
+  min-height: 24px;
+}
+
+.bytm-dialog-titlecont {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-dialog-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bytm-dialog-title {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;
+}
+
+#bytm-dialog-version {
+  position: absolute;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  font-size: 10px;
+  font-weight: normal;
+  z-index: 7;
+}
+
+#bytm-dialog-version .bytm-link {
+  color: #c6d2db;
+}
+
+#bytm-dialog-linkscont {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+
+.bytm-dialog-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bytm-dialog-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.bytm-dialog-link .bytm-dialog-img {
+  position: relative;
+  border-radius: 50%;
+  bottom: 0px;
+  transition: bottom 0.15s ease-out;
+}
+
+.bytm-dialog-link:hover .bytm-dialog-img {
+  bottom: 5px;
+}
+
+.bytm-dialog-close {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.bytm-dialog-close.small {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-dialog-footer {
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.bytm-dialog-footer.hidden {
+  display: none;
+}
+
+.bytm-dialog-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 15px 20px;
+  background: var(--bytm-dialog-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: solid none none none;
+  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
+}
+
+#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-dialog-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#bytm-dialog-footer-left-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#bytm-dialog-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
+  position: sticky;
+  bottom: -15px;
+  left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 7;
+  background-color: var(--bytm-scroll-indicator-bg);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0px 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.bytm-dialog .bytm-ftitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4em;
+  padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-dialog .bytm-ftitem:hover {
+  background-color: var(--bytm-dialog-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.bytm-ftconf-label {
+  user-select: none;
+}
+
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.bytm-ftconf-input[type=number] {
+  width: 75px;
+}
+
+.bytm-ftconf-input[type=range] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type=text] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
+}
+
+#bytm-export-dialog-text, #bytm-import-dialog-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+.bytm-dialog-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
+#bytm-changelog-dialog-body {
+  overflow-y: auto;
+}
+
+#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
+}
+
+.bytm-markdown-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1.4rem;
+  line-height: 20px;
+}
+
+/* Markdown stuff */
+
+.bytm-markdown-container kbd, .bytm-kbd {
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 11px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+}
+
+.bytm-markdown-container kbd:active, .bytm-kbd:active {
+  padding-bottom: 2px;
+  margin-top: 2px;
+  box-shadow: inset 0 0 0 initial;
+}
+
+.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
+  margin-bottom: 5px;
+}
+
+.bytm-markdown-container h2:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.bytm-markdown-container ul li::before {
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li::before {
+  white-space: pre;
+  content: "    • ";
+  font-weight: bolder;
+}
+
+#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+#bytm-feat-help-dialog-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
+}
+
+.bytm-ftitem-adornment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 6px;
+}
+
+.bytm-ftitem-adornment svg path {
+  fill: var(--bytm-dialog-accent-col, #4595c7);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #c5a73b);
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.bytm-toggle-input-wrapper {
+  --toggle-height: 20px;
+  --toggle-width: 40px;
+  --toggle-knob-offset: 4px;
+  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
+  --toggle-color-off: #707070;
+  --toggle-knob-color: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input-wrapper .bytm-toggle-input-label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 3px 12px;
+}
+
+/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
+
+.bytm-toggle-input {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input input {
+  appearance: none;
+  display: inline-block;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: var(--toggle-knob-offset);
+  cursor: pointer;
+  background-color: var(--toggle-color-off);
+  transition: justify-content 0.2s ease, background-color 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] {
+  background-color: var(--toggle-color-on);
+}
+
+.bytm-toggle-input input .bytm-toggle-input-knob {
+  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  width: var(--toggle-knob-calc-width);
+  height: var(--toggle-knob-calc-height);
+  background-color: var(--toggle-knob-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--toggle-knob-offset);
+  transition: left 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
+  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
+}
+.bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
   --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
@@ -5430,486 +6040,6 @@ hr {
   border: revert;
 }
 
-:root {
-  --bytm-dialog-accent-col: #3683d4;
-}
-
-.bytm-dialog-bg {
-  --bytm-dialog-bg: #333333;
-  --bytm-dialog-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
-  --bytm-dialog-separator-color: #797979;
-  --bytm-dialog-border-radius: 10px;
-}
-
-.bytm-dialog-bg {
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.bytm-dialog {
-  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
-  border-radius: var(--bytm-dialog-border-radius);
-  height: auto;
-  max-height: var(--calc-max-height);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 6;
-  color: #fff;
-  background-color: var(--bytm-dialog-bg);
-}
-
-.bytm-dialog-body {
-  font-size: 1.5rem;
-  padding: 20px;
-}
-
-.bytm-dialog-body.small {
-  padding: 15px;
-}
-
-#bytm-dialog-opts {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: 30px 0px;
-  overflow-y: auto;
-}
-
-.bytm-dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  padding: 15px 20px 15px 20px;
-  background-color: var(--bytm-dialog-bg);
-  border: 2px solid var(--bytm-dialog-separator-color);
-  border-style: none none solid none;
-  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
-}
-
-.bytm-dialog-header.small {
-  padding: 10px 15px;
-}
-
-.bytm-dialog-header-pad {
-  content: " ";
-  min-height: 32px;
-}
-
-.bytm-dialog-header-pad.small {
-  min-height: 24px;
-}
-
-.bytm-dialog-titlecont {
-  display: flex;
-  align-items: center;
-}
-
-.bytm-dialog-titlecont-no-title {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.bytm-dialog-title {
-  position: relative;
-  display: inline-block;
-  font-size: 22px;
-}
-
-#bytm-dialog-version {
-  position: absolute;
-  width: 100%;
-  bottom: -10px;
-  left: 0;
-  font-size: 10px;
-  font-weight: normal;
-  z-index: 7;
-}
-
-#bytm-dialog-version .bytm-link {
-  color: #c6d2db;
-}
-
-#bytm-dialog-linkscont {
-  display: flex;
-  align-items: center;
-  margin-left: 32px;
-}
-
-.bytm-dialog-link {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.bytm-dialog-link:not(:last-of-type) {
-  margin-right: 10px;
-}
-
-.bytm-dialog-link .bytm-dialog-img {
-  position: relative;
-  border-radius: 50%;
-  bottom: 0px;
-  transition: bottom 0.15s ease-out;
-}
-
-.bytm-dialog-link:hover .bytm-dialog-img {
-  bottom: 5px;
-}
-
-.bytm-dialog-close {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-}
-
-.bytm-dialog-close.small {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-dialog-footer {
-  font-size: 17px;
-  text-decoration: underline;
-}
-
-.bytm-dialog-footer.hidden {
-  display: none;
-}
-
-.bytm-dialog-footer-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 6px;
-  padding: 15px 20px;
-  background: var(--bytm-dialog-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
-  border: 2px solid var(--bytm-dialog-separator-color);
-  border-style: solid none none none;
-  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
-}
-
-#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-.bytm-dialog-footer-right {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  margin-top: 15px;
-}
-
-#bytm-dialog-footer-left-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-#bytm-dialog-scroll-indicator {
-  --bytm-scroll-indicator-padding: 5px;
-  position: sticky;
-  bottom: -15px;
-  left: 50%;
-  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
-  padding: var(--bytm-scroll-indicator-padding);
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
-  z-index: 7;
-  background-color: var(--bytm-scroll-indicator-bg);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.bytm-hidden {
-  visibility: hidden !important;
-}
-
-.bytm-ftconf-category-header {
-  font-size: 18px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
-}
-
-.bytm-dialog .bytm-ftitem {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.4em;
-  padding: 8px 20px;
-  transition: background-color 0.15s ease-out;
-}
-
-.bytm-dialog .bytm-ftitem:hover {
-  background-color: var(--bytm-dialog-bg-highlight);
-}
-
-.bytm-ftitem-leftside {
-  display: flex;
-  align-items: center;
-  min-height: 24px;
-}
-
-.bytm-ftconf-ctrl {
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-.bytm-ftconf-label {
-  user-select: none;
-}
-
-.bytm-slider-label {
-  margin-right: 10px;
-}
-
-.bytm-ftconf-input.bytm-hotkey-input {
-  cursor: pointer;
-  min-width: 80px;
-}
-
-.bytm-ftconf-input[type=number] {
-  width: 75px;
-}
-
-.bytm-ftconf-input[type=range] {
-  width: 200px;
-}
-
-.bytm-ftconf-input[type=text] {
-  width: 200px;
-}
-
-.bytm-ftconf-input[type=checkbox] {
-  margin-left: 5px;
-}
-
-#bytm-export-dialog-text, #bytm-import-dialog-text {
-  font-size: 1.6em;
-  margin-bottom: 15px;
-}
-
-.bytm-dialog-footer-copied {
-  font-size: 1.6em;
-  margin-right: 15px;
-}
-
-#bytm-changelog-dialog-body {
-  overflow-y: auto;
-}
-
-#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
-  width: 100%;
-  height: 150px;
-  resize: none;
-}
-
-.bytm-markdown-container {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  font-size: 1.4rem;
-  line-height: 20px;
-}
-
-/* Markdown stuff */
-
-.bytm-markdown-container kbd, .bytm-kbd {
-  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
-  display: inline-block;
-  vertical-align: bottom;
-  padding: 4px;
-  padding-top: 2px;
-  font-size: 0.95em;
-  line-height: 11px;
-  background-color: #222;
-  border: 1px solid #777;
-  border-radius: 5px;
-  box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
-}
-
-.bytm-markdown-container kbd:active, .bytm-kbd:active {
-  padding-bottom: 2px;
-  margin-top: 2px;
-  box-shadow: inset 0 0 0 initial;
-}
-
-.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
-  background: rgba(0, 0, 0, 0);
-}
-
-.bytm-markdown-container code {
-  background-color: #222;
-  border-radius: 3px;
-  padding: 1px 5px;
-}
-
-.bytm-markdown-container h2 {
-  margin-bottom: 5px;
-}
-
-.bytm-markdown-container h2:not(:first-of-type) {
-  margin-top: 30px;
-}
-
-.bytm-markdown-container ul li::before {
-  content: "• ";
-  font-weight: bolder;
-}
-
-.bytm-markdown-container ul li > ul li::before {
-  white-space: pre;
-  content: "    • ";
-  font-weight: bolder;
-}
-
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  padding: 10px 10px 15px 20px;
-  font-size: 1.5em;
-}
-
-#bytm-feat-help-dialog-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
-}
-
-.bytm-ftitem-help-btn {
-  width: 24px !important;
-  height: 24px !important;
-}
-
-.bytm-ftitem-help-btn svg {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-.bytm-ftitem-help-btn svg > path {
-  fill: #b3bec7 !important;
-}
-
-hr {
-  display: block;
-  margin: 8px 0px 12px 0px;
-  border: revert;
-}
-
-.bytm-ftitem-adornment {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-right: 6px;
-}
-
-.bytm-ftitem-adornment svg path,
-.advancedModeIcon svg path
-{
-  fill: var(--bytm-dialog-accent-col, #4595c7);
-}
-
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-.bytm-toggle-input-wrapper {
-  --toggle-height: 20px;
-  --toggle-width: 40px;
-  --toggle-knob-offset: 4px;
-  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
-  --toggle-color-off: #707070;
-  --toggle-knob-color: #f5f5f5;
-
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input-wrapper .bytm-toggle-input-label {
-  cursor: pointer;
-  font-size: 1.5rem;
-  padding: 3px 12px;
-}
-
-/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
-
-.bytm-toggle-input {
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input input {
-  appearance: none;
-  display: inline-block;
-  width: var(--toggle-width);
-  height: var(--toggle-height);
-  position: relative;
-  border-radius: 50px;
-  overflow: hidden;
-  outline: none;
-  border: none;
-  margin: 0;
-  padding: var(--toggle-knob-offset);
-  cursor: pointer;
-  background-color: var(--toggle-color-off);
-  transition: justify-content 0.2s ease, background-color 0.2s ease;
-}
-
-.bytm-toggle-input input[data-toggled="true"] {
-  background-color: var(--toggle-color-on);
-}
-
-.bytm-toggle-input input .bytm-toggle-input-knob {
-  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  width: var(--toggle-knob-calc-width);
-  height: var(--toggle-knob-calc-height);
-  background-color: var(--toggle-knob-color);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: var(--toggle-knob-offset);
-  transition: left 0.2s ease;
-}
-
-.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
-  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
-}
 /* #MARKER misc */
 
 .bytm-disable-scroll {
@@ -6236,101 +6366,6 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 
 ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
   visibility: visible !important;
-}
-
-/* TODO(v1.2): leave only dialog */
-#bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg
-{
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 1150px;
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 1150px;
-}
-
-#bytm-changelog-dialog-bg,
-#bytm-changelog-menu-bg
-{
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 900px;
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 900px;
-}
-
-#bytm-export-dialog-bg, #bytm-import-dialog-bg,
-#bytm-export-menu-bg, #bytm-import-menu-bg
-{
-  --bytm-dialog-height-max: 500px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 600px;
-}
-
-#bytm-feat-help-dialog-bg,
-#bytm-feat-help-menu-bg
-{
-  --bytm-dialog-height-max: 400px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 400px;
-  --bytm-menu-width-max: 600px;
-}
-
-.bytm-dialog-body p {
-  overflow-wrap: break-word;
-}
-
-.bytm-dialog-body details summary {
-  cursor: pointer;
-  font-style: italic;
-}
-
-#bytm-version-notif-dialog-btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-#bytm-disable-update-check-wrapper {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 35px;
-}
-
-#bytm-disable-update-check-wrapper label {
-  padding-left: 12px;
-}
-
-#bytm-version-notif-changelog-cont {
-  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
-  overflow-y: auto;
-  margin: 10px 0px;
-}
-
-#bytm-version-notif-changelog-details {
-  margin-top: 15px;
-}
-
-.bytm-disable-update-check-toggle-label-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.bytm-secondary-label {
-  padding-left: 12px;
-  font-size: 1.3rem;
-}
-
-.bytm-advanced-mode-icon {
-  display: inline-flex;
-  align-items: center;
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: #c5a73b;
 }
 
 #bytm-welcome-menu-bg {
