@@ -7,7 +7,7 @@
     "import_menu_title": "%1 - Importar configuración",
     "open_menu_tooltip": "Abra el menú de configuración de %1",
     "close_menu_tooltip": "Cerrar el menú",
-    "reload_hint": "Necesitas recargar la página para aplicar cualquier cambio.",
+    "reload_hint": "Tus cambios se guardaron, pero necesitas recargar la página para aplicarlos.",
     "reload_now": "Recargar ahora",
     "reload_tooltip": "Recargar la página",
     "version_tooltip": "Versión %1 (compilación %2) - haga clic para abrir el registro de cambios",
