@@ -49,6 +49,7 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
  * | `click: () => void`                         | for type `button` only - function that will be called when the button is clicked |
  * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `advanced`                                  | if true, the feature will only be shown if the advanced mode feature has been turned on |
  * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
  * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
@@ -335,6 +336,18 @@ export const featInfo = {
         alert(t("lyrics_clear_cache_success"));
       }
     },
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: getAdvancedModeAdornment,
+  },
+  lyricsFuzzyFilter: {
+    type: "toggle",
+    category: "lyrics",
+    default: false,
+    enable: noopTODO,
+    disable: noopTODO,
+    // TODO: use dialog here?
+    change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: getAdvancedModeAdornment,
