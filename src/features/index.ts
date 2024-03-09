@@ -315,7 +315,7 @@ export const featInfo = {
     type: "slider",
     category: "lyrics",
     default: 21,
-    min: 3,
+    min: 1,
     max: 100,
     step: 1,
     unit: (val: number) => tp("unit_days", val),
