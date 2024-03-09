@@ -74,7 +74,9 @@ const devDirectives = mode === "development" ? `\
 ` : undefined;
 
 (async () => {
-  const resourcesDirectives = await getResourceDirectives();
+  const buildNbr = await getLastCommitSha();
+
+  const resourcesDirectives = await getResourceDirectives(buildNbr);
   const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
 
@@ -90,7 +92,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl("images/logo/logo_48.png")}
+// @icon              ${getResourceUrl("images/logo/logo_48.png", buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -128,7 +130,6 @@ I welcome every contribution on GitHub!
 
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
-    const lastCommitSha = await getLastCommitSha();
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
     const globalStylePath = join(rootPath, distFolderPath, "global.css");
@@ -143,7 +144,7 @@ I welcome every contribution on GitHub!
         MODE: mode,
         BRANCH: branch,
         HOST: host,
-        BUILD_NUMBER: lastCommitSha,
+        BUILD_NUMBER: buildNbr,
       },
     )
       // needs special treatment because the double quotes need to be replaced with backticks
@@ -177,7 +178,7 @@ I welcome every contribution on GitHub!
     }
 
     console.info();
-    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
+    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${buildNbr}`);
     console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
     console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
     console.info();
@@ -243,7 +244,7 @@ async function exists(path: string) {
 }
 
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
-async function getResourceDirectives() {
+async function getResourceDirectives(buildNbr: string) {
   try {
     const directives: string[] = [];
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
@@ -261,7 +262,7 @@ async function getResourceDirectives() {
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getResourceUrl(path)
+          : getResourceUrl(path, buildNbr)
       }`);
     }
 
@@ -321,15 +322,15 @@ function getLocalizedDescriptions() {
 
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
- * @path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
+ * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
  */
-function getResourceUrl(path: string) {
+function getResourceUrl(path: string, buildToken?: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
   return assetSource === "local"
-    ? `http://localhost:${devServerPort}${assetPath}${path}?t=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}`;
+    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
+    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}?b=${buildToken ?? pkg.version}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
