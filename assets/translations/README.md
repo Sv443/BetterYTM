@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 159 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `159/159` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `123/159` (77.4%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`en_US`](./en_US.json) | 162 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `162/162` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `123/162` (75.9%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `123/162` (75.9%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -35,6 +35,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -61,6 +62,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -68,7 +71,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -78,6 +81,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -104,6 +108,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -111,7 +117,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -121,6 +127,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -147,6 +154,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -154,7 +163,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -164,6 +173,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -190,6 +200,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -197,7 +209,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -207,6 +219,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -233,6 +246,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -240,7 +255,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -250,6 +265,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -276,6 +292,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -283,7 +301,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 39 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -293,6 +311,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -319,6 +338,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_lyricsFuzzyFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
+| `feature_helptext_lyricsFuzzyFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
