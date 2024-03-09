@@ -2,6 +2,7 @@ import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, paus
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
 import { error, getResourceUrl, log, onSelectorOld, warn, t, resourceToHTMLString } from "../utils";
+import { siteEvents } from "../siteEvents";
 import { openCfgMenu } from "../menu/menu_old";
 import { getFeatures } from "../config";
 import { featInfo } from ".";
@@ -228,7 +229,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
 
   const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, features.volumeSliderStep ?? slider.step);
+    t("volume_tooltip", getFeatures().lockVolume ? getFeatures().lockVolumeLevel : slider.value, features.volumeSliderStep ?? slider.step);
 
   const labelFull = getLabelText(sliderElem);
   sliderContainer.setAttribute("title", labelFull);
@@ -247,8 +248,6 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
       labelElem2.textContent = getLabel(sliderElem.value);
   };
 
-  sliderElem.addEventListener("change", () => updateLabel());
-
   let lockIconElem: HTMLElement | undefined;
   const lockIconHtml = await resourceToHTMLString("icon-lock");
   if(getFeatures().lockVolume && lockIconHtml) {
@@ -261,6 +260,13 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
     lockIconElem.textContent = " ";
     lockIconElem.style.minWidth = "32px";
   }
+
+  sliderElem.addEventListener("change", () => updateLabel());
+  siteEvents.on("configChanged", () => {
+    updateLabel();
+    if(lockIconElem)
+      lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
+  });
 
   onSelectorOld("#bytm-vol-slider-cont", {
     listener: (volumeCont) => {
