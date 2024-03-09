@@ -36,8 +36,8 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheReady": LyricsCache;
   /** Emitted when the lyrics cache has been cleared */
   "bytm:lyricsCacheCleared": undefined;
-  /** Emitted when an entry is added to the lyrics cache */
-  "bytm:lyricsCacheEntryAdded": LyricsCacheEntry;
+  /** Emitted when an entry is added to the lyrics cache - "penalized" entries have a lower TTL because they were less related in lyrics lookups, as opposed to the "best" entries */
+  "bytm:lyricsCacheEntryAdded": { type: "best" | "penalized", entry: LyricsCacheEntry };
 
   // additionally all events from SiteEventsMap in `src/siteEvents.ts`
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
