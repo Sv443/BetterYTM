@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 156 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `156/156` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `123/156` (78.8%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `123/156` (78.8%) | ─ |
+| [`en_US`](./en_US.json) | 158 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `158/158` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `123/158` (77.8%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -60,12 +60,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -100,12 +102,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -140,12 +144,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -180,12 +186,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -220,12 +228,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -260,12 +270,14 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 33 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 35 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -300,6 +312,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
+| `feature_desc_checkVersionNow` | `Manually check for a new version` |
+| `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
 | `feature_helptext_advancedMode` | `Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.` |
 

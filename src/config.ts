@@ -21,21 +21,16 @@ export const migrations: ConfigMigrationsDict = {
     };
   },
   // 2 -> 3
-  3: (oldData: Record<string, unknown>) => ({
-    ...oldData,
-    removeShareTrackingParam: getFeatureDefault("removeShareTrackingParam"),
-    numKeysSkipToTime: getFeatureDefault("numKeysSkipToTime"),
-    fixSpacing: getFeatureDefault("fixSpacing"),
-    scrollToActiveSongBtn: getFeatureDefault("scrollToActiveSongBtn"),
-    logLevel: getFeatureDefault("logLevel"),
-  }),
+  3: (oldData: FeatureConfig) => useDefaultConfig([
+    "removeShareTrackingParam", "numKeysSkipToTime",
+    "fixSpacing", "scrollToActiveSongBtn",
+    "logLevel",
+  ], oldData),
   // 3 -> 4
-  4: (oldData: Record<string, unknown>) => {
+  4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
       ...oldData,
-      rememberSongTime: getFeatureDefault("rememberSongTime"),
-      rememberSongTimeSites: getFeatureDefault("rememberSongTimeSites"),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
         code: oldSwitchSitesHotkey.key ?? "F9",
@@ -44,26 +39,30 @@ export const migrations: ConfigMigrationsDict = {
         alt: Boolean(oldSwitchSitesHotkey.meta ?? false),
       },
       listButtonsPlacement: "queueOnly",
-      volumeSliderScrollStep: getFeatureDefault("volumeSliderScrollStep"),
-      locale: getFeatureDefault("locale"),
-      versionCheck: getFeatureDefault("versionCheck"),
+      ...useDefaultConfig([
+        "rememberSongTime", "rememberSongTimeSites",
+        "volumeSliderScrollStep", "locale",
+        "versionCheck",
+      ], oldData),
     };
   },
   // 4 -> 5
-  5: (oldData: FeatureConfig) => {
-    return {
-      ...oldData,
-      geniUrlBase: getFeatureDefault("geniUrlBase"),
-      geniUrlToken: getFeatureDefault("geniUrlToken"),
-      lyricsCacheMaxSize: getFeatureDefault("lyricsCacheMaxSize"),
-      lyricsCacheTTL: getFeatureDefault("lyricsCacheTTL"),
-      clearLyricsCache: getFeatureDefault("clearLyricsCache"),
-      advancedMode: getFeatureDefault("advancedMode"),
-      lockVolume: getFeatureDefault("lockVolume"),
-      lockVolumeLevel: getFeatureDefault("lockVolumeLevel"),
-    } satisfies FeatureConfig;
-  },
+  5: (oldData: FeatureConfig) => useDefaultConfig([
+    "geniUrlBase", "geniUrlToken",
+    "lyricsCacheMaxSize", "lyricsCacheTTL",
+    "clearLyricsCache", "advancedMode",
+    "lockVolume", "lockVolumeLevel",
+    "checkVersionNow",
+  ], oldData),
 };
+
+/** Uses the passed `oldData` as the base and sets all passed `keys` to their feature default - returns a copy of the object */
+function useDefaultConfig(keys: (keyof typeof featInfo)[], oldData: FeatureConfig): Partial<FeatureConfig> {
+  const newData = { ...oldData };
+  for(const key of keys)
+    newData[key as keyof typeof featInfo] = getFeatureDefault(key as keyof typeof featInfo) as unknown as never;
+  return newData;
+}
 
 function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
   return featInfo[key].default;
