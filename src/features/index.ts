@@ -1,7 +1,8 @@
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
-import { clearLyricsCache, getLyricsCache } from "./lyrics";
+import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
+import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo } from "../types";
@@ -10,6 +11,7 @@ export * from "./layout";
 export * from "./behavior";
 export * from "./input";
 export * from "./lyrics";
+export * from "./lyricsCache";
 export * from "./songLists";
 export * from "./versionCheck";
 
@@ -353,6 +355,12 @@ export const featInfo = {
     default: true,
     enable: noopTODO,
     disable: noopTODO,
+  },
+  checkVersionNow: {
+    type: "button",
+    category: "general",
+    default: undefined,
+    click: () => doVersionCheck(true),
   },
   logLevel: {
     type: "select",
