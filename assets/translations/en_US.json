@@ -62,7 +62,7 @@
     "lyrics_clear_cache_confirm_prompt-1": "The lyrics cache currently has %1 entry.\nDo you really want to delete them?",
     "lyrics_clear_cache_confirm_prompt-n": "The lyrics cache currently has %1 entries.\nDo you really want to delete them?",
     "lyrics_clear_cache_success": "Lyrics cache was cleared successfully.",
-    "lyrics_cache_changed_clear_confirm": "You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?",
+    "lyrics_cache_changed_clear_confirm": "You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?",
 
     "hotkey_input_click_to_change": "Click to change",
     "hotkey_input_click_to_change_tooltip": "Click, then press the desired key combination",

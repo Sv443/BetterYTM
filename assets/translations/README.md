@@ -35,7 +35,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -81,7 +81,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -127,7 +127,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -173,7 +173,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -219,7 +219,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -265,7 +265,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
@@ -311,7 +311,7 @@ This means you need to manually check against the base translations for missing 
 | `lyrics_clear_cache_confirm_prompt-1` | `The lyrics cache currently has %1 entry.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_confirm_prompt-n` | `The lyrics cache currently has %1 entries.\nDo you really want to delete them?` |
 | `lyrics_clear_cache_success` | `Lyrics cache was cleared successfully.` |
-| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which affects lyrics URL lookups.\nDo you want to clear the cache now?` |
+| `lyrics_cache_changed_clear_confirm` | `You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?` |
 | `new_version_available` | `A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3` |
 | `open_update_page_install_manually` | `Install on %1` |
 | `disable_update_check` | `Disable automatic update checks` |
