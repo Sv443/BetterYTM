@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "992640c";
+const buildNumberRaw = "9e4a710";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1881,8 +1881,10 @@ function addCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
-                    if (getFeatures().advancedMode)
-                        featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${fmtVal(ftDefault)}`;
+                    if (getFeatures().advancedMode) {
+                        const valFmtd = fmtVal(ftDefault);
+                        featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${valFmtd.length === 0 ? "(empty)" : valFmtd}`;
+                    }
                     const textElem = document.createElement("span");
                     textElem.textContent = t(`feature_desc_${featKey}`);
                     let adornmentElem;
@@ -2965,7 +2967,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
         labelElem.textContent = getLabel(sliderElem.value);
         // prevent video from minimizing
         labelContElem.addEventListener("click", (e) => e.stopPropagation());
-        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", getFeatures().lockVolume ? getFeatures().lockVolumeLevel : slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
         const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
@@ -2979,7 +2981,6 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
             if (labelElem2)
                 labelElem2.textContent = getLabel(sliderElem.value);
         };
-        sliderElem.addEventListener("change", () => updateLabel());
         let lockIconElem;
         const lockIconHtml = yield resourceToHTMLString("icon-lock");
         if (getFeatures().lockVolume && lockIconHtml) {
@@ -2992,6 +2993,12 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
             lockIconElem.textContent = " ";
             lockIconElem.style.minWidth = "32px";
         }
+        sliderElem.addEventListener("change", () => updateLabel());
+        siteEvents.on("configChanged", () => {
+            updateLabel();
+            if (lockIconElem)
+                lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
+        });
         onSelectorOld("#bytm-vol-slider-cont", {
             listener: (volumeCont) => {
                 lockIconElem && labelContElem.appendChild(lockIconElem);
@@ -3551,10 +3558,6 @@ function fetchLyricsUrls(artist, song) {
                 warn("No lyrics URL found for the provided song");
                 return undefined;
             }
-            const exactish = (input) => {
-                return input.toLowerCase()
-                    .replace(/[\s\-_&,.()[\]]+/gm, "");
-            };
             const allResultsSan = allResults
                 .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
                 .map(({ meta, url }) => {
@@ -3564,6 +3567,14 @@ function fetchLyricsUrls(artist, song) {
                     url,
                 });
             });
+            if (!getFeatures().lyricsFuzzyFilter)
+                return allResultsSan.map(r => ({
+                    artist: r.meta.primaryArtist.name,
+                    song: r.meta.title,
+                    url: r.url,
+                }));
+            const exactish = (input) => input.toLowerCase()
+                .replace(/[\s\-_&,.()[\]]+/gm, "");
             // exact-ish matches, best matching one first
             const exactishResults = [...allResultsSan].sort((a, b) => {
                 const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
@@ -3900,6 +3911,7 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
  * | `click: () => void`                         | for type `button` only - function that will be called when the button is clicked |
  * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `advanced`                                  | if true, the feature will only be shown if the advanced mode feature has been turned on |
  * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
  * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
@@ -4186,6 +4198,18 @@ const featInfo = {
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: getAdvancedModeAdornment,
     },
+    lyricsFuzzyFilter: {
+        type: "toggle",
+        category: "lyrics",
+        default: false,
+        enable: noopTODO,
+        disable: noopTODO,
+        // TODO: use dialog here?
+        change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: getAdvancedModeAdornment,
+    },
     //#SECTION general
     locale: {
         type: "select",
@@ -4275,7 +4299,7 @@ const migrations = {
         "lyricsCacheMaxSize", "lyricsCacheTTL",
         "clearLyricsCache", "advancedMode",
         "lockVolume", "lockVolumeLevel",
-        "checkVersionNow",
+        "checkVersionNow", "lyricsFuzzyFilter",
     ], oldData),
 };
 /** Uses the passed `oldData` as the base and sets all passed `keys` to their feature default - returns a copy of the object */
