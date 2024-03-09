@@ -279,6 +279,8 @@ export interface FeatureConfig {
   locale: TrLocale;
   /** Whether to check for updates to the script */
   versionCheck: boolean;
+  /** Button to check for updates */
+  checkVersionNow: undefined;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
   /** Whether to show advanced settings in the config menu */

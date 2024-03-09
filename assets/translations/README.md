@@ -6,15 +6,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | Locale | Translated keys | Based on |
 | ------ | --------------- | :------: |
-| [`en_US`](./en_US.json) | 158 (default locale) |  |
-| [`de_DE`](./de_DE.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`en_UK`](./en_UK.json) | ✅ `158/158` (100.0%) | `en_US` |
-| [`es_ES`](./es_ES.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`fr_FR`](./fr_FR.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`hi_IN`](./hi_IN.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`ja_JA`](./ja_JA.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`pt_BR`](./pt_BR.json) | 🚫 `123/158` (77.8%) | ─ |
-| [`zh_CN`](./zh_CN.json) | 🚫 `123/158` (77.8%) | ─ |
+| [`en_US`](./en_US.json) | 159 (default locale) |  |
+| [`de_DE`](./de_DE.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`en_UK`](./en_UK.json) | ✅ `159/159` (100.0%) | `en_US` |
+| [`es_ES`](./es_ES.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`fr_FR`](./fr_FR.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`hi_IN`](./hi_IN.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`ja_JA`](./ja_JA.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`pt_BR`](./pt_BR.json) | 🚫 `123/159` (77.4%) | ─ |
+| [`zh_CN`](./zh_CN.json) | 🚫 `123/159` (77.4%) | ─ |
 
 <br>
 
@@ -25,7 +25,7 @@ This means you need to manually check against the base translations for missing 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -43,6 +43,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -67,7 +68,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -85,6 +86,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -109,7 +111,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -127,6 +129,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -151,7 +154,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -169,6 +172,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -193,7 +197,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -211,6 +215,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -235,7 +240,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -253,6 +258,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |
@@ -277,7 +283,7 @@ This means you need to manually check against the base translations for missing 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 35 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -295,6 +301,7 @@ This means you need to manually check against the base translations for missing 
 | `close_and_ignore_until_reenabled` | `Close and ignore until re-enabled` |
 | `expand_release_notes` | `Click to expand the latest release notes` |
 | `collapse_release_notes` | `Click to collapse the latest release notes` |
+| `no_updates_found` | `No updates found.` |
 | `unit_entries-1` | `entry` |
 | `unit_entries-n` | `entries` |
 | `unit_days-1` | `day` |

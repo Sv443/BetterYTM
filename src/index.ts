@@ -8,35 +8,30 @@ import { emitInterface, initInterface } from "./interface";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import { initObservers, observers } from "./observers";
 import {
-  // other:
-  featInfo,
-
   // features:
+  featInfo,
   // layout
-  setLayoutConfig,
-  addWatermark,
+  setLayoutConfig, addWatermark,
   removeUpgradeTab, initVolumeFeatures,
   removeShareTrackingParam, fixSpacing,
   addScrollToActiveBtn,
   // song lists
-  setSongListsConfig,
-  initQueueButtons,
+  setSongListsConfig, initQueueButtons,
   // behavior
-  setBehaviorConfig,
-  initBeforeUnloadHook, disableBeforeUnload,
-  initAutoCloseToasts, initRememberSongTime,
-  disableDarkReader, enableLockVolume,
+  setBehaviorConfig, initBeforeUnloadHook,
+  disableBeforeUnload, initAutoCloseToasts,
+  initRememberSongTime, disableDarkReader,
+  enableLockVolume,
   // input
-  setInputConfig,
-  initArrowKeySkip, initSiteSwitch,
-  addAnchorImprovements, initNumKeysSkip,
+  setInputConfig, initArrowKeySkip,
+  initSiteSwitch, addAnchorImprovements,
+  initNumKeysSkip,
   // lyrics
   addMediaCtrlLyricsBtn,
   // menu
   addConfigMenuOption,
   // other
-  checkVersion,
-  initLyricsCache,
+  initVersionCheck, initLyricsCache,
 } from "./features/index";
 
 {
@@ -132,7 +127,7 @@ async function onDomLoad() {
   const features = getFeatures();
   const ftInit = [] as Promise<void>[];
 
-  await checkVersion();
+  await initVersionCheck();
 
   log(`DOM loaded. Initializing features for domain "${domain}"...`);
 
