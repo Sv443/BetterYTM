@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d8bb4a7";
+const buildNumberRaw = "e75d11c";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -4173,7 +4173,7 @@ const featInfo = {
         type: "slider",
         category: "lyrics",
         default: 21,
-        min: 3,
+        min: 1,
         max: 100,
         step: 1,
         unit: (val) => tp("unit_days", val),
