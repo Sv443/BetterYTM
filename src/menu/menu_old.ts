@@ -298,8 +298,10 @@ async function addCfgMenu() {
       {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
-        if(getFeatures().advancedMode)
-          featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${fmtVal(ftDefault)}`;
+        if(getFeatures().advancedMode) {
+          const valFmtd = fmtVal(ftDefault);
+          featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${valFmtd.length === 0 ? "(empty)" : valFmtd}`;
+        }
 
         const textElem = document.createElement("span");
         textElem.textContent = t(`feature_desc_${featKey}`);

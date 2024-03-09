@@ -52,7 +52,7 @@ export const migrations: ConfigMigrationsDict = {
     "lyricsCacheMaxSize", "lyricsCacheTTL",
     "clearLyricsCache", "advancedMode",
     "lockVolume", "lockVolumeLevel",
-    "checkVersionNow",
+    "checkVersionNow", "lyricsFuzzyFilter",
   ], oldData),
 };
 

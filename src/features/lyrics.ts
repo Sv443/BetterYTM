@@ -234,6 +234,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
         },
       } : {}),
     });
+
     if(fetchRes.status === 429) {
       const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
       alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
@@ -243,6 +244,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
       return undefined;
     }
+
     const result = await fetchRes.json();
 
     if(typeof result === "object" && result.error || !result || !result.all) {
@@ -267,11 +269,6 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       return undefined;
     }
 
-    const exactish = (input: string) => {
-      return input.toLowerCase()
-        .replace(/[\s\-_&,.()[\]]+/gm, "");
-    };
-
     const allResultsSan = allResults
       .filter(({ meta, url }) => (meta.title || meta.fullTitle) && meta.artists && url)
       .map(({ meta, url }) => ({
@@ -282,6 +279,16 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
         },
         url,
       }));
+
+    if(!getFeatures().lyricsFuzzyFilter)
+      return allResultsSan.map(r => ({
+        artist: r.meta.primaryArtist.name,
+        song: r.meta.title,
+        url: r.url,
+      }));
+    
+    const exactish = (input: string) => input.toLowerCase()
+      .replace(/[\s\-_&,.()[\]]+/gm, "");
 
     // exact-ish matches, best matching one first
     const exactishResults = [...allResultsSan].sort((a, b) => {
