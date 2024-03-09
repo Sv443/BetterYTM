@@ -3,8 +3,7 @@ import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
-import { featInfo } from "./features";
-import { fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features/lyrics";
+import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
 import type { SiteEventsMap } from "./siteEvents";
 import type { FeatureConfig, FeatureInfo, LyricsCacheEntry } from "./types";
 import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";

@@ -2,7 +2,8 @@ import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { clearInner, error, getResourceUrl, log, onSelectorOld, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
-import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, getLyricsCacheEntry, splitVideoTitle } from "./lyrics";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
+import { getLyricsCacheEntry } from "./lyricsCache";
 import type { FeatureConfig, LyricsCacheEntry } from "../types";
 import "./songLists.css";
 

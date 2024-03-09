@@ -98,6 +98,7 @@
     "close_and_ignore_until_reenabled": "Close and ignore until re-enabled",
     "expand_release_notes": "Click to expand the latest release notes",
     "collapse_release_notes": "Click to collapse the latest release notes",
+    "no_updates_found": "No updates found.",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
