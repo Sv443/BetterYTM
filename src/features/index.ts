@@ -1,3 +1,4 @@
+import { debounce } from "@sv443-network/userutils";
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { remSongMinPlayTime } from "./behavior";
@@ -360,7 +361,7 @@ export const featInfo = {
     type: "button",
     category: "general",
     default: undefined,
-    click: () => doVersionCheck(true),
+    click: debounce(() => doVersionCheck(true), 750),
   },
   logLevel: {
     type: "select",
