@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?v=419fd3f
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=42dabb5
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,34 +34,34 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?v=419fd3f
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?v=419fd3f
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?v=419fd3f
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?v=419fd3f
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?v=419fd3f
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?v=419fd3f
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?v=419fd3f
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?v=419fd3f
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?v=419fd3f
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?v=419fd3f
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?v=419fd3f
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?v=419fd3f
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?v=419fd3f
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?v=419fd3f
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?v=419fd3f
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?v=419fd3f
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?v=419fd3f
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?v=419fd3f
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?v=419fd3f
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?v=419fd3f
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?v=419fd3f
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?v=419fd3f
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?v=419fd3f
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?v=419fd3f
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?v=419fd3f
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?v=419fd3f
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?v=419fd3f
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?v=419fd3f
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=42dabb5
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=42dabb5
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=42dabb5
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=42dabb5
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=42dabb5
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=42dabb5
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=42dabb5
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=42dabb5
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=42dabb5
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=42dabb5
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=42dabb5
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=42dabb5
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=42dabb5
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=42dabb5
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=42dabb5
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=42dabb5
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=42dabb5
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=42dabb5
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=42dabb5
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=42dabb5
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=42dabb5
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=42dabb5
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=42dabb5
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=42dabb5
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=42dabb5
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=42dabb5
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=42dabb5
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=42dabb5
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -238,7 +238,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "419fd3f";
+const buildNumberRaw = "42dabb5";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3398,7 +3398,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                             }
                             const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
                             imgElem.src = errorIconUrl;
-                            imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
+                            lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
                             lyricsBtn.style.cursor = "pointer";
                             lyricsBtn.style.pointerEvents = "all";
                             lyricsBtn.style.display = "inline-flex";
@@ -3884,6 +3884,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
         queueItem.classList.add("bytm-has-queue-btns");
     });
 }//#MARKER feature dependencies
+/** List of all available locale SelectOptions */
 const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => {
     return [...a, {
             value: locale,
@@ -3891,6 +3892,11 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
         }];
 }, [])
     .sort((a, b) => a.label.localeCompare(b.label));
+/** Decoration elements that can be added next to the label */
+const adornments = {
+    advancedMode: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
+    globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe")) !== null && _b !== void 0 ? _b : ""; }),
+};
 //#MARKER features
 /**
  * Contains all possible features with their default values and other configuration.
@@ -4143,7 +4149,7 @@ const featInfo = {
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     geniUrlToken: {
         type: "text",
@@ -4153,21 +4159,21 @@ const featInfo = {
         normalize: (val) => val.trim(),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
-        default: 500,
-        min: 50,
-        max: 2000,
-        step: 50,
+        default: 1000,
+        min: 100,
+        max: 5000,
+        step: 100,
         unit: (val) => tp("unit_entries", val),
         enable: noopTODO,
         change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     lyricsCacheTTL: {
         type: "slider",
@@ -4181,7 +4187,7 @@ const featInfo = {
         change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     clearLyricsCache: {
         type: "button",
@@ -4196,7 +4202,7 @@ const featInfo = {
         },
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     lyricsFuzzyFilter: {
         type: "toggle",
@@ -4208,7 +4214,7 @@ const featInfo = {
         change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: getAdvancedModeAdornment,
+        textAdornment: adornments.advancedMode,
     },
     //#SECTION general
     locale: {
@@ -4218,7 +4224,7 @@ const featInfo = {
         default: getPreferredLocale(),
         enable: noopTODO,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("icon-globe")) !== null && _a !== void 0 ? _a : ""; }),
+        textAdornment: adornments.globe,
     },
     versionCheck: {
         type: "toggle",
@@ -4250,15 +4256,9 @@ const featInfo = {
         enable: noopTODO,
         disable: noopTODO,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
+        textAdornment: () => getFeatures().advancedMode ? adornments.advancedMode() : undefined,
     },
 };
-function getAdvancedModeAdornment() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`;
-    });
-}
 function noop() {
 }
 function noopTODO() {
