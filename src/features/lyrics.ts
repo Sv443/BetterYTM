@@ -79,7 +79,8 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
           const query = artist && song ? "?q=" + encodeURIComponent(sanitizeArtists(artist) + " - " + sanitizeSong(song)) : "";
 
           imgElem.src = errorIconUrl;
-          imgElem.ariaLabel = imgElem.title = t("lyrics_not_found_click_open_search");
+
+          lyricsBtn.ariaLabel = lyricsBtn.title = t("lyrics_not_found_click_open_search");
           lyricsBtn.style.cursor = "pointer";
           lyricsBtn.style.pointerEvents = "all";
           lyricsBtn.style.display = "inline-flex";
