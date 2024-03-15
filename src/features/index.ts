@@ -20,6 +20,7 @@ type SelectOption = { value: number | string, label: string };
 
 //#MARKER feature dependencies
 
+/** List of all available locale SelectOptions */
 const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
   return [...a, {
     value: locale,
@@ -27,6 +28,12 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
   }];
 }, [] as SelectOption[])
   .sort((a, b) => a.label.localeCompare(b.label));
+
+/** Decoration elements that can be added next to the label */
+const adornments = {
+  advancedMode: async () => `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
+  globe: async () => await resourceToHTMLString("icon-globe") ?? "",
+};
 
 //#MARKER features
 
@@ -285,7 +292,7 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
   geniUrlToken: {
     type: "text",
@@ -295,21 +302,21 @@ export const featInfo = {
     normalize: (val: string) => val.trim(),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
-    default: 500,
-    min: 50,
-    max: 2000,
-    step: 50,
+    default: 1000,
+    min: 100,
+    max: 5000,
+    step: 100,
     unit: (val: number) => tp("unit_entries", val),
     enable: noopTODO,
     change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -323,7 +330,7 @@ export const featInfo = {
     change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
   clearLyricsCache: {
     type: "button",
@@ -338,7 +345,7 @@ export const featInfo = {
     },
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
   lyricsFuzzyFilter: {
     type: "toggle",
@@ -350,7 +357,7 @@ export const featInfo = {
     change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: getAdvancedModeAdornment,
+    textAdornment: adornments.advancedMode,
   },
 
   //#SECTION general
@@ -361,7 +368,7 @@ export const featInfo = {
     default: getPreferredLocale(),
     enable: noopTODO,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: async () => await resourceToHTMLString("icon-globe") ?? "",
+    textAdornment: adornments.globe,
   },
   versionCheck: {
     type: "toggle",
@@ -393,13 +400,9 @@ export const featInfo = {
     enable: noopTODO,
     disable: noopTODO,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: () => getFeatures().advancedMode ? getAdvancedModeAdornment() : undefined,
+    textAdornment: () => getFeatures().advancedMode ? adornments.advancedMode() : undefined,
   },
 } as const satisfies FeatureInfo;
-
-async function getAdvancedModeAdornment() {
-  return `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`;
-}
 
 function noop() {
   void 0;
