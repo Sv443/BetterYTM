@@ -31,7 +31,8 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  advancedMode: async () => `<span class="bytm-advanced-mode-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
+  advancedMode: async () => `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
+  experimental: async () => `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}">${await resourceToHTMLString("icon-experimental") ?? ""}</span>`,
   globe: async () => await resourceToHTMLString("icon-globe") ?? "",
 };
 
@@ -357,7 +358,7 @@ export const featInfo = {
     change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.experimental,
   },
 
   //#SECTION general
