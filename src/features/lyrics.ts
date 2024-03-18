@@ -281,7 +281,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
         url,
       }));
 
-    if(!getFeatures().lyricsFuzzyFilter)
+    if(!getFeatures().advancedLyricsFilter)
       return allResultsSan.map(r => ({
         artist: r.meta.primaryArtist.name,
         song: r.meta.title,
