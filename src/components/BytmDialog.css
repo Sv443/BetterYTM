@@ -1,6 +1,7 @@
 :root {
   --bytm-dialog-accent-col: #3683d4;
   --bytm-advanced-mode-color: #c5a73b;
+  --bytm-experimental-col: #df543d;
 }
 
 .bytm-dialog-bg {
@@ -394,9 +395,13 @@ hr {
 }
 
 .bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #4595c7);
+  fill: var(--bytm-dialog-accent-col, #fff);
 }
 
 .bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #c5a73b);
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
 }
