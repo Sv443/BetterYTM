@@ -62,8 +62,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -108,8 +108,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -154,8 +154,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -200,8 +200,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -246,8 +246,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -292,8 +292,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
@@ -338,8 +338,8 @@ This means you need to manually check against the base translations for missing 
 | `feature_desc_clearLyricsCache` | `Clear the lyrics cache manually` |
 | `feature_helptext_clearLyricsCache` | `If the lyrics that are in the local cache are outdated or you just want to free up some space, you can clear the cache manually by pressing this button.` |
 | `feature_btn_clearLyricsCache` | `Clear cache` |
-| `feature_desc_advancedLyricsFilter` | `Experimental: Enable fuzzy filtering for the lyrics search` |
-| `feature_helptext_advancedLyricsFilter` | `Fuzzy filtering allows you to find lyrics even if the song title or artist name is misspelled or slightly different from the actual title or artist name.\nThis feature is experimental and might not work as expected.` |
+| `feature_desc_advancedLyricsFilter` | `Experimental: Enable advanced filtering for the lyrics search` |
+| `feature_helptext_advancedLyricsFilter` | `Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that asks about clearing the cache after changing this setting if you want.` |
 | `feature_desc_checkVersionNow` | `Manually check for a new version` |
 | `feature_btn_checkVersionNow` | `Check now` |
 | `feature_desc_advancedMode` | `Show advanced settings (after reload)` |
