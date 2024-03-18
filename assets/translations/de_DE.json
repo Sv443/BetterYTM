@@ -167,7 +167,7 @@
     "feature_helptext_clearLyricsCache": "Wenn die Songtexte im lokalen Cache veraltet sind oder du einfach nur etwas Platz freimachen möchtest, kannst du den Cache manuell löschen, indem du diesen Knopf drückst.",
     "feature_btn_clearLyricsCache": "Cache löschen",
     "feature_desc_advancedLyricsFilter": "Experimentell: Aktiviere erweiterte Filterung für die Songtext-Suche",
-    "feature_helptext_advancedLyricsFilter": "Erweiterte Filterung beinhaltet mehrere Schichten von Filtern, die versuchen die Songtext-Suchen zuverlässiger zu machen.\nDiese Filter funktionieren möglicherweise nicht gut für Songs in deiner Sprache und Songs und Künstler mit weniger eindeutigen Titeln im Allgemeinen.\nWarnung: Diese Funktion ist immer noch experimentell und könnte tatsächlich nicht besser funktionieren als die Standard-Songtext-Suche. Stelle sicher, dass du die Aufforderung bestätigst, die nach dem Ändern dieser Einstellung erscheint, die dich bittet den Cache zu löschen.",
+    "feature_helptext_advancedLyricsFilter": "Erweiterte Filterung beinhaltet mehrere Schichten von Filtern, die darauf abzielen, die Songtext-Suchen zuverlässiger zu machen.\nDiese Filter funktionieren möglicherweise nicht gut für Songs in deiner Sprache und Songs und Künstler mit weniger eindeutigen Titeln im Allgemeinen.\nWarnung: Diese Funktion ist immer noch experimentell und könnte tatsächlich nicht besser funktionieren als die Standard-Songtext-Suche. Stelle sicher, dass du die Meldung bestätigst, die erscheint, wenn du diese Einstellung geändert hast.",
 
     "feature_desc_locale": "Sprache",
     "feature_desc_versionCheck": "Prüfe alle 24 Stunden auf Updates",
