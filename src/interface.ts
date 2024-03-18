@@ -85,7 +85,7 @@ export function initInterface() {
   log("Initialized BYTM interface");
 }
 
-/** Sets a global property on the window.BYTM object */
+/** Sets a global property on the unsafeWindow.BYTM object */
 export function setGlobalProp<
   TKey extends keyof Window["BYTM"],
   TValue = Window["BYTM"][TKey],
@@ -93,10 +93,12 @@ export function setGlobalProp<
   key: TKey | (string & {}),
   value: TValue,
 ) {
-  // use unsafeWindow so the properties are available outside of the userscript's scope
+  // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
   const win = getUnsafeWindow();
-  if(!win.BYTM)
-    win.BYTM = {} as typeof win.BYTM;
+
+  if(typeof win.BYTM !== "object")
+    win.BYTM = {} as typeof window.BYTM;
+
   win.BYTM[key] = value;
 }
 
@@ -113,6 +115,7 @@ export function emitInterface<
 
 //#MARKER proxy functions
 
+/** Returns the current feature config, with sensitive values replaced by `undefined` */
 export function getFeaturesInterface() {
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
