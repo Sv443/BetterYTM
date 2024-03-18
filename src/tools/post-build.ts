@@ -339,7 +339,7 @@ function getCliArg<TReturn extends string = string>(name: string, defaultVal: TR
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
+  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
   const val = arg?.split("=")?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }
