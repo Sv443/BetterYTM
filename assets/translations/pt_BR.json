@@ -91,6 +91,7 @@
     "remember_song_time_sites_all": "Ambos os sites",
     "remember_song_time_sites_yt": "Apenas YouTube",
     "remember_song_time_sites_ytm": "Apenas YouTube Music",
+
     "new_version_available": "Uma nova versão do %1 está disponível!\nVocê tem a versão %2 instalada e pode atualizar para a versão %3",
     "open_update_page_install_manually": "Instalar em %1",
     "disable_update_check": "Desativar verificação de atualizações",
@@ -100,6 +101,7 @@
     "expand_release_notes": "Clique para expandir as notas de lançamento mais recentes",
     "collapse_release_notes": "Clique para recolher as notas de lançamento mais recentes",
     "no_updates_found": "Nenhuma atualização encontrada.",
+
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
     "unit_days-1": "dia",
@@ -165,7 +167,7 @@
     "feature_helptext_clearLyricsCache": "Se as letras que estão no cache local estiverem desatualizadas ou você apenas quiser liberar espaço, você pode limpar o cache manualmente pressionando este botão.",
     "feature_btn_clearLyricsCache": "Limpar cache",
     "feature_desc_advancedLyricsFilter": "Experimental: Ativar filtragem avançada para a pesquisa de letras",
-    "feature_helptext_advancedLyricsFilter": "A filtragem avançada inclui várias camadas de filtros que visam tornar as pesquisas de letras mais confiáveis.\nEsses filtros podem não funcionar bem para músicas em seu idioma e músicas e artistas com títulos menos únicos em geral.\nAviso: Este recurso ainda é experimental e pode não funcionar melhor do que a pesquisa de letras padrão. Certifique-se de confirmar o prompt que pergunta sobre limpar o cache após alterar esta configuração se desejar.",
+    "feature_helptext_advancedLyricsFilter": "A filtragem avançada inclui várias camadas de filtros que visam tornar as pesquisas de letras mais confiáveis.\nEsses filtros podem não funcionar bem para músicas em seu idioma e músicas e artistas com títulos menos únicos em geral.\nAviso: Este recurso ainda é experimental e pode não funcionar melhor do que a pesquisa de letras padrão. Certifique-se de confirmar o prompt que aparece se você alterou esta configuração.",
 
     "feature_desc_locale": "Idioma",
     "feature_desc_versionCheck": "Verificar atualizações",

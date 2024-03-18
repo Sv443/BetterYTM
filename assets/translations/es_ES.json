@@ -167,7 +167,7 @@
     "feature_helptext_clearLyricsCache": "Si las letras que están en la caché local están desactualizadas o simplemente quieres liberar algo de espacio, puedes borrar la caché manualmente presionando este botón.",
     "feature_btn_clearLyricsCache": "Borrar caché",
     "feature_desc_advancedLyricsFilter": "Experimental: Habilitar el filtrado avanzado para la búsqueda de letras",
-    "feature_helptext_advancedLyricsFilter": "El filtrado avanzado incluye múltiples capas de filtros que tienen como objetivo hacer que las búsquedas de letras sean más confiables.\nEstos filtros pueden no funcionar bien para canciones en su idioma y canciones y artistas con títulos menos únicos en general.\nAdvertencia: esta función todavía es experimental y es posible que no funcione mejor que la búsqueda de letras predeterminada. Asegúrese de confirmar el mensaje que pregunta sobre borrar la caché después de cambiar esta configuración si lo desea.",
+    "feature_helptext_advancedLyricsFilter": "El filtrado avanzado incluye múltiples capas de filtros que tienen como objetivo hacer que las búsquedas de letras sean más confiables.\nEstos filtros pueden no funcionar bien para canciones en su idioma y canciones y artistas con títulos menos únicos en general.\nAdvertencia: esta función todavía es experimental y es posible que no funcione mejor que la búsqueda de letras predeterminada. Asegúrese de confirmar el mensaje que aparece si cambió esta configuración.",
 
     "feature_desc_locale": "Idioma",
     "feature_desc_versionCheck": "Compruebe si hay actualizaciones",
