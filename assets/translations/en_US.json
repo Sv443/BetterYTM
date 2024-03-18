@@ -12,7 +12,7 @@
     "reload_tooltip": "Reload the page",
     "version_tooltip": "Version %1 (build %2) - click to open the changelog",
     "export": "Export",
-    "export_hint": "Copy the following text to export your configuration:",
+    "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
     "export_tooltip": "Export your current configuration",
     "import": "Import",
     "import_hint": "Paste the configuration you want to import into the field below, then click the import button:",
@@ -51,6 +51,7 @@
     "volume_locked": "Volume is locked at %1% - you can change this in the config menu.",
     "middle_click_open_tab": "Middle-click to open in a new tab",
     "advanced_mode": "Advanced mode",
+    "experimental_feature": "Experimental feature",
 
     "open_current_lyrics": "Open the current song's lyrics in a new tab",
     "open_lyrics": "Open this song's lyrics in a new tab",
