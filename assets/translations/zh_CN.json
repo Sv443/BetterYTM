@@ -51,8 +51,7 @@
     "volume_locked": "音量已锁定在 %1% - 您可以在配置菜单中更改此设置。",
     "middle_click_open_tab": "中键点击打开新标签页",
     "advanced_mode": "高级模式",
-    "experimental_feature": "",
-    "experimental_feature": "Experimental feature",
+    "experimental_feature": "实验性功能",
 
     "open_current_lyrics": "在新标签页中打开当前歌曲的歌词",
     "open_lyrics": "在新标签页中打开这首歌的歌词",
@@ -168,7 +167,7 @@
     "feature_helptext_clearLyricsCache": "如果本地缓存中的歌词已过时，或者您只是想释放一些空间，您可以通过按下此按钮手动清除缓存。",
     "feature_btn_clearLyricsCache": "清除缓存",
     "feature_desc_advancedLyricsFilter": "实验性：启用歌词搜索的高级过滤",
-    "feature_helptext_advancedLyricsFilter": "高级过滤包括多层过滤器，旨在使歌词查找更可靠。\n这些过滤器可能不适用于您的语言中的歌曲，以及标题不太独特的歌曲和艺术家。\n警告：此功能仍处于实验阶段，可能实际上并不比默认歌词查找更好。如果您想要更改此设置后清除缓存，请确认提示。",
+    "feature_helptext_advancedLyricsFilter": "高级过滤包括多层过滤器，旨在使歌词查找更可靠。\n这些过滤器可能不适用于您的语言的歌曲，以及标题不太独特的歌曲和艺术家。\n警告：此功能仍处于实验阶段，可能实际上并不比默认歌词查找更好。确保确认更改此设置时出现的提示。",
 
     "feature_desc_locale": "语言",
     "feature_desc_versionCheck": "检查更新",
