@@ -347,7 +347,7 @@ export const featInfo = {
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advancedMode,
   },
-  lyricsFuzzyFilter: {
+  advancedLyricsFilter: {
     type: "toggle",
     category: "lyrics",
     default: false,
