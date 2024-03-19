@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=2dc2045
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=51dd3bb
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,35 +34,35 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=2dc2045
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=2dc2045
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=2dc2045
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=2dc2045
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=2dc2045
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=2dc2045
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=2dc2045
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=2dc2045
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=2dc2045
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=2dc2045
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=2dc2045
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=2dc2045
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=2dc2045
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=2dc2045
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=2dc2045
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=2dc2045
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=2dc2045
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=2dc2045
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=2dc2045
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=2dc2045
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=2dc2045
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=2dc2045
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=2dc2045
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=2dc2045
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=2dc2045
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=2dc2045
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=2dc2045
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=2dc2045
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=2dc2045
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=51dd3bb
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=51dd3bb
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=51dd3bb
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=51dd3bb
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=51dd3bb
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=51dd3bb
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=51dd3bb
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=51dd3bb
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=51dd3bb
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=51dd3bb
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=51dd3bb
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=51dd3bb
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=51dd3bb
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=51dd3bb
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=51dd3bb
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=51dd3bb
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=51dd3bb
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=51dd3bb
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=51dd3bb
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=51dd3bb
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=51dd3bb
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=51dd3bb
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=51dd3bb
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=51dd3bb
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=51dd3bb
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=51dd3bb
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=51dd3bb
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=51dd3bb
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=51dd3bb
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -239,7 +239,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "2dc2045";
+const buildNumberRaw = "51dd3bb";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -679,15 +679,18 @@ function getLyricsCacheEntry(artist, song, refreshEntry = true) {
         updateLyricsCacheEntry(artist, song);
     return entry;
 }
+/** Updates the "last viewed" timestamp of the cache entry for the passed artist and song */
 function updateLyricsCacheEntry(artist, song) {
     const { cache } = lyricsCacheMgr.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
     if (idx !== -1) {
         const newEntry = cache.splice(idx, 1)[0];
         newEntry.viewed = Date.now();
+        log("Updating cache entry for", artist, "-", song, "to", newEntry);
         lyricsCacheMgr.setData({ cache: [newEntry, ...cache] });
     }
 }
+/** Deletes the cache entry for the passed artist and song */
 function deleteLyricsCacheEntry(artist, song) {
     const { cache } = lyricsCacheMgr.getData();
     const idx = cache.findIndex(e => e.artist === artist && e.song === song);
@@ -706,6 +709,27 @@ function getLyricsCache() {
     return lyricsCacheMgr.getData().cache;
 }
 /**
+ * Adds the provided "best" (non-penalized) entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
+ * {@linkcode artist} and {@linkcode song} need to be sanitized first!
+ */
+function addLyricsCacheEntryBest(artist, song, url) {
+    // refresh entry if it exists and don't overwrite / duplicate it
+    const cachedEntry = getLyricsCacheEntry(artist, song, true);
+    if (cachedEntry)
+        return;
+    const { cache } = lyricsCacheMgr.getData();
+    const entry = {
+        artist, song, url, viewed: Date.now(), added: Date.now(),
+    };
+    cache.push(entry);
+    cache.sort((a, b) => b.viewed - a.viewed);
+    if (cache.length > getFeatures().lyricsCacheMaxSize)
+        cache.pop();
+    log("Added cache entry for best result", artist, "-", song, "\n", entry);
+    emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
+    return lyricsCacheMgr.setData({ cache });
+}
+/**
  * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
  * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
  *
@@ -713,6 +737,10 @@ function getLyricsCache() {
  * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
  */
 function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
+    // refresh entry if it exists and don't overwrite / duplicate it
+    const cachedEntry = getLyricsCacheEntry(artist, song, true);
+    if (cachedEntry)
+        return;
     const { cache } = lyricsCacheMgr.getData();
     penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
     const viewedPenalty = maxViewedPenalty * penaltyFr;
@@ -728,6 +756,7 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     cache.sort((a, b) => b.viewed - a.viewed);
     if (cache.length > getFeatures().lyricsCacheMaxSize)
         cache.pop();
+    log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
 }let createNanoEvents = () => ({
@@ -2144,7 +2173,7 @@ function addCfgMenu() {
         versionEl.role = "button";
         versionEl.tabIndex = 0;
         versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-        versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
+        versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [DEV]" : ""}`;
         const versionElemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopPropagation();
@@ -3234,7 +3263,8 @@ function addScrollToActiveBtn() {
             }),
         });
     });
-}let features$1;
+}const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+let features$1;
 function setInputConfig(feats) {
     features$1 = feats;
 }
@@ -3246,7 +3276,7 @@ function initArrowKeySkip() {
             if (!["ArrowLeft", "ArrowRight"].includes(evt.code))
                 return;
             // discard the event when a (text) input is currently active, like when editing a playlist
-            if (["INPUT", "TEXTAREA", "SELECT"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : "_"))
+            if (inputIgnoreTagNames.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.tagName) !== null && _b !== void 0 ? _b : ""))
                 return info(`Captured valid key to skip forward or backward but the current active element is <${(_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName.toLowerCase()}>, so the keypress is ignored`);
             evt.preventDefault();
             evt.stopImmediatePropagation();
@@ -3316,6 +3346,8 @@ function switchSite(newDomain) {
     });
 }
 //#MARKER number keys skip to time
+const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
+const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 function initNumKeysSkip() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3325,11 +3357,12 @@ function initNumKeysSkip() {
                 return;
             if (isCfgMenuOpen)
                 return;
-            // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
-            if (document.activeElement !== document.body
-                && !["progress-bar"].includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "_")
-                && !["BUTTON", "A"].includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "_"))
-                return info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
+            // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
+            if (document.activeElement !== document.body // short-circuit if nothing is active
+                && !numKeysIgnoreIds.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "") // video element or player bar active
+                && !numKeysIgnoreTagNames.includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "") // other element active
+            )
+                return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
             const vidElem = document.querySelector(videoSelector);
             if (!vidElem)
                 return warn("Could not find video element, so the keypress is ignored");
@@ -3568,12 +3601,15 @@ function fetchLyricsUrls(artist, song) {
                     url,
                 });
             });
-            if (!getFeatures().advancedLyricsFilter)
+            if (!getFeatures().advancedLyricsFilter) {
+                const topRes = allResultsSan[0];
+                topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
                 return allResultsSan.map(r => ({
                     artist: r.meta.primaryArtist.name,
                     song: r.meta.title,
                     url: r.url,
                 }));
+            }
             const exactish = (input) => input.toLowerCase()
                 .replace(/[\s\-_&,.()[\]]+/gm, "");
             // exact-ish matches, best matching one first
@@ -3618,7 +3654,7 @@ function fetchLyricsUrls(artist, song) {
             ].slice(0, 5);
             // add top 3 results to the cache with a penalty to their time to live
             // so every entry is deleted faster if it's not considered as relevant
-            finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
+            finalResults.slice(0, 3).forEach(({ meta: { artists, title }, url }, i) => {
                 const penaltyFraction = hasExactMatch
                     // if there's an exact match, give it 0 penalty and penalize all other results with the full value
                     ? i === 0 ? 0 : 1
@@ -3914,17 +3950,20 @@ const adornments = {
  * **Optional props:**
  * | Property | Description |
  * | :-- | :-- |
- * | `disable(newValue: any)`                    | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
- * | `change(prevValue: any, newValue: any)`     | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
- * | `click: () => void`                         | for type `button` only - function that will be called when the button is clicked |
- * | `helpText(): string / () => string`         | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment(): string / Promise<string>` | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
- * | `advanced`                                  | if true, the feature will only be shown if the advanced mode feature has been turned on |
- * | `hidden`                                    | if true, the feature will not be shown in the settings - default is undefined (false) |
- * | `min`                                       | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
- * | `max`                                       | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
- * | `step`                                      | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `unit: string / (val: number) => string`    | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `disable: (newValue: any) => void`                | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
+ * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
+ * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked |
+ * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
+ * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
+ * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
+ * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties |
+ * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on |
+ * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false) |
+ * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false) |
+ * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations |
  *
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -4570,9 +4609,9 @@ function resourceToHTMLString(resource) {
         }
     });
 }
-/** Parses a markdown string and turns it into an HTML string - doesn't sanitize against XSS! */
-function parseMarkdown(md) {
-    return marked.marked.parse(md, {
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+function parseMarkdown(mdString) {
+    return marked.marked.parse(mdString, {
         async: true,
         gfm: true,
     });
@@ -4603,7 +4642,7 @@ function getChangelogHtmlWithDetails() {
             return changelogHtml;
         }
         catch (err) {
-            return `Error: ${err}`;
+            return `Error while preparing changelog: ${err}`;
         }
     });
 }const selectorMap = new Map();
@@ -5728,7 +5767,7 @@ hr {
 }
 
 #bytm-cfg-menu-bg .bytm-menu-title {
-  transform: translate(0px, -5px);
+  transform: translate(0px, -6px);
 }
 
 #bytm-menu-subtitle-cont {
@@ -6545,6 +6584,20 @@ function registerMenuCommands() {
             }
             console.log(`Showing currently active listeners for ${Object.keys(observers$1).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
         }), "s");
+        GM.registerMenuCommand("Compress value", () => __awaiter(this, void 0, void 0, function* () {
+            const input = prompt("Enter the value to compress.\nSee console for output.");
+            if (input && input.length > 0) {
+                const compressed = yield UserUtils.compress(input, compressionFormat);
+                console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+            }
+        }));
+        GM.registerMenuCommand("Decompress value", () => __awaiter(this, void 0, void 0, function* () {
+            const input = prompt("Enter the value to decompress.\nSee console for output.");
+            if (input && input.length > 0) {
+                const decompressed = yield UserUtils.decompress(input, compressionFormat);
+                console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+            }
+        }));
     }
 }
 preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
