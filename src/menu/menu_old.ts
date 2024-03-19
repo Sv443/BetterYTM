@@ -411,7 +411,7 @@ async function addCfgMenu() {
             inputElem.value = String(initialVal);
 
           if(type === "text" && ftInfo.valueHidden)
-            inputElem.value = String(initialVal).replace(/./g, "•");
+            inputElem.value = String(initialVal).length === 0 ? "" : "•".repeat(16);
 
           if(type === "number" || type === "slider" && step)
             inputElem.step = String(step);
@@ -543,6 +543,10 @@ async function addCfgMenu() {
         ftElem.checked = Boolean(value);
       else
         ftElem.value = String(value);
+
+      // @ts-ignore
+      if(ftInfo.type === "text" && ftInfo.valueHidden)
+        ftElem.value = String(value).length === 0 ? "" : "•".repeat(16);
 
       if(!labelElem)
         continue;
