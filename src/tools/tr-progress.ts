@@ -41,9 +41,9 @@ async function run() {
   const { en_US, ...restLocs } = translations;
   const progress = {} as Record<TrLocale, number>;
 
-  //#SECTION table
+  //#SECTION progress table
 
-  const tableLines: string[] = [];
+  const progTableLines: string[] = [];
 
   for(const [locale, translations] of Object.entries({ en_US, ...restLocs })) {
     for(const [k] of Object.entries(en_US)) {
@@ -56,15 +56,21 @@ async function run() {
 
     const trKeys = progress[locale as TrLocale];
     const origKeys = Object.keys(en_US).length;
-    const percent = mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1);
+    const percent = Number(mapRange(trKeys, 0, origKeys, 0, 100).toFixed(1));
 
-    const sym = trKeys === origKeys ? "✅" : "🚫";
+    const sym = trKeys === origKeys
+      ? "✅"
+      : (
+        percent >= 95
+          ? "⚠"
+          : "‼️"
+      );
 
-    const keysCol = locale === "en_US" ? `${origKeys} (default locale)` : `${sym} \`${trKeys}/${origKeys}\` (${percent}%)`;
+    const keysCol = locale === "en_US" ? `${origKeys} (default locale)` : `\`${trKeys}/${origKeys}\` (${percent}%)`;
 
     const baseTr = trFiles[locale as TrLocale]?.base;
 
-    tableLines.push(`| [\`${locale}\`](./${locale}.json) | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en_US" ? "" : "─")} |`);
+    progTableLines.push(`| ${locale === "en_US" || baseTr ? "─" : sym} | [\`${locale}\`](./${locale}.json) | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en_US" ? "" : "─")} |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
@@ -90,11 +96,25 @@ ${lines.join("\n")}\n
 
   //#SECTION finalize
 
-  let templateCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
-  templateCont = templateCont
-    .replace(/<!--#{{TR_PROGRESS_TABLE}}-->/m, tableLines.join("\n"))
+  const banner = `\
+<!--
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!             THIS IS A GENERATED FILE             !!
+    !!    all changes will be overwritten next build    !!
+    !! only edit in \`src/tools/tr-progress-template.md\` !!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-->`;
+
+  const progTableHeader = `\
+| &nbsp; | Locale | Translated keys | Based on |
+| :----: | ------ | --------------- | :------: |`;
+
+  let readmeCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
+
+  readmeCont = `${banner}${"\n".repeat(8)}${readmeCont}`
+    .replace(/<!--#{{TR_PROGRESS_TABLE}}-->/m, `${progTableHeader}\n${progTableLines.join("\n")}`)
     .replace(/<!--#{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
-  await writeFile(join(trDir, "README.md"), templateCont);
+  await writeFile(join(trDir, "README.md"), readmeCont);
 
   console.log(`\n\x1b[32mFinished updating translation progress\x1b[0m - updated file at '${relative(rootDir, join(trDir, "README.md"))}'\n`);
 
