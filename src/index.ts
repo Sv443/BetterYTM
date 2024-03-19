@@ -1,4 +1,4 @@
-import { addGlobalStyle, decompress, type Stringifiable } from "@sv443-network/userutils";
+import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
 import { initOnSelector } from "./utils";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
@@ -403,6 +403,22 @@ function registerMenuCommands() {
       }
       console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     }, "s");
+
+    GM.registerMenuCommand("Compress value", async () => {
+      const input = prompt("Enter the value to compress.\nSee console for output.");
+      if(input && input.length > 0) {
+        const compressed = await compress(input, compressionFormat);
+        console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+      }
+    });
+
+    GM.registerMenuCommand("Decompress value", async () => {
+      const input = prompt("Enter the value to decompress.\nSee console for output.");
+      if(input && input.length > 0) {
+        const decompressed = await decompress(input, compressionFormat);
+        console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+      }
+    });
   }
 }
 
