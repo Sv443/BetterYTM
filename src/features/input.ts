@@ -6,6 +6,8 @@ import { disableBeforeUnload } from "./behavior";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
 
+export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
+
 let features: FeatureConfig;
 
 export function setInputConfig(feats: FeatureConfig) {
@@ -19,7 +21,7 @@ export async function initArrowKeySkip() {
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
     // discard the event when a (text) input is currently active, like when editing a playlist
-    if(["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName ?? "_"))
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
@@ -105,6 +107,9 @@ async function switchSite(newDomain: Domain) {
 
 //#MARKER number keys skip to time
 
+const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
+const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
+
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
@@ -112,13 +117,13 @@ export async function initNumKeysSkip() {
       return;
     if(isCfgMenuOpen)
       return;
-    // discard the event when a (text) input is currently active, like when editing a playlist or when the search bar is focused
+    // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
     if(
-      document.activeElement !== document.body
-      && !["progress-bar"].includes(document.activeElement?.id ?? "_")
-      && !["BUTTON", "A"].includes(document.activeElement?.tagName ?? "_")
+      document.activeElement !== document.body // short-circuit if nothing is active
+      && !numKeysIgnoreIds.includes(document.activeElement?.id ?? "") // video element or player bar active
+      && !numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "") // other element active
     )
-      return info("Captured valid key to skip video to but an unexpected element is focused, so the keypress is ignored");
+      return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
 
     const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
     if(!vidElem)
