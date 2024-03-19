@@ -13,6 +13,7 @@
     "version_tooltip": "Version %1 (build %2) - click to open the changelog",
     "export": "Export",
     "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
+    "click_to_reveal_sensitive_info": "(click to reveal sensitive information)",
     "export_tooltip": "Export your current configuration",
     "import": "Import",
     "import_hint": "Paste the configuration you want to import into the field below, then click the import button:",
