@@ -13,6 +13,7 @@
     "version_tooltip": "版本 %1 (构建 %2) - 点击打开更新日志",
     "export": "导出",
     "export_hint": "复制以下文本以导出您的配置。\n警告：它可能包含敏感数据。",
+    "click_to_reveal_sensitive_info": "(点击以显示敏感信息)",
     "export_tooltip": "导出当前配置",
     "import": "导入",
     "import_hint": "将要导入的配置粘贴到下面的字段中，然后点击导入按钮：",
