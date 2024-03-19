@@ -4,7 +4,7 @@ import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, wa
 import { emitInterface } from "../interface";
 import { mode, scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
+import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
 import type { LyricsCacheEntry } from "../types";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
@@ -281,12 +281,16 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
         url,
       }));
 
-    if(!getFeatures().advancedLyricsFilter)
+    if(!getFeatures().advancedLyricsFilter) {
+      const topRes = allResultsSan[0];
+      topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
+
       return allResultsSan.map(r => ({
         artist: r.meta.primaryArtist.name,
         song: r.meta.title,
         url: r.url,
       }));
+    }
     
     const exactish = (input: string) => input.toLowerCase()
       .replace(/[\s\-_&,.()[\]]+/gm, "");
@@ -342,7 +346,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     // add top 3 results to the cache with a penalty to their time to live
     // so every entry is deleted faster if it's not considered as relevant
-    finalResults.slice(1, 3).forEach(({ meta: { artists, title }, url }, i) => {
+    finalResults.slice(0, 3).forEach(({ meta: { artists, title }, url }, i) => {
       const penaltyFraction = hasExactMatch
         // if there's an exact match, give it 0 penalty and penalize all other results with the full value
         ? i === 0 ? 0 : 1
