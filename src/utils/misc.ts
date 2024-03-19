@@ -118,9 +118,9 @@ export async function resourceToHTMLString(resource: ResourceKey) {
   }
 }
 
-/** Parses a markdown string and turns it into an HTML string - doesn't sanitize against XSS! */
-export function parseMarkdown(md: string) {
-  return marked.parse(md, {
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+export function parseMarkdown(mdString: string) {
+  return marked.parse(mdString, {
     async: true,
     gfm: true,
   });
@@ -155,6 +155,6 @@ export async function getChangelogHtmlWithDetails() {
     return changelogHtml;
   }
   catch(err) {
-    return `Error: ${err}`;
+    return `Error while preparing changelog: ${err}`;
   }
 }

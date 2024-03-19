@@ -606,7 +606,7 @@ async function addCfgMenu() {
   versionEl.role = "button";
   versionEl.tabIndex = 0;
   versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-  versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [dev build]" : ""}`;
+  versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [DEV]" : ""}`;
   const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
