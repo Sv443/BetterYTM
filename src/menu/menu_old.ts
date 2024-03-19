@@ -430,7 +430,7 @@ async function addCfgMenu() {
           if(type === "slider") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-            labelElem.textContent = `${fmtVal(initialVal)} ${unitTxt}`;
+            labelElem.textContent = `${fmtVal(initialVal)}${unitTxt}`;
 
             inputElem.addEventListener("input", () => {
               if(labelElem && lastDisplayedVal !== inputElem.value) {
@@ -557,7 +557,7 @@ async function addCfgMenu() {
         typeof ftInfo.unit === "function" ? ftInfo.unit(Number(ftElem.value)) : ""
       ));
       if(ftInfo.type === "slider")
-        labelElem.textContent = `${fmtVal(Number(value))} ${unitTxt}`;
+        labelElem.textContent = `${fmtVal(Number(value))}${unitTxt}`;
     }
     info("Rebuilt config menu");
   });
@@ -922,16 +922,29 @@ async function addExportMenu() {
   const textAreaElem = document.createElement("textarea");
   textAreaElem.id = "bytm-export-menu-textarea";
   textAreaElem.readOnly = true;
-  const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
   lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-  textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "string") : cfgString;
+  textAreaElem.value = t("click_to_reveal_sensitive_info");
+  textAreaElem.setAttribute("revealed", "false");
+
+  const textAreaClicked = async () => {
+    const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
+    lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
+    textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "string") : cfgString;
+    textAreaElem.setAttribute("revealed", "true");
+  };
+
+  textAreaElem.addEventListener("click", textAreaClicked);
+  textAreaElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && textAreaClicked());
 
   siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
     const cfgString = JSON.stringify({ formatVersion, data });
     lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
-    if(textAreaElem)
+    if(textAreaElem) {
+      if(textAreaElem.getAttribute("revealed") !== "true")
+        return;
       textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "string") : cfgString;
+    }
   });
 
   //#SECTION footer
@@ -951,16 +964,13 @@ async function addExportMenu() {
 
   const copyBtnClicked = async (evt: MouseEvent | KeyboardEvent) => {
     evt?.bubbles && evt.stopPropagation();
-    const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
-    if(textAreaElem) {
-      GM.setClipboard(String(evt?.shiftKey || evt?.ctrlKey ? lastUncompressedCfgString : textAreaElem.value));
-      copiedTextElem.style.display = "inline-block";
-      if(typeof copiedTxtTimeout === "undefined") {
-        copiedTxtTimeout = setTimeout(() => {
-          copiedTextElem.style.display = "none";
-          copiedTxtTimeout = undefined;
-        }, 3000) as unknown as number;
-      }
+    GM.setClipboard(String(evt?.shiftKey || evt?.ctrlKey ? lastUncompressedCfgString : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
+    copiedTextElem.style.display = "inline-block";
+    if(typeof copiedTxtTimeout === "undefined") {
+      copiedTxtTimeout = setTimeout(() => {
+        copiedTextElem.style.display = "none";
+        copiedTxtTimeout = undefined;
+      }, 3000) as unknown as number;
     }
   };
   copyBtnElem.addEventListener("click", copyBtnClicked);
@@ -999,9 +1009,15 @@ function closeExportMenu(evt: MouseEvent | KeyboardEvent) {
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
 
-  const copiedTxt = document.querySelector<HTMLElement>("#bytm-export-menu-copied-txt");
-  if(copiedTxt) {
-    copiedTxt.style.display = "none";
+  const textAreaElem = menuBg.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
+  if(textAreaElem) {
+    textAreaElem.value = t("click_to_reveal_sensitive_info");
+    textAreaElem.setAttribute("revealed", "false");
+  }
+
+  const copiedTxtElem = document.querySelector<HTMLElement>("#bytm-export-menu-copied-txt");
+  if(copiedTxtElem) {
+    copiedTxtElem.style.display = "none";
     if(typeof copiedTxtTimeout === "number") {
       clearTimeout(copiedTxtTimeout);
       copiedTxtTimeout = undefined;

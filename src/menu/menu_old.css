@@ -302,6 +302,7 @@
 }
 
 #bytm-export-menu-text, #bytm-import-menu-text {
+  white-space: pre;
   font-size: 1.6em;
   margin-bottom: 15px;
 }
