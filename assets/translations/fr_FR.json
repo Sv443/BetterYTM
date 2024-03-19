@@ -13,6 +13,7 @@
     "version_tooltip": "Version %1 (build %2) - cliquez pour ouvrir l'historique des modifications",
     "export": "Exporter",
     "export_hint": "Copiez le texte suivant pour exporter votre configuration:",
+    "click_to_reveal_sensitive_info": "(cliquez pour révéler des informations sensibles)",
     "export_tooltip": "Exporter votre configuration actuelle",
     "import": "Importer",
     "import_hint": "Collez la configuration que vous souhaitez importer dans le champ ci-dessous, puis cliquez sur le bouton d'importation:",

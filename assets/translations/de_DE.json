@@ -13,6 +13,7 @@
     "version_tooltip": "Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen",
     "export": "Exportieren",
     "export_hint": "Kopiere den folgenden Text um deine Einstellungen zu exportieren.\nWarnung: der Text kann sensible Informationen enthalten.",
+    "click_to_reveal_sensitive_info": "(klicke um sensible Informationen anzuzeigen)",
     "export_tooltip": "Exportiere deine aktuellen Einstellungen",
     "import": "Importieren",
     "import_hint": "Füge die Einstellungen, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:",
