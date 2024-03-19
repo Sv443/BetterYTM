@@ -302,7 +302,7 @@
 }
 
 #bytm-export-menu-text, #bytm-import-menu-text {
-  white-space: pre;
+  white-space: pre-wrap;
   font-size: 1.6em;
   margin-bottom: 15px;
 }
@@ -392,7 +392,7 @@
 }
 
 .bytm-markdown-container ul li > ul li::before {
-  white-space: pre;
+  white-space: pre-wrap;
   content: "    • ";
   font-weight: bolder;
 }
