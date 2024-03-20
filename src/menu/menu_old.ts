@@ -2,7 +2,7 @@ import { compress, decompress, debounce, isScrollable } from "@sv443-network/use
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -22,6 +22,8 @@ let scrollIndicatorEnabled = true;
 let initLocale: string | undefined;
 /** Stringified config at the point of initializing the config menu */
 let initConfig: string | undefined;
+/** Timeout id for the "copied" text in the hidden value copy button */
+let hiddenCopiedTxtTimeout: number | undefined;
 
 /**
  * Adds an element to open the BetterYTM menu
@@ -399,6 +401,46 @@ async function addCfgMenu() {
         const ctrlElem = document.createElement("span");
         ctrlElem.classList.add("bytm-ftconf-ctrl");
 
+        let advCopyHiddenCont: HTMLElement | undefined;
+
+        if(getFeatures().advancedMode && ftInfo.valueHidden) {
+          const advCopyHintElem = document.createElement("span");
+          advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
+          advCopyHintElem.textContent = t("copied");
+          advCopyHintElem.style.display = "none";
+
+          const advCopyHiddenBtn = document.createElement("button");
+          advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn");
+          advCopyHiddenBtn.tabIndex = 0;
+          advCopyHiddenBtn.textContent = t("copy_hidden_value");
+          advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
+
+          const copyHiddenClicked = (e: MouseEvent | KeyboardEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            GM.setClipboard(String(getFeatures()[featKey as keyof FeatureConfig]));
+
+            advCopyHintElem.style.display = "inline";
+            if(typeof hiddenCopiedTxtTimeout === "undefined") {
+              hiddenCopiedTxtTimeout = setTimeout(() => {
+                advCopyHintElem.style.display = "none";
+                hiddenCopiedTxtTimeout = undefined;
+              }, 3000) as unknown as number;
+            }
+          };
+
+          advCopyHiddenBtn.addEventListener("click", copyHiddenClicked);
+          advCopyHiddenBtn.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && copyHiddenClicked(e));
+
+          advCopyHiddenCont = document.createElement("span");
+
+          advCopyHiddenCont.appendChild(advCopyHintElem);
+          advCopyHiddenCont.appendChild(advCopyHiddenBtn);
+        }
+
+        advCopyHiddenCont && ctrlElem.appendChild(advCopyHiddenCont);
+
         if(inputTag) {
           // standard input element:
 
@@ -619,7 +661,7 @@ async function addCfgMenu() {
   versionEl.role = "button";
   versionEl.tabIndex = 0;
   versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-  versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [DEV]" : ""}`;
+  versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
   const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -632,6 +674,19 @@ async function addCfgMenu() {
 
   subtitleElemCont.appendChild(versionEl);
   titleElem.appendChild(subtitleElemCont);
+
+  const modeItems = [] as TrKey[];
+  mode === "development" && modeItems.push("dev_mode");
+  getFeatures().advancedMode && modeItems.push("advanced_mode");
+
+  if(modeItems.length > 0) {
+    const modeDisplayEl = document.createElement("span");
+    modeDisplayEl.id = "bytm-menu-mode-display";
+    modeDisplayEl.textContent = `[${t("active_mode_display", arrayWithSeparators(modeItems.map(v => t(`${v}_short`)), ", ", " & "))}]`;
+    modeDisplayEl.ariaLabel = modeDisplayEl.title = tp("active_mode_tooltip", modeItems, arrayWithSeparators(modeItems.map(t), ", ", " & "));
+
+    subtitleElemCont.appendChild(modeDisplayEl);
+  }
 
   menuContainer.appendChild(footerCont);
   backgroundElem.appendChild(menuContainer);
@@ -667,6 +722,9 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   if(!menuBg)
     return;
+
+  menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
+  clearTimeout(hiddenCopiedTxtTimeout);
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
@@ -950,7 +1008,7 @@ async function addExportMenu() {
   const copiedTextElem = document.createElement("span");
   copiedTextElem.id = "bytm-export-menu-copied-txt";
   copiedTextElem.classList.add("bytm-menu-footer-copied");
-  copiedTextElem.textContent = t("copied_notice");
+  copiedTextElem.textContent = t("copied");
   copiedTextElem.style.display = "none";
 
   const copyBtnClicked = async (evt: MouseEvent | KeyboardEvent) => {
