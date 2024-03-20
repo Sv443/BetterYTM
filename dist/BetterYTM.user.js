@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4d06e4aa
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=97a865e
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,35 +34,35 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4d06e4aa
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4d06e4aa
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4d06e4aa
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4d06e4aa
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4d06e4aa
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4d06e4aa
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4d06e4aa
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4d06e4aa
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4d06e4aa
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4d06e4aa
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=4d06e4aa
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4d06e4aa
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4d06e4aa
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4d06e4aa
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4d06e4aa
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4d06e4aa
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4d06e4aa
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4d06e4aa
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4d06e4aa
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4d06e4aa
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4d06e4aa
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4d06e4aa
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4d06e4aa
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4d06e4aa
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4d06e4aa
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4d06e4aa
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4d06e4aa
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4d06e4aa
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4d06e4aa
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=97a865e
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=97a865e
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=97a865e
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=97a865e
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=97a865e
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=97a865e
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=97a865e
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=97a865e
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=97a865e
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=97a865e
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=97a865e
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=97a865e
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=97a865e
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=97a865e
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=97a865e
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=97a865e
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=97a865e
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=97a865e
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=97a865e
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=97a865e
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=97a865e
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=97a865e
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=97a865e
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=97a865e
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=97a865e
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=97a865e
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=97a865e
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=97a865e
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=97a865e
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -239,7 +239,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4d06e4aa";
+const buildNumberRaw = "97a865e";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1448,6 +1448,8 @@ let scrollIndicatorEnabled = true;
 let initLocale;
 /** Stringified config at the point of initializing the config menu */
 let initConfig$1;
+/** Timeout id for the "copied" text in the hidden value copy button */
+let hiddenCopiedTxtTimeout;
 /**
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
@@ -1757,6 +1759,36 @@ function addCfgMenu() {
                     const inputElemId = `bytm-ftconf-${featKey}-input`;
                     const ctrlElem = document.createElement("span");
                     ctrlElem.classList.add("bytm-ftconf-ctrl");
+                    let advCopyHiddenCont;
+                    if (getFeatures().advancedMode && ftInfo.valueHidden) {
+                        const advCopyHintElem = document.createElement("span");
+                        advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
+                        advCopyHintElem.textContent = t("copied");
+                        advCopyHintElem.style.display = "none";
+                        const advCopyHiddenBtn = document.createElement("button");
+                        advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn");
+                        advCopyHiddenBtn.tabIndex = 0;
+                        advCopyHiddenBtn.textContent = t("copy_hidden_value");
+                        advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
+                        const copyHiddenClicked = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            GM.setClipboard(String(getFeatures()[featKey]));
+                            advCopyHintElem.style.display = "inline";
+                            if (typeof hiddenCopiedTxtTimeout === "undefined") {
+                                hiddenCopiedTxtTimeout = setTimeout(() => {
+                                    advCopyHintElem.style.display = "none";
+                                    hiddenCopiedTxtTimeout = undefined;
+                                }, 3000);
+                            }
+                        };
+                        advCopyHiddenBtn.addEventListener("click", copyHiddenClicked);
+                        advCopyHiddenBtn.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && copyHiddenClicked(e));
+                        advCopyHiddenCont = document.createElement("span");
+                        advCopyHiddenCont.appendChild(advCopyHintElem);
+                        advCopyHiddenCont.appendChild(advCopyHiddenBtn);
+                    }
+                    advCopyHiddenCont && ctrlElem.appendChild(advCopyHiddenCont);
                     if (inputTag) {
                         // standard input element:
                         const inputElem = document.createElement(inputTag);
@@ -1944,7 +1976,7 @@ function addCfgMenu() {
         versionEl.role = "button";
         versionEl.tabIndex = 0;
         versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
-        versionEl.textContent = `v${scriptInfo.version} (${buildNumber})${mode === "development" ? " [DEV]" : ""}`;
+        versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
         const versionElemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopPropagation();
@@ -1955,6 +1987,16 @@ function addCfgMenu() {
         versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
         subtitleElemCont.appendChild(versionEl);
         titleElem.appendChild(subtitleElemCont);
+        const modeItems = [];
+        mode === "development" && modeItems.push("dev_mode");
+        getFeatures().advancedMode && modeItems.push("advanced_mode");
+        if (modeItems.length > 0) {
+            const modeDisplayEl = document.createElement("span");
+            modeDisplayEl.id = "bytm-menu-mode-display";
+            modeDisplayEl.textContent = `[${t("active_mode_display", arrayWithSeparators(modeItems.map(v => t(`${v}_short`)), ", ", " & "))}]`;
+            modeDisplayEl.ariaLabel = modeDisplayEl.title = tp("active_mode_tooltip", modeItems, arrayWithSeparators(modeItems.map(t), ", ", " & "));
+            subtitleElemCont.appendChild(modeDisplayEl);
+        }
         menuContainer.appendChild(footerCont);
         backgroundElem.appendChild(menuContainer);
         document.body.appendChild(backgroundElem);
@@ -1970,7 +2012,7 @@ function addCfgMenu() {
 }
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeCfgMenu(evt, enableScroll = true) {
-    var _a;
+    var _a, _b;
     if (!isCfgMenuOpen)
         return;
     isCfgMenuOpen = false;
@@ -1983,6 +2025,8 @@ function closeCfgMenu(evt, enableScroll = true) {
     siteEvents.emit("cfgMenuClosed");
     if (!menuBg)
         return;
+    (_b = menuBg.querySelectorAll(".bytm-ftconf-adv-copy-hint")) === null || _b === void 0 ? void 0 : _b.forEach((el) => el.style.display = "none");
+    clearTimeout(hiddenCopiedTxtTimeout);
     menuBg.style.visibility = "hidden";
     menuBg.style.display = "none";
 }
@@ -2217,7 +2261,7 @@ function addExportMenu() {
         const copiedTextElem = document.createElement("span");
         copiedTextElem.id = "bytm-export-menu-copied-txt";
         copiedTextElem.classList.add("bytm-menu-footer-copied");
-        copiedTextElem.textContent = t("copied_notice");
+        copiedTextElem.textContent = t("copied");
         copiedTextElem.style.display = "none";
         const copyBtnClicked = (evt) => __awaiter(this, void 0, void 0, function* () {
             (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
@@ -4592,6 +4636,18 @@ function compressionSupported() {
         }
     });
 }
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+function arrayWithSeparators(array, separator = ", ", lastSeparator) {
+    const arr = [...array];
+    if (!lastSeparator)
+        lastSeparator = separator;
+    if (arr.length === 0)
+        return "";
+    else if (arr.length <= 2)
+        return arr.join(lastSeparator);
+    else
+        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
+}
 //#SECTION resources
 /**
  * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
@@ -5241,6 +5297,10 @@ function insertGlobalStyle() {
   align-items: center;
 }
 
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}
+
 :root {
   --bytm-dialog-accent-col: #3683d4;
   --bytm-advanced-mode-color: #c5a73b;
@@ -5825,6 +5885,7 @@ hr {
 #bytm-menu-subtitle-cont {
   width: 100%;
   display: flex;
+  gap: 6px;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
@@ -5836,8 +5897,14 @@ hr {
   z-index: 7;
 }
 
-#bytm-menu-subtitle-cont .bytm-link {
+#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
   color: var(--bytm-menu-subtitle-color);
+}
+
+#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #bytm-menu-version-anchor {
@@ -6340,7 +6407,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   left: 97px;
   top: 45px;
   z-index: 10;
-  color: white;
+  color: #f1f1f1;
   text-decoration: none;
   cursor: pointer;
 }
