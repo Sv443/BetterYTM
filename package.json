@@ -23,7 +23,7 @@
     "tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
     "gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
-    "invisible": "node src/tools/run-invisible.mjs",
+    "invisible": "node --enable-source-maps src/tools/run-invisible.mjs",
     "test": "npm run node-ts -- ./test.ts"
   },
   "engines": {
