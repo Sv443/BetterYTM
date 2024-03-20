@@ -28,7 +28,7 @@
     "reset_confirm": "すべての設定をデフォルト値にリセットしてもよろしいですか？\nページは自動的に再読み込みされます。",
     "copy_to_clipboard": "クリップボードにコピー",
     "copy_config_tooltip": "構成をクリップボードにコピーする",
-    "copied_notice": "コピーしました！",
+    "copied": "コピーしました！",
     "open_github": "GitHub で %1 を開く",
     "open_discord": "Discord サーバーに参加する",
     "open_greasyfork": "GreasyFork で %1 を開く",

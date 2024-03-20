@@ -20,15 +20,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 168 (default locale) |  |
-| ⚠ | [`de_DE`](./de_DE.json) | `164/168` (97.6%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `168/168` (100%) | `en_US` |
-| ⚠ | [`es_ES`](./es_ES.json) | `164/168` (97.6%) | ─ |
-| ⚠ | [`fr_FR`](./fr_FR.json) | `164/168` (97.6%) | ─ |
-| ⚠ | [`hi_IN`](./hi_IN.json) | `164/168` (97.6%) | ─ |
-| ⚠ | [`ja_JA`](./ja_JA.json) | `164/168` (97.6%) | ─ |
-| ⚠ | [`pt_BR`](./pt_BR.json) | `164/168` (97.6%) | ─ |
-| ⚠ | [`zh_CN`](./zh_CN.json) | `164/168` (97.6%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 176 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `164/176` (93.2%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `176/176` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `164/176` (93.2%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `164/176` (93.2%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `164/176` (93.2%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `164/176` (93.2%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `164/176` (93.2%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `164/176` (93.2%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -49,10 +49,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -60,10 +68,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -71,10 +87,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -82,10 +106,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -93,10 +125,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -104,10 +144,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -115,10 +163,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 4 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 12 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
+| `copy_hidden_value` | `Copy hidden value` |
+| `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `active_mode_display` | `%1 Mode` |
+| `active_mode_tooltip-1` | `The %1 is currently active` |
+| `active_mode_tooltip-n` | `The %1 are currently active` |
+| `dev_mode` | `Developer mode` |
+| `dev_mode_short` | `Dev` |
+| `advanced_mode_short` | `Advanced` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
