@@ -51,6 +51,21 @@ export async function compressionSupported() {
   }
 }
 
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+export function arrayWithSeparators<TArray>(array: TArray[], separator = ", ", lastSeparator?: string) {
+  const arr = [...array];
+  if(!lastSeparator)
+    lastSeparator = separator;
+
+  if(arr.length === 0)
+    return "";
+  else if(arr.length <= 2)
+    return arr.join(lastSeparator);
+  else
+    return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)!}`;
+}
+
+
 //#SECTION resources
 
 /**
