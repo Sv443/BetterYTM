@@ -262,7 +262,15 @@ async function addCfgMenu() {
     {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
-  const fmtVal = (v: unknown) => typeof v === "object" ? JSON.stringify(v) : String(v).trim();
+  const fmtVal = (v: unknown) => {
+    try {
+      return (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+    }
+    catch(_e) {
+      // because stringify throws on circular refs
+      return String(v).trim();
+    }
+  };
 
   for(const category in featureCfgWithCategories) {
     const featObj = featureCfgWithCategories[category as FeatureCategory];
@@ -434,7 +442,7 @@ async function addCfgMenu() {
 
             inputElem.addEventListener("input", () => {
               if(labelElem && lastDisplayedVal !== inputElem.value) {
-                labelElem.textContent = `${fmtVal(inputElem.value)} ${unitTxt}`;
+                labelElem.textContent = `${fmtVal(inputElem.value)}${unitTxt}`;
                 lastDisplayedVal = inputElem.value;
               }
             });
