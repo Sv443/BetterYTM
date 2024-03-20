@@ -67,6 +67,7 @@
 }
 
 .bytm-menu-titlecont {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -129,8 +130,10 @@
 }
 
 .bytm-menu-link {
-  display: inline-flex;
   position: relative;
+  max-height: 32px;
+  max-width: 32px;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
@@ -141,22 +144,24 @@
 }
 
 .bytm-menu-link .bytm-menu-img {
-  position: relative;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  bottom: 0px;
-  transition: bottom 0.2s ease-out;
+  padding: 0px;
+  transform: initial;
+  transition: transform 0.15s ease-out, padding 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
-  bottom: 6px;
+  padding: 7px 5px;
+  transform: translateY(-14px);
 }
 
 .bytm-menu-link .extended-link {
   visibility: hidden;
   position: absolute;
   top: 14px;
-  padding-top: 14px;
-  padding-bottom: 6px;
+  padding: 6px 0px;
   opacity: 0;
   text-decoration: none;
   color: var(--bytm-menu-subtitle-color);
