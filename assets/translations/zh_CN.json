@@ -28,7 +28,7 @@
     "reset_confirm": "您是否确实要将所有设置重置为默认值？\n页面将自动重新加载。",
     "copy_to_clipboard": "复制到剪贴板",
     "copy_config_tooltip": "将配置复制到剪贴板",
-    "copied_notice": "已复制！",
+    "copied": "已复制！",
     "open_github": "在 GitHub 上打开 %1",
     "open_discord": "加入我的 Discord 服务器",
     "open_greasyfork": "在 GreasyFork 上打开 %1",
