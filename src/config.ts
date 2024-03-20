@@ -23,14 +23,16 @@ export const migrations: ConfigMigrationsDict = {
   // 2 -> 3
   3: (oldData: FeatureConfig) => useDefaultConfig([
     "removeShareTrackingParam", "numKeysSkipToTime",
-    "fixSpacing", "scrollToActiveSongBtn",
-    "logLevel",
+    "fixSpacing", "scrollToActiveSongBtn", "logLevel",
   ], oldData),
   // 3 -> 4
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
-      ...oldData,
+      ...useDefaultConfig([
+        "rememberSongTime", "rememberSongTimeSites",
+        "volumeSliderScrollStep", "locale", "versionCheck",
+      ], oldData),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
         code: oldSwitchSitesHotkey.key ?? "F9",
@@ -39,11 +41,6 @@ export const migrations: ConfigMigrationsDict = {
         alt: Boolean(oldSwitchSitesHotkey.meta ?? false),
       },
       listButtonsPlacement: "queueOnly",
-      ...useDefaultConfig([
-        "rememberSongTime", "rememberSongTimeSites",
-        "volumeSliderScrollStep", "locale",
-        "versionCheck",
-      ], oldData),
     };
   },
   // 4 -> 5
@@ -56,14 +53,15 @@ export const migrations: ConfigMigrationsDict = {
   ], oldData),
 };
 
-/** Uses the passed `oldData` as the base and sets all passed `keys` to their feature default - returns a copy of the object */
-function useDefaultConfig(keys: (keyof typeof featInfo)[], oldData: FeatureConfig): Partial<FeatureConfig> {
-  const newData = { ...oldData };
+/** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
+function useDefaultConfig(keys: (keyof typeof featInfo)[], oldData?: FeatureConfig): Partial<FeatureConfig> {
+  const newData = { ...(oldData ?? {}) };
   for(const key of keys)
     newData[key as keyof typeof featInfo] = getFeatureDefault(key as keyof typeof featInfo) as unknown as never;
   return newData;
 }
 
+/** Returns the default value for the given feature key */
 function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
   return featInfo[key].default;
 }
