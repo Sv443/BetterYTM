@@ -622,27 +622,7 @@ async function addCfgMenu() {
   versionEl.addEventListener("click", versionElemClicked);
   versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
 
-  let advancedIndicatorEl: HTMLSpanElement | undefined;
-  if(getFeatures().advancedMode) {
-    const indicatorIconHtml = await resourceToHTMLString("icon-advanced_mode");
-    const advancedIndicatorIconEl = document.createElement("span");
-    advancedIndicatorIconEl.classList.add("bytm-advanced-mode-icon");
-    if(indicatorIconHtml)
-      advancedIndicatorIconEl.innerHTML = indicatorIconHtml;
-
-    const advancedIndicatorLabelEl = document.createElement("span");
-    advancedIndicatorLabelEl.classList.add("bytm-advanced-mode-indicator-label");
-    advancedIndicatorLabelEl.textContent = t("advanced_mode");
-
-    advancedIndicatorEl = document.createElement("span");
-    advancedIndicatorEl.id = "bytm-cfg-menu-advanced-mode-indicator-wrapper";
-
-    advancedIndicatorEl.appendChild(advancedIndicatorIconEl);
-    advancedIndicatorEl.appendChild(advancedIndicatorLabelEl);
-  }
-
   subtitleElemCont.appendChild(versionEl);
-  advancedIndicatorEl && subtitleElemCont.appendChild(advancedIndicatorEl);
   titleElem.appendChild(subtitleElemCont);
 
   menuContainer.appendChild(footerCont);

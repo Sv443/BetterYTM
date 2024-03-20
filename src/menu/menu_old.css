@@ -92,11 +92,11 @@
 }
 
 #bytm-menu-subtitle-cont {
-  width: auto;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: end;
   position: absolute;
   bottom: -12px;
   left: 0;
@@ -109,21 +109,7 @@
   color: var(--bytm-menu-subtitle-color);
 }
 
-#bytm-menu-subtitle-cont .bytm-advanced-mode-indicator-label {
-  display: inline-block;
-  transform: translate(0px, 1px);
-  color: var(--bytm-menu-subtitle-color);
-}
-
-#bytm-menu-subtitle-cont .bytm-advanced-mode-icon svg {
-  width: 19px;
-  height: 19px;
-  transform: translate(1px, 7px);
-}
-
-#bytm-menu-version-anchor,
-#bytm-cfg-menu-advanced-mode-indicator-wrapper
-{
+#bytm-menu-version-anchor {
   overflow: hidden;
   text-wrap: nowrap;
   text-overflow: ellipsis;
