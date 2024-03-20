@@ -18,10 +18,9 @@ import {
   // song lists
   setSongListsConfig, initQueueButtons,
   // behavior
-  setBehaviorConfig, initBeforeUnloadHook,
-  disableBeforeUnload, initAutoCloseToasts,
-  initRememberSongTime, disableDarkReader,
-  enableLockVolume,
+  initBeforeUnloadHook, disableBeforeUnload,
+  initAutoCloseToasts, initRememberSongTime,
+  disableDarkReader, enableLockVolume,
   // input
   setInputConfig, initArrowKeySkip,
   initSiteSwitch, addAnchorImprovements,
@@ -41,7 +40,7 @@ import {
 
   console.log();
   console.log(
-    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${buildNumber} ─ ${scriptInfo.namespace}`,
+    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${buildNumber} ─ ${scriptInfo.namespace}`,
     `font-weight: bold; ${styleCommon} ${styleGradient}`,
     `background-color: #333; ${styleCommon}`,
     "padding: initial;",
@@ -80,15 +79,15 @@ async function init() {
     });
 
     const features = await initConfig();
+    setLogLevel(features.logLevel);
+
     await initLyricsCache();
 
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
 
-    setLogLevel(features.logLevel);
-
+    // TODO(v1.2): remove these
     setLayoutConfig(features);
-    setBehaviorConfig(features);
     setInputConfig(features);
     setSongListsConfig(features);
 
