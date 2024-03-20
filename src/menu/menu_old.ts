@@ -403,7 +403,7 @@ async function addCfgMenu() {
 
         let advCopyHiddenCont: HTMLElement | undefined;
 
-        if(getFeatures().advancedMode && ftInfo.valueHidden) {
+        if((getFeatures().advancedMode || mode === "development") && ftInfo.valueHidden) {
           const advCopyHintElem = document.createElement("span");
           advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
           advCopyHintElem.textContent = t("copied");
