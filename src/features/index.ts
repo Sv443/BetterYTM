@@ -1,7 +1,6 @@
 import { debounce } from "@sv443-network/userutils";
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
-import { remSongMinPlayTime } from "./behavior";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
@@ -31,7 +30,7 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  advancedMode: async () => `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
+  advanced: async () => `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
   experimental: async () => `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}">${await resourceToHTMLString("icon-experimental") ?? ""}</span>`,
   globe: async () => await resourceToHTMLString("icon-globe") ?? "",
 };
@@ -57,7 +56,7 @@ const adornments = {
  * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked |
  * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
- * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
  * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
  * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
@@ -72,12 +71,6 @@ const adornments = {
  */
 export const featInfo = {
   //#SECTION layout
-  removeUpgradeTab: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    enable: noopTODO,
-  },
   volumeSliderLabel: {
     type: "toggle",
     category: "layout",
@@ -144,6 +137,12 @@ export const featInfo = {
     enable: noopTODO,
     disable: noopTODO,
   },
+  removeUpgradeTab: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    enable: noopTODO,
+  },
 
   //#SECTION song lists
   lyricsQueueButton: {
@@ -196,7 +195,7 @@ export const featInfo = {
     default: true,
     enable: noopTODO,
     disable: noopTODO, // TODO: feasible?
-    helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
+    helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
   },
   rememberSongTimeSites: {
     type: "select",
@@ -209,6 +208,48 @@ export const featInfo = {
     default: "ytm",
     enable: noopTODO,
     change: noopTODO,
+  },
+  rememberSongTimeDuration: {
+    type: "number",
+    category: "behavior",
+    min: 3,
+    max: 60 * 60 * 24 * 7,
+    step: 1,
+    default: 60,
+    unit: "s",
+    enable: noopTODO,
+    change: noopTODO,
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: adornments.advanced,
+  },
+  rememberSongTimeReduction: {
+    type: "number",
+    category: "behavior",
+    min: 0,
+    max: 30,
+    step: 0.1,
+    default: 0,
+    unit: "s",
+    enable: noopTODO,
+    change: noopTODO,
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: adornments.advanced,
+  },
+  rememberSongTimeMinPlayTime: {
+    type: "slider",
+    category: "behavior",
+    min: 1,
+    max: 30,
+    step: 0.5,
+    default: 10,
+    unit: "s",
+    enable: noopTODO,
+    change: noopTODO,
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: adornments.advanced,
   },
   lockVolume: {
     type: "toggle",
@@ -296,7 +337,7 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.advanced,
   },
   geniUrlToken: {
     type: "text",
@@ -306,7 +347,7 @@ export const featInfo = {
     normalize: (val: string) => val.trim(),
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.advanced,
   },
   lyricsCacheMaxSize: {
     type: "slider",
@@ -320,7 +361,7 @@ export const featInfo = {
     change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.advanced,
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -334,7 +375,7 @@ export const featInfo = {
     change: noopTODO,
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.advanced,
   },
   clearLyricsCache: {
     type: "button",
@@ -349,7 +390,7 @@ export const featInfo = {
     },
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: adornments.advancedMode,
+    textAdornment: adornments.advanced,
   },
   advancedLyricsFilter: {
     type: "toggle",
@@ -404,7 +445,7 @@ export const featInfo = {
     enable: noopTODO,
     disable: noopTODO,
     // TODO: to be reworked or removed in the big menu rework
-    textAdornment: () => getFeatures().advancedMode ? adornments.advancedMode() : undefined,
+    textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
   },
 } as const satisfies FeatureInfo;
 

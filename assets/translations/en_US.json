@@ -143,6 +143,10 @@
     "feature_helptext_rememberSongTime-1": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 second, then its time will be remembered and be restorable for a short while.",
     "feature_helptext_rememberSongTime-n": "Sometimes when reloading the page or restoring it after accidentally closing it, you want to resume listening at the same point. This feature allows you to do that.\nIn order to record the song's time, you need to play it for %1 seconds, then its time will be remembered and be restorable for a short while.",
     "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
+    "feature_desc_rememberSongTimeDuration": "How long in seconds to remember the song's time for after it was last played",
+    "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
+    "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.",
+    "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
     "feature_desc_lockVolume": "Force the volume slider to stay at a specific level",
     "feature_desc_lockVolumeLevel": "What volume level to lock the volume slider at",
 
