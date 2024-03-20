@@ -28,7 +28,7 @@
     "reset_confirm": "Voulez-vous vraiment réinitialiser tous les paramètres à leurs valeurs par défaut?\nLa page sera automatiquement rechargée.",
     "copy_to_clipboard": "Copier dans le presse-papiers",
     "copy_config_tooltip": "Copiez la configuration dans votre presse-papiers",
-    "copied_notice": "Copié!",
+    "copied": "Copié!",
     "open_github": "Ouvrir %1 sur GitHub",
     "open_discord": "Rejoignez mon serveur Discord",
     "open_greasyfork": "Ouvrir %1 sur GreasyFork",

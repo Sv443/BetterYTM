@@ -28,7 +28,7 @@
     "reset_confirm": "¿Realmente quieres restablecer todos los ajustes a sus valores predeterminados?\nLa página se volverá a cargar automáticamente.",
     "copy_to_clipboard": "Copiar al portapapeles",
     "copy_config_tooltip": "Copie la configuración en su portapapeles",
-    "copied_notice": "¡Copiado!",
+    "copied": "¡Copiado!",
     "open_github": "Abrir %1 en GitHub",
     "open_discord": "Únete a mi servidor de Discord",
     "open_greasyfork": "Abrir %1 en GreasyFork",

@@ -28,7 +28,7 @@
     "reset_confirm": "Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?\nDie Seite wird automatisch neu geladen.",
     "copy_to_clipboard": "In die Zwischenablage kopieren",
     "copy_config_tooltip": "Kopiere die Einstellungen in die Zwischenablage",
-    "copied_notice": "Kopiert!",
+    "copied": "Kopiert!",
     "open_github": "Öffne %1 auf GitHub",
     "open_discord": "Tritt meinem Discord-Server bei",
     "open_greasyfork": "Öffne %1 auf GreasyFork",
