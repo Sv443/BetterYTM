@@ -606,6 +606,7 @@ async function addCfgMenu() {
   subtitleElemCont.id = "bytm-menu-subtitle-cont";
 
   const versionEl = document.createElement("a");
+  versionEl.id = "bytm-menu-version-anchor";
   versionEl.classList.add("bytm-link");
   versionEl.role = "button";
   versionEl.tabIndex = 0;
@@ -634,6 +635,8 @@ async function addCfgMenu() {
     advancedIndicatorLabelEl.textContent = t("advanced_mode");
 
     advancedIndicatorEl = document.createElement("span");
+    advancedIndicatorEl.id = "bytm-cfg-menu-advanced-mode-indicator-wrapper";
+
     advancedIndicatorEl.appendChild(advancedIndicatorIconEl);
     advancedIndicatorEl.appendChild(advancedIndicatorLabelEl);
   }

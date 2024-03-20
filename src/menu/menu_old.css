@@ -87,22 +87,22 @@
   transform: translate(0px, -6px);
 }
 
+#bytm-cfg-menu {
+  --bytm-menu-subtitle-color: #c6d2db;
+}
+
 #bytm-menu-subtitle-cont {
+  width: auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
   position: absolute;
-  width: 100%;
   bottom: -12px;
   left: 0;
   font-size: 10px;
   font-weight: normal;
   z-index: 7;
-}
-
-#bytm-cfg-menu {
-  --bytm-menu-subtitle-color: #c6d2db;
 }
 
 #bytm-menu-subtitle-cont .bytm-link {
@@ -119,6 +119,14 @@
   width: 19px;
   height: 19px;
   transform: translate(1px, 7px);
+}
+
+#bytm-menu-version-anchor,
+#bytm-cfg-menu-advanced-mode-indicator-wrapper
+{
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
 }
 
 #bytm-menu-linkscont {
@@ -143,7 +151,7 @@
   position: relative;
   border-radius: 50%;
   bottom: 0px;
-  transition: bottom 0.15s ease-out;
+  transition: bottom 0.2s ease-out;
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
@@ -161,7 +169,7 @@
   color: var(--bytm-menu-subtitle-color);
   white-space: pre;
   font-size: 1.1rem;
-  transition: visibility 0s, opacity 0.35s ease-out;
+  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .extended-link {
