@@ -88,3 +88,7 @@
   display: inline-flex;
   align-items: center;
 }
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}

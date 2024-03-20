@@ -184,7 +184,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   left: 97px;
   top: 45px;
   z-index: 10;
-  color: white;
+  color: #f1f1f1;
   text-decoration: none;
   cursor: pointer;
 }

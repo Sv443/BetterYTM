@@ -94,6 +94,7 @@
 #bytm-menu-subtitle-cont {
   width: 100%;
   display: flex;
+  gap: 6px;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
@@ -105,8 +106,14 @@
   z-index: 7;
 }
 
-#bytm-menu-subtitle-cont .bytm-link {
+#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
   color: var(--bytm-menu-subtitle-color);
+}
+
+#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #bytm-menu-version-anchor {
