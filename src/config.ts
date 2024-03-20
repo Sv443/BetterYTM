@@ -50,6 +50,8 @@ export const migrations: ConfigMigrationsDict = {
     "clearLyricsCache", "advancedMode",
     "lockVolume", "lockVolumeLevel",
     "checkVersionNow", "advancedLyricsFilter",
+    "rememberSongTimeDuration", "rememberSongTimeReduction",
+    "rememberSongTimeMinPlayTime",
   ], oldData),
 };
 
