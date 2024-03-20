@@ -205,8 +205,6 @@ export type FeatureInfo = Record<
 /** Feature configuration */
 export interface FeatureConfig {
   //#SECTION layout
-  /** Remove the \"Upgrade\" / YT Music Premium tab */
-  removeUpgradeTab: boolean;
   /** Add a percentage label to the volume slider */
   volumeSliderLabel: boolean;
   /** The width of the volume slider in pixels */
@@ -223,6 +221,8 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
+  /** Remove the \"Upgrade\" / YT Music Premium tab */
+  removeUpgradeTab: boolean;
 
   //#SECTION song lists
   /** Add a button to each song in the queue to quickly open its lyrics page */
@@ -243,6 +243,12 @@ export interface FeatureConfig {
   rememberSongTime: boolean;
   /** Where to remember the song time */
   rememberSongTimeSites: Domain | "all";
+  /** Time in seconds to remember the song time for */
+  rememberSongTimeDuration: number;
+  /** Time in seconds to subtract from the remembered song time */
+  rememberSongTimeReduction: number;
+  /** Minimum time in seconds the song needs to be played before it is remembered */
+  rememberSongTimeMinPlayTime: number;
   /** Lock the volume slider at a specific level */
   lockVolume: boolean;
   /** The volume level to lock the slider at */
