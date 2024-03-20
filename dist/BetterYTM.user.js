@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=70dad24
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4d06e4aa
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,35 +34,35 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=70dad24
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=70dad24
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=70dad24
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=70dad24
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=70dad24
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=70dad24
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=70dad24
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=70dad24
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=70dad24
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=70dad24
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=70dad24
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=70dad24
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=70dad24
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=70dad24
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=70dad24
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=70dad24
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=70dad24
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=70dad24
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=70dad24
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=70dad24
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=70dad24
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=70dad24
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=70dad24
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=70dad24
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=70dad24
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=70dad24
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=70dad24
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=70dad24
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=70dad24
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4d06e4aa
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4d06e4aa
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4d06e4aa
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4d06e4aa
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4d06e4aa
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4d06e4aa
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4d06e4aa
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4d06e4aa
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4d06e4aa
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4d06e4aa
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=4d06e4aa
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4d06e4aa
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4d06e4aa
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4d06e4aa
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4d06e4aa
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4d06e4aa
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4d06e4aa
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4d06e4aa
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4d06e4aa
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4d06e4aa
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4d06e4aa
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4d06e4aa
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4d06e4aa
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4d06e4aa
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4d06e4aa
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4d06e4aa
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4d06e4aa
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4d06e4aa
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4d06e4aa
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -239,7 +239,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "70dad24";
+const buildNumberRaw = "4d06e4aa";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -398,248 +398,7 @@ var locales = {
 	ja_JA: ja_JA,
 	pt_BR: pt_BR,
 	zh_CN: zh_CN
-};let features$3;
-function setBehaviorConfig(feats) {
-    features$3 = feats;
-}
-//#MARKER beforeunload popup
-let beforeUnloadEnabled = true;
-/** Disables the popup before leaving the site */
-function disableBeforeUnload() {
-    beforeUnloadEnabled = false;
-    info("Disabled popup before leaving the site");
-}
-/**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
- * event listeners before they can be called by the site.
- */
-function initBeforeUnloadHook() {
-    return __awaiter(this, void 0, void 0, function* () {
-        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-        (function (original) {
-            // @ts-ignore
-            window.__proto__.addEventListener = function (...args) {
-                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-                args[1] = function (...a) {
-                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
-                        info("Prevented beforeunload event listener from being called");
-                        return false;
-                    }
-                    else
-                        return origListener.apply(this, a);
-                };
-                original.apply(this, args);
-            };
-            // @ts-ignore
-        })(window.__proto__.addEventListener);
-    });
-}
-//#MARKER auto close toasts
-/** Closes toasts after a set amount of time */
-function initAutoCloseToasts() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const animTimeout = 300;
-            const closeTimeout = Math.max(features$3.closeToastsTimeout * 1000 + animTimeout, animTimeout);
-            onSelectorOld("tp-yt-paper-toast#toast", {
-                all: true,
-                continuous: true,
-                listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
-                    var _a;
-                    for (const toastElem of toastElems) {
-                        if (!toastElem.hasAttribute("allow-click-through"))
-                            continue;
-                        if (toastElem.classList.contains("bytm-closing"))
-                            continue;
-                        toastElem.classList.add("bytm-closing");
-                        yield UserUtils.pauseFor(closeTimeout);
-                        toastElem.classList.remove("paper-toast-open");
-                        log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent}' after ${features$3.closeToastsTimeout * 1000}ms`);
-                        // wait for the transition to finish
-                        yield UserUtils.pauseFor(animTimeout);
-                        toastElem.style.display = "none";
-                    }
-                }),
-            });
-            log("Initialized automatic toast closing");
-        }
-        catch (err) {
-            error("Error in automatic toast closing:", err);
-        }
-    });
-}
-/** After how many milliseconds a remembered entry should expire */
-const remSongEntryExpiry = 1000 * 60 * 1;
-/** Minimum time a song has to be played before it is committed to GM storage */
-const remSongMinPlayTime = 10;
-let remSongsCache = [];
-/** Remembers the time of the last played song and resumes playback from that time */
-function initRememberSongTime() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (features$3.rememberSongTimeSites !== "all" && features$3.rememberSongTimeSites !== getDomain())
-            return;
-        const storedDataRaw = yield GM.getValue("bytm-rem-songs");
-        if (!storedDataRaw)
-            yield GM.setValue("bytm-rem-songs", "[]");
-        remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-        log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
-        if (location.pathname.startsWith("/watch"))
-            yield restoreSongTime();
-        remSongUpdateEntry();
-        setInterval(remSongUpdateEntry, 1000);
-    });
-}
-/** Tries to restore the time of the currently playing song */
-function restoreSongTime() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (location.pathname.startsWith("/watch")) {
-            const { searchParams } = new URL(location.href);
-            const watchID = searchParams.get("v");
-            if (!watchID)
-                return;
-            const entry = remSongsCache.find(entry => entry.watchID === watchID);
-            if (entry) {
-                if (Date.now() - entry.updateTimestamp > remSongEntryExpiry) {
-                    yield delRemSongData(entry.watchID);
-                    return;
-                }
-                else {
-                    onSelectorOld(videoSelector, {
-                        listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
-                            if (vidElem) {
-                                const applyTime = () => __awaiter(this, void 0, void 0, function* () {
-                                    if (isNaN(entry.songTime))
-                                        return;
-                                    vidElem.currentTime = UserUtils.clamp(Math.max(entry.songTime, 0), 0, vidElem.duration);
-                                    yield delRemSongData(entry.watchID);
-                                    info(`Restored song time to ${Math.floor(entry.songTime / 60)}m, ${(entry.songTime % 60).toFixed(1)}s`, LogLevel.Info);
-                                });
-                                if (vidElem.readyState === 4)
-                                    applyTime();
-                                else
-                                    vidElem.addEventListener("canplay", applyTime, { once: true });
-                            }
-                        }),
-                    });
-                }
-            }
-        }
-    });
-}
-/** Updates the currently playing song's entry in GM storage */
-function remSongUpdateEntry() {
-    var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (location.pathname.startsWith("/watch")) {
-            const { searchParams } = new URL(location.href);
-            const watchID = searchParams.get("v");
-            if (!watchID)
-                return;
-            const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-            const paused = (_c = (_b = document.querySelector(videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-            // don't immediately update to reduce race conditions and only update if the video is playing
-            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > remSongMinPlayTime && !paused) {
-                const entry = {
-                    watchID,
-                    songTime,
-                    updateTimestamp: Date.now(),
-                };
-                yield setRemSongData(entry);
-            }
-            // if the song is rewound to the beginning, delete the entry
-            else {
-                const entry = remSongsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= remSongMinPlayTime)
-                    yield delRemSongData(entry.watchID);
-            }
-        }
-        const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > remSongEntryExpiry);
-        for (const entry of expiredEntries)
-            yield delRemSongData(entry.watchID);
-    });
-}
-/** Adds an entry or updates it if it already exists */
-function setRemSongData(data) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
-        if (foundIdx >= 0)
-            remSongsCache[foundIdx] = data;
-        else
-            remSongsCache.push(data);
-        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
-    });
-}
-/** Deletes an entry */
-function delRemSongData(watchID) {
-    return __awaiter(this, void 0, void 0, function* () {
-        remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
-        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
-    });
-}
-//#MARKER disable darkreader
-/** Disables Dark Reader if it is enabled */
-function disableDarkReader() {
-    if (document.querySelector(".darkreader")) {
-        const metaElem = document.createElement("meta");
-        metaElem.name = "darkreader-lock";
-        metaElem.classList.add("bytm-disable-darkreader");
-        document.head.appendChild(metaElem);
-        info("Sent hint to Dark Reader to disable itself");
-    }
-}
-//#MARKER lock volume
-let volumeSliderObserverActive = false;
-let sliderElem;
-function overrideVolValues() {
-    if (!sliderElem || !getFeatures().lockVolume)
-        return;
-    volumeSliderObserverActive = false;
-    setTimeout(() => {
-        const vidElem = document.querySelector(videoSelector);
-        if (vidElem)
-            vidElem.volume = getFeatures().lockVolumeLevel / 100;
-        if (!sliderElem) {
-            volumeSliderObserverActive = true;
-            return;
-        }
-        sliderElem.value = String(getFeatures().lockVolumeLevel);
-        sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
-        const knobElem = document.querySelector("#volume-slider #sliderKnobContainer #sliderKnob");
-        if (knobElem)
-            knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
-        const labelElem = document.querySelector("#bytm-vol-slider-label .label");
-        const newLabelContent = `${getFeatures().lockVolumeLevel}%`;
-        if (labelElem && labelElem.textContent !== newLabelContent)
-            labelElem.textContent = newLabelContent;
-        volumeSliderObserverActive = true;
-    }, 10);
-}
-/** Locks the volume slider at a specific level */
-function enableLockVolume() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (!volumeSliderObserverActive)
-                    return;
-                if (mutation.target.id === "sliderBar" && mutation.type === "attributes") {
-                    if (mutation.attributeName === "value" || mutation.attributeName === "aria-valuenow")
-                        overrideVolValues();
-                }
-            }
-        });
-        onSelectorOld("#volume-slider tp-yt-paper-progress#sliderBar", {
-            listener: (elem) => {
-                sliderElem = elem;
-                overrideVolValues();
-                volumeSliderObserverActive = true;
-                observer.observe(elem, {
-                    attributeFilter: ["value", "aria-valuenow"],
-                });
-            }
-        });
-    });
-}/** A fraction of this max value will be removed from the "last viewed" timestamp when adding penalized cache entries */
+};/** A fraction of this max value will be removed from the "last viewed" timestamp when adding penalized cache entries */
 const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
 /** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
 const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
@@ -1403,7 +1162,7 @@ var scripts = {
 	"tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
 	"gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
 	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
-	invisible: "node src/tools/run-invisible.mjs",
+	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
 	test: "npm run node-ts -- ./test.ts"
 };
 var engines = {
@@ -1694,7 +1453,7 @@ let initConfig$1;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 function addCfgMenu() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _f;
     return __awaiter(this, void 0, void 0, function* () {
         if (isCfgMenuAdded)
             return;
@@ -1851,14 +1610,14 @@ function addCfgMenu() {
         featuresCont.id = "bytm-menu-opts";
         /** Gets called whenever the feature config is changed */
         const confChanged = UserUtils.debounce((key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
-            var _f, _g;
+            var _g, _h;
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
             featConf[key] = newVal;
             yield saveFeatures(featConf);
             // @ts-ignore
-            (_g = (_f = featInfo[key]) === null || _f === void 0 ? void 0 : _f.change) === null || _g === void 0 ? void 0 : _g.call(_f, featConf);
+            (_h = (_g = featInfo[key]) === null || _g === void 0 ? void 0 : _g.change) === null || _h === void 0 ? void 0 : _h.call(_g, featConf);
             if (initConfig$1 !== JSON.stringify(featConf))
                 footerElem.classList.remove("hidden");
             else
@@ -1885,7 +1644,15 @@ function addCfgMenu() {
             acc[category][key] = featureCfg[key];
             return acc;
         }, {});
-        const fmtVal = (v) => typeof v === "object" ? JSON.stringify(v) : String(v).trim();
+        const fmtVal = (v) => {
+            try {
+                return (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+            }
+            catch (_e) {
+                // because stringify throws on circular refs
+                return String(v).trim();
+            }
+        };
         for (const category in featureCfgWithCategories) {
             const featObj = featureCfgWithCategories[category];
             const catHeaderElem = document.createElement("h3");
@@ -2023,7 +1790,7 @@ function addCfgMenu() {
                             labelElem.textContent = `${fmtVal(initialVal)}${unitTxt}`;
                             inputElem.addEventListener("input", () => {
                                 if (labelElem && lastDisplayedVal !== inputElem.value) {
-                                    labelElem.textContent = `${fmtVal(inputElem.value)} ${unitTxt}`;
+                                    labelElem.textContent = `${fmtVal(inputElem.value)}${unitTxt}`;
                                     lastDisplayedVal = inputElem.value;
                                 }
                             });
@@ -2186,23 +1953,7 @@ function addCfgMenu() {
         });
         versionEl.addEventListener("click", versionElemClicked);
         versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
-        let advancedIndicatorEl;
-        if (getFeatures().advancedMode) {
-            const indicatorIconHtml = yield resourceToHTMLString("icon-advanced_mode");
-            const advancedIndicatorIconEl = document.createElement("span");
-            advancedIndicatorIconEl.classList.add("bytm-advanced-mode-icon");
-            if (indicatorIconHtml)
-                advancedIndicatorIconEl.innerHTML = indicatorIconHtml;
-            const advancedIndicatorLabelEl = document.createElement("span");
-            advancedIndicatorLabelEl.classList.add("bytm-advanced-mode-indicator-label");
-            advancedIndicatorLabelEl.textContent = t("advanced_mode");
-            advancedIndicatorEl = document.createElement("span");
-            advancedIndicatorEl.id = "bytm-cfg-menu-advanced-mode-indicator-wrapper";
-            advancedIndicatorEl.appendChild(advancedIndicatorIconEl);
-            advancedIndicatorEl.appendChild(advancedIndicatorLabelEl);
-        }
         subtitleElemCont.appendChild(versionEl);
-        advancedIndicatorEl && subtitleElemCont.appendChild(advancedIndicatorEl);
         titleElem.appendChild(subtitleElemCont);
         menuContainer.appendChild(footerCont);
         backgroundElem.appendChild(menuContainer);
@@ -2212,7 +1963,7 @@ function addCfgMenu() {
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
-        (_e = document.querySelector("ytmusic-app")) === null || _e === void 0 ? void 0 : _e.removeAttribute("inert");
+        (_f = document.querySelector("ytmusic-app")) === null || _f === void 0 ? void 0 : _f.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
     });
@@ -3281,6 +3032,242 @@ function addScrollToActiveBtn() {
             }),
         });
     });
+}//#MARKER beforeunload popup
+let beforeUnloadEnabled = true;
+/** Disables the popup before leaving the site */
+function disableBeforeUnload() {
+    beforeUnloadEnabled = false;
+    info("Disabled popup before leaving the site");
+}
+/**
+ * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
+ * event listeners before they can be called by the site.
+ */
+function initBeforeUnloadHook() {
+    return __awaiter(this, void 0, void 0, function* () {
+        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
+        (function (original) {
+            // @ts-ignore
+            window.__proto__.addEventListener = function (...args) {
+                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
+                args[1] = function (...a) {
+                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
+                        info("Prevented 'beforeunload' event listener");
+                        return false;
+                    }
+                    else
+                        return origListener.apply(this, a);
+                };
+                original.apply(this, args);
+            };
+            // @ts-ignore
+        })(window.__proto__.addEventListener);
+    });
+}
+//#MARKER auto close toasts
+/** Closes toasts after a set amount of time */
+function initAutoCloseToasts() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const animTimeout = 300;
+            const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
+            onSelectorOld("tp-yt-paper-toast#toast", {
+                all: true,
+                continuous: true,
+                listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
+                    var _a;
+                    for (const toastElem of toastElems) {
+                        if (!toastElem.hasAttribute("allow-click-through"))
+                            continue;
+                        if (toastElem.classList.contains("bytm-closing"))
+                            continue;
+                        toastElem.classList.add("bytm-closing");
+                        yield UserUtils.pauseFor(closeTimeout);
+                        toastElem.classList.remove("paper-toast-open");
+                        log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent}' after ${getFeatures().closeToastsTimeout * 1000}ms`);
+                        // wait for the transition to finish
+                        yield UserUtils.pauseFor(animTimeout);
+                        toastElem.style.display = "none";
+                    }
+                }),
+            });
+            log("Initialized automatic toast closing");
+        }
+        catch (err) {
+            error("Error in automatic toast closing:", err);
+        }
+    });
+}
+let remSongsCache = [];
+/** Remembers the time of the last played song and resumes playback from that time */
+function initRememberSongTime() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
+            return;
+        const storedDataRaw = yield GM.getValue("bytm-rem-songs");
+        if (!storedDataRaw)
+            yield GM.setValue("bytm-rem-songs", "[]");
+        remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+        if (location.pathname.startsWith("/watch"))
+            yield restoreSongTime();
+        remSongUpdateEntry();
+        setInterval(remSongUpdateEntry, 1000);
+    });
+}
+/** Tries to restore the time of the currently playing song */
+function restoreSongTime() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (location.pathname.startsWith("/watch")) {
+            const { searchParams } = new URL(location.href);
+            const watchID = searchParams.get("v");
+            if (!watchID)
+                return;
+            const entry = remSongsCache.find(entry => entry.watchID === watchID);
+            if (entry) {
+                if (Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
+                    yield delRemSongData(entry.watchID);
+                    return;
+                }
+                else {
+                    onSelectorOld(videoSelector, {
+                        listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
+                            if (vidElem) {
+                                const applyTime = () => __awaiter(this, void 0, void 0, function* () {
+                                    var _a;
+                                    if (isNaN(entry.songTime))
+                                        return;
+                                    const vidRestoreTime = entry.songTime - ((_a = getFeatures().rememberSongTimeReduction) !== null && _a !== void 0 ? _a : 0);
+                                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                                    yield delRemSongData(entry.watchID);
+                                    info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                                });
+                                // jump to video time just after YT has finished doing their own shenanigans
+                                if (vidElem.readyState === 4)
+                                    applyTime();
+                                else
+                                    vidElem.addEventListener("canplay", applyTime, { once: true });
+                            }
+                        }),
+                    });
+                }
+            }
+        }
+    });
+}
+/** Updates the currently playing song's entry in GM storage */
+function remSongUpdateEntry() {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function* () {
+        if (location.pathname.startsWith("/watch")) {
+            const { searchParams } = new URL(location.href);
+            const watchID = searchParams.get("v");
+            if (!watchID)
+                return;
+            const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+            const paused = (_c = (_b = document.querySelector(videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
+                const entry = {
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                };
+                yield setRemSongData(entry);
+            }
+            // if the song is rewound to the beginning, delete the entry
+            else {
+                const entry = remSongsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
+                    yield delRemSongData(entry.watchID);
+            }
+        }
+        const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
+        for (const entry of expiredEntries)
+            yield delRemSongData(entry.watchID);
+    });
+}
+/** Adds an entry or updates it if it already exists */
+function setRemSongData(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
+        if (foundIdx >= 0)
+            remSongsCache[foundIdx] = data;
+        else
+            remSongsCache.push(data);
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+    });
+}
+/** Deletes an entry */
+function delRemSongData(watchID) {
+    return __awaiter(this, void 0, void 0, function* () {
+        remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+    });
+}
+//#MARKER disable darkreader
+/** Disables Dark Reader if it is enabled */
+function disableDarkReader() {
+    if (document.querySelector(".darkreader")) {
+        const metaElem = document.createElement("meta");
+        metaElem.name = "darkreader-lock";
+        metaElem.classList.add("bytm-disable-darkreader");
+        document.head.appendChild(metaElem);
+        info("Sent hint to Dark Reader to disable itself");
+    }
+}
+//#MARKER lock volume
+let volumeSliderObserverActive = false;
+let sliderElem;
+function overrideVolValues() {
+    if (!sliderElem || !getFeatures().lockVolume)
+        return;
+    volumeSliderObserverActive = false;
+    setTimeout(() => {
+        const vidElem = document.querySelector(videoSelector);
+        if (vidElem)
+            vidElem.volume = getFeatures().lockVolumeLevel / 100;
+        if (!sliderElem) {
+            volumeSliderObserverActive = true;
+            return;
+        }
+        sliderElem.value = String(getFeatures().lockVolumeLevel);
+        sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
+        const knobElem = document.querySelector("#volume-slider #sliderKnobContainer #sliderKnob");
+        if (knobElem)
+            knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
+        const labelElem = document.querySelector("#bytm-vol-slider-label .label");
+        const newLabelContent = `${getFeatures().lockVolumeLevel}%`;
+        if (labelElem && labelElem.textContent !== newLabelContent)
+            labelElem.textContent = newLabelContent;
+        volumeSliderObserverActive = true;
+    }, 10);
+}
+/** Locks the volume slider at a specific level */
+function enableLockVolume() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (!volumeSliderObserverActive)
+                    return;
+                if (mutation.target.id === "sliderBar" && mutation.type === "attributes") {
+                    if (mutation.attributeName === "value" || mutation.attributeName === "aria-valuenow")
+                        overrideVolValues();
+                }
+            }
+        });
+        onSelectorOld("#volume-slider tp-yt-paper-progress#sliderBar", {
+            listener: (elem) => {
+                sliderElem = elem;
+                overrideVolValues();
+                volumeSliderObserverActive = true;
+                observer.observe(elem, {
+                    attributeFilter: ["value", "aria-valuenow"],
+                });
+            }
+        });
+    });
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 let features$1;
 function setInputConfig(feats) {
@@ -3949,7 +3936,7 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
     .sort((a, b) => a.label.localeCompare(b.label));
 /** Decoration elements that can be added next to the label */
 const adornments = {
-    advancedMode: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
+    advanced: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
     experimental: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}">${(_b = yield resourceToHTMLString("icon-experimental")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
     globe: () => __awaiter(void 0, void 0, void 0, function* () { var _c; return (_c = yield resourceToHTMLString("icon-globe")) !== null && _c !== void 0 ? _c : ""; }),
 };
@@ -3973,7 +3960,7 @@ const adornments = {
  * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked |
  * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
- * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. "px" |
+ * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
  * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
  * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
@@ -3988,12 +3975,6 @@ const adornments = {
  */
 const featInfo = {
     //#SECTION layout
-    removeUpgradeTab: {
-        type: "toggle",
-        category: "layout",
-        default: true,
-        enable: noopTODO,
-    },
     volumeSliderLabel: {
         type: "toggle",
         category: "layout",
@@ -4060,6 +4041,12 @@ const featInfo = {
         enable: noopTODO,
         disable: noopTODO,
     },
+    removeUpgradeTab: {
+        type: "toggle",
+        category: "layout",
+        default: true,
+        enable: noopTODO,
+    },
     //#SECTION song lists
     lyricsQueueButton: {
         type: "toggle",
@@ -4110,7 +4097,7 @@ const featInfo = {
         default: true,
         enable: noopTODO,
         disable: noopTODO, // TODO: feasible?
-        helpText: () => tp("feature_helptext_rememberSongTime", remSongMinPlayTime, remSongMinPlayTime)
+        helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
     },
     rememberSongTimeSites: {
         type: "select",
@@ -4123,6 +4110,48 @@ const featInfo = {
         default: "ytm",
         enable: noopTODO,
         change: noopTODO,
+    },
+    rememberSongTimeDuration: {
+        type: "number",
+        category: "behavior",
+        min: 3,
+        max: 60 * 60 * 24 * 7,
+        step: 1,
+        default: 60,
+        unit: "s",
+        enable: noopTODO,
+        change: noopTODO,
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: adornments.advanced,
+    },
+    rememberSongTimeReduction: {
+        type: "number",
+        category: "behavior",
+        min: 0,
+        max: 30,
+        step: 0.1,
+        default: 0,
+        unit: "s",
+        enable: noopTODO,
+        change: noopTODO,
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: adornments.advanced,
+    },
+    rememberSongTimeMinPlayTime: {
+        type: "slider",
+        category: "behavior",
+        min: 1,
+        max: 30,
+        step: 0.5,
+        default: 10,
+        unit: "s",
+        enable: noopTODO,
+        change: noopTODO,
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: adornments.advanced,
     },
     lockVolume: {
         type: "toggle",
@@ -4208,7 +4237,7 @@ const featInfo = {
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: adornments.advancedMode,
+        textAdornment: adornments.advanced,
     },
     geniUrlToken: {
         type: "text",
@@ -4218,7 +4247,7 @@ const featInfo = {
         normalize: (val) => val.trim(),
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: adornments.advancedMode,
+        textAdornment: adornments.advanced,
     },
     lyricsCacheMaxSize: {
         type: "slider",
@@ -4232,7 +4261,7 @@ const featInfo = {
         change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: adornments.advancedMode,
+        textAdornment: adornments.advanced,
     },
     lyricsCacheTTL: {
         type: "slider",
@@ -4246,7 +4275,7 @@ const featInfo = {
         change: noopTODO,
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: adornments.advancedMode,
+        textAdornment: adornments.advanced,
     },
     clearLyricsCache: {
         type: "button",
@@ -4261,7 +4290,7 @@ const featInfo = {
         },
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: adornments.advancedMode,
+        textAdornment: adornments.advanced,
     },
     advancedLyricsFilter: {
         type: "toggle",
@@ -4315,7 +4344,7 @@ const featInfo = {
         enable: noopTODO,
         disable: noopTODO,
         // TODO: to be reworked or removed in the big menu rework
-        textAdornment: () => getFeatures().advancedMode ? adornments.advancedMode() : undefined,
+        textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     },
 };
 function noop() {
@@ -4357,6 +4386,8 @@ const migrations = {
         "clearLyricsCache", "advancedMode",
         "lockVolume", "lockVolumeLevel",
         "checkVersionNow", "advancedLyricsFilter",
+        "rememberSongTimeDuration", "rememberSongTimeReduction",
+        "rememberSongTimeMinPlayTime",
     ], oldData),
 };
 /** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
@@ -4959,7 +4990,7 @@ function showWelcomeMenu() {
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
     const styleCommon = "color: #fff; font-size: 1.5em; padding-left: 6px; padding-right: 6px;";
     console.log();
-    console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild ${buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
+    console.log(`%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${buildNumber} ─ ${scriptInfo.namespace}`, `font-weight: bold; ${styleCommon} ${styleGradient}`, `background-color: #333; ${styleCommon}`, "padding: initial;");
     console.log([
         "Powered by:",
         "─ Lots of ambition and dedication",
@@ -4990,12 +5021,12 @@ function init() {
                 domLoaded = true;
             });
             const features = yield initConfig();
+            setLogLevel(features.logLevel);
             yield initLyricsCache();
             yield initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en_US");
             setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
-            setLogLevel(features.logLevel);
+            // TODO(v1.2): remove these
             setLayoutConfig(features);
-            setBehaviorConfig(features);
             setInputConfig(features);
             setSongListsConfig(features);
             if (features.disableBeforeUnloadPopup && domain === "ytm")
@@ -5792,11 +5823,11 @@ hr {
 }
 
 #bytm-menu-subtitle-cont {
-  width: auto;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: end;
   position: absolute;
   bottom: -12px;
   left: 0;
@@ -5809,21 +5840,7 @@ hr {
   color: var(--bytm-menu-subtitle-color);
 }
 
-#bytm-menu-subtitle-cont .bytm-advanced-mode-indicator-label {
-  display: inline-block;
-  transform: translate(0px, 1px);
-  color: var(--bytm-menu-subtitle-color);
-}
-
-#bytm-menu-subtitle-cont .bytm-advanced-mode-icon svg {
-  width: 19px;
-  height: 19px;
-  transform: translate(1px, 7px);
-}
-
-#bytm-menu-version-anchor,
-#bytm-cfg-menu-advanced-mode-indicator-wrapper
-{
+#bytm-menu-version-anchor {
   overflow: hidden;
   text-wrap: nowrap;
   text-overflow: ellipsis;
