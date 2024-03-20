@@ -153,7 +153,7 @@
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
-  padding: 7px 5px;
+  padding: 7px;
   transform: translateY(-14px);
 }
 
@@ -161,7 +161,8 @@
   visibility: hidden;
   position: absolute;
   top: 14px;
-  padding: 6px 0px;
+  padding-top: 13px;
+  padding-bottom: 2px;
   opacity: 0;
   text-decoration: none;
   color: var(--bytm-menu-subtitle-color);
