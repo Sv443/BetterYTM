@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1935fb7
+// @icon              http://localhost:8710/assets/images/logo/logo_48.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,35 +34,35 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=1935fb7
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=1935fb7
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=1935fb7
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=1935fb7
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=1935fb7
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=1935fb7
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=1935fb7
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=1935fb7
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=1935fb7
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=1935fb7
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=1935fb7
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=1935fb7
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=1935fb7
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=1935fb7
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1935fb7
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=1935fb7
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=1935fb7
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=1935fb7
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=1935fb7
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=1935fb7
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=1935fb7
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=1935fb7
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=1935fb7
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=1935fb7
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=1935fb7
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=1935fb7
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=1935fb7
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=1935fb7
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=1935fb7
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          doc-changelog           http://localhost:8710/changelog.md?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-lock               http://localhost:8710/assets/icons/lock.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-close               http://localhost:8710/assets/images/close.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=8230de17-5e78-46d3-a0a0-68380f953b2b
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -231,6 +231,19 @@ function clearNode(element) {
     while (element.hasChildNodes())
         clearNode(element.firstChild);
     element.parentNode.removeChild(element);
+}
+/** Adds interaction listeners to the passed element in an accessible way - set {@linkcode once} to true to remove the listeners after the first interaction */
+function onInteraction(elem, listener, once = false) {
+    const proxListener = (e) => {
+        if (e instanceof KeyboardEvent && !["Enter", " ", "Space", "Spacebar"].includes(e.key))
+            return;
+        e.stopPropagation();
+        once && elem.removeEventListener("click", proxListener);
+        once && elem.removeEventListener("keydown", proxListener);
+        listener(e);
+    };
+    elem.addEventListener("click", proxListener);
+    elem.addEventListener("keydown", proxListener);
 }// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 var LogLevel;
 (function (LogLevel) {
@@ -239,7 +252,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "1935fb7";
+const buildNumberRaw = "a816936";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -993,8 +1006,7 @@ function createHotkeyInput({ initialValue, onChange }) {
         infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
         resetElem.classList.add("bytm-hidden");
     };
-    resetElem.addEventListener("click", resetClicked);
-    resetElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && resetClicked(e));
+    onInteraction(resetElem, resetClicked);
     if (initialValue)
         infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
     let lastKeyDown;
@@ -1363,18 +1375,15 @@ function renderBody({ latestTag, changelogHtml, }) {
         btnUpdate.className = "bytm-btn";
         btnUpdate.tabIndex = 0;
         btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
-        const btnUpdateClicked = () => {
+        onInteraction(btnUpdate, () => {
             window.open(pkg.updates[host]);
             verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
-        };
-        btnUpdate.addEventListener("click", btnUpdateClicked);
-        btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
+        });
         const btnClose = document.createElement("button");
         btnClose.className = "bytm-btn";
         btnClose.tabIndex = 0;
         btnClose.textContent = t("close_and_ignore_for_24h");
-        btnClose.addEventListener("click", () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
-        btnClose.addEventListener("keydown", (e) => e.key === "Enter" && (verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close()));
+        onInteraction(btnClose, () => verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close());
         btnWrapper.appendChild(btnUpdate);
         btnWrapper.appendChild(btnClose);
         wrapperEl.appendChild(btnWrapper);
@@ -1499,10 +1508,10 @@ function addCfgMenu() {
         linksCont.id = "bytm-menu-linkscont";
         linksCont.role = "navigation";
         const linkTitlesShort = {
-            discord: "Discord",
             github: "GitHub",
             greasyfork: "GreasyFork",
             openuserjs: "OpenUserJS",
+            discord: "Discord",
         };
         const addLink = (imgSrc, href, title, titleKey) => {
             const anchorElem = document.createElement("a");
@@ -1528,7 +1537,6 @@ function addCfgMenu() {
             anchorElem.appendChild(extendedAnchorEl);
             linksCont.appendChild(anchorElem);
         };
-        addLink(yield getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
         const links = [
             ["github", yield getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
             ["greasyfork", yield getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
@@ -1539,14 +1547,14 @@ function addCfgMenu() {
         const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
         for (const [, ...args] of reorderedLinks)
             addLink(...args);
+        addLink(yield getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
         const closeElem = document.createElement("img");
         closeElem.classList.add("bytm-menu-close");
         closeElem.role = "button";
         closeElem.tabIndex = 0;
         closeElem.src = yield getResourceUrl("img-close");
         closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        closeElem.addEventListener("click", closeCfgMenu);
-        closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
+        onInteraction(closeElem, closeCfgMenu);
         titleCont.appendChild(titleElem);
         titleCont.appendChild(linksCont);
         headerElem.appendChild(titleCont);
@@ -1707,13 +1715,11 @@ function addCfgMenu() {
                             helpElem.role = "button";
                             helpElem.tabIndex = 0;
                             helpElem.innerHTML = helpElemImgHtml;
-                            const helpElemClicked = (e) => {
+                            onInteraction(helpElem, (e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 openHelpDialog(featKey);
-                            };
-                            helpElem.addEventListener("click", helpElemClicked);
-                            helpElem.addEventListener("keydown", (e) => e.key === "Enter" && helpElemClicked(e));
+                            });
                         }
                         else {
                             error(`Couldn't create help button SVG element for feature '${featKey}'`);
@@ -1768,7 +1774,7 @@ function addCfgMenu() {
                         advCopyHiddenBtn.tabIndex = 0;
                         advCopyHiddenBtn.textContent = t("copy_hidden_value");
                         advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
-                        const copyHiddenClicked = (e) => {
+                        const copyHiddenInteraction = (e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             GM.setClipboard(String(getFeatures()[featKey]));
@@ -1780,8 +1786,7 @@ function addCfgMenu() {
                                 }, 3000);
                             }
                         };
-                        advCopyHiddenBtn.addEventListener("click", copyHiddenClicked);
-                        advCopyHiddenBtn.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && copyHiddenClicked(e));
+                        onInteraction(advCopyHiddenBtn, copyHiddenInteraction);
                         advCopyHiddenCont = document.createElement("span");
                         advCopyHiddenCont.appendChild(advCopyHintElem);
                         advCopyHiddenCont.appendChild(advCopyHiddenBtn);
@@ -1975,14 +1980,12 @@ function addCfgMenu() {
         versionEl.tabIndex = 0;
         versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
         versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-        const versionElemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+        onInteraction(versionEl, (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopPropagation();
             yield openChangelogMenu("cfgMenu");
             closeCfgMenu(undefined, false);
-        });
-        versionEl.addEventListener("click", versionElemClicked);
-        versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
+        }));
         subtitleElemCont.appendChild(versionEl);
         titleElem.appendChild(subtitleElemCont);
         const modeItems = [];
@@ -2095,8 +2098,7 @@ function openHelpDialog(featureKey) {
             closeElem.tabIndex = 0;
             closeElem.src = yield getResourceUrl("img-close");
             closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-            closeElem.addEventListener("click", (e) => closeHelpDialog(e));
-            closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
+            onInteraction(closeElem, closeHelpDialog);
             headerElem.appendChild(titleCont);
             headerElem.appendChild(closeElem);
             menuBgElem = document.createElement("div");
@@ -2210,12 +2212,10 @@ function addExportMenu() {
         closeElem.tabIndex = 0;
         closeElem.src = yield getResourceUrl("img-close");
         closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        const closeExportMenuClicked = (e) => {
+        onInteraction(closeElem, (e) => {
             closeExportMenu(e);
             openCfgMenu();
-        };
-        closeElem.addEventListener("click", (e) => closeExportMenuClicked(e));
-        closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeExportMenuClicked(e));
+        });
         titleCont.appendChild(titleElem);
         headerElem.appendChild(titleCont);
         headerElem.appendChild(closeElem);
@@ -2231,14 +2231,13 @@ function addExportMenu() {
         lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
         textAreaElem.value = t("click_to_reveal_sensitive_info");
         textAreaElem.setAttribute("revealed", "false");
-        const textAreaClicked = () => __awaiter(this, void 0, void 0, function* () {
+        const textAreaInteraction = () => __awaiter(this, void 0, void 0, function* () {
             const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
             lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
             textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
             textAreaElem.setAttribute("revealed", "true");
         });
-        textAreaElem.addEventListener("click", textAreaClicked);
-        textAreaElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && textAreaClicked());
+        onInteraction(textAreaElem, textAreaInteraction);
         siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
             const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
             const cfgString = JSON.stringify({ formatVersion, data });
@@ -2261,7 +2260,7 @@ function addExportMenu() {
         copiedTextElem.classList.add("bytm-menu-footer-copied");
         copiedTextElem.textContent = t("copied");
         copiedTextElem.style.display = "none";
-        const copyBtnClicked = (evt) => __awaiter(this, void 0, void 0, function* () {
+        onInteraction(copyBtnElem, (evt) => __awaiter(this, void 0, void 0, function* () {
             (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
             GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) || (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) ? lastUncompressedCfgString : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
             copiedTextElem.style.display = "inline-block";
@@ -2271,9 +2270,7 @@ function addExportMenu() {
                     copiedTxtTimeout = undefined;
                 }, 3000);
             }
-        });
-        copyBtnElem.addEventListener("click", copyBtnClicked);
-        copyBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && copyBtnClicked(e));
+        }));
         // flex-direction is row-reverse
         footerElem.appendChild(copyBtnElem);
         footerElem.appendChild(copiedTextElem);
@@ -2376,12 +2373,10 @@ function addImportMenu() {
         closeElem.tabIndex = 0;
         closeElem.src = yield getResourceUrl("img-close");
         closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        const closeImportMenuClicked = (e) => {
+        onInteraction(closeElem, (e) => {
             closeImportMenu(e);
             openCfgMenu();
-        };
-        closeElem.addEventListener("click", closeImportMenuClicked);
-        closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeImportMenuClicked(e));
+        });
         titleCont.appendChild(titleElem);
         headerElem.appendChild(titleCont);
         headerElem.appendChild(closeElem);
@@ -2557,13 +2552,11 @@ function addChangelogMenu() {
         closeElem.tabIndex = 0;
         closeElem.src = yield getResourceUrl("img-close");
         closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        const closeChangelogMenuClicked = (e) => {
+        onInteraction(closeElem, (e) => {
             closeChangelogMenu(e);
             if (menuBgElem.dataset.returnTo === "cfgMenu")
                 openCfgMenu();
-        };
-        closeElem.addEventListener("click", closeChangelogMenuClicked);
-        closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeChangelogMenuClicked(e));
+        });
         titleCont.appendChild(titleElem);
         headerElem.appendChild(titleCont);
         headerElem.appendChild(closeElem);
@@ -2649,8 +2642,7 @@ function addWatermark() {
             if (!logoExchanged && (e.shiftKey || e.ctrlKey))
                 exchangeLogo();
         };
-        watermark.addEventListener("click", watermarkOpenMenu);
-        watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
+        onInteraction(watermark, watermarkOpenMenu);
         onSelectorOld("ytmusic-nav-bar #left-content", {
             listener: (logoElem) => UserUtils.insertAfter(logoElem, watermark),
         });
@@ -2716,7 +2708,7 @@ function addConfigMenuOption(container) {
         cfgOptItemElem.role = "button";
         cfgOptItemElem.tabIndex = 0;
         cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
-        const cfgOptItemClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+        onInteraction(cfgOptItemElem, (e) => __awaiter(this, void 0, void 0, function* () {
             const settingsBtnElem = document.querySelector("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
             settingsBtnElem === null || settingsBtnElem === void 0 ? void 0 : settingsBtnElem.click();
             yield UserUtils.pauseFor(20);
@@ -2724,9 +2716,7 @@ function addConfigMenuOption(container) {
                 openCfgMenu();
             if (!logoExchanged && (e.shiftKey || e.ctrlKey))
                 exchangeLogo();
-        });
-        cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
-        cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
+        }));
         const cfgOptIconElem = document.createElement("img");
         cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
         cfgOptIconElem.src = yield getResourceUrl("img-logo");
@@ -3050,24 +3040,24 @@ function addScrollToActiveBtn() {
                 containerElem.id = "bytm-scroll-to-active-btn-cont";
                 const linkElem = document.createElement("div");
                 linkElem.id = "bytm-scroll-to-active-btn";
+                linkElem.tabIndex = 0;
                 linkElem.className = "ytmusic-player-bar bytm-generic-btn";
                 linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
                 linkElem.role = "button";
                 const imgElem = document.createElement("img");
                 imgElem.className = "bytm-generic-btn-img";
                 imgElem.src = yield getResourceUrl("icon-skip_to");
-                linkElem.addEventListener("click", (e) => {
+                const scrollToActiveInteraction = () => {
                     const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
                     if (!activeItem)
                         return;
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
                     activeItem.scrollIntoView({
                         behavior: "smooth",
                         block: "center",
                         inline: "center",
                     });
-                });
+                };
+                onInteraction(linkElem, scrollToActiveInteraction);
                 linkElem.appendChild(imgElem);
                 containerElem.appendChild(linkElem);
                 tabElem.appendChild(containerElem);
@@ -3829,7 +3819,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
             lyricsBtnElem.style.pointerEvents = "initial";
             lyricsBtnElem.role = "link";
             lyricsBtnElem.tabIndex = 0;
-            const lyricsBtnClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+            onInteraction(lyricsBtnElem, (e) => __awaiter(this, void 0, void 0, function* () {
                 var _b;
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -3900,9 +3890,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                     }
                 }
                 lyricsUrl && UserUtils.openInNewTab(lyricsUrl);
-            });
-            lyricsBtnElem.addEventListener("click", lyricsBtnClicked);
-            lyricsBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && lyricsBtnClicked(e));
+            }));
         }
         //#SECTION delete from queue btn
         let deleteBtnElem;
@@ -3916,7 +3904,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
             const imgElem = document.createElement("img");
             imgElem.classList.add("bytm-generic-btn-img");
             imgElem.src = deleteIconUrl;
-            const deleteBtnClicked = (e) => __awaiter(this, void 0, void 0, function* () {
+            onInteraction(deleteBtnElem, (e) => __awaiter(this, void 0, void 0, function* () {
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 // container of the queue item popup menu - element gets reused for every queue item
@@ -3956,9 +3944,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                 finally {
                     queuePopupCont === null || queuePopupCont === void 0 ? void 0 : queuePopupCont.removeAttribute("data-bytm-hidden");
                 }
-            });
-            deleteBtnElem.addEventListener("click", deleteBtnClicked);
-            deleteBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && deleteBtnClicked(e));
+            }));
             deleteBtnElem.appendChild(imgElem);
         }
         //#SECTION append elements to DOM
@@ -4432,6 +4418,7 @@ const migrations = {
         "rememberSongTimeMinPlayTime",
     ], oldData),
 };
+// TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
 /** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
 function useDefaultConfig(keys, oldData) {
     const newData = Object.assign({}, (oldData !== null && oldData !== void 0 ? oldData : {}));
