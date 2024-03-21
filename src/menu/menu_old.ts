@@ -82,10 +82,10 @@ async function addCfgMenu() {
   linksCont.role = "navigation";
 
   const linkTitlesShort = {
-    discord: "Discord",
     github: "GitHub",
     greasyfork: "GreasyFork",
     openuserjs: "OpenUserJS",
+    discord: "Discord",
   };
 
   const addLink = (imgSrc: string, href: string, title: string, titleKey: keyof typeof linkTitlesShort) => {
@@ -116,8 +116,6 @@ async function addCfgMenu() {
     linksCont.appendChild(anchorElem);
   };
 
-  addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
-
   const links: [name: string, ...Parameters<typeof addLink>][] = [
     ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
     ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
@@ -126,11 +124,12 @@ async function addCfgMenu() {
 
   const hostLink = links.find(([name]) => name === host);
   const otherLinks = links.filter(([name]) => name !== host);
-
   const reorderedLinks = hostLink ? [hostLink, ...otherLinks] : links;
 
   for(const [, ...args] of reorderedLinks)
     addLink(...args);
+
+  addLink(await getResourceUrl("img-discord"), "https://dc.sv443.net/", t("open_discord"), "discord");
 
   const closeElem = document.createElement("img");
   closeElem.classList.add("bytm-menu-close");
