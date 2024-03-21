@@ -1,7 +1,7 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor, type Stringifiable } from "@sv443-network/userutils";
 import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, onSelectorOld, warn, t, resourceToHTMLString } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, resourceToHTMLString, onInteraction } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { openCfgMenu } from "../menu/menu_old";
 import { getFeatures } from "../config";
@@ -39,8 +39,7 @@ export async function addWatermark() {
       exchangeLogo();
   };
 
-  watermark.addEventListener("click", watermarkOpenMenu);
-  watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
+  onInteraction(watermark, watermarkOpenMenu);
 
   onSelectorOld("ytmusic-nav-bar #left-content", {
     listener: (logoElem) => insertAfter(logoElem, watermark),
@@ -118,7 +117,8 @@ export async function addConfigMenuOption(container: HTMLElement) {
   cfgOptItemElem.role = "button";
   cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
-  const cfgOptItemClicked = async (e: MouseEvent | KeyboardEvent) => {
+
+  onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
 
@@ -128,9 +128,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
       openCfgMenu();
     if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
-  };
-  cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
-  cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
+  });
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
@@ -515,6 +513,7 @@ export async function addScrollToActiveBtn() {
 
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
+      linkElem.tabIndex = 0;
       linkElem.className = "ytmusic-player-bar bytm-generic-btn";
       linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
@@ -523,20 +522,19 @@ export async function addScrollToActiveBtn() {
       imgElem.className = "bytm-generic-btn-img";
       imgElem.src = await getResourceUrl("icon-skip_to");
 
-      linkElem.addEventListener("click", (e) => {
+      const scrollToActiveInteraction = () => {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
-
-        e.preventDefault();
-        e.stopImmediatePropagation();
 
         activeItem.scrollIntoView({
           behavior: "smooth",
           block: "center",
           inline: "center",
         });
-      });
+      };
+
+      onInteraction(linkElem, scrollToActiveInteraction);
 
       linkElem.appendChild(imgElem);
       containerElem.appendChild(linkElem);

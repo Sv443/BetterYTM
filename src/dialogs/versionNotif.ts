@@ -1,5 +1,5 @@
 import { host, scriptInfo } from "../constants";
-import { getChangelogMd, parseMarkdown, t } from "../utils";
+import { getChangelogMd, onInteraction, parseMarkdown, t } from "../utils";
 import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, saveFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
@@ -135,20 +135,18 @@ async function renderBody({
   btnUpdate.className = "bytm-btn";
   btnUpdate.tabIndex = 0;
   btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
-  const btnUpdateClicked = () => {
+
+  onInteraction(btnUpdate, () => {
     window.open(pkg.updates[host]);
     verNotifDialog?.close();
-  };
-  btnUpdate.addEventListener("click", btnUpdateClicked);
-  btnUpdate.addEventListener("keydown", (e) => e.key === "Enter" && btnUpdateClicked());
+  });
 
   const btnClose = document.createElement("button");
   btnClose.className = "bytm-btn";
   btnClose.tabIndex = 0;
   btnClose.textContent = t("close_and_ignore_for_24h");
 
-  btnClose.addEventListener("click", () => verNotifDialog?.close());
-  btnClose.addEventListener("keydown", (e) => e.key === "Enter" && verNotifDialog?.close());
+  onInteraction(btnClose, () => verNotifDialog?.close());
 
   btnWrapper.appendChild(btnUpdate);
   btnWrapper.appendChild(btnClose);
