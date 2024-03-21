@@ -112,3 +112,17 @@ function clearNode(element: Element) {
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);
 }
+
+/** Adds interaction listeners to the passed element in an accessible way - set {@linkcode once} to true to remove the listeners after the first interaction */
+export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, once = false) {
+  const proxListener = (e: MouseEvent | KeyboardEvent) => {
+    if(e instanceof KeyboardEvent && !["Enter", " ", "Space", "Spacebar"].includes(e.key))
+      return;
+    e.stopPropagation();
+    once && elem.removeEventListener("click", proxListener);
+    once && elem.removeEventListener("keydown", proxListener);
+    listener(e);
+  };
+  elem.addEventListener("click", proxListener);
+  elem.addEventListener("keydown", proxListener);
+}
