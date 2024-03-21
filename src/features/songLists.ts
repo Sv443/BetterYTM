@@ -1,5 +1,5 @@
 import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onSelectorOld, t, warn } from "../utils";
+import { clearInner, error, getResourceUrl, log, onInteraction, onSelectorOld, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
@@ -110,7 +110,7 @@ async function addQueueButtons(
     lyricsBtnElem.role = "link";
     lyricsBtnElem.tabIndex = 0;
 
-    const lyricsBtnClicked = async (e: MouseEvent | KeyboardEvent) => {
+    onInteraction(lyricsBtnElem, async (e: MouseEvent | KeyboardEvent) => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
@@ -199,10 +199,7 @@ async function addQueueButtons(
       }
 
       lyricsUrl && openInNewTab(lyricsUrl);
-    };
-
-    lyricsBtnElem.addEventListener("click", lyricsBtnClicked);
-    lyricsBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && lyricsBtnClicked(e));
+    });
   }
 
   //#SECTION delete from queue btn
@@ -220,7 +217,7 @@ async function addQueueButtons(
     imgElem.classList.add("bytm-generic-btn-img");
     imgElem.src = deleteIconUrl;
 
-    const deleteBtnClicked = async (e: MouseEvent | KeyboardEvent) => {
+    onInteraction(deleteBtnElem, async (e: MouseEvent | KeyboardEvent) => {
       e.preventDefault();
       e.stopImmediatePropagation();
 
@@ -269,10 +266,7 @@ async function addQueueButtons(
       finally {
         queuePopupCont?.removeAttribute("data-bytm-hidden");
       }
-    };
-
-    deleteBtnElem.addEventListener("click", deleteBtnClicked);
-    deleteBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && deleteBtnClicked(e));
+    });
 
     deleteBtnElem.appendChild(imgElem);
   }

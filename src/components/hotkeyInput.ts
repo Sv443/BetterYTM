@@ -1,6 +1,6 @@
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
-import { t } from "../utils";
+import { onInteraction, t } from "../utils";
 import type { HotkeyObj } from "../types";
 import "./hotkeyInput.css";
 
@@ -62,8 +62,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     resetElem.classList.add("bytm-hidden");
   };
 
-  resetElem.addEventListener("click", resetClicked);
-  resetElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && resetClicked(e));
+  onInteraction(resetElem, resetClicked);
 
   if(initialValue)
     infoElem.innerHTML = getHotkeyInfoHtml(initialValue);

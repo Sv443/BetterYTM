@@ -2,7 +2,7 @@ import { compress, decompress, debounce, isScrollable } from "@sv443-network/use
 import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -137,8 +137,7 @@ async function addCfgMenu() {
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-  closeElem.addEventListener("click", closeCfgMenu);
-  closeElem.addEventListener("keydown", ({ key }) => key === "Enter" && closeCfgMenu());
+  onInteraction(closeElem, closeCfgMenu);
 
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
@@ -340,14 +339,12 @@ async function addCfgMenu() {
             helpElem.role = "button";
             helpElem.tabIndex = 0;
             helpElem.innerHTML = helpElemImgHtml;
-            const helpElemClicked = (e: MouseEvent | KeyboardEvent) => {
+            onInteraction(helpElem, (e: MouseEvent | KeyboardEvent) => {
               e.preventDefault();
               e.stopPropagation();
 
               openHelpDialog(featKey as FeatureKey);
-            };
-            helpElem.addEventListener("click", helpElemClicked);
-            helpElem.addEventListener("keydown", (e) => e.key === "Enter" && helpElemClicked(e));
+            });
           }
           else {
             error(`Couldn't create help button SVG element for feature '${featKey}'`);
@@ -412,7 +409,7 @@ async function addCfgMenu() {
           advCopyHiddenBtn.textContent = t("copy_hidden_value");
           advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
 
-          const copyHiddenClicked = (e: MouseEvent | KeyboardEvent) => {
+          const copyHiddenInteraction = (e: MouseEvent | KeyboardEvent) => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -427,8 +424,7 @@ async function addCfgMenu() {
             }
           };
 
-          advCopyHiddenBtn.addEventListener("click", copyHiddenClicked);
-          advCopyHiddenBtn.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && copyHiddenClicked(e));
+          onInteraction(advCopyHiddenBtn, copyHiddenInteraction);
 
           advCopyHiddenCont = document.createElement("span");
 
@@ -659,15 +655,13 @@ async function addCfgMenu() {
   versionEl.tabIndex = 0;
   versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
   versionEl.textContent = `v${scriptInfo.version} (#${buildNumber})`;
-  const versionElemClicked = async (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(versionEl, async (e: MouseEvent | KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     await openChangelogMenu("cfgMenu");
     closeCfgMenu(undefined, false);
-  };
-  versionEl.addEventListener("click", versionElemClicked);
-  versionEl.addEventListener("keydown", (e) => e.key === "Enter" && versionElemClicked(e));
+  });
 
   subtitleElemCont.appendChild(versionEl);
   titleElem.appendChild(subtitleElemCont);
@@ -805,8 +799,7 @@ async function openHelpDialog(featureKey: FeatureKey) {
     closeElem.tabIndex = 0;
     closeElem.src = await getResourceUrl("img-close");
     closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-    closeElem.addEventListener("click", (e) => closeHelpDialog(e));
-    closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeHelpDialog(e));
+    onInteraction(closeElem, closeHelpDialog);
 
     headerElem.appendChild(titleCont);
     headerElem.appendChild(closeElem);
@@ -944,12 +937,10 @@ async function addExportMenu() {
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-  const closeExportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(closeElem, (e: MouseEvent | KeyboardEvent) => {
     closeExportMenu(e);
     openCfgMenu();
-  };
-  closeElem.addEventListener("click", (e) => closeExportMenuClicked(e));
-  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeExportMenuClicked(e));
+  });
 
   titleCont.appendChild(titleElem);
 
@@ -972,15 +963,14 @@ async function addExportMenu() {
   textAreaElem.value = t("click_to_reveal_sensitive_info");
   textAreaElem.setAttribute("revealed", "false");
 
-  const textAreaClicked = async () => {
+  const textAreaInteraction = async () => {
     const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
     lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
     textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "string") : cfgString;
     textAreaElem.setAttribute("revealed", "true");
   };
 
-  textAreaElem.addEventListener("click", textAreaClicked);
-  textAreaElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && textAreaClicked());
+  onInteraction(textAreaElem, textAreaInteraction);
 
   siteEvents.on("configChanged", async (data) => {
     const textAreaElem = document.querySelector<HTMLTextAreaElement>("#bytm-export-menu-textarea");
@@ -1008,7 +998,7 @@ async function addExportMenu() {
   copiedTextElem.textContent = t("copied");
   copiedTextElem.style.display = "none";
 
-  const copyBtnClicked = async (evt: MouseEvent | KeyboardEvent) => {
+  onInteraction(copyBtnElem, async (evt: MouseEvent | KeyboardEvent) => {
     evt?.bubbles && evt.stopPropagation();
     GM.setClipboard(String(evt?.shiftKey || evt?.ctrlKey ? lastUncompressedCfgString : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
     copiedTextElem.style.display = "inline-block";
@@ -1018,9 +1008,7 @@ async function addExportMenu() {
         copiedTxtTimeout = undefined;
       }, 3000) as unknown as number;
     }
-  };
-  copyBtnElem.addEventListener("click", copyBtnClicked);
-  copyBtnElem.addEventListener("keydown", (e) => e.key === "Enter" && copyBtnClicked(e));
+  });
 
   // flex-direction is row-reverse
   footerElem.appendChild(copyBtnElem);
@@ -1142,12 +1130,10 @@ async function addImportMenu() {
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-  const closeImportMenuClicked = (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(closeElem, (e: MouseEvent | KeyboardEvent) => {
     closeImportMenu(e);
     openCfgMenu();
-  };
-  closeElem.addEventListener("click", closeImportMenuClicked);
-  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeImportMenuClicked(e));
+  });
 
   titleCont.appendChild(titleElem);
 
@@ -1356,13 +1342,11 @@ async function addChangelogMenu() {
   closeElem.tabIndex = 0;
   closeElem.src = await getResourceUrl("img-close");
   closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-  const closeChangelogMenuClicked = (e: MouseEvent | KeyboardEvent) => {
+  onInteraction(closeElem, (e: MouseEvent | KeyboardEvent) => {
     closeChangelogMenu(e);
     if(menuBgElem.dataset.returnTo === "cfgMenu")
       openCfgMenu();
-  };
-  closeElem.addEventListener("click", closeChangelogMenuClicked);
-  closeElem.addEventListener("keydown", (e) => e.key === "Enter" && closeChangelogMenuClicked(e));
+  });
 
   titleCont.appendChild(titleElem);
 
