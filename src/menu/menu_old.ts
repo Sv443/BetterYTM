@@ -108,10 +108,8 @@ async function addCfgMenu() {
     extendedAnchorEl.ariaLabel = extendedAnchorEl.title = title;
 
     const imgElem = document.createElement("img");
-    imgElem.className = "bytm-menu-img";
+    imgElem.classList.add("bytm-menu-img");
     imgElem.src = imgSrc;
-    imgElem.style.width = "32px";
-    imgElem.style.height = "32px";
 
     anchorElem.appendChild(imgElem);
     anchorElem.appendChild(extendedAnchorEl);

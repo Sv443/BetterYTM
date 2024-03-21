@@ -148,7 +148,7 @@
   height: 32px;
   border-radius: 50%;
   padding: 0px;
-  transform: initial;
+  transform: translateY(0px);
   transition: transform 0.15s ease-out, padding 0.15s ease-out;
 }
 
