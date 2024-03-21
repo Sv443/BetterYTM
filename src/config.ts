@@ -54,6 +54,7 @@ export const migrations: ConfigMigrationsDict = {
     "rememberSongTimeMinPlayTime",
   ], oldData),
 };
+// TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
 
 /** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
 function useDefaultConfig(keys: (keyof typeof featInfo)[], oldData?: FeatureConfig): Partial<FeatureConfig> {
