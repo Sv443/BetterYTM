@@ -279,6 +279,8 @@ async function getRequireDirectives() {
   const require = JSON.parse(requireFile) as RequireObj[];
 
   for(const entry of require) {
+    if("link" in entry && entry.link === true)
+      continue;
     "pkgName" in entry && directives.push(getRequireEntry(entry));
     "url" in entry && directives.push(`// @require           ${entry.url}`);
   }

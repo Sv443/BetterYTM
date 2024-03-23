@@ -37,11 +37,21 @@ The keys of the object are the locale codes, and the values are the locale objec
 
 ### [`require.json`](require.json)
 This file contains the npm libraries that are loaded into the runtime through the `@require` userscript directive.  
-It's an array of objects, which each have the following properties:  
+It's an array of objects, which each have one of the following sets of properties:  
   
-| Property  | Type      | Description                                                                           |
-| :-------- | :-------- | :------------------------------------------------------------------------------------ |
-| `pkgName` | `string`  | The name of the npm package, as in `npm i <pkgName>`                                  |
-| `path`    | `string`  | The path to the file that should be loaded, relative to the library root dir          |
-| `global`  | `string`  | The name of the global variable that the library exports                              |
-| `[link]`  | `boolean` | Whether `npm link` is active and the library should instead be included in the bundle |
+Using npm and a CDN:
+| Property    | Type      | Description                                                                           |
+| :---------- | :-------- | :------------------------------------------------------------------------------------ |
+| `pkgName`   | `string`  | The name of the npm package, as in `npm i <pkgName>`                                  |
+| `path`      | `string`  | The path to the file that should be loaded, relative to the library root dir          |
+| `global`    | `string`  | The name of the global variable that the library exports                              |
+| `[baseUrl]` | `string`  | Base URL of the CDN to use - `https://cdn.jsdelivr.net/npm/` by default               |
+| `[link]`    | `boolean` | Whether `npm link` is active and the library should instead be included in the bundle |
+
+
+Using a direct URL:
+| Property | Type      | Description                                                                           |
+| :------- | :-------- | :------------------------------------------------------------------------------------ |
+| `url`    | `string`  | URL to the file to include                                                            |
+| `global` | `string`  | The name of the global variable that the library exports                              |
+| `[link]` | `boolean` | Whether `npm link` is active and the library should instead be included in the bundle |
