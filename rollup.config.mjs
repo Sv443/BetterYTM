@@ -6,6 +6,15 @@ import pluginCss from "rollup-plugin-import-css";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
 
+import requireJson from "./assets/require.json" assert { type: "json" };
+
+const globalPkgs = requireJson.reduce((acc, pkg) => {
+  acc[pkg.pkgName] = pkg.global;
+  return acc;
+}, {});
+
+const externalPkgs = requireJson.map(pkg => pkg.pkgName);
+
 const outputDir = "dist";
 const outputFile = getOutputFileName();
 
@@ -25,6 +34,8 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
   const passCliArgsStr = Object.entries(passCliArgs).map(([key, value]) => `--${key}=${value}`).join(" ");
 
   const { mode, suffix } = passCliArgs;
+
+  const linkedPkgs = requireJson.filter((pkg) => pkg.link === true);
 
   /** @type {import("rollup").RollupOptions} */
   const config = {
@@ -52,11 +63,9 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       format: "iife",
       sourcemap: mode === "development",
       compact: mode === "development",
-      globals: {
-        "@sv443-network/userutils": "UserUtils",
-        "fuse.js": "Fuse",
-        "marked": "marked",
-      },
+      globals: linkedPkgs.length > 0 ? Object.fromEntries(
+        Object.entries(globalPkgs).filter(([key]) => !linkedPkgs.some((pkg) => pkg.pkgName === key))
+      ) : globalPkgs,
     },
     onwarn(warning) {
       // ignore circular dependency warnings
@@ -65,11 +74,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         console.error(`\x1b[33m(!)\x1b[0m ${message}\n`, rest);
       }
     },
-    external: [
-      "@sv443-network/userutils",
-      "fuse.js",
-      "marked",
-    ],
+    external: linkedPkgs.length > 0 ? externalPkgs.filter(p => !linkedPkgs.map(lp => lp.pkgName).includes(p)) : externalPkgs,
   };
 
   return config;

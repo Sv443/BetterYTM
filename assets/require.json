@@ -1,14 +1,18 @@
 [
   {
     "pkgName": "@sv443-network/userutils",
-    "path": "dist/index.global.js"
+    "path": "dist/index.global.js",
+    "global": "UserUtils",
+    "link": true
   },
   {
     "pkgName": "fuse.js",
-    "path": "dist/fuse.basic.js"
+    "path": "dist/fuse.basic.js",
+    "global": "Fuse"
   },
   {
     "pkgName": "marked",
-    "path": "lib/marked.umd.js"
+    "path": "lib/marked.umd.js",
+    "global": "marked"
   }
 ]
