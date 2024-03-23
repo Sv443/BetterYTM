@@ -143,8 +143,6 @@
     "feature_helptext_rememberSongTime-1": "Às vezes, ao recarregar a página ou restaurá-la após fechá-la acidentalmente, você deseja retomar a audição no mesmo ponto. Este recurso permite que você faça isso.\nPara registrar o tempo da música, você precisa reproduzi-la por %1 segundo, então seu tempo será lembrado e restaurável por um curto período.",
     "feature_helptext_rememberSongTime-n": "Às vezes, ao recarregar a página ou restaurá-la após fechá-la acidentalmente, você deseja retomar a audição no mesmo ponto. Este recurso permite que você faça isso.\nPara registrar o tempo da música, você precisa reproduzi-la por %1 segundos, então seu tempo será lembrado e restaurável por um curto período.",
     "feature_desc_rememberSongTimeSites": "Em quais sites o tempo da música deve ser lembrado e restaurado?",
-    "feature_desc_lockVolume": "Forçar o controle deslizante de volume a permanecer em um nível específico",
-    "feature_desc_lockVolumeLevel": "Em que nível de volume bloquear o controle deslizante?",
 
     "feature_desc_arrowKeySupport": "Use as teclas de seta para pular para a próxima ou anterior música na fila",
     "feature_helptext_arrowKeySupport": "Normalmente, você só pode pular para frente e para trás por um intervalo fixo de 10 segundos com as teclas \"H\" e \"L\". Este recurso permite que você use as teclas de seta também.\nPara alterar a quantidade de segundos a pular, use a opção abaixo.",

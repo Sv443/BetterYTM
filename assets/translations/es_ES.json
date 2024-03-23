@@ -143,8 +143,6 @@
     "feature_helptext_rememberSongTime-1": "A veces, al volver a cargar la página o restaurarla después de cerrarla accidentalmente, desea reanudar la escucha en el mismo punto. Esta función le permite hacer eso.\nPara registrar el tiempo de la canción, debe reproducirla durante %1 segundo, luego su tiempo se recordará y se podrá restaurar por un corto tiempo.",
     "feature_helptext_rememberSongTime-n": "A veces, al volver a cargar la página o restaurarla después de cerrarla accidentalmente, desea reanudar la escucha en el mismo punto. Esta función le permite hacer eso.\nPara registrar el tiempo de la canción, debe reproducirla durante %1 segundos, luego su tiempo se recordará y se podrá restaurar por un corto tiempo.",
     "feature_desc_rememberSongTimeSites": "¿En qué sitios se debe recordar y restaurar el tiempo de la canción?",
-    "feature_desc_lockVolume": "Forzar el control deslizante de volumen para que se mantenga en un nivel específico",
-    "feature_desc_lockVolumeLevel": "A qué nivel de volumen bloquear el control deslizante de volumen",
 
     "feature_desc_arrowKeySupport": "Use las teclas de flecha para saltar hacia adelante y hacia atrás en la canción que se está reproduciendo actualmente",
     "feature_helptext_arrowKeySupport": "Normalmente solo puede saltar hacia adelante y hacia atrás en un intervalo fijo de 10 segundos con las teclas \"H\" y \"L\". Esta función le permite usar las teclas de flecha también.\nPara cambiar la cantidad de segundos para saltar, use la opción a continuación.",
