@@ -48,12 +48,12 @@ export const migrations: ConfigMigrationsDict = {
     "geniUrlBase", "geniUrlToken",
     "lyricsCacheMaxSize", "lyricsCacheTTL",
     "clearLyricsCache", "advancedMode",
-    "lockVolume", "lockVolumeLevel",
     "checkVersionNow", "advancedLyricsFilter",
     "rememberSongTimeDuration", "rememberSongTimeReduction",
-    "rememberSongTimeMinPlayTime",
+    "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
+    "setInitialTabVolume", "initialTabVolumeLevel",
   ], oldData),
-};
+} as const satisfies ConfigMigrationsDict;
 // TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
 
 /** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */

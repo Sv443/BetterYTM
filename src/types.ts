@@ -109,6 +109,7 @@ export type FeatureKey = keyof FeatureConfig;
 
 export type FeatureCategory =
   | "layout"
+  | "volume"
   | "songLists"
   | "behavior"
   | "input"
@@ -205,14 +206,6 @@ export type FeatureInfo = Record<
 /** Feature configuration */
 export interface FeatureConfig {
   //#SECTION layout
-  /** Add a percentage label to the volume slider */
-  volumeSliderLabel: boolean;
-  /** The width of the volume slider in pixels */
-  volumeSliderSize: number;
-  /** Volume slider sensitivity - the smaller this number, the finer the volume control */
-  volumeSliderStep: number;
-  /** Volume slider scroll wheel sensitivity */
-  volumeSliderScrollStep: number;
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
   /** Remove the "si" tracking parameter from links in the share popup */
@@ -223,6 +216,22 @@ export interface FeatureConfig {
   fixSpacing: boolean;
   /** Remove the \"Upgrade\" / YT Music Premium tab */
   removeUpgradeTab: boolean;
+
+  //#SECTION volume
+  /** Add a percentage label to the volume slider */
+  volumeSliderLabel: boolean;
+  /** The width of the volume slider in pixels */
+  volumeSliderSize: number;
+  /** Volume slider sensitivity - the smaller this number, the finer the volume control */
+  volumeSliderStep: number;
+  /** Volume slider scroll wheel sensitivity */
+  volumeSliderScrollStep: number;
+  /** Whether the volume should be locked to the same level across all tabs (changing in one changes in all others too) */
+  volumeSharedBetweenTabs: boolean;
+  /** Whether to set an initial volume level for each new session */
+  setInitialTabVolume: boolean;
+  /** The initial volume level to set for each new session */
+  initialTabVolumeLevel: number;
 
   //#SECTION song lists
   /** Add a button to each song in the queue to quickly open its lyrics page */
@@ -249,10 +258,6 @@ export interface FeatureConfig {
   rememberSongTimeReduction: number;
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
-  /** Lock the volume slider at a specific level */
-  lockVolume: boolean;
-  /** The volume level to lock the slider at */
-  lockVolumeLevel: number;
 
   //#SECTION input
   /** Arrow keys skip forwards and backwards */

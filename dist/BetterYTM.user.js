@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d0ddcd5
+// @icon              http://localhost:8710/assets/images/logo/logo_48.png?b=e29c6443-e251-4862-b5b7-00defc20568b
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,36 +34,36 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=d0ddcd5
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=d0ddcd5
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=d0ddcd5
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=d0ddcd5
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=d0ddcd5
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=d0ddcd5
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=d0ddcd5
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=d0ddcd5
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=d0ddcd5
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=d0ddcd5
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=d0ddcd5
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=d0ddcd5
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=d0ddcd5
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=d0ddcd5
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d0ddcd5
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=d0ddcd5
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=d0ddcd5
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=d0ddcd5
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=d0ddcd5
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=d0ddcd5
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=d0ddcd5
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=d0ddcd5
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=d0ddcd5
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=d0ddcd5
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=d0ddcd5
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=d0ddcd5
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=d0ddcd5
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=d0ddcd5
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=d0ddcd5
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          doc-changelog           http://localhost:8710/changelog.md?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-lock               http://localhost:8710/assets/icons/lock.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-close               http://localhost:8710/assets/images/close.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=e29c6443-e251-4862-b5b7-00defc20568b
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
@@ -252,7 +252,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d0ddcd5";
+const buildNumberRaw = "be7e60f";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -265,6 +265,18 @@ const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
 const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw); // asserted as generic string instead of literal
 /** Default compression format used throughout BYTM */
 const compressionFormat = "deflate-raw";
+typeof sessionStorage !== "undefined"
+    && (() => {
+        try {
+            const key = `_bytm_${UserUtils.randomId(4)}`;
+            sessionStorage.setItem(key, "test");
+            sessionStorage.removeItem(key);
+            return true;
+        }
+        catch (_a) {
+            return false;
+        }
+    })();
 /**
  * How much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
@@ -416,9 +428,9 @@ const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
 /** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
 const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 let canCompress$1 = true;
-const lyricsCacheMgr = new UserUtils.ConfigManager({
+const lyricsCacheMgr = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
-    defaultConfig: {
+    defaultData: {
         cache: [],
     },
     formatVersion: 1,
@@ -1208,7 +1220,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^5.0.1",
+	"@sv443-network/userutils": "^6.0.0",
 	"fuse.js": "^7.0.0",
 	marked: "^12.0.0",
 	nanoevents: "^9.0.0"
@@ -1447,6 +1459,176 @@ function compareVersions(a, b) {
             return -1;
     }
     return 0;
+}//#MARKER init
+/** Initializes all volume-related features */
+function initVolumeFeatures() {
+    return __awaiter(this, void 0, void 0, function* () {
+        // not technically an input element but behaves pretty much the same
+        onSelectorOld("tp-yt-paper-slider#volume-slider", {
+            listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
+                const volSliderCont = document.createElement("div");
+                volSliderCont.id = "bytm-vol-slider-cont";
+                if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
+                    initScrollStep(volSliderCont, sliderElem);
+                UserUtils.addParent(sliderElem, volSliderCont);
+                if (typeof getFeatures().volumeSliderSize === "number")
+                    setVolSliderSize();
+                if (getFeatures().volumeSliderLabel)
+                    yield addVolumeSliderLabel(sliderElem, volSliderCont);
+                setVolSliderStep(sliderElem);
+                if (getFeatures().volumeSharedBetweenTabs) {
+                    sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+                    setInterval(checkSharedVolume, 500);
+                    checkSharedVolume();
+                }
+                if (getFeatures().setInitialTabVolume)
+                    setInitialTabVolume(sliderElem);
+            }),
+        });
+    });
+}
+//#MARKER scroll step
+/** Initializes the volume slider scroll step features */
+function initScrollStep(volSliderCont, sliderElem) {
+    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+        volSliderCont.addEventListener(evtName, (e) => {
+            var _a, _b;
+            e.preventDefault();
+            // cancels all the other events that would be fired
+            e.stopImmediatePropagation();
+            const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
+            const volumeDir = -Math.sign(delta);
+            const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
+            sliderElem.value = newVolume;
+            sliderElem.setAttribute("aria-valuenow", newVolume);
+            // make the site actually change the volume
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+        }, {
+            // takes precedence over the slider's own event listener
+            capture: true,
+        });
+    }
+}
+// #MARKER volume slider
+//#SECTION label
+/** Adds a percentage label to the volume slider and tooltip */
+function addVolumeSliderLabel(sliderElem, sliderContainer) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const labelContElem = document.createElement("div");
+        labelContElem.id = "bytm-vol-slider-label";
+        const getLabel = (value) => `${value}%`;
+        const labelElem = document.createElement("div");
+        labelElem.classList.add("label");
+        labelElem.textContent = getLabel(sliderElem.value);
+        // prevent video from minimizing
+        labelContElem.addEventListener("click", (e) => e.stopPropagation());
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+        const labelFull = getLabelText(sliderElem);
+        sliderContainer.setAttribute("title", labelFull);
+        sliderElem.setAttribute("title", labelFull);
+        sliderElem.setAttribute("aria-valuetext", labelFull);
+        const updateLabel = () => {
+            const labelFull = getLabelText(sliderElem);
+            sliderContainer.setAttribute("title", labelFull);
+            sliderElem.setAttribute("title", labelFull);
+            sliderElem.setAttribute("aria-valuetext", labelFull);
+            const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
+            if (labelElem2)
+                labelElem2.textContent = getLabel(sliderElem.value);
+        };
+        sliderElem.addEventListener("change", () => updateLabel());
+        siteEvents.on("configChanged", () => {
+            updateLabel();
+        });
+        onSelectorOld("#bytm-vol-slider-cont", {
+            listener: (volumeCont) => {
+                labelContElem.appendChild(labelElem);
+                volumeCont.appendChild(labelContElem);
+            },
+        });
+        let lastSliderVal = Number(sliderElem.value);
+        // show label if hovering over slider or slider is focused
+        const sliderHoverObserver = new MutationObserver(() => {
+            if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+                labelContElem.classList.add("bytm-visible");
+            else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+                labelContElem.classList.remove("bytm-visible");
+            if (Number(sliderElem.value) !== lastSliderVal) {
+                lastSliderVal = Number(sliderElem.value);
+                updateLabel();
+            }
+        });
+        sliderHoverObserver.observe(sliderElem, {
+            attributes: true,
+        });
+    });
+}
+//#SECTION size
+/** Sets the volume slider to a set size */
+function setVolSliderSize() {
+    const { volumeSliderSize: size } = getFeatures();
+    if (typeof size !== "number" || isNaN(Number(size)))
+        return;
+    UserUtils.addGlobalStyle(`\
+#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
+  width: ${size}px !important;
+}`).id = "bytm-style-vol-slider-size";
+}
+//#SECTION step
+/** Sets the `step` attribute of the volume slider */
+function setVolSliderStep(sliderElem) {
+    sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
+}
+//#MARKER shared volume
+/** Saves the shared volume level to persistent storage */
+function sharedVolumeChanged(vol) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield GM.setValue("bytm-shared-volume", String(vol));
+        }
+        catch (err) {
+            error("Couldn't save shared volume level due to an error:", err);
+        }
+    });
+}
+let ignoreVal = -1;
+let lastCheckedSharedVolume = -1;
+/** Checks if the shared volume has changed and updates the volume slider accordingly */
+function checkSharedVolume() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const vol = yield GM.getValue("bytm-shared-volume");
+            console.log(">checkshared", vol, lastCheckedSharedVolume);
+            if (vol && lastCheckedSharedVolume !== Number(vol)) {
+                if (ignoreVal === Number(vol))
+                    return;
+                lastCheckedSharedVolume = Number(vol);
+                const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+                if (sliderElem) {
+                    sliderElem.value = String(vol);
+                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            }
+        }
+        catch (err) {
+            error("Couldn't check for shared volume level due to an error:", err);
+        }
+    });
+}
+function volumeSharedBetweenTabsDisabled() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield GM.deleteValue("bytm-shared-volume");
+    });
+}
+//#MARKER initial volume
+/** Sets the volume slider to a set volume level when the session starts */
+function setInitialTabVolume(sliderElem) {
+    const initialVol = getFeatures().initialTabVolumeLevel;
+    if (getFeatures().volumeSharedBetweenTabs) {
+        lastCheckedSharedVolume = ignoreVal = initialVol;
+    }
+    sliderElem.value = String(initialVol);
+    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
 }//#MARKER create menu elements
 let isCfgMenuAdded = false;
 let isCfgMenuOpen = false;
@@ -2618,11 +2800,7 @@ function openChangelogMenu(returnTo = "cfgMenu") {
         menuBg.style.visibility = "visible";
         menuBg.style.display = "block";
     });
-}let features$2;
-function setLayoutConfig(feats) {
-    features$2 = feats;
-}
-//#MARKER BYTM-Config buttons
+}//#MARKER BYTM-Config buttons
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
 function addWatermark() {
@@ -2748,125 +2926,6 @@ function removeUpgradeTab() {
             },
         });
     });
-}
-//#MARKER volume slider
-function initVolumeFeatures() {
-    return __awaiter(this, void 0, void 0, function* () {
-        // not technically an input element but behaves pretty much the same
-        onSelectorOld("tp-yt-paper-slider#volume-slider", {
-            listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
-                const volSliderCont = document.createElement("div");
-                volSliderCont.id = "bytm-vol-slider-cont";
-                if (features$2.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
-                    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
-                        volSliderCont.addEventListener(evtName, (e) => {
-                            var _a, _b;
-                            e.preventDefault();
-                            // cancels all the other events that would be fired
-                            e.stopImmediatePropagation();
-                            const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
-                            const volumeDir = -Math.sign(delta);
-                            const newVolume = String(Number(sliderElem.value) + (features$2.volumeSliderScrollStep * volumeDir));
-                            sliderElem.value = newVolume;
-                            sliderElem.setAttribute("aria-valuenow", newVolume);
-                            // make the site actually change the volume
-                            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-                        }, {
-                            // takes precedence over the slider's own event listener
-                            capture: true,
-                        });
-                    }
-                }
-                UserUtils.addParent(sliderElem, volSliderCont);
-                if (typeof features$2.volumeSliderSize === "number")
-                    setVolSliderSize();
-                if (features$2.volumeSliderLabel)
-                    yield addVolumeSliderLabel(sliderElem, volSliderCont);
-                setVolSliderStep(sliderElem);
-            }),
-        });
-    });
-}
-/** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem, sliderContainer) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const labelContElem = document.createElement("div");
-        labelContElem.id = "bytm-vol-slider-label";
-        const getLabel = (value) => `${getFeatures().lockVolume ? getFeatures().lockVolumeLevel : value}%`;
-        const labelElem = document.createElement("div");
-        labelElem.classList.add("label");
-        labelElem.textContent = getLabel(sliderElem.value);
-        // prevent video from minimizing
-        labelContElem.addEventListener("click", (e) => e.stopPropagation());
-        const getLabelText = (slider) => { var _a; return t("volume_tooltip", getFeatures().lockVolume ? getFeatures().lockVolumeLevel : slider.value, (_a = features$2.volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
-        const labelFull = getLabelText(sliderElem);
-        sliderContainer.setAttribute("title", labelFull);
-        sliderElem.setAttribute("title", labelFull);
-        sliderElem.setAttribute("aria-valuetext", labelFull);
-        const updateLabel = () => {
-            const labelFull = getLabelText(sliderElem);
-            sliderContainer.setAttribute("title", labelFull);
-            sliderElem.setAttribute("title", labelFull);
-            sliderElem.setAttribute("aria-valuetext", labelFull);
-            const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
-            if (labelElem2)
-                labelElem2.textContent = getLabel(sliderElem.value);
-        };
-        let lockIconElem;
-        const lockIconHtml = yield resourceToHTMLString("icon-lock");
-        if (getFeatures().lockVolume && lockIconHtml) {
-            lockIconElem = document.createElement("span");
-            lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
-            lockIconElem.innerHTML = lockIconHtml;
-        }
-        else {
-            lockIconElem = document.createElement("div");
-            lockIconElem.textContent = " ";
-            lockIconElem.style.minWidth = "32px";
-        }
-        sliderElem.addEventListener("change", () => updateLabel());
-        siteEvents.on("configChanged", () => {
-            updateLabel();
-            if (lockIconElem)
-                lockIconElem.title = lockIconElem.ariaLabel = t("volume_locked", getFeatures().lockVolumeLevel);
-        });
-        onSelectorOld("#bytm-vol-slider-cont", {
-            listener: (volumeCont) => {
-                lockIconElem && labelContElem.appendChild(lockIconElem);
-                labelContElem.appendChild(labelElem);
-                volumeCont.appendChild(labelContElem);
-            },
-        });
-        let lastSliderVal = Number(sliderElem.value);
-        // show label if hovering over slider or slider is focused
-        const sliderHoverObserver = new MutationObserver(() => {
-            if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-                labelContElem.classList.add("bytm-visible");
-            else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-                labelContElem.classList.remove("bytm-visible");
-            if (Number(sliderElem.value) !== lastSliderVal) {
-                lastSliderVal = Number(sliderElem.value);
-                updateLabel();
-            }
-        });
-        sliderHoverObserver.observe(sliderElem, {
-            attributes: true,
-        });
-    });
-}
-/** Sets the volume slider to a set size */
-function setVolSliderSize() {
-    const { volumeSliderSize: size } = features$2;
-    if (typeof size !== "number" || isNaN(Number(size)))
-        return;
-    UserUtils.addGlobalStyle(`\
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
-  width: ${size}px !important;
-}`).id = "bytm-style-vol-slider-size";
-}
-/** Sets the `step` attribute of the volume slider */
-function setVolSliderStep(sliderElem) {
-    sliderElem.setAttribute("step", String(features$2.volumeSliderStep));
 }
 //#MARKER anchor improvements
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
@@ -3248,58 +3307,6 @@ function disableDarkReader() {
         document.head.appendChild(metaElem);
         info("Sent hint to Dark Reader to disable itself");
     }
-}
-//#MARKER lock volume
-let volumeSliderObserverActive = false;
-let sliderElem;
-function overrideVolValues() {
-    if (!sliderElem || !getFeatures().lockVolume)
-        return;
-    volumeSliderObserverActive = false;
-    setTimeout(() => {
-        const vidElem = document.querySelector(videoSelector);
-        if (vidElem)
-            vidElem.volume = getFeatures().lockVolumeLevel / 100;
-        if (!sliderElem) {
-            volumeSliderObserverActive = true;
-            return;
-        }
-        sliderElem.value = String(getFeatures().lockVolumeLevel);
-        sliderElem.setAttribute("aria-valuenow", String(getFeatures().lockVolumeLevel));
-        const knobElem = document.querySelector("#volume-slider #sliderKnobContainer #sliderKnob");
-        if (knobElem)
-            knobElem.style.left = `${getFeatures().lockVolumeLevel}%`;
-        const labelElem = document.querySelector("#bytm-vol-slider-label .label");
-        const newLabelContent = `${getFeatures().lockVolumeLevel}%`;
-        if (labelElem && labelElem.textContent !== newLabelContent)
-            labelElem.textContent = newLabelContent;
-        volumeSliderObserverActive = true;
-    }, 10);
-}
-/** Locks the volume slider at a specific level */
-function enableLockVolume() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (!volumeSliderObserverActive)
-                    return;
-                if (mutation.target.id === "sliderBar" && mutation.type === "attributes") {
-                    if (mutation.attributeName === "value" || mutation.attributeName === "aria-valuenow")
-                        overrideVolValues();
-                }
-            }
-        });
-        onSelectorOld("#volume-slider tp-yt-paper-progress#sliderBar", {
-            listener: (elem) => {
-                sliderElem = elem;
-                overrideVolValues();
-                volumeSliderObserverActive = true;
-                observer.observe(elem, {
-                    attributeFilter: ["value", "aria-valuenow"],
-                });
-            }
-        });
-    });
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 let features$1;
 function setInputConfig(feats) {
@@ -3965,8 +3972,9 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
 /** Decoration elements that can be added next to the label */
 const adornments = {
     advanced: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
-    experimental: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}">${(_b = yield resourceToHTMLString("icon-experimental")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
+    experimental: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}" aria-label="${t("experimental_feature")}" role="alert">${(_b = yield resourceToHTMLString("icon-experimental")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
     globe: () => __awaiter(void 0, void 0, void 0, function* () { var _c; return (_c = yield resourceToHTMLString("icon-globe")) !== null && _c !== void 0 ? _c : ""; }),
+    warning: (text) => __awaiter(void 0, void 0, void 0, function* () { var _d; return `<span class="bytm-warning-icon bytm-adorn-icon" title="${text}" aria-label="${text}" role="alert">${(_d = yield resourceToHTMLString("icon-error")) !== null && _d !== void 0 ? _d : ""}</span>`; }),
 };
 //#MARKER features
 /**
@@ -4003,44 +4011,6 @@ const adornments = {
  */
 const featInfo = {
     //#SECTION layout
-    volumeSliderLabel: {
-        type: "toggle",
-        category: "layout",
-        default: true,
-        enable: noopTODO,
-        disable: noopTODO,
-    },
-    volumeSliderSize: {
-        type: "number",
-        category: "layout",
-        min: 50,
-        max: 500,
-        step: 5,
-        default: 150,
-        unit: "px",
-        enable: noopTODO,
-        change: noopTODO,
-    },
-    volumeSliderStep: {
-        type: "slider",
-        category: "layout",
-        min: 1,
-        max: 25,
-        default: 2,
-        unit: "%",
-        enable: noopTODO,
-        change: noopTODO,
-    },
-    volumeSliderScrollStep: {
-        type: "slider",
-        category: "layout",
-        min: 1,
-        max: 25,
-        default: 10,
-        unit: "%",
-        enable: noopTODO,
-        change: noopTODO,
-    },
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
@@ -4074,6 +4044,72 @@ const featInfo = {
         category: "layout",
         default: true,
         enable: noopTODO,
+    },
+    //#SECTION volume
+    volumeSliderLabel: {
+        type: "toggle",
+        category: "volume",
+        default: true,
+        enable: noopTODO,
+        disable: noopTODO,
+    },
+    volumeSliderSize: {
+        type: "number",
+        category: "volume",
+        min: 50,
+        max: 500,
+        step: 5,
+        default: 150,
+        unit: "px",
+        enable: noopTODO,
+        change: noopTODO,
+    },
+    volumeSliderStep: {
+        type: "slider",
+        category: "volume",
+        min: 1,
+        max: 25,
+        default: 2,
+        unit: "%",
+        enable: noopTODO,
+        change: noopTODO,
+    },
+    volumeSliderScrollStep: {
+        type: "slider",
+        category: "volume",
+        min: 1,
+        max: 25,
+        default: 10,
+        unit: "%",
+        enable: noopTODO,
+        change: noopTODO,
+    },
+    volumeSharedBetweenTabs: {
+        type: "toggle",
+        category: "volume",
+        default: false,
+        enable: noopTODO,
+        disable: () => volumeSharedBetweenTabsDisabled,
+    },
+    setInitialTabVolume: {
+        type: "toggle",
+        category: "volume",
+        default: false,
+        enable: noopTODO,
+        disable: noopTODO,
+        textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
+    },
+    initialTabVolumeLevel: {
+        type: "slider",
+        category: "volume",
+        min: 0,
+        max: 100,
+        step: 1,
+        default: 100,
+        unit: "%",
+        enable: noopTODO,
+        change: noopTODO,
+        textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
     //#SECTION song lists
     lyricsQueueButton: {
@@ -4180,24 +4216,6 @@ const featInfo = {
         advanced: true,
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
-    },
-    lockVolume: {
-        type: "toggle",
-        category: "behavior",
-        default: false,
-        enable: () => noopTODO,
-        disable: () => noopTODO,
-    },
-    lockVolumeLevel: {
-        type: "slider",
-        category: "behavior",
-        min: 0,
-        max: 100,
-        step: 1,
-        default: 100,
-        unit: "%",
-        enable: noop,
-        change: () => noopTODO,
     },
     //#SECTION input
     arrowKeySupport: {
@@ -4375,8 +4393,6 @@ const featInfo = {
         textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     },
 };
-function noop() {
-}
 function noopTODO() {
 }/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 5;
@@ -4412,10 +4428,10 @@ const migrations = {
         "geniUrlBase", "geniUrlToken",
         "lyricsCacheMaxSize", "lyricsCacheTTL",
         "clearLyricsCache", "advancedMode",
-        "lockVolume", "lockVolumeLevel",
         "checkVersionNow", "advancedLyricsFilter",
         "rememberSongTimeDuration", "rememberSongTimeReduction",
-        "rememberSongTimeMinPlayTime",
+        "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
+        "setInitialTabVolume", "initialTabVolumeLevel",
     ], oldData),
 };
 // TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
@@ -4430,57 +4446,57 @@ function useDefaultConfig(keys, oldData) {
 function getFeatureDefault(key) {
     return featInfo[key].default;
 }
-const defaultConfig = Object.keys(featInfo)
+const defaultData = Object.keys(featInfo)
     .reduce((acc, key) => {
     acc[key] = featInfo[key].default;
     return acc;
 }, {});
 let canCompress = true;
-const cfgMgr = new UserUtils.ConfigManager({
+const bytmCfgStore = new UserUtils.DataStore({
     id: "bytm-config",
     formatVersion,
-    defaultConfig,
+    defaultData,
     migrations,
     encodeData: (data) => canCompress ? UserUtils.compress(data, compressionFormat, "string") : data,
     decodeData: (data) => canCompress ? UserUtils.decompress(data, compressionFormat, "string") : data,
 });
-/** Initializes the ConfigManager instance and loads persistent data into memory */
+/** Initializes the DataStore instance and loads persistent data into memory */
 function initConfig() {
     return __awaiter(this, void 0, void 0, function* () {
         canCompress = yield compressionSupported();
-        const oldFmtVer = Number(yield GM.getValue(`_uucfgver-${cfgMgr.id}`, NaN));
-        const data = yield cfgMgr.loadData();
-        log(`Initialized ConfigManager (format version = ${cfgMgr.formatVersion})`);
+        const oldFmtVer = Number(yield GM.getValue(`_uucfgver-${bytmCfgStore.id}`, NaN));
+        const data = yield bytmCfgStore.loadData();
+        log(`Initialized DataStore (format version = ${bytmCfgStore.formatVersion})`);
         if (isNaN(oldFmtVer))
             info("Config data initialized with default values");
-        else if (oldFmtVer !== cfgMgr.formatVersion)
-            info(`Config data migrated from version ${oldFmtVer} to ${cfgMgr.formatVersion}`);
+        else if (oldFmtVer !== bytmCfgStore.formatVersion)
+            info(`Config data migrated from version ${oldFmtVer} to ${bytmCfgStore.formatVersion}`);
         emitInterface("bytm:configReady", getFeaturesInterface());
         return Object.assign({}, data);
     });
 }
 /** Returns the current feature config from the in-memory cache as a copy */
 function getFeatures() {
-    return cfgMgr.getData();
+    return bytmCfgStore.getData();
 }
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 function saveFeatures(featureConf) {
-    const res = cfgMgr.setData(featureConf);
-    emitSiteEvent("configChanged", cfgMgr.getData());
+    const res = bytmCfgStore.setData(featureConf);
+    emitSiteEvent("configChanged", bytmCfgStore.getData());
     info("Saved new feature config:", featureConf);
     return res;
 }
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 function setDefaultFeatures() {
-    const res = cfgMgr.saveDefaultData();
-    emitSiteEvent("configChanged", cfgMgr.getData());
+    const res = bytmCfgStore.saveDefaultData();
+    emitSiteEvent("configChanged", bytmCfgStore.getData());
     info("Reset feature config to its default values");
     return res;
 }
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 function clearConfig() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield cfgMgr.deleteConfig();
+        yield bytmCfgStore.deleteData();
         info("Deleted config from persistent storage");
     });
 }const { getUnsafeWindow } = UserUtils__namespace;
@@ -5067,7 +5083,6 @@ function init() {
             yield initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en_US");
             setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
             // TODO(v1.2): remove these
-            setLayoutConfig(features);
             setInputConfig(features);
             setSongListsConfig(features);
             if (features.disableBeforeUnloadPopup && domain === "ytm")
@@ -5138,8 +5153,6 @@ function onDomLoad() {
                     ftInit.push(fixSpacing());
                 if (features.scrollToActiveSongBtn)
                     ftInit.push(addScrollToActiveBtn());
-                if (features.lockVolume)
-                    ftInit.push(enableLockVolume());
                 ftInit.push(initVolumeFeatures());
             }
             if (["ytm", "yt"].includes(domain)) {
@@ -5191,7 +5204,14 @@ function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-    UserUtils.addGlobalStyle(`/* TODO(v1.2): leave only dialog */
+    UserUtils.addGlobalStyle(`:root {
+  --bytm-dialog-accent-col: #3683d4;
+  --bytm-advanced-mode-color: #c5a73b;
+  --bytm-experimental-col: #d07ff0;
+  --bytm-warning-col: #f27735;
+}
+
+/* TODO(v1.2): leave only dialog */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
 {
@@ -5280,16 +5300,32 @@ function insertGlobalStyle() {
 .bytm-adorn-icon {
   display: inline-flex;
   align-items: center;
+  cursor: help;
 }
 
 .bytm-ftconf-adv-copy-btn {
   margin: 0px 10px;
 }
 
-:root {
-  --bytm-dialog-accent-col: #3683d4;
-  --bytm-advanced-mode-color: #c5a73b;
-  --bytm-experimental-col: #df543d;
+.bytm-ftitem-adornment svg path {
+  fill: var(--bytm-dialog-accent-col, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-warning-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-warning-icon svg path {
+  fill: var(--bytm-warning-col, #fff);
 }
 
 .bytm-dialog-bg {
@@ -5680,18 +5716,6 @@ hr {
   justify-content: flex-start;
   align-items: center;
   margin-right: 6px;
-}
-
-.bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #fff);
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff);
-}
-
-.bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff);
 }
 
 .bytm-hotkey-wrapper {

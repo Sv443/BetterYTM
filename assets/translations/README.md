@@ -20,15 +20,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 176 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `164/176` (93.2%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `176/176` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `164/176` (93.2%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `164/176` (93.2%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `164/176` (93.2%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `164/176` (93.2%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `164/176` (93.2%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `164/176` (93.2%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 180 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `162/180` (90%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `180/180` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `162/180` (90%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `162/180` (90%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `162/180` (90%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `162/180` (90%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `162/180` (90%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `162/180` (90%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -49,7 +49,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -61,6 +61,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -68,7 +74,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -80,6 +86,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -87,7 +99,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -99,6 +111,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -106,7 +124,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -118,6 +136,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -125,7 +149,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -137,6 +161,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -144,7 +174,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -156,6 +186,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -163,7 +199,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 12 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 18 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -175,6 +211,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `feature_category_volume` | `Volume` |
+| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
+| `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
+| `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
+| `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |

@@ -143,8 +143,6 @@
     "feature_helptext_rememberSongTime-1": "Parfois, lorsque vous rechargez la page ou la restaurez après l'avoir fermée accidentellement, vous voulez reprendre l'écoute au même point. Cette fonctionnalité vous permet de le faire.\nPour enregistrer le temps de la chanson, vous devez la lire pendant %1 seconde, puis son temps sera mémorisé et pourra être restauré pendant un court instant.",
     "feature_helptext_rememberSongTime-n": "Parfois, lorsque vous rechargez la page ou la restaurez après l'avoir fermée accidentellement, vous voulez reprendre l'écoute au même point. Cette fonctionnalité vous permet de le faire.\nPour enregistrer le temps de la chanson, vous devez la lire pendant %1 secondes, puis son temps sera mémorisé et pourra être restauré pendant un court instant.",
     "feature_desc_rememberSongTimeSites": "Sur quels sites le temps de la chanson doit-il être mémorisé et restauré?",
-    "feature_desc_lockVolume": "Forcer le curseur de volume à rester à un niveau spécifique",
-    "feature_desc_lockVolumeLevel": "À quel niveau de volume verrouiller le curseur de volume",
 
     "feature_desc_arrowKeySupport": "Utilisez les touches fléchées pour avancer et reculer dans la chanson en cours de lecture",
     "feature_helptext_arrowKeySupport": "Normalement, vous ne pouvez avancer et reculer que par intervalles fixes de 10 secondes avec les touches \"H\" et \"L\". Cette fonctionnalité vous permet d'utiliser aussi les touches fléchées.\nPour changer le nombre de secondes à sauter, utilisez l'option ci-dessous.",

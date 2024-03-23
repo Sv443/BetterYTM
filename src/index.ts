@@ -11,16 +11,17 @@ import {
   // features:
   featInfo,
   // layout
-  setLayoutConfig, addWatermark,
-  removeUpgradeTab, initVolumeFeatures,
+  addWatermark, removeUpgradeTab,
   removeShareTrackingParam, fixSpacing,
   addScrollToActiveBtn,
+  // volume
+  initVolumeFeatures,
   // song lists
   setSongListsConfig, initQueueButtons,
   // behavior
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
-  disableDarkReader, enableLockVolume,
+  disableDarkReader,
   // input
   setInputConfig, initArrowKeySkip,
   initSiteSwitch, addAnchorImprovements,
@@ -87,7 +88,6 @@ async function init() {
     setLocale(features.locale ?? "en_US");
 
     // TODO(v1.2): remove these
-    setLayoutConfig(features);
     setInputConfig(features);
     setSongListsConfig(features);
 
@@ -180,9 +180,6 @@ async function onDomLoad() {
 
       if(features.scrollToActiveSongBtn)
         ftInit.push(addScrollToActiveBtn());
-
-      if(features.lockVolume)
-        ftInit.push(enableLockVolume());
 
       ftInit.push(initVolumeFeatures());
     }
