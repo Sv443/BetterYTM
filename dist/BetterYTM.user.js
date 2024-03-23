@@ -1,3 +1,88 @@
+// ==UserScript==
+// @name              BetterYTM
+// @namespace         https://github.com/Sv443/BetterYTM
+// @version           1.1.1
+// @description       Lots of configurable layout and user experience improvements for YouTube Music
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music
+// @description:en-US Configurable layout and user experience improvements for YouTube Music
+// @description:en-UK Configurable layout and user experience improvements for YouTube Music
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music
+// @description:hi-IN YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार
+// @description:ja-JA YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music
+// @description:zh-CN 可配置的布局和YouTube Music的用户体验改进
+// @homepageURL       https://github.com/Sv443/BetterYTM#readme
+// @supportURL        https://github.com/Sv443/BetterYTM/issues
+// @license           AGPL-3.0-only
+// @author            Sv443
+// @copyright         Sv443 (https://github.com/Sv443)
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d0ddcd5
+// @match             https://music.youtube.com/*
+// @match             https://www.youtube.com/*
+// @run-at            document-start
+// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.user.js
+// @connect           api.sv443.net
+// @connect           github.com
+// @connect           raw.githubusercontent.com
+// @grant             GM.getValue
+// @grant             GM.setValue
+// @grant             GM.deleteValue
+// @grant             GM.getResourceUrl
+// @grant             GM.setClipboard
+// @grant             GM.xmlHttpRequest
+// @grant             unsafeWindow
+// @noframes
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=d0ddcd5
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=d0ddcd5
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=d0ddcd5
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=d0ddcd5
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=d0ddcd5
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=d0ddcd5
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=d0ddcd5
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=d0ddcd5
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=d0ddcd5
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=d0ddcd5
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=d0ddcd5
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=d0ddcd5
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=d0ddcd5
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=d0ddcd5
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d0ddcd5
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=d0ddcd5
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=d0ddcd5
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=d0ddcd5
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=d0ddcd5
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=d0ddcd5
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=d0ddcd5
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=d0ddcd5
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=d0ddcd5
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=d0ddcd5
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=d0ddcd5
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=d0ddcd5
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=d0ddcd5
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=d0ddcd5
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=d0ddcd5
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@5.0.1/dist/index.global.js
+// @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
+// @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
+// @grant             GM.registerMenuCommand
+// @grant             GM.listValues
+// ==/UserScript==
+/*
+▄▄▄                    ▄   ▄▄▄▄▄▄   ▄
+█  █ ▄▄▄ █   █   ▄▄▄ ▄ ▄█ █  █  █▀▄▀█
+█▀▀▄ █▄█ █▀  █▀  █▄█ █▀  █   █  █   █
+█▄▄▀ ▀▄▄ ▀▄▄ ▀▄▄ ▀▄▄ █   █   █  █   █
+
+        Made with ❤️ by Sv443
+I welcome every contribution on GitHub!
+  https://github.com/Sv443/BetterYTM
+*/
+
+/* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
+/* C&D this 🖕 */
+
 (function(UserUtils,marked,Fuse){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -164,10 +249,10 @@ var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
     LogLevel[LogLevel["Info"] = 1] = "Info";
-})(LogLevel || (LogLevel = {}));const modeRaw = "#{{MODE}}";
-const branchRaw = "#{{BRANCH}}";
-const hostRaw = "#{{HOST}}";
-const buildNumberRaw = "#{{BUILD_NUMBER}}";
+})(LogLevel || (LogLevel = {}));const modeRaw = "development";
+const branchRaw = "develop";
+const hostRaw = "github";
+const buildNumberRaw = "d0ddcd5";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -5106,7 +5191,1404 @@ function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-    UserUtils.addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
+    UserUtils.addGlobalStyle(`/* TODO(v1.2): leave only dialog */
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 1150px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 1150px;
+}
+
+#bytm-changelog-dialog-bg,
+#bytm-changelog-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 900px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 900px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg,
+#bytm-export-menu-bg, #bytm-import-menu-bg
+{
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg,
+#bytm-feat-help-menu-bg
+{
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
+}
+
+.bytm-dialog-body p {
+  overflow-wrap: break-word;
+}
+
+.bytm-dialog-body details summary {
+  cursor: pointer;
+  font-style: italic;
+}
+
+#bytm-version-notif-dialog-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#bytm-disable-update-check-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
+}
+
+#bytm-disable-update-check-wrapper label {
+  padding-left: 12px;
+}
+
+#bytm-version-notif-changelog-cont {
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
+  overflow-y: auto;
+  margin: 10px 0px;
+}
+
+#bytm-version-notif-changelog-details {
+  margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
+}
+
+.bytm-adorn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}
+
+:root {
+  --bytm-dialog-accent-col: #3683d4;
+  --bytm-advanced-mode-color: #c5a73b;
+  --bytm-experimental-col: #df543d;
+}
+
+.bytm-dialog-bg {
+  --bytm-dialog-bg: #333333;
+  --bytm-dialog-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-dialog-separator-color: #797979;
+  --bytm-dialog-border-radius: 10px;
+}
+
+.bytm-dialog-bg {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bytm-dialog {
+  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
+  border-radius: var(--bytm-dialog-border-radius);
+  height: auto;
+  max-height: var(--calc-max-height);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  color: #fff;
+  background-color: var(--bytm-dialog-bg);
+}
+
+.bytm-dialog-body {
+  font-size: 1.5rem;
+  padding: 20px;
+}
+
+.bytm-dialog-body.small {
+  padding: 15px;
+}
+
+#bytm-dialog-opts {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 30px 0px;
+  overflow-y: auto;
+}
+
+.bytm-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-dialog-bg);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
+}
+
+.bytm-dialog-header.small {
+  padding: 10px 15px;
+}
+
+.bytm-dialog-header-pad {
+  content: " ";
+  min-height: 32px;
+}
+
+.bytm-dialog-header-pad.small {
+  min-height: 24px;
+}
+
+.bytm-dialog-titlecont {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-dialog-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bytm-dialog-title {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;
+}
+
+#bytm-dialog-version {
+  position: absolute;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  font-size: 10px;
+  font-weight: normal;
+  z-index: 7;
+}
+
+#bytm-dialog-version .bytm-link {
+  color: #c6d2db;
+}
+
+#bytm-dialog-linkscont {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+
+.bytm-dialog-link {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bytm-dialog-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.bytm-dialog-link .bytm-dialog-img {
+  position: relative;
+  border-radius: 50%;
+  bottom: 0px;
+  transition: bottom 0.15s ease-out;
+}
+
+.bytm-dialog-link:hover .bytm-dialog-img {
+  bottom: 5px;
+}
+
+.bytm-dialog-close {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.bytm-dialog-close.small {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-dialog-footer {
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.bytm-dialog-footer.hidden {
+  display: none;
+}
+
+.bytm-dialog-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 15px 20px;
+  background: var(--bytm-dialog-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
+  border: 2px solid var(--bytm-dialog-separator-color);
+  border-style: solid none none none;
+  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
+}
+
+#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-dialog-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#bytm-dialog-footer-left-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#bytm-dialog-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
+  position: sticky;
+  bottom: -15px;
+  left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 7;
+  background-color: var(--bytm-scroll-indicator-bg);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0px 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.bytm-dialog .bytm-ftitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4em;
+  padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-dialog .bytm-ftitem:hover {
+  background-color: var(--bytm-dialog-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.bytm-ftconf-label {
+  user-select: none;
+}
+
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.bytm-ftconf-input[type=number] {
+  width: 75px;
+}
+
+.bytm-ftconf-input[type=range] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type=text] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
+}
+
+#bytm-export-dialog-text, #bytm-import-dialog-text {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+.bytm-dialog-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
+#bytm-changelog-dialog-body {
+  overflow-y: auto;
+}
+
+#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
+}
+
+.bytm-markdown-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1.4rem;
+  line-height: 20px;
+}
+
+/* Markdown stuff */
+
+.bytm-markdown-container kbd, .bytm-kbd {
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 11px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+}
+
+.bytm-markdown-container kbd:active, .bytm-kbd:active {
+  padding-bottom: 2px;
+  margin-top: 2px;
+  box-shadow: inset 0 0 0 initial;
+}
+
+.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
+  margin-bottom: 5px;
+}
+
+.bytm-markdown-container h2:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.bytm-markdown-container ul li::before {
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li::before {
+  white-space: pre-wrap;
+  content: "    • ";
+  font-weight: bolder;
+}
+
+#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+#bytm-feat-help-dialog-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
+}
+
+.bytm-ftitem-adornment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 6px;
+}
+
+.bytm-ftitem-adornment svg path {
+  fill: var(--bytm-dialog-accent-col, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.bytm-toggle-input-wrapper {
+  --toggle-height: 20px;
+  --toggle-width: 40px;
+  --toggle-knob-offset: 4px;
+  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
+  --toggle-color-off: #707070;
+  --toggle-knob-color: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input-wrapper .bytm-toggle-input-label {
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 3px 12px;
+}
+
+/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
+
+.bytm-toggle-input {
+  display: flex;
+  align-items: center;
+}
+
+.bytm-toggle-input input {
+  appearance: none;
+  display: inline-block;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: var(--toggle-knob-offset);
+  cursor: pointer;
+  background-color: var(--toggle-color-off);
+  transition: justify-content 0.2s ease, background-color 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] {
+  background-color: var(--toggle-color-on);
+}
+
+.bytm-toggle-input input .bytm-toggle-input-knob {
+  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  width: var(--toggle-knob-calc-width);
+  height: var(--toggle-knob-calc-height);
+  background-color: var(--toggle-knob-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: var(--toggle-knob-offset);
+  transition: left 0.2s ease;
+}
+
+.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
+  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
+}
+.bytm-menu-bg {
+  --bytm-menu-bg: #333333;
+  --bytm-menu-bg-highlight: #252525;
+  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
+  --bytm-menu-separator-color: #797979;
+  --bytm-menu-border-radius: 10px;
+}
+
+.bytm-menu-bg {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bytm-menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
+  border-radius: var(--bytm-menu-border-radius);
+  height: auto;
+  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  color: #fff;
+  background-color: var(--bytm-menu-bg);
+}
+
+.bytm-menu.top-aligned {
+  top: 0;
+  transform: translate(-50%, 40px);
+}
+
+.bytm-menu-body {
+  padding: 20px;
+}
+
+#bytm-menu-opts {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px 0px;
+  overflow-y: auto;
+}
+
+.bytm-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 15px 20px 15px 20px;
+  background-color: var(--bytm-menu-bg);
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: none none solid none;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
+}
+
+.bytm-menu-header.small {
+  padding: 10px 15px;
+}
+
+.bytm-menu-titlecont {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bytm-menu-titlecont-no-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bytm-menu-title {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;
+}
+
+#bytm-cfg-menu-bg .bytm-menu-title {
+  transform: translate(0px, -6px);
+}
+
+#bytm-cfg-menu {
+  --bytm-menu-subtitle-color: #c6d2db;
+}
+
+#bytm-menu-subtitle-cont {
+  width: 100%;
+  display: flex;
+  gap: 6px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  font-size: 10px;
+  font-weight: normal;
+  z-index: 7;
+}
+
+#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
+  color: var(--bytm-menu-subtitle-color);
+}
+
+#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#bytm-menu-version-anchor {
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+
+#bytm-menu-linkscont {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+
+.bytm-menu-link {
+  position: relative;
+  max-height: 32px;
+  max-width: 32px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bytm-menu-link:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+.bytm-menu-link .bytm-menu-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 0px;
+  transform: translateY(0px);
+  transition: transform 0.15s ease-out, padding 0.15s ease-out;
+}
+
+.bytm-menu-link:hover .bytm-menu-img {
+  padding: 7px;
+  transform: translateY(-14px);
+}
+
+.bytm-menu-link .extended-link {
+  visibility: hidden;
+  position: absolute;
+  top: 14px;
+  padding-top: 13px;
+  padding-bottom: 2px;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--bytm-menu-subtitle-color);
+  white-space: pre;
+  font-size: 1.1rem;
+  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+.bytm-menu-link:hover .extended-link {
+  visibility: visible;
+  opacity: 1;
+}
+
+.bytm-menu-close {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.bytm-menu-close.small {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-menu-footer {
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.bytm-menu-footer.hidden {
+  display: none;
+}
+
+.bytm-menu-footer-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 15px 20px;
+  background: var(--bytm-menu-bg);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
+  border: 2px solid var(--bytm-menu-separator-color);
+  border-style: solid none none none;
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+}
+
+#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+.bytm-menu-footer-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 15px;
+}
+
+#bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#bytm-menu-scroll-indicator {
+  --bytm-scroll-indicator-padding: 5px;
+  position: sticky;
+  bottom: -15px;
+  left: 50%;
+  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
+  padding: var(--bytm-scroll-indicator-padding);
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 7;
+  background-color: var(--bytm-scroll-indicator-bg);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bytm-hidden {
+  visibility: hidden !important;
+}
+
+.bytm-ftconf-category-header {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 0px 20px;
+}
+
+.bytm-ftconf-category-header:first-of-type {
+  margin-top: 0;
+}
+
+.bytm-ftitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  padding: 8px 20px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-ftitem:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-ftitem-leftside {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.bytm-ftconf-ctrl {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.bytm-ftconf-label {
+  user-select: none;
+}
+
+.bytm-slider-label {
+  margin-right: 10px;
+}
+
+.bytm-toggle-label {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.bytm-ftconf-input.bytm-hotkey-input {
+  cursor: pointer;
+  min-width: 50px;
+}
+
+.bytm-ftconf-input[type=number] {
+  width: 75px;
+}
+
+.bytm-ftconf-input[type=checkbox] {
+  margin-left: 5px;
+}
+
+#bytm-export-menu-text, #bytm-import-menu-text {
+  white-space: pre-wrap;
+  font-size: 1.6em;
+  margin-bottom: 15px;
+}
+
+.bytm-menu-footer-copied {
+  font-size: 1.6em;
+  margin-right: 15px;
+}
+
+#bytm-changelog-menu-body {
+  overflow-y: auto;
+}
+
+.bytm-changelog-version-details:not(:first-of-type) {
+  margin-top: 15px;
+}
+
+.bytm-changelog-version-details summary h2 {
+  display: inline-block;
+}
+
+.bytm-changelog-version-details summary {
+  cursor: pointer;
+}
+
+.bytm-changelog-version-details summary::marker {
+  font-size: 2rem;
+}
+
+#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+  width: 100%;
+  height: 150px;
+  resize: none;
+}
+
+.bytm-markdown-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  font-size: 1.5em;
+  line-height: 20px;
+}
+
+/* Markdown stuff */
+
+.bytm-markdown-container kbd {
+  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 4px;
+  padding-top: 2px;
+  font-size: 0.95em;
+  line-height: 11px;
+  background-color: #222;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: inset 0 -2px 0 #515559;
+  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+}
+
+.bytm-markdown-container kbd:active {
+  padding-bottom: 2px;
+  box-shadow: inset 0 0 0 initial;
+}
+
+.bytm-markdown-container kbd::selection {
+  background: rgba(0, 0, 0, 0);
+}
+
+.bytm-markdown-container code {
+  background-color: #222;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.bytm-markdown-container h2 {
+  margin-bottom: 5px;
+}
+
+.bytm-markdown-container h2:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.bytm-markdown-container ul li::before {
+  content: "• ";
+  font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li::before {
+  white-space: pre-wrap;
+  content: "    • ";
+  font-weight: bolder;
+}
+
+#bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.5em;
+}
+
+#bytm-feat-help-menu-desc {
+  font-size: 1.65em;
+  padding-bottom: 5px;
+}
+
+.bytm-ftitem-help-btn {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.bytm-ftitem-help-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.bytm-ftitem-help-btn svg > path {
+  fill: #b3bec7 !important;
+}
+
+hr {
+  display: block;
+  margin: 8px 0px 12px 0px;
+  border: revert;
+}
+
+/* #MARKER misc */
+
+.bytm-disable-scroll {
+  overflow: hidden !important;
+}
+
+.bytm-generic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 8px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid transparent;
+  border-radius: 100%;
+  background-color: transparent;
+
+  transition: background-color 0.2s ease;
+}
+
+.bytm-generic-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bytm-generic-btn:active {
+  background-color: #5f5f5f;
+  animation: flashBorder 0.4s ease 1;
+}
+
+@keyframes flashBorder {
+  0% {
+    border: 1px solid transparent;
+  }
+  20% {
+    border: 1px solid #727272;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
+}
+
+.bytm-generic-btn-img {
+  display: inline-block;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-spinner {
+  animation: rotate 1.2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-anchor {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out infinite;
+} */
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
+  transform-origin: 12px 12px;
+  animation: rotate 1s ease-in-out;
+}
+
+ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
+  width: 24px;
+  height: 24px;
+  z-index: 1000;
+  position: absolute;
+  animation: rotate-fade-in 1s ease-in-out;
+}
+
+@keyframes rotate-fade-in {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+  30% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.bytm-no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
+button.bytm-btn {
+  padding: revert;
+  border: revert;
+  outline: revert;
+  font: revert;
+  text-transform: revert;
+  color: revert;
+  background: revert;
+  line-height: 1.4em;
+}
+
+.bytm-link, .bytm-markdown-container a {
+  color: #369bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bytm-link:hover, .bytm-markdown-container a:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER menu */
+
+.bytm-cfg-menu-option {
+  display: block;
+  padding: 8px 0;
+}
+
+.bytm-cfg-menu-option-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 24px;
+  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
+  min-height: var(--paper-item-min-height, 40px);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bytm-cfg-menu-option-item:hover {
+  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
+}
+
+.bytm-cfg-menu-option-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: none;
+}
+
+.bytm-cfg-menu-option-text {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
+  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
+}
+
+/* #MARKER watermark */
+
+#bytm-watermark {
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  left: 97px;
+  top: 45px;
+  z-index: 10;
+  color: #f1f1f1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#bytm-watermark:hover {
+  text-decoration: underline;
+}
+
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 35px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+#bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+/* #MARKER scroll to active */
+
+#bytm-scroll-to-active-btn-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  height: 100%;
+}
+
+#bytm-scroll-to-active-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#bytm-scroll-to-active-btn {
+  width: revert;
+  height: revert;
+}
+
+#bytm-scroll-to-active-btn .bytm-generic-btn-img {
+  padding: 4px;
+}
+
+/* #MARKER queue buttons */
+
+#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
+  position: relative;
+}
+
+#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+  display: none;
+  position: absolute;
+  right: 0;
+  padding-left: 25px;
+  height: 100%;
+}
+
+#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+.bytm-generic-list-queue-btn-container {
+  /* otherwise the queue buttons render over the currently playing song page */
+  z-index: 1;
+}
+
+#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
+ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+ytmusic-responsive-list-item-renderer .title-column {
+  align-items: center;
+}
+
+#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
+#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container {
+  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+}
+
+ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+  display: none !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+  visibility: hidden;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: hidden !important;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container {
+  visibility: visible;
+}
+
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+  visibility: visible !important;
+}
+
+#bytm-welcome-menu-bg {
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 700px;
+}
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6em;
+  padding: 8px 20px;
+  margin: 10px 0px;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6em;
+}
+
+#bytm-welcome-menu-footer-cont {
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  padding: 20px;
+}`).id = "bytm-style-global";
 }
 function registerMenuCommands() {
     if (mode === "development") {
@@ -5219,4 +6701,4 @@ function registerMenuCommands() {
         }));
     }
 }
-preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=BetterYTM.user.js.map
+preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
