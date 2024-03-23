@@ -57,7 +57,7 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
-    "@sv443-network/userutils": "^5.0.1",
+    "@sv443-network/userutils": "^6.0.0",
     "fuse.js": "^7.0.0",
     "marked": "^12.0.0",
     "nanoevents": "^9.0.0"
