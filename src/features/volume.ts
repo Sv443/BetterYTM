@@ -162,7 +162,7 @@ function setVolSliderStep(sliderElem: HTMLInputElement) {
 /** Saves the shared volume level to persistent storage */
 async function sharedVolumeChanged(vol: number) {
   try {
-    await GM.setValue("bytm-shared-volume", String(vol));
+    await GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
   }
   catch(err) {
     error("Couldn't save shared volume level due to an error:", err);
@@ -175,7 +175,6 @@ let lastCheckedSharedVolume = -1;
 async function checkSharedVolume() {
   try {
     const vol = await GM.getValue("bytm-shared-volume");
-    console.log(">checkshared", vol, lastCheckedSharedVolume);
     if(vol && lastCheckedSharedVolume !== Number(vol)) {
       if(ignoreVal === Number(vol))
         return;
@@ -204,6 +203,8 @@ function setInitialTabVolume(sliderElem: HTMLInputElement) {
   const initialVol = getFeatures().initialTabVolumeLevel;
   if(getFeatures().volumeSharedBetweenTabs) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
+    if(getFeatures().volumeSharedBetweenTabs)
+      GM.setValue("bytm-shared-volume", String(initialVol));
   }
   sliderElem.value = String(initialVol);
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
