@@ -300,7 +300,7 @@ function registerMenuCommands() {
 
     GM.registerMenuCommand("List GM values in console with decompression", async () => {
       const keys = await GM.listValues();
-      console.log("GM values:");
+      console.log(`GM values (${keys.length}):`);
       if(keys.length === 0)
         console.log("  No values found.");
 
@@ -322,7 +322,7 @@ function registerMenuCommands() {
 
     GM.registerMenuCommand("List GM values in console, without decompression", async () => {
       const keys = await GM.listValues();
-      console.log("GM values:");
+      console.log(`GM values (${keys.length}):`);
       if(keys.length === 0)
         console.log("  No values found.");
 
@@ -341,9 +341,9 @@ function registerMenuCommands() {
     });
 
     GM.registerMenuCommand("Delete all GM values", async () => {
-      if(confirm("Clear all GM values?\nSee console for details.")) {
-        const keys = await GM.listValues();
-        console.log("Clearing GM values:");
+      const keys = await GM.listValues();
+      if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+        console.log(`Clearing ${keys.length} GM values:`);
         if(keys.length === 0)
           console.log("  No values found.");
         for(const key of keys) {
