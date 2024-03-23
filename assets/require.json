@@ -2,8 +2,7 @@
   {
     "pkgName": "@sv443-network/userutils",
     "path": "dist/index.global.js",
-    "global": "UserUtils",
-    "link": true
+    "global": "UserUtils"
   },
   {
     "pkgName": "fuse.js",
