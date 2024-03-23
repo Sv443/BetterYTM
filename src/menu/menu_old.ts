@@ -1,5 +1,5 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
-import { defaultConfig, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
+import { defaultData, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
@@ -213,7 +213,7 @@ async function addCfgMenu() {
   featuresCont.id = "bytm-menu-opts";
 
   /** Gets called whenever the feature config is changed */
-  const confChanged = debounce(async (key: keyof typeof defaultConfig, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+  const confChanged = debounce(async (key: keyof typeof defaultData, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 

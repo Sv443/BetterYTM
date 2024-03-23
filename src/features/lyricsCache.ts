@@ -1,4 +1,4 @@
-import { ConfigManager, clamp, compress, decompress } from "@sv443-network/userutils";
+import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
 import { compressionFormat } from "../constants";
 import { compressionSupported, log } from "../utils";
 import { emitInterface } from "../interface";
@@ -16,9 +16,9 @@ const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
 
 let canCompress = true;
 
-const lyricsCacheMgr = new ConfigManager<LyricsCache>({
+const lyricsCacheMgr = new DataStore<LyricsCache>({
   id: "bytm-lyrics-cache",
-  defaultConfig: {
+  defaultData: {
     cache: [],
   },
   formatVersion: 1,
@@ -76,9 +76,9 @@ function deleteLyricsCacheEntry(artist: string, song: string) {
 }
 
 /** Clears the lyrics cache locally and deletes it from persistent storage - the window should be reloaded right after! */
-export function deleteLyricsCache() {
+export async function deleteLyricsCache() {
+  await lyricsCacheMgr.deleteData();
   emitInterface("bytm:lyricsCacheCleared");
-  return lyricsCacheMgr.deleteConfig();
 }
 
 /** Clears the lyrics cache locally and clears it in persistent storage */
