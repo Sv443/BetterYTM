@@ -209,7 +209,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   font-size: 1.4rem;
   top: 50%;
   left: 0;
-  transform: translate(calc(-50% - 35px), -50%);
+  transform: translate(calc(-50% - 10px), -50%);
   text-align: right;
   transition: opacity 0.2s ease;
 }
