@@ -4,14 +4,9 @@ import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
 import { getLyricsCacheEntry } from "./lyricsCache";
-import type { FeatureConfig, LyricsCacheEntry } from "../types";
+import type { LyricsCacheEntry } from "../types";
+import { getFeatures } from "../config";
 import "./songLists.css";
-
-let features: FeatureConfig;
-
-export function setSongListsConfig(feats: FeatureConfig) {
-  features = feats;
-}
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
@@ -61,7 +56,7 @@ export async function initQueueButtons() {
     "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents",
   ];
 
-  if(features.listButtonsPlacement === "everywhere") {
+  if(getFeatures().listButtonsPlacement === "everywhere") {
     for(const selector of listSelectors) {
       onSelectorOld(selector, {
         all: true,
@@ -100,7 +95,7 @@ async function addQueueButtons(
   //#SECTION lyrics btn
   let lyricsBtnElem: HTMLAnchorElement | undefined;
 
-  if(features.lyricsQueueButton) {
+  if(getFeatures().lyricsQueueButton) {
     lyricsBtnElem = await createLyricsBtn(undefined, false);
 
     lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
@@ -205,7 +200,7 @@ async function addQueueButtons(
   //#SECTION delete from queue btn
   let deleteBtnElem: HTMLAnchorElement | undefined;
 
-  if(features.deleteFromQueueButton) {
+  if(getFeatures().deleteFromQueueButton) {
     deleteBtnElem = document.createElement("a");
     deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
     deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");
