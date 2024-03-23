@@ -1,18 +1,13 @@
 import { clamp } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, videoSelector } from "../utils";
-import type { Domain, FeatureConfig } from "../types";
+import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
+import { getFeatures } from "../config";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-
-let features: FeatureConfig;
-
-export function setInputConfig(feats: FeatureConfig) {
-  features = feats;
-}
 
 //#MARKER arrow key skip
 
@@ -27,7 +22,7 @@ export async function initArrowKeySkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    let skipBy = features.arrowKeySkipBy ?? featInfo.arrowKeySkipBy.default;
+    let skipBy = getFeatures().arrowKeySkipBy ?? featInfo.arrowKeySkipBy.default;
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
@@ -50,7 +45,7 @@ let siteSwitchEnabled = true;
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
-    const hotkey = features.switchSitesHotkey;
+    const hotkey = getFeatures().switchSitesHotkey;
     if(siteSwitchEnabled && e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
