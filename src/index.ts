@@ -8,8 +8,6 @@ import { emitInterface, initInterface } from "./interface";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import { initObservers, observers } from "./observers";
 import {
-  // features:
-  featInfo,
   // layout
   addWatermark, removeUpgradeTab,
   removeShareTrackingParam, fixSpacing,
@@ -17,21 +15,21 @@ import {
   // volume
   initVolumeFeatures,
   // song lists
-  setSongListsConfig, initQueueButtons,
+  initQueueButtons,
   // behavior
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
   disableDarkReader,
   // input
-  setInputConfig, initArrowKeySkip,
-  initSiteSwitch, addAnchorImprovements,
-  initNumKeysSkip,
+  initArrowKeySkip, initSiteSwitch,
+  addAnchorImprovements, initNumKeysSkip,
   // lyrics
   addMediaCtrlLyricsBtn,
   // menu
   addConfigMenuOption,
   // other
-  initVersionCheck, initLyricsCache,
+  featInfo, initVersionCheck,
+  initLyricsCache,
 } from "./features/index";
 
 {
@@ -86,10 +84,6 @@ async function init() {
 
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
-
-    // TODO(v1.2): remove these
-    setInputConfig(features);
-    setSongListsConfig(features);
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
