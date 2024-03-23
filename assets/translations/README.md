@@ -62,7 +62,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -87,7 +87,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -112,7 +112,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -137,7 +137,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -162,7 +162,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -187,7 +187,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
@@ -212,7 +212,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
 | `feature_category_volume` | `Volume` |
-| `feature_desc_volumeSharedBetweenTabs` | `If the volume level is set in one tab, set it to the same value in others too?` |
+| `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
