@@ -6,6 +6,7 @@ import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo } from "../types";
+import { volumeSharedBetweenTabsDisabled } from "./volume";
 
 export * from "./layout";
 export * from "./behavior";
@@ -14,6 +15,7 @@ export * from "./lyrics";
 export * from "./lyricsCache";
 export * from "./songLists";
 export * from "./versionCheck";
+export * from "./volume";
 
 type SelectOption = { value: number | string, label: string };
 
@@ -31,8 +33,9 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
 /** Decoration elements that can be added next to the label */
 const adornments = {
   advanced: async () => `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
-  experimental: async () => `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}">${await resourceToHTMLString("icon-experimental") ?? ""}</span>`,
+  experimental: async () => `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}" aria-label="${t("experimental_feature")}" role="alert">${await resourceToHTMLString("icon-experimental") ?? ""}</span>`,
   globe: async () => await resourceToHTMLString("icon-globe") ?? "",
+  warning: async (text: string) => `<span class="bytm-warning-icon bytm-adorn-icon" title="${text}" aria-label="${text}" role="alert">${await resourceToHTMLString("icon-error") ?? ""}</span>`,
 };
 
 //#MARKER features
@@ -71,44 +74,6 @@ const adornments = {
  */
 export const featInfo = {
   //#SECTION layout
-  volumeSliderLabel: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    enable: noopTODO,
-    disable: noopTODO,
-  },
-  volumeSliderSize: {
-    type: "number",
-    category: "layout",
-    min: 50,
-    max: 500,
-    step: 5,
-    default: 150,
-    unit: "px",
-    enable: noopTODO,
-    change: noopTODO,
-  },
-  volumeSliderStep: {
-    type: "slider",
-    category: "layout",
-    min: 1,
-    max: 25,
-    default: 2,
-    unit: "%",
-    enable: noopTODO,
-    change: noopTODO,
-  },
-  volumeSliderScrollStep: {
-    type: "slider",
-    category: "layout",
-    min: 1,
-    max: 25,
-    default: 10,
-    unit: "%",
-    enable: noopTODO,
-    change: noopTODO,
-  },
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
@@ -142,6 +107,73 @@ export const featInfo = {
     category: "layout",
     default: true,
     enable: noopTODO,
+  },
+
+  //#SECTION volume
+  volumeSliderLabel: {
+    type: "toggle",
+    category: "volume",
+    default: true,
+    enable: noopTODO,
+    disable: noopTODO,
+  },
+  volumeSliderSize: {
+    type: "number",
+    category: "volume",
+    min: 50,
+    max: 500,
+    step: 5,
+    default: 150,
+    unit: "px",
+    enable: noopTODO,
+    change: noopTODO,
+  },
+  volumeSliderStep: {
+    type: "slider",
+    category: "volume",
+    min: 1,
+    max: 25,
+    default: 2,
+    unit: "%",
+    enable: noopTODO,
+    change: noopTODO,
+  },
+  volumeSliderScrollStep: {
+    type: "slider",
+    category: "volume",
+    min: 1,
+    max: 25,
+    default: 10,
+    unit: "%",
+    enable: noopTODO,
+    change: noopTODO,
+  },
+  volumeSharedBetweenTabs: {
+    type: "toggle",
+    category: "volume",
+    default: false,
+    enable: noopTODO,
+    disable: () => volumeSharedBetweenTabsDisabled,
+  },
+  setInitialTabVolume: {
+    type: "toggle",
+    category: "volume",
+    default: false,
+    enable: noopTODO,
+    disable: noopTODO,
+    textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
+  },
+  initialTabVolumeLevel: {
+    type: "slider",
+    category: "volume",
+    min: 0,
+    max: 100,
+    step: 1,
+    default: 100,
+    unit: "%",
+    enable: noopTODO,
+    change: noopTODO,
+    textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
 
   //#SECTION song lists
@@ -250,24 +282,6 @@ export const featInfo = {
     advanced: true,
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
-  },
-  lockVolume: {
-    type: "toggle",
-    category: "behavior",
-    default: false,
-    enable: () => noopTODO,
-    disable: () => noopTODO,
-  },
-  lockVolumeLevel: {
-    type: "slider",
-    category: "behavior",
-    min: 0,
-    max: 100,
-    step: 1,
-    default: 100,
-    unit: "%",
-    enable: noop,
-    change: () => noopTODO,
   },
 
   //#SECTION input
@@ -456,3 +470,5 @@ function noop() {
 function noopTODO() {
   void 0;
 }
+
+void [noop, noopTODO];

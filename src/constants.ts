@@ -1,3 +1,4 @@
+import { randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types";
 
 const modeRaw = "#{{MODE}}";
@@ -25,6 +26,20 @@ export const platformNames: Record<typeof host, string> = {
 
 /** Default compression format used throughout BYTM */
 export const compressionFormat: CompressionFormat = "deflate-raw";
+
+export const sessionStorageAllowed =
+  typeof sessionStorage !== "undefined"
+  && (() => {
+    try {
+      const key = `_bytm_${randomId(4)}`;
+      sessionStorage.setItem(key, "test");
+      sessionStorage.removeItem(key);
+      return true;
+    }
+    catch {
+      return false;
+    }
+  })();
 
 /**
  * How much info should be logged to the devtools console  

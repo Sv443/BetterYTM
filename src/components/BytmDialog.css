@@ -1,9 +1,3 @@
-:root {
-  --bytm-dialog-accent-col: #3683d4;
-  --bytm-advanced-mode-color: #c5a73b;
-  --bytm-experimental-col: #df543d;
-}
-
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -392,16 +386,4 @@ hr {
   justify-content: flex-start;
   align-items: center;
   margin-right: 6px;
-}
-
-.bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #fff);
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff);
-}
-
-.bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff);
 }

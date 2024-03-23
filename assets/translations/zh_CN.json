@@ -143,8 +143,6 @@
     "feature_helptext_rememberSongTime-1": "有时在重新加载页面或意外关闭后恢复它时，您希望在相同的位置继续听歌。此功能允许您这样做。\n为了记录歌曲的时间，您需要播放它 %1 秒，然后它的时间将被记住，并在短时间内可以恢复。",
     "feature_helptext_rememberSongTime-n": "有时在重新加载页面或意外关闭后恢复它时，您希望在相同的位置继续听歌。此功能允许您这样做。\n为了记录歌曲的时间，您需要播放它 %1 秒，然后它的时间将被记住，并在短时间内可以恢复。",
     "feature_desc_rememberSongTimeSites": "在哪些网站上应该记住和恢复歌曲时间？",
-    "feature_desc_lockVolume": "强制音量滑块保持在特定级别",
-    "feature_desc_lockVolumeLevel": "将音量滑块锁定在哪个音量级别？",
 
     "feature_desc_arrowKeySupport": "使用箭头键在当前播放的歌曲中前进和后退",
     "feature_helptext_arrowKeySupport": "通常，您只能使用 \"H\" 和 \"L\" 键以固定的 10 秒间隔前进和后退。此功能允许您也使用箭头键。\n要更改要跳过的秒数，请使用下面的选项。",

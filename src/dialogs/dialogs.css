@@ -1,3 +1,10 @@
+:root {
+  --bytm-dialog-accent-col: #3683d4;
+  --bytm-advanced-mode-color: #c5a73b;
+  --bytm-experimental-col: #d07ff0;
+  --bytm-warning-col: #f27735;
+}
+
 /* TODO(v1.2): leave only dialog */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
@@ -87,8 +94,30 @@
 .bytm-adorn-icon {
   display: inline-flex;
   align-items: center;
+  cursor: help;
 }
 
 .bytm-ftconf-adv-copy-btn {
   margin: 0px 10px;
+}
+
+.bytm-ftitem-adornment svg path {
+  fill: var(--bytm-dialog-accent-col, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-warning-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-warning-icon svg path {
+  fill: var(--bytm-warning-col, #fff);
 }

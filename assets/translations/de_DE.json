@@ -143,8 +143,6 @@
     "feature_helptext_rememberSongTime-1": "Manchmal möchtest du nach dem Neuladen der Seite oder nach dem versehentlichen Schließen an derselben Stelle weiterhören. Diese Funktion ermöglicht es dir, das zu tun.\nUm die Zeit des Songs zu speichern, musst du ihn %1 Sekunde lang abspielen, dann wird die Zeit gespeichert und für kurze Zeit wiederherstellbar sein.",
     "feature_helptext_rememberSongTime-n": "Manchmal möchtest du nach dem Neuladen der Seite oder nach dem versehentlichen Schließen an derselben Stelle weiterhören. Diese Funktion ermöglicht es dir, das zu tun.\nUm die Zeit des Songs zu speichern, musst du ihn %1 Sekunden lang abspielen, dann wird die Zeit gespeichert und für kurze Zeit wiederherstellbar sein.",
     "feature_desc_rememberSongTimeSites": "Auf welchen Seiten soll die Songzeit gespeichert und wiederhergestellt werden?",
-    "feature_desc_lockVolume": "Erzwinge, dass der Lautstärkeregler auf einem bestimmten Level bleibt",
-    "feature_desc_lockVolumeLevel": "Auf welchem Lautstärkelevel der Lautstärkeregler gesperrt werden soll",
 
     "feature_desc_arrowKeySupport": "Benutze die Pfeiltasten um vor- und zurückzuspulen",
     "feature_helptext_arrowKeySupport": "Normalerweise kannst du nur in 10 Sekunden Schritten vor- und zurückspulen, indem du die Tasten \"H\" und \"L\" benutzt. Diese Funktion ermöglicht es dir, auch die Pfeiltasten zu benutzen.\nUm die Anzahl der Sekunden zu ändern, um die gespult werden soll, benutze die Option unten.",
