@@ -1,8 +1,9 @@
 import { addGlobalStyle, addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
-import { error, onSelectorOld, t } from "../utils";
+import { error, onSelectorOld, resourceToHTMLString, t } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from ".";
+import "./volume.css";
 
 //#MARKER init
 
@@ -73,6 +74,21 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   const labelContElem = document.createElement("div");
   labelContElem.id = "bytm-vol-slider-label";
 
+  const volShared = getFeatures().volumeSharedBetweenTabs;
+  if(volShared) {
+    const linkIconHtml = await resourceToHTMLString("icon-link");
+    if(linkIconHtml) {
+      const linkIconElem = document.createElement("div");
+      linkIconElem.id = "bytm-vol-slider-shared";
+      linkIconElem.innerHTML = linkIconHtml;
+      linkIconElem.role = "alert";
+      linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+
+      labelContElem.classList.add("has-icon");
+      labelContElem.appendChild(linkIconElem);
+    }
+  }
+
   const getLabel = (value: Stringifiable) => `${value}%`;
 
   const labelElem = document.createElement("div");
@@ -81,6 +97,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
 
   // prevent video from minimizing
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
+  labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
 
   const getLabelText = (slider: HTMLInputElement) =>
     t("volume_tooltip", slider.value, getFeatures().volumeSliderStep ?? slider.step);

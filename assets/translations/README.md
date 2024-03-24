@@ -21,14 +21,14 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 181 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `162/181` (89.5%) | ─ |
+| ‼️ | [`de_DE`](./de_DE.json) | `161/181` (89%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `181/181` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `162/181` (89.5%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `162/181` (89.5%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `162/181` (89.5%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `162/181` (89.5%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `162/181` (89.5%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `162/181` (89.5%) | ─ |
+| ‼️ | [`es_ES`](./es_ES.json) | `161/181` (89%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `161/181` (89%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `161/181` (89%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `161/181` (89%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `161/181` (89%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `161/181` (89%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -49,12 +49,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -75,12 +76,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -101,12 +103,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -127,12 +130,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -153,12 +157,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -179,12 +184,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |
@@ -205,12 +211,13 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `copy_hidden_value` | `Copy hidden value` |
 | `copy_hidden_tooltip` | `Click to copy the hidden value - this is sensitive data ⚠️` |
+| `volume_shared_tooltip` | `Volume level is shared between tabs - disable in the configuration menu` |
 | `active_mode_display` | `%1 Mode` |
 | `active_mode_tooltip-1` | `The %1 is currently active` |
 | `active_mode_tooltip-n` | `The %1 are currently active` |

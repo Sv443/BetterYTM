@@ -51,7 +51,7 @@
     "scroll_to_playing": "Scroll to the currently playing song",
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
-    "volume_locked": "Volume is locked at %1% - you can change this in the config menu.",
+    "volume_shared_tooltip": "Volume level is shared between tabs - disable in the configuration menu",
     "middle_click_open_tab": "Middle-click to open in a new tab",
     "active_mode_display": "%1 Mode",
     "active_mode_tooltip-1": "The %1 is currently active",
