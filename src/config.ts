@@ -1,4 +1,4 @@
-import { DataStore, compress, type ConfigMigrationsDict, decompress } from "@sv443-network/userutils";
+import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
 import { compressionSupported, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
@@ -9,7 +9,7 @@ import { emitInterface, getFeaturesInterface } from "./interface";
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 5;
 /** Config data format migration dictionary */
-export const migrations: ConfigMigrationsDict = {
+export const migrations: DataMigrationsDict = {
   // 1 -> 2
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
@@ -53,7 +53,7 @@ export const migrations: ConfigMigrationsDict = {
     "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
     "setInitialTabVolume", "initialTabVolumeLevel",
   ], oldData),
-} as const satisfies ConfigMigrationsDict;
+} as const satisfies DataMigrationsDict;
 // TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
 
 /** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
