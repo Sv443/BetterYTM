@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1d6558d
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=56efc05
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,38 +34,38 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=1d6558d
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=1d6558d
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=1d6558d
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=1d6558d
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=1d6558d
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=1d6558d
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=1d6558d
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=1d6558d
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=1d6558d
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=1d6558d
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=1d6558d
-// @resource          icon-lock_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock_off.svg?b=1d6558d
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=1d6558d
-// @resource          icon-link_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link_off.svg?b=1d6558d
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=1d6558d
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=1d6558d
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=1d6558d
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1d6558d
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=1d6558d
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=1d6558d
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=1d6558d
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=1d6558d
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=1d6558d
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=1d6558d
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=1d6558d
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=1d6558d
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=1d6558d
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=1d6558d
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=1d6558d
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=1d6558d
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=1d6558d
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=1d6558d
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=56efc05
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=56efc05
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=56efc05
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=56efc05
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=56efc05
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=56efc05
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=56efc05
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=56efc05
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=56efc05
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=56efc05
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=56efc05
+// @resource          icon-lock_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock_off.svg?b=56efc05
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=56efc05
+// @resource          icon-link_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link_off.svg?b=56efc05
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=56efc05
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=56efc05
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=56efc05
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=56efc05
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=56efc05
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=56efc05
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=56efc05
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=56efc05
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=56efc05
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=56efc05
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=56efc05
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=56efc05
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=56efc05
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=56efc05
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=56efc05
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=56efc05
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=56efc05
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=56efc05
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -255,7 +255,7 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "1d6558d";
+const buildNumberRaw = "56efc05";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -933,7 +933,18 @@ class BytmDialog extends NanoEmitter {
             return dialogWrapperEl;
         });
     }
-}/** EventEmitter instance that is used to detect changes to the site */
+}/** Array of all site events */
+const allSiteEvents = [
+    "configChanged",
+    "configOptionChanged",
+    "rebuildCfgMenu",
+    "cfgMenuClosed",
+    "welcomeMenuClosed",
+    "hotkeyInputActive",
+    "queueChanged",
+    "autoplayQueueChanged",
+];
+/** EventEmitter instance that is used to detect changes to the site */
 const siteEvents = createNanoEvents();
 let observers = [];
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
@@ -1519,12 +1530,26 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
     return __awaiter(this, void 0, void 0, function* () {
         const labelContElem = document.createElement("div");
         labelContElem.id = "bytm-vol-slider-label";
+        const volShared = getFeatures().volumeSharedBetweenTabs;
+        if (volShared) {
+            const linkIconHtml = yield resourceToHTMLString("icon-link");
+            if (linkIconHtml) {
+                const linkIconElem = document.createElement("div");
+                linkIconElem.id = "bytm-vol-slider-shared";
+                linkIconElem.innerHTML = linkIconHtml;
+                linkIconElem.role = "alert";
+                linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+                labelContElem.classList.add("has-icon");
+                labelContElem.appendChild(linkIconElem);
+            }
+        }
         const getLabel = (value) => `${value}%`;
         const labelElem = document.createElement("div");
         labelElem.classList.add("label");
         labelElem.textContent = getLabel(sliderElem.value);
         // prevent video from minimizing
         labelContElem.addEventListener("click", (e) => e.stopPropagation());
+        labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
         const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
         const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
@@ -4518,7 +4543,10 @@ const globalFuncs = {
     sanitizeArtists,
     sanitizeSong,
 };
-const plugins = new Map();
+/** Plugins that are queued up for registration */
+const pluginQueue = new Map();
+/** Registered plugins including their event listener instance */
+const pluginMap = new Map();
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ mode,
@@ -4546,11 +4574,24 @@ function setGlobalProp(key, value) {
 function emitInterface(type, ...data) {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
 }
+//#MARKER register plugins
+/** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
+function initPlugins() {
+    // TODO(v1.3): check perms and ask user for initial activation
+    for (const [key, { def, events }] of pluginQueue) {
+        pluginMap.set(key, { def, events });
+        pluginQueue.delete(key);
+        emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def));
+    }
+    for (const evt of allSiteEvents) // @ts-ignore
+        siteEvents.on(evt, (...args) => emitOnPlugins(evt, () => true, ...args));
+    emitInterface("bytm:pluginsLoaded");
+}
 /** Returns the key for a given plugin definition */
 function getPluginKey(plugin) {
     return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
 }
-/** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) */
+/** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 function pluginDefToInfo(plugin) {
     return plugin && {
         name: plugin.plugin.name,
@@ -4558,11 +4599,21 @@ function pluginDefToInfo(plugin) {
         version: plugin.plugin.version,
     };
 }
+/** Checks whether two plugin definitions are the same */
+function sameDef(def1, def2) {
+    return getPluginKey(def1) === getPluginKey(def2);
+}
+/** Emits an event on all plugins that match the predicate (all plugins by default) */
+function emitOnPlugins(event, predicate = () => true, ...data) {
+    for (const { def, events } of pluginMap.values())
+        predicate(def) && events.emit(event, ...data);
+}
 /** Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered */
 function getPluginInfo(...args) {
-    return args.length === 2
-        ? pluginDefToInfo(plugins.get(`${args[1]}/${args[0]}`))
-        : pluginDefToInfo(plugins.get(getPluginKey(args[0])));
+    var _a, _b;
+    return pluginDefToInfo(args.length === 2
+        ? (_a = pluginMap.get(`${args[1]}/${args[0]}`)) === null || _a === void 0 ? void 0 : _a.def
+        : (_b = pluginMap.get(getPluginKey(args[0]))) === null || _b === void 0 ? void 0 : _b.def);
 }
 /** Validates the passed PluginDef object and returns an array of errors */
 function validatePluginDef(pluginDef) {
@@ -4577,18 +4628,23 @@ function validatePluginDef(pluginDef) {
     return errors.length > 0 ? errors : undefined;
 }
 /** Registers a plugin on the BYTM interface */
-function registerPlugin(pluginDef) {
+function registerPlugin(def) {
     var _a, _b;
-    const validationErrors = validatePluginDef(pluginDef);
+    const validationErrors = validatePluginDef(def);
     if (validationErrors) {
-        error(`Failed to register plugin${((_a = pluginDef === null || pluginDef === void 0 ? void 0 : pluginDef.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = pluginDef === null || pluginDef === void 0 ? void 0 : pluginDef.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
+        error(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
         throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
     }
-    const { plugin: { name } } = pluginDef;
-    plugins.set(getPluginKey(pluginDef), pluginDef);
+    const events = createNanoEvents();
+    const { plugin: { name } } = def;
+    pluginQueue.set(getPluginKey(def), {
+        def: def,
+        events,
+    });
     info(`Registered plugin: ${name}`, LogLevel.Info);
     return {
-        info: getPluginInfo(pluginDef),
+        info: getPluginInfo(def),
+        events,
     };
 }
 //#MARKER proxy functions
@@ -5128,6 +5184,7 @@ function init() {
             yield initLyricsCache();
             yield initTranslations((_a = features.locale) !== null && _a !== void 0 ? _a : "en_US");
             setLocale((_b = features.locale) !== null && _b !== void 0 ? _b : "en_US");
+            emitInterface("bytm:initPlugins");
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
             if (!domLoaded)
@@ -5229,21 +5286,75 @@ function onDomLoad() {
                 //   resolve();
                 // }));
             }
-            Promise.allSettled(ftInit).then(() => {
-                emitInterface("bytm:ready");
-                try {
-                    registerMenuCommands();
-                }
-                catch (e) {
-                    void e;
-                }
-            });
+            yield Promise.allSettled(ftInit);
+            emitInterface("bytm:ready");
+            try {
+                initPlugins();
+            }
+            catch (err) {
+                error("Plugin loading error:", err);
+            }
+            try {
+                registerDevMenuCommands();
+            }
+            catch (e) {
+                warn("Couldn't register dev menu commands:", e);
+            }
         }
         catch (err) {
             error("Feature error:", err);
         }
     });
 }
+// TODO(v1.2):
+// async function initFeatures() {
+//   const ftInit = [] as Promise<void>[];
+//   log(`DOM loaded. Initializing features for domain "${domain}"...`);
+//   for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+//     try {
+//       // @ts-ignore
+//       const res = ftInfo?.enable?.() as undefined | Promise<void>;
+//       if(res instanceof Promise)
+//         ftInit.push(res);
+//       else
+//         ftInit.push(Promise.resolve());
+//     }
+//     catch(err) {
+//       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
+//     }
+//   }
+//   siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
+//     try {
+//       // @ts-ignore
+//       if(featInfo[ftKey].change) {
+//         // @ts-ignore
+//         featInfo[ftKey].change(oldValue, newValue);
+//       }
+//       // @ts-ignore
+//       else if(featInfo[ftKey].disable) {
+//         // @ts-ignore
+//         const disableRes = featInfo[ftKey].disable();
+//         if(disableRes instanceof Promise) // @ts-ignore
+//           disableRes.then(() => featInfo[ftKey]?.enable?.());
+//         else // @ts-ignore
+//           featInfo[ftKey]?.enable?.();
+//       }
+//       else {
+//         // TODO: set "page reload required" flag in new menu
+//         if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
+//           disableBeforeUnload();
+//           location.reload();
+//         }
+//       }
+//     }
+//     catch(err) {
+//       error(`Couldn't change feature "${ftKey}" due to error:`, err);
+//     }
+//   });
+//   Promise.all(ftInit).then(() => {
+//     emitInterface("bytm:ready");
+//   });
+// }
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
@@ -5841,6 +5952,54 @@ hr {
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+#bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+#bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+#bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
+}
+
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
@@ -6474,39 +6633,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-#bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
 /* #MARKER scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
@@ -6657,115 +6783,116 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
   padding: 20px;
 }`).id = "bytm-style-global";
 }
-function registerMenuCommands() {
-    if (mode === "development") {
-        GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
-                yield clearConfig();
-                disableBeforeUnload();
-                location.reload();
-            }
-        }), "r");
-        GM.registerMenuCommand("List GM values in console with decompression", () => __awaiter(this, void 0, void 0, function* () {
-            const keys = yield GM.listValues();
-            console.log(`GM values (${keys.length}):`);
+/** Registers dev commands using `GM.registerMenuCommand` */
+function registerDevMenuCommands() {
+    if (mode !== "development")
+        return;
+    GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
+        if (confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
+            yield clearConfig();
+            disableBeforeUnload();
+            location.reload();
+        }
+    }), "r");
+    GM.registerMenuCommand("List GM values in console with decompression", () => __awaiter(this, void 0, void 0, function* () {
+        const keys = yield GM.listValues();
+        console.log(`GM values (${keys.length}):`);
+        if (keys.length === 0)
+            console.log("  No values found.");
+        const values = {};
+        let longestKey = 0;
+        for (const key of keys) {
+            const isEncoded = key.startsWith("_uucfg-") ? yield GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+            const val = yield GM.getValue(key, undefined);
+            values[key] = typeof val !== "undefined" && isEncoded ? yield UserUtils.decompress(val, compressionFormat, "string") : val;
+            longestKey = Math.max(longestKey, key.length);
+        }
+        for (const [key, finalVal] of Object.entries(values)) {
+            const isEncoded = key.startsWith("_uucfg-") ? yield GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+            const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+            console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        }
+    }), "l");
+    GM.registerMenuCommand("List GM values in console, without decompression", () => __awaiter(this, void 0, void 0, function* () {
+        const keys = yield GM.listValues();
+        console.log(`GM values (${keys.length}):`);
+        if (keys.length === 0)
+            console.log("  No values found.");
+        const values = {};
+        let longestKey = 0;
+        for (const key of keys) {
+            const val = yield GM.getValue(key, undefined);
+            values[key] = val;
+            longestKey = Math.max(longestKey, key.length);
+        }
+        for (const [key, val] of Object.entries(values)) {
+            const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
+            console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+        }
+    }));
+    GM.registerMenuCommand("Delete all GM values", () => __awaiter(this, void 0, void 0, function* () {
+        const keys = yield GM.listValues();
+        if (confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+            console.log(`Clearing ${keys.length} GM values:`);
             if (keys.length === 0)
                 console.log("  No values found.");
-            const values = {};
-            let longestKey = 0;
             for (const key of keys) {
-                const isEncoded = key.startsWith("_uucfg-") ? yield GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-                const val = yield GM.getValue(key, undefined);
-                values[key] = typeof val !== "undefined" && isEncoded ? yield UserUtils.decompress(val, compressionFormat, "string") : val;
-                longestKey = Math.max(longestKey, key.length);
+                yield GM.deleteValue(key);
+                console.log(`  Deleted ${key}`);
             }
-            for (const [key, finalVal] of Object.entries(values)) {
-                const isEncoded = key.startsWith("_uucfg-") ? yield GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-                const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-                console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+        }
+    }), "d");
+    GM.registerMenuCommand("Delete GM values by name (comma separated)", () => __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+        if (!keys)
+            return;
+        for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
+            if (key && key.length > 0) {
+                const truncLength = 400;
+                const oldVal = yield GM.getValue(key);
+                yield GM.deleteValue(key);
+                console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
             }
-        }), "l");
-        GM.registerMenuCommand("List GM values in console, without decompression", () => __awaiter(this, void 0, void 0, function* () {
-            const keys = yield GM.listValues();
-            console.log(`GM values (${keys.length}):`);
-            if (keys.length === 0)
-                console.log("  No values found.");
-            const values = {};
-            let longestKey = 0;
-            for (const key of keys) {
-                const val = yield GM.getValue(key, undefined);
-                values[key] = val;
-                longestKey = Math.max(longestKey, key.length);
-            }
-            for (const [key, val] of Object.entries(values)) {
-                const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-                console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
-            }
-        }));
-        GM.registerMenuCommand("Delete all GM values", () => __awaiter(this, void 0, void 0, function* () {
-            const keys = yield GM.listValues();
-            if (confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
-                console.log(`Clearing ${keys.length} GM values:`);
-                if (keys.length === 0)
-                    console.log("  No values found.");
-                for (const key of keys) {
-                    yield GM.deleteValue(key);
-                    console.log(`  Deleted ${key}`);
-                }
-            }
-        }), "d");
-        GM.registerMenuCommand("Delete GM values by name (comma separated)", () => __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
-            if (!keys)
-                return;
-            for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
-                if (key && key.length > 0) {
-                    const truncLength = 400;
-                    const oldVal = yield GM.getValue(key);
-                    yield GM.deleteValue(key);
-                    console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
-                }
-            }
-        }), "n");
-        GM.registerMenuCommand("Reset install timestamp", () => __awaiter(this, void 0, void 0, function* () {
-            yield GM.deleteValue("bytm-installed");
-            console.log("Reset install time.");
-        }), "t");
-        GM.registerMenuCommand("Reset version check timestamp", () => __awaiter(this, void 0, void 0, function* () {
-            yield GM.deleteValue("bytm-version-check");
-            console.log("Reset version check time.");
-        }), "v");
-        GM.registerMenuCommand("List active selector listeners in console", () => __awaiter(this, void 0, void 0, function* () {
-            const lines = [];
-            let listenersAmt = 0;
-            for (const [obsName, obs] of Object.entries(observers$1)) {
-                const listeners = obs.getAllListeners();
-                lines.push(`- "${obsName}" (${listeners.size} listeners):`);
-                [...listeners].forEach(([k, v]) => {
-                    listenersAmt += v.length;
-                    lines.push(`    [${v.length}] ${k}`);
-                    v.forEach(({ all, continuous }, i) => {
-                        lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
-                    });
+        }
+    }), "n");
+    GM.registerMenuCommand("Reset install timestamp", () => __awaiter(this, void 0, void 0, function* () {
+        yield GM.deleteValue("bytm-installed");
+        console.log("Reset install time.");
+    }), "t");
+    GM.registerMenuCommand("Reset version check timestamp", () => __awaiter(this, void 0, void 0, function* () {
+        yield GM.deleteValue("bytm-version-check");
+        console.log("Reset version check time.");
+    }), "v");
+    GM.registerMenuCommand("List active selector listeners in console", () => __awaiter(this, void 0, void 0, function* () {
+        const lines = [];
+        let listenersAmt = 0;
+        for (const [obsName, obs] of Object.entries(observers$1)) {
+            const listeners = obs.getAllListeners();
+            lines.push(`- "${obsName}" (${listeners.size} listeners):`);
+            [...listeners].forEach(([k, v]) => {
+                listenersAmt += v.length;
+                lines.push(`    [${v.length}] ${k}`);
+                v.forEach(({ all, continuous }, i) => {
+                    lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
                 });
-            }
-            console.log(`Showing currently active listeners for ${Object.keys(observers$1).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-        }), "s");
-        GM.registerMenuCommand("Compress value", () => __awaiter(this, void 0, void 0, function* () {
-            const input = prompt("Enter the value to compress.\nSee console for output.");
-            if (input && input.length > 0) {
-                const compressed = yield UserUtils.compress(input, compressionFormat);
-                console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-            }
-        }));
-        GM.registerMenuCommand("Decompress value", () => __awaiter(this, void 0, void 0, function* () {
-            const input = prompt("Enter the value to decompress.\nSee console for output.");
-            if (input && input.length > 0) {
-                const decompressed = yield UserUtils.decompress(input, compressionFormat);
-                console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-            }
-        }));
-    }
+            });
+        }
+        console.log(`Showing currently active listeners for ${Object.keys(observers$1).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    }), "s");
+    GM.registerMenuCommand("Compress value", () => __awaiter(this, void 0, void 0, function* () {
+        const input = prompt("Enter the value to compress.\nSee console for output.");
+        if (input && input.length > 0) {
+            const compressed = yield UserUtils.compress(input, compressionFormat);
+            console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+        }
+    }));
+    GM.registerMenuCommand("Decompress value", () => __awaiter(this, void 0, void 0, function* () {
+        const input = prompt("Enter the value to decompress.\nSee console for output.");
+        if (input && input.length > 0) {
+            const decompressed = yield UserUtils.decompress(input, compressionFormat);
+            console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+        }
+    }));
 }
 preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
