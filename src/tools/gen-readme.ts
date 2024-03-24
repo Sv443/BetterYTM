@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pluginsJson from "../../assets/plugins.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
+import type { PluginDef } from "../types";
 
 const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
 const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
@@ -13,31 +14,7 @@ const changes = {
   PLUGINS: genPluginList,
 };
 
-type PluginObj = {
-  /** Name of the plugin */
-  pluginName: string;
-  /**
-   * Descriptions of at least en_US and optionally any other existing locale  
-   * When an unspecified locale is set, the description will default to either the base locale's value or en_US' value
-   */
-  pluginDescription: Partial<Record<keyof typeof locales, string>> & {
-    en_US: string;
-  };
-  /** Path relative to the project root */
-  pluginIconPath: string;
-  /** URL to the plugin's homepage or GitHub repo */
-  pluginUrl: string;
-  /** URL to the plugin's GreasyFork page */
-  pluginUrlGF?: string;
-  /** URL to the plugin's OpenUserJS page */
-  pluginUrlOUJS?: string;
-  /** Name of the plugin's author */
-  authorName: string;
-  /** URL to the plugin author's homepage / GitHub profile */
-  authorUrl?: string;
-};
-
-const pluginList = pluginsJson as PluginObj[];
+const pluginList = pluginsJson as PluginDef[];
 void ["TODO:", pluginList];
 
 async function run() {
