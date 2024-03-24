@@ -2,7 +2,7 @@ import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
 import type { addSelectorListener } from "./observers";
 import type resources from "../assets/resources.json";
-import type langMapping from "../assets/locales.json";
+import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
 import type { getFeatures, saveFeatures } from "./config";
 
@@ -28,7 +28,7 @@ export type Domain = "yt" | "ytm";
 export type HttpUrlString = `http://${string}` | `https://${string}`;
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `trans-${keyof typeof langMapping}` | "changelog";
+export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog";
 
 /** Describes a single hotkey */
 export type HotkeyObj = {
@@ -46,6 +46,84 @@ export type LyricsCacheEntry = {
   url: string;
   viewed: number;
   added: number;
+};
+
+//#MARKER plugins
+
+// /** Intents (permissions) BYTM has to grant to the plugin for it to work */
+// export enum PluginIntent {
+//   /** Plugin has access to hidden config values */
+//   HiddenConfigValues = 1,
+//   /** Plugin can write to the feature configuration */
+//   WriteFeatureConfig = 2,
+//   /** Plugin can write to the lyrics cache */
+//   WriteLyricsCache = 4,
+//   /** Plugin can add new translations and overwrite existing ones */
+//   WriteTranslations = 8,
+//   /** Plugin can create modal dialogs */
+//   CreateModalDialogs = 16,
+// }
+
+/** Result of a plugin registration */
+export type PluginRegisterResult = {
+  /** Public info about the registered plugin */
+  info: PluginInfo;
+}
+
+/** Object that describes a plugin out of the restricted perspective of another plugin */
+export type PluginInfo =
+  Pick<PluginDef["plugin"],
+    | "name"
+    | "namespace"
+    | "version"
+  >;
+
+/** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */
+export type PluginDefResolvable = { plugin: Pick<PluginDef["plugin"], "name" | "namespace"> };
+
+/** An object that describes a BYTM plugin */
+export type PluginDef = {
+  plugin: {
+    /** Name of the plugin */
+    name: string;
+    /**
+     * Adding the namespace and the name property makes the unique identifier for a plugin.  
+     * If one exists with the same name and namespace as this plugin, it may be overwritten at registration.  
+     * I recommend to set this value to a URL pointing to your homepage, or the author's username.
+     */
+    namespace: string;
+    /** Version of the plugin as an array containing three whole numbers: `[major_version, minor_version, patch_version]` */
+    version: [major: number, minor: number, patch: number];
+    /**
+     * Descriptions of at least en_US and optionally any other locale supported by BYTM.  
+     * When an untranslated locale is set, the description will default to the value of en_US
+     */
+    description: Partial<Record<keyof typeof locales, string>> & {
+      en_US: string;
+    };
+    /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
+    iconUrl?: string;
+    /** Homepage URLs for the plugin */
+    homepage?: {
+      /** URL to the plugin's GitHub repo */
+      github?: string;
+      /** URL to the plugin's GreasyFork page */
+      greasyfork?: string;
+      /** URL to the plugin's OpenUserJS page */
+      openuserjs?: string;
+    };
+  };
+  // /** TODO(v2.3 / v3): Intents (permissions) BYTM has to grant the plugin for it to work */
+  // intents?: Array<PluginIntent>;
+  /** Info about the plugin contributors */
+  contributors?: Array<{
+    /** Name of this contributor */
+    name: string;
+    /** (optional) Email address of this contributor */
+    email?: string;
+    /** (optional) URL to this plugin contributor's homepage / GitHub profile */
+    url?: string;
+  }>;
 };
 
 /** All functions exposed by the interface on the global `BYTM` object */
@@ -104,6 +182,8 @@ declare global {
     BYTM: BytmObject;
   }
 }
+
+//#MARKER features
 
 export type FeatureKey = keyof FeatureConfig;
 
