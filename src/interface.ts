@@ -4,9 +4,10 @@ import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, 
 import { addSelectorListener } from "./observers";
 import { getFeatures, saveFeatures } from "./config";
 import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
-import type { SiteEventsMap } from "./siteEvents";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable } from "./types";
+import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
+import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem } from "./types";
 import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
+import { createNanoEvents } from "nanoevents";
 
 const { getUnsafeWindow } = UserUtils;
 
@@ -71,7 +72,11 @@ const globalFuncs = {
   sanitizeSong,
 };
 
-const plugins = new Map<string, PluginDef>();
+/** Plugins that are queued up for registration */
+const pluginQueue = new Map<string, PluginItem>();
+
+/** Registered plugins including their event listener instance */
+const pluginMap = new Map<string, PluginItem>();
 
 /** Initializes the BYTM interface */
 export function initInterface() {
@@ -126,18 +131,28 @@ export function emitInterface<
 
 //#MARKER register plugins
 
-export function loadPlugins() {
-  // TODO:
-  // load plugins between bytm:initPlugins and bytm:ready
-  // emit bytm:pluginsLoaded after all plugins loaded
+/** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
+export function initPlugins() {
+  // TODO(v1.3): check perms and ask user for initial activation
+
+  for(const [key, { def, events }] of pluginQueue) {
+    pluginMap.set(key, { def, events });
+    pluginQueue.delete(key);
+    emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+  }
+
+  for(const evt of allSiteEvents) // @ts-ignore
+    siteEvents.on(evt, (...args) => emitOnPlugins(evt, () => true, ...args));
+
+  emitInterface("bytm:pluginsLoaded");
 }
 
 /** Returns the key for a given plugin definition */
-function getPluginKey(plugin: PluginDef | PluginDefResolvable) {
+function getPluginKey(plugin: PluginDefResolvable) {
   return `${plugin.plugin.namespace}/${plugin.plugin.name}`;
 }
 
-/** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) */
+/** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   return plugin && {
     name: plugin.plugin.name,
@@ -146,15 +161,43 @@ function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   };
 }
 
+/** Checks whether two plugin definitions are the same */
+function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
+  return getPluginKey(def1) === getPluginKey(def2);
+}
+
+/** Emits an event on all plugins that match the predicate (all plugins by default) */
+export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
+  event: TEvtKey,
+  predicate: (def: PluginDef) => boolean = () => true,
+  ...data: Parameters<PluginEventMap[TEvtKey]>
+) {
+  for(const { def, events } of pluginMap.values())
+    predicate(def) && events.emit(event, ...data);
+}
+
+/** Returns the internal plugin object by its name and namespace, or undefined if it doesn't exist */
+export function getPlugin(name: string, namespace: string): PluginItem | undefined
+/** Returns the internal plugin object by its definition, or undefined if it doesn't exist */
+export function getPlugin(plugin: PluginDefResolvable): PluginItem | undefined
+/** Returns the internal plugin object, or undefined if it doesn't exist */
+export function getPlugin(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
+  return args.length === 2
+    ? pluginMap.get(`${args[1]}/${args[0]}`)
+    : pluginMap.get(getPluginKey(args[0] as PluginDefResolvable));
+}
+
 /** Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered */
 export function getPluginInfo(name: string, namespace: string): PluginInfo | undefined
 /** Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered */
 export function getPluginInfo(plugin: PluginDefResolvable): PluginInfo | undefined
 /** Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered */
 export function getPluginInfo(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
-  return args.length === 2
-    ? pluginDefToInfo(plugins.get(`${args[1]}/${args[0]}`))
-    : pluginDefToInfo(plugins.get(getPluginKey(args[0] as PluginDefResolvable)));
+  return pluginDefToInfo(
+    args.length === 2
+      ? pluginMap.get(`${args[1]}/${args[0]}`)?.def
+      : pluginMap.get(getPluginKey(args[0] as PluginDefResolvable))?.def
+  );
 }
 
 /** Validates the passed PluginDef object and returns an array of errors */
@@ -175,20 +218,26 @@ function validatePluginDef(pluginDef: Partial<PluginDef>) {
 }
 
 /** Registers a plugin on the BYTM interface */
-export function registerPlugin(pluginDef: PluginDef): PluginRegisterResult {
-  const validationErrors = validatePluginDef(pluginDef);
+export function registerPlugin(def: PluginDef): PluginRegisterResult {
+  const validationErrors = validatePluginDef(def);
   if(validationErrors) {
-    error(`Failed to register plugin${pluginDef?.plugin?.name ? ` '${pluginDef?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
+    error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
     throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
   }
 
-  const { plugin: { name } } = pluginDef;
-  plugins.set(getPluginKey(pluginDef), pluginDef);
+  const events = createNanoEvents<PluginEventMap>();
+
+  const { plugin: { name } } = def;
+  pluginQueue.set(getPluginKey(def), {
+    def: def,
+    events,
+  });
 
   info(`Registered plugin: ${name}`, LogLevel.Info);
 
   return {
-    info: getPluginInfo(pluginDef)!,
+    info: getPluginInfo(def)!,
+    events,
   };
 }
 

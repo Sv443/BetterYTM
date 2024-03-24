@@ -1,3 +1,4 @@
+import type { Emitter } from "nanoevents";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
 import type { addSelectorListener } from "./observers";
@@ -5,6 +6,7 @@ import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
 import type { getFeatures, saveFeatures } from "./config";
+import type { SiteEventsMap } from "./siteEvents";
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
@@ -68,32 +70,30 @@ export type LyricsCacheEntry = {
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
+  /** Emitter for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: Emitter<PluginEventMap>;
 }
 
-/** Object that describes a plugin out of the restricted perspective of another plugin */
-export type PluginInfo =
-  Pick<PluginDef["plugin"],
-    | "name"
-    | "namespace"
-    | "version"
-  >;
+/** Minimal object that describes a plugin - this is all info the other installed plugins can see */
+export type PluginInfo = {
+  /** Name of the plugin */
+  name: string;
+  /**
+   * Adding the namespace and the name property makes the unique identifier for a plugin.  
+   * If one exists with the same name and namespace as this plugin, it may be overwritten at registration.  
+   * I recommend to set this value to a URL pointing to your homepage, or the author's username.
+   */
+  namespace: string;
+  /** Version of the plugin as an array containing three whole numbers: `[major_version, minor_version, patch_version]` */
+  version: [major: number, minor: number, patch: number];
+};
 
 /** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */
-export type PluginDefResolvable = { plugin: Pick<PluginDef["plugin"], "name" | "namespace"> };
+export type PluginDefResolvable = PluginDef | { plugin: Pick<PluginDef["plugin"], "name" | "namespace"> };
 
 /** An object that describes a BYTM plugin */
 export type PluginDef = {
-  plugin: {
-    /** Name of the plugin */
-    name: string;
-    /**
-     * Adding the namespace and the name property makes the unique identifier for a plugin.  
-     * If one exists with the same name and namespace as this plugin, it may be overwritten at registration.  
-     * I recommend to set this value to a URL pointing to your homepage, or the author's username.
-     */
-    namespace: string;
-    /** Version of the plugin as an array containing three whole numbers: `[major_version, minor_version, patch_version]` */
-    version: [major: number, minor: number, patch: number];
+  plugin: PluginInfo & {
     /**
      * Descriptions of at least en_US and optionally any other locale supported by BYTM.  
      * When an untranslated locale is set, the description will default to the value of en_US
@@ -125,6 +125,22 @@ export type PluginDef = {
     url?: string;
   }>;
 };
+
+/** All events that are dispatched to plugins individually */
+export type PluginEventMap =
+  & {
+
+    /** Called when the plugin is registered on BYTM's side */
+    pluginRegistered: (info: PluginInfo) => void;
+  }
+  & SiteEventsMap;
+
+/** A plugin in either the queue or registered map */
+export type PluginItem = 
+  & {
+    def: PluginDef;
+  }
+  & Pick<PluginRegisterResult, "events">;
 
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {

@@ -1,10 +1,10 @@
 import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { initOnSelector } from "./utils";
+import { initOnSelector, warn } from "./utils";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
-import { initSiteEvents, siteEvents } from "./siteEvents";
-import { emitInterface, initInterface } from "./interface";
+import { initSiteEvents } from "./siteEvents";
+import { emitInterface, initInterface, initPlugins } from "./interface";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import { initObservers, observers } from "./observers";
 import {
@@ -28,8 +28,7 @@ import {
   // menu
   addConfigMenuOption,
   // other
-  featInfo, initVersionCheck,
-  initLyricsCache,
+  initVersionCheck, initLyricsCache,
 } from "./features/index";
 
 {
@@ -84,6 +83,8 @@ async function init() {
 
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
+
+    emitInterface("bytm:initPlugins");
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
@@ -212,75 +213,82 @@ async function onDomLoad() {
       // }));
     }
 
-    Promise.allSettled(ftInit).then(() => {
-      emitInterface("bytm:ready");
+    await Promise.allSettled(ftInit);
 
-      try {
-        registerMenuCommands();
-      }
-      catch(e) {
-        void e;
-      }
-    });
+    emitInterface("bytm:ready");
+
+    try {
+      initPlugins();
+    }
+    catch(err) {
+      error("Plugin loading error:", err);
+    }
+
+    try {
+      registerDevMenuCommands();
+    }
+    catch(e) {
+      warn("Couldn't register dev menu commands:", e);
+    }
   }
   catch(err) {
     error("Feature error:", err);
   }
 }
 
-void ["TODO(v1.2):", initFeatures];
-async function initFeatures() {
-  const ftInit = [] as Promise<void>[];
+// TODO(v1.2):
+// async function initFeatures() {
+//   const ftInit = [] as Promise<void>[];
 
-  log(`DOM loaded. Initializing features for domain "${domain}"...`);
+//   log(`DOM loaded. Initializing features for domain "${domain}"...`);
 
-  for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
-    try {
-      // @ts-ignore
-      const res = ftInfo?.enable?.() as undefined | Promise<void>;
-      if(res instanceof Promise)
-        ftInit.push(res);
-      else
-        ftInit.push(Promise.resolve());
-    }
-    catch(err) {
-      error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
-    }
-  }
+//   for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
+//     try {
+//       // @ts-ignore
+//       const res = ftInfo?.enable?.() as undefined | Promise<void>;
+//       if(res instanceof Promise)
+//         ftInit.push(res);
+//       else
+//         ftInit.push(Promise.resolve());
+//     }
+//     catch(err) {
+//       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
+//     }
+//   }
 
-  siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
-    try {
-      // @ts-ignore
-      if(featInfo[ftKey].change) {
-        // @ts-ignore
-        featInfo[ftKey].change(oldValue, newValue);
-      }
-      // @ts-ignore
-      else if(featInfo[ftKey].disable) {
-        // @ts-ignore
-        const disableRes = featInfo[ftKey].disable();
-        if(disableRes instanceof Promise) // @ts-ignore
-          disableRes.then(() => featInfo[ftKey]?.enable?.());
-        else // @ts-ignore
-          featInfo[ftKey]?.enable?.();
-      }
-      else {
-        // TODO: set "page reload required" flag in new menu
-        if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
-          disableBeforeUnload();
-          location.reload();
-        }
-      }
-    }
-    catch(err) {
-      error(`Couldn't change feature "${ftKey}" due to error:`, err);
-    }
-  });
+//   siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
+//     try {
+//       // @ts-ignore
+//       if(featInfo[ftKey].change) {
+//         // @ts-ignore
+//         featInfo[ftKey].change(oldValue, newValue);
+//       }
+//       // @ts-ignore
+//       else if(featInfo[ftKey].disable) {
+//         // @ts-ignore
+//         const disableRes = featInfo[ftKey].disable();
+//         if(disableRes instanceof Promise) // @ts-ignore
+//           disableRes.then(() => featInfo[ftKey]?.enable?.());
+//         else // @ts-ignore
+//           featInfo[ftKey]?.enable?.();
+//       }
+//       else {
+//         // TODO: set "page reload required" flag in new menu
+//         if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
+//           disableBeforeUnload();
+//           location.reload();
+//         }
+//       }
+//     }
+//     catch(err) {
+//       error(`Couldn't change feature "${ftKey}" due to error:`, err);
+//     }
+//   });
 
-  Promise.all(ftInit).then(() => {
-    emitInterface("bytm:ready");
-  });
-}
+//   Promise.all(ftInit).then(() => {
+//     emitInterface("bytm:ready");
+//   });
+// }
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
@@ -288,128 +296,130 @@ function insertGlobalStyle() {
   addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
 }
 
-function registerMenuCommands() {
-  if(mode === "development") {
-    GM.registerMenuCommand("Reset config", async () => {
-      if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
-        await clearConfig();
-        disableBeforeUnload();
-        location.reload();
-      }
-    }, "r");
+/** Registers dev commands using `GM.registerMenuCommand` */
+function registerDevMenuCommands() {
+  if(mode !== "development")
+    return;
 
-    GM.registerMenuCommand("List GM values in console with decompression", async () => {
-      const keys = await GM.listValues();
-      console.log(`GM values (${keys.length}):`);
+  GM.registerMenuCommand("Reset config", async () => {
+    if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
+      await clearConfig();
+      disableBeforeUnload();
+      location.reload();
+    }
+  }, "r");
+
+  GM.registerMenuCommand("List GM values in console with decompression", async () => {
+    const keys = await GM.listValues();
+    console.log(`GM values (${keys.length}):`);
+    if(keys.length === 0)
+      console.log("  No values found.");
+
+    const values = {} as Record<string, Stringifiable | undefined>;
+    let longestKey = 0;
+
+    for(const key of keys) {
+      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+      const val = await GM.getValue(key, undefined);
+      values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
+      longestKey = Math.max(longestKey, key.length);
+    }
+    for(const [key, finalVal] of Object.entries(values)) {
+      const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
+      const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
+      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+    }
+  }, "l");
+
+  GM.registerMenuCommand("List GM values in console, without decompression", async () => {
+    const keys = await GM.listValues();
+    console.log(`GM values (${keys.length}):`);
+    if(keys.length === 0)
+      console.log("  No values found.");
+
+    const values = {} as Record<string, Stringifiable | undefined>;
+    let longestKey = 0;
+
+    for(const key of keys) {
+      const val = await GM.getValue(key, undefined);
+      values[key] = val;
+      longestKey = Math.max(longestKey, key.length);
+    }
+    for(const [key, val] of Object.entries(values)) {
+      const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
+      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+    }
+  });
+
+  GM.registerMenuCommand("Delete all GM values", async () => {
+    const keys = await GM.listValues();
+    if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
+      console.log(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
         console.log("  No values found.");
-
-      const values = {} as Record<string, Stringifiable | undefined>;
-      let longestKey = 0;
-
       for(const key of keys) {
-        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-        const val = await GM.getValue(key, undefined);
-        values[key] = typeof val !== "undefined" && isEncoded ? await decompress(val, compressionFormat, "string") : val;
-        longestKey = Math.max(longestKey, key.length);
+        await GM.deleteValue(key);
+        console.log(`  Deleted ${key}`);
       }
-      for(const [key, finalVal] of Object.entries(values)) {
-        const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
-        const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+    }
+  }, "d");
+
+  GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
+    const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+    if(!keys)
+      return;
+    for(const key of keys?.split(",") ?? []) {
+      if(key && key.length > 0) {
+        const truncLength = 400;
+        const oldVal = await GM.getValue(key);
+        await GM.deleteValue(key);
+        console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
       }
-    }, "l");
+    }
+  }, "n");
 
-    GM.registerMenuCommand("List GM values in console, without decompression", async () => {
-      const keys = await GM.listValues();
-      console.log(`GM values (${keys.length}):`);
-      if(keys.length === 0)
-        console.log("  No values found.");
+  GM.registerMenuCommand("Reset install timestamp", async () => {
+    await GM.deleteValue("bytm-installed");
+    console.log("Reset install time.");
+  }, "t");
 
-      const values = {} as Record<string, Stringifiable | undefined>;
-      let longestKey = 0;
+  GM.registerMenuCommand("Reset version check timestamp", async () => {
+    await GM.deleteValue("bytm-version-check");
+    console.log("Reset version check time.");
+  }, "v");
 
-      for(const key of keys) {
-        const val = await GM.getValue(key, undefined);
-        values[key] = val;
-        longestKey = Math.max(longestKey, key.length);
-      }
-      for(const [key, val] of Object.entries(values)) {
-        const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-        console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
-      }
-    });
-
-    GM.registerMenuCommand("Delete all GM values", async () => {
-      const keys = await GM.listValues();
-      if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
-        console.log(`Clearing ${keys.length} GM values:`);
-        if(keys.length === 0)
-          console.log("  No values found.");
-        for(const key of keys) {
-          await GM.deleteValue(key);
-          console.log(`  Deleted ${key}`);
-        }
-      }
-    }, "d");
-
-    GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-      const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
-      if(!keys)
-        return;
-      for(const key of keys?.split(",") ?? []) {
-        if(key && key.length > 0) {
-          const truncLength = 400;
-          const oldVal = await GM.getValue(key);
-          await GM.deleteValue(key);
-          console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
-        }
-      }
-    }, "n");
-
-    GM.registerMenuCommand("Reset install timestamp", async () => {
-      await GM.deleteValue("bytm-installed");
-      console.log("Reset install time.");
-    }, "t");
-
-    GM.registerMenuCommand("Reset version check timestamp", async () => {
-      await GM.deleteValue("bytm-version-check");
-      console.log("Reset version check time.");
-    }, "v");
-
-    GM.registerMenuCommand("List active selector listeners in console", async () => {
-      const lines = [] as string[];
-      let listenersAmt = 0;
-      for(const [obsName, obs] of Object.entries(observers)) {
-        const listeners = obs.getAllListeners();
-        lines.push(`- "${obsName}" (${listeners.size} listeners):`);
-        [...listeners].forEach(([k, v]) => {
-          listenersAmt += v.length;
-          lines.push(`    [${v.length}] ${k}`);
-          v.forEach(({ all, continuous }, i) => {
-            lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
-          });
+  GM.registerMenuCommand("List active selector listeners in console", async () => {
+    const lines = [] as string[];
+    let listenersAmt = 0;
+    for(const [obsName, obs] of Object.entries(observers)) {
+      const listeners = obs.getAllListeners();
+      lines.push(`- "${obsName}" (${listeners.size} listeners):`);
+      [...listeners].forEach(([k, v]) => {
+        listenersAmt += v.length;
+        lines.push(`    [${v.length}] ${k}`);
+        v.forEach(({ all, continuous }, i) => {
+          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
         });
-      }
-      console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
-    }, "s");
+      });
+    }
+    console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+  }, "s");
 
-    GM.registerMenuCommand("Compress value", async () => {
-      const input = prompt("Enter the value to compress.\nSee console for output.");
-      if(input && input.length > 0) {
-        const compressed = await compress(input, compressionFormat);
-        console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
-      }
-    });
+  GM.registerMenuCommand("Compress value", async () => {
+    const input = prompt("Enter the value to compress.\nSee console for output.");
+    if(input && input.length > 0) {
+      const compressed = await compress(input, compressionFormat);
+      console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+    }
+  });
 
-    GM.registerMenuCommand("Decompress value", async () => {
-      const input = prompt("Enter the value to decompress.\nSee console for output.");
-      if(input && input.length > 0) {
-        const decompressed = await decompress(input, compressionFormat);
-        console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
-      }
-    });
-  }
+  GM.registerMenuCommand("Decompress value", async () => {
+    const input = prompt("Enter the value to decompress.\nSee console for output.");
+    if(input && input.length > 0) {
+      const decompressed = await decompress(input, compressionFormat);
+      console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+    }
+  });
 }
 
 preInit();
