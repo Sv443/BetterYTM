@@ -193,39 +193,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-#bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
 /* #MARKER scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
