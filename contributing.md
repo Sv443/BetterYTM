@@ -36,7 +36,7 @@ To submit a translation, please follow these steps:
 5. If you want to submit a pull request with the translated file:
     1. Duplicate the `en_US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged
-    3. Create the mapping in `assets/locales.json` by copying the english one and editing it (please make sure it's alphabetically ordered)
+    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
     4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
     5. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
 6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
@@ -303,17 +303,20 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The function will either throw an error if the plugin object is invalid or return a registration result object.  
 > Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)
 > 
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
+> // all properties are optional unless stated otherwise
+> // search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
 >   plugin: {
->     name: "My cool plugin",
->     namespace: "https://github.com/MyUsername",
->     version: [1, 0, 0],
->     description: {
->       en_US: "This is a plugin that does cool stuff",
->       de_DE: "Dies ist ein Plugin, das coole Sachen macht",
+>     name: "My cool plugin",                           // required
+>     namespace: "https://github.com/MyUsername",       // required
+>     version: [4, 2, 0],                               // required
+>     description: {                                    // required
+>       en_US: "This plugin does cool stuff",           // required
+>       de_DE: "Dieses Plugin macht coole Sachen",
+>       // see all supported locale codes in "assets/locales.json"
 >     },
 >     iconUrl: "https://picsum.photos/128/128",
 >     homepage: {
@@ -322,17 +325,31 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >       openuserjs: "...",
 >     },
 >   },
+>   // the intents (permissions) the plugin needs to be granted
+>   // search for "enum PluginIntent" in "src/types.ts" to see all available intent values
+>   intents: [ 2, 16 ],
 >   contributors: [
 >     {
->       name: "MyUsername",
+>       name: "MyUsername", // required
 >       homepage: "https://github.com/MyUsername",
->       email: "justsomedude@hotmail.co.bd",
+>       email: "somedude420@hotmail.co.bd",
+>     },
+>     {
+>       name: "SomeOtherGuy", // required
+>       homepage: "https://github.com/SomeOtherGuy",
+>       email: "someotherguy@star-co.net.kp",
 >     },
 >   ],
 > };
 > 
-> unsafeWindow.addEventListener("bytm:ready", () => {
->   unsafeWindow.BYTM.registerPlugin(pluginDef);
+> unsafeWindow.addEventListener("bytm:initPlugins", () => {
+>   // register the plugin
+>   const { events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>   // listen for the pluginRegistered event
+>   events.on("pluginRegistered", (info) => {
+>     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
+>   });
+>   // for other events search for "type PluginEventMap" in "src/types.ts"
 > });
 > ```
 > </details>

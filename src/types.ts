@@ -50,21 +50,53 @@ export type LyricsCacheEntry = {
   added: number;
 };
 
+//#MARKER global
+
+// shim for the BYTM interface properties
+export type BytmObject =
+  {
+    [key: string]: unknown;
+    locale: TrLocale;
+    logLevel: LogLevel;
+  }
+  // information from the userscript header
+  & typeof scriptInfo
+  // certain variables from `src/constants.ts`
+  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
+  // global functions exposed through the interface in `src/interface.ts`
+  & InterfaceFunctions
+  // others
+  & {
+    // the entire UserUtils library
+    UserUtils: typeof import("@sv443-network/userutils");
+  };
+
+declare global {
+  interface Window {
+    // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts" and hover over the property below
+    // alternatively navigate with ctrl+click to find the types
+    BYTM: BytmObject;
+  }
+}
+
 //#MARKER plugins
 
-// /** Intents (permissions) BYTM has to grant to the plugin for it to work */
-// export enum PluginIntent {
-//   /** Plugin has access to hidden config values */
-//   HiddenConfigValues = 1,
-//   /** Plugin can write to the feature configuration */
-//   WriteFeatureConfig = 2,
-//   /** Plugin can write to the lyrics cache */
-//   WriteLyricsCache = 4,
-//   /** Plugin can add new translations and overwrite existing ones */
-//   WriteTranslations = 8,
-//   /** Plugin can create modal dialogs */
-//   CreateModalDialogs = 16,
-// }
+/**
+ * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
+ * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.
+ */
+export enum PluginIntent {
+  /** Plugin has access to hidden config values */
+  HiddenConfigValues = 1,
+  /** Plugin can write to the feature configuration */
+  WriteFeatureConfig = 2,
+  /** Plugin can write to the lyrics cache */
+  WriteLyricsCache = 4,
+  /** Plugin can add new translations and overwrite existing ones */
+  WriteTranslations = 8,
+  /** Plugin can create modal dialogs */
+  CreateModalDialogs = 16,
+}
 
 /** Result of a plugin registration */
 export type PluginRegisterResult = {
@@ -113,8 +145,8 @@ export type PluginDef = {
       openuserjs?: string;
     };
   };
-  // /** TODO(v2.3 / v3): Intents (permissions) BYTM has to grant the plugin for it to work */
-  // intents?: Array<PluginIntent>;
+  /** Intents (permissions) BYTM has to grant the plugin for it to work */
+  intents?: Array<PluginIntent>;
   /** Info about the plugin contributors */
   contributors?: Array<{
     /** Name of this contributor */
@@ -126,10 +158,9 @@ export type PluginDef = {
   }>;
 };
 
-/** All events that are dispatched to plugins individually */
+/** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} - these don't have a prefix since they can't conflict with other events */
 export type PluginEventMap =
   & {
-
     /** Called when the plugin is registered on BYTM's side */
     pluginRegistered: (info: PluginInfo) => void;
   }
@@ -171,33 +202,6 @@ export type InterfaceFunctions = {
   /** Overwrites the feature configuration with the provided one */
   saveFeatures: typeof saveFeatures;
 };
-
-// shim for the BYTM interface properties
-export type BytmObject =
-  {
-    [key: string]: unknown;
-    locale: TrLocale;
-    logLevel: LogLevel;
-  }
-  // information from the userscript header
-  & typeof scriptInfo
-  // certain variables from `src/constants.ts`
-  & Pick<typeof consts, "mode" | "branch" | "host" | "buildNumber" | "compressionFormat">
-  // global functions exposed through the interface in `src/interface.ts`
-  & InterfaceFunctions
-  // others
-  & {
-    // the entire UserUtils library
-    UserUtils: typeof import("@sv443-network/userutils");
-  };
-
-declare global {
-  interface Window {
-    // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts"
-    // and hover over the property just below:
-    BYTM: BytmObject;
-  }
-}
 
 //#MARKER features
 
