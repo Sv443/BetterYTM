@@ -153,7 +153,7 @@ These are the ways to interact with BetterYTM; constants, events and global func
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
   There is also a summary with examples [below.](#global-functions)  
-  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all functions from the [UserUtils](https://github.com/Sv443-Network/UserUtils) library.
+  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)
 
 All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
   
@@ -256,6 +256,9 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
+- Meta:
+  - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
+  - [getPluginInfo()](#getplugininfo) - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
 - BYTM-specific:
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
@@ -282,6 +285,93 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 - Other:
   - [NanoEmitter](#nanoemitte) - Abstract class for creating lightweight, type safe event emitting classes
+
+<br><br>
+
+> #### registerPlugin()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.registerPlugin(pluginDef: PluginDef): PluginRegisterResult
+> ```
+>   
+> Description:  
+> Registers a plugin with BetterYTM with the given plugin definition object.  
+>   
+> Arguments:  
+> - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
+>   
+> The function will either throw an error if the plugin object is invalid or return a registration result object.  
+> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const pluginDef = {
+>   plugin: {
+>     name: "My cool plugin",
+>     namespace: "https://github.com/MyUsername",
+>     version: [1, 0, 0],
+>     description: {
+>       en_US: "This is a plugin that does cool stuff",
+>       de_DE: "Dies ist ein Plugin, das coole Sachen macht",
+>     },
+>     iconUrl: "https://picsum.photos/128/128",
+>     homepage: {
+>       github: "https://github.com/MyUsername/MyCoolBYTMPlugin",
+>       greasyfork: "...",
+>       openuserjs: "...",
+>     },
+>   },
+>   contributors: [
+>     {
+>       name: "MyUsername",
+>       homepage: "https://github.com/MyUsername",
+>       email: "justsomedude@hotmail.co.bd",
+>     },
+>   ],
+> };
+> 
+> unsafeWindow.addEventListener("bytm:ready", () => {
+>   unsafeWindow.BYTM.registerPlugin(pluginDef);
+> });
+> ```
+> </details>
+
+<br>
+
+> #### getPluginInfo()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getPluginInfo(name: string, namespace: string): PluginInfo | undefined
+> unsafeWindow.BYTM.getPluginInfo(pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
+> ```
+>   
+> Description:  
+> Returns the plugin info object for the specified plugin. It's basically a more restricted version of the plugin definition object.  
+> This object contains all information that other plugins will be able to see about your plugin.  
+>   
+> Arguments:
+> - `name` - The 'name' property of the plugin
+> - `namespace` - The 'namespace' property of the plugin
+> OR:
+> - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
+>   
+> The function will return `undefined` if the plugin is not registered.  
+> The type of the returned object can be found by searching for `type PluginInfo` in the file [`src/types.ts`](./src/types.ts)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.addEventListener("bytm:pluginsLoaded", () => {
+>   const pluginInfo = unsafeWindow.BYTM.getPluginInfo("My cool plugin", "https://github.com/MyUsername");
+>   if(pluginInfo) {
+>     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
+>   }
+>   else
+>     console.error("The plugin 'My cool plugin' is not registered");
+> });
+> ```
+> </details>
 
 <br>
 
