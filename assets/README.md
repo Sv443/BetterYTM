@@ -31,7 +31,9 @@ The keys of the object are the locale codes, and the values are the locale objec
 <br>
 
 ### [`plugins.json`](plugins.json)
-(Not implemented yet)
+(Not fully implemented yet, but should still be filled out when a plugin is added)  
+  
+For the structure of this array of objects, see `type PluginObj` in [`src/types.ts`](../src/types.ts)
 
 <br>
 

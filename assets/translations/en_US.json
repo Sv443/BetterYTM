@@ -195,6 +195,8 @@
     "feature_desc_logLevel": "How much information to log to the console",
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
     "feature_desc_advancedMode": "Show advanced settings (after reload)",
-    "feature_helptext_advancedMode": "Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior."
+    "feature_helptext_advancedMode": "Show advanced settings in the configuration menu after reloading the page.\nThis is useful if you want to more deeply customize the script's behavior.",
+
+    "plugin_validation_error_no_property": "No property '%1' with type '%2'"
   }
 }
