@@ -8,14 +8,14 @@
   },
   "en_US": {
     "name": "English (United States)",
-    "nameEnglish": "English",
+    "nameEnglish": "English (US)",
     "emoji": "🇺🇸",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
     "authors": ["Sv443"]
   },
   "en_UK": {
     "name": "English (United Kingdom)",
-    "nameEnglish": "English",
+    "nameEnglish": "English (UK)",
     "emoji": "🇬🇧",
     "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
     "authors": ["Sv443"]
