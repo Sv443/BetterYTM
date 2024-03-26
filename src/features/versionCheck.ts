@@ -1,11 +1,11 @@
 import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
-import { error, info, sendRequest } from "../utils";
+import { error, info, sendRequest, t } from "../utils";
 import { getVersionNotifDialog } from "../dialogs";
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
-export async function checkVersion() {
+export async function initVersionCheck() {
   try {
     if(getFeatures().versionCheck === false)
       return info("Version check is disabled");
@@ -14,30 +14,38 @@ export async function checkVersion() {
     if(Date.now() - lastCheck < 1000 * 60 * 60 * 24)
       return;
 
-    await GM.setValue("bytm-version-check", Date.now());
-
-    const res = await sendRequest({
-      method: "GET",
-      url: releaseURL,
-    });
-
-    const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
-
-    if(!latestTag)
-      return;
-
-    const versionComp = compareVersions(scriptInfo.version, latestTag);
-
-    info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
-
-    if(versionComp < 0) {
-      const dialog = await getVersionNotifDialog({ latestTag });
-      await dialog.open();
-    }
+    await doVersionCheck(false);
   }
   catch(err) {
     error("Version check failed:", err);
   }
+}
+
+export async function doVersionCheck(notifyNoUpdatesFound = false) {
+  await GM.setValue("bytm-version-check", Date.now());
+
+  const res = await sendRequest({
+    method: "GET",
+    url: releaseURL,
+  });
+
+  // TODO: small dialog for "no update found" message?
+  const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+
+  const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+
+  if(!latestTag)
+    return noUpdateFound();
+
+  const versionComp = compareVersions(scriptInfo.version, latestTag);
+
+  info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+
+  if(versionComp < 0) {
+    const dialog = await getVersionNotifDialog({ latestTag });
+    return await dialog.open();
+  }
+  return noUpdateFound();
 }
 
 /**

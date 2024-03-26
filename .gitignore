@@ -1,6 +1,8 @@
 .env
 test.js
 test.ts
+test.html
+test.css
 
 node_modules/
 dist/*.map

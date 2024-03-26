@@ -1,16 +1,8 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
-import type { FeatureConfig } from "../types";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, onSelectorOld, warn, t } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction } from "../utils";
 import { openCfgMenu } from "../menu/menu_old";
-import { featInfo } from ".";
 import "./layout.css";
-
-let features: FeatureConfig;
-
-export function setLayoutConfig(feats: FeatureConfig) {
-  features = feats;
-}
 
 //#MARKER BYTM-Config buttons
 
@@ -37,8 +29,7 @@ export async function addWatermark() {
       exchangeLogo();
   };
 
-  watermark.addEventListener("click", watermarkOpenMenu);
-  watermark.addEventListener("keydown", (e) => e.key === "Enter" && watermarkOpenMenu(e));
+  onInteraction(watermark, watermarkOpenMenu);
 
   onSelectorOld("ytmusic-nav-bar #left-content", {
     listener: (logoElem) => insertAfter(logoElem, watermark),
@@ -116,7 +107,8 @@ export async function addConfigMenuOption(container: HTMLElement) {
   cfgOptItemElem.role = "button";
   cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
-  const cfgOptItemClicked = async (e: MouseEvent | KeyboardEvent) => {
+
+  onInteraction(cfgOptItemElem, async (e: MouseEvent | KeyboardEvent) => {
     const settingsBtnElem = document.querySelector<HTMLElement>("ytmusic-nav-bar ytmusic-settings-button tp-yt-paper-icon-button");
     settingsBtnElem?.click();
 
@@ -126,9 +118,7 @@ export async function addConfigMenuOption(container: HTMLElement) {
       openCfgMenu();
     if(!logoExchanged && (e.shiftKey || e.ctrlKey))
       exchangeLogo();
-  };
-  cfgOptItemElem.addEventListener("click", cfgOptItemClicked);
-  cfgOptItemElem.addEventListener("keydown", (e) => e.key === "Enter" && cfgOptItemClicked(e));
+  });
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
@@ -166,125 +156,6 @@ export async function removeUpgradeTab() {
       log("Removed small upgrade tab");
     },
   });
-}
-
-//#MARKER volume slider
-
-export async function initVolumeFeatures() {
-  // not technically an input element but behaves pretty much the same
-  onSelectorOld<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
-    listener: (sliderElem) => {
-      const volSliderCont = document.createElement("div");
-      volSliderCont.id = "bytm-vol-slider-cont";
-
-      if(features.volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default) {
-        for(const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
-          volSliderCont.addEventListener(evtName, (e) => {
-            e.preventDefault();
-            // cancels all the other events that would be fired
-            e.stopImmediatePropagation();
-
-            const delta = (e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1;
-            const volumeDir = -Math.sign(delta);
-            const newVolume = String(Number(sliderElem.value) + (features.volumeSliderScrollStep * volumeDir));
-
-            sliderElem.value = newVolume;
-            sliderElem.setAttribute("aria-valuenow", newVolume);
-            // make the site actually change the volume
-            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-          }, {
-            // takes precedence over the slider's own event listener
-            capture: true,
-          });
-        }
-      }
-
-      addParent(sliderElem, volSliderCont);
-
-      if(typeof features.volumeSliderSize === "number")
-        setVolSliderSize();
-
-      if(features.volumeSliderLabel)
-        addVolumeSliderLabel(sliderElem, volSliderCont);
-
-      setVolSliderStep(sliderElem);
-    },
-  });
-}
-
-/** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
-  const labelElem = document.createElement("div");
-  labelElem.id = "bytm-vol-slider-label";
-  labelElem.textContent = `${sliderElem.value}%`;
-
-  // prevent video from minimizing
-  labelElem.addEventListener("click", (e) => e.stopPropagation());
-
-  const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, features.volumeSliderStep ?? slider.step);
-
-  const labelFull = getLabelText(sliderElem);
-  sliderContainer.setAttribute("title", labelFull);
-  sliderElem.setAttribute("title", labelFull);
-  sliderElem.setAttribute("aria-valuetext", labelFull);
-
-  const updateLabel = () => {
-    const labelFull = getLabelText(sliderElem);
-
-    sliderContainer.setAttribute("title", labelFull);
-    sliderElem.setAttribute("title", labelFull);
-    sliderElem.setAttribute("aria-valuetext", labelFull);
-
-    const labelElem2 = document.querySelector<HTMLDivElement>("#bytm-vol-slider-label");
-    if(labelElem2)
-      labelElem2.textContent = `${sliderElem.value}%`;
-  };
-
-  sliderElem.addEventListener("change", () => updateLabel());
-
-  onSelectorOld("#bytm-vol-slider-cont", {
-    listener: (volumeCont) => {
-      volumeCont.appendChild(labelElem);
-    },
-  });
-
-  let lastSliderVal = Number(sliderElem.value);
-
-  // show label if hovering over slider or slider is focused
-  const sliderHoverObserver = new MutationObserver(() => {
-    if(sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-      labelElem.classList.add("bytm-visible");
-    else if(labelElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-      labelElem.classList.remove("bytm-visible");
-
-    if(Number(sliderElem.value) !== lastSliderVal) {
-      lastSliderVal = Number(sliderElem.value);
-      updateLabel();
-    }
-  });
-
-  sliderHoverObserver.observe(sliderElem, {
-    attributes: true,
-  });
-}
-
-/** Sets the volume slider to a set size */
-function setVolSliderSize() {
-  const { volumeSliderSize: size } = features;
-
-  if(typeof size !== "number" || isNaN(Number(size)))
-    return;
-
-  addGlobalStyle(`\
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
-  width: ${size}px !important;
-}`).id = "bytm-style-vol-slider-size";
-}
-
-/** Sets the `step` attribute of the volume slider */
-function setVolSliderStep(sliderElem: HTMLInputElement) {
-  sliderElem.setAttribute("step", String(features.volumeSliderStep));
 }
 
 //#MARKER anchor improvements
@@ -487,28 +358,28 @@ export async function addScrollToActiveBtn() {
 
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
+      linkElem.tabIndex = 0;
       linkElem.className = "ytmusic-player-bar bytm-generic-btn";
       linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
 
       const imgElem = document.createElement("img");
       imgElem.className = "bytm-generic-btn-img";
-      imgElem.src = await getResourceUrl("img-skip_to");
+      imgElem.src = await getResourceUrl("icon-skip_to");
 
-      linkElem.addEventListener("click", (e) => {
+      const scrollToActiveInteraction = () => {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
-
-        e.preventDefault();
-        e.stopImmediatePropagation();
 
         activeItem.scrollIntoView({
           behavior: "smooth",
           block: "center",
           inline: "center",
         });
-      });
+      };
+
+      onInteraction(linkElem, scrollToActiveInteraction);
 
       linkElem.appendChild(imgElem);
       containerElem.appendChild(linkElem);

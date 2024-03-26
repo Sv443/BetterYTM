@@ -1,6 +1,6 @@
-import { fetchAdvanced, randomId } from "@sv443-network/userutils";
+import { compress, fetchAdvanced, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, repo } from "../constants";
+import { branch, compressionFormat, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
 import { error, type TrLocale, warn } from ".";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
@@ -35,6 +35,36 @@ export function getSessionId(): string | null {
     return null;
   }
 }
+
+let isCompressionSupported: boolean | undefined;
+
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported */
+export async function compressionSupported() {
+  if(typeof isCompressionSupported === "boolean")
+    return isCompressionSupported;
+  try {
+    await compress(".", compressionFormat, "string");
+    return isCompressionSupported = true;
+  }
+  catch(e) {
+    return isCompressionSupported = false;
+  }
+}
+
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+export function arrayWithSeparators<TArray>(array: TArray[], separator = ", ", lastSeparator?: string) {
+  const arr = [...array];
+  if(!lastSeparator)
+    lastSeparator = separator;
+
+  if(arr.length === 0)
+    return "";
+  else if(arr.length <= 2)
+    return arr.join(lastSeparator);
+  else
+    return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)!}`;
+}
+
 
 //#SECTION resources
 
@@ -103,9 +133,9 @@ export async function resourceToHTMLString(resource: ResourceKey) {
   }
 }
 
-/** Parses a markdown string and turns it into an HTML string - doesn't sanitize against XSS! */
-export function parseMarkdown(md: string) {
-  return marked.parse(md, {
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+export function parseMarkdown(mdString: string) {
+  return marked.parse(mdString, {
     async: true,
     gfm: true,
   });
@@ -114,4 +144,32 @@ export function parseMarkdown(md: string) {
 /** Returns the content of the changelog markdown file */
 export async function getChangelogMd() {
   return await (await fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+}
+
+/** Returns the changelog as HTML with a details element for each version */
+export async function getChangelogHtmlWithDetails() {
+  try {
+    const changelogMd = await getChangelogMd();
+    let changelogHtml = await parseMarkdown(changelogMd);
+
+    const getVerId = (verStr: string) => verStr.trim().replace(/[._#\s-]/g, "");
+
+    changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+
+    const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+    for(const match of h2Matches) {
+      const [fullMatch, , verStr] = match;
+      const verId = getVerId(verStr);
+      const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">Version ${verStr}</h2>`;
+      const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
+      changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
+    }
+
+    changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+
+    return changelogHtml;
+  }
+  catch(err) {
+    return `Error while preparing changelog: ${err}`;
+  }
 }

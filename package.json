@@ -11,8 +11,8 @@
     "serve": "npm run node-ts -- ./src/tools/serve.ts",
     "lint": "tsc --noEmit && eslint .",
     "build": "rollup -c",
-    "build-watch": "rollup -c --config-mode development --config-host github --config-branch develop",
-    "build-develop": "rollup -c --config-mode production --config-host github --config-branch develop",
+    "build-watch": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
+    "build-develop": "rollup -c --config-mode development --config-host github --config-branch develop",
     "build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     "build-prod-base": "rollup -c --config-mode production --config-branch main",
     "build-prod-gh": "npm run build-prod-base -- --config-host github",
@@ -23,7 +23,7 @@
     "tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
     "gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
-    "invisible": "node src/tools/run-invisible.mjs",
+    "invisible": "node --enable-source-maps src/tools/run-invisible.mjs",
     "test": "npm run node-ts -- ./test.ts"
   },
   "engines": {
@@ -57,6 +57,9 @@
     "openuserjs": "https://openuserjs.org/scripts/Sv443/BetterYTM"
   },
   "dependencies": {
+    "@sv443-network/userutils": "^6.0.1",
+    "fuse.js": "^7.0.0",
+    "marked": "^12.0.0",
     "nanoevents": "^9.0.0"
   },
   "devDependencies": {
@@ -64,7 +67,6 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
-    "@sv443-network/userutils": "^4.2.1",
     "@types/express": "^4.17.17",
     "@types/greasemonkey": "^4.0.4",
     "@types/node": "^20.2.4",
@@ -74,7 +76,6 @@
     "dotenv": "^16.4.1",
     "eslint": "^8.51.0",
     "express": "^4.18.2",
-    "marked": "^12.0.0",
     "nodemon": "^3.0.1",
     "rollup": "^4.6.0",
     "rollup-plugin-execute": "^1.1.1",

@@ -1,6 +1,6 @@
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
-import { t } from ".";
+import { onInteraction, t } from "../utils";
 import type { HotkeyObj } from "../types";
 import "./hotkeyInput.css";
 
@@ -62,16 +62,17 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     resetElem.classList.add("bytm-hidden");
   };
 
-  resetElem.addEventListener("click", resetClicked);
-  resetElem.addEventListener("keydown", (e) => ["Enter", " ", "Space"].includes(e.key) && resetClicked(e));
+  onInteraction(resetElem, resetClicked);
 
   if(initialValue)
     infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
 
   let lastKeyDown: HotkeyObj | undefined;
 
+  const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
+
   document.addEventListener("keypress", (e) => {
-    if(inputElem.dataset.state !== "active")
+    if(inputElem.dataset.state === "inactive")
       return;
     if(lastKeyDown?.code === e.code && lastKeyDown?.shift === e.shiftKey && lastKeyDown?.ctrl === e.ctrlKey && lastKeyDown?.alt === e.altKey)
       return;
@@ -92,8 +93,14 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   });
 
   document.addEventListener("keydown", (e) => {
+    if(reservedKeys.filter(k => k !== "Tab").includes(e.code))
+      return;
     if(inputElem.dataset.state !== "active")
       return;
+    if(e.code === "Tab" || e.code === " " || e.code === "Space" || e.code === "Escape" || e.code === "Enter") {
+      deactivate();
+      return;
+    }
     if(["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight"].includes(e.code))
       return;
     e.preventDefault();
@@ -131,7 +138,9 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     else
       deactivate();
   });
-  inputElem.addEventListener("keydown", () => {
+  inputElem.addEventListener("keydown", (e) => {
+    if(reservedKeys.includes(e.code))
+      return deactivate();
     if(inputElem.dataset.state === "inactive")
       activate();
   });

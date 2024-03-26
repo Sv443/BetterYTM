@@ -6,26 +6,6 @@
   --bytm-dialog-border-radius: 10px;
 }
 
-#bytm-cfg-dialog-bg {
-  --bytm-dialog-height-max: 750px;
-  --bytm-dialog-width-max: 1000px;
-}
-
-#bytm-changelog-dialog-bg {
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 800px;
-}
-
-#bytm-export-dialog-bg, #bytm-import-dialog-bg {
-  --bytm-dialog-height-max: 500px;
-  --bytm-dialog-width-max: 600px;
-}
-
-#bytm-feat-help-dialog-bg {
-  --bytm-dialog-height-max: 400px;
-  --bytm-dialog-width-max: 600px;
-}
-
 .bytm-dialog-bg {
   display: block;
   position: fixed;
@@ -38,13 +18,14 @@
 }
 
 .bytm-dialog {
-  position: fixed;
+  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
+  position: absolute;
   display: flex;
   flex-direction: column;
   width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
   border-radius: var(--bytm-dialog-border-radius);
   height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-dialog-height-max)));
+  max-height: var(--calc-max-height);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -54,7 +35,7 @@
 }
 
 .bytm-dialog-body {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   padding: 20px;
 }
 
@@ -84,6 +65,15 @@
 
 .bytm-dialog-header.small {
   padding: 10px 15px;
+}
+
+.bytm-dialog-header-pad {
+  content: " ";
+  min-height: 32px;
+}
+
+.bytm-dialog-header-pad.small {
+  min-height: 24px;
 }
 
 .bytm-dialog-titlecont {
@@ -258,18 +248,21 @@
   margin-right: 10px;
 }
 
-.bytm-toggle-label {
-  padding-left: 10px;
-  padding-right: 5px;
-}
-
 .bytm-ftconf-input.bytm-hotkey-input {
   cursor: pointer;
-  min-width: 50px;
+  min-width: 80px;
 }
 
 .bytm-ftconf-input[type=number] {
   width: 75px;
+}
+
+.bytm-ftconf-input[type=range] {
+  width: 200px;
+}
+
+.bytm-ftconf-input[type=text] {
+  width: 200px;
 }
 
 .bytm-ftconf-input[type=checkbox] {
@@ -351,7 +344,7 @@
 }
 
 .bytm-markdown-container ul li > ul li::before {
-  white-space: pre;
+  white-space: pre-wrap;
   content: "    • ";
   font-weight: bolder;
 }
@@ -392,9 +385,5 @@ hr {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 8px;
-}
-
-#bytm-ftitem-locale-adornment svg path {
-  fill: #4595c7;
+  margin-right: 6px;
 }

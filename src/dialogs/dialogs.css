@@ -1,3 +1,47 @@
+:root {
+  --bytm-dialog-accent-col: #3683d4;
+  --bytm-advanced-mode-color: #c5a73b;
+  --bytm-experimental-col: #d07ff0;
+  --bytm-warning-col: #ff5233;
+}
+
+/* TODO(v1.2): leave only dialog */
+#bytm-cfg-dialog-bg,
+#bytm-cfg-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 1150px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 1150px;
+}
+
+#bytm-changelog-dialog-bg,
+#bytm-changelog-menu-bg
+{
+  --bytm-dialog-height-max: 800px;
+  --bytm-dialog-width-max: 900px;
+  --bytm-menu-height-max: 800px;
+  --bytm-menu-width-max: 900px;
+}
+
+#bytm-export-dialog-bg, #bytm-import-dialog-bg,
+#bytm-export-menu-bg, #bytm-import-menu-bg
+{
+  --bytm-dialog-height-max: 500px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 500px;
+  --bytm-menu-width-max: 600px;
+}
+
+#bytm-feat-help-dialog-bg,
+#bytm-feat-help-menu-bg
+{
+  --bytm-dialog-height-max: 400px;
+  --bytm-dialog-width-max: 600px;
+  --bytm-menu-height-max: 400px;
+  --bytm-menu-width-max: 600px;
+}
+
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
@@ -16,19 +60,64 @@
 }
 
 #bytm-disable-update-check-wrapper {
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-top: 35px;
 }
 
 #bytm-disable-update-check-wrapper label {
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
 #bytm-version-notif-changelog-cont {
-  max-height: 400px;
+  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
   overflow-y: auto;
   margin: 10px 0px;
 }
 
 #bytm-version-notif-changelog-details {
   margin-top: 15px;
+}
+
+.bytm-disable-update-check-toggle-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
+}
+
+.bytm-adorn-icon {
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+}
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
+}
+
+.bytm-ftitem-adornment svg path {
+  fill: var(--bytm-dialog-accent-col, #fff);
+}
+
+.bytm-advanced-mode-icon svg path {
+  fill: var(--bytm-advanced-mode-color, #fff);
+}
+
+.bytm-experimental-icon svg path {
+  fill: var(--bytm-experimental-col, #fff);
+}
+
+.bytm-warning-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bytm-warning-icon svg path {
+  fill: var(--bytm-warning-col, #fff);
 }

@@ -1,9 +1,9 @@
 <div style="text-align: center;" align="center">
 <!-- <{{HEADER}}> -->
-<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
+<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music
-Supported Languages: 🇩🇪 German, 🇺🇸 English, 🇬🇧 English, 🇪🇸 Spanish, 🇫🇷 French, 🇮🇳 Hindi, 🇯🇵 Japanese, 🇵🇹 Portuguese, 🇨🇳 Chinese (simpl.)
+Supported Languages: 🇩🇪&nbsp;German, 🇺🇸&nbsp;English (US), 🇬🇧&nbsp;English (UK), 🇪🇸&nbsp;Spanish, 🇫🇷&nbsp;French, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇵🇹&nbsp;Portuguese, 🇨🇳&nbsp;Chinese (simpl.)
 <!-- </{{HEADER}}> -->
 [**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
   
@@ -63,7 +63,7 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 </sup>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (the script should auto-update to the next release version)
 
 </sup>
 
@@ -105,13 +105,13 @@ For development dependencies, please refer to `devDependencies` in [`package.jso
   
 Icons:  
 - Most icons are from [Material Icons](https://fonts.google.com/icons)
-- For external icon attributions, see [`assets/external/`](assets/external/README.md)
+- For external icon attributions, see [`assets/images/external/`](assets/images/external/README.md)
 
 <br><br>
 
 ### Disclaimers:
 - I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius, or anyone else.
-- I do not own any third party icons, I just re-host them [here](./assets/external/) for better stability and availability.
+- I do not own any third party icons, I just re-host them [here](./assets/images/external/) for better stability and availability.
 - I do not intend to ever collect any data about you, everything in this script is done and stored locally on your device or on the site the script runs on.
 - I can't guarantee this software is without flaws. If something bad happens, I don't accept blame. I do however accept [bug reports and feature requests.](https://github.com/Sv443/BetterYTM/issues/new/choose)
 

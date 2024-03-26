@@ -1,5 +1,4 @@
 import type { Stringifiable } from "@sv443-network/userutils";
-import type { HttpUrlString } from "../types";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
@@ -7,8 +6,13 @@ import type { HttpUrlString } from "../types";
  * All values will be stringified using their `toString()` method and then URI-encoded.
  * @returns Returns a string instead of a URL object
  */
-export function constructUrlString(baseUrl: HttpUrlString, params: Record<string, Stringifiable | null>) {
-  return `${baseUrl}?${Object.entries(params).map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`).join("&")}`;
+export function constructUrlString(baseUrl: string, params: Record<string, Stringifiable | null>) {
+  return `${baseUrl}?${
+    Object.entries(params)
+      .filter(([,v]) => v !== undefined)
+      .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
+      .join("&")
+  }`;
 }
 
 /**
@@ -17,7 +21,7 @@ export function constructUrlString(baseUrl: HttpUrlString, params: Record<string
  * All values will be URI-encoded.  
  * @returns Returns a URL object instead of a string
  */
-export function constructUrl(base: HttpUrlString, params: Record<string, Stringifiable | null>) {
+export function constructUrl(base: string, params: Record<string, Stringifiable | null>) {
   return new URL(constructUrlString(base, params));
 }
 
@@ -28,6 +32,7 @@ export function constructUrl(base: HttpUrlString, params: Record<string, Stringi
 export function sendRequest<T = any>(details: GM.Request<T>) {
   return new Promise<GM.Response<T>>((resolve, reject) => {
     GM.xmlHttpRequest({
+      timeout: 10_000,
       ...details,
       onload: resolve,
       onerror: reject,

@@ -1,9 +1,10 @@
-// hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "./NanoEmitter";
-import { clearInner, getResourceUrl, warn } from ".";
-import { t } from "./translations";
-import "./BytmDialog.css";
 import { addGlobalStyle } from "@sv443-network/userutils";
+// hoist the class declaration because either rollup or babel is being a hoe
+import { NanoEmitter } from "../utils/NanoEmitter";
+import { clearInner, getResourceUrl, warn } from "../utils";
+import { t } from "../utils/translations";
+import { emitInterface } from "../interface";
+import "./BytmDialog.css";
 
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
@@ -21,13 +22,13 @@ export interface BytmDialogOptions {
   /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
   /** Whether the menu should have a smaller overall appearance - defaults to false */
-  smallMenu?: boolean;
+  smallDialog?: boolean;
   /** Called to render the body of the dialog */
-  renderBody: () => HTMLElement;
+  renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
-  renderHeader?: () => HTMLElement;
+  renderHeader?: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the footer of the dialog - leave undefined for no footer */
-  renderFooter?: () => HTMLElement;
+  renderFooter?: () => HTMLElement | Promise<HTMLElement>;
 }
 
 /** ID of the last opened (top-most) dialog */
@@ -50,7 +51,7 @@ export class BytmDialog extends NanoEmitter<{
   public readonly id;
 
   private dialogOpen = false;
-  private dialogRendered = false;
+  private dialogMounted = false;
   private listenersAttached = false;
 
   constructor(options: BytmDialogOptions) {
@@ -67,11 +68,13 @@ export class BytmDialog extends NanoEmitter<{
     this.id = options.id;
   }
 
+  //#MARKER public
+
   /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
   public async mount() {
-    if(this.dialogRendered)
+    if(this.dialogMounted)
       return;
-    this.dialogRendered = true;
+    this.dialogMounted = true;
 
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
@@ -100,7 +103,7 @@ export class BytmDialog extends NanoEmitter<{
 
   /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
   public unmount() {
-    this.dialogRendered = false;
+    this.dialogMounted = false;
 
     const clearSelectors = [
       `#bytm-${this.id}-dialog-bg`,
@@ -116,8 +119,8 @@ export class BytmDialog extends NanoEmitter<{
     this.events.emit("clear");
   }
 
-  /** Clears and then re-renders the dialog */
-  public async rerender() {
+  /** Clears the DOM of the dialog and then renders it again */
+  public async remount() {
     this.unmount();
     await this.mount();
   }
@@ -134,7 +137,7 @@ export class BytmDialog extends NanoEmitter<{
       return;
     this.dialogOpen = true;
 
-    if(!this.isRendered())
+    if(!this.isMounted())
       await this.mount();
 
     document.body.classList.add("bytm-disable-scroll");
@@ -151,6 +154,9 @@ export class BytmDialog extends NanoEmitter<{
     lastDialogId = this.id;
 
     this.events.emit("open");
+    emitInterface("bytm:dialogOpened", this as BytmDialog);
+    emitInterface(`bytm:dialogOpened:${this.id}` as "bytm:dialogOpened:id", this as BytmDialog);
+
     return dialogBg;
   }
 
@@ -183,30 +189,34 @@ export class BytmDialog extends NanoEmitter<{
       this.destroy();
   }
 
-  /** Returns true if the dialog is open */
+  /** Returns true if the dialog is currently open */
   public isOpen() {
     return this.dialogOpen;
   }
 
-  /** Returns true if the dialog has been rendered */
-  public isRendered() {
-    return this.dialogRendered;
+  /** Returns true if the dialog is currently mounted */
+  public isMounted() {
+    return this.dialogMounted;
   }
 
-  /** Clears the dialog and removes all event listeners */
+  /** Clears the DOM of the dialog and removes all event listeners */
   public destroy() {
     this.events.emit("destroy");
     this.unmount();
     this.unsubscribeAll();
   }
 
+  //#MARKER static
+
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getLastDialogId() {
     return lastDialogId;
   }
 
+  //#MARKER protected
+
   /** Called once to attach all generic event listeners */
-  public attachListeners(bgElem: HTMLElement) {
+  protected attachListeners(bgElem: HTMLElement) {
     if(this.listenersAttached)
       return;
     this.listenersAttached = true;
@@ -226,6 +236,9 @@ export class BytmDialog extends NanoEmitter<{
     }
   }
 
+  //#MARKER private
+
+  /** Returns the dialog content element and all its children */
   private async getDialogContent() {
     const header = this.options.renderHeader?.();
     const footer = this.options.renderFooter?.();
@@ -239,7 +252,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
-    this.options.smallMenu && headerWrapperEl.classList.add("small");
+    this.options.smallDialog && headerWrapperEl.classList.add("small");
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
@@ -247,16 +260,20 @@ export class BytmDialog extends NanoEmitter<{
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
 
-      headerTitleWrapperEl.appendChild(header);
+      headerTitleWrapperEl.appendChild(header instanceof Promise ? await header : header);
       headerWrapperEl.appendChild(headerTitleWrapperEl);
     }
-    else
-      headerWrapperEl.appendChild(document.createElement("div"));
+    else {
+      // insert element to pad the header height
+      const padEl = document.createElement("div");
+      padEl.classList.add("bytm-dialog-header-pad", this.options.smallDialog ? "small" : "");
+      headerWrapperEl.appendChild(padEl);
+    }
 
     if(this.options.closeBtnEnabled) {
       const closeBtnEl = document.createElement("img");
       closeBtnEl.classList.add("bytm-dialog-close");
-      this.options.smallMenu && closeBtnEl.classList.add("small");
+      this.options.smallDialog && closeBtnEl.classList.add("small");
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
@@ -271,9 +288,11 @@ export class BytmDialog extends NanoEmitter<{
     const menuBodyElem = document.createElement("div");
     menuBodyElem.id = `bytm-${this.id}-dialog-body`;
     menuBodyElem.classList.add("bytm-dialog-body");
-    this.options.smallMenu && menuBodyElem.classList.add("small");
+    this.options.smallDialog && menuBodyElem.classList.add("small");
 
-    menuBodyElem.appendChild(this.options.renderBody());
+    const body = this.options.renderBody();
+
+    menuBodyElem.appendChild(body instanceof Promise ? await body : body);
     dialogWrapperEl.appendChild(menuBodyElem);
 
     //#SECTION footer
@@ -282,7 +301,7 @@ export class BytmDialog extends NanoEmitter<{
       const footerWrapper = document.createElement("div");
       footerWrapper.classList.add("bytm-dialog-footer-cont");
       dialogWrapperEl.appendChild(footerWrapper);
-      footerWrapper.appendChild(footer);
+      footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
     }
 
     return dialogWrapperEl;

@@ -14,7 +14,7 @@ const fetchOpts: FetchAdvancedOpts = {
 };
 
 /** Contains all translation keys of all initialized and loaded translations */
-const allTrKeys = new Map<TrLocale, Set<TFuncKey>>();
+const allTrKeys = new Map<TrLocale, Set<TrKey>>();
 /** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set<TrLocale>();
 
@@ -36,7 +36,7 @@ export async function initTranslations(locale: TrLocale) {
     const translations = { ...(baseTransFile?.translations ?? {}), ...transFile.translations };
 
     tr.addLanguage(locale, translations);
-    allTrKeys.set(locale, new Set(Object.keys(translations)));
+    allTrKeys.set(locale, new Set(Object.keys(translations) as TrKey[]));
 
     info(`Loaded translations for locale '${locale}'`);
   }
@@ -66,7 +66,7 @@ export function hasKey(key: TFuncKey) {
 
 /** Returns whether the given translation key exists in the given locale */
 export function hasKeyFor(locale: TrLocale, key: TFuncKey) {
-  return allTrKeys.get(locale)?.has(key) ?? false;
+  return allTrKeys.get(locale)?.has(key as TrKey) ?? false;
 }
 
 /** Returns the translated string for the given key, after optionally inserting values */

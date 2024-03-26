@@ -3,7 +3,7 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
-import dotenv from "dotenv";
+import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pkg from "../../package.json" assert { type: "json" };
@@ -23,18 +23,24 @@ type RequireObjPkg = {
   path?: string;
 };
 
+type BuildStats = {
+  sizeKiB: number;
+  mode: string;
+  timestamp: number;
+};
+
 const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUuid = randomUUID();
 
 const { env, exit } = process;
-dotenv.config();
 
 type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
 
 const mode = getCliArg<CliArg<"config-mode">>("mode", "development");
 const branch = getCliArg<CliArg<"config-branch">>("branch", (mode === "production" ? "main" : "develop"));
 const host = getCliArg<CliArg<"config-host">>("host", "github");
+const assetSource = getCliArg<CliArg<"config-assetSource">>("assetSource", "github");
 const suffix = getCliArg<CliArg<"config-suffix">>("suffix", "");
 
 const envPort = Number(env.DEV_SERVER_PORT);
@@ -61,12 +67,6 @@ const scriptUrl = (() => {
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
 
-type BuildStats = {
-  sizeKiB: number;
-  mode: string;
-  timestamp: number;
-};
-
 /** Directives that are only added in dev mode */
 const devDirectives = mode === "development" ? `\
 // @grant             GM.registerMenuCommand
@@ -74,7 +74,9 @@ const devDirectives = mode === "development" ? `\
 ` : undefined;
 
 (async () => {
-  const resourcesDirectives = await getResourceDirectives();
+  const buildNbr = await getLastCommitSha();
+
+  const resourcesDirectives = await getResourceDirectives(buildNbr);
   const requireDirectives = await getRequireDirectives();
   const localizedDescriptions = getLocalizedDescriptions();
 
@@ -90,7 +92,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl("logo/logo_48.png")}
+// @icon              ${getResourceUrl("images/logo/logo_48.png", buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -128,7 +130,6 @@ I welcome every contribution on GitHub!
 
   try {
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
-    const lastCommitSha = await getLastCommitSha();
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
     const globalStylePath = join(rootPath, distFolderPath, "global.css");
@@ -143,7 +144,7 @@ I welcome every contribution on GitHub!
         MODE: mode,
         BRANCH: branch,
         HOST: host,
-        BUILD_NUMBER: lastCommitSha,
+        BUILD_NUMBER: buildNbr,
       },
     )
       // needs special treatment because the double quotes need to be replaced with backticks
@@ -177,7 +178,7 @@ I welcome every contribution on GitHub!
     }
 
     console.info();
-    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${lastCommitSha}`);
+    console.info(`Successfully built for ${envText}\x1b[0m - build number (last commit SHA): ${buildNbr}`);
     console.info(`Outputted file '${relative("./", scriptPath)}' with a size of \x1b[32m${sizeKiB} KiB\x1b[0m${sizeIndicator}`);
     console.info(`Userscript URL: \x1b[34m\x1b[4m${devServerUserscriptUrl}\x1b[0m`);
     console.info();
@@ -243,7 +244,7 @@ async function exists(path: string) {
 }
 
 /** Returns a string of resource directives, as defined in `assets/resources.json` or undefined if the file doesn't exist or is invalid */
-async function getResourceDirectives() {
+async function getResourceDirectives(buildNbr: string) {
   try {
     const directives: string[] = [];
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
@@ -261,7 +262,7 @@ async function getResourceDirectives() {
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
           ? path
-          : getResourceUrl(path)
+          : getResourceUrl(path, buildNbr)
       }`);
     }
 
@@ -278,6 +279,8 @@ async function getRequireDirectives() {
   const require = JSON.parse(requireFile) as RequireObj[];
 
   for(const entry of require) {
+    if("link" in entry && entry.link === true)
+      continue;
     "pkgName" in entry && directives.push(getRequireEntry(entry));
     "url" in entry && directives.push(`// @require           ${entry.url}`);
   }
@@ -321,15 +324,15 @@ function getLocalizedDescriptions() {
 
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
- * @path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
+ * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
  */
-function getResourceUrl(path: string) {
+function getResourceUrl(path: string, buildToken?: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
-  return mode === "development"
-    ? `http://localhost:${devServerPort}${assetPath}${path}?t=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}`;
+  return assetSource === "local"
+    ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
+    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}?b=${buildToken ?? pkg.version}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
@@ -338,7 +341,7 @@ function getCliArg<TReturn extends string = string>(name: string, defaultVal: TR
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
 function getCliArg<TReturn extends string = string>(name: string, defaultVal?: TReturn | (string & {})): TReturn | undefined {
-  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`)));
+  const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
   const val = arg?.split("=")?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
 }

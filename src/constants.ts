@@ -1,8 +1,10 @@
+import { randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types";
 
 const modeRaw = "#{{MODE}}";
 const branchRaw = "#{{BRANCH}}";
 const hostRaw = "#{{HOST}}";
+const buildNumberRaw  = "#{{BUILD_NUMBER}}";
 
 /** The mode in which the script was built (production or development) */
 export const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw) as "production" | "development";
@@ -12,12 +14,32 @@ export const branch = (branchRaw.match(/^#{{.+}}$/) ? "main" : branchRaw) as "ma
 export const repo = "Sv443/BetterYTM";
 /** Which host the userscript was installed from */
 export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github" | "greasyfork" | "openuserjs";
+/** The build number of the userscript */
+export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw) as string; // asserted as generic string instead of literal
 
+/** Names of platforms by value of {@linkcode host} */
 export const platformNames: Record<typeof host, string> = {
   github: "GitHub",
   greasyfork: "GreasyFork",
   openuserjs: "OpenUserJS",
 };
+
+/** Default compression format used throughout BYTM */
+export const compressionFormat: CompressionFormat = "deflate-raw";
+
+export const sessionStorageAllowed =
+  typeof sessionStorage !== "undefined"
+  && (() => {
+    try {
+      const key = `_bytm_${randomId(4)}`;
+      sessionStorage.setItem(key, "test");
+      sessionStorage.removeItem(key);
+      return true;
+    }
+    catch {
+      return false;
+    }
+  })();
 
 /**
  * How much info should be logged to the devtools console  
@@ -30,5 +52,4 @@ export const scriptInfo = {
   name: GM.info.script.name,
   version: GM.info.script.version,
   namespace: GM.info.script.namespace,
-  buildNumber: "#{{BUILD_NUMBER}}" as string, // asserted as generic string instead of literal
-};
+} as const;

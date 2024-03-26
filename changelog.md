@@ -1,3 +1,18 @@
+## 1.2.0
+- **Features / Changes:**
+  - Added a persistent cache to save lyrics in. Up to 500 of the most listened to songs are cached throughout sessions for 3 weeks to save time and reduce server load.
+  - Added filtering algorithm to lyrics fetching to yield more accurate results
+  - Improved accessibility of hotkey inputs
+  - Remade the toggle buttons in the config menu to look cool and still be just as accessible
+- **Internal Changes:**
+  - Implemented new class BytmMenu for less duplicate code and better accessibility, and to enable the improved configuration menu
+  - Plugin interface now has access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#nanoemitter), and functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createhotkeyinput) and [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createtoggleinput)
+
+[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/52)
+
+<div class="split"></div>
+<br>
+
 ## 1.1.1
 - **Features / Changes:**
   - A new version notification dialog is now shown with the latest version's changes
@@ -109,4 +124,5 @@
 
 ## 0.1.0
 
-- Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)
+- **Features:**
+  - Added support for arrow keys to skip forward or backward (currently only by fixed 10 second interval)

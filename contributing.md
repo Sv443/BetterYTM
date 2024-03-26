@@ -13,8 +13,12 @@ If you have any questions or need help, feel free to contact me, [see my homepag
   - [CLI commands](#these-are-the-cli-commands-available-after-setting-up-the-project)
   - [Extras](#extras)
 - [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
+  - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
+  - [Global functions on the plugin interface](#global-functions)
 
 <br><br>
+
+<!-- #MARKER translations -->
 
 ### Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
@@ -32,7 +36,7 @@ To submit a translation, please follow these steps:
 5. If you want to submit a pull request with the translated file:
     1. Duplicate the `en_US.json` file in the folder [`assets/translations/`](./assets/translations/) by keeping the format `languageCode_localeCode.json`
     2. Edit it to your translated version and keep the left side of the colon unchanged
-    3. Create the mapping in `assets/locales.json` by copying the english one and editing it (please make sure it's alphabetically ordered)
+    3. Create the mapping in `assets/locales.json` by copying the English one and editing it (please make sure it's alphabetically ordered)
     4. Add your name to the respective `authors` property in [`assets/locales.json`](./assets/locales.json)
     5. Test your changes by following [this section](#setting-up-the-project-for-local-development), then submit your pull request
 6. Alternatively send it to me directly, [see my homepage](https://sv443.net/) for contact info  
@@ -57,6 +61,8 @@ To edit an existing translation, please follow these steps:
 11. Check that the CI checks just above the comment box pass and then wait for the pull request to be reviewed and merged
 
 <br><br><br>
+
+<!-- #MARKER local dev -->
 
 ### Setting up the project for local development:
 #### Requirements:
@@ -88,12 +94,13 @@ To edit an existing translation, please follow these steps:
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
   - `--config-branch=<value>` - The GitHub branch to target. Can be any branch name, but should be `main` for production and `develop` for development (default)
   - `--config-host=<value>` - The host to build for. Can be either `github` (default), `greasyfork` or `openuserjs`
+  - `--config-assetSource=<value>` - Where to get the resource files from. Can be either `local` or `github` (default)
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
   - `npm run build-prod-base` - Sets `--config-mode=production` and `--config-branch=main`  
     Used for building for production, targeting the main branch
-  - `npm run build-develop` - Sets `--config-mode=development` and `--config-branch=develop`  
+  - `npm run build-develop` - Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`  
     Used for building for experimental versions, targeting the develop branch
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
@@ -124,6 +131,8 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 
 <br><br><br>
 
+<!-- #MARKER plugin interface -->
+
 ### Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
@@ -144,7 +153,7 @@ These are the ways to interact with BetterYTM; constants, events and global func
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
   There is also a summary with examples [below.](#global-functions)  
-  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all functions from the [UserUtils](https://github.com/Sv443-Network/UserUtils) library.
+  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)
 
 All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
   
@@ -241,16 +250,24 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 
 <br><br>
 
+<!-- #MARKER global interface functions -->
+
 ### Global functions:
 These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
+- Meta:
+  - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
+  - [getPluginInfo()](#getplugininfo) - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
 - BYTM-specific:
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
+  - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
+  - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
 - Translations:
   - [setLocale()](#setlocale) - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -262,10 +279,116 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
 - Lyrics:
-  - [fetchLyricsUrl](#fetchlyricsurl) - Fetches the URL to the lyrics page for the specified song
-  - [getLyricsCacheEntry](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
-  - [sanitizeArtists](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
-  - [sanitizeSong](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+  - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
+  - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
+  - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
+  - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+- Other:
+  - [NanoEmitter](#nanoemitte) - Abstract class for creating lightweight, type safe event emitting classes
+
+<br><br>
+
+> #### registerPlugin()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.registerPlugin(pluginDef: PluginDef): PluginRegisterResult
+> ```
+>   
+> Description:  
+> Registers a plugin with BetterYTM with the given plugin definition object.  
+>   
+> Arguments:  
+> - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
+>   
+> The function will either throw an error if the plugin object is invalid or return a registration result object.  
+> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)
+> 
+> <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // all properties are optional unless stated otherwise
+> // search for "type PluginDef" in "src/types.ts" to see the whole type
+> const pluginDef = {
+>   plugin: {
+>     name: "My cool plugin",                           // required
+>     namespace: "https://github.com/MyUsername",       // required
+>     version: [4, 2, 0],                               // required
+>     description: {                                    // required
+>       en_US: "This plugin does cool stuff",           // required
+>       de_DE: "Dieses Plugin macht coole Sachen",
+>       // see all supported locale codes in "assets/locales.json"
+>     },
+>     iconUrl: "https://picsum.photos/128/128",
+>     homepage: {
+>       github: "https://github.com/MyUsername/MyCoolBYTMPlugin",
+>       greasyfork: "...",
+>       openuserjs: "...",
+>     },
+>   },
+>   // the intents (permissions) the plugin needs to be granted
+>   // search for "enum PluginIntent" in "src/types.ts" to see all available intent values
+>   intents: [ 2, 16 ],
+>   contributors: [
+>     {
+>       name: "MyUsername", // required
+>       homepage: "https://github.com/MyUsername",
+>       email: "somedude420@hotmail.co.bd",
+>     },
+>     {
+>       name: "SomeOtherGuy", // required
+>       homepage: "https://github.com/SomeOtherGuy",
+>       email: "someotherguy@star-co.net.kp",
+>     },
+>   ],
+> };
+> 
+> unsafeWindow.addEventListener("bytm:initPlugins", () => {
+>   // register the plugin
+>   const { events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>   // listen for the pluginRegistered event
+>   events.on("pluginRegistered", (info) => {
+>     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
+>   });
+>   // for other events search for "type PluginEventMap" in "src/types.ts"
+> });
+> ```
+> </details>
+
+<br>
+
+> #### getPluginInfo()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getPluginInfo(name: string, namespace: string): PluginInfo | undefined
+> unsafeWindow.BYTM.getPluginInfo(pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
+> ```
+>   
+> Description:  
+> Returns the plugin info object for the specified plugin. It's basically a more restricted version of the plugin definition object.  
+> This object contains all information that other plugins will be able to see about your plugin.  
+>   
+> Arguments:
+> - `name` - The 'name' property of the plugin
+> - `namespace` - The 'namespace' property of the plugin
+> OR:
+> - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
+>   
+> The function will return `undefined` if the plugin is not registered.  
+> The type of the returned object can be found by searching for `type PluginInfo` in the file [`src/types.ts`](./src/types.ts)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.addEventListener("bytm:pluginsLoaded", () => {
+>   const pluginInfo = unsafeWindow.BYTM.getPluginInfo("My cool plugin", "https://github.com/MyUsername");
+>   if(pluginInfo) {
+>     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
+>   }
+>   else
+>     console.error("The plugin 'My cool plugin' is not registered");
+> });
+> ```
+> </details>
 
 <br>
 
@@ -301,7 +424,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getSessionId()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getSessionId(): string
+> unsafeWindow.BYTM.getSessionId(): string | null
 > ```
 >   
 > Description:  
@@ -550,6 +673,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
+> If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -598,14 +722,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> #### fetchLyricsUrl()
+> #### fetchLyricsUrlTop()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.fetchLyricsUrl(artist: string, song: string): Promise<string | undefined>
+> unsafeWindow.BYTM.fetchLyricsUrlTop(artist: string, song: string): Promise<string | undefined>
 > ```
 >   
 > Description:  
-> Fetches the URL to the lyrics page for the specified song.  
+> Fetches the top result's URL to the lyrics page for the specified song.  
 > If there is already an entry in the in-memory cache for the song, it will be returned without fetching anything new.  
 > URLs that are returned by this function are added to the cache automatically.  
 > Returns undefined if there was an error while fetching the URL.  
@@ -620,7 +744,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > async function getLyricsUrl() {
->   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrl("Michael Jackson", "Thriller");
+>   const lyricsUrl = await unsafeWindow.BYTM.fetchLyricsUrlTop("Michael Jackson", "Thriller");
 > 
 >   if(lyricsUrl)
 >     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
@@ -637,12 +761,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getLyricsCacheEntry()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): string | undefined
+> unsafeWindow.BYTM.getLyricsCacheEntry(artists: string, song: string): LyricsCacheEntry | undefined
 > ```
 >   
 > Description:  
 > Tries to find an entry in the in-memory cache for the specified song.  
-> Contrary to [`fetchLyricsUrl()`](#fetchlyricsurl), this function does not fetch anything new if there is no entry in the cache.  
+> You can find the structure of the `LyricsCacheEntry` type in the file [`src/types.ts`](src/types.ts)  
+> Contrary to [`fetchLyricsUrlTop()`](#fetchlyricsurltop), this function does not fetch anything new if there is no entry in the cache.  
 >   
 > Arguments:  
 > - `artist` - The main artist of the song to grab the lyrics URL for.  
@@ -654,10 +779,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > ```ts
 > function tryToGetLyricsUrl() {
->   const lyricsUrl = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
+>   const lyricsEntry = unsafeWindow.BYTM.getLyricsCacheEntry("Michael Jackson", "Thriller");
 > 
->   if(lyricsUrl)
->     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsUrl}'`);
+>   if(lyricsEntry)
+>     console.log(`The lyrics URL for Michael Jackson's Thriller is '${lyricsEntry.url}'`);
 >   else
 >     console.log("Couldn't find the lyrics URL for this song in cache");
 > }
@@ -712,6 +837,258 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > const sanitizedSong = unsafeWindow.BYTM.sanitizeSong(" Thriller (Freddy Mercury Cover) [Tommy Cash Remix]");
 > console.log(sanitizedSong); // "Thriller"
+> ```
+> </details>
+
+<br>
+
+> #### NanoEmitter
+> Usage:  
+> ```ts
+> new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
+> ```
+>   
+> Abstract class that can be extended to create custom event emitting classes.  
+> The methods are fully typed through the generic `TEventMap`, which is an object map of event names to a callback function signature (the type is `Record<string, (...args: any) => void>`)  
+> 
+> <br>
+> 
+> Options properties:  
+> | Property | Description |
+> | :--- | :--- |
+> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method emit() |
+> 
+> <br>
+> 
+> Methods:
+> - `on(event: string, callback: Function<any>): Function`  
+>   Registers a callback for the specified event.  
+>   Returns a function that can be called to unsubscribe from the event at any time.
+> - `once(event: string, callback?: Function<any>): Promise<any[]>`  
+>   Registers a callback for the specified event that gets called only once.  
+>   The callback is called and the Promise is resolved at the same time.
+> - `emit(event: string, ...args: any[]): boolean`  
+>   Emits the specified event with the passed arguments.  
+>   Has to be enabled through the `publicEmit` option in the constructor.  
+>   Returns true if the event was emitted successfully, false if not.
+> - `unsubscribeAll(): void`  
+>   Unsubscribes all listeners from all events and clears the internal listener map.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> interface MyEvents {
+>   /** Emitted when the foo is bar */
+>   foo: (bar: string) => void;
+> }
+> 
+> class MyEmitter extends unsafeWindow.BYTM.NanoEmitter<MyEvents> {
+>   constructor() {
+>     // allow calling emit() from outside this class instance
+>     super({ publicEmit: true });
+>   }
+> 
+>   public doSomething() {
+>     this.emit("foo", "baz");
+>   }
+> }
+> 
+> function run() {
+>   const emitter = new MyEmitter();
+> 
+>   emitter.on("foo", (bar) => {
+>     //                ^ automatically typed as string
+>     console.log(`The bar is ${bar}`);
+>   });
+> 
+>   // will log "The bar is baz" to the console, see above
+>   emitter.doSomething();
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### BytmDialog
+> Usage:  
+> ```ts
+> new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
+> ```
+>   
+> A class that can be used to create a dialog with a custom header, body and footer.  
+> The dialog is fully customizable and can be used to display any kind of content.  
+> It has many helper methods and events to make it flexible and easy to work with.  
+> The CSS style is uniform and can be overridden if a different theme is needed.  
+>   
+> Options properties:
+> | Property | Description |
+> | :--- | :--- |
+> | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
+> | `maxWidth: number` | Maximum width of the dialog in pixels |
+> | `maxHeight: number` | Maximum height of the dialog in pixels |
+> | `closeOnBgClick?: boolean` | Whether the dialog should close when the background is clicked - defaults to true |
+> | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
+> | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
+> | `destroyOnClose?: boolean` | Whether the dialog should be destroyed when it's closed - defaults to false |
+> | `smallDialog?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
+> | `renderBody: () => HTMLElement │ Promise<HTMLElement>` | Called to render the body of the dialog |
+> | `renderHeader?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the header of the dialog - leave undefined for a blank header |
+> | `renderFooter?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the footer of the dialog - leave undefined for no footer |
+> 
+> <br>
+> 
+> Methods:  
+> The methods from the [`NanoEmitter`](#nanoemitter) class are also available here.  
+> These are the additional methods that are exclusive to the `BytmDialog` class:  
+> - `open(e?: MouseEvent | KeyboardEvent): Promise<void>`  
+>   Opens the dialog - also mounts it if it hasn't been mounted yet.  
+>   Prevents default action and immediate propagation if an event is passed.  
+>   Resolves once the dialog is fully mounted and opened.
+> - `close(e?: MouseEvent | KeyboardEvent): void`  
+>   Closes the dialog - also unmounts and destroys it if the `destroyOnClose` option is set to true.  
+>   Prevents default action and immediate propagation if an event is passed.  
+> - `isOpen(): boolean`  
+>   Returns true if the dialog is currently open, false if not.
+> - `isMounted(): boolean`  
+>   Returns true if the dialog is currently mounted, false if not.
+> - `mount(): Promise<void>`  
+>   Mounts the dialog to the DOM without making it visible - can be called before opening the dialog for the first time to pre-load all elements.  
+>   Resolves once the dialog is fully mounted in the DOM.
+> - `unmount(): void`  
+>   Removes the dialog from the DOM.  
+> - `remount(): Promise<void>`  
+>   Unmounts and mounts the dialog again.  
+>   This can be used to re-render the dialog's contents with new information.  
+>   Resolves once the dialog is fully mounted in the DOM.
+> - `destroy(): void`  
+>   Unmounts and removes the dialog from the DOM and removes all event listeners.  
+>   Should be called when the dialog is no longer needed.
+> - `static getLastDialogId(): string`  
+>   Returns the ID of the last dialog that was opened.  
+>   This can be used to check if a dialog is currently open and to get its ID for further use.  
+>   Static method usage: `BytmDialog.getLastDialogId()`
+> 
+> <br>
+> 
+> Events:  
+> | Event | Description |
+> | :--- | :--- |
+> | on(`close`, () => void) | Called just after the dialog is closed |
+> | on(`open`, () => void) | Called just after the dialog is opened |
+> | on(`render`, () => void) | Called just after the dialog contents are rendered |
+> | on(`clear`, () => void) | Called just after the dialog contents are cleared |
+> | on(`destroy`, () => void) | Called just before the dialog is destroyed and all listeners are removed |
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const dialog = new unsafeWindow.BYTM.BytmDialog({
+>   id: "my-dialog",
+>   maxWidth: 500,
+>   maxHeight: 300,
+>   closeOnBgClick: true,
+>   closeOnEscPress: true,
+>   closeBtnEnabled: true,
+>   destroyOnClose: false,
+>   smallDialog: true,
+>   // add more elements to the header, body and footer here, with one of these methods:
+>   // - body.appendChild(document.createElement("..."));
+>   // - body.innerHTML = "..."
+>   // - ReactDOM.render(<MyComponent />, body);
+>   // - etc.
+>   renderHeader: () => {
+>     const header = document.createElement("div");
+>     header.textContent = "My Dialog";
+>     return header;
+>   },
+>   renderBody: () => {
+>     const body = document.createElement("div");
+>     body.textContent = "This is the body of my dialog";
+>     return body;
+>   },
+>   renderFooter: () => {
+>     const footer = document.createElement("div");
+>     footer.textContent = "This is the footer of my dialog";
+>     return footer;
+>   },
+> });
+> 
+> async function run() {
+>   dialog.on("close", () => {
+>     console.log("The dialog was closed");
+>   });
+> 
+>   await dialog.open();
+>   console.log("The dialog is now open");
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### createHotkeyInput()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createHotkeyInput(inputProps: {
+>   initialValue?: HotkeyObj,
+>   onChange: (hotkey: HotkeyObj) => void,
+> }): HTMLElement
+> ```
+>   
+> Creates a hotkey input element that can be used to let the user set a hotkey.  
+> The HotkeyObj type has the properties `code: string`, `shift: boolean`, `ctrl: boolean` and `alt: boolean`  
+> The function `onChange` is called whenever the hotkey was changed.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const hotkeyInput = unsafeWindow.BYTM.createHotkeyInput({
+>   initialValue: { code: "KeyA", shift: true, ctrl: false, alt: false },
+>   onChange: (hotkey) => {
+>     console.log(`The hotkey was changed to ${hotkey.code} with shift: ${hotkey.shift}, ctrl: ${hotkey.ctrl} and alt: ${hotkey.alt}`);
+>   },
+> });
+> 
+> document.querySelector("#my-element").appendChild(hotkeyInput);
+> ```
+> </details>
+
+<br>
+
+> #### createToggleInput()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createToggleInput(toggleProps: {
+>   onChange: (value: boolean) => void,
+>   initialValue?: boolean,
+>   id?: string,
+>   labelPos?: "off" | "left" | "right",
+> })
+> ```
+>   
+> Creates a toggle input element that behaves like a checkbox but looks better.  
+> - `onChange` - Callback function that is called when the toggle is changed, gets passed the new value of the toggle as a boolean.
+> - `initialValue` - Initial value of the toggle - defaults to false (toggled off).
+> - `id` - Useful for getting a unique selector - if unspecified, a random ID is generated.
+> - `labelPos` - Toggle builtin label "off" or change position of the label to "right" or "left", relative to the toggle.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const toggleInput = unsafeWindow.BYTM.createToggleInput({
+>   onChange: (value) => {
+>     console.log(`The toggle was changed to ${value}`);
+>   },
+>   initialValue: true,
+>   id: "my-toggle",
+>   labelPos: "left",
+> });
+> 
+> document.querySelector("#my-element").appendChild(toggleInput);
 > ```
 > </details>
 

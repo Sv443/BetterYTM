@@ -26,6 +26,18 @@ export interface SiteEventsMap {
   autoplayQueueChanged: (queueElement: HTMLElement) => void;
 }
 
+/** Array of all site events */
+export const allSiteEvents = [
+  "configChanged",
+  "configOptionChanged",
+  "rebuildCfgMenu",
+  "cfgMenuClosed",
+  "welcomeMenuClosed",
+  "hotkeyInputActive",
+  "queueChanged",
+  "autoplayQueueChanged",
+] as const;
+
 /** EventEmitter instance that is used to detect changes to the site */
 export const siteEvents = createNanoEvents<SiteEventsMap>();
 
