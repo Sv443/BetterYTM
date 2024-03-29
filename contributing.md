@@ -975,11 +975,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Events:  
 > | Event | Description |
 > | :--- | :--- |
-> | on(`close`, () => void) | Called just after the dialog is closed |
-> | on(`open`, () => void) | Called just after the dialog is opened |
-> | on(`render`, () => void) | Called just after the dialog contents are rendered |
-> | on(`clear`, () => void) | Called just after the dialog contents are cleared |
-> | on(`destroy`, () => void) | Called just before the dialog is destroyed and all listeners are removed |
+> | `on("close", () => void)` | Called just **after** the dialog is closed |
+> | `on("open", () => void)` | Called just **after** the dialog is opened |
+> | `on("render", () => void)` | Called just **after** the dialog contents are rendered |
+> | `on("clear", () => void)` | Called just **after** the dialog contents are cleared |
+> | `on("destroy", () => void)` | Called just **after** the dialog is destroyed and **before** all listeners are removed |
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
