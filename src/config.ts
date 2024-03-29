@@ -10,7 +10,7 @@ import { emitInterface, getFeaturesInterface } from "./interface";
 export const formatVersion = 5;
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
-  // 1 -> 2
+  // 1 -> 2 (v1.0)
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
@@ -20,12 +20,12 @@ export const migrations: DataMigrationsDict = {
       lyricsQueueButton: queueBtnsEnabled,
     };
   },
-  // 2 -> 3
+  // 2 -> 3 (v1.0)
   3: (oldData: FeatureConfig) => useDefaultConfig([
     "removeShareTrackingParam", "numKeysSkipToTime",
     "fixSpacing", "scrollToActiveSongBtn", "logLevel",
   ], oldData),
-  // 3 -> 4
+  // 3 -> 4 (v1.1)
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
@@ -43,7 +43,7 @@ export const migrations: DataMigrationsDict = {
       listButtonsPlacement: "queueOnly",
     };
   },
-  // 4 -> 5
+  // 4 -> 5 (v1.2)
   5: (oldData: FeatureConfig) => useDefaultConfig([
     "geniUrlBase", "geniUrlToken",
     "lyricsCacheMaxSize", "lyricsCacheTTL",
@@ -53,12 +53,17 @@ export const migrations: DataMigrationsDict = {
     "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
     "setInitialTabVolume", "initialTabVolumeLevel",
   ], oldData),
+  // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
+  // 5 -> 6 (v1.3)
+  // 6: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
-// TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
 
-/** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
-function useDefaultConfig(keys: (keyof typeof featInfo)[], oldData?: FeatureConfig): Partial<FeatureConfig> {
-  const newData = { ...(oldData ?? {}) };
+/**
+ * Uses the passed {@linkcode baseData} as the base if given, and sets all passed feature {@linkcode keys} to their default value  
+ * @returns Returns a copy of the object
+ */
+function useDefaultConfig(keys: (keyof typeof featInfo)[], baseData?: FeatureConfig): Partial<FeatureConfig> {
+  const newData = { ...(baseData ?? {}) };
   for(const key of keys)
     newData[key as keyof typeof featInfo] = getFeatureDefault(key as keyof typeof featInfo) as unknown as never;
   return newData;
