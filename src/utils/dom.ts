@@ -1,7 +1,7 @@
-//#SECTION video time
-
 import { getUnsafeWindow } from "@sv443-network/userutils";
 import { error, getDomain, onSelectorOld } from ".";
+
+//#MARKER video time & volume
 
 export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
 
@@ -100,6 +100,29 @@ function ytForceShowVideoTime() {
 
   return true;
 }
+
+/** Waits for the video element to be in its readyState 4 / canplay state and returns it */
+export function waitVideoElementReady(): Promise<HTMLVideoElement> {
+  return new Promise((res) => {
+    onSelectorOld<HTMLVideoElement>(videoSelector, {
+      listener: async (vidElem) => {
+        if(vidElem) {
+          // this is just after YT has finished doing their own shenanigans with the video time and volume
+          if(vidElem.readyState === 4)
+            res(vidElem);
+          else
+            vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
+        }
+      },
+    });
+  });
+}
+
+//#MARKER other
+
+/** Whether the DOM has finished loading and elements can be added or modified */
+export let domLoaded = false;
+document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 
 /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
 export function clearInner(element: Element) {

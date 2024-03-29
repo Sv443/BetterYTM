@@ -1,5 +1,5 @@
 import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { initOnSelector, warn } from "./utils";
+import { domLoaded, initOnSelector, warn } from "./utils";
 import { clearConfig, getFeatures, initConfig } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -55,7 +55,6 @@ import {
   console.log();
 }
 
-let domLoaded = false;
 const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
@@ -77,10 +76,6 @@ function preInit() {
 
 async function init() {
   try {
-    document.addEventListener("DOMContentLoaded", () => {
-      domLoaded = true;
-    });
-
     const features = await initConfig();
     setLogLevel(features.logLevel);
 
@@ -95,7 +90,7 @@ async function init() {
       disableBeforeUnload();
 
     if(!domLoaded)
-      document.addEventListener("DOMContentLoaded", onDomLoad);
+      document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
     else
       onDomLoad();
 
