@@ -36,15 +36,15 @@ let lastDialogId: string | null = null;
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<{
-  /** Emitted just after the dialog is closed */
+  /** Emitted just **after** the dialog is closed */
   close: () => void;
-  /** Emitted just after the dialog is opened */
+  /** Emitted just **after** the dialog is opened */
   open: () => void;
-  /** Emitted just after the dialog contents are rendered */
+  /** Emitted just **after** the dialog contents are rendered */
   render: () => void;
-  /** Emitted just after the dialog contents are cleared */
+  /** Emitted just **after** the dialog contents are cleared */
   clear: () => void;
-  /** Emitted just before the dialog is destroyed and all listeners are removed */
+  /** Emitted just **after** the dialog is destroyed and **before** all listeners are removed */
   destroy: () => void;
 }> {
   public readonly options;
@@ -201,8 +201,8 @@ export class BytmDialog extends NanoEmitter<{
 
   /** Clears the DOM of the dialog and removes all event listeners */
   public destroy() {
-    this.events.emit("destroy");
     this.unmount();
+    this.events.emit("destroy");
     this.unsubscribeAll();
   }
 
