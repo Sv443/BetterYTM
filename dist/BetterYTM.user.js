@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=dd3d383
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5d83c3f
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -34,38 +34,38 @@
 // @grant             GM.xmlHttpRequest
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=dd3d383
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=dd3d383
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=dd3d383
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=dd3d383
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=dd3d383
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=dd3d383
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=dd3d383
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=dd3d383
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=dd3d383
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=dd3d383
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=dd3d383
-// @resource          icon-lock_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock_off.svg?b=dd3d383
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=dd3d383
-// @resource          icon-link_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link_off.svg?b=dd3d383
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=dd3d383
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=dd3d383
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=dd3d383
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=dd3d383
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=dd3d383
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=dd3d383
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=dd3d383
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=dd3d383
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=dd3d383
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=dd3d383
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=dd3d383
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=dd3d383
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=dd3d383
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=dd3d383
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=dd3d383
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=dd3d383
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=dd3d383
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=dd3d383
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=5d83c3f
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=5d83c3f
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=5d83c3f
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=5d83c3f
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=5d83c3f
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=5d83c3f
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=5d83c3f
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=5d83c3f
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=5d83c3f
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=5d83c3f
+// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=5d83c3f
+// @resource          icon-lock_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock_off.svg?b=5d83c3f
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=5d83c3f
+// @resource          icon-link_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link_off.svg?b=5d83c3f
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=5d83c3f
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=5d83c3f
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=5d83c3f
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5d83c3f
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=5d83c3f
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=5d83c3f
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=5d83c3f
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=5d83c3f
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=5d83c3f
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=5d83c3f
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=5d83c3f
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=5d83c3f
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=5d83c3f
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=5d83c3f
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=5d83c3f
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=5d83c3f
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=5d83c3f
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=5d83c3f
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -148,7 +148,7 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};//#SECTION video time
+};//#MARKER video time & volume
 const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
 /**
  * Returns the current video time in seconds
@@ -225,6 +225,26 @@ function ytForceShowVideoTime() {
         screenX, movementX: 5, movementY: 0 })));
     return true;
 }
+/** Waits for the video element to be in its readyState 4 / canplay state and returns it */
+function waitVideoElementReady() {
+    return new Promise((res) => {
+        onSelectorOld(videoSelector, {
+            listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
+                if (vidElem) {
+                    // this is just after YT has finished doing their own shenanigans with the video time and volume
+                    if (vidElem.readyState === 4)
+                        res(vidElem);
+                    else
+                        vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
+                }
+            }),
+        });
+    });
+}
+//#MARKER other
+/** Whether the DOM has finished loading and elements can be added or modified */
+let domLoaded = false;
+document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
 function clearInner(element) {
     while (element.hasChildNodes())
@@ -273,7 +293,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "dd3d383";
+const buildNumberRaw = "5d83c3f";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1668,14 +1688,18 @@ function volumeSharedBetweenTabsDisabled() {
 //#MARKER initial volume
 /** Sets the volume slider to a set volume level when the session starts */
 function setInitialTabVolume(sliderElem) {
-    const initialVol = getFeatures().initialTabVolumeLevel;
-    if (getFeatures().volumeSharedBetweenTabs) {
-        lastCheckedSharedVolume = ignoreVal = initialVol;
-        if (getFeatures().volumeSharedBetweenTabs)
-            GM.setValue("bytm-shared-volume", String(initialVol));
-    }
-    sliderElem.value = String(initialVol);
-    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+    return __awaiter(this, void 0, void 0, function* () {
+        yield waitVideoElementReady();
+        const initialVol = getFeatures().initialTabVolumeLevel;
+        if (getFeatures().volumeSharedBetweenTabs) {
+            lastCheckedSharedVolume = ignoreVal = initialVol;
+            if (getFeatures().volumeSharedBetweenTabs)
+                GM.setValue("bytm-shared-volume", String(initialVol));
+        }
+        sliderElem.value = String(initialVol);
+        sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+        log(`Set initial tab volume to ${initialVol}%`);
+    });
 }//#MARKER create menu elements
 let isCfgMenuAdded = false;
 let isCfgMenuOpen = false;
@@ -3237,7 +3261,10 @@ function initAutoCloseToasts() {
     });
 }
 let remSongsCache = [];
-/** Remembers the time of the last played song and resumes playback from that time */
+/**
+ * Remembers the time of the last played song and resumes playback from that time
+ * CALLED BEFORE DOM IS READY!
+ */
 function initRememberSongTime() {
     return __awaiter(this, void 0, void 0, function* () {
         if (getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
@@ -3249,12 +3276,21 @@ function initRememberSongTime() {
         log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
         if (location.pathname.startsWith("/watch"))
             yield restoreSongTime();
-        remSongUpdateEntry();
-        setInterval(remSongUpdateEntry, 1000);
+        if (!domLoaded) {
+            document.addEventListener("DOMContentLoaded", () => {
+                remSongUpdateEntry();
+                setInterval(remSongUpdateEntry, 1000);
+            });
+        }
+        else {
+            remSongUpdateEntry();
+            setInterval(remSongUpdateEntry, 1000);
+        }
     });
 }
 /** Tries to restore the time of the currently playing song */
 function restoreSongTime() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         if (location.pathname.startsWith("/watch")) {
             const { searchParams } = new URL(location.href);
@@ -3268,26 +3304,13 @@ function restoreSongTime() {
                     return;
                 }
                 else {
-                    onSelectorOld(videoSelector, {
-                        listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
-                            if (vidElem) {
-                                const applyTime = () => __awaiter(this, void 0, void 0, function* () {
-                                    var _a;
-                                    if (isNaN(entry.songTime))
-                                        return;
-                                    const vidRestoreTime = entry.songTime - ((_a = getFeatures().rememberSongTimeReduction) !== null && _a !== void 0 ? _a : 0);
-                                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                                    yield delRemSongData(entry.watchID);
-                                    info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-                                });
-                                // jump to video time just after YT has finished doing their own shenanigans
-                                if (vidElem.readyState === 4)
-                                    applyTime();
-                                else
-                                    vidElem.addEventListener("canplay", applyTime, { once: true });
-                            }
-                        }),
-                    });
+                    if (isNaN(entry.songTime))
+                        return;
+                    const vidElem = yield waitVideoElementReady();
+                    const vidRestoreTime = entry.songTime - ((_a = getFeatures().rememberSongTimeReduction) !== null && _a !== void 0 ? _a : 0);
+                    vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+                    yield delRemSongData(entry.watchID);
+                    info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                 }
             }
         }
@@ -4437,18 +4460,18 @@ function noopTODO() {
 const formatVersion = 5;
 /** Config data format migration dictionary */
 const migrations = {
-    // 1 -> 2
+    // 1 -> 2 (v1.0)
     2: (oldData) => {
         const queueBtnsEnabled = Boolean(oldData.queueButtons);
         delete oldData.queueButtons;
         return Object.assign(Object.assign({}, oldData), { deleteFromQueueButton: queueBtnsEnabled, lyricsQueueButton: queueBtnsEnabled });
     },
-    // 2 -> 3
+    // 2 -> 3 (v1.0)
     3: (oldData) => useDefaultConfig([
         "removeShareTrackingParam", "numKeysSkipToTime",
         "fixSpacing", "scrollToActiveSongBtn", "logLevel",
     ], oldData),
-    // 3 -> 4
+    // 3 -> 4 (v1.1)
     4: (oldData) => {
         var _a, _b, _c, _d;
         const oldSwitchSitesHotkey = oldData.switchSitesHotkey;
@@ -4462,7 +4485,7 @@ const migrations = {
                 alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
             }, listButtonsPlacement: "queueOnly" });
     },
-    // 4 -> 5
+    // 4 -> 5 (v1.2)
     5: (oldData) => useDefaultConfig([
         "geniUrlBase", "geniUrlToken",
         "lyricsCacheMaxSize", "lyricsCacheTTL",
@@ -4472,11 +4495,16 @@ const migrations = {
         "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
         "setInitialTabVolume", "initialTabVolumeLevel",
     ], oldData),
+    // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
+    // 5 -> 6 (v1.3)
+    // 6: (oldData: FeatureConfig) => 
 };
-// TODO: once advanced filtering is fully implemented, clear cache on migration (to v6)
-/** Uses the passed {@linkcode oldData} as the base (if given) and sets all passed {@linkcode keys} to their feature default - returns a copy of the object */
-function useDefaultConfig(keys, oldData) {
-    const newData = Object.assign({}, (oldData !== null && oldData !== void 0 ? oldData : {}));
+/**
+ * Uses the passed {@linkcode baseData} as the base if given, and sets all passed feature {@linkcode keys} to their default value
+ * @returns Returns a copy of the object
+ */
+function useDefaultConfig(keys, baseData) {
+    const newData = Object.assign({}, (baseData !== null && baseData !== void 0 ? baseData : {}));
     for (const key of keys)
         newData[key] = getFeatureDefault(key);
     return newData;
@@ -5179,24 +5207,25 @@ function showWelcomeMenu() {
     ].join("\n"));
     console.log();
 }
-let domLoaded = false;
 const domain = getDomain();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-    log("Session ID:", getSessionId());
-    initInterface();
-    setLogLevel(defaultLogLevel);
-    if (domain === "ytm")
-        initBeforeUnloadHook();
-    init();
+    try {
+        log("Session ID:", getSessionId());
+        initInterface();
+        setLogLevel(defaultLogLevel);
+        if (domain === "ytm")
+            initBeforeUnloadHook();
+        init();
+    }
+    catch (err) {
+        return error("Fatal pre-init error:", err);
+    }
 }
 function init() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            document.addEventListener("DOMContentLoaded", () => {
-                domLoaded = true;
-            });
             const features = yield initConfig();
             setLogLevel(features.logLevel);
             yield initLyricsCache();
@@ -5206,14 +5235,14 @@ function init() {
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
             if (!domLoaded)
-                document.addEventListener("DOMContentLoaded", onDomLoad);
+                document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
             else
                 onDomLoad();
             if (features.rememberSongTime)
                 initRememberSongTime();
         }
         catch (err) {
-            error("General Error:", err);
+            error("Fatal error:", err);
         }
         // init menu separately from features
         try {
@@ -5221,20 +5250,26 @@ function init() {
             // initMenu();
         }
         catch (err) {
-            error("Couldn't initialize menu:", err);
+            error("Error while initializing menu:", err);
         }
     });
 }
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
-        insertGlobalStyle();
-        initObservers();
-        initOnSelector();
         const features = getFeatures();
         const ftInit = [];
-        yield initVersionCheck();
-        log(`DOM loaded. Initializing features for domain "${domain}"...`);
+        try {
+            insertGlobalStyle();
+            initObservers();
+            initOnSelector();
+            yield initVersionCheck();
+        }
+        catch (err) {
+            error("Fatal error in feature pre-init:", err);
+            return;
+        }
+        log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
         try {
             if (domain === "ytm") {
                 disableDarkReader();
