@@ -993,10 +993,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   closeBtnEnabled: true,
 >   destroyOnClose: false,
 >   smallDialog: true,
->   // add more elements to the header, body and footer here, with one of these methods:
->   // - body.appendChild(document.createElement("..."));
->   // - body.innerHTML = "..."
->   // - ReactDOM.render(<MyComponent />, body);
+>   // add elements to the header, body and footer here, in one of these ways:
+>   // - foo.appendChild(document.createElement("..."));
+>   // - foo.innerHTML = "..."
+>   // - ReactDOM.render(<MyComponent />, foo);
 >   // - etc.
 >   renderHeader: () => {
 >     const header = document.createElement("div");

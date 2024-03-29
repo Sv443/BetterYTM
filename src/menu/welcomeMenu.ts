@@ -217,14 +217,14 @@ function retranslateWelcomeMenu() {
     "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
   };
 
-  for(const [selector, cb] of Object.entries(changes)) {
-    const elem = document.querySelector<HTMLElement>(selector);
-    if(!elem) {
-      warn(`Couldn't find element ${selector} in welcome menu`);
+  for(const [selector, fn] of Object.entries(changes)) {
+    const el = document.querySelector<HTMLElement>(selector);
+    if(!el) {
+      warn(`Couldn't find element in welcome menu with selector '${selector}'`);
       continue;
     }
 
-    cb(elem);
+    fn(el);
   }
 }
 
