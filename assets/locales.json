@@ -3,63 +3,63 @@
     "name": "Deutsch (Deutschland)",
     "nameEnglish": "German",
     "emoji": "🇩🇪",
-    "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music",
+    "userscriptDesc": "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™",
     "authors": ["Sv443"]
   },
   "en_US": {
     "name": "English (United States)",
     "nameEnglish": "English (US)",
     "emoji": "🇺🇸",
-    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
+    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™",
     "authors": ["Sv443"]
   },
   "en_UK": {
     "name": "English (United Kingdom)",
     "nameEnglish": "English (UK)",
     "emoji": "🇬🇧",
-    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music",
+    "userscriptDesc": "Configurable layout and user experience improvements for YouTube Music™",
     "authors": ["Sv443"]
   },
   "es_ES": {
     "name": "Español (España)",
     "nameEnglish": "Spanish",
     "emoji": "🇪🇸",
-    "userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music",
+    "userscriptDesc": "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™",
     "authors": ["Sv443"]
   },
   "fr_FR": {
     "name": "Français (France)",
     "nameEnglish": "French",
     "emoji": "🇫🇷",
-    "userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music",
+    "userscriptDesc": "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™",
     "authors": ["Sv443"]
   },
   "hi_IN": {
     "name": "हिंदी (भारत)",
     "nameEnglish": "Hindi",
     "emoji": "🇮🇳",
-    "userscriptDesc": "YouTube Music के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
+    "userscriptDesc": "YouTube Music™ के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
     "authors": ["Sv443"]
   },
   "ja_JA": {
     "name": "日本語 (日本)",
     "nameEnglish": "Japanese",
     "emoji": "🇯🇵",
-    "userscriptDesc": "YouTube Musicのレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
+    "userscriptDesc": "YouTube Music™のレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
     "authors": ["Sv443"]
   },
   "pt_BR": {
     "name": "Português (Brasil)",
     "nameEnglish": "Portuguese",
     "emoji": "🇵🇹",
-    "userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music",
+    "userscriptDesc": "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™",
     "authors": ["Sv443"]
   },
   "zh_CN": {
     "name": "中文（简化，中国）",
     "nameEnglish": "Chinese (simpl.)",
     "emoji": "🇨🇳",
-    "userscriptDesc": "可配置的布局和YouTube Music的用户体验改进",
+    "userscriptDesc": "可配置的布局和YouTube Music™的用户体验改进",
     "authors": ["Sv443"]
   }
 }
