@@ -1000,7 +1000,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   // - etc.
 >   renderHeader: () => {
 >     const header = document.createElement("div");
->     header.textContent = "My Dialog";
+>     header.textContent = "This is the header of my dialog";
 >     return header;
 >   },
 >   renderBody: () => {
