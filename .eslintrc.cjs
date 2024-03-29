@@ -9,6 +9,7 @@ module.exports = {
     "*.user.js",
     "*.map",
     "dist/**",
+    "test.ts",
   ],
   extends: [
     "eslint:recommended",

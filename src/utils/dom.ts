@@ -136,16 +136,20 @@ function clearNode(element: Element) {
   element.parentNode!.removeChild(element);
 }
 
-/** Adds interaction listeners to the passed element in an accessible way - set {@linkcode once} to true to remove the listeners after the first interaction */
-export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, once = false) {
+/**
+ * Adds generic, accessible interaction listeners to the passed element
+ * @param listenerOptions Set {@linkcode listenerOptions} to configure the listener
+ */
+export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: AddEventListenerOptions) {
   const proxListener = (e: MouseEvent | KeyboardEvent) => {
-    if(e instanceof KeyboardEvent && !["Enter", " ", "Space", "Spacebar"].includes(e.key))
+    if(e instanceof KeyboardEvent && !(["Enter", " ", "Space", "Spacebar"].includes(e.key)))
       return;
-    e.stopPropagation();
-    once && elem.removeEventListener("click", proxListener);
-    once && elem.removeEventListener("keydown", proxListener);
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    listenerOptions?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
+    listenerOptions?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
     listener(e);
   };
-  elem.addEventListener("click", proxListener);
-  elem.addEventListener("keydown", proxListener);
+  elem.addEventListener("click", proxListener, listenerOptions);
+  elem.addEventListener("keydown", proxListener, listenerOptions);
 }

@@ -379,7 +379,7 @@ export async function addScrollToActiveBtn() {
         });
       };
 
-      onInteraction(linkElem, scrollToActiveInteraction);
+      onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
 
       linkElem.appendChild(imgElem);
       containerElem.appendChild(linkElem);
