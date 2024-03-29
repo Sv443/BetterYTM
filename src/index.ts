@@ -60,14 +60,19 @@ const domain = getDomain();
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
-  log("Session ID:", getSessionId());
-  initInterface();
-  setLogLevel(defaultLogLevel);
+  try {
+    log("Session ID:", getSessionId());
+    initInterface();
+    setLogLevel(defaultLogLevel);
 
-  if(domain === "ytm")
-    initBeforeUnloadHook();
+    if(domain === "ytm")
+      initBeforeUnloadHook();
 
-  init();
+    init();
+  }
+  catch(err) {
+    return error("Fatal pre-init error:", err);
+  }
 }
 
 async function init() {
@@ -98,7 +103,7 @@ async function init() {
       initRememberSongTime();
   }
   catch(err) {
-    error("General Error:", err);
+    error("Fatal error:", err);
   }
 
   // init menu separately from features
@@ -107,23 +112,29 @@ async function init() {
     // initMenu();
   }
   catch(err) {
-    error("Couldn't initialize menu:", err);
+    error("Error while initializing menu:", err);
   }
 }
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
-  insertGlobalStyle();
-
-  initObservers();
-  initOnSelector();
-
   const features = getFeatures();
   const ftInit = [] as Promise<void>[];
 
-  await initVersionCheck();
+  try {
+    insertGlobalStyle();
 
-  log(`DOM loaded. Initializing features for domain "${domain}"...`);
+    initObservers();
+    initOnSelector();
+
+    await initVersionCheck();
+  }
+  catch(err) {
+    error("Fatal error in feature pre-init:", err);
+    return;
+  }
+
+  log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
 
   try {
     if(domain === "ytm") {
