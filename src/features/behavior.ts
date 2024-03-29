@@ -1,5 +1,5 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { error, getDomain, getVideoTime, info, log, onSelectorOld, videoSelector } from "../utils";
+import { domLoaded, error, getDomain, getVideoTime, info, log, onSelectorOld, videoSelector, waitVideoElementReady } from "../utils";
 import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
 
@@ -97,7 +97,10 @@ interface RemSongObj {
 
 let remSongsCache: RemSongObj[] = [];
 
-/** Remembers the time of the last played song and resumes playback from that time */
+/**
+ * Remembers the time of the last played song and resumes playback from that time  
+ * CALLED BEFORE DOM IS READY!
+ */
 export async function initRememberSongTime() {
   if(getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
     return;
@@ -113,8 +116,16 @@ export async function initRememberSongTime() {
   if(location.pathname.startsWith("/watch"))
     await restoreSongTime();
 
-  remSongUpdateEntry();
-  setInterval(remSongUpdateEntry, 1000);
+  if(!domLoaded) {
+    document.addEventListener("DOMContentLoaded", () => {
+      remSongUpdateEntry();
+      setInterval(remSongUpdateEntry, 1000);
+    });
+  }
+  else {
+    remSongUpdateEntry();
+    setInterval(remSongUpdateEntry, 1000);
+  }
 }
 
 /** Tries to restore the time of the currently playing song */
@@ -132,26 +143,13 @@ async function restoreSongTime() {
         return;
       }
       else {
-        onSelectorOld<HTMLVideoElement>(videoSelector, {
-          listener: async (vidElem) => {
-            if(vidElem) {
-              const applyTime = async () => {
-                if(isNaN(entry.songTime))
-                  return;
-                const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
-                vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                await delRemSongData(entry.watchID);
-                info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
-              };
-
-              // jump to video time just after YT has finished doing their own shenanigans
-              if(vidElem.readyState === 4)
-                applyTime();
-              else
-                vidElem.addEventListener("canplay", applyTime, { once: true });
-            }
-          },
-        });
+        if(isNaN(entry.songTime))
+          return;
+        const vidElem = await waitVideoElementReady();
+        const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
+        vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+        await delRemSongData(entry.watchID);
+        info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
       }
     }
   }
