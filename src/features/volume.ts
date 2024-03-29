@@ -1,6 +1,6 @@
 import { addGlobalStyle, addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
-import { error, onSelectorOld, resourceToHTMLString, t } from "../utils";
+import { error, log, onSelectorOld, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from ".";
 import "./volume.css";
@@ -216,7 +216,8 @@ export async function volumeSharedBetweenTabsDisabled() {
 //#MARKER initial volume
 
 /** Sets the volume slider to a set volume level when the session starts */
-function setInitialTabVolume(sliderElem: HTMLInputElement) {
+async function setInitialTabVolume(sliderElem: HTMLInputElement) {
+  await waitVideoElementReady();
   const initialVol = getFeatures().initialTabVolumeLevel;
   if(getFeatures().volumeSharedBetweenTabs) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
@@ -225,4 +226,5 @@ function setInitialTabVolume(sliderElem: HTMLInputElement) {
   }
   sliderElem.value = String(initialVol);
   sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+  log(`Set initial tab volume to ${initialVol}%`);
 }
