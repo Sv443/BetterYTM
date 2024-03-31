@@ -466,6 +466,7 @@ export async function initThumbnailOverlay() {
     thumbImgElem.id = "bytm-thumbnail-overlay-img";
     thumbImgElem.role = "presentation";
     thumbImgElem.ariaHidden = "true";
+    thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
   
     overlayElem.appendChild(thumbImgElem);
     playerEl.appendChild(overlayElem);

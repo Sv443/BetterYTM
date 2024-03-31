@@ -138,6 +138,21 @@ export const featInfo = {
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
+  thumbnailOverlayImageFit: {
+    type: "select",
+    category: "layout",
+    options: () => [
+      { value: "cover", label: t("thumbnail_overlay_image_fit_crop") },
+      { value: "contain", label: t("thumbnail_overlay_image_fit_full") },
+      { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
+    ],
+    default: "cover",
+    enable: noopTODO,
+    change: noopTODO,
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: adornments.advanced,
+  },
 
   //#SECTION volume
   volumeSliderLabel: {

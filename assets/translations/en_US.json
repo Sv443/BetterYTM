@@ -118,6 +118,9 @@
     "thumbnail_overlay_toggle_btn_tooltip_hide": "Disable the thumbnail overlay - middle-click or shift-click to open in a new tab",
     "thumbnail_overlay_toggle_btn_tooltip_show": "Enable the thumbnail overlay - middle-click or shift-click to open in a new tab",
     "thumbnail_overlay_indicator_tooltip": "The thumbnail overlay is currently active",
+    "thumbnail_overlay_image_fit_crop": "Crop if necessary",
+    "thumbnail_overlay_image_fit_full": "Show full image",
+    "thumbnail_overlay_image_fit_stretch": "Stretch to fit",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
@@ -156,6 +159,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail overlay",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
     "feature_desc_thumbnailOverlayShowIndicator": "Show an indicator in the bottom right corner of the thumbnail overlay while it's active?",
+    "feature_desc_thumbnailOverlayImageFit": "How to fit the thumbnail image into the overlay",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",
