@@ -1,8 +1,10 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { getFeatures } from "../config";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getWatchId, getBestThumbnailUrl } from "../utils";
 import { scriptInfo } from "../constants";
-import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction } from "../utils";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
+import { siteEvents } from "src/siteEvents";
 
 //#MARKER BYTM-Config buttons
 
@@ -359,12 +361,12 @@ export async function addScrollToActiveBtn() {
       const linkElem = document.createElement("div");
       linkElem.id = "bytm-scroll-to-active-btn";
       linkElem.tabIndex = 0;
-      linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+      linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
       linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
       linkElem.role = "button";
 
       const imgElem = document.createElement("img");
-      imgElem.className = "bytm-generic-btn-img";
+      imgElem.classList.add("bytm-generic-btn-img");
       imgElem.src = await getResourceUrl("icon-skip_to");
 
       const scrollToActiveInteraction = () => {
@@ -386,4 +388,121 @@ export async function addScrollToActiveBtn() {
       tabElem.appendChild(containerElem);
     },
   });
+}
+
+//#MARKER thumbnail overlay
+
+/** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
+let invertOverlay = false;
+
+// TODO:
+// - use onSelectorOld to add the overlay if the /watch page isn't open on script init
+
+export async function initThumbnailOverlay() {
+  const behavior = getFeatures().thumbnailOverlayBehavior;
+  const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
+  if(behavior === "never" && !toggleBtnShown)
+    return;
+
+  const playerEl = document.querySelector<HTMLElement>("ytmusic-player#player");
+
+  if(!playerEl)
+    return warn("Couldn't find video player element while adding thumbnail overlay");
+
+  /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
+  const updateOverlayVisibility = async () => {
+    let showOverlay = behavior === "always";
+    const isVideo = document.querySelector<HTMLElement>("ytmusic-player")?.hasAttribute("video-mode") ?? false;
+
+    if(behavior === "videosOnly" && isVideo)
+      showOverlay = true;
+    else if(behavior === "songsOnly" && !isVideo)
+      showOverlay = true;
+
+    showOverlay = invertOverlay ? !showOverlay : showOverlay;
+
+    const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
+    const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
+    if(!overlayElem || !thumbElem)
+      return warn("Couldn't find thumbnail overlay element while checking visibility");
+
+    overlayElem.style.display = showOverlay ? "block" : "none";
+    thumbElem.ariaHidden = String(!showOverlay);
+
+    if(getFeatures().thumbnailOverlayToggleBtnShown) {
+      const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
+      const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
+      if(!toggleBtnElem || !toggleBtnImgElem)
+        return warn("Couldn't find thumbnail overlay toggle button element while checking visibility");
+
+      toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "" : "_off"}` as "icon-image" | "icon-image_off");
+      toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+    }
+  };
+
+  const watchId = getWatchId();
+  if(!watchId)
+    return warn("Couldn't get watch ID while adding thumbnail overlay");
+
+  // overlay
+  const overlayElem = document.createElement("div");
+  overlayElem.id = "bytm-thumbnail-overlay";
+  overlayElem.classList.add("bytm-no-select");
+  overlayElem.style.display = "none";
+
+  const thumbImgElem = document.createElement("img");
+  thumbImgElem.id = "bytm-thumbnail-overlay-img";
+  thumbImgElem.role = "presentation";
+  thumbImgElem.ariaHidden = "true";
+
+  overlayElem.appendChild(thumbImgElem);
+  playerEl.appendChild(overlayElem);
+
+  siteEvents.on("watchIdChanged", async () => {
+    const watchId = getWatchId();
+    if(!watchId)
+      return warn("Couldn't get watch ID while updating thumbnail overlay");
+
+    const thumbUrl = await getBestThumbnailUrl(watchId);
+    if(thumbUrl) {
+      const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+      if(toggleBtnElem)
+        toggleBtnElem.href = thumbUrl;
+      thumbImgElem.src = thumbUrl;
+    }
+    invertOverlay = false;
+    updateOverlayVisibility();
+  });
+
+  // toggle button
+  if(toggleBtnShown) {
+    const toggleBtnElem = document.createElement("a");
+    toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+    toggleBtnElem.role = "button";
+    toggleBtnElem.tabIndex = 0;
+    toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+
+    onInteraction(toggleBtnElem, async (e) => {
+      if(e.shiftKey || (e instanceof MouseEvent && e.button === 3)) {
+        const thumbUrl = await getBestThumbnailUrl(watchId);
+        if(thumbUrl)
+          return GM.openInTab(thumbUrl);
+      }
+      invertOverlay = !invertOverlay;
+      updateOverlayVisibility();
+    });
+
+    const imgElem = document.createElement("img");
+    imgElem.classList.add("bytm-generic-btn-img");
+
+    toggleBtnElem.appendChild(imgElem);
+
+    onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+      listener: (likeContainer) => insertAfter(likeContainer, toggleBtnElem),
+    });
+  }
+
+  updateOverlayVisibility();
+
+  log("Added thumbnail overlay");
 }

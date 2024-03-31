@@ -1,5 +1,5 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, info, log, onSelectorOld, videoSelector, waitVideoElementReady } from "../utils";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, onSelectorOld, videoSelector, waitVideoElementReady } from "../utils";
 import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
 
@@ -158,8 +158,7 @@ async function restoreSongTime() {
 /** Updates the currently playing song's entry in GM storage */
 async function remSongUpdateEntry() {
   if(location.pathname.startsWith("/watch")) {
-    const { searchParams } = new URL(location.href);
-    const watchID = searchParams.get("v");
+    const watchID = getWatchId();
     if(!watchID)
       return;
 

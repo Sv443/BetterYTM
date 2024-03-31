@@ -373,7 +373,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 /** Creates the base lyrics button element */
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
-  linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
   linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
   if(geniusUrl)
     linkElem.href = geniusUrl;
@@ -384,7 +384,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
 
   const imgElem = document.createElement("img");
-  imgElem.className = "bytm-generic-btn-img";
+  imgElem.classList.add("bytm-generic-btn-img");
   imgElem.src = await getResourceUrl("icon-lyrics");
 
   linkElem.appendChild(imgElem);

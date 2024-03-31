@@ -108,6 +108,26 @@ export const featInfo = {
     default: true,
     enable: noopTODO,
   },
+  thumbnailOverlayBehavior: {
+    type: "select",
+    category: "layout",
+    options: () => [
+      { value: "never", label: t("thumbnail_overlay_behavior_never") },
+      { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
+      { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
+      { value: "always", label: t("thumbnail_overlay_behavior_always") },
+    ],
+    default: "never",
+    enable: noopTODO,
+    change: noopTODO,
+  },
+  thumbnailOverlayToggleBtnShown: {
+    type: "toggle",
+    category: "layout",
+    default: false,
+    enable: noopTODO,
+    disable: noopTODO,
+  },
 
   //#SECTION volume
   volumeSliderLabel: {

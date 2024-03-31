@@ -37,7 +37,7 @@
     border: 1px solid transparent;
   }
   20% {
-    border: 1px solid #727272;
+    border: 1px solid #808080;
   }
   100% {
     border: 1px solid transparent;
@@ -221,4 +221,28 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 #bytm-scroll-to-active-btn .bytm-generic-btn-img {
   padding: 4px;
+}
+
+/** #MARKER thumbnail */
+
+#bytm-thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: #030303;
+  z-index: 0;
+}
+
+#bytm-thumbnail-overlay-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+ytmusic-player#player #bezel {
+  z-index: 1;
 }

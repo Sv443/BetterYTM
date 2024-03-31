@@ -1,17 +1,17 @@
 import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { domLoaded, initOnSelector, warn } from "./utils";
-import { clearConfig, getFeatures, initConfig } from "./config";
+import { domLoaded, initOnSelector, reserialize, warn } from "./utils";
+import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
 import { initSiteEvents } from "./siteEvents";
 import { emitInterface, initInterface, initPlugins } from "./interface";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
-import { initObservers, observers } from "./observers";
+import { initObservers, globservers } from "./observers";
 import {
   // layout
   addWatermark, removeUpgradeTab,
   removeShareTrackingParam, fixSpacing,
-  addScrollToActiveBtn,
+  addScrollToActiveBtn, initThumbnailOverlay,
   // volume
   initVolumeFeatures,
   // song lists
@@ -145,7 +145,7 @@ async function onDomLoad() {
         await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
       }
 
-      observers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+      globservers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
         listener: addConfigMenuOption,
       });
 
@@ -181,6 +181,8 @@ async function onDomLoad() {
 
       if(features.scrollToActiveSongBtn)
         ftInit.push(addScrollToActiveBtn());
+
+      ftInit.push(initThumbnailOverlay());
 
       ftInit.push(initVolumeFeatures());
     }
@@ -315,6 +317,14 @@ function registerDevMenuCommands() {
     }
   }, "r");
 
+  GM.registerMenuCommand("Fix missing config values", async () => {
+    const oldFeats = reserialize(getFeatures());
+    await setFeatures({ ...defaultFeatData, ...getFeatures() });
+    console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
+    if(confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
+      location.reload();
+  });
+
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
     const keys = await GM.listValues();
     console.log(`GM values (${keys.length}):`);
@@ -397,7 +407,7 @@ function registerDevMenuCommands() {
   GM.registerMenuCommand("List active selector listeners in console", async () => {
     const lines = [] as string[];
     let listenersAmt = 0;
-    for(const [obsName, obs] of Object.entries(observers)) {
+    for(const [obsName, obs] of Object.entries(globservers)) {
       const listeners = obs.getAllListeners();
       lines.push(`- "${obsName}" (${listeners.size} listeners):`);
       [...listeners].forEach(([k, v]) => {
@@ -408,7 +418,7 @@ function registerDevMenuCommands() {
         });
       });
     }
-    console.log(`Showing currently active listeners for ${Object.keys(observers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    console.log(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   }, "s");
 
   GM.registerMenuCommand("Compress value", async () => {
