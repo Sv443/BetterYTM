@@ -115,8 +115,9 @@
     "thumbnail_overlay_behavior_videos_only": "Only for videos",
     "thumbnail_overlay_behavior_songs_only": "Only for songs",
     "thumbnail_overlay_behavior_always": "Always",
-    "thumbnail_overlay_toggle_btn_tooltip_hide": "Click to hide the thumbnail overlay",
-    "thumbnail_overlay_toggle_btn_tooltip_show": "Click to show the thumbnail overlay",
+    "thumbnail_overlay_toggle_btn_tooltip_hide": "Disable the thumbnail overlay - middle-click or shift-click to open in a new tab",
+    "thumbnail_overlay_toggle_btn_tooltip_show": "Enable the thumbnail overlay - middle-click or shift-click to open in a new tab",
+    "thumbnail_overlay_indicator_tooltip": "The thumbnail overlay is currently active",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
@@ -154,6 +155,7 @@
     "feature_helptext_thumbnailOverlayBehavior": "The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!",
     "feature_desc_thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail overlay",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
+    "feature_desc_thumbnailOverlayShowIndicator": "Show an indicator in the bottom right corner of the thumbnail overlay while it's active?",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",

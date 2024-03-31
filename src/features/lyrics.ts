@@ -30,12 +30,17 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   (async () => {
     const gUrl = await getCurrentLyricsUrl();
 
-    const linkElem = await createLyricsBtn(gUrl ?? undefined);
-    linkElem.id = "betterytm-lyrics-button";
+    const lyricsBtnElem = await createLyricsBtn(gUrl ?? undefined);
+    lyricsBtnElem.id = "betterytm-lyrics-button";
 
     log("Inserted lyrics button into media controls bar");
 
-    insertAfter(likeContainer, linkElem);
+    const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
+
+    if(thumbToggleElem)
+      insertAfter(thumbToggleElem, lyricsBtnElem);
+    else
+      insertAfter(likeContainer, lyricsBtnElem);
   })();
 
   currentSongTitle = songTitleElem.title;

@@ -320,6 +320,8 @@ export interface FeatureConfig {
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
   thumbnailOverlayToggleBtnShown: boolean;
+  /** Whether to show an indicator on the thumbnail overlay when it is active */
+  thumbnailOverlayShowIndicator: boolean;
 
   //#SECTION volume
   /** Add a percentage label to the volume slider */
