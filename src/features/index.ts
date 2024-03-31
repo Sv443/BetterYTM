@@ -38,6 +38,15 @@ const adornments = {
   warning: async (text: string) => `<span class="bytm-warning-icon bytm-adorn-icon" title="${text}" aria-label="${text}" role="alert">${await resourceToHTMLString("icon-error") ?? ""}</span>`,
 };
 
+/** Common options for config items of type "select" */
+const options = {
+  siteSelection: () => [
+    { value: "all", label: t("site_selection_both_sites") },
+    { value: "yt", label: t("site_selection_only_yt") },
+    { value: "ytm", label: t("site_selection_only_ytm") },
+  ],
+};
+
 //#MARKER features
 
 /**
@@ -85,6 +94,14 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
+    enable: noopTODO,
+    disable: noopTODO,
+  },
+  removeShareTrackingParamSites: {
+    type: "select",
+    category: "layout",
+    options: options.siteSelection,
+    default: "all",
     enable: noopTODO,
     disable: noopTODO,
   },
@@ -277,11 +294,7 @@ export const featInfo = {
   rememberSongTimeSites: {
     type: "select",
     category: "behavior",
-    options: () => [
-      { value: "all", label: t("remember_song_time_sites_all") },
-      { value: "yt", label: t("remember_song_time_sites_yt") },
-      { value: "ytm", label: t("remember_song_time_sites_ytm") },
-    ],
+    options: options.siteSelection,
     default: "ytm",
     enable: noopTODO,
     change: noopTODO,

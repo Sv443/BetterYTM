@@ -2,7 +2,7 @@ import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, open
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getBestThumbnailUrl } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getBestThumbnailUrl, getDomain } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -296,41 +296,42 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
 
 //#MARKER remove share tracking param
 
-let lastShareVal = "";
-
 /** Removes the ?si tracking parameter from share URLs */
-export async function removeShareTrackingParam() {
+export async function initRemShareTrackParam() {
   const removeSiParam = (inputElem: HTMLInputElement) => {
     try {
-      if(lastShareVal === inputElem.value)
+      if(!inputElem.value.match(/(&|\?)si=/i))
         return;
 
       const url = new URL(inputElem.value);
-      if(!url.searchParams.has("si"))
-        return;
-
-      lastShareVal = inputElem.value;
-
       url.searchParams.delete("si");
       inputElem.value = String(url);
-      log(`Removed tracking parameter from share link: ${url}`);
+
+      log(`Removed tracking parameter from share link -> ${url}`);
     }
     catch(err) {
       warn("Couldn't remove tracking parameter from share link due to error:", err);
     }
   };
 
-  onSelectorOld<HTMLInputElement>("tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", {
+  const [sharePanelSel, inputSel] = (() => {
+    switch(getDomain()) {
+    case "ytm": return ["tp-yt-paper-dialog ytmusic-unified-share-panel-renderer", "input#share-url"];
+    case "yt": return ["ytd-unified-share-panel-renderer", "input#share-url"];
+    }
+  })();
+
+  addSelectorListener<HTMLInputElement>("body", sharePanelSel, {
     listener: (sharePanelEl) => {
       const obs = new MutationObserver(() => {
-        const inputElem = sharePanelEl.querySelector<HTMLInputElement>("input#share-url");
+        const inputElem = sharePanelEl.querySelector<HTMLInputElement>(inputSel);
         inputElem && removeSiParam(inputElem);
       });
 
       obs.observe(sharePanelEl, {
         childList: true,
         subtree: true,
-        attributeFilter: ["aria-hidden", "checked"],
+        attributeFilter: ["aria-hidden", "aria-checked", "checked"],
       });
     },
   });

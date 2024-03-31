@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "Solo en la cola",
     "list_button_placement_everywhere": "En todas las listas de canciones",
 
-    "remember_song_time_sites_all": "Ambos sitios",
-    "remember_song_time_sites_yt": "Solo YouTube",
-    "remember_song_time_sites_ytm": "Solo YouTube Music",
+    "site_selection_both_sites": "Ambos sitios",
+    "site_selection_only_yt": "Solo YouTube",
+    "site_selection_only_ytm": "Solo YouTube Music",
 
     "new_version_available": "¡Nueva versión disponible!",
     "open_update_page_install_manually": "Haga clic para abrir la página de actualización / instalación manual",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "Mostrar una marca de agua debajo del logotipo del sitio que abre este menú de configuración",
     "feature_helptext_watermarkEnabled": "Si esto está deshabilitado, aún puede abrir el menú de configuración haciendo clic en la opción en el menú que se abre cuando hace clic en su imagen de perfil en la esquina superior derecha.\nSin embargo, será más difícil encontrar el huevo de pascua ;)",
-    "feature_desc_removeShareTrackingParam": "Eliminar el parámetro de seguimiento \"&si\" de los enlaces en el cuadro de diálogo Compartir",
+    "feature_desc_removeShareTrackingParam": "Eliminar el parámetro de seguimiento \"?si\" de la URL en los menús de compartir",
     "feature_helptext_removeShareTrackingParam": "Por motivos de análisis, YouTube agrega un parámetro de seguimiento al final de la URL que puede copiar en el menú Compartir. Si bien no es directamente perjudicial, hace que la URL sea más larga y le da a YouTube más información sobre usted y las personas a las que envía el enlace.",
+    "feature_desc_removeShareTrackingParamSites": "¿En qué sitios se debe eliminar el parámetro de seguimiento de compartir?",
     "feature_desc_numKeysSkipToTime": "Habilitar el salto a un momento específico en el video presionando una tecla numérica (0-9)",
     "feature_desc_fixSpacing": "Solucionar problemas de espaciado en el diseño",
     "feature_helptext_fixSpacing": "Hay varios lugares en la interfaz de usuario donde el espaciado entre elementos es inconsistente. Esta función soluciona esos problemas.",

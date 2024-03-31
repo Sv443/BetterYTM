@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "キュー内のみ",
     "list_button_placement_everywhere": "すべての曲リスト",
 
-    "remember_song_time_sites_all": "すべてのサイト",
-    "remember_song_time_sites_yt": "YouTube のみ",
-    "remember_song_time_sites_ytm": "YouTube Music のみ",
+    "site_selection_both_sites": "すべてのサイト",
+    "site_selection_only_yt": "YouTube のみ",
+    "site_selection_only_ytm": "YouTube Music のみ",
 
     "new_version_available": "新しいバージョンが利用可能です！\n現在のバージョンは %1 ですが、バージョン %2 に更新できます",
     "open_update_page_install_manually": "%1 にインストールする",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",
     "feature_helptext_watermarkEnabled": "これが無効になっている場合、プロフィール画像をクリックして右上隅にあるメニューを開くと、構成メニューを開くことができます。\nただし、イースターエッグを見つけるのは難しくなります ;)",
-    "feature_desc_removeShareTrackingParam": "共有ポップアップ内のリンクから追跡パラメータ \"&si\" を削除する",
+    "feature_desc_removeShareTrackingParam": "共有メニューでコピーできる URL から追跡パラメータ \"?si\" を削除する",
     "feature_helptext_removeShareTrackingParam": "アナリティクスの目的で、YouTube は共有メニューでコピーできる URL の末尾に追跡パラメータを追加します。直接的な害はありませんが、URL を長くし、YouTube にリンクを送信する人々についての情報をより多く提供します。",
+    "feature_desc_removeShareTrackingParamSites": "共有トラッキングパラメータを削除するサイトはどこですか？",
     "feature_desc_numKeysSkipToTime": "数字キー (0-9) を押して特定の時間にスキップする",
     "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",
     "feature_helptext_fixSpacing": "ユーザーインターフェイスには、要素間のスペーシングが一貫していない場所がいくつかあります。この機能はそれらの問題を修正します。",

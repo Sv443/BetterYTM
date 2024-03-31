@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "Seulement dans la file d'attente",
     "list_button_placement_everywhere": "Dans chaque liste de chansons",
 
-    "remember_song_time_sites_all": "Les deux sites",
-    "remember_song_time_sites_yt": "Seulement YouTube",
-    "remember_song_time_sites_ytm": "Seulement YouTube Music",
+    "site_selection_both_sites": "Les deux sites",
+    "site_selection_only_yt": "Seulement YouTube",
+    "site_selection_only_ytm": "Seulement YouTube Music",
 
     "new_version_available": "Une nouvelle version de %1 est disponible!\nVous avez actuellement la version %2 installée et vous pouvez mettre à jour vers la version %3",
     "open_update_page_install_manually": "Installer sur %1",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "Afficher un filigrane sous le logo du site qui ouvre ce menu de configuration",
     "feature_helptext_watermarkEnabled": "Si cela est désactivé, vous pouvez toujours ouvrir le menu de configuration en cliquant sur l'option dans le menu qui s'ouvre lorsque vous cliquez sur votre photo de profil dans le coin supérieur droit.\nCependant, il sera plus difficile de trouver l'easter egg ;)",
-    "feature_desc_removeShareTrackingParam": "Supprimer le paramètre de suivi \"&si\" des liens dans la fenêtre contextuelle de partage",
+    "feature_desc_removeShareTrackingParam": "Supprimer le paramètre de suivi \"?si\" de l'URL dans les menus de partage",
     "feature_helptext_removeShareTrackingParam": "À des fins d'analyse, YouTube ajoute un paramètre de suivi à la fin de l'URL que vous pouvez copier dans le menu de partage. Bien qu'il ne soit pas directement nocif, il rend l'URL plus longue et donne à YouTube plus d'informations sur vous et les personnes à qui vous envoyez le lien.",
+    "feature_desc_removeShareTrackingParamSites": "Sur quels sites le paramètre de suivi de partage doit-il être supprimé?",
     "feature_desc_numKeysSkipToTime": "Activer le saut à un moment spécifique de la vidéo en appuyant sur une touche numérique (0-9)",
     "feature_desc_fixSpacing": "Corriger les problèmes d'espacement dans la mise en page",
     "feature_helptext_fixSpacing": "Il existe divers endroits dans l'interface utilisateur où l'espacement entre les éléments est incohérent. Cette fonctionnalité corrige ces problèmes.",

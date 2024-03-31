@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "Currently playing queue only",
     "list_button_placement_everywhere": "In every song list",
 
-    "remember_song_time_sites_all": "Both sites",
-    "remember_song_time_sites_yt": "Only YouTube",
-    "remember_song_time_sites_ytm": "Only YouTube Music",
+    "site_selection_both_sites": "Both sites",
+    "site_selection_only_yt": "Only YouTube",
+    "site_selection_only_ytm": "Only YouTube Music",
 
     "new_version_available": "A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3",
     "open_update_page_install_manually": "Install on %1",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
     "feature_helptext_watermarkEnabled": "If this is disabled, you can still open the config menu by clicking the option in the menu that opens when you click your profile picture in the top right corner.\nHowever it will be harder to find the easter egg ;)",
-    "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"&si\" from links in the share popup",
+    "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"?si\" from the URL in share menus",
     "feature_helptext_removeShareTrackingParam": "For analytics purposes YouTube adds a tracking parameter to the end of the URL you can copy in the share menu. While not directly harmful, it makes the URL longer and gives YouTube more information about you and the people you send the link to.",
+    "feature_desc_removeShareTrackingParamSites": "On which sites should the share tracking parameter be removed?",
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     "feature_desc_fixSpacing": "Fix spacing issues in the layout",
     "feature_helptext_fixSpacing": "There are various locations in the user interface where the spacing between elements is inconsistent. This feature fixes those issues.",

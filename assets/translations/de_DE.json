@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "Nur Wiedergabeliste",
     "list_button_placement_everywhere": "In jeder Songliste",
 
-    "remember_song_time_sites_all": "Beide Seiten",
-    "remember_song_time_sites_yt": "Nur YouTube",
-    "remember_song_time_sites_ytm": "Nur YouTube Music",
+    "site_selection_both_sites": "Beide Seiten",
+    "site_selection_only_yt": "Nur YouTube",
+    "site_selection_only_ytm": "Nur YouTube Music",
 
     "new_version_available": "Eine neue Version von %1 ist verfügbar!\nDu hast derzeit Version %2 installiert und kannst auf Version %3 aktualisieren",
     "open_update_page_install_manually": "Installieren auf %1",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet",
     "feature_helptext_watermarkEnabled": "Wenn dies deaktiviert ist, kannst du das Einstellungsmenü immer noch öffnen, indem du die Option im Menü anklickst, das sich öffnet, wenn du auf dein Profilbild in der oberen rechten Ecke klickst.\nEs wird jedoch schwieriger sein, das Easter Egg zu finden ;)",
-    "feature_desc_removeShareTrackingParam": "Entferne den Tracking-Parameter \"&si\" von URLs im \"Teilen\" Popup",
+    "feature_desc_removeShareTrackingParam": "Entferne den Tracking-Parameter \"?si\" aus der URL in den Teilen-Menüs",
     "feature_helptext_removeShareTrackingParam": "Zu Analysezwecken fügt YouTube einen Tracking-Parameter am Ende der URL hinzu, die im Teilen-Menü angezeigt wird. Obwohl es nicht direkt schädlich ist, macht es die URL länger und gibt YouTube mehr Informationen über dich und die Personen, denen du den Link sendest.",
+    "feature_desc_removeShareTrackingParamSites": "Auf welchen Seiten soll der Tracking-Parameter entfernt werden?",
     "feature_desc_numKeysSkipToTime": "Das Drücken einer Zahlentaste (0-9) springt zu einer bestimmten Zeit im Video",
     "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",
     "feature_helptext_fixSpacing": "Es gibt verschiedene Stellen im User Interface, an denen der Abstand zwischen Elementen inkonsistent ist. Diese Funktion behebt diese Probleme.",
@@ -154,7 +155,6 @@
     "feature_desc_setInitialTabVolume": "Setze den Lautstärkepegel auf einen bestimmten Wert, wenn die Seite geöffnet wird",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Diese Funktion ist mit der Funktion \"Lautstärke zwischen Tabs teilen\" nicht kompatibel und wird ignoriert, während die Funktion zum Teilen der Lautstärke aktiviert ist.",
     "feature_desc_initialTabVolumeLevel": "Der Wert, auf den die Lautstärke eingestellt werden soll, wenn die Seite geöffnet wird",
-
     "feature_desc_thumbnailOverlayBehavior": "Wann das Videoelement automatisch durch sein Thumbnail in höchster Auflösung ersetzt werden soll",
     "feature_helptext_thumbnailOverlayBehavior": "Das Thumbnail wird über dem Video oder Song angezeigt.\nDies spart keine Bandbreite, da das Video immer noch im Hintergrund geladen und abgespielt wird!",
     "feature_desc_thumbnailOverlayToggleBtnShown": "Füge einen Knopf zu den Mediensteuerelementen hinzu, um das Thumbnail manuell zu aktivieren",
