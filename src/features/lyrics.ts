@@ -59,8 +59,6 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
         if(!lyricsBtn)
           continue;
 
-        info(`Song title changed from '${currentSongTitle}' to '${newTitle}'`);
-
         lyricsBtn.style.cursor = "wait";
         lyricsBtn.style.pointerEvents = "none";
 
