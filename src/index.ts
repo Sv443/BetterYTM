@@ -10,7 +10,7 @@ import { initObservers, addSelectorListener, globservers } from "./observers";
 import {
   // layout
   addWatermark, removeUpgradeTab,
-  removeShareTrackingParam, fixSpacing,
+  initRemShareTrackParam, fixSpacing,
   addScrollToActiveBtn, initThumbnailOverlay,
   // volume
   initVolumeFeatures,
@@ -170,9 +170,6 @@ async function onDomLoad() {
       if(features.closeToastsTimeout > 0)
         ftInit.push(initAutoCloseToasts());
 
-      if(features.removeShareTrackingParam)
-        ftInit.push(removeShareTrackingParam());
-
       if(features.numKeysSkipToTime)
         ftInit.push(initNumKeysSkip());
 
@@ -190,6 +187,9 @@ async function onDomLoad() {
     if(["ytm", "yt"].includes(domain)) {
       if(features.switchBetweenSites)
         ftInit.push(initSiteSwitch(domain));
+
+      if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
+        ftInit.push(initRemShareTrackParam());
 
       // TODO: for hot reloading features
       // ftInit.push(new Promise((resolve) => {

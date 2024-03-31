@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "Apenas na fila de reprodução",
     "list_button_placement_everywhere": "Em toda lista de músicas",
 
-    "remember_song_time_sites_all": "Ambos os sites",
-    "remember_song_time_sites_yt": "Apenas YouTube",
-    "remember_song_time_sites_ytm": "Apenas YouTube Music",
+    "site_selection_both_sites": "Ambos os sites",
+    "site_selection_only_yt": "Apenas YouTube",
+    "site_selection_only_ytm": "Apenas YouTube Music",
 
     "new_version_available": "Uma nova versão do %1 está disponível!\nVocê tem a versão %2 instalada e pode atualizar para a versão %3",
     "open_update_page_install_manually": "Instalar em %1",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "Mostrar uma marca d'água sob o logotipo do site que abre este menu de configuração",
     "feature_helptext_watermarkEnabled": "Se isso estiver desativado, você ainda pode abrir o menu de configuração clicando na opção no menu que abre quando você clica em sua foto de perfil no canto superior direito.\nNo entanto, será mais difícil encontrar o easter egg ;)",
-    "feature_desc_removeShareTrackingParam": "Remova o parâmetro de rastreamento \"&si\" dos links na janela de compartilhamento",
+    "feature_desc_removeShareTrackingParam": "Remover o parâmetro de rastreamento \"?si\" do URL nos menus de compartilhamento",
     "feature_helptext_removeShareTrackingParam": "Para fins de análise, o YouTube adiciona um parâmetro de rastreamento ao final do URL que você pode copiar no menu de compartilhamento. Embora não seja diretamente prejudicial, ele torna o URL mais longo e dá ao YouTube mais informações sobre você e as pessoas para quem você envia o link.",
+    "feature_desc_removeShareTrackingParamSites": "Em quais sites o parâmetro de rastreamento de compartilhamento deve ser removido?",
     "feature_desc_numKeysSkipToTime": "Ative a capacidade de pular para um horário específico no vídeo pressionando uma tecla numérica (0-9)",
     "feature_desc_fixSpacing": "Corrigir problemas de espaçamento no layout",
     "feature_helptext_fixSpacing": "Há vários locais na interface do usuário onde o espaçamento entre os elementos é inconsistente. Este recurso corrige esses problemas.",

@@ -44,17 +44,20 @@ export const migrations: DataMigrationsDict = {
     };
   },
   // 4 -> 5 (v1.2)
-  5: (oldData: FeatureConfig) => useDefaultConfig([
-    "geniUrlBase", "geniUrlToken",
-    "lyricsCacheMaxSize", "lyricsCacheTTL",
-    "clearLyricsCache", "advancedMode",
-    "checkVersionNow", "advancedLyricsFilter",
-    "rememberSongTimeDuration", "rememberSongTimeReduction",
-    "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
-    "setInitialTabVolume", "initialTabVolumeLevel",
-    "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-    "thumbnailOverlayShowIndicator", "thumbnailOverlayImageFit",
-  ], oldData),
+  5: (oldData: FeatureConfig) => ({
+    ...useDefaultConfig([
+      "geniUrlBase", "geniUrlToken",
+      "lyricsCacheMaxSize", "lyricsCacheTTL",
+      "clearLyricsCache", "advancedMode",
+      "checkVersionNow", "advancedLyricsFilter",
+      "rememberSongTimeDuration", "rememberSongTimeReduction",
+      "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
+      "setInitialTabVolume", "initialTabVolumeLevel",
+      "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
+      "thumbnailOverlayShowIndicator", "thumbnailOverlayImageFit",
+      "removeShareTrackingParamSites",
+    ], oldData),
+  }),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 5 -> 6 (v1.3)
   // 6: (oldData: FeatureConfig) => 
@@ -98,11 +101,11 @@ export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${bytmCfgStore.id}`, NaN));
   const data = await bytmCfgStore.loadData();
-  log(`Initialized DataStore (format version = ${bytmCfgStore.formatVersion})`);
+  log(`Initialized feature config DataStore (formatVersion = ${bytmCfgStore.formatVersion})`);
   if(isNaN(oldFmtVer))
-    info("Config data initialized with default values");
+    info("  !- Config data was initialized with default values");
   else if(oldFmtVer !== bytmCfgStore.formatVersion)
-    info(`Config data migrated from version ${oldFmtVer} to ${bytmCfgStore.formatVersion}`);
+    info(`  !- Config data was migrated from version ${oldFmtVer} to ${bytmCfgStore.formatVersion}`);
 
   emitInterface("bytm:configReady", getFeaturesInterface());
 

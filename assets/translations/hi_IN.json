@@ -97,9 +97,9 @@
     "list_button_placement_queue_only": "केवल कतार में",
     "list_button_placement_everywhere": "हर गीत सूची में",
 
-    "remember_song_time_sites_all": "दोनों साइटें",
-    "remember_song_time_sites_yt": "केवल YouTube",
-    "remember_song_time_sites_ytm": "केवल YouTube Music",
+    "site_selection_both_sites": "दोनों साइटें",
+    "site_selection_only_yt": "केवल YouTube",
+    "site_selection_only_ytm": "केवल YouTube Music",
 
     "new_version_available": "%1 का नया संस्करण उपलब्ध है!\nआपके पास वर्तमान में संस्करण%2 स्थापित है और आप संस्करण%3 में अद्यतन कर सकते हैं",
     "open_update_page_install_manually": "%1 पर इंस्टॉल करें",
@@ -137,8 +137,9 @@
 
     "feature_desc_watermarkEnabled": "एक वॉटरमार्क दिखाएं जो इस कॉन्फ़िग मेनू को खोलता है",
     "feature_helptext_watermarkEnabled": "यदि यह अक्षम है, तो आप फिर से कॉन्फ़िग मेनू खोल सकते हैं जब आप अपनी प्रोफ़ाइल चित्र पर क्लिक करते हैं जो कि आपके ब्राउज़र के दाएं कोने में होता है।\nहालांकि इसे ईस्टर एग को ढूंढना मुश्किल हो जाएगा ;)",
-    "feature_desc_removeShareTrackingParam": "शेयर पॉपअप में लिंक से ट्रैकिंग पैरामीटर \"&si\" हटाएं",
+    "feature_desc_removeShareTrackingParam": "शेयर मेनू में URL से ट्रैकिंग पैरामीटर \"?si\" हटाएं",
     "feature_helptext_removeShareTrackingParam": "विशेष रूप से यूट्यूब शेयर पॉपअप में जो लिंक दिया जाता है, उसमें एक ट्रैकिंग पैरामीटर जोड़ा जाता है। यह न केवल लिंक को लंबा बनाता है, बल्कि यूट्यूब को आपके बारे में और उन लोगों के बारे में अधिक जानकारी देता है जिन्हें आप लिंक भेजते हैं।",
+    "feature_desc_removeShareTrackingParamSites": "शेयर ट्रैकिंग पैरामीटर किस साइटों से हटाएं?",
     "feature_desc_numKeysSkipToTime": "एक नंबर कुंजी (0-9) दबाकर वीडियो में एक विशिष्ट समय पर छोड़ने को सक्षम करें",
     "feature_desc_fixSpacing": "लेआउट में स्पेसिंग समस्याओं को ठीक करें",
     "feature_helptext_fixSpacing": "यहां विभिन्न स्थान हैं जहां तत्वों के बीच स्पेसिंग असंगत है। यह सुविधा उन समस्याओं को ठीक करती है।",

@@ -26,6 +26,9 @@ export enum LogLevel {
 /** Which domain this script is currently running on */
 export type Domain = "yt" | "ytm";
 
+/** A selection option between one of the supported domains, or all of them */
+export type SiteSelection = Domain | "all";
+
 /** A URL string that starts with "http://" or "https://" */
 export type HttpUrlString = `http://${string}` | `https://${string}`;
 
@@ -308,8 +311,10 @@ export interface FeatureConfig {
   //#SECTION layout
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
-  /** Remove the "si" tracking parameter from links in the share popup */
+  /** Remove the "si" tracking parameter from links in the share menu? */
   removeShareTrackingParam: boolean;
+  /** On which sites to remove the "si" tracking parameter from links in the share menu */
+  removeShareTrackingParamSites: SiteSelection;
   /** Enable skipping to a specific time in the video by pressing a number key (0-9) */
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
@@ -359,7 +364,7 @@ export interface FeatureConfig {
   /** Remember the last song's time when reloading or restoring the tab */
   rememberSongTime: boolean;
   /** Where to remember the song time */
-  rememberSongTimeSites: Domain | "all";
+  rememberSongTimeSites: SiteSelection;
   /** Time in seconds to remember the song time for */
   rememberSongTimeDuration: number;
   /** Time in seconds to subtract from the remembered song time */
