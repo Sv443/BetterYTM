@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=e4b6562
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=75a7936
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=e4b6562
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=e4b6562
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=e4b6562
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=e4b6562
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=e4b6562
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=e4b6562
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=e4b6562
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=e4b6562
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=e4b6562
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=e4b6562
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=e4b6562
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=e4b6562
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=e4b6562
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=e4b6562
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=e4b6562
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=e4b6562
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=e4b6562
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=e4b6562
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=e4b6562
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=e4b6562
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=e4b6562
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=e4b6562
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=e4b6562
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=e4b6562
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=e4b6562
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=e4b6562
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=e4b6562
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=e4b6562
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=e4b6562
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=e4b6562
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=e4b6562
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=75a7936
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=75a7936
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=75a7936
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=75a7936
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=75a7936
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=75a7936
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=75a7936
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=75a7936
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=75a7936
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=75a7936
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=75a7936
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=75a7936
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=75a7936
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=75a7936
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=75a7936
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=75a7936
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=75a7936
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=75a7936
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=75a7936
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=75a7936
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=75a7936
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=75a7936
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=75a7936
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=75a7936
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=75a7936
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=75a7936
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=75a7936
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=75a7936
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=75a7936
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=75a7936
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=75a7936
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -148,131 +148,7 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};//#MARKER video time & volume
-const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
-/**
- * Returns the current video time in seconds
- * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
- * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
- */
-function getVideoTime() {
-    return new Promise((res) => {
-        const domain = getDomain();
-        try {
-            if (domain === "ytm") {
-                const vidElem = document.querySelector(videoSelector);
-                if (vidElem)
-                    return res(Math.floor(vidElem.currentTime));
-                onSelectorOld("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
-                });
-            }
-            else if (domain === "yt") {
-                const vidElem = document.querySelector(videoSelector);
-                if (vidElem)
-                    return res(Math.floor(vidElem.currentTime));
-                // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
-                ytForceShowVideoTime();
-                const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
-                let videoTime = -1;
-                const mut = new MutationObserver(() => {
-                    // .observe() is only called when the element exists - no need to check for null
-                    videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
-                });
-                const observe = (progElem) => {
-                    mut.observe(progElem, {
-                        attributes: true,
-                        attributeFilter: ["aria-valuenow"],
-                    });
-                    if (videoTime >= 0 && !isNaN(videoTime)) {
-                        res(Math.floor(videoTime));
-                        mut.disconnect();
-                    }
-                    else
-                        setTimeout(() => {
-                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
-                            mut.disconnect();
-                        }, 500);
-                };
-                onSelectorOld(pbSelector, { listener: observe });
-            }
-        }
-        catch (err) {
-            error("Couldn't get video time due to error:", err);
-            res(null);
-        }
-    });
-}
-/**
- * Sends events that force the video controls to become visible for about 3 seconds.
- * This only works once (for some reason), then the page needs to be reloaded!
- */
-function ytForceShowVideoTime() {
-    const player = document.querySelector("#movie_player");
-    if (!player)
-        return false;
-    const defaultProps = {
-        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
-        view: UserUtils.getUnsafeWindow(),
-        bubbles: true,
-        cancelable: false,
-    };
-    player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
-    const { x, y, width, height } = player.getBoundingClientRect();
-    const screenY = Math.round(y + height / 2);
-    const screenX = x + Math.min(50, Math.round(width / 3));
-    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
-        screenX, movementX: 5, movementY: 0 })));
-    return true;
-}
-/** Waits for the video element to be in its readyState 4 / canplay state and returns it */
-function waitVideoElementReady() {
-    return new Promise((res) => {
-        onSelectorOld(videoSelector, {
-            listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
-                if (vidElem) {
-                    // this is just after YT has finished doing their own shenanigans with the video time and volume
-                    if (vidElem.readyState === 4)
-                        res(vidElem);
-                    else
-                        vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
-                }
-            }),
-        });
-    });
-}
-//#MARKER other
-/** Whether the DOM has finished loading and elements can be added or modified */
-let domLoaded = false;
-document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
-function clearInner(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-}
-function clearNode(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-    element.parentNode.removeChild(element);
-}
-/**
- * Adds generic, accessible interaction listeners to the passed element.
- * All listeners have the default behavior prevented and stop immediate propagation.
- * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
- */
-function onInteraction(elem, listener, listenerOptions) {
-    const proxListener = (e) => {
-        if (e instanceof KeyboardEvent && !(["Enter", " ", "Space", "Spacebar"].includes(e.key)))
-            return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
-        listener(e);
-    };
-    elem.addEventListener("click", proxListener, listenerOptions);
-    elem.addEventListener("keydown", proxListener, listenerOptions);
-}// I know TS enums are impure but it doesn't really matter here, plus they look cooler
+};// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -298,7 +174,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e4b6562";
+const buildNumberRaw = "75a7936";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -333,41 +209,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-};/** Options that are applied to every SelectorObserver instance */
-const defaultObserverOptions = {
-    defaultDebounce: 100,
-};
-/** Global SelectorObserver instances usable throughout the script for improved performance */
-const globservers = {};
-/** Call after DOM load to initialize all SelectorObserver instances */
-function initObservers() {
-    try {
-        // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-        globservers.body.enable();
-        // #SECTION playerBar = media controls bar at the bottom of the page
-        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-        globservers.body.addListener(playerBarSelector, {
-            listener: () => globservers.playerBar.enable(),
-        });
-        // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
-        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-        globservers.playerBarInfo.addListener(playerBarInfoSelector, {
-            listener: () => globservers.playerBarInfo.enable(),
-        });
-        //#SECTION finalize
-        emitInterface("bytm:observersReady");
-    }
-    catch (err) {
-        error("Failed to initialize observers:", err);
-    }
-}
-/** Interface function for adding listeners to the already present observers */
-function addSelectorListener(observerName, selector, options) {
-    globservers[observerName].addListener(selector, options);
-}var de_DE = {
+};var de_DE = {
 	name: "Deutsch (Deutschland)",
 	nameEnglish: "German",
 	emoji: "🇩🇪",
@@ -994,7 +836,7 @@ function initSiteEvents() {
                 }
             });
             // only observe added or removed elements
-            onSelectorOld("#side-panel #contents.ytmusic-player-queue", {
+            addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
                 listener: (el) => {
                     queueObs.observe(el, {
                         childList: true,
@@ -1007,7 +849,7 @@ function initSiteEvents() {
                     emitSiteEvent("autoplayQueueChanged", target);
                 }
             });
-            onSelectorOld("#side-panel ytmusic-player-queue #automix-contents", {
+            addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
                 listener: (el) => {
                     autoplayObs.observe(el, {
                         childList: true,
@@ -1550,7 +1392,7 @@ function compareVersions(a, b) {
 function initVolumeFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
         // not technically an input element but behaves pretty much the same
-        onSelectorOld("tp-yt-paper-slider#volume-slider", {
+        addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
             listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
@@ -1618,6 +1460,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
         const labelElem = document.createElement("div");
         labelElem.classList.add("label");
         labelElem.textContent = getLabel(sliderElem.value);
+        labelContElem.appendChild(labelElem);
         // prevent video from minimizing
         labelContElem.addEventListener("click", (e) => e.stopPropagation());
         labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
@@ -1639,11 +1482,8 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
         siteEvents.on("configChanged", () => {
             updateLabel();
         });
-        onSelectorOld("#bytm-vol-slider-cont", {
-            listener: (volumeCont) => {
-                labelContElem.appendChild(labelElem);
-                volumeCont.appendChild(labelContElem);
-            },
+        addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
+            listener: (volumeCont) => volumeCont.appendChild(labelContElem),
         });
         let lastSliderVal = Number(sliderElem.value);
         // show label if hovering over slider or slider is focused
@@ -2926,7 +2766,7 @@ function addWatermark() {
                 exchangeLogo();
         };
         onInteraction(watermark, watermarkOpenMenu);
-        onSelectorOld("ytmusic-nav-bar #left-content", {
+        addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
             listener: (logoElem) => UserUtils.insertAfter(logoElem, watermark),
         });
         log("Added watermark element");
@@ -2941,7 +2781,7 @@ function improveLogo() {
             improveLogoCalled = true;
             const res = yield UserUtils.fetchAdvanced("https://music.youtube.com/img/on_platform_logo_dark.svg");
             const svg = yield res.text();
-            onSelectorOld("ytmusic-logo a", {
+            addSelectorListener("navBar", "ytmusic-logo a", {
                 listener: (logoElem) => {
                     var _a;
                     logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
@@ -2961,7 +2801,7 @@ function improveLogo() {
 }
 /** Exchanges the default YTM logo into BetterYTM's logo with a sick ass animation */
 function exchangeLogo() {
-    onSelectorOld(".bytm-mod-logo", {
+    addSelectorListener("navBar", ".bytm-mod-logo", {
         listener: (logoElem) => __awaiter(this, void 0, void 0, function* () {
             if (logoElem.classList.contains("bytm-logo-exchanged"))
                 return;
@@ -3018,13 +2858,13 @@ function addConfigMenuOption(container) {
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
     return __awaiter(this, void 0, void 0, function* () {
-        onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+        addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
             listener: (tabElemLarge) => {
                 tabElemLarge.remove();
                 log("Removed large upgrade tab");
             },
         });
-        onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+        addSelectorListener("sideBarMini", "ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
             listener: (tabElemSmall) => {
                 tabElemSmall.remove();
                 log("Removed small upgrade tab");
@@ -3067,26 +2907,27 @@ function addAnchorImprovements() {
                     UserUtils.addParent(thumbnailElem, anchorElem);
                 }
             };
+            // TODO: needs to be optimized
             // home page
-            onSelectorOld("#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // related tab in /watch
-            onSelectorOld("ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
+            addSelectorListener("body", "ytmusic-tab-renderer[page-type=\"MUSIC_PAGE_TYPE_TRACK_RELATED\"] ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // playlists
-            onSelectorOld("#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
             });
             // generic shelves
-            onSelectorOld("#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
+            addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
                 all: true,
                 listener: addListItemAnchors,
@@ -3102,13 +2943,13 @@ function addAnchorImprovements() {
                 improveSidebarAnchors(items);
                 return items.length;
             };
-            onSelectorOld("ytmusic-app-layout tp-yt-app-drawer #contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
+            addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer", {
                 listener: (sidebarCont) => {
                     const itemsAmt = addSidebarAnchors(sidebarCont);
                     log(`Added anchors around ${itemsAmt} sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
                 },
             });
-            onSelectorOld("ytmusic-app-layout #mini-guide ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
+            addSelectorListener("sideBarMini", "ytmusic-guide-renderer ytmusic-guide-section-renderer #items ytmusic-guide-entry-renderer", {
                 listener: (miniSidebarCont) => {
                     const itemsAmt = addSidebarAnchors(miniSidebarCont);
                     log(`Added anchors around ${itemsAmt} mini sidebar ${UserUtils.autoPlural("item", itemsAmt)}`);
@@ -3200,7 +3041,7 @@ function fixSpacing() {
 /** Adds a button to the queue to scroll to the active song */
 function addScrollToActiveBtn() {
     return __awaiter(this, void 0, void 0, function* () {
-        onSelectorOld("#side-panel #tabsContent tp-yt-paper-tab:nth-of-type(1)", {
+        addSelectorListener("sidePanel", "#tabsContent tp-yt-paper-tab:nth-of-type(1)", {
             listener: (tabElem) => __awaiter(this, void 0, void 0, function* () {
                 const containerElem = document.createElement("div");
                 containerElem.id = "bytm-scroll-to-active-btn-cont";
@@ -3339,13 +3180,13 @@ function initThumbnailOverlay() {
                 const imgElem = document.createElement("img");
                 imgElem.classList.add("bytm-generic-btn-img");
                 toggleBtnElem.appendChild(imgElem);
-                onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+                addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
                     listener: (likeContainer) => UserUtils.insertAfter(likeContainer, toggleBtnElem),
                 });
             }
             log("Added thumbnail overlay");
         });
-        addSelectorListener("body", playerSelector, {
+        addSelectorListener("mainPanel", playerSelector, {
             listener(playerEl) {
                 if (playerEl.getAttribute("player-ui-state") === "INACTIVE") {
                     const obs = new MutationObserver(() => {
@@ -3403,7 +3244,7 @@ function initAutoCloseToasts() {
         try {
             const animTimeout = 300;
             const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
-            onSelectorOld("tp-yt-paper-toast#toast", {
+            addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
                 all: true,
                 continuous: true,
                 listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
@@ -3656,7 +3497,7 @@ let currentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
     return __awaiter(this, void 0, void 0, function* () {
-        onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+        addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
     });
 }
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
@@ -4018,7 +3859,7 @@ function initQueueButtons() {
         ];
         if (getFeatures().listButtonsPlacement === "everywhere") {
             for (const selector of listSelectors) {
-                onSelectorOld(selector, {
+                addSelectorListener("body", selector, {
                     all: true,
                     continuous: true,
                     listener: (songLists) => {
@@ -4028,7 +3869,6 @@ function initQueueButtons() {
                 });
             }
         }
-        // TODO: support grids?
     });
 }
 /**
@@ -4931,6 +4771,216 @@ function getFeaturesInterface() {
             features[ftKey] = undefined;
     }
     return features;
+}/** Options that are applied to every SelectorObserver instance */
+const defaultObserverOptions = {
+    defaultDebounce: 100,
+};
+/** Global SelectorObserver instances usable throughout the script for improved performance */
+const globservers = {};
+/** Call after DOM load to initialize all SelectorObserver instances */
+function initObservers() {
+    try {
+        // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
+        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        globservers.body.enable();
+        if (getDomain() !== "ytm")
+            return;
+        //#SECTION navBar = the navigation / title bar at the top of the page
+        const navBarSelector = "ytmusic-nav-bar";
+        globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        globservers.body.addListener(navBarSelector, {
+            listener: () => globservers.navBar.enable(),
+        });
+        // #SECTION mainPanel = the main content panel - includes things like the video element
+        const mainPanelSelector = "ytmusic-player-page #main-panel";
+        globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.body.addListener(mainPanelSelector, {
+            listener: () => globservers.mainPanel.enable(),
+        });
+        // #SECTION sideBar = the sidebar on the left side of the page
+        const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
+        globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.body.addListener(sidebarSelector, {
+            listener: () => globservers.sideBar.enable(),
+        });
+        // #SECTION sideBarMini = the minimized sidebar on the left side of the page
+        const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
+        globservers.sideBarMini = new UserUtils.SelectorObserver(sideBarMiniSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.body.addListener(sideBarMiniSelector, {
+            listener: () => globservers.sideBarMini.enable(),
+        });
+        // #SECTION sidePanel = the side panel on the right side of the /watch page
+        const sidePanelSelector = "#side-panel";
+        globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.body.addListener(sidePanelSelector, {
+            listener: () => globservers.sidePanel.enable(),
+        });
+        // #SECTION playerBar = media controls bar at the bottom of the page
+        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+        globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+        globservers.body.addListener(playerBarSelector, {
+            listener: () => {
+                globservers.playerBar.enable();
+            },
+        });
+        // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+        globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+        globservers.playerBarInfo.addListener(playerBarInfoSelector, {
+            listener: () => globservers.playerBarInfo.enable(),
+        });
+        // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
+        const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
+        globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
+            listener: () => globservers.playerBarMiddleButtons.enable(),
+        });
+        // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+        const playerBarRightControls = ".right-controls .middle-controls-buttons";
+        globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.playerBar.addListener(playerBarRightControls, {
+            listener: () => globservers.playerBarRightControls.enable(),
+        });
+        // #SECTION popupContainer = the container for popups (e.g. the queue popup)
+        const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
+        globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+        globservers.body.addListener(popupContainerSelector, {
+            listener: () => globservers.popupContainer.enable(),
+        });
+        //#SECTION finalize
+        emitInterface("bytm:observersReady");
+    }
+    catch (err) {
+        error("Failed to initialize observers:", err);
+    }
+}
+/** Interface function for adding listeners to the {@linkcode globservers} */
+function addSelectorListener(observerName, selector, options) {
+    globservers[observerName].addListener(selector, options);
+}//#MARKER video time & volume
+const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
+/**
+ * Returns the current video time in seconds
+ * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
+ * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
+ */
+function getVideoTime() {
+    return new Promise((res) => {
+        const domain = getDomain();
+        try {
+            if (domain === "ytm") {
+                const vidElem = document.querySelector(videoSelector);
+                if (vidElem)
+                    return res(Math.floor(vidElem.currentTime));
+                addSelectorListener("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
+                });
+            }
+            else if (domain === "yt") {
+                const vidElem = document.querySelector(videoSelector);
+                if (vidElem)
+                    return res(Math.floor(vidElem.currentTime));
+                // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
+                ytForceShowVideoTime();
+                const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
+                let videoTime = -1;
+                const mut = new MutationObserver(() => {
+                    // .observe() is only called when the element exists - no need to check for null
+                    videoTime = Number(document.querySelector(pbSelector).getAttribute("aria-valuenow"));
+                });
+                const observe = (progElem) => {
+                    mut.observe(progElem, {
+                        attributes: true,
+                        attributeFilter: ["aria-valuenow"],
+                    });
+                    if (videoTime >= 0 && !isNaN(videoTime)) {
+                        res(Math.floor(videoTime));
+                        mut.disconnect();
+                    }
+                    else
+                        setTimeout(() => {
+                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
+                            mut.disconnect();
+                        }, 500);
+                };
+                addSelectorListener("body", pbSelector, { listener: observe });
+            }
+        }
+        catch (err) {
+            error("Couldn't get video time due to error:", err);
+            res(null);
+        }
+    });
+}
+/**
+ * Sends events that force the video controls to become visible for about 3 seconds.
+ * This only works once (for some reason), then the page needs to be reloaded!
+ */
+function ytForceShowVideoTime() {
+    const player = document.querySelector("#movie_player");
+    if (!player)
+        return false;
+    const defaultProps = {
+        // needed because otherwise YTM errors out - see https://github.com/Sv443/BetterYTM/issues/18#show_issue
+        view: UserUtils.getUnsafeWindow(),
+        bubbles: true,
+        cancelable: false,
+    };
+    player.dispatchEvent(new MouseEvent("mouseenter", defaultProps));
+    const { x, y, width, height } = player.getBoundingClientRect();
+    const screenY = Math.round(y + height / 2);
+    const screenX = x + Math.min(50, Math.round(width / 3));
+    player.dispatchEvent(new MouseEvent("mousemove", Object.assign(Object.assign({}, defaultProps), { screenY,
+        screenX, movementX: 5, movementY: 0 })));
+    return true;
+}
+/** Waits for the video element to be in its readyState 4 / canplay state and returns it */
+function waitVideoElementReady() {
+    return new Promise((res) => {
+        addSelectorListener("body", videoSelector, {
+            listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
+                if (vidElem) {
+                    // this is just after YT has finished doing their own shenanigans with the video time and volume
+                    if (vidElem.readyState === 4)
+                        res(vidElem);
+                    else
+                        vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
+                }
+            }),
+        });
+    });
+}
+//#MARKER other
+/** Whether the DOM has finished loading and elements can be added or modified */
+let domLoaded = false;
+document.addEventListener("DOMContentLoaded", () => domLoaded = true);
+/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
+function clearInner(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+}
+function clearNode(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+    element.parentNode.removeChild(element);
+}
+/**
+ * Adds generic, accessible interaction listeners to the passed element.
+ * All listeners have the default behavior prevented and stop immediate propagation.
+ * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+ */
+function onInteraction(elem, listener, listenerOptions) {
+    const proxListener = (e) => {
+        if (e instanceof KeyboardEvent && !(["Enter", " ", "Space", "Spacebar"].includes(e.key)))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
+        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
+        listener(e);
+    };
+    elem.addEventListener("click", proxListener, listenerOptions);
+    elem.addEventListener("keydown", proxListener, listenerOptions);
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -5156,64 +5206,6 @@ function getChangelogHtmlWithDetails() {
             return `Error while preparing changelog: ${err}`;
         }
     });
-}const selectorMap = new Map();
-/**
- * Calls the {@linkcode listener} as soon as the {@linkcode selector} exists in the DOM.
- * Listeners are deleted when they are called once, unless `options.continuous` is set.
- * Multiple listeners with the same selector may be registered.
- * @param selector The selector to listen for
- * @param options Used for switching to `querySelectorAll()` and for calling the listener continuously
- * @template TElem The type of element that the listener will return as its argument (defaults to the generic type HTMLElement)
- * @deprecated To be replaced with UserUtils' SelectorObserver class
- */
-function onSelectorOld(selector, options) {
-    let selectorMapItems = [];
-    if (selectorMap.has(selector))
-        selectorMapItems = selectorMap.get(selector);
-    // I don't feel like dealing with intersecting types, this should work just fine at runtime
-    // @ts-ignore
-    selectorMapItems.push(options);
-    selectorMap.set(selector, selectorMapItems);
-    checkSelectorExists(selector, selectorMapItems);
-}
-function checkSelectorExists(selector, options) {
-    const deleteIndices = [];
-    options.forEach((option, i) => {
-        try {
-            const elements = option.all ? document.querySelectorAll(selector) : document.querySelector(selector);
-            if ((elements !== null && elements instanceof NodeList && elements.length > 0) || elements !== null) {
-                // I don't feel like dealing with intersecting types, this should work just fine at runtime
-                // @ts-ignore
-                option.listener(elements);
-                if (!option.continuous)
-                    deleteIndices.push(i);
-            }
-        }
-        catch (err) {
-            console.error(`Couldn't call listener for selector '${selector}'`, err);
-        }
-    });
-    if (deleteIndices.length > 0) {
-        const newOptsArray = options.filter((_, i) => !deleteIndices.includes(i));
-        if (newOptsArray.length === 0)
-            selectorMap.delete(selector);
-        else {
-            // once again laziness strikes
-            // @ts-ignore
-            selectorMap.set(selector, newOptsArray);
-        }
-    }
-}
-/**
- * Initializes a MutationObserver that checks for all registered selectors whenever an element is added to or removed from the `<body>`
- * @param options For fine-tuning what triggers the MutationObserver's checking function - `subtree` and `childList` are set to true by default
- */
-function initOnSelector(options = {}) {
-    const observer = new MutationObserver(() => {
-        for (const [selector, options] of selectorMap.entries())
-            checkSelectorExists(selector, options);
-    });
-    observer.observe(document.body, Object.assign({ subtree: true, childList: true }, options));
 }/**
  * Constructs a URL from a base URL and a record of query parameters.
  * If a value is null, the parameter will be valueless.
@@ -5520,7 +5512,6 @@ function onDomLoad() {
         try {
             insertGlobalStyle();
             initObservers();
-            initOnSelector();
             yield initVersionCheck();
         }
         catch (err) {
