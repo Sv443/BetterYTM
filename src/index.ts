@@ -6,7 +6,7 @@ import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslation
 import { initSiteEvents } from "./siteEvents";
 import { emitInterface, initInterface, initPlugins } from "./interface";
 import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
-import { initObservers, globservers } from "./observers";
+import { initObservers, addSelectorListener, globservers } from "./observers";
 import {
   // layout
   addWatermark, removeUpgradeTab,
@@ -145,7 +145,7 @@ async function onDomLoad() {
         await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
       }
 
-      globservers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+      addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
         listener: addConfigMenuOption,
       });
 

@@ -1,7 +1,7 @@
 import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
-import { globservers } from "../observers";
+import { addSelectorListener } from "../observers";
 import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getWatchId, getBestThumbnailUrl } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
@@ -524,7 +524,7 @@ export async function initThumbnailOverlay() {
     log("Added thumbnail overlay");
   };
 
-  globservers.body.addListener<HTMLElement>(playerSelector, {
+  addSelectorListener("body", playerSelector, {
     listener(playerEl) {
       if(playerEl.getAttribute("player-ui-state") === "INACTIVE") {
         const obs = new MutationObserver(() => {
