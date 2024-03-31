@@ -65,6 +65,45 @@ export function arrayWithSeparators<TArray>(array: TArray[], separator = ", ", l
     return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)!}`;
 }
 
+/** Returns the watch ID of the current video or null if not on a video page */
+export function getWatchId() {
+  const { searchParams, pathname } = new URL(location.href);
+  return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+
+type ThumbQuality = `${"" | "hq" | "mq" | "sd" | "maxres"}default`;
+
+/** Returns the thumbnail URL for a video with the given watch ID and quality (defaults to "hqdefault") */
+export function getThumbnailUrl(watchId: string, quality?: ThumbQuality): string
+/** Returns the thumbnail URL for a video with the given watch ID and index */
+export function getThumbnailUrl(watchId: string, index: 0 | 1 | 2 | 3): string
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 0 | 1 | 2 | 3 = "hqdefault") {
+  return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+}
+
+/** Returns the best available thumbnail URL for a video with the given watch ID */
+export async function getBestThumbnailUrl(watchId: string) {
+  const priorityList = ["maxresdefault", "sddefault", 0];
+
+  for(const quality of priorityList) {
+    const url = getThumbnailUrl(watchId, quality as ThumbQuality);
+    let response: Response | undefined;
+    try {
+      response = await fetchAdvanced(url, { method: "HEAD", timeout: 5000 });
+    }
+    catch(e) {
+      void e;
+    }
+    if(response?.ok)
+      return url;
+  }
+}
+
+/** Copies a JSON-serializable object */
+export function reserialize<T>(data: T): T {
+  return JSON.parse(JSON.stringify(data));
+}
 
 //#SECTION resources
 
