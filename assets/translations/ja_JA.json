@@ -6,7 +6,7 @@
     "export_menu_title": "%1 - 構成をエクスポート",
     "import_menu_title": "%1 - 構成をインポート",
     "open_menu_tooltip": "%1 の構成メニューを開く",
-    "close_menu_tooltip": "メニューを閉じる",
+    "close_menu_tooltip": "クリックしてメニューを閉じる",
     "reload_hint": "変更は保存されましたが、適用するにはページを再読み込みする必要があります",
     "reload_now": "今すぐ再読み込み",
     "reload_tooltip": "ページを再読み込みする",

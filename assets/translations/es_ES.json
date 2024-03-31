@@ -6,7 +6,7 @@
     "export_menu_title": "%1 - Exportar configuración",
     "import_menu_title": "%1 - Importar configuración",
     "open_menu_tooltip": "Abra el menú de configuración de %1",
-    "close_menu_tooltip": "Cerrar el menú",
+    "close_menu_tooltip": "Haga clic para cerrar el menú",
     "reload_hint": "Tus cambios se guardaron, pero necesitas recargar la página para aplicarlos.",
     "reload_now": "Recargar ahora",
     "reload_tooltip": "Recargar la página",
