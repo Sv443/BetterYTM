@@ -78,10 +78,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -121,10 +121,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -164,10 +164,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -207,10 +207,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -250,10 +250,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -293,10 +293,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
@@ -336,10 +336,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
-| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to automatically enable an overlay over the video player showing the thumbnail` |
 | `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
 | `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
-| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off. This is not affected if the overlay is set to "never shown".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_thumbnailOverlayShowIndicator` | `Show an indicator in the bottom right corner of the thumbnail overlay while it's active?` |
 | `feature_desc_thumbnailOverlayImageFit` | `How to fit the thumbnail image into the overlay` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
