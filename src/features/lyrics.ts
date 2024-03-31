@@ -1,11 +1,12 @@
 import { autoPlural, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
-import { constructUrlString, error, getResourceUrl, info, log, onSelectorOld, warn, t, tp } from "../utils";
+import { constructUrlString, error, getResourceUrl, info, log, warn, t, tp } from "../utils";
 import { emitInterface } from "../interface";
 import { mode, scriptInfo } from "../constants";
 import { getFeatures } from "../config";
 import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
 import type { LyricsCacheEntry } from "../types";
+import { addSelectorListener } from "src/observers";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -16,7 +17,7 @@ let currentSongTitle = "";
 
 /** Adds a lyrics button to the media controls bar */
 export async function addMediaCtrlLyricsBtn() {
-  onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+  addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
 }
 
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */

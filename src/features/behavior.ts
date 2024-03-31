@@ -1,7 +1,8 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, onSelectorOld, videoSelector, waitVideoElementReady } from "../utils";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, videoSelector, waitVideoElementReady } from "../utils";
 import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
+import { addSelectorListener } from "src/observers";
 
 //#MARKER beforeunload popup
 
@@ -52,7 +53,7 @@ export async function initAutoCloseToasts() {
     const animTimeout = 300;
     const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
 
-    onSelectorOld("tp-yt-paper-toast#toast", {
+    addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
       all: true,
       continuous: true,
       listener: async (toastElems) => {

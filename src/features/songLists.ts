@@ -1,5 +1,5 @@
 import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, onSelectorOld, t, warn } from "../utils";
+import { clearInner, error, getResourceUrl, log, onInteraction, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
@@ -7,6 +7,7 @@ import { getLyricsCacheEntry } from "./lyricsCache";
 import type { LyricsCacheEntry } from "../types";
 import { getFeatures } from "../config";
 import "./songLists.css";
+import { addSelectorListener } from "src/observers";
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
@@ -58,7 +59,7 @@ export async function initQueueButtons() {
 
   if(getFeatures().listButtonsPlacement === "everywhere") {
     for(const selector of listSelectors) {
-      onSelectorOld(selector, {
+      addSelectorListener("body", selector, {
         all: true,
         continuous: true,
         listener: (songLists) => {
@@ -68,8 +69,6 @@ export async function initQueueButtons() {
       });
     }
   }
-
-  // TODO: support grids?
 }
 
 /**
