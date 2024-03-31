@@ -107,6 +107,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\

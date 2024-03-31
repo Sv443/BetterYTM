@@ -137,7 +137,8 @@ function clearNode(element: Element) {
 }
 
 /**
- * Adds generic, accessible interaction listeners to the passed element
+ * Adds generic, accessible interaction listeners to the passed element.  
+ * All listeners have the default behavior prevented and stop immediate propagation.
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: AddEventListenerOptions) {
