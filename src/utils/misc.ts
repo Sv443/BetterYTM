@@ -87,8 +87,8 @@ export async function getBestThumbnailUrl(watchId: string) {
   const priorityList = ["maxresdefault", "sddefault", 0];
 
   for(const quality of priorityList) {
-    const url = getThumbnailUrl(watchId, quality as ThumbQuality);
     let response: Response | undefined;
+    const url = getThumbnailUrl(watchId, quality as ThumbQuality);
     try {
       response = await fetchAdvanced(url, { method: "HEAD", timeout: 5000 });
     }
