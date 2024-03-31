@@ -110,6 +110,7 @@
     "expand_release_notes": "Klicke, um die neuesten Release-Notes zu öffnen",
     "collapse_release_notes": "Klicke, um die neuesten Release-Notes zu schließen",
     "no_updates_found": "Keine Updates gefunden.",
+
     "thumbnail_overlay_behavior_never": "Nie",
     "thumbnail_overlay_behavior_videos_only": "Nur bei Videos",
     "thumbnail_overlay_behavior_songs_only": "Nur bei Songs",
@@ -153,12 +154,13 @@
     "feature_desc_setInitialTabVolume": "Setze den Lautstärkepegel auf einen bestimmten Wert, wenn die Seite geöffnet wird",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Diese Funktion ist mit der Funktion \"Lautstärke zwischen Tabs teilen\" nicht kompatibel und wird ignoriert, während die Funktion zum Teilen der Lautstärke aktiviert ist.",
     "feature_desc_initialTabVolumeLevel": "Der Wert, auf den die Lautstärke eingestellt werden soll, wenn die Seite geöffnet wird",
-    "feature_desc_thumbnailOverlayBehavior": "Wann automatisch ein Overlay über dem Videoplayer angezeigt werden soll, das das Thumbnail anzeigt",
-    "feature_helptext_thumbnailOverlayBehavior": "Das Thumbnail-Overlay wird über dem aktuell abgespielten Video oder Song angezeigt.\nDies spart keine Bandbreite, da das Video immer noch geladen und im Hintergrund abgespielt wird!",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "Füge einen Knopf zu den Mediensteuerelementen hinzu, um das Thumbnail-Overlay manuell zu aktivieren / deaktivieren",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "Mit diesem Knopf kannst du das Thumbnail-Overlay manuell ein- und ausschalten. Dies wird nicht davon beeinflusst, wenn das Overlay auf \"nie\" gestellt ist.\nSobald ein neues Video oder ein neuer Song abgespielt wird, wird der Standardzustand wiederhergestellt.\nHalte Shift gedrückt, während du klickst oder drücke die mittlere Maustaste, um das Thumbnail in höchster Qualität in einem neuen Tab zu öffnen.",
-    "feature_desc_thumbnailOverlayShowIndicator": "Zeige einen Indikator in der unteren rechten Ecke des Thumbnail-Overlays, um zu zeigen, dass es aktiv ist",
-    "feature_desc_thumbnailOverlayImageFit": "Wie das Thumbnail-Bild im Overlay angezeigt werden soll",
+
+    "feature_desc_thumbnailOverlayBehavior": "Wann das Videoelement automatisch durch sein Thumbnail in höchster Auflösung ersetzt werden soll",
+    "feature_helptext_thumbnailOverlayBehavior": "Das Thumbnail wird über dem Video oder Song angezeigt.\nDies spart keine Bandbreite, da das Video immer noch im Hintergrund geladen und abgespielt wird!",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "Füge einen Knopf zu den Mediensteuerelementen hinzu, um das Thumbnail manuell zu aktivieren",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "Dieser Knopf ermöglicht es dir, das Thumbnail manuell ein- und auszuschalten. Dies wird nicht beeinflusst, wenn das Overlay auf \"nie gezeigt\" eingestellt ist.\nSobald ein neues Video oder Lied abgespielt wird, wird der Standardzustand wiederhergestellt.\nHalte Shift gedrückt, während du klickst oder drücke die mittlere Maustaste, um das Thumbnail in höchster Qualität in einem neuen Tab zu öffnen.",
+    "feature_desc_thumbnailOverlayShowIndicator": "Zeige einen Indikator in der unteren rechten Ecke des Thumbnails, während es aktiv ist?",
+    "feature_desc_thumbnailOverlayImageFit": "Wie das Thumbnail über dem Videoelement angezeigt werden soll",
 
     "feature_desc_lyricsQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen",
     "feature_desc_deleteFromQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen",
