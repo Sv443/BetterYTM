@@ -52,6 +52,7 @@ export const migrations: DataMigrationsDict = {
     "rememberSongTimeDuration", "rememberSongTimeReduction",
     "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
     "setInitialTabVolume", "initialTabVolumeLevel",
+    "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
   ], oldData),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 5 -> 6 (v1.3)
@@ -113,7 +114,7 @@ export function getFeatures() {
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
-export function saveFeatures(featureConf: FeatureConfig) {
+export function setFeatures(featureConf: FeatureConfig) {
   const res = bytmCfgStore.setData(featureConf);
   emitSiteEvent("configChanged", bytmCfgStore.getData());
   info("Saved new feature config:", featureConf);

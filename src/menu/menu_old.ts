@@ -1,5 +1,5 @@
 import { compress, decompress, debounce, isScrollable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, migrations, saveFeatures, setDefaultFeatures } from "../config";
+import { defaultData, getFeatures, migrations, setFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
@@ -221,7 +221,7 @@ async function addCfgMenu() {
 
     featConf[key] = newVal as never;
 
-    await saveFeatures(featConf);
+    await setFeatures(featConf);
 
     // @ts-ignore
     featInfo[key]?.change?.(featConf);
@@ -1215,7 +1215,7 @@ async function addImportMenu() {
       else if(parsed.formatVersion !== formatVersion)
         return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
 
-      await saveFeatures({ ...getFeatures(), ...parsed.data });
+      await setFeatures({ ...getFeatures(), ...parsed.data });
 
       if(confirm(t("import_success_confirm_reload"))) {
         disableBeforeUnload();

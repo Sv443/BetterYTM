@@ -1,7 +1,7 @@
 import { host, scriptInfo } from "../constants";
 import { getChangelogMd, onInteraction, parseMarkdown, t } from "../utils";
 import { BytmDialog, createToggleInput } from "../components";
-import { getFeatures, saveFeatures } from "../config";
+import { getFeatures, setFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
 
 let verNotifDialog: BytmDialog | null = null;
@@ -125,7 +125,7 @@ async function renderBody({
   verNotifDialog?.on("close", async () => {
     const config = getFeatures();
     config.versionCheck = !disableUpdateCheck;
-    await saveFeatures(config);
+    await setFeatures(config);
   });
 
   const btnWrapper = document.createElement("div");

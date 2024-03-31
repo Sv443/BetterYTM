@@ -5,7 +5,7 @@ import type { addSelectorListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
-import type { getFeatures, saveFeatures } from "./config";
+import type { getFeatures, setFeatures } from "./config";
 import type { SiteEventsMap } from "./siteEvents";
 
 /** Custom CLI args passed to rollup */
@@ -200,7 +200,7 @@ export type InterfaceFunctions = {
   /** Returns the current feature configuration */
   getFeatures: typeof getFeatures;
   /** Overwrites the feature configuration with the provided one */
-  saveFeatures: typeof saveFeatures;
+  saveFeatures: typeof setFeatures;
 };
 
 //#MARKER features
@@ -316,6 +316,10 @@ export interface FeatureConfig {
   fixSpacing: boolean;
   /** Remove the \"Upgrade\" / YT Music Premium tab */
   removeUpgradeTab: boolean;
+  /** Where to show a thumbnail overlay over the video element and whether to show it at all */
+  thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
+  /** Whether to show a button to toggle the thumbnail overlay in the media controls */
+  thumbnailOverlayToggleBtnShown: boolean;
 
   //#SECTION volume
   /** Add a percentage label to the volume slider */

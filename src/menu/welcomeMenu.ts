@@ -1,5 +1,5 @@
 import { getResourceUrl, warn, type TrLocale, initTranslations, setLocale, t } from "../utils";
-import { getFeatures, saveFeatures } from "../config";
+import { getFeatures, setFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { scriptInfo } from "../constants";
 import { openCfgMenu, openChangelogMenu } from "./menu_old";
@@ -114,7 +114,7 @@ export async function addWelcomeMenu() {
     const selectedLocale = localeSelectElem.value;
     const feats = Object.assign({}, getFeatures());
     feats.locale = selectedLocale as TrLocale;
-    saveFeatures(feats);
+    setFeatures(feats);
 
     await initTranslations(selectedLocale as TrLocale);
     setLocale(selectedLocale as TrLocale);

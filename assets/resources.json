@@ -9,6 +9,8 @@
   "icon-experimental": "icons/beaker_small.svg",
   "icon-globe": "icons/globe.svg",
   "icon-help": "icons/help.svg",
+  "icon-image": "icons/image.svg",
+  "icon-image_off": "icons/image_off.svg",
   "icon-lock": "icons/lock.svg",
   "icon-lock_off": "icons/lock_off.svg",
   "icon-link": "icons/link.svg",

@@ -2,7 +2,7 @@ import * as UserUtils from "@sv443-network/userutils";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error } from "./utils";
 import { addSelectorListener } from "./observers";
-import { getFeatures, saveFeatures } from "./config";
+import { getFeatures, setFeatures } from "./config";
 import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
 import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem } from "./types";
@@ -65,7 +65,7 @@ const globalFuncs = {
   t,
   tp,
   getFeatures: getFeaturesInterface,
-  saveFeatures,
+  saveFeatures: setFeatures,
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
   sanitizeArtists,

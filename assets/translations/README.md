@@ -20,15 +20,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 181 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `161/181` (89%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `181/181` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `161/181` (89%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `161/181` (89%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `161/181` (89%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `161/181` (89%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `161/181` (89%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `161/181` (89%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 191 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `161/191` (84.3%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `191/191` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `161/191` (84.3%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `161/191` (84.3%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `161/191` (84.3%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `161/191` (84.3%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `161/191` (84.3%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `161/191` (84.3%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -49,7 +49,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -62,12 +62,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -76,7 +86,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -89,12 +99,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -103,7 +123,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -116,12 +136,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -130,7 +160,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -143,12 +173,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -157,7 +197,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -170,12 +210,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -184,7 +234,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -197,12 +247,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |
@@ -211,7 +271,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 20 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -224,12 +284,22 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `dev_mode` | `Developer mode` |
 | `dev_mode_short` | `Dev` |
 | `advanced_mode_short` | `Advanced` |
+| `thumbnail_overlay_behavior_never` | `Never` |
+| `thumbnail_overlay_behavior_videos_only` | `Only for videos` |
+| `thumbnail_overlay_behavior_songs_only` | `Only for songs` |
+| `thumbnail_overlay_behavior_always` | `Always` |
+| `thumbnail_overlay_toggle_btn_tooltip_hide` | `Click to hide the thumbnail overlay` |
+| `thumbnail_overlay_toggle_btn_tooltip_show` | `Click to show the thumbnail overlay` |
 | `feature_category_volume` | `Volume` |
 | `feature_desc_volumeSharedBetweenTabs` | `Should the set volume be shared between tabs and remembered between sessions?` |
 | `feature_helptext_volumeSharedBetweenTabs` | `If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.` |
 | `feature_desc_setInitialTabVolume` | `Sets the volume level to a specific value once when opening the site` |
 | `feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible` | `This feature is incompatible with the "Volume level shared between tabs" feature and will be ignored while using the shared volume feature!` |
 | `feature_desc_initialTabVolumeLevel` | `The value to set the volume level to when opening the site` |
+| `feature_desc_thumbnailOverlayBehavior` | `When to show the thumbnail as an overlay over the video player` |
+| `feature_helptext_thumbnailOverlayBehavior` | `The thumbnail overlay will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!` |
+| `feature_desc_thumbnailOverlayToggleBtnShown` | `Add a button to the media controls to manually toggle the thumbnail overlay` |
+| `feature_helptext_thumbnailOverlayToggleBtnShown` | `This button will allow you to manually toggle the thumbnail overlay on and off.\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.` |
 | `feature_desc_rememberSongTimeDuration` | `How long in seconds to remember the song's time for after it was last played` |
 | `feature_desc_rememberSongTimeReduction` | `How many seconds to subtract when restoring the time of a remembered song` |
 | `feature_helptext_rememberSongTimeReduction` | `When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.` |

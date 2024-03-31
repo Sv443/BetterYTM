@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=a0d1b60
+// @icon              http://localhost:8710/assets/images/logo/logo_48.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -32,40 +32,43 @@
 // @grant             GM.getResourceUrl
 // @grant             GM.setClipboard
 // @grant             GM.xmlHttpRequest
+// @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=a0d1b60
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=a0d1b60
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=a0d1b60
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=a0d1b60
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=a0d1b60
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=a0d1b60
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=a0d1b60
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=a0d1b60
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=a0d1b60
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=a0d1b60
-// @resource          icon-lock               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock.svg?b=a0d1b60
-// @resource          icon-lock_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lock_off.svg?b=a0d1b60
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=a0d1b60
-// @resource          icon-link_off           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link_off.svg?b=a0d1b60
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=a0d1b60
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=a0d1b60
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=a0d1b60
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=a0d1b60
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=a0d1b60
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=a0d1b60
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=a0d1b60
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=a0d1b60
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=a0d1b60
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=a0d1b60
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=a0d1b60
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=a0d1b60
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=a0d1b60
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=a0d1b60
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=a0d1b60
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=a0d1b60
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=a0d1b60
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=a0d1b60
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          doc-changelog           http://localhost:8710/changelog.md?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-image              http://localhost:8710/assets/icons/image.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-image_off          http://localhost:8710/assets/icons/image_off.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-lock               http://localhost:8710/assets/icons/lock.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-lock_off           http://localhost:8710/assets/icons/lock_off.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-link               http://localhost:8710/assets/icons/link.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-link_off           http://localhost:8710/assets/icons/link_off.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-close               http://localhost:8710/assets/images/close.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=a19b6c80-4220-4071-8142-a6f05ebbc8b9
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -256,7 +259,8 @@ function clearNode(element) {
     element.parentNode.removeChild(element);
 }
 /**
- * Adds generic, accessible interaction listeners to the passed element
+ * Adds generic, accessible interaction listeners to the passed element.
+ * All listeners have the default behavior prevented and stop immediate propagation.
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 function onInteraction(elem, listener, listenerOptions) {
@@ -297,7 +301,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "a0d1b60";
+const buildNumberRaw = "ad6724a";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -336,33 +340,34 @@ const scriptInfo = {
 const defaultObserverOptions = {
     defaultDebounce: 100,
 };
-const observers$1 = {};
+/** Global SelectorObserver instances usable throughout the script for improved performance */
+const globservers = {};
 /** Call after DOM load to initialize all SelectorObserver instances */
 function initObservers() {
     try {
         // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-        observers$1.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-        observers$1.body.enable();
+        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        globservers.body.enable();
         // #SECTION playerBar = media controls bar at the bottom of the page
         const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        observers$1.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-        observers$1.body.addListener(playerBarSelector, {
+        globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+        globservers.body.addListener(playerBarSelector, {
             listener: () => {
                 log("#DBG-UU enabling playerBar observer");
-                observers$1.playerBar.enable();
+                globservers.playerBar.enable();
             },
         });
         // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
         const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        observers$1.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-        observers$1.playerBarInfo.addListener(playerBarInfoSelector, {
+        globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+        globservers.playerBarInfo.addListener(playerBarInfoSelector, {
             listener: () => {
                 log("#DBG-UU enabling playerBarTitle observer");
-                observers$1.playerBarInfo.enable();
+                globservers.playerBarInfo.enable();
             },
         });
         // #DEBUG example: listen for title change:
-        observers$1.playerBarInfo.addListener("yt-formatted-string.title", {
+        globservers.playerBarInfo.addListener("yt-formatted-string.title", {
             continuous: true,
             listener: (titleElem) => {
                 log("#DBG-UU >>>>> title changed", titleElem.title);
@@ -376,7 +381,7 @@ function initObservers() {
 }
 /** Interface function for adding listeners to the already present observers */
 function addSelectorListener(observerName, selector, options) {
-    observers$1[observerName].addListener(selector, options);
+    globservers[observerName].addListener(selector, options);
 }var de_DE = {
 	name: "Deutsch (Deutschland)",
 	nameEnglish: "German",
@@ -985,6 +990,8 @@ const allSiteEvents = [
     "hotkeyInputActive",
     "queueChanged",
     "autoplayQueueChanged",
+    "songTitleChanged",
+    "watchIdChanged",
 ];
 /** EventEmitter instance that is used to detect changes to the site */
 const siteEvents = createNanoEvents();
@@ -1002,8 +1009,12 @@ function initSiteEvents() {
                 }
             });
             // only observe added or removed elements
-            queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue"), {
-                childList: true,
+            onSelectorOld("#side-panel #contents.ytmusic-player-queue", {
+                listener: (el) => {
+                    queueObs.observe(el, {
+                        childList: true,
+                    });
+                },
             });
             const autoplayObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
@@ -1011,14 +1022,46 @@ function initSiteEvents() {
                     emitSiteEvent("autoplayQueueChanged", target);
                 }
             });
-            autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents"), {
-                childList: true,
+            onSelectorOld("#side-panel ytmusic-player-queue #automix-contents", {
+                listener: (el) => {
+                    autoplayObs.observe(el, {
+                        childList: true,
+                    });
+                },
+            });
+            //#SECTION player bar
+            let lastTitle = null;
+            let initialPlay = true;
+            globservers.playerBarInfo.addListener("yt-formatted-string.title", {
+                continuous: true,
+                listener: (titleElem) => {
+                    const oldTitle = lastTitle;
+                    const newTitle = titleElem.textContent;
+                    if (newTitle === lastTitle || !newTitle)
+                        return;
+                    lastTitle = newTitle;
+                    info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}" - initial play: ${initialPlay}`);
+                    emitSiteEvent("songTitleChanged", newTitle, oldTitle, initialPlay);
+                    initialPlay = false;
+                },
             });
             info("Successfully initialized SiteEvents observers");
             observers = observers.concat([
                 queueObs,
                 autoplayObs,
             ]);
+            //#SECTION other
+            let lastWatchId = null;
+            setInterval(() => {
+                if (location.pathname.startsWith("/watch")) {
+                    const newWatchId = new URL(location.href).searchParams.get("v");
+                    if (newWatchId && newWatchId !== lastWatchId) {
+                        info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+                        emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+                        lastWatchId = newWatchId;
+                    }
+                }
+            }, 200);
         }
         catch (err) {
             error("Couldn't initialize SiteEvents observers due to an error:\n", err);
@@ -1435,7 +1478,7 @@ function renderBody({ latestTag, changelogHtml, }) {
         verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.on("close", () => __awaiter(this, void 0, void 0, function* () {
             const config = getFeatures();
             config.versionCheck = !disableUpdateCheck;
-            yield saveFeatures(config);
+            yield setFeatures(config);
         }));
         const btnWrapper = document.createElement("div");
         btnWrapper.id = "bytm-version-notif-dialog-btns";
@@ -1880,7 +1923,7 @@ function addCfgMenu() {
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
             featConf[key] = newVal;
-            yield saveFeatures(featConf);
+            yield setFeatures(featConf);
             // @ts-ignore
             (_h = (_g = featInfo[key]) === null || _g === void 0 ? void 0 : _g.change) === null || _h === void 0 ? void 0 : _h.call(_g, featConf);
             if (initConfig$1 !== JSON.stringify(featConf))
@@ -2703,7 +2746,7 @@ function addImportMenu() {
                 }
                 else if (parsed.formatVersion !== formatVersion)
                     return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
-                yield saveFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
+                yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
                 if (confirm(t("import_success_confirm_reload"))) {
                     disableBeforeUnload();
                     return location.reload();
@@ -3175,11 +3218,11 @@ function addScrollToActiveBtn() {
                 const linkElem = document.createElement("div");
                 linkElem.id = "bytm-scroll-to-active-btn";
                 linkElem.tabIndex = 0;
-                linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+                linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
                 linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
                 linkElem.role = "button";
                 const imgElem = document.createElement("img");
-                imgElem.className = "bytm-generic-btn-img";
+                imgElem.classList.add("bytm-generic-btn-img");
                 imgElem.src = yield getResourceUrl("icon-skip_to");
                 const scrollToActiveInteraction = () => {
                     const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
@@ -3197,6 +3240,100 @@ function addScrollToActiveBtn() {
                 tabElem.appendChild(containerElem);
             }),
         });
+    });
+}
+//#MARKER thumbnail overlay
+/** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
+let invertOverlay = false;
+// TODO:
+// - use onSelectorOld to add the overlay if the /watch page isn't open on script init
+function initThumbnailOverlay() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const behavior = getFeatures().thumbnailOverlayBehavior;
+        const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
+        if (behavior === "never" && !toggleBtnShown)
+            return;
+        const playerEl = document.querySelector("ytmusic-player#player");
+        if (!playerEl)
+            return warn("Couldn't find video player element while adding thumbnail overlay");
+        /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
+        const updateOverlayVisibility = () => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            let showOverlay = behavior === "always";
+            const isVideo = (_b = (_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode")) !== null && _b !== void 0 ? _b : false;
+            if (behavior === "videosOnly" && isVideo)
+                showOverlay = true;
+            else if (behavior === "songsOnly" && !isVideo)
+                showOverlay = true;
+            showOverlay = invertOverlay ? !showOverlay : showOverlay;
+            const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
+            const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
+            if (!overlayElem || !thumbElem)
+                return warn("Couldn't find thumbnail overlay element while checking visibility");
+            overlayElem.style.display = showOverlay ? "block" : "none";
+            thumbElem.ariaHidden = String(!showOverlay);
+            if (getFeatures().thumbnailOverlayToggleBtnShown) {
+                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                const toggleBtnImgElem = document.querySelector("#bytm-thumbnail-overlay-toggle > img");
+                if (!toggleBtnElem || !toggleBtnImgElem)
+                    return warn("Couldn't find thumbnail overlay toggle button element while checking visibility");
+                toggleBtnImgElem.src = yield getResourceUrl(`icon-image${showOverlay ? "" : "_off"}`);
+                toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+            }
+        });
+        const watchId = getWatchId();
+        if (!watchId)
+            return warn("Couldn't get watch ID while adding thumbnail overlay");
+        // overlay
+        const overlayElem = document.createElement("div");
+        overlayElem.id = "bytm-thumbnail-overlay";
+        overlayElem.classList.add("bytm-no-select");
+        overlayElem.style.display = "none";
+        const thumbImgElem = document.createElement("img");
+        thumbImgElem.id = "bytm-thumbnail-overlay-img";
+        thumbImgElem.role = "presentation";
+        thumbImgElem.ariaHidden = "true";
+        overlayElem.appendChild(thumbImgElem);
+        playerEl.appendChild(overlayElem);
+        siteEvents.on("watchIdChanged", () => __awaiter(this, void 0, void 0, function* () {
+            const watchId = getWatchId();
+            if (!watchId)
+                return warn("Couldn't get watch ID while updating thumbnail overlay");
+            const thumbUrl = yield getBestThumbnailUrl(watchId);
+            if (thumbUrl) {
+                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                if (toggleBtnElem)
+                    toggleBtnElem.href = thumbUrl;
+                thumbImgElem.src = thumbUrl;
+            }
+            invertOverlay = false;
+            updateOverlayVisibility();
+        }));
+        // toggle button
+        if (toggleBtnShown) {
+            const toggleBtnElem = document.createElement("a");
+            toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+            toggleBtnElem.role = "button";
+            toggleBtnElem.tabIndex = 0;
+            toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+            onInteraction(toggleBtnElem, (e) => __awaiter(this, void 0, void 0, function* () {
+                if (e.shiftKey || (e instanceof MouseEvent && e.button === 3)) {
+                    const thumbUrl = yield getBestThumbnailUrl(watchId);
+                    if (thumbUrl)
+                        return GM.openInTab(thumbUrl);
+                }
+                invertOverlay = !invertOverlay;
+                updateOverlayVisibility();
+            }));
+            const imgElem = document.createElement("img");
+            imgElem.classList.add("bytm-generic-btn-img");
+            toggleBtnElem.appendChild(imgElem);
+            onSelectorOld(".middle-controls-buttons ytmusic-like-button-renderer#like-button-renderer", {
+                listener: (likeContainer) => UserUtils.insertAfter(likeContainer, toggleBtnElem),
+            });
+        }
+        updateOverlayVisibility();
+        log("Added thumbnail overlay");
     });
 }//#MARKER beforeunload popup
 let beforeUnloadEnabled = true;
@@ -3325,8 +3462,7 @@ function remSongUpdateEntry() {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         if (location.pathname.startsWith("/watch")) {
-            const { searchParams } = new URL(location.href);
-            const watchID = searchParams.get("v");
+            const watchID = getWatchId();
             if (!watchID)
                 return;
             const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
@@ -3794,7 +3930,7 @@ function fetchLyricsUrls(artist, song) {
 function createLyricsBtn(geniusUrl, hideIfLoading = true) {
     return __awaiter(this, void 0, void 0, function* () {
         const linkElem = document.createElement("a");
-        linkElem.className = "ytmusic-player-bar bytm-generic-btn";
+        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
         linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
         if (geniusUrl)
             linkElem.href = geniusUrl;
@@ -3804,7 +3940,7 @@ function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         linkElem.style.visibility = hideIfLoading && geniusUrl ? "initial" : "hidden";
         linkElem.style.display = hideIfLoading && geniusUrl ? "inline-flex" : "none";
         const imgElem = document.createElement("img");
-        imgElem.className = "bytm-generic-btn-img";
+        imgElem.classList.add("bytm-generic-btn-img");
         imgElem.src = yield getResourceUrl("icon-lyrics");
         linkElem.appendChild(imgElem);
         return linkElem;
@@ -4110,6 +4246,26 @@ const featInfo = {
         category: "layout",
         default: true,
         enable: noopTODO,
+    },
+    thumbnailOverlayBehavior: {
+        type: "select",
+        category: "layout",
+        options: () => [
+            { value: "never", label: t("thumbnail_overlay_behavior_never") },
+            { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
+            { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
+            { value: "always", label: t("thumbnail_overlay_behavior_always") },
+        ],
+        default: "never",
+        enable: noopTODO,
+        change: noopTODO,
+    },
+    thumbnailOverlayToggleBtnShown: {
+        type: "toggle",
+        category: "layout",
+        default: false,
+        enable: noopTODO,
+        disable: noopTODO,
     },
     //#SECTION volume
     volumeSliderLabel: {
@@ -4498,6 +4654,7 @@ const migrations = {
         "rememberSongTimeDuration", "rememberSongTimeReduction",
         "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
         "setInitialTabVolume", "initialTabVolumeLevel",
+        "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
     ], oldData),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
     // 5 -> 6 (v1.3)
@@ -4551,7 +4708,7 @@ function getFeatures() {
     return bytmCfgStore.getData();
 }
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
-function saveFeatures(featureConf) {
+function setFeatures(featureConf) {
     const res = bytmCfgStore.setData(featureConf);
     emitSiteEvent("configChanged", bytmCfgStore.getData());
     info("Saved new feature config:", featureConf);
@@ -4587,7 +4744,7 @@ const globalFuncs = {
     t,
     tp,
     getFeatures: getFeaturesInterface,
-    saveFeatures,
+    saveFeatures: setFeatures,
     fetchLyricsUrlTop,
     getLyricsCacheEntry,
     sanitizeArtists,
@@ -4800,6 +4957,36 @@ function arrayWithSeparators(array, separator = ", ", lastSeparator) {
         return arr.join(lastSeparator);
     else
         return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
+}
+/** Returns the watch ID of the current video or null if not on a video page */
+function getWatchId() {
+    const { searchParams, pathname } = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+function getThumbnailUrl(watchId, qualityOrIndex = "hqdefault") {
+    return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+}
+/** Returns the best available thumbnail URL for a video with the given watch ID */
+function getBestThumbnailUrl(watchId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const priorityList = ["maxresdefault", "sddefault", 0];
+        for (const quality of priorityList) {
+            const url = getThumbnailUrl(watchId, quality);
+            let response;
+            try {
+                response = yield UserUtils.fetchAdvanced(url, { method: "HEAD", timeout: 5000 });
+            }
+            catch (e) {
+            }
+            if (response === null || response === void 0 ? void 0 : response.ok)
+                return url;
+        }
+    });
+}
+/** Copies a JSON-serializable object */
+function reserialize(data) {
+    return JSON.parse(JSON.stringify(data));
 }
 //#SECTION resources
 /**
@@ -5065,7 +5252,7 @@ function addWelcomeMenu() {
             const selectedLocale = localeSelectElem.value;
             const feats = Object.assign({}, getFeatures());
             feats.locale = selectedLocale;
-            saveFeatures(feats);
+            setFeatures(feats);
             yield initTranslations(selectedLocale);
             setLocale(selectedLocale);
             retranslateWelcomeMenu();
@@ -5285,7 +5472,7 @@ function onDomLoad() {
                     yield showWelcomeMenu();
                     yield GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
                 }
-                observers$1.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+                globservers.body.addListener("tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
                     listener: addConfigMenuOption,
                 });
                 if (features.arrowKeySupport)
@@ -5310,6 +5497,7 @@ function onDomLoad() {
                     ftInit.push(fixSpacing());
                 if (features.scrollToActiveSongBtn)
                     ftInit.push(addScrollToActiveBtn());
+                ftInit.push(initThumbnailOverlay());
                 ftInit.push(initVolumeFeatures());
             }
             if (["ytm", "yt"].includes(domain)) {
@@ -6534,7 +6722,7 @@ hr {
     border: 1px solid transparent;
   }
   20% {
-    border: 1px solid #727272;
+    border: 1px solid #808080;
   }
   100% {
     border: 1px solid transparent;
@@ -6720,6 +6908,30 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   padding: 4px;
 }
 
+/** #MARKER thumbnail */
+
+#bytm-thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: #030303;
+  z-index: 0;
+}
+
+#bytm-thumbnail-overlay-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+ytmusic-player#player #bezel {
+  z-index: 1;
+}
+
 /* #MARKER queue buttons */
 
 #side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
@@ -6851,6 +7063,13 @@ function registerDevMenuCommands() {
             location.reload();
         }
     }), "r");
+    GM.registerMenuCommand("Fix missing config values", () => __awaiter(this, void 0, void 0, function* () {
+        const oldFeats = reserialize(getFeatures());
+        yield setFeatures(Object.assign(Object.assign({}, defaultData), getFeatures()));
+        console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
+        if (confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
+            location.reload();
+    }));
     GM.registerMenuCommand("List GM values in console with decompression", () => __awaiter(this, void 0, void 0, function* () {
         const keys = yield GM.listValues();
         console.log(`GM values (${keys.length}):`);
@@ -6924,7 +7143,7 @@ function registerDevMenuCommands() {
     GM.registerMenuCommand("List active selector listeners in console", () => __awaiter(this, void 0, void 0, function* () {
         const lines = [];
         let listenersAmt = 0;
-        for (const [obsName, obs] of Object.entries(observers$1)) {
+        for (const [obsName, obs] of Object.entries(globservers)) {
             const listeners = obs.getAllListeners();
             lines.push(`- "${obsName}" (${listeners.size} listeners):`);
             [...listeners].forEach(([k, v]) => {
@@ -6935,7 +7154,7 @@ function registerDevMenuCommands() {
                 });
             });
         }
-        console.log(`Showing currently active listeners for ${Object.keys(observers$1).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+        console.log(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     }), "s");
     GM.registerMenuCommand("Compress value", () => __awaiter(this, void 0, void 0, function* () {
         const input = prompt("Enter the value to compress.\nSee console for output.");
