@@ -1,7 +1,7 @@
 import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
 import type { ObserverName } from "./types";
 import { emitInterface } from "./interface";
-import { error, log } from "./utils";
+import { error } from "./utils";
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
@@ -19,6 +19,7 @@ export function initObservers() {
       ...defaultObserverOptions,
       subtree: false,
     });
+
     globservers.body.enable();
 
     // #SECTION playerBar = media controls bar at the bottom of the page
@@ -27,11 +28,9 @@ export function initObservers() {
       ...defaultObserverOptions,
       defaultDebounce: 200,
     });
+
     globservers.body.addListener(playerBarSelector, {
-      listener: () => {
-        log("#DBG-UU enabling playerBar observer");
-        globservers.playerBar.enable();
-      },
+      listener: () => globservers.playerBar.enable(),
     });
 
     // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
@@ -41,20 +40,12 @@ export function initObservers() {
       attributes: true,
       attributeFilter: ["title"],
     });
+
     globservers.playerBarInfo.addListener(playerBarInfoSelector, {
-      listener: () => {
-        log("#DBG-UU enabling playerBarTitle observer");
-        globservers.playerBarInfo.enable();
-      },
+      listener: () => globservers.playerBarInfo.enable(),
     });
 
-    // #DEBUG example: listen for title change:
-    globservers.playerBarInfo.addListener("yt-formatted-string.title", {
-      continuous: true,
-      listener: (titleElem) => {
-        log("#DBG-UU >>>>> title changed", titleElem.title);
-      },
-    });
+    //#SECTION finalize
 
     emitInterface("bytm:observersReady");
   }

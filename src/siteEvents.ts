@@ -2,7 +2,7 @@ import { createNanoEvents } from "nanoevents";
 import { error, info, onSelectorOld } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
-import { globservers } from "./observers";
+import { addSelectorListener } from "./observers";
 
 export interface SiteEventsMap {
   // misc:
@@ -105,7 +105,7 @@ export async function initSiteEvents() {
     let lastTitle: string | null = null;
     let initialPlay = true;
 
-    globservers.playerBarInfo.addListener("yt-formatted-string.title", {
+    addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
       continuous: true,
       listener: (titleElem) => {
         const oldTitle = lastTitle;
