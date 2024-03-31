@@ -1,8 +1,8 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getWatchId, getBestThumbnailUrl } from "../utils";
+import { error, getResourceUrl, log, onSelectorOld, warn, t, onInteraction, getBestThumbnailUrl } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -444,6 +444,28 @@ export async function initThumbnailOverlay() {
     }
   };
 
+  const applyThumbUrl = async (watchId: string) => {
+    const thumbUrl = await getBestThumbnailUrl(watchId);
+    if(thumbUrl) {
+      const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+      const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
+      if(toggleBtnElem)
+        toggleBtnElem.href = thumbUrl;
+      if(thumbImgElem)
+        thumbImgElem.src = thumbUrl;
+    }
+  };
+
+  const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+    unsubWatchIdChanged();
+    addSelectorListener("body", "#bytm-thumbnail-overlay", {
+      listener: () => {
+        applyThumbUrl(watchId);
+        updateOverlayVisibility();
+      },
+    });
+  });
+
   const createElements = async () => {
     // overlay
     const overlayElem = document.createElement("div");
@@ -471,20 +493,11 @@ export async function initThumbnailOverlay() {
     overlayElem.appendChild(thumbImgElem);
     playerEl.appendChild(overlayElem);
     indicatorElem && playerEl.appendChild(indicatorElem);
-  
-    siteEvents.on("watchIdChanged", async () => {
-      const watchId = getWatchId();
-      if(!watchId)
-        return error("Couldn't get watch ID while updating thumbnail overlay");
-  
-      const thumbUrl = await getBestThumbnailUrl(watchId);
-      if(thumbUrl) {
-        const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
-        if(toggleBtnElem)
-          toggleBtnElem.href = thumbUrl;
-        thumbImgElem.src = thumbUrl;
-      }
+
+
+    siteEvents.on("watchIdChanged", async (watchId) => {
       invertOverlay = false;
+      applyThumbUrl(watchId);
       updateOverlayVisibility();
     });
   
@@ -496,15 +509,9 @@ export async function initThumbnailOverlay() {
       toggleBtnElem.tabIndex = 0;
       toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
   
-      onInteraction(toggleBtnElem, async (e) => {
-        if(e.shiftKey || (e instanceof MouseEvent && e.button === 3)) {
-          const watchId = getWatchId();
-          if(!watchId)
-            return error("Couldn't get watch ID while opening thumbnail in new tab");
-          const thumbUrl = await getBestThumbnailUrl(watchId);
-          if(thumbUrl)
-            return GM.openInTab(thumbUrl);
-        }
+      onInteraction(toggleBtnElem, (e) => {
+        if(e instanceof MouseEvent && e.shiftKey)
+          openInNewTab(toggleBtnElem.href);
         invertOverlay = !invertOverlay;
         updateOverlayVisibility();
       });
