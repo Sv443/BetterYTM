@@ -8,47 +8,48 @@ const defaultObserverOptions: SelectorObserverOptions = {
   defaultDebounce: 100,
 };
 
-export const observers = {} as Record<ObserverName, SelectorObserver>;
+/** Global SelectorObserver instances usable throughout the script for improved performance */
+export const globservers = {} as Record<ObserverName, SelectorObserver>;
 
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers() {
   try {
     // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-    observers.body = new SelectorObserver(document.body, {
+    globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
       subtree: false,
     });
-    observers.body.enable();
+    globservers.body.enable();
 
     // #SECTION playerBar = media controls bar at the bottom of the page
     const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-    observers.playerBar = new SelectorObserver(playerBarSelector, {
+    globservers.playerBar = new SelectorObserver(playerBarSelector, {
       ...defaultObserverOptions,
       defaultDebounce: 200,
     });
-    observers.body.addListener(playerBarSelector, {
+    globservers.body.addListener(playerBarSelector, {
       listener: () => {
         log("#DBG-UU enabling playerBar observer");
-        observers.playerBar.enable();
+        globservers.playerBar.enable();
       },
     });
 
     // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
     const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-    observers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
+    globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
       ...defaultObserverOptions,
       attributes: true,
       attributeFilter: ["title"],
     });
-    observers.playerBarInfo.addListener(playerBarInfoSelector, {
+    globservers.playerBarInfo.addListener(playerBarInfoSelector, {
       listener: () => {
         log("#DBG-UU enabling playerBarTitle observer");
-        observers.playerBarInfo.enable();
+        globservers.playerBarInfo.enable();
       },
     });
 
     // #DEBUG example: listen for title change:
-    observers.playerBarInfo.addListener("yt-formatted-string.title", {
+    globservers.playerBarInfo.addListener("yt-formatted-string.title", {
       continuous: true,
       listener: (titleElem) => {
         log("#DBG-UU >>>>> title changed", titleElem.title);
@@ -64,5 +65,5 @@ export function initObservers() {
 
 /** Interface function for adding listeners to the already present observers */
 export function addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
-  observers[observerName].addListener(selector, options);
+  globservers[observerName].addListener(selector, options);
 }

@@ -1,7 +1,8 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info } from "./utils";
+import { error, info, onSelectorOld } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
+import { globservers } from "./observers";
 
 export interface SiteEventsMap {
   // misc:
@@ -24,6 +25,15 @@ export interface SiteEventsMap {
   queueChanged: (queueElement: HTMLElement) => void;
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
   autoplayQueueChanged: (queueElement: HTMLElement) => void;
+  /**
+   * Emitted whenever the current song title changes
+   * @param newTitle The new song title
+   * @param oldTitle The old song title, or `null` if no previous title was found
+   * @param initialPlay Whether this is the first played song
+   */
+  songTitleChanged: (newTitle: string, oldTitle: string | null, initialPlay: boolean) => void;
+  /** Emitted whenever the current song's watch ID changes */
+  watchIdChanged: (newId: string, oldId: string | null) => void;
 }
 
 /** Array of all site events */
@@ -36,6 +46,8 @@ export const allSiteEvents = [
   "hotkeyInputActive",
   "queueChanged",
   "autoplayQueueChanged",
+  "songTitleChanged",
+  "watchIdChanged",
 ] as const;
 
 /** EventEmitter instance that is used to detect changes to the site */
@@ -65,8 +77,12 @@ export async function initSiteEvents() {
     });
 
     // only observe added or removed elements
-    queueObs.observe(document.querySelector("#side-panel #contents.ytmusic-player-queue")!, {
-      childList: true,
+    onSelectorOld("#side-panel #contents.ytmusic-player-queue", {
+      listener: (el) => {
+        queueObs.observe(el, {
+          childList: true,
+        });
+      },
     });
 
     const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
@@ -76,8 +92,31 @@ export async function initSiteEvents() {
       }
     });
 
-    autoplayObs.observe(document.querySelector("#side-panel ytmusic-player-queue #automix-contents")!, {
-      childList: true,
+    onSelectorOld("#side-panel ytmusic-player-queue #automix-contents", {
+      listener: (el) => {
+        autoplayObs.observe(el, {
+          childList: true,
+        });
+      },
+    });
+
+    //#SECTION player bar
+
+    let lastTitle: string | null = null;
+    let initialPlay = true;
+
+    globservers.playerBarInfo.addListener("yt-formatted-string.title", {
+      continuous: true,
+      listener: (titleElem) => {
+        const oldTitle = lastTitle;
+        const newTitle = titleElem.textContent;
+        if(newTitle === lastTitle || !newTitle)
+          return;
+        lastTitle = newTitle;
+        info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}" - initial play: ${initialPlay}`);
+        emitSiteEvent("songTitleChanged", newTitle, oldTitle, initialPlay);
+        initialPlay = false;
+      },
     });
 
     info("Successfully initialized SiteEvents observers");
@@ -86,6 +125,21 @@ export async function initSiteEvents() {
       queueObs,
       autoplayObs,
     ]);
+
+    //#SECTION other
+
+    let lastWatchId: string | null = null;
+
+    setInterval(() => {
+      if(location.pathname.startsWith("/watch")) {
+        const newWatchId = new URL(location.href).searchParams.get("v");
+        if(newWatchId && newWatchId !== lastWatchId) {
+          info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+          emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+          lastWatchId = newWatchId;
+        }
+      }
+    }, 200);
   }
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
