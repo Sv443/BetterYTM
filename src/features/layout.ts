@@ -436,11 +436,11 @@ export async function initThumbnailOverlay() {
     if(getFeatures().thumbnailOverlayToggleBtnShown) {
       const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
       const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
-      if(!toggleBtnElem || !toggleBtnImgElem)
-        return error("Couldn't find thumbnail overlay toggle button element while checking visibility");
 
-      toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
-      toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+      if(toggleBtnImgElem)
+        toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
+      if(toggleBtnElem)
+        toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
     }
   };
 
@@ -518,8 +518,6 @@ export async function initThumbnailOverlay() {
         listener: (likeContainer) => insertAfter(likeContainer, toggleBtnElem),
       });
     }
-  
-    updateOverlayVisibility();
 
     log("Added thumbnail overlay");
   };
