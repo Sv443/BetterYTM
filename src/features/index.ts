@@ -113,9 +113,9 @@ export const featInfo = {
     category: "layout",
     options: () => [
       { value: "never", label: t("thumbnail_overlay_behavior_never") },
+      { value: "always", label: t("thumbnail_overlay_behavior_always") },
       { value: "videosOnly", label: t("thumbnail_overlay_behavior_videos_only") },
       { value: "songsOnly", label: t("thumbnail_overlay_behavior_songs_only") },
-      { value: "always", label: t("thumbnail_overlay_behavior_always") },
     ],
     default: "never",
     enable: noopTODO,
