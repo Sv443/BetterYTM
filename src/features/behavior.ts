@@ -116,16 +116,10 @@ export async function initRememberSongTime() {
   if(location.pathname.startsWith("/watch"))
     await restoreSongTime();
 
-  if(!domLoaded) {
-    document.addEventListener("DOMContentLoaded", () => {
-      remSongUpdateEntry();
-      setInterval(remSongUpdateEntry, 1000);
-    });
-  }
-  else {
+  if(!domLoaded)
+    document.addEventListener("DOMContentLoaded", remSongUpdateEntry);
+  else
     remSongUpdateEntry();
-    setInterval(remSongUpdateEntry, 1000);
-  }
 }
 
 /** Tries to restore the time of the currently playing song */
@@ -155,7 +149,7 @@ async function restoreSongTime() {
   }
 }
 
-/** Updates the currently playing song's entry in GM storage */
+/** Only call once as this calls itself after a timeout! - Updates the currently playing song's entry in GM storage */
 async function remSongUpdateEntry() {
   if(location.pathname.startsWith("/watch")) {
     const watchID = getWatchId();
@@ -187,6 +181,9 @@ async function remSongUpdateEntry() {
   const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
   for(const entry of expiredEntries)
     await delRemSongData(entry.watchID);
+
+  // for no overlapping calls and better error handling
+  setTimeout(remSongUpdateEntry, 1000);
 }
 
 /** Adds an entry or updates it if it already exists */

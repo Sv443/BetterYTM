@@ -30,7 +30,6 @@ export async function initVolumeFeatures() {
 
       if(getFeatures().volumeSharedBetweenTabs) {
         sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
-        setInterval(checkSharedVolume, 500);
         checkSharedVolume();
       }
 
@@ -188,7 +187,8 @@ async function sharedVolumeChanged(vol: number) {
 
 let ignoreVal = -1;
 let lastCheckedSharedVolume = -1;
-/** Checks if the shared volume has changed and updates the volume slider accordingly */
+
+/** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
 async function checkSharedVolume() {
   try {
     const vol = await GM.getValue("bytm-shared-volume");
@@ -203,6 +203,8 @@ async function checkSharedVolume() {
         sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
       }
     }
+
+    setTimeout(checkSharedVolume, 333);
   }
   catch(err) {
     error("Couldn't check for shared volume level due to an error:", err);

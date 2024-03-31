@@ -32,7 +32,7 @@ export interface SiteEventsMap {
    * @param initialPlay Whether this is the first played song
    */
   songTitleChanged: (newTitle: string, oldTitle: string | null, initialPlay: boolean) => void;
-  /** Emitted whenever the current song's watch ID changes */
+  /** Emitted whenever the current song's watch ID changes - `oldId` is `null` if this is the first song played in the session */
   watchIdChanged: (newId: string, oldId: string | null) => void;
 }
 
@@ -130,7 +130,7 @@ export async function initSiteEvents() {
 
     let lastWatchId: string | null = null;
 
-    setInterval(() => {
+    const checkWatchId = () => {
       if(location.pathname.startsWith("/watch")) {
         const newWatchId = new URL(location.href).searchParams.get("v");
         if(newWatchId && newWatchId !== lastWatchId) {
@@ -139,7 +139,9 @@ export async function initSiteEvents() {
           lastWatchId = newWatchId;
         }
       }
-    }, 200);
+      setTimeout(checkWatchId, 200);
+    };
+    checkWatchId();
   }
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
