@@ -53,7 +53,7 @@ export const migrations: DataMigrationsDict = {
     "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
     "setInitialTabVolume", "initialTabVolumeLevel",
     "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-    "thumbnailOverlayShowIndicator",
+    "thumbnailOverlayShowIndicator", "thumbnailOverlayImageFit",
   ], oldData),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 5 -> 6 (v1.3)

@@ -322,6 +322,8 @@ export interface FeatureConfig {
   thumbnailOverlayToggleBtnShown: boolean;
   /** Whether to show an indicator on the thumbnail overlay when it is active */
   thumbnailOverlayShowIndicator: boolean;
+  /** How to fit the thumbnail overlay image */
+  thumbnailOverlayImageFit: "cover" | "contain" | "fill";
 
   //#SECTION volume
   /** Add a percentage label to the volume slider */
