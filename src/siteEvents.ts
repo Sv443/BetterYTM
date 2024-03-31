@@ -1,5 +1,5 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info, onSelectorOld } from "./utils";
+import { error, info } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
@@ -77,7 +77,7 @@ export async function initSiteEvents() {
     });
 
     // only observe added or removed elements
-    onSelectorOld("#side-panel #contents.ytmusic-player-queue", {
+    addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
       listener: (el) => {
         queueObs.observe(el, {
           childList: true,
@@ -92,7 +92,7 @@ export async function initSiteEvents() {
       }
     });
 
-    onSelectorOld("#side-panel ytmusic-player-queue #automix-contents", {
+    addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
       listener: (el) => {
         autoplayObs.observe(el, {
           childList: true,

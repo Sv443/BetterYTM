@@ -43,8 +43,6 @@ export type HotkeyObj = {
   alt: boolean,
 };
 
-export type ObserverName = "body" | "playerBar" | "playerBarInfo";
-
 export type LyricsCacheEntry = {
   artist: string;
   song: string;

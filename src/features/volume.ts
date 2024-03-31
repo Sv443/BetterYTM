@@ -1,16 +1,17 @@
 import { addGlobalStyle, addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
-import { error, log, onSelectorOld, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
+import { error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from ".";
 import "./volume.css";
+import { addSelectorListener } from "src/observers";
 
 //#MARKER init
 
 /** Initializes all volume-related features */
 export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
-  onSelectorOld<HTMLInputElement>("tp-yt-paper-slider#volume-slider", {
+  addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
     listener: async (sliderElem) => {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
@@ -94,6 +95,8 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   labelElem.classList.add("label");
   labelElem.textContent = getLabel(sliderElem.value);
 
+  labelContElem.appendChild(labelElem);
+
   // prevent video from minimizing
   labelContElem.addEventListener("click", (e) => e.stopPropagation());
   labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
@@ -123,12 +126,8 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
     updateLabel();
   });
 
-  onSelectorOld("#bytm-vol-slider-cont", {
-    listener: (volumeCont) => {
-      labelContElem.appendChild(labelElem);
-
-      volumeCont.appendChild(labelContElem);
-    },
+  addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
+    listener: (volumeCont) => volumeCont.appendChild(labelContElem),
   });
 
   let lastSliderVal = Number(sliderElem.value);

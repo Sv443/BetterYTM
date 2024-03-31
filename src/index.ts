@@ -1,5 +1,5 @@
 import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { domLoaded, initOnSelector, reserialize, warn } from "./utils";
+import { domLoaded, reserialize, warn } from "./utils";
 import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -120,7 +120,6 @@ async function onDomLoad() {
     insertGlobalStyle();
 
     initObservers();
-    initOnSelector();
 
     await initVersionCheck();
   }

@@ -1,5 +1,6 @@
 import { getUnsafeWindow } from "@sv443-network/userutils";
-import { error, getDomain, onSelectorOld } from ".";
+import { error, getDomain } from ".";
+import { addSelectorListener } from "src/observers";
 
 //#MARKER video time & volume
 
@@ -20,7 +21,7 @@ export function getVideoTime() {
         if(vidElem)
           return res(Math.floor(vidElem.currentTime));
 
-        onSelectorOld<HTMLProgressElement>("tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
+        addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
             res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
@@ -58,7 +59,7 @@ export function getVideoTime() {
             }, 500);
         };
 
-        onSelectorOld<HTMLProgressElement>(pbSelector, { listener: observe });
+        addSelectorListener<HTMLProgressElement>("body", pbSelector, { listener: observe });
       }
     }
     catch(err) {
@@ -104,7 +105,7 @@ function ytForceShowVideoTime() {
 /** Waits for the video element to be in its readyState 4 / canplay state and returns it */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise((res) => {
-    onSelectorOld<HTMLVideoElement>(videoSelector, {
+    addSelectorListener<HTMLVideoElement>("body", videoSelector, {
       listener: async (vidElem) => {
         if(vidElem) {
           // this is just after YT has finished doing their own shenanigans with the video time and volume

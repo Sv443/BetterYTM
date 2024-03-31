@@ -1,7 +1,19 @@
 import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-import type { ObserverName } from "./types";
 import { emitInterface } from "./interface";
-import { error } from "./utils";
+import { error, getDomain } from "./utils";
+
+export type ObserverName =
+  | "body"
+  | "navBar"
+  | "mainPanel"
+  | "sideBar"
+  | "sideBarMini"
+  | "sidePanel"
+  | "playerBar"
+  | "playerBarInfo"
+  | "playerBarMiddleButtons"
+  | "playerBarRightControls"
+  | "popupContainer";
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
@@ -22,6 +34,64 @@ export function initObservers() {
 
     globservers.body.enable();
 
+    if(getDomain() !== "ytm")
+      return;
+
+    //#SECTION navBar = the navigation / title bar at the top of the page
+    const navBarSelector = "ytmusic-nav-bar";
+    globservers.navBar = new SelectorObserver(navBarSelector, {
+      ...defaultObserverOptions,
+      subtree: false,
+    });
+
+    globservers.body.addListener(navBarSelector, {
+      listener: () => globservers.navBar.enable(),
+    });
+
+    // #SECTION mainPanel = the main content panel - includes things like the video element
+    const mainPanelSelector = "ytmusic-player-page #main-panel";
+    globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.body.addListener(mainPanelSelector, {
+      listener: () => globservers.mainPanel.enable(),
+    });
+
+    // #SECTION sideBar = the sidebar on the left side of the page
+    const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
+    globservers.sideBar = new SelectorObserver(sidebarSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.body.addListener(sidebarSelector, {
+      listener: () => globservers.sideBar.enable(),
+    });
+
+    // #SECTION sideBarMini = the minimized sidebar on the left side of the page
+    const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
+    globservers.sideBarMini = new SelectorObserver(sideBarMiniSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.body.addListener(sideBarMiniSelector, {
+      listener: () => globservers.sideBarMini.enable(),
+    });
+
+    // #SECTION sidePanel = the side panel on the right side of the /watch page
+    const sidePanelSelector = "#side-panel";
+    globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.body.addListener(sidePanelSelector, {
+      listener: () => globservers.sidePanel.enable(),
+    });
+
     // #SECTION playerBar = media controls bar at the bottom of the page
     const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
     globservers.playerBar = new SelectorObserver(playerBarSelector, {
@@ -30,7 +100,9 @@ export function initObservers() {
     });
 
     globservers.body.addListener(playerBarSelector, {
-      listener: () => globservers.playerBar.enable(),
+      listener: () => {
+        globservers.playerBar.enable();
+      },
     });
 
     // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
@@ -45,6 +117,39 @@ export function initObservers() {
       listener: () => globservers.playerBarInfo.enable(),
     });
 
+    // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
+    const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
+    globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
+      listener: () => globservers.playerBarMiddleButtons.enable(),
+    });
+
+    // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+    const playerBarRightControls = ".right-controls .middle-controls-buttons";
+    globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.playerBar.addListener(playerBarRightControls, {
+      listener: () => globservers.playerBarRightControls.enable(),
+    });
+
+    // #SECTION popupContainer = the container for popups (e.g. the queue popup)
+    const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
+    globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
+      ...defaultObserverOptions,
+      subtree: true,
+    });
+
+    globservers.body.addListener(popupContainerSelector, {
+      listener: () => globservers.popupContainer.enable(),
+    });
+
     //#SECTION finalize
 
     emitInterface("bytm:observersReady");
@@ -54,7 +159,7 @@ export function initObservers() {
   }
 }
 
-/** Interface function for adding listeners to the already present observers */
-export function addSelectorListener<TElem extends Element>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
+/** Interface function for adding listeners to the {@linkcode globservers} */
+export function addSelectorListener<TElem extends HTMLElement>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
   globservers[observerName].addListener(selector, options);
 }
