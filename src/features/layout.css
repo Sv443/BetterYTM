@@ -243,6 +243,17 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   object-fit: cover;
 }
 
+#bytm-thumbnail-overlay-indicator {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: calc(min(56px, 100% - 16px));
+  height: calc(min(56px, 100% - 16px));
+  z-index: 1;
+  cursor: help;
+  filter: drop-shadow(0 0 3px #000);
+}
+
 ytmusic-player#player #bezel {
   z-index: 1;
 }

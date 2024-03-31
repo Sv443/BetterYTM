@@ -406,7 +406,7 @@ export async function initThumbnailOverlay() {
   const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
   if(!playerEl)
-    return warn("Couldn't find video player element while adding thumbnail overlay");
+    return error("Couldn't find video player element while adding thumbnail overlay");
 
   /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
   const updateOverlayVisibility = async () => {
@@ -422,29 +422,45 @@ export async function initThumbnailOverlay() {
 
     const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
     const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
-    if(!overlayElem || !thumbElem)
-      return warn("Couldn't find thumbnail overlay element while checking visibility");
+    const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
-    overlayElem.style.display = showOverlay ? "block" : "none";
-    thumbElem.ariaHidden = String(!showOverlay);
+    if(overlayElem)
+      overlayElem.style.display = showOverlay ? "block" : "none";
+    if(thumbElem)
+      thumbElem.ariaHidden = String(!showOverlay);
+    if(indicatorElem) {
+      indicatorElem.style.display = showOverlay ? "block" : "none";
+      indicatorElem.ariaHidden = String(!showOverlay);
+    }
 
     if(getFeatures().thumbnailOverlayToggleBtnShown) {
       const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
       const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
       if(!toggleBtnElem || !toggleBtnImgElem)
-        return warn("Couldn't find thumbnail overlay toggle button element while checking visibility");
+        return error("Couldn't find thumbnail overlay toggle button element while checking visibility");
 
-      toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "" : "_off"}` as "icon-image" | "icon-image_off");
+      toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
       toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
     }
   };
 
-  const createElements = () => {
+  const createElements = async () => {
     // overlay
     const overlayElem = document.createElement("div");
     overlayElem.id = "bytm-thumbnail-overlay";
     overlayElem.classList.add("bytm-no-select");
     overlayElem.style.display = "none";
+
+    let indicatorElem: HTMLImageElement | undefined;
+    if(getFeatures().thumbnailOverlayShowIndicator) {
+      indicatorElem = document.createElement("img");
+      indicatorElem.id = "bytm-thumbnail-overlay-indicator";
+      indicatorElem.src = await getResourceUrl("icon-image");
+      indicatorElem.role = "presentation";
+      indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+      indicatorElem.ariaHidden = "true";
+      indicatorElem.style.display = "none";
+    }
   
     const thumbImgElem = document.createElement("img");
     thumbImgElem.id = "bytm-thumbnail-overlay-img";
@@ -453,6 +469,7 @@ export async function initThumbnailOverlay() {
   
     overlayElem.appendChild(thumbImgElem);
     playerEl.appendChild(overlayElem);
+    indicatorElem && playerEl.appendChild(indicatorElem);
   
     siteEvents.on("watchIdChanged", async () => {
       const watchId = getWatchId();
