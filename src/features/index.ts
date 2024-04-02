@@ -169,6 +169,27 @@ export const featInfo = {
     // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
+  hideCursorOnIdle: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    enable: noopTODO,
+    disable: noopTODO,
+  },
+  hideCursorOnIdleDelay: {
+    type: "slider",
+    category: "layout",
+    min: 0.5,
+    max: 10,
+    step: 0.5,
+    default: 3,
+    unit: "s",
+    enable: noopTODO,
+    change: noopTODO,
+    advanced: true,
+    // TODO: to be reworked or removed in the big menu rework
+    textAdornment: adornments.advanced,
+  },
 
   //#SECTION volume
   volumeSliderLabel: {

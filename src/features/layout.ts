@@ -1,4 +1,4 @@
-import { addGlobalStyle, addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addGlobalStyle, addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
@@ -549,6 +549,69 @@ export async function initThumbnailOverlay() {
       }
       else
         createElements();
+    },
+  });
+}
+
+//#MARKER hide cursor on idle
+
+export async function initHideCursorOnIdle() {
+  addSelectorListener("mainPanel", "ytmusic-player#player", {
+    listener(vidContainer) {
+      const overlaySelector = "ytmusic-player #song-media-window";
+
+      const overlayElem = document.querySelector<HTMLElement>(overlaySelector);
+
+      if(!overlayElem)
+        return warn("Couldn't find overlay element while initializing cursor hiding");
+
+      let cursorHideTimer: ReturnType<typeof setTimeout>;
+      let cursorHidden = false;
+
+      const hide = () => {
+        if(cursorHidden)
+          return;
+        cursorHidden = true;
+
+        overlayElem.style.opacity = "0 !important";
+        setTimeout(() => {
+          overlayElem.style.display = "none";
+          vidContainer.style.cursor = "none";
+        }, 200);
+      };
+
+      const show = () => {
+        if(!cursorHidden)
+          return;
+        cursorHidden = false;
+
+        vidContainer.style.cursor = "initial";
+        overlayElem.style.display = "initial";
+        overlayElem.style.opacity = "1 !important";
+      };
+
+      const cursorHideTimerCb = () =>
+        cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
+
+      const onMove = () => {
+        clearTimeout(cursorHideTimer);
+        show();
+        cursorHideTimerCb();
+      };
+
+      vidContainer.addEventListener("mouseenter", onMove);
+      vidContainer.addEventListener("mousemove", debounce(onMove, 25, "rising"));
+      vidContainer.addEventListener("mouseleave", () => {
+        clearTimeout(cursorHideTimer);
+        hide();
+      });
+      vidContainer.addEventListener("click", () => {
+        show();
+        cursorHideTimerCb();
+        setTimeout(hide, 3000);
+      });
+
+      log("Initialized cursor hiding on idle");
     },
   });
 }
