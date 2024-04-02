@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1486137
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=19c129f
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,38 +35,38 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=1486137
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=1486137
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=1486137
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=1486137
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=1486137
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=1486137
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=1486137
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=1486137
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=1486137
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=1486137
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=1486137
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=1486137
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=1486137
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=1486137
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=1486137
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=1486137
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1486137
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=1486137
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=1486137
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=1486137
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=1486137
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=1486137
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=1486137
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=1486137
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=1486137
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=1486137
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=1486137
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=1486137
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=1486137
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=1486137
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=1486137
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.1.0/dist/index.global.js
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=19c129f
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=19c129f
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=19c129f
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=19c129f
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=19c129f
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=19c129f
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=19c129f
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=19c129f
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=19c129f
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=19c129f
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=19c129f
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=19c129f
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=19c129f
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=19c129f
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=19c129f
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=19c129f
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=19c129f
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=19c129f
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=19c129f
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=19c129f
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=19c129f
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=19c129f
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=19c129f
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=19c129f
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=19c129f
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=19c129f
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=19c129f
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=19c129f
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=19c129f
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=19c129f
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=19c129f
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "1486137";
+const buildNumberRaw = "19c129f";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -807,6 +807,33 @@ class BytmDialog extends NanoEmitter {
             return dialogWrapperEl;
         });
     }
+}/**
+ * Creates a generic button element.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` is provided, the button will be a div element.
+ */
+function createGenericBtn({ resourceName, title, href, onClick, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let btnElem;
+        if (href) {
+            btnElem = document.createElement("a");
+            btnElem.href = href;
+            btnElem.role = "button";
+            btnElem.target = "_blank";
+            btnElem.rel = "noopener noreferrer";
+        }
+        else {
+            btnElem = document.createElement("div");
+            onClick && onInteraction(btnElem, onClick);
+        }
+        btnElem.classList.add("bytm-generic-btn");
+        btnElem.ariaLabel = btnElem.title = title;
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.src = yield getResourceUrl(resourceName);
+        btnElem.appendChild(imgElem);
+        return btnElem;
+    });
 }/** Array of all site events */
 const allSiteEvents = [
     "configChanged",
@@ -1148,7 +1175,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^6.1.0",
+	"@sv443-network/userutils": "^6.2.0",
 	"fuse.js": "^7.0.0",
 	marked: "^12.0.0",
 	nanoevents: "^9.0.0"
@@ -2869,8 +2896,8 @@ function exchangeLogo() {
         }),
     });
 }
-/** Called whenever the avatar popover menu exists to add a BYTM-Configuration button to the user menu popover */
-function addConfigMenuOption(container) {
+/** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
+function addConfigMenuOptionYTM(container) {
     return __awaiter(this, void 0, void 0, function* () {
         const cfgOptElem = document.createElement("div");
         cfgOptElem.className = "bytm-cfg-menu-option";
@@ -2900,6 +2927,28 @@ function addConfigMenuOption(container) {
         container.appendChild(cfgOptElem);
         improveLogo();
         log("Added BYTM-Configuration button to menu popover");
+    });
+}
+/** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
+function addConfigMenuOptionYT(container) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const btnElem = yield createGenericBtn({
+            resourceName: "img-logo",
+            title: t("open_menu_tooltip", scriptInfo.name),
+            onClick(e) {
+                if ((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+                    openCfgMenu();
+                if (!logoExchanged && (e.shiftKey || e.ctrlKey))
+                    exchangeLogo();
+            },
+        });
+        const firstChild = container.firstElementChild;
+        if (firstChild)
+            container.insertBefore(btnElem, firstChild);
+        else {
+            const notifEl = container.querySelector("ytd-notification-topbar-button-renderer");
+            notifEl && UserUtils.insertAfter(notifEl, btnElem);
+        }
     });
 }
 //#MARKER remove upgrade tab
@@ -4898,79 +4947,103 @@ function getFeaturesInterface() {
 }/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     defaultDebounce: 100,
+    defaultDebounceEdge: "rising",
 };
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 const globservers = {};
 /** Call after DOM load to initialize all SelectorObserver instances */
 function initObservers() {
     try {
+        //#MARKER both sites
         // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
-        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+        globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 150, subtree: false }));
         globservers.body.enable();
-        if (getDomain() !== "ytm")
-            return;
-        //#SECTION navBar = the navigation / title bar at the top of the page
-        const navBarSelector = "ytmusic-nav-bar";
-        globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
-        globservers.body.addListener(navBarSelector, {
-            listener: () => globservers.navBar.enable(),
-        });
-        // #SECTION mainPanel = the main content panel - includes things like the video element
-        const mainPanelSelector = "ytmusic-player-page #main-panel";
-        globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.body.addListener(mainPanelSelector, {
-            listener: () => globservers.mainPanel.enable(),
-        });
-        // #SECTION sideBar = the sidebar on the left side of the page
-        const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
-        globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.body.addListener(sidebarSelector, {
-            listener: () => globservers.sideBar.enable(),
-        });
-        // #SECTION sideBarMini = the minimized sidebar on the left side of the page
-        const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
-        globservers.sideBarMini = new UserUtils.SelectorObserver(sideBarMiniSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.body.addListener(sideBarMiniSelector, {
-            listener: () => globservers.sideBarMini.enable(),
-        });
-        // #SECTION sidePanel = the side panel on the right side of the /watch page
-        const sidePanelSelector = "#side-panel";
-        globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.body.addListener(sidePanelSelector, {
-            listener: () => globservers.sidePanel.enable(),
-        });
-        // #SECTION playerBar = media controls bar at the bottom of the page
-        const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
-        globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
-        globservers.body.addListener(playerBarSelector, {
-            listener: () => {
-                globservers.playerBar.enable();
-            },
-        });
-        // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
-        const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
-        globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
-        globservers.playerBarInfo.addListener(playerBarInfoSelector, {
-            listener: () => globservers.playerBarInfo.enable(),
-        });
-        // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
-        const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
-        globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
-            listener: () => globservers.playerBarMiddleButtons.enable(),
-        });
-        // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
-        const playerBarRightControls = ".right-controls .middle-controls-buttons";
-        globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.playerBar.addListener(playerBarRightControls, {
-            listener: () => globservers.playerBarRightControls.enable(),
-        });
-        // #SECTION popupContainer = the container for popups (e.g. the queue popup)
-        const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
-        globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-        globservers.body.addListener(popupContainerSelector, {
-            listener: () => globservers.popupContainer.enable(),
-        });
+        switch (getDomain()) {
+            case "ytm": {
+                //#MARKER YTM
+                //#SECTION navBar = the navigation / title bar at the top of the page
+                const navBarSelector = "ytmusic-nav-bar";
+                globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
+                globservers.body.addListener(navBarSelector, {
+                    listener: () => globservers.navBar.enable(),
+                });
+                // #SECTION mainPanel = the main content panel - includes things like the video element
+                const mainPanelSelector = "ytmusic-player-page #main-panel";
+                globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(mainPanelSelector, {
+                    listener: () => globservers.mainPanel.enable(),
+                });
+                // #SECTION sideBar = the sidebar on the left side of the page
+                const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
+                globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(sidebarSelector, {
+                    listener: () => globservers.sideBar.enable(),
+                });
+                // #SECTION sideBarMini = the minimized sidebar on the left side of the page
+                const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
+                globservers.sideBarMini = new UserUtils.SelectorObserver(sideBarMiniSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(sideBarMiniSelector, {
+                    listener: () => globservers.sideBarMini.enable(),
+                });
+                // #SECTION sidePanel = the side panel on the right side of the /watch page
+                const sidePanelSelector = "#side-panel";
+                globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(sidePanelSelector, {
+                    listener: () => globservers.sidePanel.enable(),
+                });
+                // #SECTION playerBar = media controls bar at the bottom of the page
+                const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
+                globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
+                globservers.body.addListener(playerBarSelector, {
+                    listener: () => {
+                        globservers.playerBar.enable();
+                    },
+                });
+                // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+                const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
+                globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
+                globservers.playerBarInfo.addListener(playerBarInfoSelector, {
+                    listener: () => globservers.playerBarInfo.enable(),
+                });
+                // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
+                const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
+                globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
+                    listener: () => globservers.playerBarMiddleButtons.enable(),
+                });
+                // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+                const playerBarRightControls = ".right-controls .middle-controls-buttons";
+                globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.playerBar.addListener(playerBarRightControls, {
+                    listener: () => globservers.playerBarRightControls.enable(),
+                });
+                // #SECTION popupContainer = the container for popups (e.g. the queue popup)
+                const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
+                globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(popupContainerSelector, {
+                    listener: () => globservers.popupContainer.enable(),
+                });
+                break;
+            }
+            case "yt": {
+                //#MARKER YT
+                // #SECTION ytGuide = the left sidebar menu
+                const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
+                globservers.ytGuide = new UserUtils.SelectorObserver(ytGuideSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(ytGuideSelector, {
+                    listener: () => globservers.ytGuide.enable(),
+                });
+                // // #SECTION ytMasthead = the masthead at the top of the page
+                // const mastheadSelector = "#content ytd-masthead#masthead";
+                // globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
+                //   ...defaultObserverOptions,
+                //   subtree: true,
+                // });
+                // globservers.body.addListener(mastheadSelector, {
+                //   listener: () => globservers.ytMasthead.enable(),
+                // });
+            }
+        }
         //#SECTION finalize
         emitInterface("bytm:observersReady");
     }
@@ -4981,6 +5054,9 @@ function initObservers() {
 /**
  * Interface function for adding listeners to the {@linkcode globservers}
  * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
+ * @param options Options for the listener
+ * @template TElem The type of the element that the listener will be attached to. If set to `0`, the type HTMLElement will be used.
+ * @template TDomain This restricts which observers are available with the current domain
  */
 function addSelectorListener(observerName, selector, options) {
     globservers[observerName].addListener(selector, options);
@@ -5658,7 +5734,7 @@ function onDomLoad() {
                     yield GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
                 }
                 addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
-                    listener: addConfigMenuOption,
+                    listener: addConfigMenuOptionYTM,
                 });
                 if (features.arrowKeySupport)
                     ftInit.push(initArrowKeySkip());
@@ -5684,6 +5760,11 @@ function onDomLoad() {
                 if (features.hideCursorOnIdle)
                     ftInit.push(initHideCursorOnIdle());
                 ftInit.push(initVolumeFeatures());
+            }
+            if (domain === "yt") {
+                addSelectorListener("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+                    listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
+                });
             }
             if (["ytm", "yt"].includes(domain)) {
                 if (features.switchBetweenSites)
