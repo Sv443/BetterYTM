@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=28191c5
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1486137
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,38 +35,38 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=28191c5
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=28191c5
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=28191c5
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=28191c5
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=28191c5
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=28191c5
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=28191c5
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=28191c5
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=28191c5
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=28191c5
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=28191c5
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=28191c5
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=28191c5
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=28191c5
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=28191c5
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=28191c5
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=28191c5
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=28191c5
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=28191c5
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=28191c5
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=28191c5
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=28191c5
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=28191c5
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=28191c5
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=28191c5
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=28191c5
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=28191c5
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=28191c5
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=28191c5
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=28191c5
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=28191c5
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.0.1/dist/index.global.js
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=1486137
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=1486137
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=1486137
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=1486137
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=1486137
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=1486137
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=1486137
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=1486137
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=1486137
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=1486137
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=1486137
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=1486137
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=1486137
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=1486137
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=1486137
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=1486137
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1486137
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=1486137
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=1486137
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=1486137
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=1486137
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=1486137
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=1486137
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=1486137
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=1486137
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=1486137
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=1486137
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=1486137
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=1486137
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=1486137
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=1486137
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
 // @grant             GM.registerMenuCommand
@@ -148,7 +148,26 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};// I know TS enums are impure but it doesn't really matter here, plus they look cooler
+};let createNanoEvents = () => ({
+  emit(event, ...args) {
+    for (
+      let i = 0,
+        callbacks = this.events[event] || [],
+        length = callbacks.length;
+      i < length;
+      i++
+    ) {
+      callbacks[i](...args);
+    }
+  },
+  events: {},
+  on(event, cb) {
+(this.events[event] ||= []).push(cb);
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i);
+    }
+  }
+});// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -174,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "28191c5";
+const buildNumberRaw = "1486137";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -420,26 +439,7 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
-}let createNanoEvents = () => ({
-  emit(event, ...args) {
-    for (
-      let i = 0,
-        callbacks = this.events[event] || [],
-        length = callbacks.length;
-      i < length;
-      i++
-    ) {
-      callbacks[i](...args);
-    }
-  },
-  events: {},
-  on(event, cb) {
-(this.events[event] ||= []).push(cb);
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i);
-    }
-  }
-});/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
+}/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
 class NanoEmitter {
     constructor(settings = {}) {
         Object.defineProperty(this, "events", {
@@ -1148,7 +1148,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^6.0.1",
+	"@sv443-network/userutils": "^6.1.0",
 	"fuse.js": "^7.0.0",
 	marked: "^12.0.0",
 	nanoevents: "^9.0.0"
@@ -1330,6 +1330,7 @@ function renderBody({ latestTag, changelogHtml, }) {
         return wrapperEl;
     });
 }const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
+/** Initializes the version check feature */
 function initVersionCheck() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -1345,6 +1346,10 @@ function initVersionCheck() {
         }
     });
 }
+/**
+ * Checks for a new version of the script and shows a dialog.
+ * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
+ */
 function doVersionCheck(notifyNoUpdatesFound = false) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
@@ -1370,9 +1375,14 @@ function doVersionCheck(notifyNoUpdatesFound = false) {
 }
 /**
  * Crudely compares two semver version strings.
- * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
+ * The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
  */
 function compareVersions(a, b) {
+    a = String(a).trim();
+    b = String(b).trim();
+    if ([a, b].some(v => !v.match(/^\d+\.\d+\.\d+$/)))
+        throw new TypeError("Invalid version format, expected 'MAJOR.MINOR.PATCH'");
     const pa = a.split(".");
     const pb = b.split(".");
     for (let i = 0; i < 3; i++) {
@@ -1388,6 +1398,22 @@ function compareVersions(a, b) {
             return -1;
     }
     return 0;
+}
+/**
+ * Compares two version arrays.
+ * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
+ */
+function compareVersionArrays(a, b) {
+    if ([a, b].some(v => !Array.isArray(v) || v.length !== 3 || v.some(iv => !Number.isInteger(iv) || iv < 0)))
+        throw new TypeError("Invalid version format, expected '[MAJOR, MINOR, PATCH]' consisting only of positive integers");
+    for (let i = 0; i < 3; i++) {
+        if (a[i] > b[i])
+            return 1;
+        if (b[i] > a[i])
+            return -1;
+    }
+    return 0;
 }//#MARKER init
 /** Initializes all volume-related features */
 function initVolumeFeatures() {
@@ -1395,6 +1421,7 @@ function initVolumeFeatures() {
         // not technically an input element but behaves pretty much the same
         addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
             listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
+                // TODO:FIXME: broken fsr
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
                 if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
@@ -2036,11 +2063,13 @@ function addCfgMenu() {
                                     const startTs = Date.now();
                                     const res = ftInfo.click();
                                     wrapperElem.disabled = true;
+                                    wrapperElem.classList.add("bytm-busy");
                                     wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
                                     if (res instanceof Promise)
                                         yield res;
                                     const finalize = () => {
                                         wrapperElem.disabled = false;
+                                        wrapperElem.classList.remove("bytm-busy");
                                         wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
                                     };
                                     // artificial timeout ftw
@@ -3224,6 +3253,57 @@ function initThumbnailOverlay() {
             },
         });
     });
+}
+//#MARKER hide cursor on idle
+function initHideCursorOnIdle() {
+    return __awaiter(this, void 0, void 0, function* () {
+        addSelectorListener("mainPanel", "ytmusic-player#player", {
+            listener(vidContainer) {
+                const overlaySelector = "ytmusic-player #song-media-window";
+                const overlayElem = document.querySelector(overlaySelector);
+                if (!overlayElem)
+                    return warn("Couldn't find overlay element while initializing cursor hiding");
+                let cursorHideTimer;
+                let cursorHidden = false;
+                const hide = () => {
+                    if (cursorHidden)
+                        return;
+                    cursorHidden = true;
+                    overlayElem.style.opacity = "0 !important";
+                    setTimeout(() => {
+                        overlayElem.style.display = "none";
+                        vidContainer.style.cursor = "none";
+                    }, 200);
+                };
+                const show = () => {
+                    if (!cursorHidden)
+                        return;
+                    cursorHidden = false;
+                    vidContainer.style.cursor = "initial";
+                    overlayElem.style.display = "initial";
+                    overlayElem.style.opacity = "1 !important";
+                };
+                const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
+                const onMove = () => {
+                    clearTimeout(cursorHideTimer);
+                    show();
+                    cursorHideTimerCb();
+                };
+                vidContainer.addEventListener("mouseenter", onMove);
+                vidContainer.addEventListener("mousemove", UserUtils.debounce(onMove, 25, "rising"));
+                vidContainer.addEventListener("mouseleave", () => {
+                    clearTimeout(cursorHideTimer);
+                    hide();
+                });
+                vidContainer.addEventListener("click", () => {
+                    show();
+                    cursorHideTimerCb();
+                    setTimeout(hide, 3000);
+                });
+                log("Initialized cursor hiding on idle");
+            },
+        });
+    });
 }//#MARKER beforeunload popup
 let beforeUnloadEnabled = true;
 /** Disables the popup before leaving the site */
@@ -4195,6 +4275,27 @@ const featInfo = {
         // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
+    hideCursorOnIdle: {
+        type: "toggle",
+        category: "layout",
+        default: true,
+        enable: noopTODO,
+        disable: noopTODO,
+    },
+    hideCursorOnIdleDelay: {
+        type: "slider",
+        category: "layout",
+        min: 0.5,
+        max: 10,
+        step: 0.5,
+        default: 3,
+        unit: "s",
+        enable: noopTODO,
+        change: noopTODO,
+        advanced: true,
+        // TODO: to be reworked or removed in the big menu rework
+        textAdornment: adornments.advanced,
+    },
     //#SECTION volume
     volumeSliderLabel: {
         type: "toggle",
@@ -4677,6 +4778,8 @@ const globalFuncs = {
     getLyricsCacheEntry,
     sanitizeArtists,
     sanitizeSong,
+    compareVersions,
+    compareVersionArrays,
 };
 /** Plugins that are queued up for registration */
 const pluginQueue = new Map();
@@ -4875,7 +4978,10 @@ function initObservers() {
         error("Failed to initialize observers:", err);
     }
 }
-/** Interface function for adding listeners to the {@linkcode globservers} */
+/**
+ * Interface function for adding listeners to the {@linkcode globservers}
+ * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
+ */
 function addSelectorListener(observerName, selector, options) {
     globservers[observerName].addListener(selector, options);
 }//#MARKER video time & volume
@@ -5575,6 +5681,8 @@ function onDomLoad() {
                 if (features.scrollToActiveSongBtn)
                     ftInit.push(addScrollToActiveBtn());
                 ftInit.push(initThumbnailOverlay());
+                if (features.hideCursorOnIdle)
+                    ftInit.push(initHideCursorOnIdle());
                 ftInit.push(initVolumeFeatures());
             }
             if (["ytm", "yt"].includes(domain)) {
@@ -6898,6 +7006,10 @@ button.bytm-btn {
 
 button[disabled] {
   cursor: not-allowed;
+}
+
+button[disabled].bytm-busy {
+  cursor: wait;
 }
 
 /* #MARKER menu */
