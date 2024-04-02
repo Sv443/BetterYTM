@@ -136,6 +136,10 @@ button[disabled] {
   cursor: not-allowed;
 }
 
+button[disabled].bytm-busy {
+  cursor: wait;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {

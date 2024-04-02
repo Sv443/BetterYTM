@@ -566,6 +566,7 @@ async function addCfgMenu() {
               const res = ftInfo.click();
 
               (wrapperElem as HTMLButtonElement).disabled = true;
+              wrapperElem!.classList.add("bytm-busy");
               wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
 
               if(res instanceof Promise)
@@ -573,6 +574,7 @@ async function addCfgMenu() {
 
               const finalize = () => {
                 (wrapperElem as HTMLButtonElement).disabled = false;
+                wrapperElem!.classList.remove("bytm-busy");
                 wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
               };
 

@@ -1,13 +1,13 @@
 import * as UserUtils from "@sv443-network/userutils";
+import { createNanoEvents } from "nanoevents";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
-import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
+import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
 import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem } from "./types";
 import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
-import { createNanoEvents } from "nanoevents";
 
 const { getUnsafeWindow } = UserUtils;
 
@@ -32,7 +32,7 @@ export type InterfaceEvents = {
 
   /** Emitted when a dialog was opened - returns the dialog's instance */
   "bytm:dialogOpened": BytmDialog;
-  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - use `as "bytm:dialogOpened:id"` in TS to make the error go away */
+  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - in TS, use `"..." as "bytm:dialogOpened:id"` to make the error go away */
   "bytm:dialogOpened:id": BytmDialog;
 
   /** Emitted whenever the lyrics URL for a song is loaded */
@@ -41,7 +41,7 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheReady": LyricsCache;
   /** Emitted when the lyrics cache has been cleared */
   "bytm:lyricsCacheCleared": undefined;
-  /** Emitted when an entry is added to the lyrics cache - "penalized" entries have a lower TTL because they were less related in lyrics lookups, as opposed to the "best" entries */
+  /** Emitted when an entry is added to the lyrics cache - "penalized" entries get removed from cache faster because they were less related in lyrics lookups, opposite to the "best" entries */
   "bytm:lyricsCacheEntryAdded": { type: "best" | "penalized", entry: LyricsCacheEntry };
 
   // additionally all events from SiteEventsMap in `src/siteEvents.ts`
@@ -70,6 +70,8 @@ const globalFuncs = {
   getLyricsCacheEntry,
   sanitizeArtists,
   sanitizeSong,
+  compareVersions,
+  compareVersionArrays,
 };
 
 /** Plugins that are queued up for registration */
