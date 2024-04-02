@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: "Contributor Guide"
+    about: "Read the contributor guide to learn how to contribute to the project or how to create a plugin"
+    url: "https://github.com/Sv443/BetterYTM/blob/main/contributing.md"
   - name: "Discussions"
     about: "Open a new thread on the discussion board if you have a question, want to show off your project, etc."
     url: "https://github.com/Sv443/BetterYTM/discussions"
