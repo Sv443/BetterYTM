@@ -60,6 +60,12 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
  * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
  */
 export function compareVersions(a: string, b: string) {
+  a = String(a).trim();
+  b = String(b).trim();
+
+  if([a, b].some(v => !v.match(/^\d+\.\d+\.\d+$/)))
+    throw new TypeError("Invalid version format, expected 'MAJOR.MINOR.PATCH'");
+
   const pa = a.split(".");
   const pb = b.split(".");
   for(let i = 0; i < 3; i++) {
@@ -79,10 +85,12 @@ export function compareVersions(a: string, b: string) {
 
 /**
  * Compares two version arrays.  
- * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a number.
+ * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.
  * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
  */
 export function compareVersionArrays(a: [major: number, minor: number, patch: number], b: [major: number, minor: number, patch: number]) {
+  if([a, b].some(v => !Array.isArray(v) || v.length !== 3 || v.some(iv => !Number.isInteger(iv) || iv < 0)))
+    throw new TypeError("Invalid version format, expected '[MAJOR, MINOR, PATCH]' consisting only of positive integers");
   for(let i = 0; i < 3; i++) {
     if(a[i] > b[i])
       return 1;

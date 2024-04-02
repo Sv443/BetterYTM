@@ -285,7 +285,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [compareVersions](#compareversions) - Compares two semver version strings and returns which one is newer
+  - [compareVersions](#compareversions) - Crudely compares two semver version strings and returns which one is newer
+  - [compareVersionArrays](#compareversionarrays) - Crudely compares two semver version number arrays and returns which one is newer
 
 <br><br>
 
@@ -1093,5 +1094,59 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 > </details>
 
+<br>
+
+> ### compareVersions()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.compareVersions(verA: string, verB: string): -1 | 0 | 1
+> ```
+>   
+> Description:
+> Crudely compares two semver version strings.  
+> The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a positive integer number without leading zeroes.  
+> The function returns:
+> - `-1`, when `verA < verB`
+> - `0`, when `verA == verB`
+> - `1`, when `verA > verB`
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.4");   // -1
+> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.3");   // 0
+> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.2");   // 1
+> unsafeWindow.BYTM.compareVersions("1.2.3", "invalid"); // throws a TypeError
+> ```
+> </details>
+
+<br>
+
+> ### compareVersionArrays()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.compareVersionArrays(verA: [number, number, number], verB: [number, number, number]): -1 | 0 | 1
+> ```
+>   
+> Description:  
+> Crudely compares two semver version arrays.  
+> The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.  
+> The function returns:
+> - `-1`, when `verA < verB`
+> - `0`, when `verA == verB`
+> - `1`, when `verA > verB`
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 4]);   // -1
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 3]);   // 0
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 2]);   // 1
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2]);      // throws a TypeError
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [-1, 2 3]);   // throws a TypeError
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1.1, 2 3]);  // throws a TypeError
+> ```
+> 
+> </details>
 
 <br><br><br><br><br><br>
