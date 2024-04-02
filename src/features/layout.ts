@@ -5,6 +5,7 @@ import { addSelectorListener } from "../observers";
 import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
+import { createGenericBtn } from "../components";
 import "./layout.css";
 
 //#MARKER BYTM-Config buttons
@@ -100,8 +101,8 @@ function exchangeLogo() {
   });
 }
 
-/** Called whenever the avatar popover menu exists to add a BYTM-Configuration button to the user menu popover */
-export async function addConfigMenuOption(container: HTMLElement) {
+/** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
+export async function addConfigMenuOptionYTM(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
   cfgOptElem.className = "bytm-cfg-menu-option";
   
@@ -141,6 +142,29 @@ export async function addConfigMenuOption(container: HTMLElement) {
   improveLogo();
 
   log("Added BYTM-Configuration button to menu popover");
+}
+
+/** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
+export async function addConfigMenuOptionYT(container: HTMLElement) {
+  const btnElem = await createGenericBtn({
+    resourceName: "img-logo",
+    title: t("open_menu_tooltip", scriptInfo.name),
+    onClick(e) {
+      if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
+        openCfgMenu();
+      if(!logoExchanged && (e.shiftKey || e.ctrlKey))
+        exchangeLogo();
+    },
+  });
+
+  const firstChild = container.firstElementChild;
+
+  if(firstChild)
+    container.insertBefore(btnElem, firstChild);
+  else {
+    const notifEl = container.querySelector("ytd-notification-topbar-button-renderer");
+    notifEl && insertAfter(notifEl, btnElem);
+  }
 }
 
 //#MARKER remove upgrade tab

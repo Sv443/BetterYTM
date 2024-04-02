@@ -27,7 +27,7 @@ import {
   // lyrics
   addMediaCtrlLyricsBtn,
   // menu
-  addConfigMenuOption,
+  addConfigMenuOptionYT, addConfigMenuOptionYTM,
   // other
   initVersionCheck, initLyricsCache,
 } from "./features/index";
@@ -146,7 +146,7 @@ async function onDomLoad() {
       }
 
       addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
-        listener: addConfigMenuOption,
+        listener: addConfigMenuOptionYTM,
       });
 
       if(features.arrowKeySupport)
@@ -185,6 +185,12 @@ async function onDomLoad() {
         ftInit.push(initHideCursorOnIdle());
 
       ftInit.push(initVolumeFeatures());
+    }
+
+    if(domain === "yt") {
+      addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+        listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
+      });
     }
 
     if(["ytm", "yt"].includes(domain)) {
