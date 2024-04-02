@@ -259,7 +259,7 @@ type FeatureTypeProps = ({
   | {
     type: "button";
     default: undefined;
-    click: () => void;
+    click: () => Promise<void> | void;
   }
 
 type FeatureFuncProps = {
