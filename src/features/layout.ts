@@ -514,7 +514,7 @@ export async function initThumbnailOverlay() {
   
       onInteraction(toggleBtnElem, (e) => {
         if(e instanceof MouseEvent && e.shiftKey)
-          openInNewTab(toggleBtnElem.href);
+          return openInNewTab(toggleBtnElem.href);
         invertOverlay = !invertOverlay;
         updateOverlayVisibility();
       });
