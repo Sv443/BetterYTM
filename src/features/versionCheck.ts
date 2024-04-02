@@ -43,7 +43,8 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
 
   if(versionComp < 0) {
     const dialog = await getVersionNotifDialog({ latestTag });
-    return await dialog.open();
+    await dialog.open();
+    return;
   }
   return noUpdateFound();
 }

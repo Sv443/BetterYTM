@@ -132,6 +132,10 @@ button.bytm-btn {
   text-decoration: underline;
 }
 
+button[disabled] {
+  cursor: not-allowed;
+}
+
 /* #MARKER menu */
 
 .bytm-cfg-menu-option {

@@ -1,4 +1,3 @@
-import { debounce } from "@sv443-network/userutils";
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
@@ -453,10 +452,10 @@ export const featInfo = {
     type: "button",
     category: "lyrics",
     default: undefined,
-    click() {
+    async click() {
       const entries = getLyricsCache().length;
       if(confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
-        clearLyricsCache();
+        await clearLyricsCache();
         alert(t("lyrics_clear_cache_success"));
       }
     },
@@ -498,7 +497,7 @@ export const featInfo = {
     type: "button",
     category: "general",
     default: undefined,
-    click: debounce(() => doVersionCheck(true), 750),
+    click: () => doVersionCheck(true),
   },
   logLevel: {
     type: "select",

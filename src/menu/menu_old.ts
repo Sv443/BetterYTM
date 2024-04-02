@@ -557,7 +557,31 @@ async function addCfgMenu() {
             wrapperElem = document.createElement("button");
             wrapperElem.tabIndex = 0;
             wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
-            wrapperElem.addEventListener("click", () => ftInfo.click());
+
+            onInteraction(wrapperElem, async () => {
+              if((wrapperElem as HTMLButtonElement).disabled)
+                return;
+
+              const startTs = Date.now();
+              const res = ftInfo.click();
+
+              (wrapperElem as HTMLButtonElement).disabled = true;
+              wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+
+              if(res instanceof Promise)
+                await res;
+
+              const finalize = () => {
+                (wrapperElem as HTMLButtonElement).disabled = false;
+                wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+              };
+
+              // artificial timeout ftw
+              if(Date.now() - startTs < 350)
+                setTimeout(finalize, 350 - (Date.now() - startTs));
+              else
+                finalize();
+            });
             break;
           }
 
