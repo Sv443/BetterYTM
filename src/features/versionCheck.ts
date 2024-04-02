@@ -5,6 +5,7 @@ import { getVersionNotifDialog } from "../dialogs";
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
+/** Initializes the version check feature */
 export async function initVersionCheck() {
   try {
     if(getFeatures().versionCheck === false)
@@ -21,6 +22,10 @@ export async function initVersionCheck() {
   }
 }
 
+/**
+ * Checks for a new version of the script and shows a dialog.  
+ * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
+ */
 export async function doVersionCheck(notifyNoUpdatesFound = false) {
   await GM.setValue("bytm-version-check", Date.now());
 
@@ -51,18 +56,38 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
 
 /**
  * Crudely compares two semver version strings.  
- * @returns Returns 1 if a > b or -1 if a < b or 0 if a == b
+ * The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
  */
-function compareVersions(a: string, b: string) {
+export function compareVersions(a: string, b: string) {
   const pa = a.split(".");
   const pb = b.split(".");
   for(let i = 0; i < 3; i++) {
     const na = Number(pa[i]);
     const nb = Number(pb[i]);
-    if(na > nb) return 1;
-    if(nb > na) return -1;
-    if(!isNaN(na) && isNaN(nb)) return 1;
-    if(isNaN(na) && !isNaN(nb)) return -1;
+    if(na > nb)
+      return 1;
+    if(nb > na)
+      return -1;
+    if(!isNaN(na) && isNaN(nb))
+      return 1;
+    if(isNaN(na) && !isNaN(nb))
+      return -1;
+  }
+  return 0;
+}
+
+/**
+ * Compares two version arrays.  
+ * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
+ */
+export function compareVersionArrays(a: [major: number, minor: number, patch: number], b: [major: number, minor: number, patch: number]) {
+  for(let i = 0; i < 3; i++) {
+    if(a[i] > b[i])
+      return 1;
+    if(b[i] > a[i])
+      return -1;
   }
   return 0;
 }
