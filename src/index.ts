@@ -12,6 +12,7 @@ import {
   addWatermark, removeUpgradeTab,
   initRemShareTrackParam, fixSpacing,
   addScrollToActiveBtn, initThumbnailOverlay,
+  initHideCursorOnIdle,
   // volume
   initVolumeFeatures,
   // song lists
@@ -179,6 +180,9 @@ async function onDomLoad() {
         ftInit.push(addScrollToActiveBtn());
 
       ftInit.push(initThumbnailOverlay());
+
+      if(features.hideCursorOnIdle)
+        ftInit.push(initHideCursorOnIdle());
 
       ftInit.push(initVolumeFeatures());
     }

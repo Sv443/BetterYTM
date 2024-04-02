@@ -159,7 +159,10 @@ export function initObservers() {
   }
 }
 
-/** Interface function for adding listeners to the {@linkcode globservers} */
+/**
+ * Interface function for adding listeners to the {@linkcode globservers}  
+ * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
+ */
 export function addSelectorListener<TElem extends HTMLElement>(observerName: ObserverName, selector: string, options: SelectorListenerOptions<TElem>) {
   globservers[observerName].addListener(selector, options);
 }

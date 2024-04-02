@@ -327,6 +327,10 @@ export interface FeatureConfig {
   thumbnailOverlayShowIndicator: boolean;
   /** How to fit the thumbnail overlay image */
   thumbnailOverlayImageFit: "cover" | "contain" | "fill";
+  /** Hide the cursor when it's idling on the video element for a while */
+  hideCursorOnIdle: boolean;
+  /** Delay in seconds after which the cursor should be hidden */
+  hideCursorOnIdleDelay: number;
 
   //#SECTION volume
   /** Add a percentage label to the volume slider */

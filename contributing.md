@@ -284,7 +284,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 - Other:
-  - [NanoEmitter](#nanoemitte) - Abstract class for creating lightweight, type safe event emitting classes
+  - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
+  - [compareVersions](#compareversions) - Compares two semver version strings and returns which one is newer
 
 <br><br>
 
