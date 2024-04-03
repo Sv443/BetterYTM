@@ -21,6 +21,7 @@
     "post-build": "npm run node-ts -- ./src/tools/post-build.ts",
     "tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
     "tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
+    "tr-prep": "npm run tr-format -- -p",
     "gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
     "node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
     "invisible": "node --enable-source-maps src/tools/run-invisible.mjs",

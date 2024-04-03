@@ -44,6 +44,7 @@
     "toggled_on": "Activé",
     "toggled_off": "Désactivé",
     "trigger_btn_action": "Action",
+    "trigger_btn_action_running": "En cours...",
     "remove_from_queue": "Supprimer cette chanson de la file d'attente",
     "delete_from_list": "Supprimer cette chanson de la liste",
     "couldnt_remove_from_queue": "Impossible de supprimer cette chanson de la file d'attente",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Ce bouton vous permettra d'activer ou de désactiver manuellement la vignette. Cela n'est pas affecté si la superposition est définie sur \"jamais affichée\".\nUne fois qu'une nouvelle vidéo ou chanson commence à jouer, l'état par défaut sera restauré.\nMaintenez la touche Maj enfoncée tout en cliquant ou appuyez sur le bouton du milieu de la souris pour ouvrir la vignette de la plus haute qualité dans un nouvel onglet.",
     "feature_desc_thumbnailOverlayShowIndicator": "Afficher un indicateur dans le coin inférieur droit de la vignette lorsqu'elle est active?",
     "feature_desc_thumbnailOverlayImageFit": "Comment ajuster l'image de la vignette sur l'élément vidéo",
+    "feature_desc_hideCursorOnIdle": "Masquer le curseur après quelques secondes d'inactivité sur la vidéo",
+    "feature_desc_hideCursorOnIdleDelay": "Combien de secondes d'inactivité avant que le curseur ne soit masqué?",
 
     "feature_desc_lyricsQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour ouvrir rapidement sa page de paroles",
     "feature_desc_deleteFromQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour la supprimer rapidement",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "Vider le cache des paroles manuellement",
     "feature_helptext_clearLyricsCache": "Si les paroles qui sont dans le cache local sont obsolètes ou si vous voulez simplement libérer de l'espace, vous pouvez vider le cache manuellement en appuyant sur ce bouton.",
     "feature_btn_clearLyricsCache": "Vider le cache",
+    "feature_btn_clearLyricsCache_running": "Vider...",
     "feature_desc_advancedLyricsFilter": "Expérimental: Activer le filtrage avancé pour la recherche de paroles",
     "feature_helptext_advancedLyricsFilter": "Le filtrage avancé comprend plusieurs couches de filtres qui visent à rendre les recherches de paroles plus fiables.\nCes filtres peuvent ne pas bien fonctionner pour les chansons dans votre langue et les chansons et artistes avec des titres moins uniques en général.\nAvertissement: Cette fonctionnalité est encore expérimentale et pourrait ne pas fonctionner mieux que la recherche de paroles par défaut. Assurez-vous de confirmer l'invite qui apparaît si vous avez modifié ce paramètre.",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "Cette fonctionnalité vérifie les mises à jour toutes les 24 heures, vous avertit si une nouvelle version est disponible et vous permet de mettre à jour le script manuellement.\nSi votre gestionnaire de scripts utilisateur met à jour les scripts automatiquement, vous pouvez désactiver cette fonctionnalité.",
     "feature_desc_checkVersionNow": "Rechercher manuellement une nouvelle version",
     "feature_btn_checkVersionNow": "Vérifier maintenant",
+    "feature_btn_checkVersionNow_running": "Vérification...",
     "feature_desc_logLevel": "Combien d'informations à enregistrer dans la console",
     "feature_helptext_logLevel": "Changer cela n'est vraiment nécessaire que pour le débogage à la suite d'un problème rencontré.\nSi vous en avez un, vous pouvez augmenter le niveau de journalisation ici, ouvrir la console JavaScript de votre navigateur (généralement avec Ctrl + Maj + K) et joindre des captures d'écran de ce journal dans un problème GitHub.",
     "feature_desc_advancedMode": "Afficher les paramètres avancés (après rechargement)",

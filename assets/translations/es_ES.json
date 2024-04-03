@@ -44,6 +44,7 @@
     "toggled_on": "Encendido",
     "toggled_off": "Apagado",
     "trigger_btn_action": "Disparador",
+    "trigger_btn_action_running": "Ejecutando...",
     "remove_from_queue": "Eliminar esta canción de la cola",
     "delete_from_list": "Eliminar esta canción de la lista",
     "couldnt_remove_from_queue": "No se pudo eliminar esta canción de la cola",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botón le permitirá alternar manualmente la miniatura.\nEsto no se verá afectado si la superposición está configurada en \"nunca se muestra\".\nUna vez que comienza a reproducirse un nuevo video o canción, el estado predeterminado se restaurará.\nMantenga presionada la tecla Mayús mientras hace clic o presione el botón central del mouse para abrir la miniatura de mayor calidad en una nueva pestaña.",
     "feature_desc_thumbnailOverlayShowIndicator": "Mostrar un indicador en la esquina inferior derecha de la miniatura mientras está activo",
     "feature_desc_thumbnailOverlayImageFit": "Cómo ajustar la imagen de la miniatura sobre el elemento de video",
+    "feature_desc_hideCursorOnIdle": "Ocultar el cursor después de unos segundos de inactividad sobre el video",
+    "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
 
     "feature_desc_lyricsQueueButton": "Agregue un botón a cada canción en la cola para abrir rápidamente su página de letras",
     "feature_desc_deleteFromQueueButton": "Agregue un botón a cada canción en la cola para eliminarla rápidamente",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "Borrar la caché de letras manualmente",
     "feature_helptext_clearLyricsCache": "Si las letras que están en la caché local están desactualizadas o simplemente quieres liberar algo de espacio, puedes borrar la caché manualmente presionando este botón.",
     "feature_btn_clearLyricsCache": "Borrar caché",
+    "feature_btn_clearLyricsCache_running": "Borrando...",
     "feature_desc_advancedLyricsFilter": "Experimental: Habilitar el filtrado avanzado para la búsqueda de letras",
     "feature_helptext_advancedLyricsFilter": "El filtrado avanzado incluye múltiples capas de filtros que tienen como objetivo hacer que las búsquedas de letras sean más confiables.\nEstos filtros pueden no funcionar bien para canciones en su idioma y canciones y artistas con títulos menos únicos en general.\nAdvertencia: esta función todavía es experimental y es posible que no funcione mejor que la búsqueda de letras predeterminada. Asegúrese de confirmar el mensaje que aparece si cambió esta configuración.",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "Esta función comprueba si hay actualizaciones cada 24 horas, le notifica si hay una nueva versión disponible y le permite actualizar el script manualmente.\nSi su extensión de administrador de usuarios de scripts actualiza los scripts automáticamente, puede desactivar esta función.",
     "feature_desc_checkVersionNow": "Compruebe manualmente si hay una nueva versión",
     "feature_btn_checkVersionNow": "Comprobar ahora",
+    "feature_btn_checkVersionNow_running": "Comprobando...",
     "feature_desc_logLevel": "Cuánta información registrar en la consola",
     "feature_helptext_logLevel": "Cambiar esto solo es necesario para fines de depuración como resultado de experimentar un problema.\nSi tiene uno, puede aumentar el nivel de registro aquí, abrir la consola de JavaScript de su navegador (generalmente con Ctrl + Shift + K) y adjuntar capturas de pantalla de ese registro en un problema de GitHub.",
     "feature_desc_advancedMode": "Mostrar configuración avanzada (después de recargar)",

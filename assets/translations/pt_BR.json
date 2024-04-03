@@ -44,6 +44,7 @@
     "toggled_on": "Habilitado",
     "toggled_off": "Desabilitado",
     "trigger_btn_action": "Ação",
+    "trigger_btn_action_running": "Executando...",
     "remove_from_queue": "Remover esta música da fila",
     "delete_from_list": "Excluir esta música da lista",
     "couldnt_remove_from_queue": "Não foi possível remover esta música da fila",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botão permitirá que você alterne manualmente a miniatura ligada e desligada. Isso não é afetado se a sobreposição estiver definida como \"nunca mostrada\".\nAssim que um novo vídeo ou música começar a ser reproduzido, o estado padrão será restaurado.\nMantenha pressionada a tecla shift enquanto clica ou pressione o botão do meio do mouse para abrir a miniatura da mais alta qualidade em uma nova guia.",
     "feature_desc_thumbnailOverlayShowIndicator": "Mostrar um indicador na miniatura enquanto ela estiver ativa?",
     "feature_desc_thumbnailOverlayImageFit": "Como ajustar a miniatura sobre o elemento de vídeo",
+    "feature_desc_hideCursorOnIdle": "Ocultar o cursor após alguns segundos de inatividade sobre o vídeo",
+    "feature_desc_hideCursorOnIdleDelay": "Quantos segundos de inatividade antes de ocultar o cursor?",
 
     "feature_desc_lyricsQueueButton": "Adicione um botão a cada música na fila para abrir rapidamente sua página de letras",
     "feature_desc_deleteFromQueueButton": "Adicionar um botão a cada música na fila para removê-la rapidamente",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "Limpar o cache de letras manualmente",
     "feature_helptext_clearLyricsCache": "Se as letras que estão no cache local estiverem desatualizadas ou você apenas quiser liberar espaço, você pode limpar o cache manualmente pressionando este botão.",
     "feature_btn_clearLyricsCache": "Limpar cache",
+    "feature_btn_clearLyricsCache_running": "Limpando...",
     "feature_desc_advancedLyricsFilter": "Experimental: Ativar filtragem avançada para a pesquisa de letras",
     "feature_helptext_advancedLyricsFilter": "A filtragem avançada inclui várias camadas de filtros que visam tornar as pesquisas de letras mais confiáveis.\nEsses filtros podem não funcionar bem para músicas em seu idioma e músicas e artistas com títulos menos únicos em geral.\nAviso: Este recurso ainda é experimental e pode não funcionar melhor do que a pesquisa de letras padrão. Certifique-se de confirmar o prompt que aparece se você alterou esta configuração.",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "Este recurso verifica atualizações a cada 24 horas, notifica você se uma nova versão estiver disponível e permite que você atualize o script manualmente.\nSe o seu gerenciador de scripts de usuário atualiza scripts automaticamente, você pode desativar este recurso.",
     "feature_desc_checkVersionNow": "Verificar manualmente uma nova versão",
     "feature_btn_checkVersionNow": "Verificar agora",
+    "feature_btn_checkVersionNow_running": "Verificando...",
     "feature_desc_logLevel": "Quanta informação registrar no console",
     "feature_helptext_logLevel": "Alterar isso é realmente necessário apenas para fins de depuração como resultado de experimentar um problema.\nSe você tiver um, você pode aumentar o nível de log aqui, abrir o console JavaScript do seu navegador (geralmente com Ctrl + Shift + K) e anexar capturas de tela desse log em um problema do GitHub.",
     "feature_desc_advancedMode": "Mostrar configurações avançadas (após recarregar)",
