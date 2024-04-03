@@ -44,6 +44,7 @@
     "toggled_on": "开",
     "toggled_off": "关",
     "trigger_btn_action": "触发",
+    "trigger_btn_action_running": "运行...",
     "remove_from_queue": "从队列中删除此歌曲",
     "delete_from_list": "从列表中删除此歌曲",
     "couldnt_remove_from_queue": "无法从队列中删除此歌曲",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "这个按钮允许你手动开关缩略图。一旦开始播放新的视频或歌曲，就会恢复默认状态。点击时按住 shift 或按下鼠标中键，可在新标签页中打开最高质量的缩略图。",
     "feature_desc_thumbnailOverlayShowIndicator": "在缩略图上显示一个指示器，表示它是活动的吗？",
     "feature_desc_thumbnailOverlayImageFit": "如何将缩略图图像适配到视频元素上",
+    "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
+    "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
 
     "feature_desc_lyricsQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速打开其歌词页面",
     "feature_desc_deleteFromQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速删除它",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "手动清除歌词缓存",
     "feature_helptext_clearLyricsCache": "如果本地缓存中的歌词已过时，或者您只是想释放一些空间，您可以通过按下此按钮手动清除缓存。",
     "feature_btn_clearLyricsCache": "清除缓存",
+    "feature_btn_clearLyricsCache_running": "正在清除...",
     "feature_desc_advancedLyricsFilter": "实验性：启用歌词搜索的高级过滤",
     "feature_helptext_advancedLyricsFilter": "高级过滤包括多层过滤器，旨在使歌词查找更可靠。\n这些过滤器可能不适用于您的语言的歌曲，以及标题不太独特的歌曲和艺术家。\n警告：此功能仍处于实验阶段，可能实际上并不比默认歌词查找更好。确保确认更改此设置时出现的提示。",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "此功能每 24 小时检查更新，如果有新版本可用，会通知您并允许您手动更新脚本。\n如果您的用户脚本管理器扩展自动更新脚本，您可以禁用此功能。",
     "feature_desc_checkVersionNow": "手动检查新版本",
     "feature_btn_checkVersionNow": "立即检查",
+    "feature_btn_checkVersionNow_running": "正在检查...",
     "feature_desc_logLevel": "更改扩展程序的日志级别",
     "feature_helptext_logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
     "feature_desc_advancedMode": "显示高级设置（重新加载后）",

@@ -44,6 +44,7 @@
     "toggled_on": "オン",
     "toggled_off": "オフ",
     "trigger_btn_action": "トリガー",
+    "trigger_btn_action_running": "実行中...",
     "remove_from_queue": "この曲をキューから削除",
     "delete_from_list": "この曲をリストから削除",
     "couldnt_remove_from_queue": "この曲をキューから削除できませんでした",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "このボタンを押すと、サムネイルのオンとオフを手動で切り替えることができます\n新しいビデオや曲の再生が始まると、デフォルトの状態に戻ります。シフトを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
     "feature_desc_thumbnailOverlayShowIndicator": "サムネイルがアクティブな間、サムネイルの右下隅にインジケータを表示する",
     "feature_desc_thumbnailOverlayImageFit": "サムネイル画像をビデオ要素に合わせる方法",
+    "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
+    "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
 
     "feature_desc_lyricsQueueButton": "キュー内の各曲にボタンを追加して、すばやく歌詞ページを開く",
     "feature_desc_deleteFromQueueButton": "キュー内の各曲にボタンを追加して、すばやく削除できるようにする",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "歌詞キャッシュを手動でクリアする",
     "feature_helptext_clearLyricsCache": "ローカルキャッシュにある歌詞が古くなっている場合や、スペースを解放したい場合は、このボタンを押してキャッシュを手動でクリアできます。",
     "feature_btn_clearLyricsCache": "キャッシュをクリア",
+    "feature_btn_clearLyricsCache_running": "クリア中...",
     "feature_desc_advancedLyricsFilter": "実験的: 歌詞検索のための高度なフィルタリングを有効にする",
     "feature_helptext_advancedLyricsFilter": "高度なフィルタリングには、歌詞検索をより信頼性の高いものにするための複数のフィルタのレイヤが含まれています。\nこれらのフィルタは、あなたの言語の曲や、一般的にタイトルが一意でない曲やアーティストにはうまく機能しないかもしれません。\n警告: この機能はまだ実験的であり、デフォルトの歌詞検索よりも実際に優れたパフォーマンスを発揮しないかもしれません。この設定を変更した場合は、表示されるプロンプトを確認してください。",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "この機能は 24 時間ごとに更新をチェックし、新しいバージョンが利用可能な場合に通知し、スクリプトを手動で更新することができます。\nユーザースクリプトマネージャー拡張機能がスクリプトを自動的に更新する場合、この機能を無効にすることができます。",
     "feature_desc_checkVersionNow": "手動で新しいバージョンをチェックする",
     "feature_btn_checkVersionNow": "今すぐチェック",
+    "feature_btn_checkVersionNow_running": "チェック中...",
     "feature_desc_logLevel": "ログレベル",
     "feature_helptext_logLevel": "これを変更するのは、問題が発生した結果としてデバッグ目的でのみ必要です。\n問題が発生した場合にのみ、ここでログレベルを増やし、ブラウザの JavaScript コンソールを開いて（通常は Ctrl + Shift + K）そのログのスクリーンショットを GitHub の課題に添付してください。",
     "feature_desc_advancedMode": "詳細設定を表示（再読み込み後）",

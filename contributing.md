@@ -115,6 +115,8 @@ To edit an existing translation, please follow these steps:
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a comma separated list (e.g. `-o="fr_FR,de_DE"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
+- **`npm run tr-prep`**  
+  Shorthand for `npm run tr-format -- -p` (see above)
 - **`npm run --silent invisible -- "<command>"`**  
   Runs the passed command as a detached child process without giving any console output.  
   Remove `--silent` to see npm's info and error messages.

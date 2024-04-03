@@ -44,6 +44,7 @@
     "toggled_on": "An",
     "toggled_off": "Aus",
     "trigger_btn_action": "Ausführen",
+    "trigger_btn_action_running": "Wird ausgeführt...",
     "remove_from_queue": "Aus der Wiedergabeliste entfernen",
     "delete_from_list": "Aus der Liste löschen",
     "couldnt_remove_from_queue": "Song konnte nicht aus der Wiedergabeliste entfernt werden",
@@ -161,6 +162,8 @@
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Dieser Knopf ermöglicht es dir, das Thumbnail manuell ein- und auszuschalten. Dies wird nicht beeinflusst, wenn das Overlay auf \"nie gezeigt\" eingestellt ist.\nSobald ein neues Video oder Lied abgespielt wird, wird der Standardzustand wiederhergestellt.\nHalte Shift gedrückt, während du klickst oder drücke die mittlere Maustaste, um das Thumbnail in höchster Qualität in einem neuen Tab zu öffnen.",
     "feature_desc_thumbnailOverlayShowIndicator": "Zeige einen Indikator in der unteren rechten Ecke des Thumbnails, während es aktiv ist?",
     "feature_desc_thumbnailOverlayImageFit": "Wie das Thumbnail über dem Videoelement angezeigt werden soll",
+    "feature_desc_hideCursorOnIdle": "Verstecke den Cursor nach einigen Sekunden Inaktivität über dem Video",
+    "feature_desc_hideCursorOnIdleDelay": "Wie viele Sekunden Inaktivität vergehen müssen, bevor der Cursor versteckt wird",
 
     "feature_desc_lyricsQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um den Songtext schnell zu öffnen",
     "feature_desc_deleteFromQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen",
@@ -202,6 +205,7 @@
     "feature_desc_clearLyricsCache": "Lösche den Songtext-Cache manuell",
     "feature_helptext_clearLyricsCache": "Wenn die Songtexte im lokalen Cache veraltet sind oder du einfach nur etwas Platz freimachen möchtest, kannst du den Cache manuell löschen, indem du diesen Knopf drückst.",
     "feature_btn_clearLyricsCache": "Cache löschen",
+    "feature_btn_clearLyricsCache_running": "Wird gelöscht...",
     "feature_desc_advancedLyricsFilter": "Experimentell: Aktiviere erweiterte Filterung für die Songtext-Suche",
     "feature_helptext_advancedLyricsFilter": "Erweiterte Filterung beinhaltet mehrere Schichten von Filtern, die darauf abzielen, die Songtext-Suchen zuverlässiger zu machen.\nDiese Filter funktionieren möglicherweise nicht gut für Songs in deiner Sprache und Songs und Künstler mit weniger eindeutigen Titeln im Allgemeinen.\nWarnung: Diese Funktion ist immer noch experimentell und könnte tatsächlich nicht besser funktionieren als die Standard-Songtext-Suche. Stelle sicher, dass du die Meldung bestätigst, die erscheint, wenn du diese Einstellung geändert hast.",
 
@@ -210,6 +214,7 @@
     "feature_helptext_versionCheck": "Diese Funktion prüft alle 24 Stunden auf Updates, benachrichtigt dich, wenn eine neue Version verfügbar ist und ermöglicht es dir, das Skript manuell zu aktualisieren.\nWenn dein Userscript-Manager Skripte automatisch aktualisiert, kannst du diese Funktion deaktivieren.",
     "feature_desc_checkVersionNow": "Manuell nach einer neuen Version suchen",
     "feature_btn_checkVersionNow": "Jetzt prüfen",
+    "feature_btn_checkVersionNow_running": "Wird geprüft...",
     "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?",
     "feature_helptext_logLevel": "Das Ändern dieses Wertes ist wirklich nur für Debugging-Zwecke notwendig, wenn du ein Problem hast.\nSolltest du eines haben, kannst du den Log-Level hier erhöhen, die JavaScript-Konsole deines Browsers (normalerweise mit Strg + Shift + K) öffnen und Screenshots dieses Logs in einem GitHub-Issue hinzufügen.",
     "feature_desc_advancedMode": "Erweiterte Einstellungen anzeigen (nach dem Neuladen)",
