@@ -13,7 +13,6 @@ export async function initVolumeFeatures() {
   // not technically an input element but behaves pretty much the same
   addSelectorListener<HTMLInputElement>("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
     listener: async (sliderElem) => {
-      // TODO:FIXME: broken fsr
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
 
