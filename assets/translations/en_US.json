@@ -159,7 +159,7 @@
     "feature_desc_thumbnailOverlayBehavior": "When to automatically replace the video element with its thumbnail in the highest resolution",
     "feature_helptext_thumbnailOverlayBehavior": "The thumbnail will be shown over top of the currently playing video or song.\nThis will not save any bandwidth as the video will still be loaded and played in the background!",
     "feature_desc_thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail on and off. This is not affected if the overlay is set to \"never shown\".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail on and off. This is not affected if the thumbnail replacement option is set to \"never\".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
     "feature_desc_thumbnailOverlayShowIndicator": "Show an indicator in the bottom right corner of the thumbnail while it's active?",
     "feature_desc_thumbnailOverlayImageFit": "How to fit the thumbnail image over the video element",
     "feature_desc_hideCursorOnIdle": "Hide the cursor after a few seconds of inactivity over the video",
