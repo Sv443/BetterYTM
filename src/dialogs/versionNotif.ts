@@ -1,5 +1,5 @@
 import { host, scriptInfo } from "../constants";
-import { getChangelogMd, onInteraction, parseMarkdown, t } from "../utils";
+import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils";
 import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, setFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
@@ -28,13 +28,28 @@ export async function getVersionNotifDialog({
       closeOnEscPress: true,
       destroyOnClose: true,
       smallDialog: true,
+      renderHeader,
       renderBody: () => renderBody({
         latestTag,
         changelogHtml,
       }),
     });
   }
-  return verNotifDialog!;
+  return verNotifDialog;
+}
+
+async function renderHeader() {
+  const headerEl = document.createElement("div");
+  headerEl.role = "heading";
+  headerEl.ariaLevel = "1";
+
+  const logoEl = document.createElement("img");
+  logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
+  logoEl.src = await getResourceUrl("img-logo");
+  logoEl.alt = "BetterYTM logo";
+
+  headerEl.appendChild(logoEl);
+  return headerEl;
 }
 
 let disableUpdateCheck = false;
