@@ -150,14 +150,17 @@ export function initObservers() {
       });
 
       // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
-      const playerBarRightControls = ".right-controls .middle-controls-buttons";
+      const playerBarRightControls = "#right-controls";
       globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
       globservers.playerBar.addListener(playerBarRightControls, {
-        listener: () => globservers.playerBarRightControls.enable(),
+        listener: () => {
+          console.log(">> enable playerBarRightControls");
+          globservers.playerBarRightControls.enable();
+        },
       });
 
       // #SECTION popupContainer = the container for popups (e.g. the queue popup)
