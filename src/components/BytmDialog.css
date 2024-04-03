@@ -135,12 +135,19 @@
 }
 
 .bytm-dialog-close {
-  width: 32px;
-  height: 32px;
   cursor: pointer;
 }
 
-.bytm-dialog-close.small {
+.bytm-dialog-header-img,
+.bytm-dialog-close
+{
+  width: 32px;
+  height: 32px;
+}
+
+.bytm-dialog-header-img.small,
+.bytm-dialog-close.small
+{
   width: 24px;
   height: 24px;
 }
