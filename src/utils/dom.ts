@@ -1,4 +1,4 @@
-import { getUnsafeWindow } from "@sv443-network/userutils";
+import { addGlobalStyle, getUnsafeWindow, randomId } from "@sv443-network/userutils";
 import { error, getDomain } from ".";
 import { addSelectorListener } from "src/observers";
 
@@ -154,4 +154,17 @@ export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: 
   };
   elem.addEventListener("click", proxListener, listenerOptions);
   elem.addEventListener("keydown", proxListener, listenerOptions);
+}
+
+/**
+ * Adds a style element to the DOM at runtime.
+ * @param css The CSS stylesheet to add
+ * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ */
+export function addStyle(css: string, ref?: string) {
+  if(!domLoaded)
+    throw new Error("DOM has not finished loading yet");
+  const elem = addGlobalStyle(css);
+  elem.id = `bytm-global-style-${ref ?? randomId(5, 36)}`;
+  return elem;
 }

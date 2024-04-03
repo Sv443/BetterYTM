@@ -1,5 +1,5 @@
-import { addGlobalStyle, compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { domLoaded, reserialize, warn } from "./utils";
+import { compress, decompress, type Stringifiable } from "@sv443-network/userutils";
+import { addStyle, domLoaded, reserialize, warn } from "./utils";
 import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -310,7 +310,7 @@ async function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
   // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-  addGlobalStyle("#{{GLOBAL_STYLE}}").id = "bytm-style-global";
+  addStyle("#{{GLOBAL_STYLE}}", "global");
 }
 
 /** Registers dev commands using `GM.registerMenuCommand` */

@@ -1,8 +1,8 @@
-import { addGlobalStyle, addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain, addStyle } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createGenericBtn } from "../components";
@@ -192,7 +192,7 @@ export async function addAnchorImprovements() {
   try {
     const css = await (await fetchAdvanced(await getResourceUrl("css-anchor_improvements"))).text();
     if(css)
-      addGlobalStyle(css).id = "bytm-style-anchor-improvements";
+      addStyle(css, "anchor-improvements");
   }
   catch(err) {
     error("Couldn't add anchor improvements CSS due to an error:", err);
@@ -370,7 +370,7 @@ export async function fixSpacing() {
   try {
     const css = await (await fetchAdvanced(await getResourceUrl("css-fix_spacing"))).text();
     if(css)
-      addGlobalStyle(css).id = "bytm-style-fix-spacing";
+      addStyle(css, "fix-spacing");
   }
   catch(err) {
     error("Couldn't fix spacing due to an error:", err);

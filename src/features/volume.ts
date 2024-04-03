@@ -1,6 +1,6 @@
-import { addGlobalStyle, addParent, type Stringifiable } from "@sv443-network/userutils";
+import { addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
-import { error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
+import { addStyle, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from ".";
 import "./volume.css";
@@ -159,10 +159,10 @@ function setVolSliderSize() {
   if(typeof size !== "number" || isNaN(Number(size)))
     return;
 
-  addGlobalStyle(`\
+  addStyle(`\
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   width: ${size}px !important;
-}`).id = "bytm-style-vol-slider-size";
+}`, "vol-slider-size");
 }
 
 //#SECTION step
