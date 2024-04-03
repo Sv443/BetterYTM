@@ -1,7 +1,6 @@
-import { addGlobalStyle } from "@sv443-network/userutils";
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "../utils/NanoEmitter";
-import { clearInner, getResourceUrl, warn } from "../utils";
+import { addStyle, clearInner, getResourceUrl, warn } from "../utils";
 import { t } from "../utils/translations";
 import { emitInterface } from "../interface";
 import "./BytmDialog.css";
@@ -91,11 +90,11 @@ export class BytmDialog extends NanoEmitter<{
 
     this.attachListeners(bgElem);
 
-    addGlobalStyle(`\
+    addStyle(`\
 #bytm-${this.id}-dialog-bg {
   --bytm-dialog-width-max: ${this.options.maxWidth}px;
   --bytm-dialog-height-max: ${this.options.maxHeight}px;
-}`).id = `bytm-style-dialog-${this.id}`;
+}`, `dialog-${this.id}`);
 
     this.events.emit("render");
     return bgElem;
