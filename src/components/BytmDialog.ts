@@ -20,6 +20,8 @@ export interface BytmDialogOptions {
   closeBtnEnabled?: boolean;
   /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
+  /** Whether the dialog should be unmounted when it's closed - defaults to false */
+  unmountOnClose?: boolean;
   /** Whether the menu should have a smaller overall appearance - defaults to false */
   smallDialog?: boolean;
   /** Called to render the body of the dialog */
@@ -51,7 +53,6 @@ export class BytmDialog extends NanoEmitter<{
 
   private dialogOpen = false;
   private dialogMounted = false;
-  private listenersAttached = false;
 
   constructor(options: BytmDialogOptions) {
     super();
@@ -61,6 +62,7 @@ export class BytmDialog extends NanoEmitter<{
       closeOnEscPress: true,
       closeBtnEnabled: true,
       destroyOnClose: false,
+      unmountOnClose: false,
       smallHeader: false,
       ...options,
     };
@@ -186,6 +188,9 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.options.destroyOnClose)
       this.destroy();
+
+    if(this.options.unmountOnClose)
+      this.unmount();
   }
 
   /** Returns true if the dialog is currently open */
@@ -216,10 +221,6 @@ export class BytmDialog extends NanoEmitter<{
 
   /** Called once to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
-    if(this.listenersAttached)
-      return;
-    this.listenersAttached = true;
-
     if(this.options.closeOnBgClick) {
       bgElem.addEventListener("click", (e) => {
         if(this.isOpen() && (e.target as HTMLElement)?.id === `bytm-${this.id}-dialog-bg`)

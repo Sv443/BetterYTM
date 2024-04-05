@@ -5,6 +5,7 @@ import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
+import { getFeatHelpDialog } from "../dialogs";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
 import { createHotkeyInput, createToggleInput } from "../components";
@@ -342,11 +343,11 @@ async function addCfgMenu() {
             helpElem.role = "button";
             helpElem.tabIndex = 0;
             helpElem.innerHTML = helpElemImgHtml;
-            onInteraction(helpElem, (e: MouseEvent | KeyboardEvent) => {
+            onInteraction(helpElem, async (e: MouseEvent | KeyboardEvent) => {
               e.preventDefault();
               e.stopPropagation();
 
-              openHelpDialog(featKey as FeatureKey);
+              await (await getFeatHelpDialog({ featKey: featKey as FeatureKey })).open();
             });
           }
           else {
@@ -791,125 +792,6 @@ function checkToggleScrollIndicator() {
       scrollIndicator.classList.add("bytm-hidden");
     }
   }
-}
-
-//#MARKER help dialog
-
-let isHelpDialogOpen = false;
-/** Key of the feature currently loaded in the help dialog */
-let helpDialogCurFeature: FeatureKey | undefined;
-
-/** Opens the feature help dialog for the given feature */
-async function openHelpDialog(featureKey: FeatureKey) {
-  if(isHelpDialogOpen)
-    return;
-  isHelpDialogOpen = true;
-
-  let menuBgElem: HTMLElement;
-
-  if(!helpDialogCurFeature) {
-    // create menu
-
-    const headerElem = document.createElement("div");
-    headerElem.classList.add("bytm-menu-header", "small");
-
-    const titleCont = document.createElement("div");
-    titleCont.className = "bytm-menu-titlecont-no-title";
-    titleCont.role = "heading";
-    titleCont.ariaLevel = "1";
-
-    const helpIconSvg = await resourceToHTMLString("icon-help");
-    if(helpIconSvg)
-      titleCont.innerHTML = helpIconSvg;
-
-    const closeElem = document.createElement("img");
-    closeElem.classList.add("bytm-menu-close", "small");
-    closeElem.role = "button";
-    closeElem.tabIndex = 0;
-    closeElem.src = await getResourceUrl("img-close");
-    closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-    onInteraction(closeElem, closeHelpDialog);
-
-    headerElem.appendChild(titleCont);
-    headerElem.appendChild(closeElem);
-
-    menuBgElem = document.createElement("div");
-    menuBgElem.id = "bytm-feat-help-menu-bg";
-    menuBgElem.classList.add("bytm-menu-bg");
-    menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-    menuBgElem.style.visibility = "hidden";
-    menuBgElem.style.display = "none";
-    menuBgElem.addEventListener("click", (e) => {
-      if(isHelpDialogOpen && (e.target as HTMLElement)?.id === "bytm-feat-help-menu-bg")
-        closeHelpDialog(e);
-    });
-    document.body.addEventListener("keydown", (e) => {
-      if(isHelpDialogOpen && e.key === "Escape")
-        closeHelpDialog(e);
-    });
-
-    const menuContainer = document.createElement("div");
-    menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-    menuContainer.classList.add("bytm-menu");
-    menuContainer.id = "bytm-feat-help-menu";
-
-    const featDescElem = document.createElement("h3");
-    featDescElem.id = "bytm-feat-help-menu-desc";
-
-    const helpTextElem = document.createElement("div");
-    helpTextElem.id = "bytm-feat-help-menu-text";
-
-    menuContainer.appendChild(headerElem);
-    menuContainer.appendChild(featDescElem);
-    menuContainer.appendChild(helpTextElem);
-
-    menuBgElem.appendChild(menuContainer);
-    document.body.appendChild(menuBgElem);
-  }
-  else
-    menuBgElem = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg")!;
-
-  if(helpDialogCurFeature !== featureKey) {
-    // update help text
-    const featDescElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-desc")!;
-    const helpTextElem = menuBgElem.querySelector<HTMLElement>("#bytm-feat-help-menu-text")!;
-
-    featDescElem.textContent = t(`feature_desc_${featureKey}`);
-
-    // @ts-ignore
-    const helpText: string | undefined = featInfo[featureKey]?.helpText?.();
-    helpTextElem.textContent = helpText ?? t(`feature_helptext_${featureKey}`);
-  }
-
-  // show menu
-  const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
-
-  if(!menuBg)
-    return warn("Couldn't find feature help dialog background element");
-
-  helpDialogCurFeature = featureKey;
-
-  menuBg.style.visibility = "visible";
-  menuBg.style.display = "block";
-
-  document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true");
-}
-
-function closeHelpDialog(evt?: MouseEvent | KeyboardEvent) {
-  if(!isHelpDialogOpen)
-    return;
-  isHelpDialogOpen = false;
-  evt?.bubbles && evt.stopPropagation();
-
-  const menuBg = document.querySelector<HTMLElement>("#bytm-feat-help-menu-bg");
-
-  if(!menuBg)
-    return warn("Couldn't find feature help dialog background element");
-
-  menuBg.style.visibility = "hidden";
-  menuBg.style.display = "none";
-
-  document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert");
 }
 
 //#MARKER export menu
