@@ -4,6 +4,7 @@ import { featInfo } from "../features";
 import type { FeatureKey } from "../types";
 
 let featHelpDialog: BytmDialog | null = null;
+let curFeatKey: FeatureKey | null = null;
 
 export type FeatHelpDialogRenderProps = {
   featKey: FeatureKey;
@@ -13,6 +14,7 @@ export type FeatHelpDialogRenderProps = {
 export async function getFeatHelpDialog({
   featKey,
 }: FeatHelpDialogRenderProps) {
+  curFeatKey = featKey;
   if(!featHelpDialog) {
     featHelpDialog = new BytmDialog({
       id: "feat-help",
@@ -21,13 +23,10 @@ export async function getFeatHelpDialog({
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
-      destroyOnClose: true,
       small: true,
       renderHeader,
-      renderBody: () => renderBody({ featKey }),
+      renderBody,
     });
-
-    featHelpDialog.on("destroy", () => featHelpDialog = null);
 
     // make config menu inert while help dialog is open
     featHelpDialog.on("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
@@ -47,23 +46,19 @@ async function renderHeader() {
   return headerEl;
 }
 
-async function renderBody({
-  featKey,
-}: {
-  featKey: FeatureKey;
-}) {
+async function renderBody() {
   const contElem = document.createElement("div");
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
-  featDescElem.textContent = t(`feature_desc_${featKey}`);
-  featDescElem.id = "bytm-feat-help-menu-desc";
+  featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
+  featDescElem.id = "bytm-feat-help-dialog-desc";
 
   const helpTextElem = document.createElement("div");
-  helpTextElem.id = "bytm-feat-help-menu-text";
+  helpTextElem.id = "bytm-feat-help-dialog-text";
   // @ts-ignore
-  const helpText: string | undefined = featInfo[featKey]?.helpText?.();
-  helpTextElem.textContent = helpText ?? t(`feature_helptext_${featKey}`);
+  const helpText: string | undefined = featInfo[curFeatKey]?.helpText?.();
+  helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);
 
   contElem.appendChild(featDescElem);
   contElem.appendChild(helpTextElem);
