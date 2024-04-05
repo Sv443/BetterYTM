@@ -8,10 +8,10 @@ import "./BytmDialog.css";
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
   id: string;
-  /** Maximum width of the dialog in pixels */
-  maxWidth: number;
-  /** Maximum height of the dialog in pixels */
-  maxHeight: number;
+  /** Target and max width of the dialog in pixels */
+  width: number;
+  /** Target and max height of the dialog in pixels */
+  height: number;
   /** Whether the dialog should close when the background is clicked - defaults to true */
   closeOnBgClick?: boolean;
   /** Whether the dialog should close when the escape key is pressed - defaults to true */
@@ -94,8 +94,8 @@ export class BytmDialog extends NanoEmitter<{
 
     addStyle(`\
 #bytm-${this.id}-dialog-bg {
-  --bytm-dialog-width-max: ${this.options.maxWidth}px;
-  --bytm-dialog-height-max: ${this.options.maxHeight}px;
+  --bytm-dialog-width-max: ${this.options.width}px;
+  --bytm-dialog-height-max: ${this.options.height}px;
 }`, `dialog-${this.id}`);
 
     this.events.emit("render");

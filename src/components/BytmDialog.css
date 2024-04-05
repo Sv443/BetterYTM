@@ -162,9 +162,6 @@
 }
 
 .bytm-dialog-footer-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin-top: 6px;
   padding: 15px 20px;
   background: var(--bytm-dialog-bg);

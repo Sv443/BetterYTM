@@ -21,8 +21,8 @@ export async function getVersionNotifDialog({
 
     verNotifDialog = new BytmDialog({
       id: "version-notif",
-      maxWidth: 600,
-      maxHeight: 800,
+      width: 600,
+      height: 800,
       closeBtnEnabled: false,
       closeOnBgClick: false,
       closeOnEscPress: true,

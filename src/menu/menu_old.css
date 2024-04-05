@@ -217,7 +217,6 @@
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  margin-top: 15px;
 }
 
 #bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
@@ -310,12 +309,12 @@
 
 #bytm-export-menu-text, #bytm-import-menu-text {
   white-space: pre-wrap;
-  font-size: 1.6em;
+  font-size: 1.6rem;
   margin-bottom: 15px;
 }
 
 .bytm-menu-footer-copied {
-  font-size: 1.6em;
+  font-size: 1.6rem;
   margin-right: 15px;
 }
 
