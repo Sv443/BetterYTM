@@ -1,4 +1,4 @@
-import { addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
@@ -589,26 +589,27 @@ export async function initHideCursorOnIdle() {
       if(!overlayElem)
         return warn("Couldn't find overlay element while initializing cursor hiding");
 
+      /** Timer after which the cursor is hidden */
       let cursorHideTimer: ReturnType<typeof setTimeout>;
-      let cursorHidden = false;
+      /** Timer for the opacity transition while switching to the hidden state */
+      let hideTransTimer: ReturnType<typeof setTimeout>;
 
       const hide = () => {
-        if(cursorHidden)
+        if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
-        cursorHidden = true;
-
         overlayElem.style.opacity = "0 !important";
-        setTimeout(() => {
+        hideTransTimer = setTimeout(() => {
           overlayElem.style.display = "none";
           vidContainer.style.cursor = "none";
+          vidContainer.classList.add("bytm-cursor-hidden");
         }, 200);
       };
 
       const show = () => {
-        if(!cursorHidden)
+        hideTransTimer && clearTimeout(hideTransTimer);
+        if(!vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
-        cursorHidden = false;
-
+        vidContainer.classList.remove("bytm-cursor-hidden");
         vidContainer.style.cursor = "initial";
         overlayElem.style.display = "initial";
         overlayElem.style.opacity = "1 !important";
@@ -619,14 +620,16 @@ export async function initHideCursorOnIdle() {
 
       const onMove = () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
+        hideTransTimer && clearTimeout(hideTransTimer);
         show();
         cursorHideTimerCb();
       };
 
       vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", onMove);
+      vidContainer.addEventListener("mousemove", debounce(onMove, 200, "rising"));
       vidContainer.addEventListener("mouseleave", () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
+        hideTransTimer && clearTimeout(hideTransTimer);
         hide();
       });
       vidContainer.addEventListener("click", () => {
