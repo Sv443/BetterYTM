@@ -405,6 +405,7 @@ async function addCfgMenu() {
           const advCopyHintElem = document.createElement("span");
           advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
           advCopyHintElem.textContent = t("copied");
+          advCopyHintElem.role = "status";
           advCopyHintElem.style.display = "none";
 
           const advCopyHiddenBtn = document.createElement("button");
@@ -905,6 +906,7 @@ async function addExportMenu() {
 
   const copiedTextElem = document.createElement("span");
   copiedTextElem.id = "bytm-export-menu-copied-txt";
+  copiedTextElem.role = "status";
   copiedTextElem.classList.add("bytm-menu-footer-copied");
   copiedTextElem.textContent = t("copied");
   copiedTextElem.style.display = "none";
