@@ -359,7 +359,6 @@
 #bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  padding: 10px 10px 15px 20px;
   font-size: 1.5em;
 }
 

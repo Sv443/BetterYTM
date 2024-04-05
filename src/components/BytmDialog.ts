@@ -33,7 +33,7 @@ export interface BytmDialogOptions {
 }
 
 /** ID of the last opened (top-most) dialog */
-let lastDialogId: string | null = null;
+let currentDialogId: string | null = null;
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<{
@@ -152,7 +152,7 @@ export class BytmDialog extends NanoEmitter<{
     dialogBg.style.display = "block";
     dialogBg.inert = false;
 
-    lastDialogId = this.id;
+    currentDialogId = this.id;
 
     this.events.emit("open");
     emitInterface("bytm:dialogOpened", this as BytmDialog);
@@ -181,8 +181,8 @@ export class BytmDialog extends NanoEmitter<{
     dialogBg.style.display = "none";
     dialogBg.inert = true;
 
-    if(BytmDialog.getLastDialogId() === this.id)
-      lastDialogId = null;
+    if(BytmDialog.getCurrentDialogId() === this.id)
+      currentDialogId = null;
 
     this.events.emit("close");
 
@@ -213,8 +213,8 @@ export class BytmDialog extends NanoEmitter<{
   //#MARKER static
 
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-  public static getLastDialogId() {
-    return lastDialogId;
+  public static getCurrentDialogId() {
+    return currentDialogId;
   }
 
   //#MARKER protected
@@ -230,7 +230,7 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.options.closeOnEscPress) {
       document.body.addEventListener("keydown", (e) => {
-        if(e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
+        if(e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id)
           this.close(e);
       });
     }
