@@ -23,7 +23,7 @@ let initLocale: string | undefined;
 /** Stringified config at the point of initializing the config menu */
 let initConfig: string | undefined;
 /** Timeout id for the "copied" text in the hidden value copy button */
-let hiddenCopiedTxtTimeout: number | undefined;
+let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /**
  * Adds an element to open the BetterYTM menu
@@ -422,7 +422,7 @@ async function addCfgMenu() {
               hiddenCopiedTxtTimeout = setTimeout(() => {
                 advCopyHintElem.style.display = "none";
                 hiddenCopiedTxtTimeout = undefined;
-              }, 3000) as unknown as number;
+              }, 3000);
             }
           };
 
