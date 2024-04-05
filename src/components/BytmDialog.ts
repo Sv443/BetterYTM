@@ -246,6 +246,9 @@ export class BytmDialog extends NanoEmitter<{
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
     dialogWrapperEl.classList.add("bytm-dialog");
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
+    dialogWrapperEl.role = "dialog";
+    dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
+    dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
 
     //#SECTION header
 
@@ -255,6 +258,7 @@ export class BytmDialog extends NanoEmitter<{
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
+      headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
       headerTitleWrapperEl.classList.add("bytm-dialog-title-wrapper");
       headerTitleWrapperEl.role = "heading";
       headerTitleWrapperEl.ariaLevel = "1";
@@ -276,6 +280,7 @@ export class BytmDialog extends NanoEmitter<{
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
+      closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
       closeBtnEl.addEventListener("click", () => this.close());
       headerWrapperEl.appendChild(closeBtnEl);
     }

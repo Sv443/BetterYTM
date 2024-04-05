@@ -154,6 +154,7 @@ async function addCfgMenu() {
   const footerElem = document.createElement("div");
   footerElem.classList.add("bytm-menu-footer", "hidden");
   footerElem.textContent = t("reload_hint");
+  footerElem.role = "alert";
 
   const reloadElem = document.createElement("button");
   reloadElem.classList.add("bytm-btn");
