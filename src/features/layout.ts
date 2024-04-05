@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewT
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain, addStyle } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createGenericBtn } from "../components";
@@ -429,6 +429,8 @@ export async function initThumbnailOverlay() {
   if(behavior === "never" && !toggleBtnShown)
     return;
 
+  await waitVideoElementReady();
+
   const playerSelector = "ytmusic-player#player";
   const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
@@ -437,8 +439,11 @@ export async function initThumbnailOverlay() {
 
   /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
   const updateOverlayVisibility = async () => {
+    if(!domLoaded)
+      return;
+
     let showOverlay = behavior === "always";
-    const isVideo = document.querySelector<HTMLElement>("ytmusic-player")?.hasAttribute("video-mode") ?? false;
+    const isVideo = currentMediaType() === "video";
 
     if(behavior === "videosOnly" && isVideo)
       showOverlay = true;
@@ -470,8 +475,6 @@ export async function initThumbnailOverlay() {
         toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
     }
   };
-
-  window.addEventListener("bytm:ready", updateOverlayVisibility, { once: true });
 
   const applyThumbUrl = async (watchId: string) => {
     const thumbUrl = await getBestThumbnailUrl(watchId);

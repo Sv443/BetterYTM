@@ -157,10 +157,7 @@ export function initObservers() {
       });
 
       globservers.playerBar.addListener(playerBarRightControls, {
-        listener: () => {
-          console.log(">> enable playerBarRightControls");
-          globservers.playerBarRightControls.enable();
-        },
+        listener: () => globservers.playerBarRightControls.enable(),
       });
 
       // #SECTION popupContainer = the container for popups (e.g. the queue popup)
