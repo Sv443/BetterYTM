@@ -404,16 +404,22 @@
   font-weight: bolder;
 }
 
+.bytm-markdown-container ul li > ul li > ul li::before {
+  white-space: pre-wrap;
+  content: "        • ";
+  font-weight: bolder;
+}
+
 #bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  padding: 10px 10px 15px 20px;
-  font-size: 1.5em;
+  font-size: 1.5rem;
+  line-height: 1.25em;
 }
 
 #bytm-feat-help-menu-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
+  font-size: 1.8rem;
+  padding-bottom: 10px;
 }
 
 .bytm-ftitem-help-btn {
