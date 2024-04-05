@@ -4,7 +4,7 @@ import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
-import { FeatureInfo } from "../types";
+import { FeatureInfo, type ResourceKey, type SiteSelection } from "../types";
 import { volumeSharedBetweenTabsDisabled } from "./volume";
 
 export * from "./layout";
@@ -29,17 +29,20 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
 }, [] as SelectOption[])
   .sort((a, b) => a.label.localeCompare(b.label));
 
+const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
+  `<span class="${className}" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceToHTMLString(resource) ?? ""}</span>`;
+
 /** Decoration elements that can be added next to the label */
 const adornments = {
-  advanced: async () => `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${await resourceToHTMLString("icon-advanced_mode") ?? ""}</span>`,
-  experimental: async () => `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}" aria-label="${t("experimental_feature")}" role="alert">${await resourceToHTMLString("icon-experimental") ?? ""}</span>`,
+  advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
+  experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
   globe: async () => await resourceToHTMLString("icon-globe") ?? "",
-  warning: async (text: string) => `<span class="bytm-warning-icon bytm-adorn-icon" title="${text}" aria-label="${text}" role="alert">${await resourceToHTMLString("icon-error") ?? ""}</span>`,
+  warning: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
 };
 
 /** Common options for config items of type "select" */
 const options = {
-  siteSelection: () => [
+  siteSelection: (): { value: SiteSelection, label: string }[] => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
@@ -66,7 +69,7 @@ const options = {
  * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
  * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked |
  * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element |
  * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
  * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
  * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
@@ -86,43 +89,43 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   removeShareTrackingParamSites: {
     type: "select",
     category: "layout",
     options: options.siteSelection,
     default: "all",
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   removeUpgradeTab: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
+    enable: noop,
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -134,24 +137,23 @@ export const featInfo = {
       { value: "never", label: t("thumbnail_overlay_behavior_never") },
     ],
     default: "songsOnly",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   thumbnailOverlayToggleBtnShown: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   thumbnailOverlayShowIndicator: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   thumbnailOverlayImageFit: {
@@ -163,18 +165,17 @@ export const featInfo = {
       { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
     ],
     default: "cover",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   hideCursorOnIdle: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   hideCursorOnIdleDelay: {
     type: "slider",
@@ -184,10 +185,9 @@ export const featInfo = {
     step: 0.5,
     default: 3,
     unit: "s",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
 
@@ -196,8 +196,8 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   volumeSliderSize: {
     type: "number",
@@ -207,8 +207,8 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   volumeSliderStep: {
     type: "slider",
@@ -217,8 +217,8 @@ export const featInfo = {
     max: 25,
     default: 2,
     unit: "%",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   volumeSliderScrollStep: {
     type: "slider",
@@ -227,22 +227,22 @@ export const featInfo = {
     max: 25,
     default: 10,
     unit: "%",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   volumeSharedBetweenTabs: {
     type: "toggle",
     category: "volume",
     default: false,
-    enable: noopTODO,
+    enable: noop,
     disable: () => volumeSharedBetweenTabsDisabled,
   },
   setInitialTabVolume: {
     type: "toggle",
     category: "volume",
     default: false,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
   initialTabVolumeLevel: {
@@ -253,8 +253,8 @@ export const featInfo = {
     step: 1,
     default: 100,
     unit: "%",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
 
@@ -263,15 +263,15 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   listButtonsPlacement: {
     type: "select",
@@ -281,8 +281,8 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
 
   //#SECTION behavior
@@ -290,7 +290,7 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: false,
-    enable: noopTODO,
+    enable: noop,
   },
   closeToastsTimeout: {
     type: "number",
@@ -300,15 +300,15 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO, // TODO: feasible?
+    enable: noop,
+    disable: noop, // TODO: feasible?
     helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
   },
   rememberSongTimeSites: {
@@ -316,8 +316,8 @@ export const featInfo = {
     category: "behavior",
     options: options.siteSelection,
     default: "ytm",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   rememberSongTimeDuration: {
     type: "number",
@@ -327,10 +327,9 @@ export const featInfo = {
     step: 1,
     default: 60,
     unit: "s",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   rememberSongTimeReduction: {
@@ -341,10 +340,9 @@ export const featInfo = {
     step: 0.1,
     default: 0,
     unit: "s",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   rememberSongTimeMinPlayTime: {
@@ -355,10 +353,9 @@ export const featInfo = {
     step: 0.5,
     default: 10,
     unit: "s",
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
 
@@ -367,8 +364,8 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   arrowKeySkipBy: {
     type: "number",
@@ -377,15 +374,15 @@ export const featInfo = {
     max: 60,
     step: 0.5,
     default: 5,
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   switchBetweenSites: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -396,22 +393,22 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
   },
   anchorImprovements: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
 
   //#SECTION lyrics
@@ -419,8 +416,8 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   geniUrlBase: {
     type: "text",
@@ -428,7 +425,6 @@ export const featInfo = {
     default: "https://api.sv443.net/geniurl",
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   geniUrlToken: {
@@ -438,7 +434,6 @@ export const featInfo = {
     default: "",
     normalize: (val: string) => val.trim(),
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   lyricsCacheMaxSize: {
@@ -449,10 +444,9 @@ export const featInfo = {
     max: 5000,
     step: 100,
     unit: (val: number) => " " + tp("unit_entries", val),
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   lyricsCacheTTL: {
@@ -463,10 +457,9 @@ export const featInfo = {
     max: 100,
     step: 1,
     unit: (val: number) => " " + tp("unit_days", val),
-    enable: noopTODO,
-    change: noopTODO,
+    enable: noop,
+    change: noop,
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   clearLyricsCache: {
@@ -481,19 +474,16 @@ export const featInfo = {
       }
     },
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.advanced,
   },
   advancedLyricsFilter: {
     type: "toggle",
     category: "lyrics",
     default: false,
-    enable: noopTODO,
-    disable: noopTODO,
-    // TODO: use dialog here?
+    enable: noop,
+    disable: noop,
     change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
     advanced: true,
-    // TODO: to be reworked or removed in the big menu rework
     textAdornment: adornments.experimental,
   },
 
@@ -503,16 +493,15 @@ export const featInfo = {
     category: "general",
     options: localeOptions,
     default: getPreferredLocale(),
-    enable: noopTODO,
-    // TODO: to be reworked or removed in the big menu rework
+    enable: noop,
     textAdornment: adornments.globe,
   },
   versionCheck: {
     type: "toggle",
     category: "general",
     default: true,
-    enable: noopTODO,
-    disable: noopTODO,
+    enable: noop,
+    disable: noop,
   },
   checkVersionNow: {
     type: "button",
@@ -528,25 +517,21 @@ export const featInfo = {
       { value: 1, label: t("log_level_info") },
     ],
     default: 1,
-    enable: noopTODO,
+    enable: noop,
   },
   advancedMode: {
     type: "toggle",
     category: "general",
     default: mode === "development",
-    enable: noopTODO,
-    disable: noopTODO,
-    // TODO: to be reworked or removed in the big menu rework
+    enable: noop,
+    disable: noop,
     textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
   },
 } as const satisfies FeatureInfo;
+
 
 function noop() {
   void 0;
 }
 
-function noopTODO() {
-  void 0;
-}
-
-void [noop, noopTODO];
+void [noop];
