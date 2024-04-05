@@ -137,7 +137,7 @@ button[disabled] {
 }
 
 button[disabled].bytm-busy {
-  cursor: wait;
+  cursor: progress;
 }
 
 /* #MARKER menu */
