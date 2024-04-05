@@ -409,6 +409,13 @@ export async function addScrollToActiveBtn() {
         });
       };
 
+      siteEvents.on("fullscreenToggled", (isFullscreen) => {
+        if(isFullscreen)
+          containerElem.classList.add("hidden");
+        else
+          containerElem.classList.remove("hidden");
+      });
+
       onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
 
       linkElem.appendChild(imgElem);
