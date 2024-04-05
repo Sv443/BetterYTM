@@ -936,7 +936,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
 > | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
 > | `destroyOnClose?: boolean` | Whether the dialog should be destroyed when it's closed - defaults to false |
-> | `smallDialog?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
+> | `small?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
 > | `renderBody: () => HTMLElement │ Promise<HTMLElement>` | Called to render the body of the dialog |
 > | `renderHeader?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the header of the dialog - leave undefined for a blank header |
 > | `renderFooter?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the footer of the dialog - leave undefined for no footer |
@@ -996,7 +996,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   closeOnEscPress: true,
 >   closeBtnEnabled: true,
 >   destroyOnClose: false,
->   smallDialog: true,
+>   small: true,
 >   // add elements to the header, body and footer here, in one of these ways:
 >   // - foo.appendChild(document.createElement("..."));
 >   // - foo.innerHTML = "..."

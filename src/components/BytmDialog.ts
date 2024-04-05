@@ -22,8 +22,8 @@ export interface BytmDialogOptions {
   destroyOnClose?: boolean;
   /** Whether the dialog should be unmounted when it's closed - defaults to false */
   unmountOnClose?: boolean;
-  /** Whether the menu should have a smaller overall appearance - defaults to false */
-  smallDialog?: boolean;
+  /** Whether the dialog should have a smaller overall appearance - defaults to false */
+  small?: boolean;
   /** Called to render the body of the dialog */
   renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
@@ -255,7 +255,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
-    this.options.smallDialog && headerWrapperEl.classList.add("small");
+    this.options.small && headerWrapperEl.classList.add("small");
 
     if(header) {
       const headerTitleWrapperEl = document.createElement("div");
@@ -270,14 +270,14 @@ export class BytmDialog extends NanoEmitter<{
     else {
       // insert element to pad the header height
       const padEl = document.createElement("div");
-      padEl.classList.add("bytm-dialog-header-pad", this.options.smallDialog ? "small" : "");
+      padEl.classList.add("bytm-dialog-header-pad", this.options.small ? "small" : "");
       headerWrapperEl.appendChild(padEl);
     }
 
     if(this.options.closeBtnEnabled) {
       const closeBtnEl = document.createElement("img");
       closeBtnEl.classList.add("bytm-dialog-close");
-      this.options.smallDialog && closeBtnEl.classList.add("small");
+      this.options.small && closeBtnEl.classList.add("small");
       closeBtnEl.src = await getResourceUrl("img-close");
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
@@ -290,15 +290,15 @@ export class BytmDialog extends NanoEmitter<{
 
     //#SECTION body
 
-    const menuBodyElem = document.createElement("div");
-    menuBodyElem.id = `bytm-${this.id}-dialog-body`;
-    menuBodyElem.classList.add("bytm-dialog-body");
-    this.options.smallDialog && menuBodyElem.classList.add("small");
+    const dialogBodyElem = document.createElement("div");
+    dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
+    dialogBodyElem.classList.add("bytm-dialog-body");
+    this.options.small && dialogBodyElem.classList.add("small");
 
     const body = this.options.renderBody();
 
-    menuBodyElem.appendChild(body instanceof Promise ? await body : body);
-    dialogWrapperEl.appendChild(menuBodyElem);
+    dialogBodyElem.appendChild(body instanceof Promise ? await body : body);
+    dialogWrapperEl.appendChild(dialogBodyElem);
 
     //#SECTION footer
 

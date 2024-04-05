@@ -22,7 +22,7 @@ export async function getFeatHelpDialog({
       closeOnBgClick: true,
       closeOnEscPress: true,
       destroyOnClose: true,
-      smallDialog: true,
+      small: true,
       renderHeader,
       renderBody: () => renderBody({ featKey }),
     });
