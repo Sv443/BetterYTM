@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4237644
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5f6c6e5
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4237644
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4237644
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4237644
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4237644
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4237644
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4237644
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4237644
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4237644
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4237644
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4237644
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=4237644
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=4237644
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=4237644
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4237644
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4237644
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4237644
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4237644
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4237644
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4237644
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4237644
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4237644
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4237644
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4237644
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4237644
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4237644
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4237644
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4237644
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4237644
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4237644
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4237644
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4237644
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=5f6c6e5
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=5f6c6e5
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=5f6c6e5
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=5f6c6e5
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=5f6c6e5
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=5f6c6e5
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=5f6c6e5
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=5f6c6e5
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=5f6c6e5
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=5f6c6e5
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=5f6c6e5
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=5f6c6e5
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=5f6c6e5
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=5f6c6e5
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=5f6c6e5
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=5f6c6e5
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5f6c6e5
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=5f6c6e5
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=5f6c6e5
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=5f6c6e5
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=5f6c6e5
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=5f6c6e5
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=5f6c6e5
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=5f6c6e5
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=5f6c6e5
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=5f6c6e5
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=5f6c6e5
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=5f6c6e5
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=5f6c6e5
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=5f6c6e5
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=5f6c6e5
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4237644";
+const buildNumberRaw = "5f6c6e5";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3199,15 +3199,17 @@ function initThumbnailOverlay() {
         const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
         if (behavior === "never" && !toggleBtnShown)
             return;
+        yield waitVideoElementReady();
         const playerSelector = "ytmusic-player#player";
         const playerEl = document.querySelector(playerSelector);
         if (!playerEl)
             return error("Couldn't find video player element while adding thumbnail overlay");
         /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
         const updateOverlayVisibility = () => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+            if (!domLoaded)
+                return;
             let showOverlay = behavior === "always";
-            const isVideo = (_b = (_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode")) !== null && _b !== void 0 ? _b : false;
+            const isVideo = currentMediaType() === "video";
             if (behavior === "videosOnly" && isVideo)
                 showOverlay = true;
             else if (behavior === "songsOnly" && !isVideo)
@@ -3233,7 +3235,6 @@ function initThumbnailOverlay() {
                     toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
             }
         });
-        window.addEventListener("bytm:ready", updateOverlayVisibility, { once: true });
         const applyThumbUrl = (watchId) => __awaiter(this, void 0, void 0, function* () {
             const thumbUrl = yield getBestThumbnailUrl(watchId);
             if (thumbUrl) {
@@ -3787,11 +3788,10 @@ function sanitizeArtists(artists) {
 }
 /** Returns the lyrics URL from genius for the currently selected song */
 function getCurrentLyricsUrl() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-            const isVideo = typeof ((_a = document.querySelector("ytmusic-player")) === null || _a === void 0 ? void 0 : _a.hasAttribute("video-mode"));
+            const isVideo = currentMediaType() === "video";
             const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
             const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
             if (!songTitleElem || !songMetaElem)
@@ -4214,12 +4214,13 @@ const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => 
         }];
 }, [])
     .sort((a, b) => a.label.localeCompare(b.label));
+const getAdornHtml = (className, title, resource, extraParams) => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="${className}" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${(_a = yield resourceToHTMLString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; });
 /** Decoration elements that can be added next to the label */
 const adornments = {
-    advanced: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="bytm-advanced-mode-icon bytm-adorn-icon" title="${t("advanced_mode")}">${(_a = yield resourceToHTMLString("icon-advanced_mode")) !== null && _a !== void 0 ? _a : ""}</span>`; }),
-    experimental: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return `<span class="bytm-experimental-icon bytm-adorn-icon" title="${t("experimental_feature")}" aria-label="${t("experimental_feature")}" role="alert">${(_b = yield resourceToHTMLString("icon-experimental")) !== null && _b !== void 0 ? _b : ""}</span>`; }),
-    globe: () => __awaiter(void 0, void 0, void 0, function* () { var _c; return (_c = yield resourceToHTMLString("icon-globe")) !== null && _c !== void 0 ? _c : ""; }),
-    warning: (text) => __awaiter(void 0, void 0, void 0, function* () { var _d; return `<span class="bytm-warning-icon bytm-adorn-icon" title="${text}" aria-label="${text}" role="alert">${(_d = yield resourceToHTMLString("icon-error")) !== null && _d !== void 0 ? _d : ""}</span>`; }),
+    advanced: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"); }),
+    experimental: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"); }),
+    globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe")) !== null && _b !== void 0 ? _b : ""; }),
+    warning: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
 };
 /** Common options for config items of type "select" */
 const options = {
@@ -4234,30 +4235,30 @@ const options = {
  * Contains all possible features with their default values and other configuration.
  *
  * **Required props:**
- * | Property | Description |
- * | :-- | :-- |
+ * | Property             | Description                                                                                                |
+ * | :------------------- | :--------------------------------------------------------------------------------------------------------- |
  * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
- * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts` |
- * | `default`            | default value of the feature - type of the value depends on the given `type` |
- * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time |
+ * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                    |
+ * | `default`            | default value of the feature - type of the value depends on the given `type`                               |
+ * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time                  |
  *
  * **Optional props:**
- * | Property | Description |
- * | :-- | :-- |
- * | `disable: (newValue: any) => void`                | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function |
- * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed |
- * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked |
+ * | Property                                          | Description                                                                                                                                              |
+ * | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | `disable: (newValue: any) => void`                | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
+ * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
+ * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked                                                                         |
  * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element - TODO: to be replaced in the big menu rework |
+ * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
  * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
- * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element |
- * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element |
- * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element |
- * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties |
- * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on |
- * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false) |
- * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false) |
- * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations |
+ * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
+ * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
+ * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
+ * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
+ * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
+ * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
+ * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
+ * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
  *
  * **Notes:**
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
@@ -4268,43 +4269,43 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     removeShareTrackingParamSites: {
         type: "select",
         category: "layout",
         options: options.siteSelection,
         default: "all",
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     fixSpacing: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
+        enable: noop,
     },
     thumbnailOverlayBehavior: {
         type: "select",
@@ -4316,24 +4317,23 @@ const featInfo = {
             { value: "never", label: t("thumbnail_overlay_behavior_never") },
         ],
         default: "songsOnly",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     thumbnailOverlayToggleBtnShown: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     thumbnailOverlayImageFit: {
@@ -4345,18 +4345,17 @@ const featInfo = {
             { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
         ],
         default: "cover",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     hideCursorOnIdle: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     hideCursorOnIdleDelay: {
         type: "slider",
@@ -4366,10 +4365,9 @@ const featInfo = {
         step: 0.5,
         default: 3,
         unit: "s",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     //#SECTION volume
@@ -4377,8 +4375,8 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     volumeSliderSize: {
         type: "number",
@@ -4388,8 +4386,8 @@ const featInfo = {
         step: 5,
         default: 150,
         unit: "px",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     volumeSliderStep: {
         type: "slider",
@@ -4398,8 +4396,8 @@ const featInfo = {
         max: 25,
         default: 2,
         unit: "%",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     volumeSliderScrollStep: {
         type: "slider",
@@ -4408,22 +4406,22 @@ const featInfo = {
         max: 25,
         default: 10,
         unit: "%",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     volumeSharedBetweenTabs: {
         type: "toggle",
         category: "volume",
         default: false,
-        enable: noopTODO,
+        enable: noop,
         disable: () => volumeSharedBetweenTabsDisabled,
     },
     setInitialTabVolume: {
         type: "toggle",
         category: "volume",
         default: false,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
         textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
     initialTabVolumeLevel: {
@@ -4434,8 +4432,8 @@ const featInfo = {
         step: 1,
         default: 100,
         unit: "%",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
     //#SECTION song lists
@@ -4443,15 +4441,15 @@ const featInfo = {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     listButtonsPlacement: {
         type: "select",
@@ -4461,15 +4459,15 @@ const featInfo = {
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     //#SECTION behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
         default: false,
-        enable: noopTODO,
+        enable: noop,
     },
     closeToastsTimeout: {
         type: "number",
@@ -4479,15 +4477,15 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO, // TODO: feasible?
+        enable: noop,
+        disable: noop, // TODO: feasible?
         helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
     },
     rememberSongTimeSites: {
@@ -4495,8 +4493,8 @@ const featInfo = {
         category: "behavior",
         options: options.siteSelection,
         default: "ytm",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     rememberSongTimeDuration: {
         type: "number",
@@ -4506,10 +4504,9 @@ const featInfo = {
         step: 1,
         default: 60,
         unit: "s",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     rememberSongTimeReduction: {
@@ -4520,10 +4517,9 @@ const featInfo = {
         step: 0.1,
         default: 0,
         unit: "s",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     rememberSongTimeMinPlayTime: {
@@ -4534,10 +4530,9 @@ const featInfo = {
         step: 0.5,
         default: 10,
         unit: "s",
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     //#SECTION input
@@ -4545,8 +4540,8 @@ const featInfo = {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     arrowKeySkipBy: {
         type: "number",
@@ -4555,15 +4550,15 @@ const featInfo = {
         max: 60,
         step: 0.5,
         default: 5,
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     switchSitesHotkey: {
         type: "hotkey",
@@ -4574,30 +4569,30 @@ const featInfo = {
             ctrl: false,
             alt: false,
         },
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
     },
     anchorImprovements: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     numKeysSkipToTime: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     //#SECTION lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     geniUrlBase: {
         type: "text",
@@ -4605,7 +4600,6 @@ const featInfo = {
         default: "https://api.sv443.net/geniurl",
         normalize: (val) => val.trim().replace(/\/+$/, ""),
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     geniUrlToken: {
@@ -4615,7 +4609,6 @@ const featInfo = {
         default: "",
         normalize: (val) => val.trim(),
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     lyricsCacheMaxSize: {
@@ -4626,10 +4619,9 @@ const featInfo = {
         max: 5000,
         step: 100,
         unit: (val) => " " + tp("unit_entries", val),
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     lyricsCacheTTL: {
@@ -4640,10 +4632,9 @@ const featInfo = {
         max: 100,
         step: 1,
         unit: (val) => " " + tp("unit_days", val),
-        enable: noopTODO,
-        change: noopTODO,
+        enable: noop,
+        change: noop,
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     clearLyricsCache: {
@@ -4660,19 +4651,16 @@ const featInfo = {
             });
         },
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.advanced,
     },
     advancedLyricsFilter: {
         type: "toggle",
         category: "lyrics",
         default: false,
-        enable: noopTODO,
-        disable: noopTODO,
-        // TODO: use dialog here?
+        enable: noop,
+        disable: noop,
         change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
         advanced: true,
-        // TODO: to be reworked or removed in the big menu rework
         textAdornment: adornments.experimental,
     },
     //#SECTION general
@@ -4681,16 +4669,15 @@ const featInfo = {
         category: "general",
         options: localeOptions,
         default: getPreferredLocale(),
-        enable: noopTODO,
-        // TODO: to be reworked or removed in the big menu rework
+        enable: noop,
         textAdornment: adornments.globe,
     },
     versionCheck: {
         type: "toggle",
         category: "general",
         default: true,
-        enable: noopTODO,
-        disable: noopTODO,
+        enable: noop,
+        disable: noop,
     },
     checkVersionNow: {
         type: "button",
@@ -4706,19 +4693,18 @@ const featInfo = {
             { value: 1, label: t("log_level_info") },
         ],
         default: 1,
-        enable: noopTODO,
+        enable: noop,
     },
     advancedMode: {
         type: "toggle",
         category: "general",
         default: mode === "development",
-        enable: noopTODO,
-        disable: noopTODO,
-        // TODO: to be reworked or removed in the big menu rework
+        enable: noop,
+        disable: noop,
         textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     },
 };
-function noopTODO() {
+function noop() {
 }/** If this number is incremented, the features object data will be migrated to the new format */
 const formatVersion = 5;
 /** Config data format migration dictionary */
@@ -5042,10 +5028,7 @@ function initObservers() {
                 const playerBarRightControls = "#right-controls";
                 globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.playerBar.addListener(playerBarRightControls, {
-                    listener: () => {
-                        console.log(">> enable playerBarRightControls");
-                        globservers.playerBarRightControls.enable();
-                    },
+                    listener: () => globservers.playerBarRightControls.enable(),
                 });
                 // #SECTION popupContainer = the container for popups (e.g. the queue popup)
                 const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
@@ -5167,7 +5150,7 @@ function ytForceShowVideoTime() {
         screenX, movementX: 5, movementY: 0 })));
     return true;
 }
-/** Waits for the video element to be in its readyState 4 / canplay state and returns it */
+/** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
 function waitVideoElementReady() {
     return new Promise((res) => {
         addSelectorListener("body", videoSelector, {
@@ -5226,6 +5209,16 @@ function addStyle(css, ref) {
     const elem = UserUtils.addGlobalStyle(css);
     elem.id = `bytm-global-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(5, 36)}`;
     return elem;
+}
+/**
+ * Checks if the currently playing media is a song or a video.
+ * This function should only be called after awaiting `waitVideoElementReady()`!
+ */
+function currentMediaType() {
+    const songImgElem = document.querySelector("ytmusic-player #song-image");
+    if (!songImgElem)
+        throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
+    return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
