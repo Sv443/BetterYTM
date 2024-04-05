@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53740c4
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53cce4a
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=53740c4
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=53740c4
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=53740c4
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=53740c4
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=53740c4
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=53740c4
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=53740c4
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=53740c4
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=53740c4
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=53740c4
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=53740c4
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=53740c4
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=53740c4
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=53740c4
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=53740c4
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=53740c4
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53740c4
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=53740c4
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=53740c4
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=53740c4
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=53740c4
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=53740c4
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=53740c4
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=53740c4
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=53740c4
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=53740c4
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=53740c4
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=53740c4
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=53740c4
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=53740c4
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=53740c4
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=53cce4a
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=53cce4a
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=53cce4a
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=53cce4a
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=53cce4a
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=53cce4a
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=53cce4a
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=53cce4a
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=53cce4a
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=53cce4a
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=53cce4a
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=53cce4a
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=53cce4a
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=53cce4a
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=53cce4a
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=53cce4a
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53cce4a
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=53cce4a
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=53cce4a
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=53cce4a
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=53cce4a
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=53cce4a
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=53cce4a
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=53cce4a
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=53cce4a
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=53cce4a
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=53cce4a
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=53cce4a
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=53cce4a
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=53cce4a
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=53cce4a
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "53740c4";
+const buildNumberRaw = "53cce4a";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -601,13 +601,7 @@ class BytmDialog extends NanoEmitter {
             writable: true,
             value: false
         });
-        Object.defineProperty(this, "listenersAttached", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: false
-        });
-        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, smallHeader: false }, options);
+        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: false, smallHeader: false }, options);
         this.id = options.id;
     }
     //#MARKER public
@@ -709,6 +703,8 @@ class BytmDialog extends NanoEmitter {
         this.events.emit("close");
         if (this.options.destroyOnClose)
             this.destroy();
+        if (this.options.unmountOnClose)
+            this.unmount();
     }
     /** Returns true if the dialog is currently open */
     isOpen() {
@@ -732,9 +728,6 @@ class BytmDialog extends NanoEmitter {
     //#MARKER protected
     /** Called once to attach all generic event listeners */
     attachListeners(bgElem) {
-        if (this.listenersAttached)
-            return;
-        this.listenersAttached = true;
         if (this.options.closeOnBgClick) {
             bgElem.addEventListener("click", (e) => {
                 var _a;
@@ -1284,8 +1277,8 @@ function getVersionNotifDialog({ latestTag, }) {
                 closeOnEscPress: true,
                 destroyOnClose: true,
                 smallDialog: true,
-                renderHeader,
-                renderBody: () => renderBody({
+                renderHeader: renderHeader$1,
+                renderBody: () => renderBody$1({
                     latestTag,
                     changelogHtml,
                 }),
@@ -1294,7 +1287,7 @@ function getVersionNotifDialog({ latestTag, }) {
         return verNotifDialog;
     });
 }
-function renderHeader() {
+function renderHeader$1() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("div");
         headerEl.role = "heading";
@@ -1308,7 +1301,7 @@ function renderHeader() {
     });
 }
 let disableUpdateCheck = false;
-function renderBody({ latestTag, changelogHtml, }) {
+function renderBody$1({ latestTag, changelogHtml, }) {
     return __awaiter(this, void 0, void 0, function* () {
         disableUpdateCheck = false;
         const hostPlatformNames = {
@@ -1392,6 +1385,59 @@ function renderBody({ latestTag, changelogHtml, }) {
         btnWrapper.appendChild(btnClose);
         wrapperEl.appendChild(btnWrapper);
         return wrapperEl;
+    });
+}let featHelpDialog = null;
+/** Creates and/or returns the help dialog for a specific feature */
+function getFeatHelpDialog({ featKey, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!featHelpDialog) {
+            featHelpDialog = new BytmDialog({
+                id: "feat-help",
+                maxWidth: 600,
+                maxHeight: 400,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                destroyOnClose: true,
+                smallDialog: true,
+                renderHeader,
+                renderBody: () => renderBody({ featKey }),
+            });
+            featHelpDialog.on("destroy", () => featHelpDialog = null);
+            // make config menu inert while help dialog is open
+            featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
+            featHelpDialog.on("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
+        }
+        return featHelpDialog;
+    });
+}
+function renderHeader() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const headerEl = document.createElement("div");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        const helpIconSvg = yield resourceToHTMLString("icon-help");
+        if (helpIconSvg)
+            headerEl.innerHTML = helpIconSvg;
+        return headerEl;
+    });
+}
+function renderBody({ featKey, }) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        const contElem = document.createElement("div");
+        const featDescElem = document.createElement("h3");
+        featDescElem.role = "subheading";
+        featDescElem.textContent = t(`feature_desc_${featKey}`);
+        featDescElem.id = "bytm-feat-help-menu-desc";
+        const helpTextElem = document.createElement("div");
+        helpTextElem.id = "bytm-feat-help-menu-text";
+        // @ts-ignore
+        const helpText = (_b = (_a = featInfo[featKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
+        helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featKey}`);
+        contElem.appendChild(featDescElem);
+        contElem.appendChild(helpTextElem);
+        return contElem;
     });
 }const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 /** Initializes the version check feature */
@@ -1935,11 +1981,11 @@ function addCfgMenu() {
                             helpElem.role = "button";
                             helpElem.tabIndex = 0;
                             helpElem.innerHTML = helpElemImgHtml;
-                            onInteraction(helpElem, (e) => {
+                            onInteraction(helpElem, (e) => __awaiter(this, void 0, void 0, function* () {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                openHelpDialog(featKey);
-                            });
+                                yield (yield getFeatHelpDialog({ featKey: featKey })).open();
+                            }));
                         }
                         else {
                             error(`Couldn't create help button SVG element for feature '${featKey}'`);
@@ -2308,101 +2354,6 @@ function checkToggleScrollIndicator() {
             scrollIndicator.classList.add("bytm-hidden");
         }
     }
-}
-//#MARKER help dialog
-let isHelpDialogOpen = false;
-/** Key of the feature currently loaded in the help dialog */
-let helpDialogCurFeature;
-/** Opens the feature help dialog for the given feature */
-function openHelpDialog(featureKey) {
-    var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (isHelpDialogOpen)
-            return;
-        isHelpDialogOpen = true;
-        let menuBgElem;
-        if (!helpDialogCurFeature) {
-            // create menu
-            const headerElem = document.createElement("div");
-            headerElem.classList.add("bytm-menu-header", "small");
-            const titleCont = document.createElement("div");
-            titleCont.className = "bytm-menu-titlecont-no-title";
-            titleCont.role = "heading";
-            titleCont.ariaLevel = "1";
-            const helpIconSvg = yield resourceToHTMLString("icon-help");
-            if (helpIconSvg)
-                titleCont.innerHTML = helpIconSvg;
-            const closeElem = document.createElement("img");
-            closeElem.classList.add("bytm-menu-close", "small");
-            closeElem.role = "button";
-            closeElem.tabIndex = 0;
-            closeElem.src = yield getResourceUrl("img-close");
-            closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-            onInteraction(closeElem, closeHelpDialog);
-            headerElem.appendChild(titleCont);
-            headerElem.appendChild(closeElem);
-            menuBgElem = document.createElement("div");
-            menuBgElem.id = "bytm-feat-help-menu-bg";
-            menuBgElem.classList.add("bytm-menu-bg");
-            menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-            menuBgElem.style.visibility = "hidden";
-            menuBgElem.style.display = "none";
-            menuBgElem.addEventListener("click", (e) => {
-                var _a;
-                if (isHelpDialogOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-feat-help-menu-bg")
-                    closeHelpDialog(e);
-            });
-            document.body.addEventListener("keydown", (e) => {
-                if (isHelpDialogOpen && e.key === "Escape")
-                    closeHelpDialog(e);
-            });
-            const menuContainer = document.createElement("div");
-            menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-            menuContainer.classList.add("bytm-menu");
-            menuContainer.id = "bytm-feat-help-menu";
-            const featDescElem = document.createElement("h3");
-            featDescElem.id = "bytm-feat-help-menu-desc";
-            const helpTextElem = document.createElement("div");
-            helpTextElem.id = "bytm-feat-help-menu-text";
-            menuContainer.appendChild(headerElem);
-            menuContainer.appendChild(featDescElem);
-            menuContainer.appendChild(helpTextElem);
-            menuBgElem.appendChild(menuContainer);
-            document.body.appendChild(menuBgElem);
-        }
-        else
-            menuBgElem = document.querySelector("#bytm-feat-help-menu-bg");
-        if (helpDialogCurFeature !== featureKey) {
-            // update help text
-            const featDescElem = menuBgElem.querySelector("#bytm-feat-help-menu-desc");
-            const helpTextElem = menuBgElem.querySelector("#bytm-feat-help-menu-text");
-            featDescElem.textContent = t(`feature_desc_${featureKey}`);
-            // @ts-ignore
-            const helpText = (_b = (_a = featInfo[featureKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
-            helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featureKey}`);
-        }
-        // show menu
-        const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find feature help dialog background element");
-        helpDialogCurFeature = featureKey;
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
-        (_c = document.querySelector("#bytm-cfg-menu")) === null || _c === void 0 ? void 0 : _c.setAttribute("inert", "true");
-    });
-}
-function closeHelpDialog(evt) {
-    var _a;
-    if (!isHelpDialogOpen)
-        return;
-    isHelpDialogOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    const menuBg = document.querySelector("#bytm-feat-help-menu-bg");
-    if (!menuBg)
-        return warn("Couldn't find feature help dialog background element");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-    (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
 }
 //#MARKER export menu
 let isExportMenuAdded = false;
@@ -3411,29 +3362,10 @@ function disableBeforeUnload() {
     beforeUnloadEnabled = false;
     info("Disabled popup before leaving the site");
 }
-/**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload`
- * event listeners before they can be called by the site.
- */
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 function initBeforeUnloadHook() {
     return __awaiter(this, void 0, void 0, function* () {
-        Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-        (function (original) {
-            // @ts-ignore
-            window.__proto__.addEventListener = function (...args) {
-                const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-                args[1] = function (...a) {
-                    if (!beforeUnloadEnabled && args[0] === "beforeunload") {
-                        info("Prevented 'beforeunload' event listener");
-                        return false;
-                    }
-                    else
-                        return origListener.apply(this, a);
-                };
-                original.apply(this, args);
-            };
-            // @ts-ignore
-        })(window.__proto__.addEventListener);
+        UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
     });
 }
 //#MARKER auto close toasts
@@ -6985,16 +6917,22 @@ hr {
   font-weight: bolder;
 }
 
+.bytm-markdown-container ul li > ul li > ul li::before {
+  white-space: pre-wrap;
+  content: "        • ";
+  font-weight: bolder;
+}
+
 #bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  padding: 10px 10px 15px 20px;
-  font-size: 1.5em;
+  font-size: 1.5rem;
+  line-height: 1.25em;
 }
 
 #bytm-feat-help-menu-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
+  font-size: 1.8rem;
+  padding-bottom: 10px;
 }
 
 .bytm-ftitem-help-btn {
