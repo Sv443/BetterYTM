@@ -1,4 +1,4 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
@@ -618,15 +618,15 @@ export async function initHideCursorOnIdle() {
         cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
 
       const onMove = () => {
-        clearTimeout(cursorHideTimer);
+        cursorHideTimer && clearTimeout(cursorHideTimer);
         show();
         cursorHideTimerCb();
       };
 
       vidContainer.addEventListener("mouseenter", onMove);
-      vidContainer.addEventListener("mousemove", debounce(onMove, 10, "rising"));
+      vidContainer.addEventListener("mousemove", onMove);
       vidContainer.addEventListener("mouseleave", () => {
-        clearTimeout(cursorHideTimer);
+        cursorHideTimer && clearTimeout(cursorHideTimer);
         hide();
       });
       vidContainer.addEventListener("click", () => {
