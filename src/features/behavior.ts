@@ -1,4 +1,4 @@
-import { clamp, pauseFor } from "@sv443-network/userutils";
+import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
 import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, videoSelector, waitVideoElementReady } from "../utils";
 import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
@@ -20,29 +20,9 @@ export function enableBeforeUnload() {
   info("Enabled popup before leaving the site");
 }
 
-/**
- * Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` 
- * event listeners before they can be called by the site.
- */
+/** Adds a spy function into `window.__proto__.addEventListener` to selectively discard `beforeunload` event listeners before they can be called by the site */
 export async function initBeforeUnloadHook() {
-  Error.stackTraceLimit = 1000; // default is 25 on FF so this should hopefully be more than enough
-
-  (function(original: typeof window.addEventListener) {
-    // @ts-ignore
-    window.__proto__.addEventListener = function(...args: Parameters<typeof window.addEventListener>) {
-      const origListener = typeof args[1] === "function" ? args[1] : args[1].handleEvent;
-      args[1] = function(...a) {
-        if(!beforeUnloadEnabled && args[0] === "beforeunload") {
-          info("Prevented 'beforeunload' event listener");
-          return false;
-        }
-        else
-          return origListener.apply(this, a);
-      };
-      original.apply(this, args);
-    };
-    // @ts-ignore
-  })(window.__proto__.addEventListener);
+  interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
 }
 
 //#MARKER auto close toasts
