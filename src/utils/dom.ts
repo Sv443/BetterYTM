@@ -4,7 +4,7 @@ import { addSelectorListener } from "src/observers";
 
 //#MARKER video time & volume
 
-export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#content ytd-player video";
+export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
 /**
  * Returns the current video time in seconds  
@@ -12,8 +12,10 @@ export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#
  * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
 export function getVideoTime() {
-  return new Promise<number | null>((res) => {
+  return new Promise<number | null>(async (res) => {
     const domain = getDomain();
+
+    await waitVideoElementReady();
 
     try {
       if(domain === "ytm") {
