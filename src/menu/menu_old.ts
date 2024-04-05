@@ -2,10 +2,10 @@ import { compress, decompress, debounce, isScrollable } from "@sv443-network/use
 import { defaultData, getFeatures, migrations, setFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, getChangelogHtmlWithDetails, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, warn, getLocale, hasKey, initTranslations, setLocale, t, compressionSupported, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
 import { formatVersion } from "../config";
 import { emitSiteEvent, siteEvents } from "../siteEvents";
-import { getFeatHelpDialog } from "../dialogs";
+import { getChangelogDialog, getFeatHelpDialog } from "../dialogs";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
 import { createHotkeyInput, createToggleInput } from "../components";
@@ -690,8 +690,11 @@ async function addCfgMenu() {
     e.preventDefault();
     e.stopPropagation();
 
-    await openChangelogMenu("cfgMenu");
+    const dlg = await getChangelogDialog();
+    dlg.on("close", openCfgMenu);
+    await dlg.mount();
     closeCfgMenu(undefined, false);
+    await dlg.open();
   });
 
   subtitleElemCont.appendChild(versionEl);
@@ -1199,143 +1202,6 @@ async function openImportMenu() {
   if(!menuBg)
     return warn("Couldn't find import menu background element");
 
-  menuBg.style.visibility = "visible";
-  menuBg.style.display = "block";
-}
-
-//#MARKER changelog menu
-
-let isChangelogMenuAdded = false;
-let isChangelogMenuOpen = false;
-
-/** Adds a changelog menu (hidden by default) */
-async function addChangelogMenu() {
-  const menuBgElem = document.createElement("div");
-  menuBgElem.id = "bytm-changelog-menu-bg";
-  menuBgElem.classList.add("bytm-menu-bg");
-  menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-  menuBgElem.style.visibility = "hidden";
-  menuBgElem.style.display = "none";
-  menuBgElem.addEventListener("click", (e) => {
-    if(isChangelogMenuOpen && (e.target as HTMLElement)?.id === "bytm-changelog-menu-bg") {
-      closeChangelogMenu(e);
-      if(menuBgElem.dataset.returnTo === "cfgMenu")
-        openCfgMenu();
-    }
-  });
-  document.body.addEventListener("keydown", (e) => {
-    if(isChangelogMenuOpen && e.key === "Escape") {
-      closeChangelogMenu(e);
-      if(menuBgElem.dataset.returnTo === "cfgMenu")
-        openCfgMenu();
-    }
-  });
-
-  const menuContainer = document.createElement("div");
-  menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.classList.add("bytm-menu", "top-aligned");
-  menuContainer.id = "bytm-changelog-menu";
-
-  //#SECTION title bar
-  const headerElem = document.createElement("div");
-  headerElem.classList.add("bytm-menu-header");
-
-  const titleCont = document.createElement("div");
-  titleCont.className = "bytm-menu-titlecont";
-  titleCont.role = "heading";
-  titleCont.ariaLevel = "1";
-
-  const titleElem = document.createElement("h2");
-  titleElem.className = "bytm-menu-title";
-  titleElem.textContent = t("changelog_menu_title", scriptInfo.name);
-
-  const closeElem = document.createElement("img");
-  closeElem.classList.add("bytm-menu-close");
-  closeElem.role = "button";
-  closeElem.tabIndex = 0;
-  closeElem.src = await getResourceUrl("img-close");
-  closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-  onInteraction(closeElem, (e: MouseEvent | KeyboardEvent) => {
-    closeChangelogMenu(e);
-    if(menuBgElem.dataset.returnTo === "cfgMenu")
-      openCfgMenu();
-  });
-
-  titleCont.appendChild(titleElem);
-
-  headerElem.appendChild(titleCont);
-  headerElem.appendChild(closeElem);
-
-  //#SECTION body
-
-  const menuBodyElem = document.createElement("div");
-  menuBodyElem.id = "bytm-changelog-menu-body";
-  menuBodyElem.classList.add("bytm-menu-body");
-
-  const textElem = document.createElement("div");
-  textElem.id = "bytm-changelog-menu-text";
-  textElem.classList.add("bytm-markdown-container");
-  textElem.innerHTML = await getChangelogHtmlWithDetails();
-
-  //#SECTION finalize
-
-  menuBodyElem.appendChild(textElem);
-
-  menuContainer.appendChild(headerElem);
-  menuContainer.appendChild(menuBodyElem);
-  
-  menuBgElem.appendChild(menuContainer);
-
-  document.body.appendChild(menuBgElem);
-
-  const anchors = document.querySelectorAll<HTMLAnchorElement>("#bytm-changelog-menu-text a");
-  for(const anchor of anchors) {
-    anchor.ariaLabel = anchor.title = anchor.href;
-    anchor.target = "_blank";
-  }
-}
-
-/** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeChangelogMenu(evt?: MouseEvent | KeyboardEvent) {
-  if(!isChangelogMenuOpen)
-    return;
-  isChangelogMenuOpen = false;
-  evt?.bubbles && evt.stopPropagation();
-
-  const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
-
-  if(!menuBg)
-    return warn("Couldn't find changelog menu background element");
-
-  menuBg.style.visibility = "hidden";
-  menuBg.style.display = "none";
-}
-
-/**
- * Opens the changelog menu if it is closed
- * @param returnTo What menu to open after the changelog menu is closed
- */
-export async function openChangelogMenu(returnTo: "cfgMenu" | "exit" = "cfgMenu") {
-  if(!isChangelogMenuAdded)
-    await addChangelogMenu();
-  isChangelogMenuAdded = true;
-
-  if(isChangelogMenuOpen)
-    return;
-  isChangelogMenuOpen = true;
-
-  document.body.classList.add("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
-  const menuBg = document.querySelector<HTMLElement>("#bytm-changelog-menu-bg");
-
-  if(!menuBg)
-    return warn("Couldn't find changelog menu background element");
-
-  const firstDetails = menuBg.querySelector<HTMLDetailsElement>("#bytm-changelog-menu-text details");
-  if(firstDetails)
-    firstDetails.open = true;
-
-  menuBg.dataset.returnTo = returnTo;
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
 }
