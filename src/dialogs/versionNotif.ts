@@ -27,7 +27,7 @@ export async function getVersionNotifDialog({
       closeOnBgClick: false,
       closeOnEscPress: true,
       destroyOnClose: true,
-      smallDialog: true,
+      small: true,
       renderHeader,
       renderBody: () => renderBody({
         latestTag,
