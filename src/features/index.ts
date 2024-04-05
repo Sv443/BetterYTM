@@ -482,7 +482,7 @@ export const featInfo = {
     default: false,
     enable: noop,
     disable: noop,
-    change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
+    change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
     advanced: true,
     textAdornment: adornments.experimental,
   },
