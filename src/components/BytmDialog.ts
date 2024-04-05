@@ -20,7 +20,7 @@ export interface BytmDialogOptions {
   closeBtnEnabled?: boolean;
   /** Whether the dialog should be destroyed when it's closed - defaults to false */
   destroyOnClose?: boolean;
-  /** Whether the dialog should be unmounted when it's closed - defaults to false */
+  /** Whether the dialog should be unmounted when it's closed - defaults to true - superseded by destroyOnClose */
   unmountOnClose?: boolean;
   /** Whether the dialog should have a smaller overall appearance - defaults to false */
   small?: boolean;
@@ -62,7 +62,7 @@ export class BytmDialog extends NanoEmitter<{
       closeOnEscPress: true,
       closeBtnEnabled: true,
       destroyOnClose: false,
-      unmountOnClose: false,
+      unmountOnClose: true,
       smallHeader: false,
       ...options,
     };
@@ -188,8 +188,8 @@ export class BytmDialog extends NanoEmitter<{
 
     if(this.options.destroyOnClose)
       this.destroy();
-
-    if(this.options.unmountOnClose)
+    // don't destroy *and* unmount at the same time
+    else if(this.options.unmountOnClose)
       this.unmount();
   }
 

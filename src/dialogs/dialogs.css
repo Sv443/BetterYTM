@@ -33,15 +33,6 @@
   --bytm-menu-width-max: 600px;
 }
 
-#bytm-feat-help-dialog-bg,
-#bytm-feat-help-menu-bg
-{
-  --bytm-dialog-height-max: 400px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 400px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
