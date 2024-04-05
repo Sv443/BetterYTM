@@ -471,6 +471,8 @@ export async function initThumbnailOverlay() {
     }
   };
 
+  window.addEventListener("bytm:ready", updateOverlayVisibility, { once: true });
+
   const applyThumbUrl = async (watchId: string) => {
     const thumbUrl = await getBestThumbnailUrl(watchId);
     if(thumbUrl) {
@@ -592,16 +594,17 @@ export async function initHideCursorOnIdle() {
       /** Timer after which the cursor is hidden */
       let cursorHideTimer: ReturnType<typeof setTimeout>;
       /** Timer for the opacity transition while switching to the hidden state */
-      let hideTransTimer: ReturnType<typeof setTimeout>;
+      let hideTransTimer: ReturnType<typeof setTimeout> | undefined;
 
       const hide = () => {
         if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
-        overlayElem.style.opacity = "0 !important";
+        overlayElem.style.opacity = ".000001 !important";
         hideTransTimer = setTimeout(() => {
           overlayElem.style.display = "none";
           vidContainer.style.cursor = "none";
           vidContainer.classList.add("bytm-cursor-hidden");
+          hideTransTimer = undefined;
         }, 200);
       };
 
@@ -620,7 +623,6 @@ export async function initHideCursorOnIdle() {
 
       const onMove = () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
-        hideTransTimer && clearTimeout(hideTransTimer);
         show();
         cursorHideTimerCb();
       };
