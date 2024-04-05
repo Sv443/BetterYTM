@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=0a6281d
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4260e39
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=0a6281d
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=0a6281d
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=0a6281d
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=0a6281d
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=0a6281d
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=0a6281d
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=0a6281d
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=0a6281d
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=0a6281d
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=0a6281d
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=0a6281d
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=0a6281d
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=0a6281d
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=0a6281d
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=0a6281d
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=0a6281d
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=0a6281d
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=0a6281d
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=0a6281d
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=0a6281d
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=0a6281d
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=0a6281d
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=0a6281d
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=0a6281d
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=0a6281d
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=0a6281d
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=0a6281d
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=0a6281d
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=0a6281d
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=0a6281d
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=0a6281d
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4260e39
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4260e39
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4260e39
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4260e39
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4260e39
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4260e39
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4260e39
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4260e39
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4260e39
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4260e39
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=4260e39
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=4260e39
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=4260e39
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4260e39
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4260e39
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4260e39
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4260e39
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4260e39
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4260e39
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4260e39
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4260e39
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4260e39
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4260e39
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4260e39
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4260e39
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4260e39
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4260e39
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4260e39
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4260e39
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4260e39
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4260e39
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "0a6281d";
+const buildNumberRaw = "4260e39";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -572,7 +572,7 @@ function tp(key, num, ...values) {
         return t(key, ...values);
     return trans;
 }/** ID of the last opened (top-most) dialog */
-let lastDialogId = null;
+let currentDialogId = null;
 /** Creates and manages a modal dialog element */
 class BytmDialog extends NanoEmitter {
     constructor(options) {
@@ -624,8 +624,8 @@ class BytmDialog extends NanoEmitter {
             this.attachListeners(bgElem);
             addStyle(`\
 #bytm-${this.id}-dialog-bg {
-  --bytm-dialog-width-max: ${this.options.maxWidth}px;
-  --bytm-dialog-height-max: ${this.options.maxHeight}px;
+  --bytm-dialog-width-max: ${this.options.width}px;
+  --bytm-dialog-height-max: ${this.options.height}px;
 }`, `dialog-${this.id}`);
             this.events.emit("render");
             return bgElem;
@@ -675,7 +675,7 @@ class BytmDialog extends NanoEmitter {
             dialogBg.style.visibility = "visible";
             dialogBg.style.display = "block";
             dialogBg.inert = false;
-            lastDialogId = this.id;
+            currentDialogId = this.id;
             this.events.emit("open");
             emitInterface("bytm:dialogOpened", this);
             emitInterface(`bytm:dialogOpened:${this.id}`, this);
@@ -698,8 +698,8 @@ class BytmDialog extends NanoEmitter {
         dialogBg.style.visibility = "hidden";
         dialogBg.style.display = "none";
         dialogBg.inert = true;
-        if (BytmDialog.getLastDialogId() === this.id)
-            lastDialogId = null;
+        if (BytmDialog.getCurrentDialogId() === this.id)
+            currentDialogId = null;
         this.events.emit("close");
         if (this.options.destroyOnClose)
             this.destroy();
@@ -723,8 +723,8 @@ class BytmDialog extends NanoEmitter {
     }
     //#MARKER static
     /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
-    static getLastDialogId() {
-        return lastDialogId;
+    static getCurrentDialogId() {
+        return currentDialogId;
     }
     //#MARKER protected
     /** Called once to attach all generic event listeners */
@@ -738,7 +738,7 @@ class BytmDialog extends NanoEmitter {
         }
         if (this.options.closeOnEscPress) {
             document.body.addEventListener("keydown", (e) => {
-                if (e.key === "Escape" && this.isOpen() && BytmDialog.getLastDialogId() === this.id)
+                if (e.key === "Escape" && this.isOpen() && BytmDialog.getCurrentDialogId() === this.id)
                     this.close(e);
             });
         }
@@ -1133,6 +1133,344 @@ function createToggleInput({ onChange, initialValue = false, id = UserUtils.rand
         labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
         return wrapperEl;
     });
+}let changelogDialog = null;
+/** Creates and/or returns the changelog dialog */
+function getChangelogDialog() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!changelogDialog) {
+            changelogDialog = new BytmDialog({
+                id: "changelog",
+                width: 900,
+                height: 800,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                small: true,
+                renderHeader: renderHeader$4,
+                renderBody: renderBody$4,
+            });
+            changelogDialog.on("render", () => {
+                const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
+                if (!mdContElem)
+                    return;
+                const anchors = mdContElem.querySelectorAll("a");
+                for (const anchor of anchors) {
+                    anchor.ariaLabel = anchor.title = anchor.href;
+                    anchor.target = "_blank";
+                }
+                const firstDetails = mdContElem.querySelector("details");
+                if (firstDetails)
+                    firstDetails.open = true;
+            });
+        }
+        return changelogDialog;
+    });
+}
+function renderHeader$4() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const headerEl = document.createElement("h2");
+        headerEl.classList.add("bytm-dialog-title");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        headerEl.textContent = t("changelog_menu_title", scriptInfo.name);
+        return headerEl;
+    });
+}
+function renderBody$4() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const contElem = document.createElement("div");
+        const mdContElem = document.createElement("div");
+        mdContElem.id = "bytm-changelog-dialog-text";
+        mdContElem.classList.add("bytm-markdown-container");
+        mdContElem.innerHTML = yield getChangelogHtmlWithDetails();
+        contElem.appendChild(mdContElem);
+        return contElem;
+    });
+}let exportDialog = null;
+let copiedTxtTimeout = undefined;
+let lastUncompressedCfgString;
+/** Creates and/or returns the export dialog */
+function getExportDialog() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!exportDialog) {
+            exportDialog = new BytmDialog({
+                id: "export",
+                width: 600,
+                height: 500,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                small: true,
+                renderHeader: renderHeader$3,
+                renderBody: renderBody$3,
+                renderFooter: renderFooter$1,
+            });
+            exportDialog.on("close", () => {
+                const textAreaElem = document.querySelector("#bytm-export-dialog-bg #bytm-export-menu-textarea");
+                if (textAreaElem) {
+                    textAreaElem.value = t("click_to_reveal_sensitive_info");
+                    textAreaElem.setAttribute("revealed", "false");
+                }
+                const copiedTxtElem = document.querySelector("#bytm-export-menu-copied-txt");
+                if (copiedTxtElem) {
+                    copiedTxtElem.style.display = "none";
+                    if (typeof copiedTxtTimeout === "number") {
+                        clearTimeout(copiedTxtTimeout);
+                        copiedTxtTimeout = undefined;
+                    }
+                }
+            });
+        }
+        return exportDialog;
+    });
+}
+function renderHeader$3() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const headerEl = document.createElement("h2");
+        headerEl.classList.add("bytm-menu-title");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        headerEl.textContent = t("export_menu_title", scriptInfo.name);
+        return headerEl;
+    });
+}
+function renderBody$3() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const canCompress = yield compressionSupported();
+        const contElem = document.createElement("div");
+        const textElem = document.createElement("div");
+        textElem.id = "bytm-export-menu-text";
+        textElem.textContent = t("export_hint");
+        const textAreaElem = document.createElement("textarea");
+        textAreaElem.id = "bytm-export-menu-textarea";
+        textAreaElem.readOnly = true;
+        lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
+        textAreaElem.value = t("click_to_reveal_sensitive_info");
+        textAreaElem.setAttribute("revealed", "false");
+        const textAreaInteraction = () => __awaiter(this, void 0, void 0, function* () {
+            const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
+            lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
+            textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
+            textAreaElem.setAttribute("revealed", "true");
+        });
+        onInteraction(textAreaElem, textAreaInteraction);
+        siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
+            const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
+            const cfgString = JSON.stringify({ formatVersion, data });
+            lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
+            if (textAreaElem) {
+                if (textAreaElem.getAttribute("revealed") !== "true")
+                    return;
+                textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
+            }
+        }));
+        contElem.appendChild(textElem);
+        contElem.appendChild(textAreaElem);
+        return contElem;
+    });
+}
+function renderFooter$1() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const footerElem = document.createElement("div");
+        footerElem.classList.add("bytm-menu-footer-right");
+        const copyBtnElem = document.createElement("button");
+        copyBtnElem.classList.add("bytm-btn");
+        copyBtnElem.textContent = t("copy_to_clipboard");
+        copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
+        const copiedTextElem = document.createElement("span");
+        copiedTextElem.id = "bytm-export-menu-copied-txt";
+        copiedTextElem.role = "status";
+        copiedTextElem.classList.add("bytm-menu-footer-copied");
+        copiedTextElem.textContent = t("copied");
+        copiedTextElem.style.display = "none";
+        onInteraction(copyBtnElem, (evt) => __awaiter(this, void 0, void 0, function* () {
+            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+            GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) || (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) ? lastUncompressedCfgString : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
+            copiedTextElem.style.display = "inline-block";
+            if (typeof copiedTxtTimeout === "undefined") {
+                copiedTxtTimeout = setTimeout(() => {
+                    copiedTextElem.style.display = "none";
+                    copiedTxtTimeout = undefined;
+                }, 3000);
+            }
+        }));
+        // flex-direction is row-reverse
+        footerElem.appendChild(copyBtnElem);
+        footerElem.appendChild(copiedTextElem);
+        return footerElem;
+    });
+}let featHelpDialog = null;
+let curFeatKey = null;
+/** Creates and/or returns the help dialog for a specific feature */
+function getFeatHelpDialog({ featKey, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        curFeatKey = featKey;
+        if (!featHelpDialog) {
+            featHelpDialog = new BytmDialog({
+                id: "feat-help",
+                width: 600,
+                height: 400,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                small: true,
+                renderHeader: renderHeader$2,
+                renderBody: renderBody$2,
+            });
+            // make config menu inert while help dialog is open
+            featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
+            featHelpDialog.on("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
+        }
+        return featHelpDialog;
+    });
+}
+function renderHeader$2() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const headerEl = document.createElement("div");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        const helpIconSvg = yield resourceToHTMLString("icon-help");
+        if (helpIconSvg)
+            headerEl.innerHTML = helpIconSvg;
+        return headerEl;
+    });
+}
+function renderBody$2() {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+        const contElem = document.createElement("div");
+        const featDescElem = document.createElement("h3");
+        featDescElem.role = "subheading";
+        featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
+        featDescElem.id = "bytm-feat-help-dialog-desc";
+        const helpTextElem = document.createElement("div");
+        helpTextElem.id = "bytm-feat-help-dialog-text";
+        // @ts-ignore
+        const helpText = (_b = (_a = featInfo[curFeatKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
+        helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
+        contElem.appendChild(featDescElem);
+        contElem.appendChild(helpTextElem);
+        return contElem;
+    });
+}let importDialog = null;
+/** Creates and/or returns the import dialog */
+function getImportDialog() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!importDialog) {
+            importDialog = new BytmDialog({
+                id: "import",
+                width: 600,
+                height: 500,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                small: true,
+                renderHeader: renderHeader$1,
+                renderBody: renderBody$1,
+                renderFooter,
+            });
+        }
+        return importDialog;
+    });
+}
+function renderHeader$1() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const headerEl = document.createElement("h2");
+        headerEl.classList.add("bytm-dialog-title");
+        headerEl.role = "heading";
+        headerEl.ariaLevel = "1";
+        headerEl.textContent = t("import_menu_title", scriptInfo.name);
+        return headerEl;
+    });
+}
+function renderBody$1() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const contElem = document.createElement("div");
+        const textElem = document.createElement("div");
+        textElem.id = "bytm-import-menu-text";
+        textElem.textContent = t("import_hint");
+        const textAreaElem = document.createElement("textarea");
+        textAreaElem.id = "bytm-import-menu-textarea";
+        contElem.appendChild(textElem);
+        contElem.appendChild(textAreaElem);
+        return contElem;
+    });
+}
+function renderFooter() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const footerElem = document.createElement("div");
+        footerElem.classList.add("bytm-menu-footer-right");
+        const importBtnElem = document.createElement("button");
+        importBtnElem.classList.add("bytm-btn");
+        importBtnElem.textContent = t("import");
+        importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
+        importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
+            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
+            const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
+            if (!textAreaElem)
+                return warn("Couldn't find import menu textarea element");
+            try {
+                /** Tries to parse an uncompressed or compressed input string as a JSON object */
+                const decode = (input) => __awaiter(this, void 0, void 0, function* () {
+                    try {
+                        return JSON.parse(input);
+                    }
+                    catch (_a) {
+                        try {
+                            return JSON.parse(yield UserUtils.decompress(input, compressionFormat, "string"));
+                        }
+                        catch (err) {
+                            warn("Couldn't import configuration:", err);
+                            return null;
+                        }
+                    }
+                });
+                const parsed = yield decode(textAreaElem.value.trim());
+                if (typeof parsed !== "object")
+                    return alert(t("import_error_invalid"));
+                if (typeof parsed.formatVersion !== "number")
+                    return alert(t("import_error_no_format_version"));
+                if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
+                    return alert(t("import_error_no_data"));
+                if (parsed.formatVersion < formatVersion) {
+                    let newData = JSON.parse(JSON.stringify(parsed.data));
+                    const sortedMigrations = Object.entries(migrations)
+                        .sort(([a], [b]) => Number(a) - Number(b));
+                    let curFmtVer = Number(parsed.formatVersion);
+                    for (const [fmtVer, migrationFunc] of sortedMigrations) {
+                        const ver = Number(fmtVer);
+                        if (curFmtVer < formatVersion && curFmtVer < ver) {
+                            try {
+                                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                                newData = migRes instanceof Promise ? yield migRes : migRes;
+                                curFmtVer = ver;
+                            }
+                            catch (err) {
+                                error(`Error while running migration function for format version ${fmtVer}:`, err);
+                            }
+                        }
+                    }
+                    parsed.formatVersion = curFmtVer;
+                    parsed.data = newData;
+                }
+                else if (parsed.formatVersion !== formatVersion)
+                    return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+                yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
+                if (confirm(t("import_success_confirm_reload"))) {
+                    disableBeforeUnload();
+                    return location.reload();
+                }
+                emitSiteEvent("rebuildCfgMenu", parsed.data);
+                importDialog === null || importDialog === void 0 ? void 0 : importDialog.close();
+            }
+            catch (err) {
+                warn("Couldn't import configuration:", err);
+                alert(t("import_error_invalid"));
+            }
+        }));
+        footerElem.appendChild(importBtnElem);
+        return footerElem;
+    });
 }var name = "betterytm";
 var userscriptName = "BetterYTM";
 var version = "1.1.1";
@@ -1271,15 +1609,15 @@ function getVersionNotifDialog({ latestTag, }) {
             const changelogHtml = yield parseMarkdown(changelogMd);
             verNotifDialog = new BytmDialog({
                 id: "version-notif",
-                maxWidth: 600,
-                maxHeight: 800,
+                width: 600,
+                height: 800,
                 closeBtnEnabled: false,
                 closeOnBgClick: false,
                 closeOnEscPress: true,
                 destroyOnClose: true,
                 small: true,
-                renderHeader: renderHeader$1,
-                renderBody: () => renderBody$1({
+                renderHeader,
+                renderBody: () => renderBody({
                     latestTag,
                     changelogHtml,
                 }),
@@ -1288,7 +1626,7 @@ function getVersionNotifDialog({ latestTag, }) {
         return verNotifDialog;
     });
 }
-function renderHeader$1() {
+function renderHeader() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("div");
         headerEl.role = "heading";
@@ -1302,7 +1640,7 @@ function renderHeader$1() {
     });
 }
 let disableUpdateCheck = false;
-function renderBody$1({ latestTag, changelogHtml, }) {
+function renderBody({ latestTag, changelogHtml, }) {
     return __awaiter(this, void 0, void 0, function* () {
         disableUpdateCheck = false;
         const hostPlatformNames = {
@@ -1386,59 +1724,6 @@ function renderBody$1({ latestTag, changelogHtml, }) {
         btnWrapper.appendChild(btnClose);
         wrapperEl.appendChild(btnWrapper);
         return wrapperEl;
-    });
-}let featHelpDialog = null;
-let curFeatKey = null;
-/** Creates and/or returns the help dialog for a specific feature */
-function getFeatHelpDialog({ featKey, }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        curFeatKey = featKey;
-        if (!featHelpDialog) {
-            featHelpDialog = new BytmDialog({
-                id: "feat-help",
-                maxWidth: 600,
-                maxHeight: 400,
-                closeBtnEnabled: true,
-                closeOnBgClick: true,
-                closeOnEscPress: true,
-                small: true,
-                renderHeader,
-                renderBody,
-            });
-            // make config menu inert while help dialog is open
-            featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
-            featHelpDialog.on("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
-        }
-        return featHelpDialog;
-    });
-}
-function renderHeader() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const headerEl = document.createElement("div");
-        headerEl.role = "heading";
-        headerEl.ariaLevel = "1";
-        const helpIconSvg = yield resourceToHTMLString("icon-help");
-        if (helpIconSvg)
-            headerEl.innerHTML = helpIconSvg;
-        return headerEl;
-    });
-}
-function renderBody() {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function* () {
-        const contElem = document.createElement("div");
-        const featDescElem = document.createElement("h3");
-        featDescElem.role = "subheading";
-        featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
-        featDescElem.id = "bytm-feat-help-dialog-desc";
-        const helpTextElem = document.createElement("div");
-        helpTextElem.id = "bytm-feat-help-dialog-text";
-        // @ts-ignore
-        const helpText = (_b = (_a = featInfo[curFeatKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
-        helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
-        contElem.appendChild(featDescElem);
-        contElem.appendChild(helpTextElem);
-        return contElem;
     });
 }const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 /** Initializes the version check feature */
@@ -1861,16 +2146,22 @@ function addCfgMenu() {
         exportElem.ariaLabel = exportElem.title = t("export_tooltip");
         exportElem.textContent = t("export");
         exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            yield openExportMenu();
+            const dlg = yield getExportDialog();
+            dlg.on("close", openCfgMenu);
+            yield dlg.mount();
             closeCfgMenu(undefined, false);
+            yield dlg.open();
         }));
         const importElem = document.createElement("button");
         importElem.classList.add("bytm-btn");
         importElem.ariaLabel = importElem.title = t("import_tooltip");
         importElem.textContent = t("import");
         importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            yield openImportMenu();
+            const dlg = yield getImportDialog();
+            dlg.on("close", openCfgMenu);
+            yield dlg.mount();
             closeCfgMenu(undefined, false);
+            yield dlg.open();
         }));
         const buttonsCont = document.createElement("div");
         buttonsCont.id = "bytm-menu-footer-buttons-cont";
@@ -2271,8 +2562,11 @@ function addCfgMenu() {
         onInteraction(versionEl, (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
             e.stopPropagation();
-            yield openChangelogMenu("cfgMenu");
+            const dlg = yield getChangelogDialog();
+            dlg.on("close", openCfgMenu);
+            yield dlg.mount();
             closeCfgMenu(undefined, false);
+            yield dlg.open();
         }));
         subtitleElemCont.appendChild(versionEl);
         titleElem.appendChild(subtitleElemCont);
@@ -2356,462 +2650,6 @@ function checkToggleScrollIndicator() {
             scrollIndicator.classList.add("bytm-hidden");
         }
     }
-}
-//#MARKER export menu
-let isExportMenuAdded = false;
-let isExportMenuOpen = false;
-let copiedTxtTimeout = undefined;
-let lastUncompressedCfgString;
-/** Adds a menu to copy the current configuration as compressed (if supported) or uncompressed JSON (hidden by default) */
-function addExportMenu() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const canCompress = yield compressionSupported();
-        const menuBgElem = document.createElement("div");
-        menuBgElem.id = "bytm-export-menu-bg";
-        menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-        menuBgElem.style.visibility = "hidden";
-        menuBgElem.style.display = "none";
-        menuBgElem.addEventListener("click", (e) => {
-            var _a;
-            if (isExportMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-export-menu-bg") {
-                closeExportMenu(e);
-                openCfgMenu();
-            }
-        });
-        document.body.addEventListener("keydown", (e) => {
-            if (isExportMenuOpen && e.key === "Escape") {
-                closeExportMenu(e);
-                openCfgMenu();
-            }
-        });
-        const menuContainer = document.createElement("div");
-        menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.classList.add("bytm-menu");
-        menuContainer.id = "bytm-export-menu";
-        //#SECTION title bar
-        const headerElem = document.createElement("div");
-        headerElem.classList.add("bytm-menu-header");
-        const titleCont = document.createElement("div");
-        titleCont.className = "bytm-menu-titlecont";
-        titleCont.role = "heading";
-        titleCont.ariaLevel = "1";
-        const titleElem = document.createElement("h2");
-        titleElem.className = "bytm-menu-title";
-        titleElem.textContent = t("export_menu_title", scriptInfo.name);
-        const closeElem = document.createElement("img");
-        closeElem.classList.add("bytm-menu-close");
-        closeElem.role = "button";
-        closeElem.tabIndex = 0;
-        closeElem.src = yield getResourceUrl("img-close");
-        closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        onInteraction(closeElem, (e) => {
-            closeExportMenu(e);
-            openCfgMenu();
-        });
-        titleCont.appendChild(titleElem);
-        headerElem.appendChild(titleCont);
-        headerElem.appendChild(closeElem);
-        //#SECTION body
-        const menuBodyElem = document.createElement("div");
-        menuBodyElem.classList.add("bytm-menu-body");
-        const textElem = document.createElement("div");
-        textElem.id = "bytm-export-menu-text";
-        textElem.textContent = t("export_hint");
-        const textAreaElem = document.createElement("textarea");
-        textAreaElem.id = "bytm-export-menu-textarea";
-        textAreaElem.readOnly = true;
-        lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-        textAreaElem.value = t("click_to_reveal_sensitive_info");
-        textAreaElem.setAttribute("revealed", "false");
-        const textAreaInteraction = () => __awaiter(this, void 0, void 0, function* () {
-            const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
-            lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-            textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
-            textAreaElem.setAttribute("revealed", "true");
-        });
-        onInteraction(textAreaElem, textAreaInteraction);
-        siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
-            const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
-            const cfgString = JSON.stringify({ formatVersion, data });
-            lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
-            if (textAreaElem) {
-                if (textAreaElem.getAttribute("revealed") !== "true")
-                    return;
-                textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
-            }
-        }));
-        //#SECTION footer
-        const footerElem = document.createElement("div");
-        footerElem.classList.add("bytm-menu-footer-right");
-        const copyBtnElem = document.createElement("button");
-        copyBtnElem.classList.add("bytm-btn");
-        copyBtnElem.textContent = t("copy_to_clipboard");
-        copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
-        const copiedTextElem = document.createElement("span");
-        copiedTextElem.id = "bytm-export-menu-copied-txt";
-        copiedTextElem.role = "status";
-        copiedTextElem.classList.add("bytm-menu-footer-copied");
-        copiedTextElem.textContent = t("copied");
-        copiedTextElem.style.display = "none";
-        onInteraction(copyBtnElem, (evt) => __awaiter(this, void 0, void 0, function* () {
-            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-            GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) || (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) ? lastUncompressedCfgString : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
-            copiedTextElem.style.display = "inline-block";
-            if (typeof copiedTxtTimeout === "undefined") {
-                copiedTxtTimeout = setTimeout(() => {
-                    copiedTextElem.style.display = "none";
-                    copiedTxtTimeout = undefined;
-                }, 3000);
-            }
-        }));
-        // flex-direction is row-reverse
-        footerElem.appendChild(copyBtnElem);
-        footerElem.appendChild(copiedTextElem);
-        //#SECTION finalize
-        menuBodyElem.appendChild(textElem);
-        menuBodyElem.appendChild(textAreaElem);
-        menuBodyElem.appendChild(footerElem);
-        menuContainer.appendChild(headerElem);
-        menuContainer.appendChild(menuBodyElem);
-        menuBgElem.appendChild(menuContainer);
-        document.body.appendChild(menuBgElem);
-    });
-}
-/** Closes the export menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeExportMenu(evt) {
-    if (!isExportMenuOpen)
-        return;
-    isExportMenuOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    const menuBg = document.querySelector("#bytm-export-menu-bg");
-    if (!menuBg)
-        return warn("Couldn't find export menu background element");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-    const textAreaElem = menuBg.querySelector("#bytm-export-menu-textarea");
-    if (textAreaElem) {
-        textAreaElem.value = t("click_to_reveal_sensitive_info");
-        textAreaElem.setAttribute("revealed", "false");
-    }
-    const copiedTxtElem = document.querySelector("#bytm-export-menu-copied-txt");
-    if (copiedTxtElem) {
-        copiedTxtElem.style.display = "none";
-        if (typeof copiedTxtTimeout === "number") {
-            clearTimeout(copiedTxtTimeout);
-            copiedTxtTimeout = undefined;
-        }
-    }
-}
-/** Opens the export menu if it is closed */
-function openExportMenu() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!isExportMenuAdded)
-            yield addExportMenu();
-        isExportMenuAdded = true;
-        if (isExportMenuOpen)
-            return;
-        isExportMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-export-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find export menu background element");
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
-    });
-}
-//#MARKER import menu
-let isImportMenuAdded = false;
-let isImportMenuOpen = false;
-/** Adds a menu to import a configuration from compressed or uncompressed JSON (hidden by default) */
-function addImportMenu() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const menuBgElem = document.createElement("div");
-        menuBgElem.id = "bytm-import-menu-bg";
-        menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-        menuBgElem.style.visibility = "hidden";
-        menuBgElem.style.display = "none";
-        menuBgElem.addEventListener("click", (e) => {
-            var _a;
-            if (isImportMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-import-menu-bg") {
-                closeImportMenu(e);
-                openCfgMenu();
-            }
-        });
-        document.body.addEventListener("keydown", (e) => {
-            if (isImportMenuOpen && e.key === "Escape") {
-                closeImportMenu(e);
-                openCfgMenu();
-            }
-        });
-        const menuContainer = document.createElement("div");
-        menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.classList.add("bytm-menu");
-        menuContainer.id = "bytm-import-menu";
-        //#SECTION title bar
-        const headerElem = document.createElement("div");
-        headerElem.classList.add("bytm-menu-header");
-        const titleCont = document.createElement("div");
-        titleCont.className = "bytm-menu-titlecont";
-        titleCont.role = "heading";
-        titleCont.ariaLevel = "1";
-        const titleElem = document.createElement("h2");
-        titleElem.className = "bytm-menu-title";
-        titleElem.textContent = t("import_menu_title", scriptInfo.name);
-        const closeElem = document.createElement("img");
-        closeElem.classList.add("bytm-menu-close");
-        closeElem.role = "button";
-        closeElem.tabIndex = 0;
-        closeElem.src = yield getResourceUrl("img-close");
-        closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        onInteraction(closeElem, (e) => {
-            closeImportMenu(e);
-            openCfgMenu();
-        });
-        titleCont.appendChild(titleElem);
-        headerElem.appendChild(titleCont);
-        headerElem.appendChild(closeElem);
-        //#SECTION body
-        const menuBodyElem = document.createElement("div");
-        menuBodyElem.classList.add("bytm-menu-body");
-        const textElem = document.createElement("div");
-        textElem.id = "bytm-import-menu-text";
-        textElem.textContent = t("import_hint");
-        const textAreaElem = document.createElement("textarea");
-        textAreaElem.id = "bytm-import-menu-textarea";
-        //#SECTION footer
-        const footerElem = document.createElement("div");
-        footerElem.classList.add("bytm-menu-footer-right");
-        const importBtnElem = document.createElement("button");
-        importBtnElem.classList.add("bytm-btn");
-        importBtnElem.textContent = t("import");
-        importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
-        importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
-            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-            const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
-            if (!textAreaElem)
-                return warn("Couldn't find import menu textarea element");
-            try {
-                /** Tries to parse an uncompressed or compressed input string as a JSON object */
-                const decode = (input) => __awaiter(this, void 0, void 0, function* () {
-                    try {
-                        return JSON.parse(input);
-                    }
-                    catch (_a) {
-                        try {
-                            return JSON.parse(yield UserUtils.decompress(input, compressionFormat, "string"));
-                        }
-                        catch (err) {
-                            warn("Couldn't import configuration:", err);
-                            return null;
-                        }
-                    }
-                });
-                const parsed = yield decode(textAreaElem.value.trim());
-                if (typeof parsed !== "object")
-                    return alert(t("import_error_invalid"));
-                if (typeof parsed.formatVersion !== "number")
-                    return alert(t("import_error_no_format_version"));
-                if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                    return alert(t("import_error_no_data"));
-                if (parsed.formatVersion < formatVersion) {
-                    let newData = JSON.parse(JSON.stringify(parsed.data));
-                    const sortedMigrations = Object.entries(migrations)
-                        .sort(([a], [b]) => Number(a) - Number(b));
-                    let curFmtVer = Number(parsed.formatVersion);
-                    for (const [fmtVer, migrationFunc] of sortedMigrations) {
-                        const ver = Number(fmtVer);
-                        if (curFmtVer < formatVersion && curFmtVer < ver) {
-                            try {
-                                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-                                newData = migRes instanceof Promise ? yield migRes : migRes;
-                                curFmtVer = ver;
-                            }
-                            catch (err) {
-                                error(`Error while running migration function for format version ${fmtVer}:`, err);
-                            }
-                        }
-                    }
-                    parsed.formatVersion = curFmtVer;
-                    parsed.data = newData;
-                }
-                else if (parsed.formatVersion !== formatVersion)
-                    return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
-                yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
-                if (confirm(t("import_success_confirm_reload"))) {
-                    disableBeforeUnload();
-                    return location.reload();
-                }
-                emitSiteEvent("rebuildCfgMenu", parsed.data);
-                closeImportMenu();
-                openCfgMenu();
-            }
-            catch (err) {
-                warn("Couldn't import configuration:", err);
-                alert(t("import_error_invalid"));
-            }
-        }));
-        footerElem.appendChild(importBtnElem);
-        //#SECTION finalize
-        menuBodyElem.appendChild(textElem);
-        menuBodyElem.appendChild(textAreaElem);
-        menuBodyElem.appendChild(footerElem);
-        menuContainer.appendChild(headerElem);
-        menuContainer.appendChild(menuBodyElem);
-        menuBgElem.appendChild(menuContainer);
-        document.body.appendChild(menuBgElem);
-    });
-}
-/** Closes the import menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeImportMenu(evt) {
-    if (!isImportMenuOpen)
-        return;
-    isImportMenuOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    const menuBg = document.querySelector("#bytm-import-menu-bg");
-    const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
-    if (textAreaElem)
-        textAreaElem.value = "";
-    if (!menuBg)
-        return warn("Couldn't find import menu background element");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-}
-/** Opens the import menu if it is closed */
-function openImportMenu() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!isImportMenuAdded)
-            yield addImportMenu();
-        isImportMenuAdded = true;
-        if (isImportMenuOpen)
-            return;
-        isImportMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-import-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find import menu background element");
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
-    });
-}
-//#MARKER changelog menu
-let isChangelogMenuAdded = false;
-let isChangelogMenuOpen = false;
-/** Adds a changelog menu (hidden by default) */
-function addChangelogMenu() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const menuBgElem = document.createElement("div");
-        menuBgElem.id = "bytm-changelog-menu-bg";
-        menuBgElem.classList.add("bytm-menu-bg");
-        menuBgElem.ariaLabel = menuBgElem.title = t("close_menu_tooltip");
-        menuBgElem.style.visibility = "hidden";
-        menuBgElem.style.display = "none";
-        menuBgElem.addEventListener("click", (e) => {
-            var _a;
-            if (isChangelogMenuOpen && ((_a = e.target) === null || _a === void 0 ? void 0 : _a.id) === "bytm-changelog-menu-bg") {
-                closeChangelogMenu(e);
-                if (menuBgElem.dataset.returnTo === "cfgMenu")
-                    openCfgMenu();
-            }
-        });
-        document.body.addEventListener("keydown", (e) => {
-            if (isChangelogMenuOpen && e.key === "Escape") {
-                closeChangelogMenu(e);
-                if (menuBgElem.dataset.returnTo === "cfgMenu")
-                    openCfgMenu();
-            }
-        });
-        const menuContainer = document.createElement("div");
-        menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.classList.add("bytm-menu", "top-aligned");
-        menuContainer.id = "bytm-changelog-menu";
-        //#SECTION title bar
-        const headerElem = document.createElement("div");
-        headerElem.classList.add("bytm-menu-header");
-        const titleCont = document.createElement("div");
-        titleCont.className = "bytm-menu-titlecont";
-        titleCont.role = "heading";
-        titleCont.ariaLevel = "1";
-        const titleElem = document.createElement("h2");
-        titleElem.className = "bytm-menu-title";
-        titleElem.textContent = t("changelog_menu_title", scriptInfo.name);
-        const closeElem = document.createElement("img");
-        closeElem.classList.add("bytm-menu-close");
-        closeElem.role = "button";
-        closeElem.tabIndex = 0;
-        closeElem.src = yield getResourceUrl("img-close");
-        closeElem.ariaLabel = closeElem.title = t("close_menu_tooltip");
-        onInteraction(closeElem, (e) => {
-            closeChangelogMenu(e);
-            if (menuBgElem.dataset.returnTo === "cfgMenu")
-                openCfgMenu();
-        });
-        titleCont.appendChild(titleElem);
-        headerElem.appendChild(titleCont);
-        headerElem.appendChild(closeElem);
-        //#SECTION body
-        const menuBodyElem = document.createElement("div");
-        menuBodyElem.id = "bytm-changelog-menu-body";
-        menuBodyElem.classList.add("bytm-menu-body");
-        const textElem = document.createElement("div");
-        textElem.id = "bytm-changelog-menu-text";
-        textElem.classList.add("bytm-markdown-container");
-        textElem.innerHTML = yield getChangelogHtmlWithDetails();
-        //#SECTION finalize
-        menuBodyElem.appendChild(textElem);
-        menuContainer.appendChild(headerElem);
-        menuContainer.appendChild(menuBodyElem);
-        menuBgElem.appendChild(menuContainer);
-        document.body.appendChild(menuBgElem);
-        const anchors = document.querySelectorAll("#bytm-changelog-menu-text a");
-        for (const anchor of anchors) {
-            anchor.ariaLabel = anchor.title = anchor.href;
-            anchor.target = "_blank";
-        }
-    });
-}
-/** Closes the changelog menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeChangelogMenu(evt) {
-    if (!isChangelogMenuOpen)
-        return;
-    isChangelogMenuOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    const menuBg = document.querySelector("#bytm-changelog-menu-bg");
-    if (!menuBg)
-        return warn("Couldn't find changelog menu background element");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-}
-/**
- * Opens the changelog menu if it is closed
- * @param returnTo What menu to open after the changelog menu is closed
- */
-function openChangelogMenu(returnTo = "cfgMenu") {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!isChangelogMenuAdded)
-            yield addChangelogMenu();
-        isChangelogMenuAdded = true;
-        if (isChangelogMenuOpen)
-            return;
-        isChangelogMenuOpen = true;
-        document.body.classList.add("bytm-disable-scroll");
-        (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-        const menuBg = document.querySelector("#bytm-changelog-menu-bg");
-        if (!menuBg)
-            return warn("Couldn't find changelog menu background element");
-        const firstDetails = menuBg.querySelector("#bytm-changelog-menu-text details");
-        if (firstDetails)
-            firstDetails.open = true;
-        menuBg.dataset.returnTo = returnTo;
-        menuBg.style.visibility = "visible";
-        menuBg.style.display = "block";
-    });
 }//#MARKER BYTM-Config buttons
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
@@ -5470,8 +5308,10 @@ function addWelcomeMenu() {
         openChangelogElem.id = "bytm-welcome-menu-open-changelog";
         openChangelogElem.classList.add("bytm-btn");
         openChangelogElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            yield openChangelogMenu("exit");
+            const dlg = yield getChangelogDialog();
+            yield dlg.mount();
             closeWelcomeMenu();
+            yield dlg.open();
         }));
         const closeBtnElem = document.createElement("button");
         closeBtnElem.id = "bytm-welcome-menu-footer-close";
@@ -5882,24 +5722,6 @@ function insertGlobalStyle() {
   --bytm-menu-width-max: 1150px;
 }
 
-#bytm-changelog-dialog-bg,
-#bytm-changelog-menu-bg
-{
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 900px;
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 900px;
-}
-
-#bytm-export-dialog-bg, #bytm-import-dialog-bg,
-#bytm-export-menu-bg, #bytm-import-menu-bg
-{
-  --bytm-dialog-height-max: 500px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
@@ -6144,9 +5966,6 @@ function insertGlobalStyle() {
 }
 
 .bytm-dialog-footer-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin-top: 6px;
   padding: 15px 20px;
   background: var(--bytm-dialog-bg);
@@ -6317,6 +6136,7 @@ function insertGlobalStyle() {
   background-color: #222;
   border-radius: 3px;
   padding: 1px 5px;
+  font-family: monospace;
 }
 
 .bytm-markdown-container h2 {
@@ -6341,7 +6161,6 @@ function insertGlobalStyle() {
 #bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
-  padding: 10px 10px 15px 20px;
   font-size: 1.5em;
 }
 
@@ -6724,7 +6543,6 @@ hr {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  margin-top: 15px;
 }
 
 #bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
@@ -6817,12 +6635,12 @@ hr {
 
 #bytm-export-menu-text, #bytm-import-menu-text {
   white-space: pre-wrap;
-  font-size: 1.6em;
+  font-size: 1.6rem;
   margin-bottom: 15px;
 }
 
 .bytm-menu-footer-copied {
-  font-size: 1.6em;
+  font-size: 1.6rem;
   margin-right: 15px;
 }
 
