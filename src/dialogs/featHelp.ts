@@ -18,8 +18,8 @@ export async function getFeatHelpDialog({
   if(!featHelpDialog) {
     featHelpDialog = new BytmDialog({
       id: "feat-help",
-      maxWidth: 600,
-      maxHeight: 400,
+      width: 600,
+      height: 400,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,

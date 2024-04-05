@@ -15,15 +15,6 @@
   --bytm-menu-width-max: 1150px;
 }
 
-#bytm-export-dialog-bg, #bytm-import-dialog-bg,
-#bytm-export-menu-bg, #bytm-import-menu-bg
-{
-  --bytm-dialog-height-max: 500px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }

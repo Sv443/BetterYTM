@@ -9,8 +9,8 @@ export async function getChangelogDialog() {
   if(!changelogDialog) {
     changelogDialog = new BytmDialog({
       id: "changelog",
-      maxWidth: 900,
-      maxHeight: 800,
+      width: 900,
+      height: 800,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
@@ -39,7 +39,8 @@ export async function getChangelogDialog() {
 }
 
 async function renderHeader() {
-  const headerEl = document.createElement("h1");
+  const headerEl = document.createElement("h2");
+  headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
   headerEl.textContent = t("changelog_menu_title", scriptInfo.name);
