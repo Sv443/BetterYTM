@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53cce4a
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=cd37b3d
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=53cce4a
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=53cce4a
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=53cce4a
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=53cce4a
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=53cce4a
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=53cce4a
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=53cce4a
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=53cce4a
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=53cce4a
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=53cce4a
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=53cce4a
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=53cce4a
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=53cce4a
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=53cce4a
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=53cce4a
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=53cce4a
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=53cce4a
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=53cce4a
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=53cce4a
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=53cce4a
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=53cce4a
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=53cce4a
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=53cce4a
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=53cce4a
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=53cce4a
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=53cce4a
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=53cce4a
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=53cce4a
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=53cce4a
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=53cce4a
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=53cce4a
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=cd37b3d
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=cd37b3d
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=cd37b3d
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=cd37b3d
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=cd37b3d
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=cd37b3d
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=cd37b3d
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=cd37b3d
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=cd37b3d
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=cd37b3d
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=cd37b3d
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=cd37b3d
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=cd37b3d
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=cd37b3d
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=cd37b3d
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=cd37b3d
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=cd37b3d
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=cd37b3d
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=cd37b3d
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=cd37b3d
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=cd37b3d
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=cd37b3d
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=cd37b3d
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=cd37b3d
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=cd37b3d
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=cd37b3d
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=cd37b3d
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=cd37b3d
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=cd37b3d
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=cd37b3d
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=cd37b3d
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "53cce4a";
+const buildNumberRaw = "cd37b3d";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -601,7 +601,7 @@ class BytmDialog extends NanoEmitter {
             writable: true,
             value: false
         });
-        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: false, smallHeader: false }, options);
+        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, smallHeader: false }, options);
         this.id = options.id;
     }
     //#MARKER public
@@ -703,7 +703,8 @@ class BytmDialog extends NanoEmitter {
         this.events.emit("close");
         if (this.options.destroyOnClose)
             this.destroy();
-        if (this.options.unmountOnClose)
+        // don't destroy *and* unmount at the same time
+        else if (this.options.unmountOnClose)
             this.unmount();
     }
     /** Returns true if the dialog is currently open */
@@ -759,7 +760,7 @@ class BytmDialog extends NanoEmitter {
             //#SECTION header
             const headerWrapperEl = document.createElement("div");
             headerWrapperEl.classList.add("bytm-dialog-header");
-            this.options.smallDialog && headerWrapperEl.classList.add("small");
+            this.options.small && headerWrapperEl.classList.add("small");
             if (header) {
                 const headerTitleWrapperEl = document.createElement("div");
                 headerTitleWrapperEl.id = `bytm-${this.id}-dialog-title`;
@@ -772,13 +773,13 @@ class BytmDialog extends NanoEmitter {
             else {
                 // insert element to pad the header height
                 const padEl = document.createElement("div");
-                padEl.classList.add("bytm-dialog-header-pad", this.options.smallDialog ? "small" : "");
+                padEl.classList.add("bytm-dialog-header-pad", this.options.small ? "small" : "");
                 headerWrapperEl.appendChild(padEl);
             }
             if (this.options.closeBtnEnabled) {
                 const closeBtnEl = document.createElement("img");
                 closeBtnEl.classList.add("bytm-dialog-close");
-                this.options.smallDialog && closeBtnEl.classList.add("small");
+                this.options.small && closeBtnEl.classList.add("small");
                 closeBtnEl.src = yield getResourceUrl("img-close");
                 closeBtnEl.role = "button";
                 closeBtnEl.tabIndex = 0;
@@ -788,13 +789,13 @@ class BytmDialog extends NanoEmitter {
             }
             dialogWrapperEl.appendChild(headerWrapperEl);
             //#SECTION body
-            const menuBodyElem = document.createElement("div");
-            menuBodyElem.id = `bytm-${this.id}-dialog-body`;
-            menuBodyElem.classList.add("bytm-dialog-body");
-            this.options.smallDialog && menuBodyElem.classList.add("small");
+            const dialogBodyElem = document.createElement("div");
+            dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
+            dialogBodyElem.classList.add("bytm-dialog-body");
+            this.options.small && dialogBodyElem.classList.add("small");
             const body = this.options.renderBody();
-            menuBodyElem.appendChild(body instanceof Promise ? yield body : body);
-            dialogWrapperEl.appendChild(menuBodyElem);
+            dialogBodyElem.appendChild(body instanceof Promise ? yield body : body);
+            dialogWrapperEl.appendChild(dialogBodyElem);
             //#SECTION footer
             if (footer) {
                 const footerWrapper = document.createElement("div");
@@ -1276,7 +1277,7 @@ function getVersionNotifDialog({ latestTag, }) {
                 closeOnBgClick: false,
                 closeOnEscPress: true,
                 destroyOnClose: true,
-                smallDialog: true,
+                small: true,
                 renderHeader: renderHeader$1,
                 renderBody: () => renderBody$1({
                     latestTag,
@@ -1387,9 +1388,11 @@ function renderBody$1({ latestTag, changelogHtml, }) {
         return wrapperEl;
     });
 }let featHelpDialog = null;
+let curFeatKey = null;
 /** Creates and/or returns the help dialog for a specific feature */
 function getFeatHelpDialog({ featKey, }) {
     return __awaiter(this, void 0, void 0, function* () {
+        curFeatKey = featKey;
         if (!featHelpDialog) {
             featHelpDialog = new BytmDialog({
                 id: "feat-help",
@@ -1398,12 +1401,10 @@ function getFeatHelpDialog({ featKey, }) {
                 closeBtnEnabled: true,
                 closeOnBgClick: true,
                 closeOnEscPress: true,
-                destroyOnClose: true,
-                smallDialog: true,
+                small: true,
                 renderHeader,
-                renderBody: () => renderBody({ featKey }),
+                renderBody,
             });
-            featHelpDialog.on("destroy", () => featHelpDialog = null);
             // make config menu inert while help dialog is open
             featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
             featHelpDialog.on("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
@@ -1422,19 +1423,19 @@ function renderHeader() {
         return headerEl;
     });
 }
-function renderBody({ featKey, }) {
+function renderBody() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
         const featDescElem = document.createElement("h3");
         featDescElem.role = "subheading";
-        featDescElem.textContent = t(`feature_desc_${featKey}`);
-        featDescElem.id = "bytm-feat-help-menu-desc";
+        featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
+        featDescElem.id = "bytm-feat-help-dialog-desc";
         const helpTextElem = document.createElement("div");
-        helpTextElem.id = "bytm-feat-help-menu-text";
+        helpTextElem.id = "bytm-feat-help-dialog-text";
         // @ts-ignore
-        const helpText = (_b = (_a = featInfo[featKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
-        helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${featKey}`);
+        const helpText = (_b = (_a = featInfo[curFeatKey]) === null || _a === void 0 ? void 0 : _a.helpText) === null || _b === void 0 ? void 0 : _b.call(_a);
+        helpTextElem.textContent = helpText !== null && helpText !== void 0 ? helpText : t(`feature_helptext_${curFeatKey}`);
         contElem.appendChild(featDescElem);
         contElem.appendChild(helpTextElem);
         return contElem;
@@ -4614,7 +4615,7 @@ const featInfo = {
         default: false,
         enable: noop,
         disable: noop,
-        change: () => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(),
+        change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
         advanced: true,
         textAdornment: adornments.experimental,
     },
@@ -5897,15 +5898,6 @@ function insertGlobalStyle() {
   --bytm-menu-width-max: 600px;
 }
 
-#bytm-feat-help-dialog-bg,
-#bytm-feat-help-menu-bg
-{
-  --bytm-dialog-height-max: 400px;
-  --bytm-dialog-width-max: 600px;
-  --bytm-menu-height-max: 400px;
-  --bytm-menu-width-max: 600px;
-}
-
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
@@ -6923,14 +6915,14 @@ hr {
   font-weight: bolder;
 }
 
-#bytm-feat-help-menu-desc, #bytm-feat-help-menu-text {
+#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   font-size: 1.5rem;
   line-height: 1.25em;
 }
 
-#bytm-feat-help-menu-desc {
+#bytm-feat-help-dialog-desc {
   font-size: 1.8rem;
   padding-bottom: 10px;
 }
@@ -7094,7 +7086,7 @@ button[disabled] {
 }
 
 button[disabled].bytm-busy {
-  cursor: wait;
+  cursor: progress;
 }
 
 /* #MARKER menu */
