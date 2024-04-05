@@ -15,15 +15,6 @@
   --bytm-menu-width-max: 1150px;
 }
 
-#bytm-changelog-dialog-bg,
-#bytm-changelog-menu-bg
-{
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 900px;
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 900px;
-}
-
 #bytm-export-dialog-bg, #bytm-import-dialog-bg,
 #bytm-export-menu-bg, #bytm-import-menu-bg
 {

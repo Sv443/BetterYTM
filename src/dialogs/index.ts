@@ -1,4 +1,5 @@
 import "./dialogs.css";
 
-export * from "./versionNotif";
+export * from "./changelog";
 export * from "./featHelp";
+export * from "./versionNotif";
