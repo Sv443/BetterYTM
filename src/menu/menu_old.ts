@@ -212,8 +212,7 @@ async function addCfgMenu() {
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
 
-  /** Gets called whenever the feature config is changed */
-  const confChanged = debounce(async (key: keyof typeof defaultData, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+  const onCfgChange = async (key: keyof typeof defaultData, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
@@ -246,7 +245,10 @@ async function addCfgMenu() {
     }
     else if(getLocale() !== featConf.locale)
       setLocale(featConf.locale);
-  });
+  };
+
+  /** Call whenever the feature config is changed */
+  const confChanged = debounce(onCfgChange, 300, "rising");
 
   const featureCfg = getFeatures();
   const featureCfgWithCategories = Object.entries(featInfo)
@@ -710,7 +712,7 @@ async function addCfgMenu() {
 
   document.body.appendChild(backgroundElem);
 
-  window.addEventListener("resize", debounce(checkToggleScrollIndicator, 150));
+  window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250, "rising"));
 
   log("Added menu element");
 
