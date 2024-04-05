@@ -34,6 +34,8 @@ export interface SiteEventsMap {
   songTitleChanged: (newTitle: string, oldTitle: string | null, initialPlay: boolean) => void;
   /** Emitted whenever the current song's watch ID changes - `oldId` is `null` if this is the first song played in the session */
   watchIdChanged: (newId: string, oldId: string | null) => void;
+  /** Emitted whenever the player enters or exits fullscreen mode */
+  fullscreenToggled: (isFullscreen: boolean) => void;
 }
 
 /** Array of all site events */
@@ -125,6 +127,21 @@ export async function initSiteEvents() {
       queueObs,
       autoplayObs,
     ]);
+
+    //#SECTION player
+
+    const playerFullscreenObs = new MutationObserver(([{ target }]) => {
+      const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
+      siteEvents.emit("fullscreenToggled", isFullscreen);
+    });
+
+    addSelectorListener("mainPanel", "ytmusic-player#player", {
+      listener: (el) => {
+        playerFullscreenObs.observe(el, {
+          attributeFilter: ["player-ui-state"],
+        });
+      },
+    });
 
     //#SECTION other
 

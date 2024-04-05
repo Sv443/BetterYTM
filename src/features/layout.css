@@ -46,7 +46,7 @@
 
 .bytm-generic-btn-img {
   display: inline-block;
-  z-index: 10;
+  z-index: 1;
   width: 24px;
   height: 24px;
 }
@@ -212,6 +212,10 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   right: 5px;
   top: 0;
   height: 100%;
+}
+
+#bytm-scroll-to-active-btn-cont.hidden {
+  display: none;
 }
 
 #bytm-scroll-to-active-btn {
