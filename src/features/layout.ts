@@ -1,8 +1,8 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, openInNewTab, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createGenericBtn } from "../components";
@@ -549,8 +549,8 @@ export async function initThumbnailOverlay() {
       toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
   
       onInteraction(toggleBtnElem, (e) => {
-        if(e instanceof MouseEvent && e.shiftKey)
-          return openInNewTab(toggleBtnElem.href);
+        if(e.shiftKey)
+          return openInTab(toggleBtnElem.href);
         invertOverlay = !invertOverlay;
         updateOverlayVisibility();
       });

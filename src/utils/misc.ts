@@ -1,4 +1,4 @@
-import { compress, fetchAdvanced, randomId } from "@sv443-network/userutils";
+import { compress, fetchAdvanced, openInNewTab, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
@@ -103,6 +103,16 @@ export async function getBestThumbnailUrl(watchId: string) {
 /** Copies a JSON-serializable object */
 export function reserialize<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
+}
+
+/** Opens the given URL in a new tab, using GM.openInTab if available */
+export function openInTab(href: string, background = true) {
+  try {
+    openInNewTab(href, background);
+  }
+  catch(err) {
+    window.open(href, "_blank", "noopener noreferrer");
+  }
 }
 
 //#region resources
