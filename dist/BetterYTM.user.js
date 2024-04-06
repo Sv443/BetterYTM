@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4260e39
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7e98290
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4260e39
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4260e39
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4260e39
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4260e39
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4260e39
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4260e39
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4260e39
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4260e39
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4260e39
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4260e39
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=4260e39
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=4260e39
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=4260e39
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4260e39
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4260e39
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4260e39
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4260e39
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4260e39
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4260e39
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4260e39
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4260e39
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4260e39
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4260e39
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4260e39
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4260e39
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4260e39
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4260e39
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4260e39
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4260e39
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4260e39
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4260e39
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=7e98290
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=7e98290
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=7e98290
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=7e98290
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=7e98290
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=7e98290
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=7e98290
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=7e98290
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=7e98290
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=7e98290
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=7e98290
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=7e98290
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=7e98290
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=7e98290
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=7e98290
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=7e98290
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7e98290
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=7e98290
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=7e98290
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=7e98290
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=7e98290
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=7e98290
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=7e98290
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=7e98290
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=7e98290
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=7e98290
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=7e98290
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=7e98290
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=7e98290
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=7e98290
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=7e98290
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4260e39";
+const buildNumberRaw = "7e98290";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -309,7 +309,7 @@ var zh_CN = {
 		"Sv443"
 	]
 };
-var locales = {
+var langMapping = {
 	de_DE: de_DE,
 	en_US: en_US,
 	en_UK: en_UK,
@@ -1146,8 +1146,8 @@ function getChangelogDialog() {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$4,
-                renderBody: renderBody$4,
+                renderHeader: renderHeader$5,
+                renderBody: renderBody$5,
             });
             changelogDialog.on("render", () => {
                 const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
@@ -1166,7 +1166,7 @@ function getChangelogDialog() {
         return changelogDialog;
     });
 }
-function renderHeader$4() {
+function renderHeader$5() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
@@ -1176,7 +1176,7 @@ function renderHeader$4() {
         return headerEl;
     });
 }
-function renderBody$4() {
+function renderBody$5() {
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
         const mdContElem = document.createElement("div");
@@ -1201,9 +1201,9 @@ function getExportDialog() {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$3,
-                renderBody: renderBody$3,
-                renderFooter: renderFooter$1,
+                renderHeader: renderHeader$4,
+                renderBody: renderBody$4,
+                renderFooter: renderFooter$2,
             });
             exportDialog.on("close", () => {
                 const textAreaElem = document.querySelector("#bytm-export-dialog-bg #bytm-export-menu-textarea");
@@ -1224,7 +1224,7 @@ function getExportDialog() {
         return exportDialog;
     });
 }
-function renderHeader$3() {
+function renderHeader$4() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-menu-title");
@@ -1234,7 +1234,7 @@ function renderHeader$3() {
         return headerEl;
     });
 }
-function renderBody$3() {
+function renderBody$4() {
     return __awaiter(this, void 0, void 0, function* () {
         const canCompress = yield compressionSupported();
         const contElem = document.createElement("div");
@@ -1247,10 +1247,14 @@ function renderBody$3() {
         lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
         textAreaElem.value = t("click_to_reveal_sensitive_info");
         textAreaElem.setAttribute("revealed", "false");
-        const textAreaInteraction = () => __awaiter(this, void 0, void 0, function* () {
+        const textAreaInteraction = ({ shiftKey }) => __awaiter(this, void 0, void 0, function* () {
             const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
             lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-            textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
+            textAreaElem.value = shiftKey
+                ? lastUncompressedCfgString
+                : (canCompress
+                    ? yield UserUtils.compress(cfgString, compressionFormat, "string")
+                    : cfgString);
             textAreaElem.setAttribute("revealed", "true");
         });
         onInteraction(textAreaElem, textAreaInteraction);
@@ -1269,7 +1273,7 @@ function renderBody$3() {
         return contElem;
     });
 }
-function renderFooter$1() {
+function renderFooter$2() {
     return __awaiter(this, void 0, void 0, function* () {
         const footerElem = document.createElement("div");
         footerElem.classList.add("bytm-menu-footer-right");
@@ -1285,7 +1289,7 @@ function renderFooter$1() {
         copiedTextElem.style.display = "none";
         onInteraction(copyBtnElem, (evt) => __awaiter(this, void 0, void 0, function* () {
             (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-            GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) || (evt === null || evt === void 0 ? void 0 : evt.ctrlKey) ? lastUncompressedCfgString : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
+            GM.setClipboard(String((evt === null || evt === void 0 ? void 0 : evt.shiftKey) ? lastUncompressedCfgString : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
             copiedTextElem.style.display = "inline-block";
             if (typeof copiedTxtTimeout === "undefined") {
                 copiedTxtTimeout = setTimeout(() => {
@@ -1314,8 +1318,8 @@ function getFeatHelpDialog({ featKey, }) {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$2,
-                renderBody: renderBody$2,
+                renderHeader: renderHeader$3,
+                renderBody: renderBody$3,
             });
             // make config menu inert while help dialog is open
             featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -1324,7 +1328,7 @@ function getFeatHelpDialog({ featKey, }) {
         return featHelpDialog;
     });
 }
-function renderHeader$2() {
+function renderHeader$3() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("div");
         headerEl.role = "heading";
@@ -1335,7 +1339,7 @@ function renderHeader$2() {
         return headerEl;
     });
 }
-function renderBody$2() {
+function renderBody$3() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
@@ -1365,15 +1369,15 @@ function getImportDialog() {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$1,
-                renderBody: renderBody$1,
-                renderFooter,
+                renderHeader: renderHeader$2,
+                renderBody: renderBody$2,
+                renderFooter: renderFooter$1,
             });
         }
         return importDialog;
     });
 }
-function renderHeader$1() {
+function renderHeader$2() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
@@ -1383,7 +1387,7 @@ function renderHeader$1() {
         return headerEl;
     });
 }
-function renderBody$1() {
+function renderBody$2() {
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
         const textElem = document.createElement("div");
@@ -1396,7 +1400,7 @@ function renderBody$1() {
         return contElem;
     });
 }
-function renderFooter() {
+function renderFooter$1() {
     return __awaiter(this, void 0, void 0, function* () {
         const footerElem = document.createElement("div");
         footerElem.classList.add("bytm-menu-footer-right");
@@ -1616,8 +1620,8 @@ function getVersionNotifDialog({ latestTag, }) {
                 closeOnEscPress: true,
                 destroyOnClose: true,
                 small: true,
-                renderHeader,
-                renderBody: () => renderBody({
+                renderHeader: renderHeader$1,
+                renderBody: () => renderBody$1({
                     latestTag,
                     changelogHtml,
                 }),
@@ -1626,7 +1630,7 @@ function getVersionNotifDialog({ latestTag, }) {
         return verNotifDialog;
     });
 }
-function renderHeader() {
+function renderHeader$1() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("div");
         headerEl.role = "heading";
@@ -1640,7 +1644,7 @@ function renderHeader() {
     });
 }
 let disableUpdateCheck = false;
-function renderBody({ latestTag, changelogHtml, }) {
+function renderBody$1({ latestTag, changelogHtml, }) {
     return __awaiter(this, void 0, void 0, function* () {
         disableUpdateCheck = false;
         const hostPlatformNames = {
@@ -1724,278 +1728,6 @@ function renderBody({ latestTag, changelogHtml, }) {
         btnWrapper.appendChild(btnClose);
         wrapperEl.appendChild(btnWrapper);
         return wrapperEl;
-    });
-}const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
-/** Initializes the version check feature */
-function initVersionCheck() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            if (getFeatures().versionCheck === false)
-                return info("Version check is disabled");
-            const lastCheck = yield GM.getValue("bytm-version-check", 0);
-            if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
-                return;
-            yield doVersionCheck(false);
-        }
-        catch (err) {
-            error("Version check failed:", err);
-        }
-    });
-}
-/**
- * Checks for a new version of the script and shows a dialog.
- * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
- */
-function doVersionCheck(notifyNoUpdatesFound = false) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        yield GM.setValue("bytm-version-check", Date.now());
-        const res = yield sendRequest({
-            method: "GET",
-            url: releaseURL,
-        });
-        // TODO: small dialog for "no update found" message?
-        const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
-        const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
-        if (!latestTag)
-            return noUpdateFound();
-        const versionComp = compareVersions(scriptInfo.version, latestTag);
-        info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
-        if (versionComp < 0) {
-            const dialog = yield getVersionNotifDialog({ latestTag });
-            yield dialog.open();
-            return;
-        }
-        return noUpdateFound();
-    });
-}
-/**
- * Crudely compares two semver version strings.
- * The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a number.
- * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
- */
-function compareVersions(a, b) {
-    a = String(a).trim();
-    b = String(b).trim();
-    if ([a, b].some(v => !v.match(/^\d+\.\d+\.\d+$/)))
-        throw new TypeError("Invalid version format, expected 'MAJOR.MINOR.PATCH'");
-    const pa = a.split(".");
-    const pb = b.split(".");
-    for (let i = 0; i < 3; i++) {
-        const na = Number(pa[i]);
-        const nb = Number(pb[i]);
-        if (na > nb)
-            return 1;
-        if (nb > na)
-            return -1;
-        if (!isNaN(na) && isNaN(nb))
-            return 1;
-        if (isNaN(na) && !isNaN(nb))
-            return -1;
-    }
-    return 0;
-}
-/**
- * Compares two version arrays.
- * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.
- * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
- */
-function compareVersionArrays(a, b) {
-    if ([a, b].some(v => !Array.isArray(v) || v.length !== 3 || v.some(iv => !Number.isInteger(iv) || iv < 0)))
-        throw new TypeError("Invalid version format, expected '[MAJOR, MINOR, PATCH]' consisting only of positive integers");
-    for (let i = 0; i < 3; i++) {
-        if (a[i] > b[i])
-            return 1;
-        if (b[i] > a[i])
-            return -1;
-    }
-    return 0;
-}//#MARKER init
-/** Initializes all volume-related features */
-function initVolumeFeatures() {
-    return __awaiter(this, void 0, void 0, function* () {
-        // not technically an input element but behaves pretty much the same
-        addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-            listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
-                const volSliderCont = document.createElement("div");
-                volSliderCont.id = "bytm-vol-slider-cont";
-                if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
-                    initScrollStep(volSliderCont, sliderElem);
-                UserUtils.addParent(sliderElem, volSliderCont);
-                if (typeof getFeatures().volumeSliderSize === "number")
-                    setVolSliderSize();
-                if (getFeatures().volumeSliderLabel)
-                    yield addVolumeSliderLabel(sliderElem, volSliderCont);
-                setVolSliderStep(sliderElem);
-                if (getFeatures().volumeSharedBetweenTabs) {
-                    sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
-                    checkSharedVolume();
-                }
-                if (getFeatures().setInitialTabVolume)
-                    setInitialTabVolume(sliderElem);
-            }),
-        });
-    });
-}
-//#MARKER scroll step
-/** Initializes the volume slider scroll step features */
-function initScrollStep(volSliderCont, sliderElem) {
-    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
-        volSliderCont.addEventListener(evtName, (e) => {
-            var _a, _b;
-            e.preventDefault();
-            // cancels all the other events that would be fired
-            e.stopImmediatePropagation();
-            const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
-            const volumeDir = -Math.sign(delta);
-            const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
-            sliderElem.value = newVolume;
-            sliderElem.setAttribute("aria-valuenow", newVolume);
-            // make the site actually change the volume
-            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-        }, {
-            // takes precedence over the slider's own event listener
-            capture: true,
-        });
-    }
-}
-// #MARKER volume slider
-//#SECTION label
-/** Adds a percentage label to the volume slider and tooltip */
-function addVolumeSliderLabel(sliderElem, sliderContainer) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const labelContElem = document.createElement("div");
-        labelContElem.id = "bytm-vol-slider-label";
-        const volShared = getFeatures().volumeSharedBetweenTabs;
-        if (volShared) {
-            const linkIconHtml = yield resourceToHTMLString("icon-link");
-            if (linkIconHtml) {
-                const linkIconElem = document.createElement("div");
-                linkIconElem.id = "bytm-vol-slider-shared";
-                linkIconElem.innerHTML = linkIconHtml;
-                linkIconElem.role = "alert";
-                linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
-                labelContElem.classList.add("has-icon");
-                labelContElem.appendChild(linkIconElem);
-            }
-        }
-        const getLabel = (value) => `${value}%`;
-        const labelElem = document.createElement("div");
-        labelElem.classList.add("label");
-        labelElem.textContent = getLabel(sliderElem.value);
-        labelContElem.appendChild(labelElem);
-        // prevent video from minimizing
-        labelContElem.addEventListener("click", (e) => e.stopPropagation());
-        labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
-        const labelFull = getLabelText(sliderElem);
-        sliderContainer.setAttribute("title", labelFull);
-        sliderElem.setAttribute("title", labelFull);
-        sliderElem.setAttribute("aria-valuetext", labelFull);
-        const updateLabel = () => {
-            const labelFull = getLabelText(sliderElem);
-            sliderContainer.setAttribute("title", labelFull);
-            sliderElem.setAttribute("title", labelFull);
-            sliderElem.setAttribute("aria-valuetext", labelFull);
-            const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
-            if (labelElem2)
-                labelElem2.textContent = getLabel(sliderElem.value);
-        };
-        sliderElem.addEventListener("change", () => updateLabel());
-        siteEvents.on("configChanged", () => {
-            updateLabel();
-        });
-        addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
-            listener: (volumeCont) => volumeCont.appendChild(labelContElem),
-        });
-        let lastSliderVal = Number(sliderElem.value);
-        // show label if hovering over slider or slider is focused
-        const sliderHoverObserver = new MutationObserver(() => {
-            if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-                labelContElem.classList.add("bytm-visible");
-            else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-                labelContElem.classList.remove("bytm-visible");
-            if (Number(sliderElem.value) !== lastSliderVal) {
-                lastSliderVal = Number(sliderElem.value);
-                updateLabel();
-            }
-        });
-        sliderHoverObserver.observe(sliderElem, {
-            attributes: true,
-        });
-    });
-}
-//#SECTION size
-/** Sets the volume slider to a set size */
-function setVolSliderSize() {
-    const { volumeSliderSize: size } = getFeatures();
-    if (typeof size !== "number" || isNaN(Number(size)))
-        return;
-    addStyle(`\
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
-  width: ${size}px !important;
-}`, "vol-slider-size");
-}
-//#SECTION step
-/** Sets the `step` attribute of the volume slider */
-function setVolSliderStep(sliderElem) {
-    sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
-}
-//#MARKER shared volume
-/** Saves the shared volume level to persistent storage */
-function sharedVolumeChanged(vol) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
-        }
-        catch (err) {
-            error("Couldn't save shared volume level due to an error:", err);
-        }
-    });
-}
-let ignoreVal = -1;
-let lastCheckedSharedVolume = -1;
-/** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
-function checkSharedVolume() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const vol = yield GM.getValue("bytm-shared-volume");
-            if (vol && lastCheckedSharedVolume !== Number(vol)) {
-                if (ignoreVal === Number(vol))
-                    return;
-                lastCheckedSharedVolume = Number(vol);
-                const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
-                if (sliderElem) {
-                    sliderElem.value = String(vol);
-                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-                }
-            }
-            setTimeout(checkSharedVolume, 333);
-        }
-        catch (err) {
-            error("Couldn't check for shared volume level due to an error:", err);
-        }
-    });
-}
-function volumeSharedBetweenTabsDisabled() {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield GM.deleteValue("bytm-shared-volume");
-    });
-}
-//#MARKER initial volume
-/** Sets the volume slider to a set volume level when the session starts */
-function setInitialTabVolume(sliderElem) {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield waitVideoElementReady();
-        const initialVol = getFeatures().initialTabVolumeLevel;
-        if (getFeatures().volumeSharedBetweenTabs) {
-            lastCheckedSharedVolume = ignoreVal = initialVol;
-            if (getFeatures().volumeSharedBetweenTabs)
-                GM.setValue("bytm-shared-volume", String(initialVol));
-        }
-        sliderElem.value = String(initialVol);
-        sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-        log(`Set initial tab volume to ${initialVol}%`);
     });
 }//#MARKER create menu elements
 let isCfgMenuAdded = false;
@@ -2650,6 +2382,458 @@ function checkToggleScrollIndicator() {
             scrollIndicator.classList.add("bytm-hidden");
         }
     }
+}let welcomeDialog = null;
+/** Creates and/or returns the import dialog */
+function getWelcomeDialog() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!welcomeDialog) {
+            welcomeDialog = new BytmDialog({
+                id: "welcome",
+                width: 700,
+                height: 500,
+                closeBtnEnabled: true,
+                closeOnBgClick: true,
+                closeOnEscPress: true,
+                destroyOnClose: true,
+                renderHeader,
+                renderBody,
+                renderFooter,
+            });
+            welcomeDialog.on("render", retranslateWelcomeMenu);
+        }
+        return welcomeDialog;
+    });
+}
+function renderHeader() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const titleWrapperElem = document.createElement("div");
+        titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
+        const titleLogoElem = document.createElement("img");
+        titleLogoElem.id = "bytm-welcome-menu-title-logo";
+        titleLogoElem.classList.add("bytm-no-select");
+        titleLogoElem.src = yield getResourceUrl("img-logo");
+        const titleElem = document.createElement("h2");
+        titleElem.id = "bytm-welcome-menu-title";
+        titleElem.classList.add("bytm-dialog-title");
+        titleElem.role = "heading";
+        titleElem.ariaLevel = "1";
+        titleWrapperElem.appendChild(titleLogoElem);
+        titleWrapperElem.appendChild(titleElem);
+        return titleWrapperElem;
+    });
+}
+function renderBody() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const contentWrapper = document.createElement("div");
+        contentWrapper.id = "bytm-welcome-menu-content-wrapper";
+        // locale switcher
+        const localeCont = document.createElement("div");
+        localeCont.id = "bytm-welcome-menu-locale-cont";
+        const localeImg = document.createElement("img");
+        localeImg.id = "bytm-welcome-menu-locale-img";
+        localeImg.classList.add("bytm-no-select");
+        localeImg.src = yield getResourceUrl("icon-globe");
+        const localeSelectElem = document.createElement("select");
+        localeSelectElem.id = "bytm-welcome-menu-locale-select";
+        for (const [locale, { name }] of Object.entries(langMapping)) {
+            const localeOptionElem = document.createElement("option");
+            localeOptionElem.value = locale;
+            localeOptionElem.textContent = name;
+            localeSelectElem.appendChild(localeOptionElem);
+        }
+        localeSelectElem.value = getFeatures().locale;
+        localeSelectElem.addEventListener("change", () => __awaiter(this, void 0, void 0, function* () {
+            const selectedLocale = localeSelectElem.value;
+            const feats = Object.assign({}, getFeatures());
+            feats.locale = selectedLocale;
+            setFeatures(feats);
+            yield initTranslations(selectedLocale);
+            setLocale(selectedLocale);
+            retranslateWelcomeMenu();
+        }));
+        localeCont.appendChild(localeImg);
+        localeCont.appendChild(localeSelectElem);
+        contentWrapper.appendChild(localeCont);
+        // text
+        const textCont = document.createElement("div");
+        textCont.id = "bytm-welcome-menu-text-cont";
+        const textElem = document.createElement("p");
+        textElem.id = "bytm-welcome-menu-text";
+        const textElems = [];
+        const line1Elem = document.createElement("span");
+        line1Elem.id = "bytm-welcome-text-line1";
+        textElems.push(line1Elem);
+        const br1Elem = document.createElement("br");
+        textElems.push(br1Elem);
+        const line2Elem = document.createElement("span");
+        line2Elem.id = "bytm-welcome-text-line2";
+        textElems.push(line2Elem);
+        const br2Elem = document.createElement("br");
+        textElems.push(br2Elem);
+        const br3Elem = document.createElement("br");
+        textElems.push(br3Elem);
+        const line3Elem = document.createElement("span");
+        line3Elem.id = "bytm-welcome-text-line3";
+        textElems.push(line3Elem);
+        const br4Elem = document.createElement("br");
+        textElems.push(br4Elem);
+        const line4Elem = document.createElement("span");
+        line4Elem.id = "bytm-welcome-text-line4";
+        textElems.push(line4Elem);
+        const br5Elem = document.createElement("br");
+        textElems.push(br5Elem);
+        const br6Elem = document.createElement("br");
+        textElems.push(br6Elem);
+        const line5Elem = document.createElement("span");
+        line5Elem.id = "bytm-welcome-text-line5";
+        textElems.push(line5Elem);
+        textElems.forEach((elem) => textElem.appendChild(elem));
+        textCont.appendChild(textElem);
+        contentWrapper.appendChild(textCont);
+        return contentWrapper;
+    });
+}
+/** Retranslates all elements inside the welcome menu */
+function retranslateWelcomeMenu() {
+    const getLink = (href) => {
+        return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
+    };
+    const changes = {
+        "#bytm-welcome-menu-title": (e) => e.textContent = t("welcome_menu_title", scriptInfo.name),
+        "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
+        "#bytm-welcome-menu-open-cfg": (e) => {
+            e.textContent = t("config_menu");
+            e.ariaLabel = e.title = t("open_config_menu_tooltip");
+        },
+        "#bytm-welcome-menu-open-changelog": (e) => {
+            e.textContent = t("open_changelog");
+            e.ariaLabel = e.title = t("open_changelog_tooltip");
+        },
+        "#bytm-welcome-menu-footer-close": (e) => {
+            e.textContent = t("close");
+            e.ariaLabel = e.title = t("close_menu_tooltip");
+        },
+        "#bytm-welcome-text-line1": (e) => e.innerHTML = t("welcome_text_line_1"),
+        "#bytm-welcome-text-line2": (e) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
+        "#bytm-welcome-text-line3": (e) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
+        "#bytm-welcome-text-line4": (e) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
+        "#bytm-welcome-text-line5": (e) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
+    };
+    for (const [selector, fn] of Object.entries(changes)) {
+        const el = document.querySelector(selector);
+        if (!el) {
+            warn(`Couldn't find element in welcome menu with selector '${selector}'`);
+            continue;
+        }
+        fn(el);
+    }
+}
+function renderFooter() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const footerCont = document.createElement("div");
+        footerCont.id = "bytm-welcome-menu-footer-cont";
+        const openCfgElem = document.createElement("button");
+        openCfgElem.id = "bytm-welcome-menu-open-cfg";
+        openCfgElem.classList.add("bytm-btn");
+        openCfgElem.addEventListener("click", () => {
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+            openCfgMenu();
+        });
+        const openChangelogElem = document.createElement("button");
+        openChangelogElem.id = "bytm-welcome-menu-open-changelog";
+        openChangelogElem.classList.add("bytm-btn");
+        openChangelogElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            const dlg = yield getChangelogDialog();
+            yield dlg.mount();
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+            yield dlg.open();
+        }));
+        const closeBtnElem = document.createElement("button");
+        closeBtnElem.id = "bytm-welcome-menu-footer-close";
+        closeBtnElem.classList.add("bytm-btn");
+        closeBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            welcomeDialog === null || welcomeDialog === void 0 ? void 0 : welcomeDialog.close();
+        }));
+        const leftButtonsCont = document.createElement("div");
+        leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
+        leftButtonsCont.appendChild(openCfgElem);
+        leftButtonsCont.appendChild(openChangelogElem);
+        footerCont.appendChild(leftButtonsCont);
+        footerCont.appendChild(closeBtnElem);
+        return footerCont;
+    });
+}const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
+/** Initializes the version check feature */
+function initVersionCheck() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            if (getFeatures().versionCheck === false)
+                return info("Version check is disabled");
+            const lastCheck = yield GM.getValue("bytm-version-check", 0);
+            if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
+                return;
+            yield doVersionCheck(false);
+        }
+        catch (err) {
+            error("Version check failed:", err);
+        }
+    });
+}
+/**
+ * Checks for a new version of the script and shows a dialog.
+ * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
+ */
+function doVersionCheck(notifyNoUpdatesFound = false) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        yield GM.setValue("bytm-version-check", Date.now());
+        const res = yield sendRequest({
+            method: "GET",
+            url: releaseURL,
+        });
+        // TODO: small dialog for "no update found" message?
+        const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+        const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
+        if (!latestTag)
+            return noUpdateFound();
+        const versionComp = compareVersions(scriptInfo.version, latestTag);
+        info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+        if (versionComp < 0) {
+            const dialog = yield getVersionNotifDialog({ latestTag });
+            yield dialog.open();
+            return;
+        }
+        return noUpdateFound();
+    });
+}
+/**
+ * Crudely compares two semver version strings.
+ * The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
+ */
+function compareVersions(a, b) {
+    a = String(a).trim();
+    b = String(b).trim();
+    if ([a, b].some(v => !v.match(/^\d+\.\d+\.\d+$/)))
+        throw new TypeError("Invalid version format, expected 'MAJOR.MINOR.PATCH'");
+    const pa = a.split(".");
+    const pb = b.split(".");
+    for (let i = 0; i < 3; i++) {
+        const na = Number(pa[i]);
+        const nb = Number(pb[i]);
+        if (na > nb)
+            return 1;
+        if (nb > na)
+            return -1;
+        if (!isNaN(na) && isNaN(nb))
+            return 1;
+        if (isNaN(na) && !isNaN(nb))
+            return -1;
+    }
+    return 0;
+}
+/**
+ * Compares two version arrays.
+ * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.
+ * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
+ */
+function compareVersionArrays(a, b) {
+    if ([a, b].some(v => !Array.isArray(v) || v.length !== 3 || v.some(iv => !Number.isInteger(iv) || iv < 0)))
+        throw new TypeError("Invalid version format, expected '[MAJOR, MINOR, PATCH]' consisting only of positive integers");
+    for (let i = 0; i < 3; i++) {
+        if (a[i] > b[i])
+            return 1;
+        if (b[i] > a[i])
+            return -1;
+    }
+    return 0;
+}//#MARKER init
+/** Initializes all volume-related features */
+function initVolumeFeatures() {
+    return __awaiter(this, void 0, void 0, function* () {
+        // not technically an input element but behaves pretty much the same
+        addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+            listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
+                const volSliderCont = document.createElement("div");
+                volSliderCont.id = "bytm-vol-slider-cont";
+                if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
+                    initScrollStep(volSliderCont, sliderElem);
+                UserUtils.addParent(sliderElem, volSliderCont);
+                if (typeof getFeatures().volumeSliderSize === "number")
+                    setVolSliderSize();
+                if (getFeatures().volumeSliderLabel)
+                    yield addVolumeSliderLabel(sliderElem, volSliderCont);
+                setVolSliderStep(sliderElem);
+                if (getFeatures().volumeSharedBetweenTabs) {
+                    sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+                    checkSharedVolume();
+                }
+                if (getFeatures().setInitialTabVolume)
+                    setInitialTabVolume(sliderElem);
+            }),
+        });
+    });
+}
+//#MARKER scroll step
+/** Initializes the volume slider scroll step features */
+function initScrollStep(volSliderCont, sliderElem) {
+    for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+        volSliderCont.addEventListener(evtName, (e) => {
+            var _a, _b;
+            e.preventDefault();
+            // cancels all the other events that would be fired
+            e.stopImmediatePropagation();
+            const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
+            const volumeDir = -Math.sign(delta);
+            const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
+            sliderElem.value = newVolume;
+            sliderElem.setAttribute("aria-valuenow", newVolume);
+            // make the site actually change the volume
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+        }, {
+            // takes precedence over the slider's own event listener
+            capture: true,
+        });
+    }
+}
+// #MARKER volume slider
+//#SECTION label
+/** Adds a percentage label to the volume slider and tooltip */
+function addVolumeSliderLabel(sliderElem, sliderContainer) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const labelContElem = document.createElement("div");
+        labelContElem.id = "bytm-vol-slider-label";
+        const volShared = getFeatures().volumeSharedBetweenTabs;
+        if (volShared) {
+            const linkIconHtml = yield resourceToHTMLString("icon-link");
+            if (linkIconHtml) {
+                const linkIconElem = document.createElement("div");
+                linkIconElem.id = "bytm-vol-slider-shared";
+                linkIconElem.innerHTML = linkIconHtml;
+                linkIconElem.role = "alert";
+                linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+                labelContElem.classList.add("has-icon");
+                labelContElem.appendChild(linkIconElem);
+            }
+        }
+        const getLabel = (value) => `${value}%`;
+        const labelElem = document.createElement("div");
+        labelElem.classList.add("label");
+        labelElem.textContent = getLabel(sliderElem.value);
+        labelContElem.appendChild(labelElem);
+        // prevent video from minimizing
+        labelContElem.addEventListener("click", (e) => e.stopPropagation());
+        labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+        const labelFull = getLabelText(sliderElem);
+        sliderContainer.setAttribute("title", labelFull);
+        sliderElem.setAttribute("title", labelFull);
+        sliderElem.setAttribute("aria-valuetext", labelFull);
+        const updateLabel = () => {
+            const labelFull = getLabelText(sliderElem);
+            sliderContainer.setAttribute("title", labelFull);
+            sliderElem.setAttribute("title", labelFull);
+            sliderElem.setAttribute("aria-valuetext", labelFull);
+            const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
+            if (labelElem2)
+                labelElem2.textContent = getLabel(sliderElem.value);
+        };
+        sliderElem.addEventListener("change", () => updateLabel());
+        siteEvents.on("configChanged", () => {
+            updateLabel();
+        });
+        addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
+            listener: (volumeCont) => volumeCont.appendChild(labelContElem),
+        });
+        let lastSliderVal = Number(sliderElem.value);
+        // show label if hovering over slider or slider is focused
+        const sliderHoverObserver = new MutationObserver(() => {
+            if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+                labelContElem.classList.add("bytm-visible");
+            else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+                labelContElem.classList.remove("bytm-visible");
+            if (Number(sliderElem.value) !== lastSliderVal) {
+                lastSliderVal = Number(sliderElem.value);
+                updateLabel();
+            }
+        });
+        sliderHoverObserver.observe(sliderElem, {
+            attributes: true,
+        });
+    });
+}
+//#SECTION size
+/** Sets the volume slider to a set size */
+function setVolSliderSize() {
+    const { volumeSliderSize: size } = getFeatures();
+    if (typeof size !== "number" || isNaN(Number(size)))
+        return;
+    addStyle(`\
+#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
+  width: ${size}px !important;
+}`, "vol-slider-size");
+}
+//#SECTION step
+/** Sets the `step` attribute of the volume slider */
+function setVolSliderStep(sliderElem) {
+    sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
+}
+//#MARKER shared volume
+/** Saves the shared volume level to persistent storage */
+function sharedVolumeChanged(vol) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
+        }
+        catch (err) {
+            error("Couldn't save shared volume level due to an error:", err);
+        }
+    });
+}
+let ignoreVal = -1;
+let lastCheckedSharedVolume = -1;
+/** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
+function checkSharedVolume() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const vol = yield GM.getValue("bytm-shared-volume");
+            if (vol && lastCheckedSharedVolume !== Number(vol)) {
+                if (ignoreVal === Number(vol))
+                    return;
+                lastCheckedSharedVolume = Number(vol);
+                const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+                if (sliderElem) {
+                    sliderElem.value = String(vol);
+                    sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            }
+            setTimeout(checkSharedVolume, 333);
+        }
+        catch (err) {
+            error("Couldn't check for shared volume level due to an error:", err);
+        }
+    });
+}
+function volumeSharedBetweenTabsDisabled() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield GM.deleteValue("bytm-shared-volume");
+    });
+}
+//#MARKER initial volume
+/** Sets the volume slider to a set volume level when the session starts */
+function setInitialTabVolume(sliderElem) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield waitVideoElementReady();
+        const initialVol = getFeatures().initialTabVolumeLevel;
+        if (getFeatures().volumeSharedBetweenTabs) {
+            lastCheckedSharedVolume = ignoreVal = initialVol;
+            if (getFeatures().volumeSharedBetweenTabs)
+                GM.setValue("bytm-shared-volume", String(initialVol));
+        }
+        sliderElem.value = String(initialVol);
+        sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+        log(`Set initial tab volume to ${initialVol}%`);
+    });
 }//#MARKER BYTM-Config buttons
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
@@ -4003,7 +4187,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
     });
 }//#MARKER feature dependencies
 /** List of all available locale SelectOptions */
-const localeOptions = Object.entries(locales).reduce((a, [locale, { name }]) => {
+const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
     return [...a, {
             value: locale,
             label: name,
@@ -5174,16 +5358,16 @@ function getPreferredLocale() {
     const navLangs = navigator.languages
         .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
         .map(lang => lang.replace(/-/g, "_"));
-    if (Object.entries(locales).find(([key]) => key === navLang))
+    if (Object.entries(langMapping).find(([key]) => key === navLang))
         return navLang;
     for (const loc of navLangs) {
-        if (Object.entries(locales).find(([key]) => key === loc))
+        if (Object.entries(langMapping).find(([key]) => key === loc))
             return loc;
     }
     // if navigator.languages has entries that aren't locale codes in the format xx_XX
     if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
         for (const lang of navLangs) {
-            const foundLoc = (_a = Object.entries(locales).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+            const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
             if (foundLoc)
                 return foundLoc;
         }
@@ -5260,222 +5444,6 @@ function constructUrlString(baseUrl, params) {
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
         GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
-    });
-}//#MARKER menu
-let isWelcomeMenuOpen = false;
-/** Adds the welcome menu to the DOM */
-function addWelcomeMenu() {
-    return __awaiter(this, void 0, void 0, function* () {
-        //#SECTION backdrop & menu container
-        const backgroundElem = document.createElement("div");
-        backgroundElem.id = "bytm-welcome-menu-bg";
-        backgroundElem.classList.add("bytm-menu-bg");
-        backgroundElem.style.visibility = "hidden";
-        backgroundElem.style.display = "none";
-        const menuContainer = document.createElement("div");
-        menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-        menuContainer.classList.add("bytm-menu");
-        menuContainer.id = "bytm-welcome-menu";
-        //#SECTION title bar
-        const headerElem = document.createElement("div");
-        headerElem.classList.add("bytm-menu-header");
-        const titleWrapperElem = document.createElement("div");
-        titleWrapperElem.id = "bytm-welcome-menu-title-wrapper";
-        const titleLogoElem = document.createElement("img");
-        titleLogoElem.id = "bytm-welcome-menu-title-logo";
-        titleLogoElem.classList.add("bytm-no-select");
-        titleLogoElem.src = yield getResourceUrl("img-logo");
-        const titleElem = document.createElement("h2");
-        titleElem.id = "bytm-welcome-menu-title";
-        titleElem.className = "bytm-menu-title";
-        titleElem.role = "heading";
-        titleElem.ariaLevel = "1";
-        titleWrapperElem.appendChild(titleLogoElem);
-        titleWrapperElem.appendChild(titleElem);
-        headerElem.appendChild(titleWrapperElem);
-        //#SECTION footer
-        const footerCont = document.createElement("div");
-        footerCont.id = "bytm-welcome-menu-footer-cont";
-        footerCont.className = "bytm-menu-footer-cont";
-        const openCfgElem = document.createElement("button");
-        openCfgElem.id = "bytm-welcome-menu-open-cfg";
-        openCfgElem.classList.add("bytm-btn");
-        openCfgElem.addEventListener("click", () => {
-            closeWelcomeMenu();
-            openCfgMenu();
-        });
-        const openChangelogElem = document.createElement("button");
-        openChangelogElem.id = "bytm-welcome-menu-open-changelog";
-        openChangelogElem.classList.add("bytm-btn");
-        openChangelogElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            const dlg = yield getChangelogDialog();
-            yield dlg.mount();
-            closeWelcomeMenu();
-            yield dlg.open();
-        }));
-        const closeBtnElem = document.createElement("button");
-        closeBtnElem.id = "bytm-welcome-menu-footer-close";
-        closeBtnElem.classList.add("bytm-btn");
-        closeBtnElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            closeWelcomeMenu();
-        }));
-        const leftButtonsCont = document.createElement("div");
-        leftButtonsCont.id = "bytm-menu-footer-left-buttons-cont";
-        leftButtonsCont.appendChild(openCfgElem);
-        leftButtonsCont.appendChild(openChangelogElem);
-        footerCont.appendChild(leftButtonsCont);
-        footerCont.appendChild(closeBtnElem);
-        //#SECTION content
-        const contentWrapper = document.createElement("div");
-        contentWrapper.id = "bytm-welcome-menu-content-wrapper";
-        // locale switcher
-        const localeCont = document.createElement("div");
-        localeCont.id = "bytm-welcome-menu-locale-cont";
-        const localeImg = document.createElement("img");
-        localeImg.id = "bytm-welcome-menu-locale-img";
-        localeImg.classList.add("bytm-no-select");
-        localeImg.src = yield getResourceUrl("icon-globe");
-        const localeSelectElem = document.createElement("select");
-        localeSelectElem.id = "bytm-welcome-menu-locale-select";
-        for (const [locale, { name }] of Object.entries(locales)) {
-            const localeOptionElem = document.createElement("option");
-            localeOptionElem.value = locale;
-            localeOptionElem.textContent = name;
-            localeSelectElem.appendChild(localeOptionElem);
-        }
-        localeSelectElem.value = getFeatures().locale;
-        localeSelectElem.addEventListener("change", () => __awaiter(this, void 0, void 0, function* () {
-            const selectedLocale = localeSelectElem.value;
-            const feats = Object.assign({}, getFeatures());
-            feats.locale = selectedLocale;
-            setFeatures(feats);
-            yield initTranslations(selectedLocale);
-            setLocale(selectedLocale);
-            retranslateWelcomeMenu();
-        }));
-        localeCont.appendChild(localeImg);
-        localeCont.appendChild(localeSelectElem);
-        contentWrapper.appendChild(localeCont);
-        // text
-        const textCont = document.createElement("div");
-        textCont.id = "bytm-welcome-menu-text-cont";
-        const textElem = document.createElement("p");
-        textElem.id = "bytm-welcome-menu-text";
-        const textElems = [];
-        const line1Elem = document.createElement("span");
-        line1Elem.id = "bytm-welcome-text-line1";
-        textElems.push(line1Elem);
-        const br1Elem = document.createElement("br");
-        textElems.push(br1Elem);
-        const line2Elem = document.createElement("span");
-        line2Elem.id = "bytm-welcome-text-line2";
-        textElems.push(line2Elem);
-        const br2Elem = document.createElement("br");
-        textElems.push(br2Elem);
-        const br3Elem = document.createElement("br");
-        textElems.push(br3Elem);
-        const line3Elem = document.createElement("span");
-        line3Elem.id = "bytm-welcome-text-line3";
-        textElems.push(line3Elem);
-        const br4Elem = document.createElement("br");
-        textElems.push(br4Elem);
-        const line4Elem = document.createElement("span");
-        line4Elem.id = "bytm-welcome-text-line4";
-        textElems.push(line4Elem);
-        const br5Elem = document.createElement("br");
-        textElems.push(br5Elem);
-        const br6Elem = document.createElement("br");
-        textElems.push(br6Elem);
-        const line5Elem = document.createElement("span");
-        line5Elem.id = "bytm-welcome-text-line5";
-        textElems.push(line5Elem);
-        textElems.forEach((elem) => textElem.appendChild(elem));
-        textCont.appendChild(textElem);
-        contentWrapper.appendChild(textCont);
-        //#SECTION finalize
-        menuContainer.appendChild(headerElem);
-        menuContainer.appendChild(contentWrapper);
-        menuContainer.appendChild(footerCont);
-        backgroundElem.appendChild(menuContainer);
-        document.body.appendChild(backgroundElem);
-        retranslateWelcomeMenu();
-    });
-}
-//#MARKER (re-)translate
-/** Retranslates all elements inside the welcome menu */
-function retranslateWelcomeMenu() {
-    const getLink = (href) => {
-        return [`<a href="${href}" class="bytm-link" target="_blank" rel="noopener noreferrer">`, "</a>"];
-    };
-    const changes = {
-        "#bytm-welcome-menu-title": (e) => e.textContent = t("welcome_menu_title", scriptInfo.name),
-        "#bytm-welcome-menu-title-close": (e) => e.ariaLabel = e.title = t("close_menu_tooltip"),
-        "#bytm-welcome-menu-open-cfg": (e) => {
-            e.textContent = t("config_menu");
-            e.ariaLabel = e.title = t("open_config_menu_tooltip");
-        },
-        "#bytm-welcome-menu-open-changelog": (e) => {
-            e.textContent = t("open_changelog");
-            e.ariaLabel = e.title = t("open_changelog_tooltip");
-        },
-        "#bytm-welcome-menu-footer-close": (e) => {
-            e.textContent = t("close");
-            e.ariaLabel = e.title = t("close_menu_tooltip");
-        },
-        "#bytm-welcome-text-line1": (e) => e.innerHTML = t("welcome_text_line_1"),
-        "#bytm-welcome-text-line2": (e) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
-        "#bytm-welcome-text-line3": (e) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
-        "#bytm-welcome-text-line4": (e) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
-        "#bytm-welcome-text-line5": (e) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
-    };
-    for (const [selector, fn] of Object.entries(changes)) {
-        const el = document.querySelector(selector);
-        if (!el) {
-            warn(`Couldn't find element in welcome menu with selector '${selector}'`);
-            continue;
-        }
-        fn(el);
-    }
-}
-/** Closes the welcome menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
-function closeWelcomeMenu(evt) {
-    var _a;
-    if (!isWelcomeMenuOpen)
-        return;
-    isWelcomeMenuOpen = false;
-    (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-    document.body.classList.remove("bytm-disable-scroll");
-    (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
-    const menuBg = document.querySelector("#bytm-welcome-menu-bg");
-    siteEvents.emit("welcomeMenuClosed");
-    if (!menuBg)
-        return warn("Couldn't find welcome menu background element");
-    menuBg.style.visibility = "hidden";
-    menuBg.style.display = "none";
-}
-//#MARKER open, show & close
-/** Opens the welcome menu if it is closed */
-function openWelcomeMenu() {
-    var _a;
-    if (isWelcomeMenuOpen)
-        return;
-    isWelcomeMenuOpen = true;
-    document.body.classList.add("bytm-disable-scroll");
-    (_a = document.querySelector("ytmusic-app")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-    const menuBg = document.querySelector("#bytm-welcome-menu-bg");
-    if (!menuBg)
-        return warn("Couldn't find welcome menu background element");
-    menuBg.style.visibility = "visible";
-    menuBg.style.display = "block";
-}
-/** Shows the welcome menu and returns a promise that resolves when the menu is closed */
-function showWelcomeMenu() {
-    return new Promise((resolve) => {
-        const unsub = siteEvents.on("welcomeMenuClosed", () => {
-            unsub();
-            resolve();
-        });
-        openWelcomeMenu();
     });
 }{
     // console watermark with sexy gradient
@@ -5562,10 +5530,11 @@ function onDomLoad() {
                 ftInit.push(initSiteEvents());
                 if (typeof (yield GM.getValue("bytm-installed")) !== "string") {
                     // open welcome menu with language selector
-                    yield addWelcomeMenu();
+                    const dlg = yield getWelcomeDialog();
+                    dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
+                    yield dlg.mount();
                     info("Showing welcome menu");
-                    yield showWelcomeMenu();
-                    yield GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
+                    yield dlg.open();
                 }
                 addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
                     listener: addConfigMenuOptionYTM,
@@ -5800,6 +5769,56 @@ function insertGlobalStyle() {
 
 .bytm-warning-icon svg path {
   fill: var(--bytm-warning-col, #fff);
+}
+
+/* #SECTION welcome dialog */
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text-cont {
+  margin-top: 16px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6rem;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6rem;
+}
+
+#bytm-welcome-menu-footer-cont {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
 
 .bytm-dialog-bg {
@@ -6276,54 +6295,6 @@ hr {
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }
-/* #MARKER volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-#bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-#bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-#bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-vol-slider-shared svg {
-  width: 20px;
-  height: 20px;
-}
-
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
   --bytm-menu-bg-highlight: #252525;
@@ -6767,6 +6738,54 @@ hr {
   border: revert;
 }
 
+/* #MARKER volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+#bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+#bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+#bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* #MARKER misc */
 
 .bytm-disable-scroll {
@@ -7107,56 +7126,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
   visibility: visible !important;
 }
-
-#bytm-welcome-menu-bg {
-  --bytm-menu-height-max: 500px;
-  --bytm-menu-width-max: 700px;
-}
-
-#bytm-welcome-menu-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-welcome-menu-title-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 20px;
-}
-
-#bytm-welcome-menu-content-wrapper {
-  overflow-y: auto;
-}
-
-#bytm-welcome-menu-locale-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#bytm-welcome-menu-locale-img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-}
-
-#bytm-welcome-menu-text {
-  font-size: 1.6em;
-  padding: 8px 20px;
-  margin: 10px 0px;
-  line-height: 20px;
-}
-
-#bytm-welcome-menu-locale-select {
-  font-size: 1.6em;
-}
-
-#bytm-welcome-menu-footer-cont {
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
-  padding: 20px;
-}`, "global");
+`, "global");
 }
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevMenuCommands() {
