@@ -94,3 +94,53 @@
 .bytm-warning-icon svg path {
   fill: var(--bytm-warning-col, #fff);
 }
+
+/* #SECTION welcome dialog */
+
+#bytm-welcome-menu-title-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-welcome-menu-title-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 20px;
+}
+
+#bytm-welcome-menu-content-wrapper {
+  overflow-y: auto;
+}
+
+#bytm-welcome-menu-locale-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#bytm-welcome-menu-locale-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+#bytm-welcome-menu-text-cont {
+  margin-top: 16px;
+}
+
+#bytm-welcome-menu-text {
+  font-size: 1.6rem;
+  line-height: 20px;
+}
+
+#bytm-welcome-menu-locale-select {
+  font-size: 1.6rem;
+}
+
+#bytm-welcome-menu-footer-cont {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+}

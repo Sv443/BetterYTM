@@ -71,10 +71,15 @@ async function renderBody() {
   textAreaElem.value = t("click_to_reveal_sensitive_info");
   textAreaElem.setAttribute("revealed", "false");
 
-  const textAreaInteraction = async () => {
+  const textAreaInteraction = async ({ shiftKey }: MouseEvent | KeyboardEvent) => {
     const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
     lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-    textAreaElem.value = canCompress ? await compress(cfgString, compressionFormat, "string") : cfgString;
+    textAreaElem.value = shiftKey
+      ? lastUncompressedCfgString
+      : (canCompress
+        ? await compress(cfgString, compressionFormat, "string")
+        : cfgString
+      );
     textAreaElem.setAttribute("revealed", "true");
   };
 
@@ -115,7 +120,7 @@ async function renderFooter() {
 
   onInteraction(copyBtnElem, async (evt: MouseEvent | KeyboardEvent) => {
     evt?.bubbles && evt.stopPropagation();
-    GM.setClipboard(String(evt?.shiftKey || evt?.ctrlKey ? lastUncompressedCfgString : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
+    GM.setClipboard(String(evt?.shiftKey ? lastUncompressedCfgString : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
     copiedTextElem.style.display = "inline-block";
     if(typeof copiedTxtTimeout === "undefined") {
       copiedTxtTimeout = setTimeout(() => {
