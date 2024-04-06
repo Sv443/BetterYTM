@@ -1,13 +1,13 @@
-import { autoPlural, openInNewTab, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, t, warn } from "../utils";
+import { autoPlural, pauseFor } from "@sv443-network/userutils";
+import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t, warn } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
 import { getLyricsCacheEntry } from "./lyricsCache";
 import type { LyricsCacheEntry } from "../types";
+import { addSelectorListener } from "../observers";
 import { getFeatures } from "../config";
 import "./songLists.css";
-import { addSelectorListener } from "src/observers";
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
@@ -186,12 +186,12 @@ async function addQueueButtons(
         if(!lyricsUrl) {
           resetImgElem();
           if(confirm(t("lyrics_not_found_confirm_open_search")))
-            openInNewTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
+            openInTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
           return;
         }
       }
 
-      lyricsUrl && openInNewTab(lyricsUrl);
+      lyricsUrl && openInTab(lyricsUrl);
     });
   }
 
