@@ -4,7 +4,7 @@ import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
 import { addSelectorListener } from "src/observers";
 
-//#MARKER beforeunload popup
+//#region beforeunload popup
 
 let beforeUnloadEnabled = true;
 
@@ -25,7 +25,7 @@ export async function initBeforeUnloadHook() {
   interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
 }
 
-//#MARKER auto close toasts
+//#region auto close toasts
 
 /** Closes toasts after a set amount of time */
 export async function initAutoCloseToasts() {
@@ -65,7 +65,7 @@ export async function initAutoCloseToasts() {
   }
 }
 
-//#MARKER remember song time
+//#region remember song time
 
 interface RemSongObj {
   /** Watch ID */
@@ -184,7 +184,7 @@ async function delRemSongData(watchID: string) {
   await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
 }
 
-//#MARKER disable darkreader
+//#region disable darkreader
 
 /** Disables Dark Reader if it is enabled */
 export function disableDarkReader() {

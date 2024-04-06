@@ -18,7 +18,7 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 <br><br>
 
-<!-- #MARKER translations -->
+<!-- #region translations -->
 
 ### Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
@@ -62,7 +62,7 @@ To edit an existing translation, please follow these steps:
 
 <br><br><br>
 
-<!-- #MARKER local dev -->
+<!-- #region local dev -->
 
 ### Setting up the project for local development:
 #### Requirements:
@@ -133,7 +133,7 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 
 <br><br><br>
 
-<!-- #MARKER plugin interface -->
+<!-- #region plugin interface -->
 
 ### Developing a plugin that interfaces with BetterYTM:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
@@ -252,7 +252,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 
 <br><br>
 
-<!-- #MARKER global interface functions -->
+<!-- #region global interface functions -->
 
 ### Global functions:
 These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  

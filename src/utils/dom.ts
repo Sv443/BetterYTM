@@ -2,7 +2,7 @@ import { addGlobalStyle, getUnsafeWindow, randomId } from "@sv443-network/userut
 import { error, getDomain } from ".";
 import { addSelectorListener } from "src/observers";
 
-//#MARKER video time & volume
+//#region video time, volume
 
 export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
@@ -121,7 +121,7 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   });
 }
 
-//#MARKER other
+//#region other
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;

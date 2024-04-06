@@ -51,7 +51,7 @@ export type LyricsCacheEntry = {
   added: number;
 };
 
-//#MARKER global
+//#region global
 
 // shim for the BYTM interface properties
 export type BytmObject =
@@ -80,7 +80,7 @@ declare global {
   }
 }
 
-//#MARKER plugins
+//#region plugins
 
 /**
  * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
@@ -204,7 +204,7 @@ export type InterfaceFunctions = {
   saveFeatures: typeof setFeatures;
 };
 
-//#MARKER features
+//#region features
 
 export type FeatureKey = keyof FeatureConfig;
 
@@ -306,7 +306,7 @@ export type FeatureInfo = Record<
 
 /** Feature configuration */
 export interface FeatureConfig {
-  //#SECTION layout
+  //#region layout
   /** Show a BetterYTM watermark under the YTM logo */
   watermarkEnabled: boolean;
   /** Remove the "si" tracking parameter from links in the share menu? */
@@ -332,7 +332,7 @@ export interface FeatureConfig {
   /** Delay in seconds after which the cursor should be hidden */
   hideCursorOnIdleDelay: number;
 
-  //#SECTION volume
+  //#region volume
   /** Add a percentage label to the volume slider */
   volumeSliderLabel: boolean;
   /** The width of the volume slider in pixels */
@@ -348,7 +348,7 @@ export interface FeatureConfig {
   /** The initial volume level to set for each new session */
   initialTabVolumeLevel: number;
 
-  //#SECTION song lists
+  //#region song lists
   /** Add a button to each song in the queue to quickly open its lyrics page */
   lyricsQueueButton: boolean;
   /** Add a button to each song in the queue to quickly remove it */
@@ -358,7 +358,7 @@ export interface FeatureConfig {
   /** Add a button to the queue to scroll to the currently playing song */
   scrollToActiveSongBtn: boolean;
 
-  //#SECTION behavior
+  //#region behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */
   disableBeforeUnloadPopup: boolean;
   /** After how many milliseconds to close permanent toasts */
@@ -374,7 +374,7 @@ export interface FeatureConfig {
   /** Minimum time in seconds the song needs to be played before it is remembered */
   rememberSongTimeMinPlayTime: number;
 
-  //#SECTION input
+  //#region input
   /** Arrow keys skip forwards and backwards */
   arrowKeySupport: boolean;
   /** By how many seconds to skip when pressing the arrow keys */
@@ -386,7 +386,7 @@ export interface FeatureConfig {
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
 
-  //#SECTION lyrics
+  //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
   /** Base URL to use for GeniURL */
@@ -402,7 +402,7 @@ export interface FeatureConfig {
   /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
   advancedLyricsFilter: boolean;
 
-  //#SECTION misc
+  //#region misc
   /** The locale to use for translations */
   locale: TrLocale;
   /** Whether to check for updates to the script */

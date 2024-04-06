@@ -9,7 +9,7 @@ import { getFeatures } from "../config";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 
-//#MARKER arrow key skip
+//#region arrow key skip
 
 export async function initArrowKeySkip() {
   document.addEventListener("keydown", (evt) => {
@@ -36,7 +36,7 @@ export async function initArrowKeySkip() {
   log("Added arrow key press listener");
 }
 
-//#MARKER site switch
+//#region site switch
 
 /** switch sites only if current video time is greater than this value */
 const videoTimeThreshold = 3;
@@ -100,7 +100,7 @@ async function switchSite(newDomain: Domain) {
   }
 }
 
-//#MARKER number keys skip to time
+//#region num key skip to
 
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
 const numKeysIgnoreIds = ["progress-bar", "song-media-window"];

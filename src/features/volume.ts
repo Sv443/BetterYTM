@@ -6,7 +6,7 @@ import { featInfo } from ".";
 import "./volume.css";
 import { addSelectorListener } from "src/observers";
 
-//#MARKER init
+//#region init vol features
 
 /** Initializes all volume-related features */
 export async function initVolumeFeatures() {
@@ -40,7 +40,7 @@ export async function initVolumeFeatures() {
   });
 }
 
-//#MARKER scroll step
+//#region scroll step
 
 /** Initializes the volume slider scroll step features */
 function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElement) {
@@ -65,9 +65,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
   }
 }
 
-// #MARKER volume slider
-
-//#SECTION label
+//#region volume slider label
 
 /** Adds a percentage label to the volume slider and tooltip */
 async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContainer: HTMLDivElement) {
@@ -150,7 +148,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   });
 }
 
-//#SECTION size
+//#region volume slider size
 
 /** Sets the volume slider to a set size */
 function setVolSliderSize() {
@@ -165,14 +163,14 @@ function setVolSliderSize() {
 }`, "vol-slider-size");
 }
 
-//#SECTION step
+//#region volume slider step
 
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep(sliderElem: HTMLInputElement) {
   sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
 }
 
-//#MARKER shared volume
+//#region shared volume
 
 /** Saves the shared volume level to persistent storage */
 async function sharedVolumeChanged(vol: number) {
@@ -214,7 +212,7 @@ export async function volumeSharedBetweenTabsDisabled() {
   await GM.deleteValue("bytm-shared-volume");
 }
 
-//#MARKER initial volume
+//#region initial volume
 
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {

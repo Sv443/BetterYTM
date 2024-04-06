@@ -69,7 +69,7 @@ export function removeAllObservers() {
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 export async function initSiteEvents() {
   try {
-    //#SECTION queue
+    //#region queue
     // the queue container always exists so it doesn't need an extra init function
     const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
       if(addedNodes.length > 0 || removedNodes.length > 0) {
@@ -102,7 +102,7 @@ export async function initSiteEvents() {
       },
     });
 
-    //#SECTION player bar
+    //#region player bar
 
     let lastTitle: string | null = null;
     let initialPlay = true;
@@ -128,7 +128,7 @@ export async function initSiteEvents() {
       autoplayObs,
     ]);
 
-    //#SECTION player
+    //#region player
 
     const playerFullscreenObs = new MutationObserver(([{ target }]) => {
       const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
@@ -143,7 +143,7 @@ export async function initSiteEvents() {
       },
     });
 
-    //#SECTION other
+    //#region other
 
     let lastWatchId: string | null = null;
 

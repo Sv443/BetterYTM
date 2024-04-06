@@ -84,14 +84,13 @@ async function addQueueButtons(
   listType: "currentQueue" | "genericQueue" = "currentQueue",
   classes: string[] = [],
 ) {
-  //#SECTION general queue item stuff
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
 
   const lyricsIconUrl = await getResourceUrl("icon-lyrics");
   const deleteIconUrl = await getResourceUrl("icon-delete");
 
-  //#SECTION lyrics btn
+  //#region lyrics
   let lyricsBtnElem: HTMLAnchorElement | undefined;
 
   if(getFeatures().lyricsQueueButton) {
@@ -196,7 +195,7 @@ async function addQueueButtons(
     });
   }
 
-  //#SECTION delete from queue btn
+  //#region delete from queue
   let deleteBtnElem: HTMLAnchorElement | undefined;
 
   if(getFeatures().deleteFromQueueButton) {
@@ -264,8 +263,6 @@ async function addQueueButtons(
 
     deleteBtnElem.appendChild(imgElem);
   }
-
-  //#SECTION append elements to DOM
 
   lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
   deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);

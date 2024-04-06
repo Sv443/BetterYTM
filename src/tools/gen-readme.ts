@@ -64,6 +64,7 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
     // replace the content between the two lines
     const newContent = await getContent();
     retLines.push(...lines.splice(0, beginLine + 1));
+    retLines.push("<!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->");
     retLines.push(...newContent.split(/\r?\n/gm));
     retLines.push(...lines.splice(endLine - beginLine - 1));
 
