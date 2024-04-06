@@ -11,7 +11,7 @@ import { addSelectorListener } from "src/observers";
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 
-//#MARKER media control bar
+//#region media control bar
 
 let currentSongTitle = "";
 
@@ -110,7 +110,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
 }
 
-//#MARKER utils
+//#region lyrics utils
 
 /** Removes everything in parentheses from the passed song name */
 export function sanitizeSong(songName: string) {

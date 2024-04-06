@@ -11,6 +11,8 @@ import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
 
 const { getUnsafeWindow } = UserUtils;
 
+//#region interface globals
+
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export type InterfaceEvents = {
   /** Emitted whenever the plugins should be registered using `unsafeWindow.BYTM.registerPlugin()` */
@@ -74,12 +76,6 @@ const globalFuncs = {
   compareVersionArrays,
 };
 
-/** Plugins that are queued up for registration */
-const pluginQueue = new Map<string, PluginItem>();
-
-/** Registered plugins including their event listener instance */
-const pluginMap = new Map<string, PluginItem>();
-
 /** Initializes the BYTM interface */
 export function initInterface() {
   const props = {
@@ -131,7 +127,13 @@ export function emitInterface<
   getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
 }
 
-//#MARKER register plugins
+//#region register plugins
+
+/** Plugins that are queued up for registration */
+const pluginQueue = new Map<string, PluginItem>();
+
+/** Registered plugins including their event listener instance */
+const pluginMap = new Map<string, PluginItem>();
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
@@ -243,7 +245,7 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
   };
 }
 
-//#MARKER proxy functions
+//#region proxy funcs
 
 /** Returns the current feature config, with sensitive values replaced by `undefined` */
 export function getFeaturesInterface() {

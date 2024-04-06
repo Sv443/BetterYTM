@@ -18,21 +18,15 @@
       "color": "black",
       "overviewRulerColor": "#ed0",
     },
-    "(#MARKER)": { // #MARKER test
-      "backgroundColor": "#c31",
+    "((//\\s?)?#region ([^\\S\\r\\n]*[\\w,.\\-_&]+)*[:]*)": { //#region test
+      "backgroundColor": "#069",
       "color": "#fff",
-      "isWholeLine": true,
-      "overviewRulerColor": "#c31",
-    },
-    "(#SECTION ([^\\S\\r\\n]*[\\w,.\\-_&]+)*[:]*)": { // #SECTION test, 123 & foo
-      "backgroundColor": "#44f",
-      "color": "white",
-      "overviewRulerColor": "#44f",
+      "overviewRulerColor": "#069",
     },
     "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
-      "overviewRulerColor": "#2ae",
-      "backgroundColor": "#2ae",
-      "color": "#002",
+      "backgroundColor": "#9af",
+      "overviewRulerColor": "#9af",
+      "color": "#000",
     },
     "(#?(DEBUG|DBG)#?)": { // #DEBUG or DEBUG or #DBG or #DBG#
       "backgroundColor": "#ff0",

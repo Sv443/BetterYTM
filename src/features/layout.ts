@@ -8,7 +8,7 @@ import { openCfgMenu } from "../menu/menu_old";
 import { createGenericBtn } from "../components";
 import "./layout.css";
 
-//#MARKER BYTM-Config buttons
+//#region cfg menu buttons
 
 let logoExchanged = false, improveLogoCalled = false;
 
@@ -167,7 +167,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
   }
 }
 
-//#MARKER remove upgrade tab
+//#region rem upgrade tab
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export async function removeUpgradeTab() {
@@ -185,7 +185,7 @@ export async function removeUpgradeTab() {
   });
 }
 
-//#MARKER anchor improvements
+//#region anchor improvements
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
@@ -198,7 +198,7 @@ export async function addAnchorImprovements() {
     error("Couldn't add anchor improvements CSS due to an error:", err);
   }
 
-  //#SECTION carousel shelves
+  //#region carousel shelves
   try {
     const preventDefault = (e: MouseEvent) => e.preventDefault();
 
@@ -266,7 +266,7 @@ export async function addAnchorImprovements() {
     error("Couldn't improve carousel shelf anchors due to an error:", err);
   }
 
-  //#SECTION sidebar
+  //#region sidebar
 
   try {
     const addSidebarAnchors = (sidebarCont: HTMLElement) => {
@@ -320,7 +320,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#MARKER remove share tracking param
+//#region rem tracking param
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
@@ -363,7 +363,7 @@ export async function initRemShareTrackParam() {
   });
 }
 
-//#MARKER fix margins
+//#region fix spacing
 
 /** Applies global CSS to fix various spacings */
 export async function fixSpacing() {
@@ -377,7 +377,7 @@ export async function fixSpacing() {
   }
 }
 
-//#MARKER scroll to active song
+//#region scroll to active
 
 /** Adds a button to the queue to scroll to the active song */
 export async function addScrollToActiveBtn() {
@@ -425,7 +425,7 @@ export async function addScrollToActiveBtn() {
   });
 }
 
-//#MARKER thumbnail overlay
+//#region thumbnail overlay
 
 /** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
@@ -589,7 +589,7 @@ export async function initThumbnailOverlay() {
   });
 }
 
-//#MARKER hide cursor on idle
+//#region hide cursor on idle
 
 export async function initHideCursorOnIdle() {
   addSelectorListener("mainPanel", "ytmusic-player#player", {

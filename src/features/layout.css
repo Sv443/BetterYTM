@@ -1,4 +1,4 @@
-/* #MARKER misc */
+/* #region misc */
 
 .bytm-disable-scroll {
   overflow: hidden !important;
@@ -140,7 +140,7 @@ button[disabled].bytm-busy {
   cursor: progress;
 }
 
-/* #MARKER menu */
+/* #region menu */
 
 .bytm-cfg-menu-option {
   display: block;
@@ -183,7 +183,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
 }
 
-/* #MARKER watermark */
+/* #region watermark */
 
 #bytm-watermark {
   font-size: 10px;
@@ -201,7 +201,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER scroll to active */
+/* #region scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
   display: flex;
@@ -235,7 +235,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   padding: 4px;
 }
 
-/** #MARKER thumbnail */
+/** #region thumbnail */
 
 #bytm-thumbnail-overlay {
   position: absolute;

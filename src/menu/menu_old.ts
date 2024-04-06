@@ -10,7 +10,7 @@ import "./menu_old.css";
 import { createHotkeyInput, createToggleInput } from "../components";
 import pkg from "../../package.json" assert { type: "json" };
 
-//#MARKER create menu elements
+//#region create menu
 
 let isCfgMenuAdded = false;
 export let isCfgMenuOpen = false;
@@ -38,7 +38,7 @@ async function addCfgMenu() {
 
   const initLangReloadText = t("lang_changed_prompt_reload");
 
-  //#SECTION backdrop & menu container
+  //#region bg & container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
   backgroundElem.classList.add("bytm-menu-bg");
@@ -60,7 +60,7 @@ async function addCfgMenu() {
   menuContainer.id = "bytm-cfg-menu";
 
 
-  //#SECTION title bar
+  //#region title bar
   const headerElem = document.createElement("div");
   headerElem.classList.add("bytm-menu-header");
 
@@ -145,7 +145,7 @@ async function addCfgMenu() {
   headerElem.appendChild(titleCont);
   headerElem.appendChild(closeElem);
 
-  //#SECTION footer
+  //#region footer
   const footerCont = document.createElement("div");
   footerCont.className = "bytm-menu-footer-cont";
 
@@ -215,7 +215,7 @@ async function addCfgMenu() {
   footerCont.appendChild(buttonsCont);
 
 
-  //#SECTION feature list
+  //#region feature list
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
 
@@ -607,7 +607,7 @@ async function addCfgMenu() {
     }
   }
 
-  //#SECTION set values of inputs on external change
+  //#region reset inputs on external change
   siteEvents.on("rebuildCfgMenu", (newConfig) => {
     for(const ftKey in featInfo) {
       const ftElem = document.querySelector<HTMLInputElement>(`#bytm-ftconf-${ftKey}-input`);
@@ -641,7 +641,7 @@ async function addCfgMenu() {
     info("Rebuilt config menu");
   });
 
-  //#SECTION scroll indicator
+  //#region scroll indicator
   const scrollIndicator = document.createElement("img");
   scrollIndicator.id = "bytm-menu-scroll-indicator";
   scrollIndicator.src = await getResourceUrl("icon-arrow_down");
@@ -677,7 +677,7 @@ async function addCfgMenu() {
   featuresCont.appendChild(bottomAnchor);
 
 
-  //#SECTION finalize
+  //#region finalize
   menuContainer.appendChild(headerElem);
   menuContainer.appendChild(featuresCont);
 
@@ -735,6 +735,8 @@ async function addCfgMenu() {
   backgroundElem.style.display = "none";
 }
 
+//#region open & close
+
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = true) {
   if(!isCfgMenuOpen)
@@ -780,6 +782,8 @@ export async function openCfgMenu() {
 
   checkToggleScrollIndicator();
 }
+
+//#region chk scroll indicator
 
 /** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
 function checkToggleScrollIndicator() {

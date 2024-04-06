@@ -18,7 +18,7 @@ interface TrFile {
 async function run() {
   console.log("\n\x1b[34mUpdating translation progress...\x1b[0m\n");
 
-  //#SECTION parse
+  //#region parse
 
   const translations = {} as Record<TrLocale, Record<string, string>>;
   const trFiles = {} as Record<TrLocale, TrFile>;
@@ -41,7 +41,7 @@ async function run() {
   const { en_US, ...restLocs } = translations;
   const progress = {} as Record<TrLocale, number>;
 
-  //#SECTION progress table
+  //#region progress table
 
   const progTableLines: string[] = [];
 
@@ -74,7 +74,7 @@ async function run() {
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
   }
 
-  //#SECTION missing keys
+  //#region missing keys
 
   const missingKeys = [] as string[];
 
@@ -94,7 +94,7 @@ ${lines.join("\n")}\n
     }
   }
 
-  //#SECTION finalize
+  //#region finalize
 
   const banner = `\
 <!--

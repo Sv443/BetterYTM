@@ -69,7 +69,7 @@ export class BytmDialog extends NanoEmitter<{
     this.id = options.id;
   }
 
-  //#MARKER public
+  //#region public
 
   /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
   public async mount() {
@@ -210,14 +210,14 @@ export class BytmDialog extends NanoEmitter<{
     this.unsubscribeAll();
   }
 
-  //#MARKER static
+  //#region static
 
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getCurrentDialogId() {
     return currentDialogId;
   }
 
-  //#MARKER protected
+  //#region protected
 
   /** Called once to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
@@ -236,7 +236,7 @@ export class BytmDialog extends NanoEmitter<{
     }
   }
 
-  //#MARKER private
+  //#region private
 
   /** Returns the dialog content element and all its children */
   private async getDialogContent() {
@@ -251,7 +251,7 @@ export class BytmDialog extends NanoEmitter<{
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
     dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
 
-    //#SECTION header
+    //#region header
 
     const headerWrapperEl = document.createElement("div");
     headerWrapperEl.classList.add("bytm-dialog-header");
@@ -288,7 +288,7 @@ export class BytmDialog extends NanoEmitter<{
 
     dialogWrapperEl.appendChild(headerWrapperEl);
 
-    //#SECTION body
+    //#region body
 
     const dialogBodyElem = document.createElement("div");
     dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
@@ -300,7 +300,7 @@ export class BytmDialog extends NanoEmitter<{
     dialogBodyElem.appendChild(body instanceof Promise ? await body : body);
     dialogWrapperEl.appendChild(dialogBodyElem);
 
-    //#SECTION footer
+    //#region footer
 
     if(footer) {
       const footerWrapper = document.createElement("div");

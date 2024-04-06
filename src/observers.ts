@@ -43,9 +43,10 @@ export const globservers = {} as Record<ObserverName, SelectorObserver>;
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers() {
   try {
-    //#MARKER both sites
+    //#region both sites
 
-    // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
+    //#region body
+    // -> the entire <body> element - use sparingly due to performance impacts!
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
       defaultDebounce: 150,
@@ -56,9 +57,10 @@ export function initObservers() {
 
     switch(getDomain()) {
     case "ytm": {
-      //#MARKER YTM
+      //#region YTM
 
-      //#SECTION navBar = the navigation / title bar at the top of the page
+      //#region navBar
+      // -> the navigation / title bar at the top of the page
       const navBarSelector = "ytmusic-nav-bar";
       globservers.navBar = new SelectorObserver(navBarSelector, {
         ...defaultObserverOptions,
@@ -69,7 +71,8 @@ export function initObservers() {
         listener: () => globservers.navBar.enable(),
       });
 
-      // #SECTION mainPanel = the main content panel - includes things like the video element
+      //#region mainPanel
+      // -> the main content panel - includes things like the video element
       const mainPanelSelector = "ytmusic-player-page #main-panel";
       globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
         ...defaultObserverOptions,
@@ -80,7 +83,8 @@ export function initObservers() {
         listener: () => globservers.mainPanel.enable(),
       });
 
-      // #SECTION sideBar = the sidebar on the left side of the page
+      //#region sideBar
+      // -> the sidebar on the left side of the page
       const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
       globservers.sideBar = new SelectorObserver(sidebarSelector, {
         ...defaultObserverOptions,
@@ -91,7 +95,8 @@ export function initObservers() {
         listener: () => globservers.sideBar.enable(),
       });
 
-      // #SECTION sideBarMini = the minimized sidebar on the left side of the page
+      //#region sideBarMini
+      // -> the minimized sidebar on the left side of the page
       const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
       globservers.sideBarMini = new SelectorObserver(sideBarMiniSelector, {
         ...defaultObserverOptions,
@@ -102,7 +107,8 @@ export function initObservers() {
         listener: () => globservers.sideBarMini.enable(),
       });
 
-      // #SECTION sidePanel = the side panel on the right side of the /watch page
+      //#region sidePanel
+      // -> the side panel on the right side of the /watch page
       const sidePanelSelector = "#side-panel";
       globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
         ...defaultObserverOptions,
@@ -113,7 +119,8 @@ export function initObservers() {
         listener: () => globservers.sidePanel.enable(),
       });
 
-      // #SECTION playerBar = media controls bar at the bottom of the page
+      //#region playerBar
+      // -> media controls bar at the bottom of the page
       const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
@@ -126,7 +133,8 @@ export function initObservers() {
         },
       });
 
-      // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+      //#region playerBarInfo
+      // -> song title, artist, album, etc. inside the player bar
       const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
       globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
         ...defaultObserverOptions,
@@ -138,7 +146,8 @@ export function initObservers() {
         listener: () => globservers.playerBarInfo.enable(),
       });
 
-      // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
+      //#region playerBarMiddleButtons
+      // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
       const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
       globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
         ...defaultObserverOptions,
@@ -149,7 +158,8 @@ export function initObservers() {
         listener: () => globservers.playerBarMiddleButtons.enable(),
       });
 
-      // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+      //#region playerBarRightControls
+      // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
       const playerBarRightControls = "#right-controls";
       globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
         ...defaultObserverOptions,
@@ -160,7 +170,8 @@ export function initObservers() {
         listener: () => globservers.playerBarRightControls.enable(),
       });
 
-      // #SECTION popupContainer = the container for popups (e.g. the queue popup)
+      //#region popupContainer
+      // -> the container for popups (e.g. the queue popup)
       const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
       globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
         ...defaultObserverOptions,
@@ -174,9 +185,10 @@ export function initObservers() {
       break;
     }
     case "yt": {
-      //#MARKER YT
+      //#region YT
 
-      // #SECTION ytGuide = the left sidebar menu
+      //#region ytGuide
+      // -> the left sidebar menu
       const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
       globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
         ...defaultObserverOptions,
@@ -187,7 +199,8 @@ export function initObservers() {
         listener: () => globservers.ytGuide.enable(),
       });
 
-      // // #SECTION ytMasthead = the masthead at the top of the page
+      // //#region ytMasthead
+      // -> the masthead (title bar) at the top of the page
       // const mastheadSelector = "#content ytd-masthead#masthead";
       // globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
       //   ...defaultObserverOptions,
@@ -200,7 +213,7 @@ export function initObservers() {
     }
     }
 
-    //#SECTION finalize
+    //#region finalize
 
     emitInterface("bytm:observersReady");
   }

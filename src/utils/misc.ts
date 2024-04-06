@@ -5,7 +5,7 @@ import { type Domain, type ResourceKey } from "../types";
 import { error, type TrLocale, warn } from ".";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 
-//#SECTION misc
+//#region misc
 
 /**
  * Returns the current domain as a constant string representation
@@ -105,7 +105,7 @@ export function reserialize<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
 }
 
-//#SECTION resources
+//#region resources
 
 /**
  * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)  

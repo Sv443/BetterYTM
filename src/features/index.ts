@@ -18,7 +18,7 @@ export * from "./volume";
 
 type SelectOption = { value: number | string, label: string };
 
-//#MARKER feature dependencies
+//#region dependencies
 
 /** List of all available locale SelectOptions */
 const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
@@ -49,7 +49,7 @@ const options = {
   ],
 };
 
-//#MARKER features
+//#region features
 
 /**
  * Contains all possible features with their default values and other configuration.  
@@ -84,7 +84,7 @@ const options = {
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
  */
 export const featInfo = {
-  //#SECTION layout
+  //#region layout
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
@@ -191,7 +191,7 @@ export const featInfo = {
     textAdornment: adornments.advanced,
   },
 
-  //#SECTION volume
+  //#region volume
   volumeSliderLabel: {
     type: "toggle",
     category: "volume",
@@ -258,7 +258,7 @@ export const featInfo = {
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
 
-  //#SECTION song lists
+  //#region song lists
   lyricsQueueButton: {
     type: "toggle",
     category: "songLists",
@@ -285,7 +285,7 @@ export const featInfo = {
     disable: noop,
   },
 
-  //#SECTION behavior
+  //#region behavior
   disableBeforeUnloadPopup: {
     type: "toggle",
     category: "behavior",
@@ -359,7 +359,7 @@ export const featInfo = {
     textAdornment: adornments.advanced,
   },
 
-  //#SECTION input
+  //#region input
   arrowKeySupport: {
     type: "toggle",
     category: "input",
@@ -411,7 +411,7 @@ export const featInfo = {
     disable: noop,
   },
 
-  //#SECTION lyrics
+  //#region lyrics
   geniusLyrics: {
     type: "toggle",
     category: "lyrics",
@@ -487,7 +487,7 @@ export const featInfo = {
     textAdornment: adornments.experimental,
   },
 
-  //#SECTION general
+  //#region general
   locale: {
     type: "select",
     category: "general",
