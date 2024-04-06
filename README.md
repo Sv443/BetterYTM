@@ -1,5 +1,6 @@
 <div style="text-align: center;" align="center">
 <!-- <{{HEADER}}> -->
+<!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™
@@ -73,6 +74,7 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
   
 <!-- <{{PLUGINS}}> -->
+<!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
 Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
 Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.
 <!-- </{{PLUGINS}}> -->
