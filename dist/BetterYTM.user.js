@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7e98290
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5396563
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=7e98290
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=7e98290
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=7e98290
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=7e98290
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=7e98290
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=7e98290
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=7e98290
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=7e98290
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=7e98290
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=7e98290
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=7e98290
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=7e98290
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=7e98290
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=7e98290
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=7e98290
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=7e98290
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7e98290
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=7e98290
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=7e98290
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=7e98290
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=7e98290
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=7e98290
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=7e98290
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=7e98290
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=7e98290
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=7e98290
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=7e98290
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=7e98290
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=7e98290
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=7e98290
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=7e98290
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=5396563
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=5396563
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=5396563
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=5396563
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=5396563
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=5396563
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=5396563
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=5396563
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=5396563
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=5396563
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=5396563
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=5396563
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=5396563
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=5396563
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=5396563
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=5396563
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=5396563
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=5396563
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=5396563
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=5396563
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=5396563
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=5396563
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=5396563
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=5396563
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=5396563
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=5396563
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=5396563
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=5396563
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=5396563
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=5396563
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=5396563
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.2.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -173,7 +173,7 @@ var LogLevel;
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
     LogLevel[LogLevel["Info"] = 1] = "Info";
 })(LogLevel || (LogLevel = {}));
-//#MARKER plugins
+//#region plugins
 /**
  * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.
  * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "7e98290";
+const buildNumberRaw = "5396563";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -604,7 +604,7 @@ class BytmDialog extends NanoEmitter {
         this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, smallHeader: false }, options);
         this.id = options.id;
     }
-    //#MARKER public
+    //#region public
     /** Call after DOMContentLoaded to pre-render the dialog and invisibly mount it in the DOM */
     mount() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -721,12 +721,12 @@ class BytmDialog extends NanoEmitter {
         this.events.emit("destroy");
         this.unsubscribeAll();
     }
-    //#MARKER static
+    //#region static
     /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
     static getCurrentDialogId() {
         return currentDialogId;
     }
-    //#MARKER protected
+    //#region protected
     /** Called once to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.options.closeOnBgClick) {
@@ -743,7 +743,7 @@ class BytmDialog extends NanoEmitter {
             });
         }
     }
-    //#MARKER private
+    //#region private
     /** Returns the dialog content element and all its children */
     getDialogContent() {
         var _a, _b, _c, _d;
@@ -757,7 +757,7 @@ class BytmDialog extends NanoEmitter {
             dialogWrapperEl.role = "dialog";
             dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
             dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
-            //#SECTION header
+            //#region header
             const headerWrapperEl = document.createElement("div");
             headerWrapperEl.classList.add("bytm-dialog-header");
             this.options.small && headerWrapperEl.classList.add("small");
@@ -788,7 +788,7 @@ class BytmDialog extends NanoEmitter {
                 headerWrapperEl.appendChild(closeBtnEl);
             }
             dialogWrapperEl.appendChild(headerWrapperEl);
-            //#SECTION body
+            //#region body
             const dialogBodyElem = document.createElement("div");
             dialogBodyElem.id = `bytm-${this.id}-dialog-body`;
             dialogBodyElem.classList.add("bytm-dialog-body");
@@ -796,7 +796,7 @@ class BytmDialog extends NanoEmitter {
             const body = this.options.renderBody();
             dialogBodyElem.appendChild(body instanceof Promise ? yield body : body);
             dialogWrapperEl.appendChild(dialogBodyElem);
-            //#SECTION footer
+            //#region footer
             if (footer) {
                 const footerWrapper = document.createElement("div");
                 footerWrapper.classList.add("bytm-dialog-footer-cont");
@@ -853,7 +853,7 @@ let observers = [];
 function initSiteEvents() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            //#SECTION queue
+            //#region queue
             // the queue container always exists so it doesn't need an extra init function
             const queueObs = new MutationObserver(([{ addedNodes, removedNodes, target }]) => {
                 if (addedNodes.length > 0 || removedNodes.length > 0) {
@@ -882,7 +882,7 @@ function initSiteEvents() {
                     });
                 },
             });
-            //#SECTION player bar
+            //#region player bar
             let lastTitle = null;
             let initialPlay = true;
             addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
@@ -903,7 +903,7 @@ function initSiteEvents() {
                 queueObs,
                 autoplayObs,
             ]);
-            //#SECTION player
+            //#region player
             const playerFullscreenObs = new MutationObserver(([{ target }]) => {
                 var _a;
                 const isFullscreen = ((_a = target.getAttribute("player-ui-state")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "FULLSCREEN";
@@ -916,7 +916,7 @@ function initSiteEvents() {
                     });
                 },
             });
-            //#SECTION other
+            //#region other
             let lastWatchId = null;
             const checkWatchId = () => {
                 if (location.pathname.startsWith("/watch")) {
@@ -1729,7 +1729,7 @@ function renderBody$1({ latestTag, changelogHtml, }) {
         wrapperEl.appendChild(btnWrapper);
         return wrapperEl;
     });
-}//#MARKER create menu elements
+}//#region create menu
 let isCfgMenuAdded = false;
 let isCfgMenuOpen = false;
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
@@ -1754,7 +1754,7 @@ function addCfgMenu() {
         initLocale = getFeatures().locale;
         initConfig$1 = JSON.stringify(getFeatures());
         const initLangReloadText = t("lang_changed_prompt_reload");
-        //#SECTION backdrop & menu container
+        //#region bg & container
         const backgroundElem = document.createElement("div");
         backgroundElem.id = "bytm-cfg-menu-bg";
         backgroundElem.classList.add("bytm-menu-bg");
@@ -1774,7 +1774,7 @@ function addCfgMenu() {
         menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
         menuContainer.classList.add("bytm-menu");
         menuContainer.id = "bytm-cfg-menu";
-        //#SECTION title bar
+        //#region title bar
         const headerElem = document.createElement("div");
         headerElem.classList.add("bytm-menu-header");
         const titleCont = document.createElement("div");
@@ -1841,7 +1841,7 @@ function addCfgMenu() {
         titleCont.appendChild(linksCont);
         headerElem.appendChild(titleCont);
         headerElem.appendChild(closeElem);
-        //#SECTION footer
+        //#region footer
         const footerCont = document.createElement("div");
         footerCont.className = "bytm-menu-footer-cont";
         const footerElemCont = document.createElement("div");
@@ -1902,7 +1902,7 @@ function addCfgMenu() {
         buttonsCont.appendChild(resetElem);
         footerCont.appendChild(footerElemCont);
         footerCont.appendChild(buttonsCont);
-        //#SECTION feature list
+        //#region feature list
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
         const onCfgChange = (key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
@@ -2223,7 +2223,7 @@ function addCfgMenu() {
                 featuresCont.appendChild(ftConfElem);
             }
         }
-        //#SECTION set values of inputs on external change
+        //#region reset inputs on external change
         siteEvents.on("rebuildCfgMenu", (newConfig) => {
             for (const ftKey in featInfo) {
                 const ftElem = document.querySelector(`#bytm-ftconf-${ftKey}-input`);
@@ -2250,7 +2250,7 @@ function addCfgMenu() {
             }
             info("Rebuilt config menu");
         });
-        //#SECTION scroll indicator
+        //#region scroll indicator
         const scrollIndicator = document.createElement("img");
         scrollIndicator.id = "bytm-menu-scroll-indicator";
         scrollIndicator.src = yield getResourceUrl("icon-arrow_down");
@@ -2279,7 +2279,7 @@ function addCfgMenu() {
         const bottomAnchor = document.createElement("div");
         bottomAnchor.id = "bytm-menu-bottom-anchor";
         featuresCont.appendChild(bottomAnchor);
-        //#SECTION finalize
+        //#region finalize
         menuContainer.appendChild(headerElem);
         menuContainer.appendChild(featuresCont);
         const subtitleElemCont = document.createElement("div");
@@ -2325,6 +2325,7 @@ function addCfgMenu() {
         backgroundElem.style.display = "none";
     });
 }
+//#region open & close
 /** Closes the config menu if it is open. If a bubbling event is passed, its propagation will be prevented. */
 function closeCfgMenu(evt, enableScroll = true) {
     var _a, _b;
@@ -2364,6 +2365,7 @@ function openCfgMenu() {
         checkToggleScrollIndicator();
     });
 }
+//#region chk scroll indicator
 /** Checks if the features container is scrollable and toggles the scroll indicator accordingly */
 function checkToggleScrollIndicator() {
     const featuresCont = document.querySelector("#bytm-menu-opts");
@@ -2647,7 +2649,7 @@ function compareVersionArrays(a, b) {
             return -1;
     }
     return 0;
-}//#MARKER init
+}//#region init vol features
 /** Initializes all volume-related features */
 function initVolumeFeatures() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2674,7 +2676,7 @@ function initVolumeFeatures() {
         });
     });
 }
-//#MARKER scroll step
+//#region scroll step
 /** Initializes the volume slider scroll step features */
 function initScrollStep(volSliderCont, sliderElem) {
     for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
@@ -2696,8 +2698,7 @@ function initScrollStep(volSliderCont, sliderElem) {
         });
     }
 }
-// #MARKER volume slider
-//#SECTION label
+//#region volume slider label
 /** Adds a percentage label to the volume slider and tooltip */
 function addVolumeSliderLabel(sliderElem, sliderContainer) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2762,7 +2763,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
         });
     });
 }
-//#SECTION size
+//#region volume slider size
 /** Sets the volume slider to a set size */
 function setVolSliderSize() {
     const { volumeSliderSize: size } = getFeatures();
@@ -2773,12 +2774,12 @@ function setVolSliderSize() {
   width: ${size}px !important;
 }`, "vol-slider-size");
 }
-//#SECTION step
+//#region volume slider step
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep(sliderElem) {
     sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
 }
-//#MARKER shared volume
+//#region shared volume
 /** Saves the shared volume level to persistent storage */
 function sharedVolumeChanged(vol) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2819,7 +2820,7 @@ function volumeSharedBetweenTabsDisabled() {
         yield GM.deleteValue("bytm-shared-volume");
     });
 }
-//#MARKER initial volume
+//#region initial volume
 /** Sets the volume slider to a set volume level when the session starts */
 function setInitialTabVolume(sliderElem) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2834,7 +2835,7 @@ function setInitialTabVolume(sliderElem) {
         sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
         log(`Set initial tab volume to ${initialVol}%`);
     });
-}//#MARKER BYTM-Config buttons
+}//#region cfg menu buttons
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
 function addWatermark() {
@@ -2965,7 +2966,7 @@ function addConfigMenuOptionYT(container) {
         }
     });
 }
-//#MARKER remove upgrade tab
+//#region rem upgrade tab
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 function removeUpgradeTab() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2983,7 +2984,7 @@ function removeUpgradeTab() {
         });
     });
 }
-//#MARKER anchor improvements
+//#region anchor improvements
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 function addAnchorImprovements() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -2995,7 +2996,7 @@ function addAnchorImprovements() {
         catch (err) {
             error("Couldn't add anchor improvements CSS due to an error:", err);
         }
-        //#SECTION carousel shelves
+        //#region carousel shelves
         try {
             const preventDefault = (e) => e.preventDefault();
             /** Adds anchor improvements to &lt;ytmusic-responsive-list-item-renderer&gt; */
@@ -3047,7 +3048,7 @@ function addAnchorImprovements() {
         catch (err) {
             error("Couldn't improve carousel shelf anchors due to an error:", err);
         }
-        //#SECTION sidebar
+        //#region sidebar
         try {
             const addSidebarAnchors = (sidebarCont) => {
                 const items = sidebarCont.parentNode.querySelectorAll("ytmusic-guide-entry-renderer tp-yt-paper-item");
@@ -3096,7 +3097,7 @@ function improveSidebarAnchors(sidebarItems) {
         UserUtils.addParent(item, anchorElem);
     });
 }
-//#MARKER remove share tracking param
+//#region rem tracking param
 /** Removes the ?si tracking parameter from share URLs */
 function initRemShareTrackParam() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3134,7 +3135,7 @@ function initRemShareTrackParam() {
         });
     });
 }
-//#MARKER fix margins
+//#region fix spacing
 /** Applies global CSS to fix various spacings */
 function fixSpacing() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3148,7 +3149,7 @@ function fixSpacing() {
         }
     });
 }
-//#MARKER scroll to active song
+//#region scroll to active
 /** Adds a button to the queue to scroll to the active song */
 function addScrollToActiveBtn() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3189,7 +3190,7 @@ function addScrollToActiveBtn() {
         });
     });
 }
-//#MARKER thumbnail overlay
+//#region thumbnail overlay
 /** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 function initThumbnailOverlay() {
@@ -3325,7 +3326,7 @@ function initThumbnailOverlay() {
         });
     });
 }
-//#MARKER hide cursor on idle
+//#region hide cursor on idle
 function initHideCursorOnIdle() {
     return __awaiter(this, void 0, void 0, function* () {
         addSelectorListener("mainPanel", "ytmusic-player#player", {
@@ -3380,7 +3381,7 @@ function initHideCursorOnIdle() {
             },
         });
     });
-}//#MARKER beforeunload popup
+}//#region beforeunload popup
 let beforeUnloadEnabled = true;
 /** Disables the popup before leaving the site */
 function disableBeforeUnload() {
@@ -3393,7 +3394,7 @@ function initBeforeUnloadHook() {
         UserUtils.interceptWindowEvent("beforeunload", () => !beforeUnloadEnabled);
     });
 }
-//#MARKER auto close toasts
+//#region auto close toasts
 /** Closes toasts after a set amount of time */
 function initAutoCloseToasts() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3529,7 +3530,7 @@ function delRemSongData(watchID) {
         yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
     });
 }
-//#MARKER disable darkreader
+//#region disable darkreader
 /** Disables Dark Reader if it is enabled */
 function disableDarkReader() {
     if (document.querySelector(".darkreader")) {
@@ -3540,7 +3541,7 @@ function disableDarkReader() {
         info("Sent hint to Dark Reader to disable itself");
     }
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
-//#MARKER arrow key skip
+//#region arrow key skip
 function initArrowKeySkip() {
     return __awaiter(this, void 0, void 0, function* () {
         document.addEventListener("keydown", (evt) => {
@@ -3563,7 +3564,7 @@ function initArrowKeySkip() {
         log("Added arrow key press listener");
     });
 }
-//#MARKER site switch
+//#region site switch
 /** switch sites only if current video time is greater than this value */
 const videoTimeThreshold = 3;
 let siteSwitchEnabled = true;
@@ -3617,7 +3618,7 @@ function switchSite(newDomain) {
         }
     });
 }
-//#MARKER number keys skip to time
+//#region num key skip to
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
 const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
@@ -3648,7 +3649,7 @@ function initNumKeysSkip() {
     });
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
-//#MARKER media control bar
+//#region media control bar
 let currentSongTitle = "";
 /** Adds a lyrics button to the media controls bar */
 function addMediaCtrlLyricsBtn() {
@@ -3737,7 +3738,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
         obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
     });
 }
-//#MARKER utils
+//#region lyrics utils
 /** Removes everything in parentheses from the passed song name */
 function sanitizeSong(songName) {
     if (typeof songName !== "string")
@@ -4036,12 +4037,11 @@ function initQueueButtons() {
 function addQueueButtons(queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = []) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        //#SECTION general queue item stuff
         const queueBtnsCont = document.createElement("div");
         queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
         const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
         const deleteIconUrl = yield getResourceUrl("icon-delete");
-        //#SECTION lyrics btn
+        //#region lyrics
         let lyricsBtnElem;
         if (getFeatures().lyricsQueueButton) {
             lyricsBtnElem = yield createLyricsBtn(undefined, false);
@@ -4124,7 +4124,7 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
                 lyricsUrl && UserUtils.openInNewTab(lyricsUrl);
             }));
         }
-        //#SECTION delete from queue btn
+        //#region delete from queue
         let deleteBtnElem;
         if (getFeatures().deleteFromQueueButton) {
             deleteBtnElem = document.createElement("a");
@@ -4179,13 +4179,12 @@ function addQueueButtons(queueItem, containerParentSelector = ".song-info", list
             }));
             deleteBtnElem.appendChild(imgElem);
         }
-        //#SECTION append elements to DOM
         lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
         deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);
         (_a = queueItem.querySelector(containerParentSelector)) === null || _a === void 0 ? void 0 : _a.appendChild(queueBtnsCont);
         queueItem.classList.add("bytm-has-queue-btns");
     });
-}//#MARKER feature dependencies
+}//#region dependencies
 /** List of all available locale SelectOptions */
 const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
     return [...a, {
@@ -4210,7 +4209,7 @@ const options = {
         { value: "ytm", label: t("site_selection_only_ytm") },
     ],
 };
-//#MARKER features
+//#region features
 /**
  * Contains all possible features with their default values and other configuration.
  *
@@ -4244,7 +4243,7 @@ const options = {
  * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
  */
 const featInfo = {
-    //#SECTION layout
+    //#region layout
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
@@ -4350,7 +4349,7 @@ const featInfo = {
         advanced: true,
         textAdornment: adornments.advanced,
     },
-    //#SECTION volume
+    //#region volume
     volumeSliderLabel: {
         type: "toggle",
         category: "volume",
@@ -4416,7 +4415,7 @@ const featInfo = {
         change: noop,
         textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
-    //#SECTION song lists
+    //#region song lists
     lyricsQueueButton: {
         type: "toggle",
         category: "songLists",
@@ -4442,7 +4441,7 @@ const featInfo = {
         enable: noop,
         disable: noop,
     },
-    //#SECTION behavior
+    //#region behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
@@ -4515,7 +4514,7 @@ const featInfo = {
         advanced: true,
         textAdornment: adornments.advanced,
     },
-    //#SECTION input
+    //#region input
     arrowKeySupport: {
         type: "toggle",
         category: "input",
@@ -4566,7 +4565,7 @@ const featInfo = {
         enable: noop,
         disable: noop,
     },
-    //#SECTION lyrics
+    //#region lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
@@ -4643,7 +4642,7 @@ const featInfo = {
         advanced: true,
         textAdornment: adornments.experimental,
     },
-    //#SECTION general
+    //#region general
     locale: {
         type: "select",
         category: "general",
@@ -4823,10 +4822,6 @@ const globalFuncs = {
     compareVersions,
     compareVersionArrays,
 };
-/** Plugins that are queued up for registration */
-const pluginQueue = new Map();
-/** Registered plugins including their event listener instance */
-const pluginMap = new Map();
 /** Initializes the BYTM interface */
 function initInterface() {
     const props = Object.assign(Object.assign(Object.assign({ mode,
@@ -4854,7 +4849,11 @@ function setGlobalProp(key, value) {
 function emitInterface(type, ...data) {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
 }
-//#MARKER register plugins
+//#region register plugins
+/** Plugins that are queued up for registration */
+const pluginQueue = new Map();
+/** Registered plugins including their event listener instance */
+const pluginMap = new Map();
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
     // TODO(v1.3): check perms and ask user for initial activation
@@ -4927,7 +4926,7 @@ function registerPlugin(def) {
         events,
     };
 }
-//#MARKER proxy functions
+//#region proxy funcs
 /** Returns the current feature config, with sensitive values replaced by `undefined` */
 function getFeaturesInterface() {
     const features = getFeatures();
@@ -4947,44 +4946,51 @@ const globservers = {};
 /** Call after DOM load to initialize all SelectorObserver instances */
 function initObservers() {
     try {
-        //#MARKER both sites
-        // #SECTION body = the entire <body> element - use sparingly due to performance impacts!
+        //#region both sites
+        //#region body
+        // -> the entire <body> element - use sparingly due to performance impacts!
         globservers.body = new UserUtils.SelectorObserver(document.body, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 150, subtree: false }));
         globservers.body.enable();
         switch (getDomain()) {
             case "ytm": {
-                //#MARKER YTM
-                //#SECTION navBar = the navigation / title bar at the top of the page
+                //#region YTM
+                //#region navBar
+                // -> the navigation / title bar at the top of the page
                 const navBarSelector = "ytmusic-nav-bar";
                 globservers.navBar = new UserUtils.SelectorObserver(navBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: false }));
                 globservers.body.addListener(navBarSelector, {
                     listener: () => globservers.navBar.enable(),
                 });
-                // #SECTION mainPanel = the main content panel - includes things like the video element
+                //#region mainPanel
+                // -> the main content panel - includes things like the video element
                 const mainPanelSelector = "ytmusic-player-page #main-panel";
                 globservers.mainPanel = new UserUtils.SelectorObserver(mainPanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(mainPanelSelector, {
                     listener: () => globservers.mainPanel.enable(),
                 });
-                // #SECTION sideBar = the sidebar on the left side of the page
+                //#region sideBar
+                // -> the sidebar on the left side of the page
                 const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
                 globservers.sideBar = new UserUtils.SelectorObserver(sidebarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(sidebarSelector, {
                     listener: () => globservers.sideBar.enable(),
                 });
-                // #SECTION sideBarMini = the minimized sidebar on the left side of the page
+                //#region sideBarMini
+                // -> the minimized sidebar on the left side of the page
                 const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
                 globservers.sideBarMini = new UserUtils.SelectorObserver(sideBarMiniSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(sideBarMiniSelector, {
                     listener: () => globservers.sideBarMini.enable(),
                 });
-                // #SECTION sidePanel = the side panel on the right side of the /watch page
+                //#region sidePanel
+                // -> the side panel on the right side of the /watch page
                 const sidePanelSelector = "#side-panel";
                 globservers.sidePanel = new UserUtils.SelectorObserver(sidePanelSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(sidePanelSelector, {
                     listener: () => globservers.sidePanel.enable(),
                 });
-                // #SECTION playerBar = media controls bar at the bottom of the page
+                //#region playerBar
+                // -> media controls bar at the bottom of the page
                 const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
                 globservers.playerBar = new UserUtils.SelectorObserver(playerBarSelector, Object.assign(Object.assign({}, defaultObserverOptions), { defaultDebounce: 200 }));
                 globservers.body.addListener(playerBarSelector, {
@@ -4992,25 +4998,29 @@ function initObservers() {
                         globservers.playerBar.enable();
                     },
                 });
-                // #SECTION playerBarInfo = song title, artist, album, etc. inside the player bar
+                //#region playerBarInfo
+                // -> song title, artist, album, etc. inside the player bar
                 const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
                 globservers.playerBarInfo = new UserUtils.SelectorObserver(playerBarInfoSelector, Object.assign(Object.assign({}, defaultObserverOptions), { attributes: true, attributeFilter: ["title"] }));
                 globservers.playerBarInfo.addListener(playerBarInfoSelector, {
                     listener: () => globservers.playerBarInfo.enable(),
                 });
-                // #SECTION playerBarMiddleButtons = the buttons inside the player bar (like, dislike, lyrics, etc.)
+                //#region playerBarMiddleButtons
+                // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
                 const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
                 globservers.playerBarMiddleButtons = new UserUtils.SelectorObserver(playerBarMiddleButtonsSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.playerBar.addListener(playerBarMiddleButtonsSelector, {
                     listener: () => globservers.playerBarMiddleButtons.enable(),
                 });
-                // #SECTION playerBarRightControls = the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+                //#region playerBarRightControls
+                // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
                 const playerBarRightControls = "#right-controls";
                 globservers.playerBarRightControls = new UserUtils.SelectorObserver(playerBarRightControls, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.playerBar.addListener(playerBarRightControls, {
                     listener: () => globservers.playerBarRightControls.enable(),
                 });
-                // #SECTION popupContainer = the container for popups (e.g. the queue popup)
+                //#region popupContainer
+                // -> the container for popups (e.g. the queue popup)
                 const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
                 globservers.popupContainer = new UserUtils.SelectorObserver(popupContainerSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(popupContainerSelector, {
@@ -5019,14 +5029,16 @@ function initObservers() {
                 break;
             }
             case "yt": {
-                //#MARKER YT
-                // #SECTION ytGuide = the left sidebar menu
+                //#region YT
+                //#region ytGuide
+                // -> the left sidebar menu
                 const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
                 globservers.ytGuide = new UserUtils.SelectorObserver(ytGuideSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
                 globservers.body.addListener(ytGuideSelector, {
                     listener: () => globservers.ytGuide.enable(),
                 });
-                // // #SECTION ytMasthead = the masthead at the top of the page
+                // //#region ytMasthead
+                // -> the masthead (title bar) at the top of the page
                 // const mastheadSelector = "#content ytd-masthead#masthead";
                 // globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
                 //   ...defaultObserverOptions,
@@ -5037,7 +5049,7 @@ function initObservers() {
                 // });
             }
         }
-        //#SECTION finalize
+        //#region finalize
         emitInterface("bytm:observersReady");
     }
     catch (err) {
@@ -5053,7 +5065,7 @@ function initObservers() {
  */
 function addSelectorListener(observerName, selector, options) {
     globservers[observerName].addListener(selector, options);
-}//#MARKER video time & volume
+}//#region video time, volume
 const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 /**
  * Returns the current video time in seconds
@@ -5147,7 +5159,7 @@ function waitVideoElementReady() {
         });
     });
 }
-//#MARKER other
+//#region other
 /** Whether the DOM has finished loading and elements can be added or modified */
 let domLoaded = false;
 document.addEventListener("DOMContentLoaded", () => domLoaded = true);
@@ -5241,7 +5253,7 @@ function warn(...args) {
 /** Logs all passed values to the console as an error, no matter the log level. */
 function error(...args) {
     console.error(consPrefix, ...args);
-}//#SECTION misc
+}//#region misc
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
@@ -5324,7 +5336,7 @@ function getBestThumbnailUrl(watchId) {
 function reserialize(data) {
     return JSON.parse(JSON.stringify(data));
 }
-//#SECTION resources
+//#region resources
 /**
  * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
@@ -6738,7 +6750,7 @@ hr {
   border: revert;
 }
 
-/* #MARKER volume slider */
+/* #region volume slider */
 
 #bytm-vol-slider-cont {
   position: relative;
@@ -6786,7 +6798,7 @@ hr {
   height: 20px;
 }
 
-/* #MARKER misc */
+/* #region misc */
 
 .bytm-disable-scroll {
   overflow: hidden !important;
@@ -6928,7 +6940,7 @@ button[disabled].bytm-busy {
   cursor: progress;
 }
 
-/* #MARKER menu */
+/* #region menu */
 
 .bytm-cfg-menu-option {
   display: block;
@@ -6971,7 +6983,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
 }
 
-/* #MARKER watermark */
+/* #region watermark */
 
 #bytm-watermark {
   font-size: 10px;
@@ -6989,7 +7001,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
-/* #MARKER scroll to active */
+/* #region scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
   display: flex;
@@ -7023,7 +7035,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   padding: 4px;
 }
 
-/** #MARKER thumbnail */
+/** #region thumbnail */
 
 #bytm-thumbnail-overlay {
   position: absolute;
@@ -7057,7 +7069,7 @@ ytmusic-player#player #bezel {
   z-index: 1;
 }
 
-/* #MARKER queue buttons */
+/* #region queue buttons */
 
 #side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
   position: relative;
