@@ -1,7 +1,8 @@
 import "./dialogs.css";
 
 export * from "./changelog";
-export * from "./export";
+export * from "./exportCfg";
 export * from "./featHelp";
-export * from "./import";
+export * from "./importCfg";
 export * from "./versionNotif";
+export * from "./welcome";

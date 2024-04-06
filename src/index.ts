@@ -5,7 +5,6 @@ import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } fro
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
 import { initSiteEvents } from "./siteEvents";
 import { emitInterface, initInterface, initPlugins } from "./interface";
-import { addWelcomeMenu, showWelcomeMenu } from "./menu/welcomeMenu";
 import { initObservers, addSelectorListener, globservers } from "./observers";
 import {
   // layout
@@ -31,6 +30,7 @@ import {
   // other
   initVersionCheck, initLyricsCache,
 } from "./features/index";
+import { getWelcomeDialog } from "./dialogs";
 
 {
   // console watermark with sexy gradient
@@ -139,10 +139,11 @@ async function onDomLoad() {
 
       if(typeof await GM.getValue("bytm-installed") !== "string") {
         // open welcome menu with language selector
-        await addWelcomeMenu();
+        const dlg = await getWelcomeDialog();
+        dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
+        await dlg.mount();
         info("Showing welcome menu");
-        await showWelcomeMenu();
-        await GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version }));
+        await dlg.open();
       }
 
       addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {

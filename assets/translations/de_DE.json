@@ -92,7 +92,7 @@
     "welcome_text_line_1": "Vielen Dank für die Installation!",
     "welcome_text_line_2": "Ich hoffe, du hast genauso viel Spaß mit %1 wie ich beim Erstellen hatte 😃",
     "welcome_text_line_3": "Wenn dir %1 gefällt, hinterlasse bitte eine Bewertung auf %2GreasyFork%3 oder %4OpenUserJS%5",
-    "welcome_text_line_4": "Meine Arbeit hängt von Spenden ab, also bitte überlege zu %1spenden ❤️%2",
+    "welcome_text_line_4": "Meine Arbeit hängt von %1Spenden%2 ab, also bitte denke darüber nach, ob du spenden möchtest ❤️",
     "welcome_text_line_5": "Hast du einen Fehler gefunden oder möchtest ein Feature vorschlagen? Bitte %1öffne ein Issue auf GitHub%2",
 
     "list_button_placement_queue_only": "Nur Wiedergabeliste",
