@@ -78,8 +78,6 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    console.log(">> keypress", e);
-
     const hotkey = {
       code: e.code,
       shift: e.shiftKey,
