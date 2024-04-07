@@ -133,9 +133,13 @@ async function onDomLoad() {
 
   try {
     if(domain === "ytm") {
+      //#region (ytm) misc
+
       disableDarkReader();
 
       ftInit.push(initSiteEvents());
+
+      //#region (ytm) welcome dlg
 
       if(typeof await GM.getValue("bytm-installed") !== "string") {
         // open welcome menu with language selector
@@ -146,33 +150,10 @@ async function onDomLoad() {
         await dlg.open();
       }
 
-      addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
-        listener: addConfigMenuOptionYTM,
-      });
-
-      if(features.arrowKeySupport)
-        ftInit.push(initArrowKeySkip());
-
-      if(features.removeUpgradeTab)
-        ftInit.push(removeUpgradeTab());
+      //#region (ytm) layout
 
       if(features.watermarkEnabled)
         ftInit.push(addWatermark());
-
-      if(features.geniusLyrics)
-        ftInit.push(addMediaCtrlLyricsBtn());
-
-      if(features.deleteFromQueueButton || features.lyricsQueueButton)
-        ftInit.push(initQueueButtons());
-
-      if(features.anchorImprovements)
-        ftInit.push(addAnchorImprovements());
-
-      if(features.closeToastsTimeout > 0)
-        ftInit.push(initAutoCloseToasts());
-
-      if(features.numKeysSkipToTime)
-        ftInit.push(initNumKeysSkip());
 
       if(features.fixSpacing)
         ftInit.push(fixSpacing());
@@ -180,14 +161,51 @@ async function onDomLoad() {
       if(features.scrollToActiveSongBtn)
         ftInit.push(addScrollToActiveBtn());
 
+      if(features.removeUpgradeTab)
+        ftInit.push(removeUpgradeTab());
+
       ftInit.push(initThumbnailOverlay());
 
       if(features.hideCursorOnIdle)
         ftInit.push(initHideCursorOnIdle());
 
+      //#region (ytm) volume
+
       ftInit.push(initVolumeFeatures());
+
+      //#region (ytm) song lists
+
+      if(features.lyricsQueueButton || features.deleteFromQueueButton)
+        ftInit.push(initQueueButtons());
+
+      //#region (ytm) behavior
+
+      if(features.closeToastsTimeout > 0)
+        ftInit.push(initAutoCloseToasts());
+
+      //#region (ytm) input
+
+      if(features.arrowKeySupport)
+        ftInit.push(initArrowKeySkip());
+
+      if(features.anchorImprovements)
+        ftInit.push(addAnchorImprovements());
+
+      if(features.numKeysSkipToTime)
+        ftInit.push(initNumKeysSkip());
+
+      //#region (ytm) lyrics
+
+      if(features.geniusLyrics)
+        ftInit.push(addMediaCtrlLyricsBtn());
     }
 
+    //#region (ytm+yt) cfg menu option
+    if(domain === "ytm") {
+      addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+        listener: addConfigMenuOptionYTM,
+      });
+    }
     if(domain === "yt") {
       addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
         listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
@@ -195,11 +213,15 @@ async function onDomLoad() {
     }
 
     if(["ytm", "yt"].includes(domain)) {
-      if(features.switchBetweenSites)
-        ftInit.push(initSiteSwitch(domain));
+      //#region (ytm+yt) layout
 
       if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
         ftInit.push(initRemShareTrackParam());
+
+      //#region (ytm+yt) input
+
+      if(features.switchBetweenSites)
+        ftInit.push(initSiteSwitch(domain));
 
       // TODO: for hot reloading features
       // ftInit.push(new Promise((resolve) => {
