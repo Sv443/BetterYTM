@@ -431,9 +431,8 @@ export async function addScrollToActiveBtn() {
 let invertOverlay = false;
 
 export async function initThumbnailOverlay() {
-  const behavior = getFeatures().thumbnailOverlayBehavior;
   const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
-  if(behavior === "never" && !toggleBtnShown)
+  if(getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
     return;
 
   await waitVideoElementReady();
@@ -448,6 +447,8 @@ export async function initThumbnailOverlay() {
   const updateOverlayVisibility = async () => {
     if(!domLoaded)
       return;
+
+    const behavior = getFeatures().thumbnailOverlayBehavior;
 
     let showOverlay = behavior === "always";
     const isVideo = currentMediaType() === "video";
@@ -607,6 +608,8 @@ export async function initHideCursorOnIdle() {
       let hideTransTimer: ReturnType<typeof setTimeout> | undefined;
 
       const hide = () => {
+        if(!getFeatures().hideCursorOnIdle)
+          return;
         if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
         overlayElem.style.opacity = ".000001 !important";

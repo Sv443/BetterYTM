@@ -251,14 +251,14 @@ type FeatureTypeProps = ({
     type: "hotkey";
     default: HotkeyObj;
   } & FeatureFuncProps)
-  | {
+  | ({
     type: "text";
     default: string;
     normalize?: (val: string) => string;
-  }
+  } & FeatureFuncProps)
   | {
     type: "button";
-    default: undefined;
+    default?: undefined;
     click: () => Promise<void> | void;
   }
 

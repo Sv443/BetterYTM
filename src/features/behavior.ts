@@ -31,7 +31,6 @@ export async function initBeforeUnloadHook() {
 export async function initAutoCloseToasts() {
   try {
     const animTimeout = 300;
-    const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
 
     addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
       all: true,
@@ -45,6 +44,7 @@ export async function initAutoCloseToasts() {
             continue;
           toastElem.classList.add("bytm-closing");
 
+          const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
           await pauseFor(closeTimeout);
 
           toastElem.classList.remove("paper-toast-open");
