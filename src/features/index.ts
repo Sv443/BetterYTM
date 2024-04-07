@@ -80,6 +80,8 @@ const options = {
  * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * 
+ * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 export const featInfo = {
   //#region layout

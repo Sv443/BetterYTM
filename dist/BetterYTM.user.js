@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7ed0cd6
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=6020a6d
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,37 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=7ed0cd6
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=7ed0cd6
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=7ed0cd6
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=7ed0cd6
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=7ed0cd6
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=7ed0cd6
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=7ed0cd6
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=7ed0cd6
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=7ed0cd6
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=7ed0cd6
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=7ed0cd6
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=7ed0cd6
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=7ed0cd6
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=7ed0cd6
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=7ed0cd6
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=7ed0cd6
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7ed0cd6
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=7ed0cd6
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=7ed0cd6
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=7ed0cd6
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=7ed0cd6
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=7ed0cd6
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=7ed0cd6
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=7ed0cd6
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=7ed0cd6
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=7ed0cd6
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=7ed0cd6
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=7ed0cd6
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=7ed0cd6
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=7ed0cd6
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=7ed0cd6
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=6020a6d
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=6020a6d
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=6020a6d
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=6020a6d
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=6020a6d
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=6020a6d
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=6020a6d
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=6020a6d
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=6020a6d
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=6020a6d
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=6020a6d
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=6020a6d
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=6020a6d
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=6020a6d
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=6020a6d
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=6020a6d
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=6020a6d
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=6020a6d
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=6020a6d
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=6020a6d
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=6020a6d
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=6020a6d
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=6020a6d
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=6020a6d
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=6020a6d
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=6020a6d
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=6020a6d
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=6020a6d
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=6020a6d
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=6020a6d
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=6020a6d
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +193,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "7ed0cd6";
+const buildNumberRaw = "6020a6d";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1753,7 +1753,7 @@ function addCfgMenu() {
             return;
         isCfgMenuAdded = true;
         initLocale = getFeatures().locale;
-        initConfig$1 = JSON.stringify(getFeatures());
+        initConfig$1 = getFeatures();
         const initLangReloadText = t("lang_changed_prompt_reload");
         //#region bg & container
         const backgroundElem = document.createElement("div");
@@ -1848,6 +1848,7 @@ function addCfgMenu() {
         const footerElemCont = document.createElement("div");
         const footerElem = document.createElement("div");
         footerElem.classList.add("bytm-menu-footer", "hidden");
+        footerElem.setAttribute("aria-hidden", "true");
         footerElem.textContent = t("reload_hint");
         footerElem.role = "alert";
         const reloadElem = document.createElement("button");
@@ -1912,13 +1913,22 @@ function addCfgMenu() {
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
             featConf[key] = newVal;
+            const changedKeys = initConfig$1 ? Object.keys(featConf).filter((k) => typeof featConf[k] !== "object"
+                && featConf[k] !== initConfig$1[k]) : [];
+            const requiresReload = 
+            // @ts-ignore
+            changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
             yield setFeatures(featConf);
             // @ts-ignore
             (_h = (_g = featInfo[key]) === null || _g === void 0 ? void 0 : _g.change) === null || _h === void 0 ? void 0 : _h.call(_g, featConf);
-            if (initConfig$1 !== JSON.stringify(featConf))
+            if (requiresReload) {
                 footerElem.classList.remove("hidden");
-            else
+                footerElem.setAttribute("aria-hidden", "false");
+            }
+            else if (!requiresReload) {
                 footerElem.classList.add("hidden");
+                footerElem.setAttribute("aria-hidden", "true");
+            }
             if (initLocale !== featConf.locale) {
                 yield initTranslations(featConf.locale);
                 setLocale(featConf.locale);
@@ -4215,12 +4225,12 @@ const options = {
  * Contains all possible features with their default values and other configuration.
  *
  * **Required props:**
- * | Property             | Description                                                                                                |
- * | :------------------- | :--------------------------------------------------------------------------------------------------------- |
- * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
- * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                    |
- * | `default`            | default value of the feature - type of the value depends on the given `type`                               |
- * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time                  |
+ * | Property             | Description                                                                                                                      |
+ * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+ * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
+ * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
+ * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
+ * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
  *
  * **Optional props:**
  * | Property                                          | Description                                                                                                                                              |
@@ -4235,13 +4245,13 @@ const options = {
  * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
  * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
  * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
+ * | `reloadRequired: boolean`                         | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
  * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
  * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
  *
- * **Notes:**
- * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
+ * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 const featInfo = {
     //#region layout
@@ -4249,43 +4259,32 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     removeShareTrackingParamSites: {
         type: "select",
         category: "layout",
         options: options.siteSelection,
         default: "all",
-        enable: noop,
-        disable: noop,
     },
     fixSpacing: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
     },
     thumbnailOverlayBehavior: {
         type: "select",
@@ -4297,22 +4296,16 @@ const featInfo = {
             { value: "never", label: t("thumbnail_overlay_behavior_never") },
         ],
         default: "songsOnly",
-        enable: noop,
-        change: noop,
     },
     thumbnailOverlayToggleBtnShown: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4325,8 +4318,6 @@ const featInfo = {
             { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
         ],
         default: "cover",
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4334,8 +4325,6 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     hideCursorOnIdleDelay: {
         type: "slider",
@@ -4345,9 +4334,9 @@ const featInfo = {
         step: 0.5,
         default: 3,
         unit: "s",
-        enable: noop,
-        change: noop,
         advanced: true,
+        reloadRequired: false,
+        enable: noop,
         textAdornment: adornments.advanced,
     },
     //#region volume
@@ -4355,8 +4344,6 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     volumeSliderSize: {
         type: "number",
@@ -4366,8 +4353,6 @@ const featInfo = {
         step: 5,
         default: 150,
         unit: "px",
-        enable: noop,
-        change: noop,
     },
     volumeSliderStep: {
         type: "slider",
@@ -4376,8 +4361,6 @@ const featInfo = {
         max: 25,
         default: 2,
         unit: "%",
-        enable: noop,
-        change: noop,
     },
     volumeSliderScrollStep: {
         type: "slider",
@@ -4386,13 +4369,12 @@ const featInfo = {
         max: 25,
         default: 10,
         unit: "%",
-        enable: noop,
-        change: noop,
     },
     volumeSharedBetweenTabs: {
         type: "toggle",
         category: "volume",
         default: false,
+        reloadRequired: false,
         enable: noop,
         disable: () => volumeSharedBetweenTabsDisabled,
     },
@@ -4400,8 +4382,6 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: false,
-        enable: noop,
-        disable: noop,
         textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
     initialTabVolumeLevel: {
@@ -4412,8 +4392,6 @@ const featInfo = {
         step: 1,
         default: 100,
         unit: "%",
-        enable: noop,
-        change: noop,
         textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
     },
     //#region song lists
@@ -4421,15 +4399,11 @@ const featInfo = {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     listButtonsPlacement: {
         type: "select",
@@ -4439,15 +4413,12 @@ const featInfo = {
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
-        enable: noop,
-        disable: noop,
     },
     //#region behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
         default: false,
-        enable: noop,
     },
     closeToastsTimeout: {
         type: "number",
@@ -4457,15 +4428,11 @@ const featInfo = {
         step: 0.5,
         default: 0,
         unit: "s",
-        enable: noop,
-        change: noop,
     },
     rememberSongTime: {
         type: "toggle",
         category: "behavior",
         default: true,
-        enable: noop,
-        disable: noop, // TODO: feasible?
         helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
     },
     rememberSongTimeSites: {
@@ -4473,8 +4440,6 @@ const featInfo = {
         category: "behavior",
         options: options.siteSelection,
         default: "ytm",
-        enable: noop,
-        change: noop,
     },
     rememberSongTimeDuration: {
         type: "number",
@@ -4484,8 +4449,6 @@ const featInfo = {
         step: 1,
         default: 60,
         unit: "s",
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4497,8 +4460,6 @@ const featInfo = {
         step: 0.1,
         default: 0,
         unit: "s",
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4510,8 +4471,6 @@ const featInfo = {
         step: 0.5,
         default: 10,
         unit: "s",
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4520,8 +4479,6 @@ const featInfo = {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     arrowKeySkipBy: {
         type: "number",
@@ -4530,15 +4487,11 @@ const featInfo = {
         max: 60,
         step: 0.5,
         default: 5,
-        enable: noop,
-        change: noop,
     },
     switchBetweenSites: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     switchSitesHotkey: {
         type: "hotkey",
@@ -4549,30 +4502,22 @@ const featInfo = {
             ctrl: false,
             alt: false,
         },
-        enable: noop,
-        change: noop,
     },
     anchorImprovements: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     numKeysSkipToTime: {
         type: "toggle",
         category: "input",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     //#region lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     geniUrlBase: {
         type: "text",
@@ -4599,8 +4544,6 @@ const featInfo = {
         max: 5000,
         step: 100,
         unit: (val) => " " + tp("unit_entries", val),
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4612,8 +4555,6 @@ const featInfo = {
         max: 100,
         step: 1,
         unit: (val) => " " + tp("unit_days", val),
-        enable: noop,
-        change: noop,
         advanced: true,
         textAdornment: adornments.advanced,
     },
@@ -4637,8 +4578,6 @@ const featInfo = {
         type: "toggle",
         category: "lyrics",
         default: false,
-        enable: noop,
-        disable: noop,
         change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
         advanced: true,
         textAdornment: adornments.experimental,
@@ -4649,15 +4588,12 @@ const featInfo = {
         category: "general",
         options: localeOptions,
         default: getPreferredLocale(),
-        enable: noop,
         textAdornment: adornments.globe,
     },
     versionCheck: {
         type: "toggle",
         category: "general",
         default: true,
-        enable: noop,
-        disable: noop,
     },
     checkVersionNow: {
         type: "button",
@@ -4673,14 +4609,11 @@ const featInfo = {
             { value: 1, label: t("log_level_info") },
         ],
         default: 1,
-        enable: noop,
     },
     advancedMode: {
         type: "toggle",
         category: "general",
         default: mode === "development",
-        enable: noop,
-        disable: noop,
         textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     },
 };
