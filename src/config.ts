@@ -65,15 +65,16 @@ export const migrations: DataMigrationsDict = {
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
-    acc[key] = featInfo[key].default as unknown as undefined;
+    // @ts-ignore
+    acc[key] = featInfo?.[key]?.default as unknown as undefined;
     return acc;
   }, {}) as FeatureConfig;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(resetKeys: (keyof typeof featInfo)[], baseData?: FeatureConfig): Partial<FeatureConfig> {
   const newData = { ...defaultData, ...(baseData ?? {}) };
-  for(const key of resetKeys)
-    newData[key] = featInfo[key].default as never; // typescript funny moments
+  for(const key of resetKeys) // @ts-ignore
+    newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
 }
 
