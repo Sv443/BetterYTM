@@ -182,7 +182,7 @@
     "feature_desc_rememberSongTimeSites": "On which sites should the song time be remembered and restored?",
     "feature_desc_rememberSongTimeDuration": "How long in seconds to remember the song's time for after it was last played",
     "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
-    "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you can re-listen to the part that was interrupted.",
+    "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when listening to the part that was interrupted again.",
     "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
 
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",

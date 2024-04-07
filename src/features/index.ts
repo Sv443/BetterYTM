@@ -322,7 +322,7 @@ export const featInfo = {
   rememberSongTimeDuration: {
     type: "number",
     category: "behavior",
-    min: 3,
+    min: 1,
     max: 60 * 60 * 24 * 7,
     step: 1,
     default: 60,
@@ -337,8 +337,8 @@ export const featInfo = {
     category: "behavior",
     min: 0,
     max: 30,
-    step: 0.1,
-    default: 0,
+    step: 0.05,
+    default: 0.2,
     unit: "s",
     advanced: true,
     textAdornment: adornments.advanced,
@@ -348,7 +348,7 @@ export const featInfo = {
   rememberSongTimeMinPlayTime: {
     type: "slider",
     category: "behavior",
-    min: 1,
+    min: 0.5,
     max: 30,
     step: 0.5,
     default: 10,
