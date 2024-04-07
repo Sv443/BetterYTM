@@ -13,6 +13,9 @@ export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"
 
 export async function initArrowKeySkip() {
   document.addEventListener("keydown", (evt) => {
+    if(!getFeatures().arrowKeySupport)
+      return;
+
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
     // discard the event when a (text) input is currently active, like when editing a playlist
@@ -45,11 +48,15 @@ let siteSwitchEnabled = true;
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
+    if(!getFeatures().switchBetweenSites)
+      return;
     const hk = getFeatures().switchSitesHotkey;
     if(siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
   siteEvents.on("hotkeyInputActive", (state) => {
+    if(!getFeatures().switchBetweenSites)
+      return;
     siteSwitchEnabled = !state;
   });
   log("Initialized site switch listener");
@@ -108,6 +115,8 @@ const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
+    if(!getFeatures().numKeysSkipToTime)
+      return;
     if(!e.key.trim().match(/^[0-9]$/))
       return;
     if(isCfgMenuOpen)

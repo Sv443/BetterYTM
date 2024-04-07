@@ -185,14 +185,12 @@ async function onDomLoad() {
 
       //#region (ytm) input
 
-      if(features.arrowKeySupport)
-        ftInit.push(initArrowKeySkip());
+      ftInit.push(initArrowKeySkip());
 
       if(features.anchorImprovements)
         ftInit.push(addAnchorImprovements());
 
-      if(features.numKeysSkipToTime)
-        ftInit.push(initNumKeysSkip());
+      ftInit.push(initNumKeysSkip());
 
       //#region (ytm) lyrics
 
@@ -220,8 +218,7 @@ async function onDomLoad() {
 
       //#region (ytm+yt) input
 
-      if(features.switchBetweenSites)
-        ftInit.push(initSiteSwitch(domain));
+      ftInit.push(initSiteSwitch(domain));
 
       // TODO: for hot reloading features
       // ftInit.push(new Promise((resolve) => {

@@ -126,6 +126,8 @@ export const featInfo = {
       { value: "never", label: t("thumbnail_overlay_behavior_never") },
     ],
     default: "songsOnly",
+    reloadRequired: false,
+    enable: noop,
   },
   thumbnailOverlayToggleBtnShown: {
     type: "toggle",
@@ -155,6 +157,8 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
+    reloadRequired: false,
+    enable: noop,
   },
   hideCursorOnIdleDelay: {
     type: "slider",
@@ -165,9 +169,9 @@ export const featInfo = {
     default: 3,
     unit: "s",
     advanced: true,
+    textAdornment: adornments.advanced,
     reloadRequired: false,
     enable: noop,
-    textAdornment: adornments.advanced,
   },
 
   //#region volume
@@ -224,6 +228,8 @@ export const featInfo = {
     default: 100,
     unit: "%",
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region song lists
@@ -261,6 +267,8 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
+    reloadRequired: false,
+    enable: noop,
   },
   rememberSongTime: {
     type: "toggle",
@@ -284,6 +292,8 @@ export const featInfo = {
     unit: "s",
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   rememberSongTimeReduction: {
     type: "number",
@@ -295,6 +305,8 @@ export const featInfo = {
     unit: "s",
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   rememberSongTimeMinPlayTime: {
     type: "slider",
@@ -306,6 +318,8 @@ export const featInfo = {
     unit: "s",
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region input
@@ -313,6 +327,8 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
+    reloadRequired: false,
+    enable: noop,
   },
   arrowKeySkipBy: {
     type: "number",
@@ -321,11 +337,15 @@ export const featInfo = {
     max: 60,
     step: 0.5,
     default: 5,
+    reloadRequired: false,
+    enable: noop,
   },
   switchBetweenSites: {
     type: "toggle",
     category: "input",
     default: true,
+    reloadRequired: false,
+    enable: noop,
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -348,6 +368,8 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region lyrics
@@ -363,6 +385,8 @@ export const featInfo = {
     normalize: (val: string) => val.trim().replace(/\/+$/, ""),
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   geniUrlToken: {
     type: "text",
@@ -372,6 +396,8 @@ export const featInfo = {
     normalize: (val: string) => val.trim(),
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   lyricsCacheMaxSize: {
     type: "slider",
@@ -383,6 +409,8 @@ export const featInfo = {
     unit: (val: number) => " " + tp("unit_entries", val),
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   lyricsCacheTTL: {
     type: "slider",
@@ -394,11 +422,12 @@ export const featInfo = {
     unit: (val: number) => " " + tp("unit_days", val),
     advanced: true,
     textAdornment: adornments.advanced,
+    reloadRequired: false,
+    enable: noop,
   },
   clearLyricsCache: {
     type: "button",
     category: "lyrics",
-    default: undefined,
     async click() {
       const entries = getLyricsCache().length;
       if(confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
@@ -416,6 +445,8 @@ export const featInfo = {
     change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
     advanced: true,
     textAdornment: adornments.experimental,
+    reloadRequired: false,
+    enable: noop,
   },
 
   //#region general
@@ -434,7 +465,6 @@ export const featInfo = {
   checkVersionNow: {
     type: "button",
     category: "general",
-    default: undefined,
     click: () => doVersionCheck(true),
   },
   logLevel: {

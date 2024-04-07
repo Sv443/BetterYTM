@@ -110,8 +110,8 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
   cache.push(entry);
   cache.sort((a, b) => b.viewed - a.viewed);
 
-  if(cache.length > getFeatures().lyricsCacheMaxSize)
-    cache.pop();
+  // always keep the cache <= max size
+  cache.splice(getFeatures().lyricsCacheMaxSize);
 
   log("Added cache entry for best result", artist, "-", song, "\n", entry);
 
@@ -150,8 +150,8 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   cache.push(entry);
   cache.sort((a, b) => b.viewed - a.viewed);
 
-  if(cache.length > getFeatures().lyricsCacheMaxSize)
-    cache.pop();
+  // always keep the cache <= max size
+  cache.splice(getFeatures().lyricsCacheMaxSize);
 
   log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
 
