@@ -45,8 +45,8 @@ let siteSwitchEnabled = true;
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
-    const hotkey = getFeatures().switchSitesHotkey;
-    if(siteSwitchEnabled && e.code === hotkey.code && e.shiftKey === hotkey.shift && e.ctrlKey === hotkey.ctrl && e.altKey === hotkey.alt)
+    const hk = getFeatures().switchSitesHotkey;
+    if(siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
   siteEvents.on("hotkeyInputActive", (state) => {

@@ -336,6 +336,8 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
+    reloadRequired: false,
+    enable: noop,
   },
   anchorImprovements: {
     type: "toggle",
