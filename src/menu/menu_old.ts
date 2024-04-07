@@ -327,8 +327,11 @@ async function addCfgMenu() {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
         if(getFeatures().advancedMode) {
-          const valFmtd = fmtVal(ftDefault);
-          featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${valFmtd.length === 0 ? "(empty)" : valFmtd}`;
+          const defVal = fmtVal(ftDefault);
+          // @ts-ignore
+          const rel = ftInfo.reloadRequired === false ? "" : " (reload required)";
+          const adv = ftInfo.advanced ? " (advanced feature)" : "";
+          featLeftSideElem.title = `${featKey}${rel}${adv} - default value: ${defVal.length === 0 ? "(undefined)" : defVal}`;
         }
 
         const textElem = document.createElement("span");

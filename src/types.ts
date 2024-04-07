@@ -302,10 +302,7 @@ export type FeatureInfo = Record<
     helpText?: string | (() => string);
     /** Whether the value should be hidden in the config menu and from plugins */
     valueHidden?: boolean;
-    /**
-     * HTML string that is appended to the end of a feature's text description
-     * @deprecated TODO:FIXME: To be removed or changed in the big menu rework
-     */
+    /** HTML string that is appended to the end of a feature's text description */
     textAdornment?: () => (Promise<string | undefined> | string | undefined);
 
     /** Whether to only show this feature when advanced mode is activated (default false) */

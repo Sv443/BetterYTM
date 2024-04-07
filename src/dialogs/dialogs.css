@@ -3,6 +3,7 @@
   --bytm-advanced-mode-color: #c5a73b;
   --bytm-experimental-col: #d07ff0;
   --bytm-warning-col: #ff5233;
+  --bytm-reload-col: #42b045;
 }
 
 /* TODO(v1.2): leave only dialog */
@@ -93,6 +94,10 @@
 
 .bytm-warning-icon svg path {
   fill: var(--bytm-warning-col, #fff);
+}
+
+.bytm-reload-icon svg path {
+  fill: var(--bytm-reload-col, #fff);
 }
 
 /* #SECTION welcome dialog */
