@@ -246,7 +246,7 @@ export const featInfo = {
     default: false,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs
       ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-      : undefined,
+      : adornments.reloadRequired(),
   },
   initialTabVolumeLevel: {
     type: "slider",
@@ -258,7 +258,7 @@ export const featInfo = {
     unit: "%",
     textAdornment: () => getFeatures().volumeSharedBetweenTabs
       ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
-      : undefined,
+      : adornments.reloadRequired(),
     reloadRequired: false,
     enable: noop,
   },
