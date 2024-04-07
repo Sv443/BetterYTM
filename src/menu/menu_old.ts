@@ -299,6 +299,7 @@ async function addCfgMenu() {
     catHeaderElem.classList.add("bytm-ftconf-category-header");
     catHeaderElem.role = "heading";
     catHeaderElem.ariaLevel = "2";
+    catHeaderElem.tabIndex = 0;
     catHeaderElem.textContent = `${t(`feature_category_${category}`)}:`;
     featuresCont.appendChild(catHeaderElem);
 
@@ -335,6 +336,7 @@ async function addCfgMenu() {
         }
 
         const textElem = document.createElement("span");
+        textElem.tabIndex = 0;
         textElem.textContent = t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;

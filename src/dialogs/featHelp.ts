@@ -51,11 +51,13 @@ async function renderBody() {
 
   const featDescElem = document.createElement("h3");
   featDescElem.role = "subheading";
+  featDescElem.tabIndex = 0;
   featDescElem.textContent = t(`feature_desc_${curFeatKey}`);
   featDescElem.id = "bytm-feat-help-dialog-desc";
 
   const helpTextElem = document.createElement("div");
   helpTextElem.id = "bytm-feat-help-dialog-text";
+  helpTextElem.tabIndex = 0;
   // @ts-ignore
   const helpText: string | undefined = featInfo[curFeatKey]?.helpText?.();
   helpTextElem.textContent = helpText ?? t(`feature_helptext_${curFeatKey}`);

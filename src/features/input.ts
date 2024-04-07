@@ -19,7 +19,7 @@ export async function initArrowKeySkip() {
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
     // discard the event when a (text) input is currently active, like when editing a playlist
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? "") || ["volume-slider"].includes(document.activeElement?.id ?? ""))
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
