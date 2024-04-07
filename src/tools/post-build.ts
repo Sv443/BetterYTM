@@ -1,4 +1,4 @@
-import { access, readFile, writeFile, constants as fsconstants } from "node:fs/promises";
+import { access, readFile, writeFile, constants as fsconst } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
@@ -208,7 +208,7 @@ I welcome every contribution on GitHub!
 /** Replaces tokens in the format `#{{key}}` or `/⋆#{{key}}⋆/` of the `replacements` param with their respective value */
 function insertValues(userscript: string, replacements: Record<string, Stringifiable>) {
   for(const key in replacements)
-    userscript = userscript.replace(new RegExp(`(\\/\\*)?#{{${key}}}(\\*\\/)?`, "gm"), String(replacements[key]));
+    userscript = userscript.replace(new RegExp(`(\\/\\*\\s*)?#{{${key}}}(\\s*\\*\\/)?`, "gm"), String(replacements[key]));
   return userscript;
 }
 
@@ -236,7 +236,7 @@ function getLastCommitSha() {
 
 async function exists(path: string) {
   try {
-    await access(path, fsconstants.R_OK | fsconstants.W_OK);
+    await access(path, fsconst.R_OK | fsconst.W_OK);
     return true;
   }
   catch(err) {

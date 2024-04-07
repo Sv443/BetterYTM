@@ -1,8 +1,8 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import express, { NextFunction, Request, Response } from "express";
-import { outputDir } from "../../rollup.config.mjs";
 import "dotenv/config";
+import { outputDir } from "../../rollup.config.mjs";
 
 const envPort = Number(process.env.DEV_SERVER_PORT);
 

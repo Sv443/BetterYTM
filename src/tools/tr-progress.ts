@@ -1,9 +1,9 @@
+import { autoPlural, mapRange } from "@sv443-network/userutils";
 import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { autoPlural, mapRange } from "@sv443-network/userutils";
-import locales from "../../assets/locales.json" assert { type: "json" };
 import type { TrLocale } from "../utils";
+import locales from "../../assets/locales.json" assert { type: "json" };
 
 const { exit } = process;
 

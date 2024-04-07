@@ -38,7 +38,7 @@ export function getSessionId(): string | null {
 
 let isCompressionSupported: boolean | undefined;
 
-/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported */
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
 export async function compressionSupported() {
   if(typeof isCompressionSupported === "boolean")
     return isCompressionSupported;
