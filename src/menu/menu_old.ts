@@ -255,7 +255,7 @@ async function addCfgMenu() {
   };
 
   /** Call whenever the feature config is changed */
-  const confChanged = debounce(onCfgChange, 300, "rising");
+  const confChanged = debounce(onCfgChange, 200, "falling");
 
   const featureCfg = getFeatures();
   const featureCfgWithCategories = Object.entries(featInfo)

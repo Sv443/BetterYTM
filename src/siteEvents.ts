@@ -132,7 +132,7 @@ export async function initSiteEvents() {
 
     const playerFullscreenObs = new MutationObserver(([{ target }]) => {
       const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
-      siteEvents.emit("fullscreenToggled", isFullscreen);
+      emitSiteEvent("fullscreenToggled", isFullscreen);
     });
 
     addSelectorListener("mainPanel", "ytmusic-player#player", {
