@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1bbe911
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=e401f84
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,37 +35,38 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=1bbe911
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=1bbe911
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=1bbe911
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=1bbe911
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=1bbe911
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=1bbe911
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=1bbe911
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=1bbe911
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=1bbe911
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=1bbe911
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=1bbe911
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=1bbe911
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=1bbe911
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=1bbe911
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=1bbe911
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=1bbe911
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=1bbe911
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=1bbe911
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=1bbe911
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=1bbe911
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=1bbe911
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=1bbe911
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=1bbe911
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=1bbe911
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=1bbe911
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=1bbe911
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=1bbe911
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=1bbe911
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=1bbe911
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=1bbe911
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=1bbe911
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=e401f84
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=e401f84
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=e401f84
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=e401f84
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=e401f84
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=e401f84
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=e401f84
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=e401f84
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=e401f84
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=e401f84
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=e401f84
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=e401f84
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=e401f84
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=e401f84
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=e401f84
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=e401f84
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=e401f84
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=e401f84
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=e401f84
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=e401f84
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=e401f84
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=e401f84
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=e401f84
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=e401f84
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=e401f84
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=e401f84
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=e401f84
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=e401f84
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=e401f84
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=e401f84
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=e401f84
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=e401f84
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -193,7 +194,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "1bbe911";
+const buildNumberRaw = "e401f84";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1988,8 +1989,11 @@ function addCfgMenu() {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
                     if (getFeatures().advancedMode) {
-                        const valFmtd = fmtVal(ftDefault);
-                        featLeftSideElem.title = `${featKey}${ftInfo.advanced ? " (advanced)" : ""} - Default: ${valFmtd.length === 0 ? "(empty)" : valFmtd}`;
+                        const defVal = fmtVal(ftDefault);
+                        // @ts-ignore
+                        const rel = ftInfo.reloadRequired === false ? "" : " (reload required)";
+                        const adv = ftInfo.advanced ? " (advanced feature)" : "";
+                        featLeftSideElem.title = `${featKey}${rel}${adv} - default value: ${defVal.length === 0 ? "(undefined)" : defVal}`;
                     }
                     const textElem = document.createElement("span");
                     textElem.textContent = t(`feature_desc_${featKey}`);
@@ -4214,13 +4218,22 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
         }];
 }, [])
     .sort((a, b) => a.label.localeCompare(b.label));
-const getAdornHtml = (className, title, resource, extraParams) => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="${className}" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${(_a = yield resourceToHTMLString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; });
+const getAdornHtml = (className, title, resource, extraParams) => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${(_a = yield resourceToHTMLString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; });
+const combineAdornments = (adornments) => new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+    const html = [];
+    for (const adornment of adornments) {
+        const val = typeof adornment === "function" ? yield adornment() : yield adornment;
+        val && html.push(val);
+    }
+    resolve(html.join(""));
+}));
 /** Decoration elements that can be added next to the label */
 const adornments = {
     advanced: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"); }),
     experimental: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"); }),
     globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe")) !== null && _b !== void 0 ? _b : ""; }),
     warning: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
+    reloadRequired: () => __awaiter(void 0, void 0, void 0, function* () { return getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined; }),
 };
 /** Common options for config items of type "select" */
 const options = {
@@ -4269,32 +4282,38 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     removeShareTrackingParam: {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     removeShareTrackingParamSites: {
         type: "select",
         category: "layout",
         options: options.siteSelection,
         default: "all",
+        textAdornment: adornments.reloadRequired,
     },
     fixSpacing: {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     scrollToActiveSongBtn: {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     thumbnailOverlayBehavior: {
         type: "select",
@@ -4313,13 +4332,14 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     thumbnailOverlayShowIndicator: {
         type: "toggle",
         category: "layout",
         default: true,
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
     thumbnailOverlayImageFit: {
         type: "select",
@@ -4331,7 +4351,7 @@ const featInfo = {
         ],
         default: "cover",
         advanced: true,
-        textAdornment: adornments.advanced,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
     hideCursorOnIdle: {
         type: "toggle",
@@ -4358,6 +4378,7 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     volumeSliderSize: {
         type: "number",
@@ -4367,6 +4388,7 @@ const featInfo = {
         step: 5,
         default: 150,
         unit: "px",
+        textAdornment: adornments.reloadRequired,
     },
     volumeSliderStep: {
         type: "slider",
@@ -4375,6 +4397,7 @@ const featInfo = {
         max: 25,
         default: 2,
         unit: "%",
+        textAdornment: adornments.reloadRequired,
     },
     volumeSliderScrollStep: {
         type: "slider",
@@ -4383,6 +4406,7 @@ const featInfo = {
         max: 25,
         default: 10,
         unit: "%",
+        textAdornment: adornments.reloadRequired,
     },
     volumeSharedBetweenTabs: {
         type: "toggle",
@@ -4396,7 +4420,9 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: false,
-        textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
+        textAdornment: () => getFeatures().volumeSharedBetweenTabs
+            ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+            : undefined,
     },
     initialTabVolumeLevel: {
         type: "slider",
@@ -4406,7 +4432,9 @@ const featInfo = {
         step: 1,
         default: 100,
         unit: "%",
-        textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
+        textAdornment: () => getFeatures().volumeSharedBetweenTabs
+            ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+            : undefined,
         reloadRequired: false,
         enable: noop,
     },
@@ -4415,11 +4443,13 @@ const featInfo = {
         type: "toggle",
         category: "songLists",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     deleteFromQueueButton: {
         type: "toggle",
         category: "songLists",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     listButtonsPlacement: {
         type: "select",
@@ -4429,12 +4459,14 @@ const featInfo = {
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
+        textAdornment: adornments.reloadRequired,
     },
     //#region behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
         default: false,
+        textAdornment: adornments.reloadRequired,
     },
     closeToastsTimeout: {
         type: "number",
@@ -4451,13 +4483,15 @@ const featInfo = {
         type: "toggle",
         category: "behavior",
         default: true,
-        helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
+        helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime),
+        textAdornment: adornments.reloadRequired,
     },
     rememberSongTimeSites: {
         type: "select",
         category: "behavior",
         options: options.siteSelection,
         default: "ytm",
+        textAdornment: adornments.reloadRequired,
     },
     rememberSongTimeDuration: {
         type: "number",
@@ -4539,6 +4573,7 @@ const featInfo = {
         type: "toggle",
         category: "input",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     numKeysSkipToTime: {
         type: "toggle",
@@ -4631,12 +4666,13 @@ const featInfo = {
         category: "general",
         options: localeOptions,
         default: getPreferredLocale(),
-        textAdornment: adornments.globe,
+        textAdornment: () => combineAdornments([adornments.globe, adornments.reloadRequired]),
     },
     versionCheck: {
         type: "toggle",
         category: "general",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     checkVersionNow: {
         type: "button",
@@ -4651,12 +4687,15 @@ const featInfo = {
             { value: 1, label: t("log_level_info") },
         ],
         default: 1,
+        textAdornment: adornments.reloadRequired,
     },
     advancedMode: {
         type: "toggle",
         category: "general",
         default: mode === "development",
-        textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
+        textAdornment: () => getFeatures().advancedMode
+            ? combineAdornments([adornments.advanced, adornments.reloadRequired])
+            : undefined,
     },
 };
 function noop() {
@@ -5682,6 +5721,7 @@ function insertGlobalStyle() {
   --bytm-advanced-mode-color: #c5a73b;
   --bytm-experimental-col: #d07ff0;
   --bytm-warning-col: #ff5233;
+  --bytm-reload-col: #42b045;
 }
 
 /* TODO(v1.2): leave only dialog */
@@ -5772,6 +5812,10 @@ function insertGlobalStyle() {
 
 .bytm-warning-icon svg path {
   fill: var(--bytm-warning-col, #fff);
+}
+
+.bytm-reload-icon svg path {
+  fill: var(--bytm-reload-col, #fff);
 }
 
 /* #SECTION welcome dialog */
