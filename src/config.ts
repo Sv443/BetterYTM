@@ -63,27 +63,19 @@ export const migrations: DataMigrationsDict = {
   // 6: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
 
-/**
- * Uses the passed {@linkcode baseData} as the base if given, and sets all passed feature {@linkcode keys} to their default value  
- * @returns Returns a copy of the object
- */
-function useDefaultConfig(keys: (keyof typeof featInfo)[], baseData?: FeatureConfig): Partial<FeatureConfig> {
-  const newData = { ...(baseData ?? {}) };
-  for(const key of keys)
-    newData[key as keyof typeof featInfo] = getFeatureDefault(key as keyof typeof featInfo) as unknown as never;
-  return newData;
-}
-
-/** Returns the default value for the given feature key */
-function getFeatureDefault<TKey extends keyof typeof featInfo>(key: TKey): typeof featInfo[TKey]["default"] {
-  return featInfo[key].default;
-}
-
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   .reduce<Partial<FeatureConfig>>((acc, key) => {
     acc[key] = featInfo[key].default as unknown as undefined;
     return acc;
   }, {}) as FeatureConfig;
+
+/** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
+function useDefaultConfig(resetKeys: (keyof typeof featInfo)[], baseData?: FeatureConfig): Partial<FeatureConfig> {
+  const newData = { ...defaultData, ...(baseData ?? {}) };
+  for(const key of resetKeys)
+    newData[key] = featInfo[key].default as never; // typescript funny moments
+  return newData;
+}
 
 let canCompress = true;
 

@@ -27,11 +27,12 @@ export const platformNames: Record<typeof host, string> = {
 /** Default compression format used throughout BYTM */
 export const compressionFormat: CompressionFormat = "deflate-raw";
 
+/** Whether sessionStorage is available and working */
 export const sessionStorageAllowed =
-  typeof sessionStorage !== "undefined"
+  typeof sessionStorage?.setItem !== "undefined"
   && (() => {
     try {
-      const key = `_bytm_${randomId(4)}`;
+      const key = `_bytm_test_${randomId(4)}`;
       sessionStorage.setItem(key, "test");
       sessionStorage.removeItem(key);
       return true;
