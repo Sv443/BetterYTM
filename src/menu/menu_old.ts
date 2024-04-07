@@ -21,7 +21,7 @@ let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale: string | undefined;
 /** Stringified config at the point of initializing the config menu */
-let initConfig: string | undefined;
+let initConfig: FeatureConfig | undefined;
 /** Timeout id for the "copied" text in the hidden value copy button */
 let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -34,7 +34,7 @@ async function addCfgMenu() {
     return;
   isCfgMenuAdded = true;
   initLocale = getFeatures().locale;
-  initConfig = JSON.stringify(getFeatures());
+  initConfig = getFeatures();
 
   const initLangReloadText = t("lang_changed_prompt_reload");
 
@@ -153,6 +153,7 @@ async function addCfgMenu() {
 
   const footerElem = document.createElement("div");
   footerElem.classList.add("bytm-menu-footer", "hidden");
+  footerElem.setAttribute("aria-hidden", "true");
   footerElem.textContent = t("reload_hint");
   footerElem.role = "alert";
 
@@ -223,19 +224,31 @@ async function addCfgMenu() {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
-    const featConf = JSON.parse(JSON.stringify(getFeatures()));
+    const featConf = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
 
     featConf[key] = newVal as never;
+
+    const changedKeys = initConfig ? Object.keys(featConf).filter((k) =>
+      typeof featConf[k as FeatureKey] !== "object"
+      && featConf[k as FeatureKey] !== initConfig![k as FeatureKey]
+    ) : [];
+    const requiresReload =
+      // @ts-ignore
+      changedKeys.some((k) => featInfo[k as keyof typeof featInfo]?.reloadRequired !== false);
 
     await setFeatures(featConf);
 
     // @ts-ignore
     featInfo[key]?.change?.(featConf);
 
-    if(initConfig !== JSON.stringify(featConf))
+    if(requiresReload) {
       footerElem.classList.remove("hidden");
-    else
+      footerElem.setAttribute("aria-hidden", "false");
+    }
+    else if(!requiresReload) {
       footerElem.classList.add("hidden");
+      footerElem.setAttribute("aria-hidden", "true");
+    }
 
     if(initLocale !== featConf.locale) {
       await initTranslations(featConf.locale);

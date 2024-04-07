@@ -262,10 +262,20 @@ type FeatureTypeProps = ({
     click: () => Promise<void> | void;
   }
 
-type FeatureFuncProps = {
-  /** Called to instantiate the feature on the page */
-  enable: (featCfg: FeatureConfig) => void,
-} & (
+type FeatureFuncProps = (
+  {
+    /** Whether the feature requires a page reload to take effect */
+    reloadRequired: false;
+    /** Called to instantiate the feature on the page */
+    enable: (featCfg: FeatureConfig) => void,
+  }
+  | {
+    /** Whether the feature requires a page reload to take effect */
+    reloadRequired?: true;
+    /** Called to instantiate the feature on the page */
+    enable?: undefined;
+  }
+) & (
   {
     /** Called to remove all traces of the feature from the page and memory (includes event listeners) */
     disable?: (feats: FeatureConfig) => void,
@@ -274,7 +284,7 @@ type FeatureFuncProps = {
     /** Called to update the feature's behavior when the config changes */
     change?: (feats: FeatureConfig) => void,
   }
-)
+);
 
 /**
  * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  

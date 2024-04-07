@@ -55,12 +55,12 @@ const options = {
  * Contains all possible features with their default values and other configuration.  
  *   
  * **Required props:**
- * | Property             | Description                                                                                                |
- * | :------------------- | :--------------------------------------------------------------------------------------------------------- |
- * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts` |
- * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                    |
- * | `default`            | default value of the feature - type of the value depends on the given `type`                               |
- * | `enable(value: any)` | function that will be called when the feature is enabled / initialized for the first time                  |
+ * | Property             | Description                                                                                                                      |
+ * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+ * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
+ * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
+ * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
+ * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
  *   
  * **Optional props:**
  * | Property                                          | Description                                                                                                                                              |
@@ -75,13 +75,11 @@ const options = {
  * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
  * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
  * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
+ * | `reloadRequired: boolean`                         | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
  * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
  * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
- *   
- * **Notes:**
- * - If no `disable()` or `change()` function is present, the page needs to be reloaded for the changes to take effect
  */
 export const featInfo = {
   //#region layout
@@ -89,43 +87,32 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   removeShareTrackingParam: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   removeShareTrackingParamSites: {
     type: "select",
     category: "layout",
     options: options.siteSelection,
     default: "all",
-    enable: noop,
-    disable: noop,
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   scrollToActiveSongBtn: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   removeUpgradeTab: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -137,22 +124,16 @@ export const featInfo = {
       { value: "never", label: t("thumbnail_overlay_behavior_never") },
     ],
     default: "songsOnly",
-    enable: noop,
-    change: noop,
   },
   thumbnailOverlayToggleBtnShown: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   thumbnailOverlayShowIndicator: {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -165,8 +146,6 @@ export const featInfo = {
       { value: "fill", label: t("thumbnail_overlay_image_fit_stretch") },
     ],
     default: "cover",
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -174,8 +153,6 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   hideCursorOnIdleDelay: {
     type: "slider",
@@ -185,9 +162,9 @@ export const featInfo = {
     step: 0.5,
     default: 3,
     unit: "s",
-    enable: noop,
-    change: noop,
     advanced: true,
+    reloadRequired: false,
+    enable: noop,
     textAdornment: adornments.advanced,
   },
 
@@ -196,8 +173,6 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   volumeSliderSize: {
     type: "number",
@@ -207,8 +182,6 @@ export const featInfo = {
     step: 5,
     default: 150,
     unit: "px",
-    enable: noop,
-    change: noop,
   },
   volumeSliderStep: {
     type: "slider",
@@ -217,8 +190,6 @@ export const featInfo = {
     max: 25,
     default: 2,
     unit: "%",
-    enable: noop,
-    change: noop,
   },
   volumeSliderScrollStep: {
     type: "slider",
@@ -227,13 +198,12 @@ export const featInfo = {
     max: 25,
     default: 10,
     unit: "%",
-    enable: noop,
-    change: noop,
   },
   volumeSharedBetweenTabs: {
     type: "toggle",
     category: "volume",
     default: false,
+    reloadRequired: false,
     enable: noop,
     disable: () => volumeSharedBetweenTabsDisabled,
   },
@@ -241,8 +211,6 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: false,
-    enable: noop,
-    disable: noop,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
   initialTabVolumeLevel: {
@@ -253,8 +221,6 @@ export const featInfo = {
     step: 1,
     default: 100,
     unit: "%",
-    enable: noop,
-    change: noop,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs ? adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")) : undefined,
   },
 
@@ -263,15 +229,11 @@ export const featInfo = {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   deleteFromQueueButton: {
     type: "toggle",
     category: "songLists",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   listButtonsPlacement: {
     type: "select",
@@ -281,8 +243,6 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
-    enable: noop,
-    disable: noop,
   },
 
   //#region behavior
@@ -290,7 +250,6 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: false,
-    enable: noop,
   },
   closeToastsTimeout: {
     type: "number",
@@ -300,15 +259,11 @@ export const featInfo = {
     step: 0.5,
     default: 0,
     unit: "s",
-    enable: noop,
-    change: noop,
   },
   rememberSongTime: {
     type: "toggle",
     category: "behavior",
     default: true,
-    enable: noop,
-    disable: noop, // TODO: feasible?
     helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime)
   },
   rememberSongTimeSites: {
@@ -316,8 +271,6 @@ export const featInfo = {
     category: "behavior",
     options: options.siteSelection,
     default: "ytm",
-    enable: noop,
-    change: noop,
   },
   rememberSongTimeDuration: {
     type: "number",
@@ -327,8 +280,6 @@ export const featInfo = {
     step: 1,
     default: 60,
     unit: "s",
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -340,8 +291,6 @@ export const featInfo = {
     step: 0.1,
     default: 0,
     unit: "s",
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -353,8 +302,6 @@ export const featInfo = {
     step: 0.5,
     default: 10,
     unit: "s",
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -364,8 +311,6 @@ export const featInfo = {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   arrowKeySkipBy: {
     type: "number",
@@ -374,15 +319,11 @@ export const featInfo = {
     max: 60,
     step: 0.5,
     default: 5,
-    enable: noop,
-    change: noop,
   },
   switchBetweenSites: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   switchSitesHotkey: {
     type: "hotkey",
@@ -393,22 +334,16 @@ export const featInfo = {
       ctrl: false,
       alt: false,
     },
-    enable: noop,
-    change: noop,
   },
   anchorImprovements: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   numKeysSkipToTime: {
     type: "toggle",
     category: "input",
     default: true,
-    enable: noop,
-    disable: noop,
   },
 
   //#region lyrics
@@ -416,8 +351,6 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   geniUrlBase: {
     type: "text",
@@ -444,8 +377,6 @@ export const featInfo = {
     max: 5000,
     step: 100,
     unit: (val: number) => " " + tp("unit_entries", val),
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -457,8 +388,6 @@ export const featInfo = {
     max: 100,
     step: 1,
     unit: (val: number) => " " + tp("unit_days", val),
-    enable: noop,
-    change: noop,
     advanced: true,
     textAdornment: adornments.advanced,
   },
@@ -480,8 +409,6 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: false,
-    enable: noop,
-    disable: noop,
     change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
     advanced: true,
     textAdornment: adornments.experimental,
@@ -493,15 +420,12 @@ export const featInfo = {
     category: "general",
     options: localeOptions,
     default: getPreferredLocale(),
-    enable: noop,
     textAdornment: adornments.globe,
   },
   versionCheck: {
     type: "toggle",
     category: "general",
     default: true,
-    enable: noop,
-    disable: noop,
   },
   checkVersionNow: {
     type: "button",
@@ -517,14 +441,11 @@ export const featInfo = {
       { value: 1, label: t("log_level_info") },
     ],
     default: 1,
-    enable: noop,
   },
   advancedMode: {
     type: "toggle",
     category: "general",
     default: mode === "development",
-    enable: noop,
-    disable: noop,
     textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
   },
 } as const satisfies FeatureInfo;
