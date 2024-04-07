@@ -7,11 +7,12 @@ import { addSelectorListener } from "src/observers";
 export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
 /**
- * Returns the current video time in seconds  
+ * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
+ * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
  * Dispatches mouse movement events in case the video time can't be read from the video or progress bar elements (needs a prior user interaction to work)
  * @returns Returns null if the video time is unavailable or no user interaction has happened prior to calling in case of the fallback behavior being used
  */
-export function getVideoTime() {
+export function getVideoTime(precision = 2) {
   return new Promise<number | null>(async (res) => {
     const domain = getDomain();
 
@@ -21,7 +22,7 @@ export function getVideoTime() {
       if(domain === "ytm") {
         const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
         if(vidElem)
-          return res(Math.floor(vidElem.currentTime));
+          return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
         addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
@@ -31,7 +32,7 @@ export function getVideoTime() {
       else if(domain === "yt") {
         const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
         if(vidElem)
-          return res(Math.floor(vidElem.currentTime));
+          return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();

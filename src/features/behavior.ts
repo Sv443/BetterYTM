@@ -120,11 +120,17 @@ async function restoreSongTime() {
       else {
         if(isNaN(entry.songTime))
           return;
-        const vidElem = await waitVideoElementReady();
-        const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
-        vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-        await delRemSongData(entry.watchID);
-        info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+        const doRestoreTime = async () => {
+          const vidElem = await waitVideoElementReady();
+          const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
+          vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
+          await delRemSongData(entry.watchID);
+          info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+        };
+        if(!domLoaded)
+          document.addEventListener("DOMContentLoaded", doRestoreTime);
+        else
+          doRestoreTime();
       }
     }
   }

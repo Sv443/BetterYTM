@@ -81,7 +81,7 @@ async function switchSite(newDomain: Domain) {
 
     const { pathname, search, hash } = new URL(location.href);
 
-    const vt = await getVideoTime();
+    const vt = await getVideoTime(0);
 
     log(`Found video time of ${vt} seconds`);
 
