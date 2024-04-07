@@ -490,20 +490,23 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getVideoTime()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getVideoTime(): Promise<number | null>
+> unsafeWindow.BYTM.getVideoTime(precision?: number): Promise<number | null>
 > ```
 >   
 > Description:  
-> Returns the current video time (on both YT and YTM).  
-> In case it can't be determined on YT, mouse movement is simulated to bring up the video time element and read it.  
-> In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers.  
+> Returns the current video time in seconds, with the given `precision` (2 decimal digits by default).  
+> Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
+>   
+> In case the time can't be determined on YT, mouse movement is simulated to bring up the video time element and read it.  
+> In order for that edge case not to throw an error, the function would need to be called in response to a user interaction event (e.g. click) due to the strict automated interaction policy in browsers, otherwise an error can be thrown.  
 > Resolves with a number of seconds or `null` if the time couldn't be determined.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > try {
->   const videoTime = await unsafeWindow.BYTM.getVideoTime();
+>   // get the video time with 3 decimal digits
+>   const videoTime = await unsafeWindow.BYTM.getVideoTime(3);
 >   console.log(`The video time is ${videoTime}s`);
 > }
 > catch(err) {
