@@ -50,6 +50,7 @@ export type InterfaceEvents = {
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
 };
 
+/** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
 const globalFuncs = {
   // meta
   registerPlugin,
@@ -173,29 +174,48 @@ function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
 /** Emits an event on all plugins that match the predicate (all plugins by default) */
 export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
   event: TEvtKey,
-  predicate: (def: PluginDef) => boolean = () => true,
+  predicate: ((def: PluginDef) => boolean) | boolean = true,
   ...data: Parameters<PluginEventMap[TEvtKey]>
 ) {
   for(const { def, events } of pluginMap.values())
-    predicate(def) && events.emit(event, ...data);
+    if(typeof predicate === "boolean" ? predicate : predicate(def))
+      events.emit(event, ...data);
 }
 
-/** Returns the internal plugin object by its name and namespace, or undefined if it doesn't exist */
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Returns the internal plugin object by its name and namespace, or undefined if it doesn't exist
+ */
 export function getPlugin(name: string, namespace: string): PluginItem | undefined
-/** Returns the internal plugin object by its definition, or undefined if it doesn't exist */
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Returns the internal plugin object by a resolvable definition object, or undefined if it doesn't exist
+ */
 export function getPlugin(plugin: PluginDefResolvable): PluginItem | undefined
-/** Returns the internal plugin object, or undefined if it doesn't exist */
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Returns the internal plugin object, or undefined if it doesn't exist
+ */
 export function getPlugin(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
   return args.length === 2
     ? pluginMap.get(`${args[1]}/${args[0]}`)
     : pluginMap.get(getPluginKey(args[0] as PluginDefResolvable));
 }
 
-/** Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered */
+/**
+ * Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered.  
+ * @public Intended for general use in plugins.
+ */
 export function getPluginInfo(name: string, namespace: string): PluginInfo | undefined
-/** Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered */
+/**
+ * Returns info about a registered plugin on the BYTM interface by a resolvable definition object, or undefined if the plugin isn't registered.  
+ * @public Intended for general use in plugins.
+ */
 export function getPluginInfo(plugin: PluginDefResolvable): PluginInfo | undefined
-/** Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered */
+/**
+ * Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered.  
+ * @public Intended for general use in plugins.
+ */
 export function getPluginInfo(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
   return pluginDefToInfo(
     args.length === 2
@@ -204,7 +224,7 @@ export function getPluginInfo(...args: [pluginDefOrName: PluginDefResolvable | s
   );
 }
 
-/** Validates the passed PluginDef object and returns an array of errors */
+/** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
 
