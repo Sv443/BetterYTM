@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "../utils/NanoEmitter";
-import { addStyle, clearInner, getResourceUrl, warn } from "../utils";
+import { addStyle, clearInner, getResourceUrl, onInteraction, warn } from "../utils";
 import { t } from "../utils/translations";
 import { emitInterface } from "../interface";
 import "./BytmDialog.css";
@@ -282,7 +282,7 @@ export class BytmDialog extends NanoEmitter<{
       closeBtnEl.role = "button";
       closeBtnEl.tabIndex = 0;
       closeBtnEl.alt = closeBtnEl.title = closeBtnEl.ariaLabel = t("close_menu_tooltip");
-      closeBtnEl.addEventListener("click", () => this.close());
+      onInteraction(closeBtnEl, () => this.close());
       headerWrapperEl.appendChild(closeBtnEl);
     }
 
