@@ -33,6 +33,8 @@ export type YTObserverName =
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
+  disableOnNoListeners: false,
+  enableOnAddListener: false,
   defaultDebounce: 100,
   defaultDebounceEdge: "rising",
 };
