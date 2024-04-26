@@ -306,8 +306,7 @@ async function addCfgMenu() {
     for(const featKey in featObj) {
       const ftInfo = featInfo[featKey as keyof typeof featureCfg] as FeatureInfo[keyof typeof featureCfg];
 
-      // @ts-ignore
-      if(!ftInfo || ftInfo.hidden === true)
+      if(!ftInfo || ("hidden" in ftInfo && ftInfo.hidden === true))
         continue;
 
       if(ftInfo.advanced && !featureCfg.advancedMode)
@@ -315,8 +314,7 @@ async function addCfgMenu() {
 
       const { type, default: ftDefault } = ftInfo;
 
-      // @ts-ignore
-      const step = ftInfo?.step ?? undefined;
+      const step = "step" in ftInfo ? ftInfo.step : undefined;
       const val = featureCfg[featKey as keyof typeof featureCfg];
 
       const initialVal = val ?? ftDefault ?? undefined;
@@ -329,10 +327,17 @@ async function addCfgMenu() {
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
         if(getFeatures().advancedMode) {
           const defVal = fmtVal(ftDefault);
-          // @ts-ignore
-          const rel = ftInfo.reloadRequired === false ? "" : " (reload required)";
+          const extraTxts = [
+            `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
+          ];
+          "min" in ftInfo && extraTxts.push(`min: ${ftInfo.min}`);
+          "max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
+          "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
+
+          const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
           const adv = ftInfo.advanced ? " (advanced feature)" : "";
-          featLeftSideElem.title = `${featKey}${rel}${adv} - default value: ${defVal.length === 0 ? "(undefined)" : defVal}`;
+
+          featLeftSideElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
         }
 
         const textElem = document.createElement("span");
@@ -471,12 +476,10 @@ async function addCfgMenu() {
           if(inputType)
             inputElem.type = inputType;
 
-          // @ts-ignore
-          if(typeof ftInfo.min !== "undefined")// @ts-ignore
-            inputElem.min = ftInfo.min;
-          // @ts-ignore
-          if(typeof ftInfo.max !== "undefined") // @ts-ignore
-            inputElem.max = ftInfo.max;
+          if("min" in ftInfo && typeof ftInfo.min !== "undefined")
+            inputElem.min = String(ftInfo.min);
+          if("max" in ftInfo && typeof ftInfo.max !== "undefined")
+            inputElem.max = String(ftInfo.max);
 
           if(typeof initialVal !== "undefined")
             inputElem.value = String(initialVal);
@@ -490,11 +493,15 @@ async function addCfgMenu() {
           if(type === "toggle" && typeof initialVal !== "undefined")
             inputElem.checked = Boolean(initialVal);
 
-          // @ts-ignore
-          const unitTxt = (typeof ftInfo.unit === "string" ? ftInfo.unit : (
-            // @ts-ignore
-            typeof ftInfo.unit === "function" ? ftInfo.unit(Number(inputElem.value)) : ""
-          ));
+          const unitTxt = (
+            "unit" in ftInfo && typeof ftInfo.unit === "string"
+              ? ftInfo.unit
+              : (
+                "unit" in ftInfo && typeof ftInfo.unit === "function"
+                  ? ftInfo.unit(Number(inputElem.value))
+                  : ""
+              )
+          );
 
           let labelElem: HTMLLabelElement | undefined;
           let lastDisplayedVal: string | undefined;
@@ -641,18 +648,21 @@ async function addCfgMenu() {
       else
         ftElem.value = String(value);
 
-      // @ts-ignore
-      if(ftInfo.type === "text" && ftInfo.valueHidden)
+      if(ftInfo.type === "text" && "valueHidden" in ftInfo && ftInfo.valueHidden)
         ftElem.value = String(value).length === 0 ? "" : "•".repeat(16);
 
       if(!labelElem)
         continue;
 
-      // @ts-ignore
-      const unitTxt = " " + (typeof ftInfo.unit === "string" ? ftInfo.unit : (
-        // @ts-ignore
-        typeof ftInfo.unit === "function" ? ftInfo.unit(Number(ftElem.value)) : ""
-      ));
+      const unitTxt = (
+        "unit" in ftInfo && typeof ftInfo.unit === "string" 
+          ? ftInfo.unit
+          : (
+            "unit" in ftInfo && typeof ftInfo.unit === "function"
+              ? ftInfo.unit(Number(ftElem.value))
+              : ""
+          )
+      );
       if(ftInfo.type === "slider")
         labelElem.textContent = `${fmtVal(Number(value))}${unitTxt}`;
     }
