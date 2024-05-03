@@ -282,9 +282,12 @@ async function addCfgMenu() {
     {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
-  const fmtVal = (v: unknown) => {
+  const fmtVal = (v: unknown, key: FeatureKey) => {
     try {
-      return (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+      // @ts-ignore
+      const renderValue = typeof featInfo?.[key]?.renderValue === "function" ? featInfo[key].renderValue : undefined;
+      const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+      return renderValue ? renderValue(retVal) : retVal;
     }
     catch(_e) {
       // because stringify throws on circular refs
@@ -304,7 +307,7 @@ async function addCfgMenu() {
     featuresCont.appendChild(catHeaderElem);
 
     for(const featKey in featObj) {
-      const ftInfo = featInfo[featKey as keyof typeof featureCfg] as FeatureInfo[keyof typeof featureCfg];
+      const ftInfo = featInfo[featKey as FeatureKey] as FeatureInfo[keyof typeof featureCfg];
 
       if(!ftInfo || ("hidden" in ftInfo && ftInfo.hidden === true))
         continue;
@@ -315,7 +318,7 @@ async function addCfgMenu() {
       const { type, default: ftDefault } = ftInfo;
 
       const step = "step" in ftInfo ? ftInfo.step : undefined;
-      const val = featureCfg[featKey as keyof typeof featureCfg];
+      const val = featureCfg[featKey as FeatureKey];
 
       const initialVal = val ?? ftDefault ?? undefined;
 
@@ -326,7 +329,7 @@ async function addCfgMenu() {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
         if(getFeatures().advancedMode) {
-          const defVal = fmtVal(ftDefault);
+          const defVal = fmtVal(ftDefault, featKey as FeatureKey);
           const extraTxts = [
             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
           ];
@@ -508,11 +511,11 @@ async function addCfgMenu() {
           if(type === "slider") {
             labelElem = document.createElement("label");
             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-            labelElem.textContent = `${fmtVal(initialVal)}${unitTxt}`;
+            labelElem.textContent = `${fmtVal(initialVal, featKey as FeatureKey)}${unitTxt}`;
 
             inputElem.addEventListener("input", () => {
               if(labelElem && lastDisplayedVal !== inputElem.value) {
-                labelElem.textContent = `${fmtVal(inputElem.value)}${unitTxt}`;
+                labelElem.textContent = `${fmtVal(inputElem.value, featKey as FeatureKey)}${unitTxt}`;
                 lastDisplayedVal = inputElem.value;
               }
             });
@@ -664,7 +667,7 @@ async function addCfgMenu() {
           )
       );
       if(ftInfo.type === "slider")
-        labelElem.textContent = `${fmtVal(Number(value))}${unitTxt}`;
+        labelElem.textContent = `${fmtVal(Number(value), ftKey as FeatureKey)}${unitTxt}`;
     }
     info("Rebuilt config menu");
   });

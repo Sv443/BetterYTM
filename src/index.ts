@@ -1,5 +1,5 @@
 import { compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, domLoaded, reserialize, warn } from "./utils";
+import { addStyle, domLoaded, reserialize, t, warn } from "./utils";
 import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -116,6 +116,8 @@ async function init() {
 async function onDomLoad() {
   const features = getFeatures();
   const ftInit = [] as Promise<void>[];
+
+  console.log(">>>\n", Object.keys(features).map(k => ([k, t(`feature_desc_${k}`)]).join(" :: ")).reduce((a, c, i) => `${a}${i === 0 ? "" : "\n"}${c}`, ""));
 
   try {
     insertGlobalStyle();
