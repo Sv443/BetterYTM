@@ -510,6 +510,7 @@ export async function initThumbnailOverlay() {
     // overlay
     const overlayElem = document.createElement("div");
     overlayElem.id = "bytm-thumbnail-overlay";
+    overlayElem.title = ""; // prevent child titles from propagating
     overlayElem.classList.add("bytm-no-select");
     overlayElem.style.display = "none";
 
@@ -522,6 +523,7 @@ export async function initThumbnailOverlay() {
       indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
       indicatorElem.ariaHidden = "true";
       indicatorElem.style.display = "none";
+      indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
     }
   
     const thumbImgElem = document.createElement("img");
