@@ -220,7 +220,7 @@
     "feature_desc_logLevel": "ログレベル",
     "feature_helptext_logLevel": "これを変更するのは、問題が発生した結果としてデバッグ目的でのみ必要です。\n問題が発生した場合にのみ、ここでログレベルを増やし、ブラウザの JavaScript コンソールを開いて（通常は Ctrl + Shift + K）そのログのスクリーンショットを GitHub の課題に添付してください。",
     "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",
-    "feature_helptext_advancedMode": "ページを再読み込みした後、構成メニューで詳細設定を表示します。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。",
+    "feature_helptext_advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。",
 
     "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません"
   }

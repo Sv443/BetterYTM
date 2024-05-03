@@ -220,7 +220,7 @@
     "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?",
     "feature_helptext_logLevel": "Das Ändern dieses Wertes ist wirklich nur für Debugging-Zwecke notwendig, wenn du ein Problem hast.\nSolltest du eines haben, kannst du den Log-Level hier erhöhen, die JavaScript-Konsole deines Browsers (normalerweise mit Strg + Shift + K) öffnen und Screenshots dieses Logs in einem GitHub-Issue hinzufügen.",
     "feature_desc_advancedMode": "Erweiterte Einstellungen anzeigen (lädt Menü neu)",
-    "feature_helptext_advancedMode": "Zeige erweiterte Einstellungen im Konfigurationsmenü nach dem Neuladen der Seite.\nDas ist nützlich, wenn du das Verhalten des Skripts tiefergehend anpassen möchtest.",
+    "feature_helptext_advancedMode": "Nachdem du dies aktiviert hast, wird das Menü neu geladen und erweiterte Einstellungen werden angezeigt, die standardmäßig ausgeblendet sind.\nDies ist nützlich, wenn du das Verhalten des Skripts tiefer anpassen möchtest und dir ein überfülltes Menü egal ist.",
 
     "plugin_validation_error_no_property": "Keine Eigenschaft '%1' vom Typ '%2'"
   }

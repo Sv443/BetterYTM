@@ -220,7 +220,7 @@
     "feature_desc_logLevel": "Quanta informação registrar no console",
     "feature_helptext_logLevel": "Alterar isso é realmente necessário apenas para fins de depuração como resultado de experimentar um problema.\nSe você tiver um, você pode aumentar o nível de log aqui, abrir o console JavaScript do seu navegador (geralmente com Ctrl + Shift + K) e anexar capturas de tela desse log em um problema do GitHub.",
     "feature_desc_advancedMode": "Mostrar configurações avançadas (isso recarrega o menu)",
-    "feature_helptext_advancedMode": "Mostrar configurações avançadas no menu de configuração após recarregar a página.\nIsso é útil se você quiser personalizar mais profundamente o comportamento do script.",
+    "feature_helptext_advancedMode": "Depois de ativar isso, o menu recarregará e mostrará configurações avançadas que estão ocultas por padrão.\nIsso é útil se você deseja personalizar mais profundamente o comportamento do script e não se importa com um menu lotado.",
 
     "plugin_validation_error_no_property": "Nenhuma propriedade '%1' com o tipo '%2'"
   }
