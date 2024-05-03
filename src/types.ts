@@ -302,6 +302,8 @@ export type FeatureInfo = Record<
     helpText?: string | (() => string);
     /** Whether the value should be hidden in the config menu and from plugins */
     valueHidden?: boolean;
+    /** Transformation function called before the value is rendered in the config menu */
+    renderValue?: (value: string) => string | Promise<string>;
     /** HTML string that is appended to the end of a feature's text description */
     textAdornment?: () => (Promise<string | undefined> | string | undefined);
 
@@ -332,6 +334,8 @@ export interface FeatureConfig {
   thumbnailOverlayToggleBtnShown: boolean;
   /** Whether to show an indicator on the thumbnail overlay when it is active */
   thumbnailOverlayShowIndicator: boolean;
+  /** The opacity of the thumbnail overlay indicator element */
+  thumbnailOverlayIndicatorOpacity: number;
   /** How to fit the thumbnail overlay image */
   thumbnailOverlayImageFit: "cover" | "contain" | "fill";
   /** Hide the cursor when it's idling on the video element for a while */
