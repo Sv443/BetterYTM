@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=a02f4f1
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=0c949d3
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,38 +35,38 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=a02f4f1
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=a02f4f1
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=a02f4f1
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=a02f4f1
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=a02f4f1
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=a02f4f1
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=a02f4f1
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=a02f4f1
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=a02f4f1
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=a02f4f1
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=a02f4f1
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=a02f4f1
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=a02f4f1
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=a02f4f1
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=a02f4f1
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=a02f4f1
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=a02f4f1
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=a02f4f1
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=a02f4f1
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=a02f4f1
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=a02f4f1
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=a02f4f1
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=a02f4f1
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=a02f4f1
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=a02f4f1
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=a02f4f1
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=a02f4f1
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=a02f4f1
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=a02f4f1
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=a02f4f1
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=a02f4f1
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=a02f4f1
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=0c949d3
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=0c949d3
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=0c949d3
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=0c949d3
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=0c949d3
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=0c949d3
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=0c949d3
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=0c949d3
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=0c949d3
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=0c949d3
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=0c949d3
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=0c949d3
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=0c949d3
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=0c949d3
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=0c949d3
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=0c949d3
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=0c949d3
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=0c949d3
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=0c949d3
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=0c949d3
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=0c949d3
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=0c949d3
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=0c949d3
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=0c949d3
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=0c949d3
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=0c949d3
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=0c949d3
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=0c949d3
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=0c949d3
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=0c949d3
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=0c949d3
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=0c949d3
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -194,7 +194,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "a02f4f1";
+const buildNumberRaw = "0c949d3";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -840,6 +840,7 @@ const allSiteEvents = [
     "configChanged",
     "configOptionChanged",
     "rebuildCfgMenu",
+    "recreateCfgMenu",
     "cfgMenuClosed",
     "welcomeMenuClosed",
     "hotkeyInputActive",
@@ -1749,7 +1750,7 @@ let hiddenCopiedTxtTimeout;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 function addCfgMenu() {
-    var _a, _b, _c, _d, _f;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         if (isCfgMenuAdded)
             return;
@@ -1910,7 +1911,7 @@ function addCfgMenu() {
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
         const onCfgChange = (key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
-            var _g, _h;
+            var _f, _g;
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
@@ -1922,7 +1923,7 @@ function addCfgMenu() {
             changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
             yield setFeatures(featConf);
             // @ts-ignore
-            (_h = (_g = featInfo[key]) === null || _g === void 0 ? void 0 : _g.change) === null || _h === void 0 ? void 0 : _h.call(_g, featConf);
+            (_g = (_f = featInfo[key]) === null || _f === void 0 ? void 0 : _f.change) === null || _g === void 0 ? void 0 : _g.call(_f, key, initialVal, newVal);
             if (requiresReload) {
                 footerElem.classList.remove("hidden");
                 footerElem.setAttribute("aria-hidden", "false");
@@ -1955,9 +1956,13 @@ function addCfgMenu() {
             acc[category][key] = featureCfg[key];
             return acc;
         }, {});
-        const fmtVal = (v) => {
+        const fmtVal = (v, key) => {
+            var _a;
             try {
-                return (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+                // @ts-ignore
+                const renderValue = typeof ((_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.renderValue) === "function" ? featInfo[key].renderValue : undefined;
+                const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
+                return renderValue ? renderValue(retVal) : retVal;
             }
             catch (_e) {
                 // because stringify throws on circular refs
@@ -1975,33 +1980,36 @@ function addCfgMenu() {
             featuresCont.appendChild(catHeaderElem);
             for (const featKey in featObj) {
                 const ftInfo = featInfo[featKey];
-                // @ts-ignore
-                if (!ftInfo || ftInfo.hidden === true)
+                if (!ftInfo || ("hidden" in ftInfo && ftInfo.hidden === true))
                     continue;
                 if (ftInfo.advanced && !featureCfg.advancedMode)
                     continue;
                 const { type, default: ftDefault } = ftInfo;
-                // @ts-ignore
-                const step = (_a = ftInfo === null || ftInfo === void 0 ? void 0 : ftInfo.step) !== null && _a !== void 0 ? _a : undefined;
+                const step = "step" in ftInfo ? ftInfo.step : undefined;
                 const val = featureCfg[featKey];
-                const initialVal = (_b = val !== null && val !== void 0 ? val : ftDefault) !== null && _b !== void 0 ? _b : undefined;
+                const initialVal = (_a = val !== null && val !== void 0 ? val : ftDefault) !== null && _a !== void 0 ? _a : undefined;
                 const ftConfElem = document.createElement("div");
                 ftConfElem.classList.add("bytm-ftitem");
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
                     if (getFeatures().advancedMode) {
-                        const defVal = fmtVal(ftDefault);
-                        // @ts-ignore
-                        const rel = ftInfo.reloadRequired === false ? "" : " (reload required)";
+                        const defVal = fmtVal(ftDefault, featKey);
+                        const extraTxts = [
+                            `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
+                        ];
+                        "min" in ftInfo && extraTxts.push(`min: ${ftInfo.min}`);
+                        "max" in ftInfo && extraTxts.push(`max: ${ftInfo.max}`);
+                        "step" in ftInfo && extraTxts.push(`step: ${ftInfo.step}`);
+                        const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
                         const adv = ftInfo.advanced ? " (advanced feature)" : "";
-                        featLeftSideElem.title = `${featKey}${rel}${adv} - default value: ${defVal.length === 0 ? "(undefined)" : defVal}`;
+                        featLeftSideElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                     }
                     const textElem = document.createElement("span");
                     textElem.tabIndex = 0;
                     textElem.textContent = t(`feature_desc_${featKey}`);
                     let adornmentElem;
-                    const adornContent = (_c = ftInfo.textAdornment) === null || _c === void 0 ? void 0 : _c.call(ftInfo);
+                    const adornContent = (_b = ftInfo.textAdornment) === null || _b === void 0 ? void 0 : _b.call(ftInfo);
                     const adornContentAw = adornContent instanceof Promise ? yield adornContent : adornContent;
                     if ((typeof adornContent === "string" || adornContent instanceof Promise) && typeof adornContentAw !== "undefined") {
                         adornmentElem = document.createElement("span");
@@ -2011,7 +2019,7 @@ function addCfgMenu() {
                     }
                     let helpElem;
                     // @ts-ignore
-                    const hasHelpTextFunc = typeof ((_d = featInfo[featKey]) === null || _d === void 0 ? void 0 : _d.helpText) === "function";
+                    const hasHelpTextFunc = typeof ((_c = featInfo[featKey]) === null || _c === void 0 ? void 0 : _c.helpText) === "function";
                     // @ts-ignore
                     const helpTextVal = hasHelpTextFunc && featInfo[featKey].helpText();
                     if (hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
@@ -2108,12 +2116,10 @@ function addCfgMenu() {
                         inputElem.id = inputElemId;
                         if (inputType)
                             inputElem.type = inputType;
-                        // @ts-ignore
-                        if (typeof ftInfo.min !== "undefined") // @ts-ignore
-                            inputElem.min = ftInfo.min;
-                        // @ts-ignore
-                        if (typeof ftInfo.max !== "undefined") // @ts-ignore
-                            inputElem.max = ftInfo.max;
+                        if ("min" in ftInfo && typeof ftInfo.min !== "undefined")
+                            inputElem.min = String(ftInfo.min);
+                        if ("max" in ftInfo && typeof ftInfo.max !== "undefined")
+                            inputElem.max = String(ftInfo.max);
                         if (typeof initialVal !== "undefined")
                             inputElem.value = String(initialVal);
                         if (type === "text" && ftInfo.valueHidden)
@@ -2122,19 +2128,20 @@ function addCfgMenu() {
                             inputElem.step = String(step);
                         if (type === "toggle" && typeof initialVal !== "undefined")
                             inputElem.checked = Boolean(initialVal);
-                        // @ts-ignore
-                        const unitTxt = (typeof ftInfo.unit === "string" ? ftInfo.unit : (
-                        // @ts-ignore
-                        typeof ftInfo.unit === "function" ? ftInfo.unit(Number(inputElem.value)) : ""));
+                        const unitTxt = ("unit" in ftInfo && typeof ftInfo.unit === "string"
+                            ? ftInfo.unit
+                            : ("unit" in ftInfo && typeof ftInfo.unit === "function"
+                                ? ftInfo.unit(Number(inputElem.value))
+                                : ""));
                         let labelElem;
                         let lastDisplayedVal;
                         if (type === "slider") {
                             labelElem = document.createElement("label");
                             labelElem.classList.add("bytm-ftconf-label", "bytm-slider-label");
-                            labelElem.textContent = `${fmtVal(initialVal)}${unitTxt}`;
+                            labelElem.textContent = `${fmtVal(initialVal, featKey)}${unitTxt}`;
                             inputElem.addEventListener("input", () => {
                                 if (labelElem && lastDisplayedVal !== inputElem.value) {
-                                    labelElem.textContent = `${fmtVal(inputElem.value)}${unitTxt}`;
+                                    labelElem.textContent = `${fmtVal(inputElem.value, featKey)}${unitTxt}`;
                                     lastDisplayedVal = inputElem.value;
                                 }
                             });
@@ -2254,17 +2261,17 @@ function addCfgMenu() {
                     ftElem.checked = Boolean(value);
                 else
                     ftElem.value = String(value);
-                // @ts-ignore
-                if (ftInfo.type === "text" && ftInfo.valueHidden)
+                if (ftInfo.type === "text" && "valueHidden" in ftInfo && ftInfo.valueHidden)
                     ftElem.value = String(value).length === 0 ? "" : "•".repeat(16);
                 if (!labelElem)
                     continue;
-                // @ts-ignore
-                const unitTxt = " " + (typeof ftInfo.unit === "string" ? ftInfo.unit : (
-                // @ts-ignore
-                typeof ftInfo.unit === "function" ? ftInfo.unit(Number(ftElem.value)) : ""));
+                const unitTxt = ("unit" in ftInfo && typeof ftInfo.unit === "string"
+                    ? ftInfo.unit
+                    : ("unit" in ftInfo && typeof ftInfo.unit === "function"
+                        ? ftInfo.unit(Number(ftElem.value))
+                        : ""));
                 if (ftInfo.type === "slider")
-                    labelElem.textContent = `${fmtVal(Number(value))}${unitTxt}`;
+                    labelElem.textContent = `${fmtVal(Number(value), ftKey)}${unitTxt}`;
             }
             info("Rebuilt config menu");
         });
@@ -2338,9 +2345,19 @@ function addCfgMenu() {
         // ensure stuff is reset if menu was opened before being added
         isCfgMenuOpen = false;
         document.body.classList.remove("bytm-disable-scroll");
-        (_f = document.querySelector("ytmusic-app")) === null || _f === void 0 ? void 0 : _f.removeAttribute("inert");
+        (_d = document.querySelector("ytmusic-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
         backgroundElem.style.visibility = "hidden";
         backgroundElem.style.display = "none";
+        siteEvents.on("recreateCfgMenu", () => __awaiter(this, void 0, void 0, function* () {
+            const bgElem = document.querySelector("#bytm-cfg-menu-bg");
+            if (!bgElem)
+                return;
+            closeCfgMenu();
+            bgElem.remove();
+            isCfgMenuAdded = false;
+            yield addCfgMenu();
+            yield openCfgMenu();
+        }));
     });
 }
 //#region open & close
@@ -2965,6 +2982,7 @@ function addConfigMenuOptionYTM(container) {
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 function addConfigMenuOptionYT(container) {
     return __awaiter(this, void 0, void 0, function* () {
+        // TODO:
         const btnElem = yield createGenericBtn({
             resourceName: "img-logo",
             title: t("open_menu_tooltip", scriptInfo.name),
@@ -3277,6 +3295,7 @@ function initThumbnailOverlay() {
             // overlay
             const overlayElem = document.createElement("div");
             overlayElem.id = "bytm-thumbnail-overlay";
+            overlayElem.title = ""; // prevent child titles from propagating
             overlayElem.classList.add("bytm-no-select");
             overlayElem.style.display = "none";
             let indicatorElem;
@@ -3288,6 +3307,7 @@ function initThumbnailOverlay() {
                 indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
                 indicatorElem.ariaHidden = "true";
                 indicatorElem.style.display = "none";
+                indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
             }
             const thumbImgElem = document.createElement("img");
             thumbImgElem.id = "bytm-thumbnail-overlay-img";
@@ -4265,23 +4285,23 @@ const options = {
  * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
  *
  * **Optional props:**
- * | Property                                          | Description                                                                                                                                              |
- * | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | `disable: (newValue: any) => void`                | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
- * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
- * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked                                                                         |
- * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
- * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
- * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
- * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
- * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
- * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
- * | `reloadRequired: boolean`                         | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
- * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
- * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
- * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
- * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * | Property                                                       | Description                                                                                                                                              |
+ * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
+ * | `change: (key: string, prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
+ * | `click: () => void`                                            | for type `button` only - function that will be called when the button is clicked                                                                         |
+ * | `helpText: string / () => string`                              | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment: () => string / Promise<string>`                | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
+ * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
+ * | `min: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
+ * | `max: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
+ * | `step: number`                                                 | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
+ * | `options: SelectOption[] / () => SelectOption[]`               | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
+ * | `reloadRequired: boolean`                                      | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
+ * | `advanced: boolean`                                            | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
+ * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
+ * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
+ * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
  *
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -4347,6 +4367,16 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
+    },
+    thumbnailOverlayIndicatorOpacity: {
+        type: "slider",
+        category: "layout",
+        min: 5,
+        max: 100,
+        step: 5,
+        default: 25,
+        unit: "%",
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
@@ -4705,6 +4735,8 @@ const featInfo = {
         textAdornment: () => getFeatures().advancedMode
             ? combineAdornments([adornments.advanced, adornments.reloadRequired])
             : undefined,
+        change: (_key, prevValue, newValue) => prevValue !== newValue &&
+            emitSiteEvent("recreateCfgMenu"),
     },
 };
 function noop() {
@@ -4747,8 +4779,8 @@ const migrations = {
         "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
         "setInitialTabVolume", "initialTabVolumeLevel",
         "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-        "thumbnailOverlayShowIndicator", "thumbnailOverlayImageFit",
-        "removeShareTrackingParamSites",
+        "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
+        "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
     ], oldData))),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
     // 5 -> 6 (v1.3)
@@ -5563,6 +5595,7 @@ function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         const features = getFeatures();
         const ftInit = [];
+        console.log(">>>\n", Object.keys(features).map(k => ([k, t(`feature_desc_${k}`)]).join(" :: ")).reduce((a, c, i) => `${a}${i === 0 ? "" : "\n"}${c}`, ""));
         try {
             insertGlobalStyle();
             initObservers();
