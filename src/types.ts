@@ -282,7 +282,7 @@ type FeatureFuncProps = (
   }
   | {
     /** Called to update the feature's behavior when the config changes */
-    change?: (feats: FeatureConfig) => void,
+    change?: (key: FeatureKey, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => void,
   }
 );
 

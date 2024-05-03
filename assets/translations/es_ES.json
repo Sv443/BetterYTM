@@ -10,6 +10,7 @@
     "reload_hint": "Tus cambios se guardaron, pero necesitas recargar la página para aplicarlos.",
     "reload_now": "Recargar ahora",
     "reload_tooltip": "Recargar la página",
+    "feature_requires_reload": "Cambiar esta función requiere una recarga de la página",
     "version_tooltip": "Versión %1 (compilación %2) - haga clic para abrir el registro de cambios",
     "export": "Exportar",
     "export_hint": "Copie el siguiente texto para exportar su configuración.\nAdvertencia: puede contener datos sensibles.",
@@ -161,6 +162,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Agregue un botón a los controles multimedia para mostrar u ocultar manualmente la miniatura",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botón le permitirá alternar manualmente la miniatura.\nEsto no se verá afectado si la superposición está configurada en \"nunca se muestra\".\nUna vez que comienza a reproducirse un nuevo video o canción, el estado predeterminado se restaurará.\nMantenga presionada la tecla Mayús mientras hace clic o presione el botón central del mouse para abrir la miniatura de mayor calidad en una nueva pestaña.",
     "feature_desc_thumbnailOverlayShowIndicator": "Mostrar un indicador en la esquina inferior derecha de la miniatura mientras está activo",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacidad del indicador en la esquina inferior derecha",
     "feature_desc_thumbnailOverlayImageFit": "Cómo ajustar la imagen de la miniatura sobre el elemento de video",
     "feature_desc_hideCursorOnIdle": "Ocultar el cursor después de unos segundos de inactividad sobre el video",
     "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
@@ -217,7 +219,7 @@
     "feature_btn_checkVersionNow_running": "Comprobando...",
     "feature_desc_logLevel": "Cuánta información registrar en la consola",
     "feature_helptext_logLevel": "Cambiar esto solo es necesario para fines de depuración como resultado de experimentar un problema.\nSi tiene uno, puede aumentar el nivel de registro aquí, abrir la consola de JavaScript de su navegador (generalmente con Ctrl + Shift + K) y adjuntar capturas de pantalla de ese registro en un problema de GitHub.",
-    "feature_desc_advancedMode": "Mostrar configuración avanzada (después de recargar)",
+    "feature_desc_advancedMode": "Mostrar configuración avanzada (recarga el menú)",
     "feature_helptext_advancedMode": "Muestra la configuración avanzada en el menú de configuración después de recargar la página.\nEsto es útil si desea personalizar más profundamente el comportamiento del script.",
 
     "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'"

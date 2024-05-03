@@ -10,6 +10,7 @@
     "reload_hint": "Deine Änderungen wurden gespeichert, aber du musst die Seite neu laden, um sie anzuwenden",
     "reload_now": "Jetzt neu laden",
     "reload_tooltip": "Seite neu laden",
+    "feature_requires_reload": "Die Seite muss neu geladen werden, wenn diese Funktion geändert wird",
     "version_tooltip": "Version %1 (build %2) - klicken um das Änderungsprotokoll zu öffnen",
     "export": "Exportieren",
     "export_hint": "Kopiere den folgenden Text um deine Einstellungen zu exportieren.\nWarnung: der Text kann sensible Informationen enthalten.",
@@ -161,6 +162,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Füge einen Knopf zu den Mediensteuerelementen hinzu, um das Thumbnail manuell zu aktivieren",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Dieser Knopf ermöglicht es dir, das Thumbnail manuell ein- und auszuschalten. Dies wird nicht beeinflusst, wenn das Overlay auf \"nie gezeigt\" eingestellt ist.\nSobald ein neues Video oder Lied abgespielt wird, wird der Standardzustand wiederhergestellt.\nHalte Shift gedrückt, während du klickst oder drücke die mittlere Maustaste, um das Thumbnail in höchster Qualität in einem neuen Tab zu öffnen.",
     "feature_desc_thumbnailOverlayShowIndicator": "Zeige einen Indikator in der unteren rechten Ecke des Thumbnails, während es aktiv ist?",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "Deckkraft des Indikators in der unteren rechten Ecke",
     "feature_desc_thumbnailOverlayImageFit": "Wie das Thumbnail über dem Videoelement angezeigt werden soll",
     "feature_desc_hideCursorOnIdle": "Verstecke den Cursor nach einigen Sekunden Inaktivität über dem Video",
     "feature_desc_hideCursorOnIdleDelay": "Wie viele Sekunden Inaktivität vergehen müssen, bevor der Cursor versteckt wird",
@@ -217,7 +219,7 @@
     "feature_btn_checkVersionNow_running": "Wird geprüft...",
     "feature_desc_logLevel": "Wie viele Informationen sollen in der Konsole geloggt werden?",
     "feature_helptext_logLevel": "Das Ändern dieses Wertes ist wirklich nur für Debugging-Zwecke notwendig, wenn du ein Problem hast.\nSolltest du eines haben, kannst du den Log-Level hier erhöhen, die JavaScript-Konsole deines Browsers (normalerweise mit Strg + Shift + K) öffnen und Screenshots dieses Logs in einem GitHub-Issue hinzufügen.",
-    "feature_desc_advancedMode": "Erweiterte Einstellungen anzeigen (nach dem Neuladen)",
+    "feature_desc_advancedMode": "Erweiterte Einstellungen anzeigen (lädt Menü neu)",
     "feature_helptext_advancedMode": "Zeige erweiterte Einstellungen im Konfigurationsmenü nach dem Neuladen der Seite.\nDas ist nützlich, wenn du das Verhalten des Skripts tiefergehend anpassen möchtest.",
 
     "plugin_validation_error_no_property": "Keine Eigenschaft '%1' vom Typ '%2'"

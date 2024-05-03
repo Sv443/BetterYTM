@@ -10,6 +10,7 @@
     "reload_hint": "変更は保存されましたが、適用するにはページを再読み込みする必要があります",
     "reload_now": "今すぐ再読み込み",
     "reload_tooltip": "ページを再読み込みする",
+    "feature_requires_reload": "この機能を変更するにはページを再読み込みする必要があります",
     "version_tooltip": "バージョン %1 (ビルド %2) - クリックして更新履歴を開く",
     "export": "エクスポート",
     "export_hint": "次のテキストをコピーして構成をエクスポートします。",
@@ -161,6 +162,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "サムネイルオーバーレイを手動で切り替えるボタンを追加する",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "このボタンを押すと、サムネイルのオンとオフを手動で切り替えることができます\n新しいビデオや曲の再生が始まると、デフォルトの状態に戻ります。シフトを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
     "feature_desc_thumbnailOverlayShowIndicator": "サムネイルがアクティブな間、サムネイルの右下隅にインジケータを表示する",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "右下隅のインジケータの不透明度",
     "feature_desc_thumbnailOverlayImageFit": "サムネイル画像をビデオ要素に合わせる方法",
     "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
     "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
@@ -217,7 +219,7 @@
     "feature_btn_checkVersionNow_running": "チェック中...",
     "feature_desc_logLevel": "ログレベル",
     "feature_helptext_logLevel": "これを変更するのは、問題が発生した結果としてデバッグ目的でのみ必要です。\n問題が発生した場合にのみ、ここでログレベルを増やし、ブラウザの JavaScript コンソールを開いて（通常は Ctrl + Shift + K）そのログのスクリーンショットを GitHub の課題に添付してください。",
-    "feature_desc_advancedMode": "詳細設定を表示（再読み込み後）",
+    "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",
     "feature_helptext_advancedMode": "ページを再読み込みした後、構成メニューで詳細設定を表示します。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。",
 
     "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません"

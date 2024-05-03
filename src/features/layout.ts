@@ -146,6 +146,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 export async function addConfigMenuOptionYT(container: HTMLElement) {
+  // TODO:
   const btnElem = await createGenericBtn({
     resourceName: "img-logo",
     title: t("open_menu_tooltip", scriptInfo.name),

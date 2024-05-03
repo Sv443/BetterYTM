@@ -239,7 +239,7 @@ async function addCfgMenu() {
     await setFeatures(featConf);
 
     // @ts-ignore
-    featInfo[key]?.change?.(featConf);
+    featInfo[key]?.change?.(key, initialVal, newVal);
 
     if(requiresReload) {
       footerElem.classList.remove("hidden");
@@ -764,6 +764,17 @@ async function addCfgMenu() {
   document.querySelector("ytmusic-app")?.removeAttribute("inert");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
+
+  siteEvents.on("recreateCfgMenu", async () => {
+    const bgElem = document.querySelector("#bytm-cfg-menu-bg");
+    if(!bgElem)
+      return;
+    closeCfgMenu();
+    bgElem.remove();
+    isCfgMenuAdded = false;
+    await addCfgMenu();
+    await openCfgMenu();
+  });
 }
 
 //#region open & close
