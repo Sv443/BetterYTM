@@ -220,7 +220,7 @@
     "feature_desc_logLevel": "更改扩展程序的日志级别",
     "feature_helptext_logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
     "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",
-    "feature_helptext_advancedMode": "在重新加载页面后，在配置菜单中显示高级设置。\n如果您想更深入地定制脚本的行为，这很有用。",
+    "feature_helptext_advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。",
 
     "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'"
   }

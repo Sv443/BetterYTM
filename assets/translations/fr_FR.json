@@ -220,7 +220,7 @@
     "feature_desc_logLevel": "Combien d'informations à enregistrer dans la console",
     "feature_helptext_logLevel": "Changer cela n'est vraiment nécessaire que pour le débogage à la suite d'un problème rencontré.\nSi vous en avez un, vous pouvez augmenter le niveau de journalisation ici, ouvrir la console JavaScript de votre navigateur (généralement avec Ctrl + Maj + K) et joindre des captures d'écran de ce journal dans un problème GitHub.",
     "feature_desc_advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",
-    "feature_helptext_advancedMode": "Afficher les paramètres avancés dans le menu de configuration après le rechargement de la page.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script.",
+    "feature_helptext_advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé.",
 
     "plugin_validation_error_no_property": "Aucune propriété '%1' avec le type '%2'"
   }
