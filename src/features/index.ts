@@ -6,6 +6,7 @@ import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection } from "../types";
 import { volumeSharedBetweenTabsDisabled } from "./volume";
+import { emitSiteEvent } from "src/siteEvents";
 
 export * from "./layout";
 export * from "./behavior";
@@ -79,23 +80,23 @@ const options = {
  * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
  *   
  * **Optional props:**
- * | Property                                          | Description                                                                                                                                              |
- * | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | `disable: (newValue: any) => void`                | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
- * | `change: (prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
- * | `click: () => void`                               | for type `button` only - function that will be called when the button is clicked                                                                         |
- * | `helpText: string / () => string`                 | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment: () => string / Promise<string>`   | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
- * | `unit: string / (val: number) => string`          | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
- * | `min: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
- * | `max: number`                                     | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
- * | `step: number`                                    | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
- * | `options: SelectOption[] / () => SelectOption[]`  | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
- * | `reloadRequired: boolean`                         | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
- * | `advanced: boolean`                               | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
- * | `hidden: boolean`                                 | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
- * | `valueHidden: boolean`                            | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
- * | `normalize: (val: any) => any`                    | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * | Property                                                       | Description                                                                                                                                              |
+ * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
+ * | `change: (key: string, prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
+ * | `click: () => void`                                            | for type `button` only - function that will be called when the button is clicked                                                                         |
+ * | `helpText: string / () => string`                              | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment: () => string / Promise<string>`                | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
+ * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
+ * | `min: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
+ * | `max: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
+ * | `step: number`                                                 | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
+ * | `options: SelectOption[] / () => SelectOption[]`               | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
+ * | `reloadRequired: boolean`                                      | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
+ * | `advanced: boolean`                                            | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
+ * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
+ * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
+ * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
  * 
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -533,6 +534,9 @@ export const featInfo = {
     textAdornment: () => getFeatures().advancedMode
       ? combineAdornments([adornments.advanced, adornments.reloadRequired])
       : undefined,
+    change: (_key, prevValue, newValue) =>
+      prevValue !== newValue &&
+        emitSiteEvent("recreateCfgMenu"),
   },
 } as const satisfies FeatureInfo;
 

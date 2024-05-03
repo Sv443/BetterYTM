@@ -10,6 +10,7 @@
     "reload_hint": "您的更改已保存，但您需要重新加载页面才能应用它们",
     "reload_now": "立即重新加载",
     "reload_tooltip": "重新加载页面",
+    "feature_requires_reload": "更改此功能需要重新加载页面",
     "version_tooltip": "版本 %1 (构建 %2) - 点击打开更新日志",
     "export": "导出",
     "export_hint": "复制以下文本以导出您的配置。\n警告：它可能包含敏感数据。",
@@ -161,6 +162,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "在媒体控件中添加一个按钮，以手动切换缩略图",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "这个按钮允许你手动开关缩略图。一旦开始播放新的视频或歌曲，就会恢复默认状态。点击时按住 shift 或按下鼠标中键，可在新标签页中打开最高质量的缩略图。",
     "feature_desc_thumbnailOverlayShowIndicator": "在缩略图上显示一个指示器，表示它是活动的吗？",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "指示器在右下角的不透明度",
     "feature_desc_thumbnailOverlayImageFit": "如何将缩略图图像适配到视频元素上",
     "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
     "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
@@ -217,7 +219,7 @@
     "feature_btn_checkVersionNow_running": "正在检查...",
     "feature_desc_logLevel": "更改扩展程序的日志级别",
     "feature_helptext_logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
-    "feature_desc_advancedMode": "显示高级设置（重新加载后）",
+    "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",
     "feature_helptext_advancedMode": "在重新加载页面后，在配置菜单中显示高级设置。\n如果您想更深入地定制脚本的行为，这很有用。",
 
     "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'"

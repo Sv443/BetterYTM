@@ -13,6 +13,8 @@ export interface SiteEventsMap {
   configOptionChanged: <TKey extends keyof FeatureConfig>(key: TKey, oldValue: FeatureConfig[TKey], newValue: FeatureConfig[TKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
   rebuildCfgMenu: (config: FeatureConfig) => void;
+  /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
+  recreateCfgMenu: () => void;
   /** Emitted whenever the config menu is closed */
   cfgMenuClosed: () => void;
   /** Emitted when the welcome menu is closed */
@@ -43,6 +45,7 @@ export const allSiteEvents = [
   "configChanged",
   "configOptionChanged",
   "rebuildCfgMenu",
+  "recreateCfgMenu",
   "cfgMenuClosed",
   "welcomeMenuClosed",
   "hotkeyInputActive",

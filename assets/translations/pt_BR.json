@@ -10,6 +10,7 @@
     "reload_hint": "Suas alterações foram salvas, mas você precisa recarregar a página para aplicá-las",
     "reload_now": "Recarregar agora",
     "reload_tooltip": "Recarregue a página",
+    "feature_requires_reload": "Alterar este recurso requer uma recarga da página",
     "version_tooltip": "Versão %1 (compilação %2) - clique para abrir o registro de alterações",
     "export": "Exportar",
     "export_hint": "Copie o texto a seguir para exportar sua configuração:",
@@ -161,6 +162,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Adicione um botão aos controles de mídia para alternar manualmente a miniatura",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botão permitirá que você alterne manualmente a miniatura ligada e desligada. Isso não é afetado se a sobreposição estiver definida como \"nunca mostrada\".\nAssim que um novo vídeo ou música começar a ser reproduzido, o estado padrão será restaurado.\nMantenha pressionada a tecla shift enquanto clica ou pressione o botão do meio do mouse para abrir a miniatura da mais alta qualidade em uma nova guia.",
     "feature_desc_thumbnailOverlayShowIndicator": "Mostrar um indicador na miniatura enquanto ela estiver ativa?",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacidade do indicador no canto inferior direito",
     "feature_desc_thumbnailOverlayImageFit": "Como ajustar a miniatura sobre o elemento de vídeo",
     "feature_desc_hideCursorOnIdle": "Ocultar o cursor após alguns segundos de inatividade sobre o vídeo",
     "feature_desc_hideCursorOnIdleDelay": "Quantos segundos de inatividade antes de ocultar o cursor?",
@@ -217,7 +219,7 @@
     "feature_btn_checkVersionNow_running": "Verificando...",
     "feature_desc_logLevel": "Quanta informação registrar no console",
     "feature_helptext_logLevel": "Alterar isso é realmente necessário apenas para fins de depuração como resultado de experimentar um problema.\nSe você tiver um, você pode aumentar o nível de log aqui, abrir o console JavaScript do seu navegador (geralmente com Ctrl + Shift + K) e anexar capturas de tela desse log em um problema do GitHub.",
-    "feature_desc_advancedMode": "Mostrar configurações avançadas (após recarregar)",
+    "feature_desc_advancedMode": "Mostrar configurações avançadas (isso recarrega o menu)",
     "feature_helptext_advancedMode": "Mostrar configurações avançadas no menu de configuração após recarregar a página.\nIsso é útil se você quiser personalizar mais profundamente o comportamento do script.",
 
     "plugin_validation_error_no_property": "Nenhuma propriedade '%1' com o tipo '%2'"
