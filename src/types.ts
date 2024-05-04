@@ -138,8 +138,10 @@ export type PluginDef = {
     iconUrl?: string;
     /** Homepage URLs for the plugin */
     homepage?: {
-      /** URL to the plugin's GitHub repo */
-      github?: string;
+      /** Any other homepage URL */
+      other?: string;
+      /** URL to the plugin's source code (i.e. Git repo) */
+      source?: string;
       /** URL to the plugin's GreasyFork page */
       greasyfork?: string;
       /** URL to the plugin's OpenUserJS page */
