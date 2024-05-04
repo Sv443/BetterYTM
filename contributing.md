@@ -5,16 +5,20 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 <br>
 
-- [Submitting translations](#submitting-translations)
-  - [Adding translations for a new language](#adding-translations-for-a-new-language)
-  - [Editing an existing translation](#editing-an-existing-translation)
-- [Setting up the project for local development](#setting-up-the-project-for-local-development)
-  - [Requirements](#requirements)
-  - [CLI commands](#these-are-the-cli-commands-available-after-setting-up-the-project)
-  - [Extras](#extras)
-- [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
-  - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
-  - [Global functions on the plugin interface](#global-functions)
+- [BetterYTM - Contributing Guide](#betterytm---contributing-guide)
+  - [Submitting translations:](#submitting-translations)
+    - [Adding translations for a new language:](#adding-translations-for-a-new-language)
+    - [Editing an existing translation:](#editing-an-existing-translation)
+  - [Setting up the project for local development:](#setting-up-the-project-for-local-development)
+    - [Requirements:](#requirements)
+    - [These are the CLI commands available after setting up the project:](#these-are-the-cli-commands-available-after-setting-up-the-project)
+    - [Extras:](#extras)
+  - [Developing a plugin that interfaces with BetterYTM:](#developing-a-plugin-that-interfaces-with-betterytm)
+    - [Example:](#example)
+    - [Basic format:](#basic-format)
+    - [Practical Example:](#practical-example)
+  - [Shimming for TypeScript without errors \& with autocomplete:](#shimming-for-typescript-without-errors--with-autocomplete)
+  - [Global functions:](#global-functions)
 
 <br><br>
 
@@ -324,7 +328,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >     },
 >     iconUrl: "https://picsum.photos/128/128",
 >     homepage: {
->       github: "https://github.com/MyUsername/MyCoolBYTMPlugin",
+>       other: "https://example.org/MyCoolBYTMPlugin",
+>       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",
 >       greasyfork: "...",
 >       openuserjs: "...",
 >     },
