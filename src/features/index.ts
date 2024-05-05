@@ -170,7 +170,7 @@ export const featInfo = {
     min: 5,
     max: 100,
     step: 5,
-    default: 25,
+    default: 40,
     unit: "%",
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
