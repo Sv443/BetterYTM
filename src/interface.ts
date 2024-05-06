@@ -6,7 +6,7 @@ import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
 import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
 import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem } from "./types";
+import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
 import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
 
 const { getUnsafeWindow } = UserUtils;
@@ -112,7 +112,7 @@ export function setGlobalProp<
   const win = getUnsafeWindow();
 
   if(typeof win.BYTM !== "object")
-    win.BYTM = {} as typeof window.BYTM;
+    win.BYTM = {} as BytmObject;
 
   win.BYTM[key] = value;
 }
@@ -141,9 +141,14 @@ export function initPlugins() {
   // TODO(v1.3): check perms and ask user for initial activation
 
   for(const [key, { def, events }] of pluginQueue) {
-    pluginMap.set(key, { def, events });
-    pluginQueue.delete(key);
-    emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+    try {
+      pluginMap.set(key, { def, events });
+      pluginQueue.delete(key);
+      emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+    }
+    catch(err) {
+      error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
+    }
   }
 
   for(const evt of allSiteEvents) // @ts-ignore
@@ -166,7 +171,7 @@ function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
   };
 }
 
-/** Checks whether two plugin definitions are the same */
+/** Checks whether two plugins are the same, given their resolvable definition objects */
 function sameDef(def1: PluginDefResolvable, def2: PluginDefResolvable) {
   return getPluginKey(def1) === getPluginKey(def2);
 }
