@@ -3,7 +3,7 @@ import Fuse from "fuse.js";
 import { constructUrlString, error, getResourceUrl, info, log, warn, t, tp, currentMediaType } from "../utils";
 import { emitInterface } from "../interface";
 import { mode, scriptInfo } from "../constants";
-import { getFeatures } from "../config";
+import { getFeature } from "../config";
 import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
 import type { LyricsCacheEntry } from "../types";
 import { addSelectorListener } from "src/observers";
@@ -221,7 +221,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }
 
     const startTs = Date.now();
-    const fetchUrl = constructUrlString(`${getFeatures().geniUrlBase}/search`, {
+    const fetchUrl = constructUrlString(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
       utm_source: scriptInfo.name,
       utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
@@ -231,11 +231,11 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     log(`Requesting URLs from geniURL at '${fetchUrl}'`);
 
-    const { geniUrlToken } = getFeatures();
+    const token = getFeature("geniUrlToken");
     const fetchRes = await fetchAdvanced(fetchUrl, {
-      ...(geniUrlToken ? {
+      ...(token ? {
         headers: {
-          Authorization: `Bearer ${geniUrlToken}`,
+          Authorization: `Bearer ${token}`,
         },
       } : {}),
     });
@@ -285,7 +285,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
         url,
       }));
 
-    if(!getFeatures().advancedLyricsFilter) {
+    if(!getFeature("advancedLyricsFilter")) {
       const topRes = allResultsSan[0];
       topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
 

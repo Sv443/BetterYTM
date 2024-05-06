@@ -3,7 +3,7 @@ import { featInfo } from "./features/index";
 import { compressionSupported, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat } from "./constants";
-import type { FeatureConfig } from "./types";
+import type { FeatureConfig, FeatureKey } from "./types";
 import { emitInterface, getFeaturesInterface } from "./interface";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -106,8 +106,13 @@ export async function initConfig() {
 }
 
 /** Returns the current feature config from the in-memory cache as a copy */
-export function getFeatures() {
+export function getFeatures(): FeatureConfig {
   return bytmCfgStore.getData();
+}
+
+/** Returns the value of the feature with the given key from the in-memory cache, as a copy */
+export function getFeature<TKey extends FeatureKey>(key: TKey): FeatureConfig[TKey] {
+  return bytmCfgStore.getData()[key];
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
