@@ -5,6 +5,7 @@
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™
 Supported Languages: 🇩🇪&nbsp;German, 🇺🇸&nbsp;English (US), 🇬🇧&nbsp;English (UK), 🇪🇸&nbsp;Spanish, 🇫🇷&nbsp;French, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇵🇹&nbsp;Portuguese, 🇨🇳&nbsp;Chinese (simpl.)
+<!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 [**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
   
@@ -77,6 +78,7 @@ BetterYTM supports plugin userscripts that can be installed in parallel and can 
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
 Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
 Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.
+<!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
 
 <br><br>

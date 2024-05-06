@@ -66,6 +66,7 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
     retLines.push(...lines.splice(0, beginLine + 1));
     retLines.push("<!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->");
     retLines.push(...newContent.split(/\r?\n/gm));
+    retLines.push("<!-- END OF GENERATED CONTENT -->");
     retLines.push(...lines.splice(endLine - beginLine - 1));
 
     lines = [...retLines];
