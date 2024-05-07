@@ -8,7 +8,9 @@
   - Implemented new class BytmMenu for less duplicate code and better accessibility, and to enable the improved configuration menu
   - Plugin interface now has access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#nanoemitter), and functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createhotkeyinput) and [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createtoggleinput)
 
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/52)
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/52" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>
@@ -28,7 +30,9 @@
   - Removed React JSX support
   - Small utility function refactoring
   
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/47)
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/47" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>
@@ -60,7 +64,9 @@
   - Added support for React JSX
   - Added support for external libraries through `@require`
   
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/35)
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/35" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>
@@ -105,7 +111,9 @@
   - Site switch with <kbd>F9</kbd> will now keep the video time
   - Moved lots of utility code to my new library [UserUtils](https://github.com/Sv443-Network/UserUtils)
   
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/9)
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/9" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>
@@ -117,7 +125,9 @@
   - Search for song lyrics with new button in media controls
   - Remove "Upgrade to YTM Premium" tab
   
-[See pull request for more info](https://github.com/Sv443/BetterYTM/pull/3)
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/3" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>

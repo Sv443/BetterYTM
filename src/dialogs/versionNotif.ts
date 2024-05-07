@@ -3,6 +3,7 @@ import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from 
 import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, setFeatures } from "../config";
 import pkg from "../../package.json" assert { type: "json" };
+import { siteEvents } from "src/siteEvents";
 
 let verNotifDialog: BytmDialog | null = null;
 
@@ -105,9 +106,12 @@ async function renderBody({
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
+  if(getFeatures().versionCheck === false)
+    disableUpdateCheck = true;
+
   const disableToggleEl = await createToggleInput({
     id: "disable-update-check",
-    initialValue: false,
+    initialValue: disableUpdateCheck,
     labelPos: "off",
     onChange(checked) {
       disableUpdateCheck = checked;
@@ -139,8 +143,13 @@ async function renderBody({
 
   verNotifDialog?.on("close", async () => {
     const config = getFeatures();
-    config.versionCheck = !disableUpdateCheck;
+    const recreateCfgMenu = config.versionCheck === disableUpdateCheck;
+    if(config.versionCheck && disableUpdateCheck)
+      config.versionCheck = false;
+    else if(!config.versionCheck && !disableUpdateCheck)
+      config.versionCheck = true;
     await setFeatures(config);
+    recreateCfgMenu && siteEvents.emit("recreateCfgMenu");
   });
 
   const btnWrapper = document.createElement("div");

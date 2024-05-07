@@ -409,6 +409,10 @@
   font-weight: bolder;
 }
 
+.bytm-markdown-container .pr-link-cont {
+  padding-top: 10px;
+}
+
 #bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
