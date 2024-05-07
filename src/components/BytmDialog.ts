@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "../utils/NanoEmitter";
-import { addStyle, clearInner, getResourceUrl, onInteraction, warn } from "../utils";
+import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils";
 import { t } from "../utils/translations";
 import { emitInterface } from "../interface";
 import "./BytmDialog.css";
@@ -79,7 +79,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
-    bgElem.classList.add("bytm-dialog-bg");
+    bgElem.classList.add("bytm-dialog-bg", `bytm-dom-${getDomain()}`);
     if(this.options.closeOnBgClick)
       bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
@@ -245,7 +245,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const dialogWrapperEl = document.createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-    dialogWrapperEl.classList.add("bytm-dialog");
+    dialogWrapperEl.classList.add("bytm-dialog", `bytm-dom-${getDomain()}`);
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
     dialogWrapperEl.role = "dialog";
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
