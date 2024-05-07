@@ -16,6 +16,16 @@
   --bytm-menu-width-max: 1150px;
 }
 
+.bytm-dialog-bg.bytm-dom-yt,
+.bytm-menu-bg.bytm-dom-yt {
+  z-index: 10042;
+}
+
+.bytm-dialog.bytm-dom-yt,
+.bytm-menu.bytm-dom-yt {
+  z-index: 10069;
+}
+
 .bytm-dialog-body p {
   overflow-wrap: break-word;
 }
