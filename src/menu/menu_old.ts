@@ -2,7 +2,7 @@ import { debounce, isScrollable } from "@sv443-network/userutils";
 import { defaultData, getFeatures, setFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -41,7 +41,7 @@ async function addCfgMenu() {
   //#region bg & container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
-  backgroundElem.classList.add("bytm-menu-bg");
+  backgroundElem.classList.add("bytm-menu-bg", `bytm-menu-bg-dom-${getDomain()}`);
   backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
@@ -56,7 +56,7 @@ async function addCfgMenu() {
 
   const menuContainer = document.createElement("div");
   menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.classList.add("bytm-menu");
+  menuContainer.classList.add("bytm-menu", `bytm-menu-dom-${getDomain()}`);
   menuContainer.id = "bytm-cfg-menu";
 
 

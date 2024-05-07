@@ -29,29 +29,34 @@ export async function initVersionCheck() {
 export async function doVersionCheck(notifyNoUpdatesFound = false) {
   await GM.setValue("bytm-version-check", Date.now());
 
-  const res = await sendRequest({
-    method: "GET",
-    url: releaseURL,
-  });
+  // DEBUG:
+  const dialog = await getVersionNotifDialog({ latestTag: "1.1.1" });
+  await dialog.open();
+  return;
 
-  // TODO: small dialog for "no update found" message?
-  const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+  // const res = await sendRequest({
+  //   method: "GET",
+  //   url: releaseURL,
+  // });
 
-  const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
+  // // TODO: small dialog for "no update found" message?
+  // const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
 
-  if(!latestTag)
-    return noUpdateFound();
+  // const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
-  const versionComp = compareVersions(scriptInfo.version, latestTag);
+  // if(!latestTag)
+  //   return noUpdateFound();
 
-  info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+  // const versionComp = compareVersions(scriptInfo.version, latestTag);
 
-  if(versionComp < 0) {
-    const dialog = await getVersionNotifDialog({ latestTag });
-    await dialog.open();
-    return;
-  }
-  return noUpdateFound();
+  // info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
+
+  // if(versionComp < 0) {
+  //   const dialog = await getVersionNotifDialog({ latestTag });
+  //   await dialog.open();
+  //   return;
+  // }
+  // return noUpdateFound();
 }
 
 /**

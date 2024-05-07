@@ -209,7 +209,7 @@ export async function getChangelogHtmlWithDetails() {
     for(const match of h2Matches) {
       const [fullMatch, , verStr] = match;
       const verId = getVerId(verStr);
-      const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">Version ${verStr}</h2>`;
+      const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
       const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
       changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
     }
