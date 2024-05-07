@@ -48,8 +48,8 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
   for(const [name, getContent] of Object.entries(changes)) {
     retLines = [];
 
-    const beginRegex = new RegExp(`<!--\\s?<\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->`, "gm");
-    const endRegex = new RegExp(`<!--\\s?</\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->`, "gm");
+    const beginRegex = new RegExp(`\\s{0,}<!--\\s?<\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s{0,}\\n`, "gm");
+    const endRegex = new RegExp(`\\s{0,}<!--\\s?</\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s{0,}\\n`, "gm");
 
     // find line number that matches beginRegex
     const beginLine = lines.findIndex((line) => beginRegex.test(line));
