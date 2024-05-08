@@ -5,7 +5,6 @@ import { addSelectorListener } from "../observers";
 import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
-import { createGenericBtn } from "../components";
 import "./layout.css";
 
 //#region cfg menu buttons
@@ -105,7 +104,7 @@ function exchangeLogo() {
 export async function addConfigMenuOptionYTM(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
   cfgOptElem.className = "bytm-cfg-menu-option";
-  
+
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.className = "bytm-cfg-menu-option-item";
   cfgOptItemElem.role = "button";
@@ -147,25 +146,30 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 export async function addConfigMenuOptionYT(container: HTMLElement) {
   // TODO:
-  const btnElem = await createGenericBtn({
-    resourceName: "img-logo",
-    title: t("open_menu_tooltip", scriptInfo.name),
-    onClick(e) {
-      if((!e.shiftKey && !e.ctrlKey) || logoExchanged)
-        openCfgMenu();
-      if(!logoExchanged && (e.shiftKey || e.ctrlKey))
-        exchangeLogo();
-    },
+  const cfgOptElem = document.createElement("div");
+  cfgOptElem.className = "bytm-yt-cfg-menu-option";
+  cfgOptElem.role = "button";
+  cfgOptElem.tabIndex = 0;
+  cfgOptElem.ariaLabel = cfgOptElem.title = t("open_menu_tooltip", scriptInfo.name);
+
+  const cfgOptItemElem = document.createElement("div");
+  cfgOptItemElem.className = "bytm-yt-cfg-menu-option-item";
+  cfgOptItemElem.textContent = t("config_menu_option", scriptInfo.name);
+
+  cfgOptElem.appendChild(cfgOptItemElem);
+
+  onInteraction(cfgOptElem, () => {
+    const guideBtnElem = document.querySelector<HTMLElement>("ytd-masthead #start yt-icon-button#guide-button");
+    guideBtnElem?.click();
+    openCfgMenu();
   });
 
-  const firstChild = container.firstElementChild;
+  const firstChild = container?.firstElementChild;
 
   if(firstChild)
-    container.insertBefore(btnElem, firstChild);
-  else {
-    const notifEl = container.querySelector("ytd-notification-topbar-button-renderer");
-    notifEl && insertAfter(notifEl, btnElem);
-  }
+    container.insertBefore(cfgOptElem, firstChild);
+  else
+    return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
 //#region rem upgrade tab

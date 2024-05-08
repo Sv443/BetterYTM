@@ -123,13 +123,14 @@ button.bytm-btn {
 }
 
 .bytm-link, .bytm-markdown-container a {
-  color: #369bff;
-  text-decoration: none;
+  color: #369bff !important;
+  text-decoration: none !important;
   cursor: pointer;
 }
 
 .bytm-link:hover, .bytm-markdown-container a:hover {
-  text-decoration: underline;
+  color: #369bff !important;
+  text-decoration: underline !important;
 }
 
 button[disabled] {

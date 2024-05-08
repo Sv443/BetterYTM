@@ -29,7 +29,7 @@ const lyricsCacheMgr = new DataStore<LyricsCache>({
 export async function initLyricsCache() {
   canCompress = await compressionSupported();
   const data = await lyricsCacheMgr.loadData();
-  log(`Loaded lyrics cache (${data.cache.length} entries):`, data);
+  log(`Initialized lyrics cache with ${data.cache.length} entries:`, data);
   emitInterface("bytm:lyricsCacheReady", data);
   return data;
 }
@@ -60,7 +60,7 @@ function updateLyricsCacheEntry(artist: string, song: string) {
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
     newEntry.viewed = Date.now();
-    log("Updating cache entry for", artist, "-", song, "to", newEntry);
+    log(`Updating cache entry for '${artist} - ${song}' to`, newEntry);
     lyricsCacheMgr.setData({ cache: [ newEntry, ...cache ] });
   }
 }
