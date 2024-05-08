@@ -86,15 +86,15 @@
 }
 
 .bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #fff);
+  fill: var(--bytm-dialog-accent-col, #fff) !important;
 }
 
 .bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff);
+  fill: var(--bytm-advanced-mode-color, #fff) !important;
 }
 
 .bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff);
+  fill: var(--bytm-experimental-col, #fff) !important;
 }
 
 .bytm-warning-icon svg {
@@ -103,11 +103,11 @@
 }
 
 .bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff);
+  fill: var(--bytm-warning-col, #fff) !important;
 }
 
 .bytm-reload-icon svg path {
-  fill: var(--bytm-reload-col, #fff);
+  fill: var(--bytm-reload-col, #fff) !important;
 }
 
 /* #SECTION welcome dialog */
