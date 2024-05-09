@@ -115,6 +115,11 @@ export function openInTab(href: string, background = true) {
   }
 }
 
+/** Returns whether the monitor has HDR enabled */
+export function hdrEnabled() {
+  return window.matchMedia("(dynamic-range: high)").matches;
+}
+
 //#region resources
 
 /**

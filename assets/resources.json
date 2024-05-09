@@ -1,6 +1,7 @@
 {
   "css-anchor_improvements": "style/anchorImprovements.css",
   "css-fix_spacing": "style/fixSpacing.css",
+  "css-fix_hdr": "style/fixHDR.css",
   "doc-changelog": "/changelog.md",
   "icon-advanced_mode": "icons/plus_circle_small.svg",
   "icon-arrow_down": "icons/arrow_down.svg",

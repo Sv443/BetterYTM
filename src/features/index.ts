@@ -1,4 +1,4 @@
-import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
+import { getPreferredLocale, hdrEnabled, resourceToHTMLString, t, tp } from "../utils";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
@@ -206,6 +206,12 @@ export const featInfo = {
     textAdornment: adornments.advanced,
     reloadRequired: false,
     enable: noop,
+  },
+  fixHdrIssues: {
+    type: "toggle",
+    category: "layout",
+    default: hdrEnabled(),
+    textAdornment: adornments.reloadRequired,
   },
 
   //#region volume

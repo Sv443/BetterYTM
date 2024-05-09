@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -663,4 +663,17 @@ export async function initHideCursorOnIdle() {
       log("Initialized cursor hiding on idle");
     },
   });
+}
+
+//#region fix HDR
+
+/** Fixes visual issues when HDR is enabled */
+export async function fixHdrIssues() {
+  if(!hdrEnabled())
+    return log("HDR is not enabled, skipping HDR fixes");
+  const css = await (await fetchAdvanced(await getResourceUrl("css-fix_hdr"))).text();
+  if(css) {
+    addStyle(css, "fix-hdr");
+    log("Fixed HDR issues");
+  }
 }
