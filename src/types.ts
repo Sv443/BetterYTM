@@ -344,6 +344,8 @@ export interface FeatureConfig {
   hideCursorOnIdle: boolean;
   /** Delay in seconds after which the cursor should be hidden */
   hideCursorOnIdleDelay: number;
+  /** Whether to fix various issues in the layout when HDR is supported and active */
+  fixHdrIssues: boolean;
 
   //#region volume
   /** Add a percentage label to the volume slider */

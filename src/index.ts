@@ -11,7 +11,7 @@ import {
   addWatermark, removeUpgradeTab,
   initRemShareTrackParam, fixSpacing,
   addScrollToActiveBtn, initThumbnailOverlay,
-  initHideCursorOnIdle,
+  initHideCursorOnIdle, fixHdrIssues,
   // volume
   initVolumeFeatures,
   // song lists
@@ -168,6 +168,9 @@ async function onDomLoad() {
 
       if(features.hideCursorOnIdle)
         ftInit.push(initHideCursorOnIdle());
+
+      if(features.fixHdrIssues)
+        ftInit.push(fixHdrIssues());
 
       //#region (ytm) volume
 
