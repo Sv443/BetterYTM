@@ -109,7 +109,7 @@
 }
 
 #bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
-  color: var(--bytm-menu-subtitle-color);
+  color: var(--bytm-menu-subtitle-color) !important;
 }
 
 #bytm-menu-subtitle-cont, #bytm-menu-mode-display {
@@ -166,7 +166,7 @@
   padding-bottom: 2px;
   opacity: 0;
   text-decoration: none;
-  color: var(--bytm-menu-subtitle-color);
+  color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
   font-size: 1.1rem;
   transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
