@@ -5,20 +5,16 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 <br>
 
-- [BetterYTM - Contributing Guide](#betterytm---contributing-guide)
-  - [Submitting translations:](#submitting-translations)
-    - [Adding translations for a new language:](#adding-translations-for-a-new-language)
-    - [Editing an existing translation:](#editing-an-existing-translation)
-  - [Setting up the project for local development:](#setting-up-the-project-for-local-development)
-    - [Requirements:](#requirements)
-    - [These are the CLI commands available after setting up the project:](#these-are-the-cli-commands-available-after-setting-up-the-project)
-    - [Extras:](#extras)
-  - [Developing a plugin that interfaces with BetterYTM:](#developing-a-plugin-that-interfaces-with-betterytm)
-    - [Example:](#example)
-    - [Basic format:](#basic-format)
-    - [Practical Example:](#practical-example)
-  - [Shimming for TypeScript without errors \& with autocomplete:](#shimming-for-typescript-without-errors--with-autocomplete)
-  - [Global functions:](#global-functions)
+- [Submitting translations](#submitting-translations)
+  - [Adding translations for a new language](#adding-translations-for-a-new-language)
+  - [Editing an existing translation](#editing-an-existing-translation)
+- [Setting up the project for local development](#setting-up-the-project-for-local-development)
+  - [Requirements](#requirements)
+  - [CLI commands](#these-are-the-cli-commands-available-after-setting-up-the-project)
+  - [Extras](#extras)
+- [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
+  - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
+  - [Global functions and classes on the plugin interface](#global-functions-and-classes)
 
 <br><br>
 
@@ -258,8 +254,8 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 
 <!-- #region global interface functions -->
 
-### Global functions:
-These are the global functions that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
+### Global functions and classes:
+These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
 - Meta:
@@ -274,6 +270,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
+  - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element
 - Translations:
   - [setLocale()](#setlocale) - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -291,8 +288,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [compareVersions](#compareversions) - Crudely compares two semver version strings and returns which one is newer
-  - [compareVersionArrays](#compareversionarrays) - Crudely compares two semver version number arrays and returns which one is newer
+  - [compareVersions()](#compareversions) - Crudely compares two semver version strings and returns which one is newer
+  - [compareVersionArrays()](#compareversionarrays) - Crudely compares two semver version number arrays and returns which one is newer
 
 <br><br>
 
@@ -1101,6 +1098,44 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > });
 > 
 > document.querySelector("#my-element").appendChild(toggleInput);
+> ```
+> </details>
+
+<br>
+
+> #### createCircularBtn()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.createCircularBtn(btnProps: {
+>   title: string,
+>   // either resourceName or src has to be specified:
+>   resourceName: string | undefined,
+>   src: string | undefined,
+>   // either href or onClick has to be specified:
+>   href: string | undefined,
+>   onClick: (event: MouseEvent | KeyboardEvent) => void | undefined,
+> }): HTMLElement
+> ```
+>
+> Creates a circular button element that can be used to trigger an action or navigate to a different page.  
+> - `title` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility.
+> - `resourceName` - The name of the resource to use as the button icon (`src` can't be specified).
+> - `src` - The URL of the image to use as the button icon (`resourceName` can't be specified).
+> - `href` - The URL to navigate to when the button is interacted with (`onClick` can't be specified).
+> - `onClick` - The function that is called when the button is clicked or interacted with (`href` can't be specified).
+>
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+>
+> ```ts
+> const circularBtn = unsafeWindow.BYTM.createCircularBtn({
+>   title: "My cool button",
+>   resourceName: "icon-help",
+>   onClick() {
+>     console.log("The button was clicked");
+>   },
+> });
+> 
+> document.querySelector("#my-element").appendChild(circularBtn);
 > ```
 > </details>
 

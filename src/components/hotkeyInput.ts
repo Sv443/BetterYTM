@@ -8,6 +8,8 @@ interface HotkeyInputProps {
   onChange: (hotkey: HotkeyObj) => void;
 }
 
+let otherHotkeyInputActive = false;
+
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
 
 /** Creates a hotkey input element */
@@ -20,7 +22,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
 
   const infoElem = document.createElement("span");
   infoElem.classList.add("bytm-hotkey-info");
-  
+
   const inputElem = document.createElement("input");
   inputElem.type = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
@@ -36,7 +38,10 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   resetElem.ariaLabel = resetElem.title = t("reset");
 
   const deactivate = () => {
+    if(!otherHotkeyInputActive)
+      return;
     siteEvents.emit("hotkeyInputActive", false);
+    otherHotkeyInputActive = false;
     const curHk = currentHotkey ?? initialValue;
     inputElem.value = curHk?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
@@ -45,7 +50,10 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   };
 
   const activate = () => {
+    if(otherHotkeyInputActive)
+      return;
     siteEvents.emit("hotkeyInputActive", true);
+    otherHotkeyInputActive = true;
     inputElem.value = "< ... >";
     inputElem.dataset.state = "active";
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
