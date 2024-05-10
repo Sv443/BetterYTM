@@ -184,6 +184,37 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
 }
 
+.bytm-yt-cfg-menu-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 12px;
+  min-height: var(--paper-item-min-height,48px);
+  width: calc(100% - 12px);
+  max-width: calc(100% - 12px);
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.bytm-yt-cfg-menu-option:hover {
+  background-color: var(--yt-spec-badge-chip-background, #3e3e3e) !important;
+}
+
+.bytm-yt-cfg-menu-option-icon {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 24px;
+  height: 24px;
+  margin-right: 24px;
+}
+
+.bytm-yt-cfg-menu-option-item {
+  font-size: 14px;
+}
+
 /* #region watermark */
 
 #bytm-watermark {
