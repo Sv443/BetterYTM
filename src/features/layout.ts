@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, insertBefore } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -382,52 +382,116 @@ export async function fixSpacing() {
   }
 }
 
-//#region scroll to active
+//#region above queue btns
 
-/** Adds a button to the queue to scroll to the active song */
-export async function addScrollToActiveBtn() {
-  addSelectorListener("sidePanel", "#tabsContent tp-yt-paper-tab:nth-of-type(1)", {
-    listener: async (tabElem) => {
-      const containerElem = document.createElement("div");
-      containerElem.id = "bytm-scroll-to-active-btn-cont";
+export async function addAboveQueueBtns() {
+  const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
 
-      const linkElem = document.createElement("div");
-      linkElem.id = "bytm-scroll-to-active-btn";
-      linkElem.tabIndex = 0;
-      linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-      linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
-      linkElem.role = "button";
+  if(!scrollToActiveSongBtn && !clearQueueBtn)
+    return;
 
-      const imgElem = document.createElement("img");
-      imgElem.classList.add("bytm-generic-btn-img");
-      imgElem.src = await getResourceUrl("icon-skip_to");
+  addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
+    async listener(rightBtnsEl) {
+      const aboveQueueBtnCont = document.createElement("div");
+      aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
 
-      const scrollToActiveInteraction = () => {
-        const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-        if(!activeItem)
-          return;
+      addParent(rightBtnsEl, aboveQueueBtnCont);
 
-        activeItem.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        });
-      };
-
-      siteEvents.on("fullscreenToggled", (isFullscreen) => {
-        if(isFullscreen)
-          containerElem.classList.add("hidden");
-        else
-          containerElem.classList.remove("hidden");
-      });
-
-      onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
-
-      linkElem.appendChild(imgElem);
-      containerElem.appendChild(linkElem);
-      tabElem.appendChild(containerElem);
+      if(scrollToActiveSongBtn)
+        await addScrollToActiveBtn(rightBtnsEl);
+      if(clearQueueBtn)
+        await addClearQueueBtn(rightBtnsEl);
     },
   });
+}
+
+/** Adds a button above the queue to scroll to the active song */
+export async function addScrollToActiveBtn(rightBtnsEl: HTMLElement) {
+  const containerElem = document.createElement("div");
+  containerElem.id = "bytm-scroll-to-active-btn-cont";
+
+  const linkElem = document.createElement("div");
+  linkElem.id = "bytm-scroll-to-active-btn";
+  linkElem.tabIndex = 0;
+  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+  linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
+  linkElem.role = "button";
+
+  const imgElem = document.createElement("img");
+  imgElem.classList.add("bytm-generic-btn-img");
+  imgElem.src = await getResourceUrl("icon-skip_to");
+
+  const scrollToActiveInteraction = () => {
+    const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+    if(!activeItem)
+      return;
+
+    activeItem.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  };
+
+  siteEvents.on("fullscreenToggled", (isFullscreen) => {
+    if(isFullscreen)
+      containerElem.classList.add("hidden");
+    else
+      containerElem.classList.remove("hidden");
+  });
+
+  onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
+
+  linkElem.appendChild(imgElem);
+  containerElem.appendChild(linkElem);
+  insertBefore(rightBtnsEl, containerElem);
+}
+
+/** Adds a button above the queue to clear it */
+export async function addClearQueueBtn(rightBtnsEl: HTMLElement) {
+  const containerElem = document.createElement("div");
+  containerElem.id = "bytm-clear-queue-btn-cont";
+
+  const linkElem = document.createElement("div");
+  linkElem.id = "bytm-clear-queue-btn";
+  linkElem.tabIndex = 0;
+  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+  linkElem.ariaLabel = linkElem.title = t("clear_queue");
+  linkElem.role = "button";
+
+  const imgElem = document.createElement("img");
+  imgElem.classList.add("bytm-generic-btn-img");
+  imgElem.src = await getResourceUrl("icon-clear_list");
+
+  siteEvents.on("fullscreenToggled", (isFullscreen) => {
+    if(isFullscreen)
+      containerElem.classList.add("hidden");
+    else
+      containerElem.classList.remove("hidden");
+  });
+
+  onInteraction(
+    linkElem,
+    () => {
+      try {
+        // TODO: better confirmation dialog?
+        if(!confirm(t("clear_queue_confirm")))
+          return;
+        const url = new URL(location.href);
+        url.searchParams.delete("list");
+        location.href = String(url);
+      }
+      catch(err) {
+        error("Couldn't clear queue due to an error:", err);
+      }
+    }, {
+      capture: true,
+    }
+  );
+
+  linkElem.appendChild(imgElem);
+  containerElem.appendChild(linkElem);
+  insertBefore(rightBtnsEl, containerElem);
 }
 
 //#region thumbnail overlay

@@ -370,8 +370,10 @@ export interface FeatureConfig {
   deleteFromQueueButton: boolean;
   /** Where to place the buttons in the queue */
   listButtonsPlacement: "queueOnly" | "everywhere";
-  /** Add a button to the queue to scroll to the currently playing song */
+  /** Add a button above the queue to scroll to the currently playing song */
   scrollToActiveSongBtn: boolean;
+  /** Add a button above the queue to clear it */
+  clearQueueBtn: boolean;
 
   //#region behavior
   /** Whether to completely disable the popup that sometimes appears before leaving the site */

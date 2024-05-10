@@ -202,6 +202,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
+/* #region above queue btns */
+
+#bytm-above-queue-btn-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 /* #region scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
@@ -209,9 +219,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 5px;
-  top: 0;
   height: 100%;
 }
 

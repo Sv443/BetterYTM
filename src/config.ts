@@ -56,7 +56,7 @@ export const migrations: DataMigrationsDict = {
       "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
       "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
       "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-      "fixHdrIssues",
+      "fixHdrIssues", "clearQueueBtn",
     ], oldData),
   }),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
