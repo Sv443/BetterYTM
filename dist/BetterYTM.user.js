@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=27ec038
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=21ecb9d
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,39 +35,40 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=27ec038
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=27ec038
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=27ec038
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=27ec038
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=27ec038
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=27ec038
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=27ec038
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=27ec038
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=27ec038
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=27ec038
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=27ec038
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=27ec038
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=27ec038
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=27ec038
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=27ec038
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=27ec038
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=27ec038
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=27ec038
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=27ec038
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=27ec038
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=27ec038
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=27ec038
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=27ec038
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=27ec038
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=27ec038
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=27ec038
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=27ec038
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=27ec038
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=27ec038
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=27ec038
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=27ec038
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=27ec038
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=27ec038
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=21ecb9d
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=21ecb9d
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=21ecb9d
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=21ecb9d
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=21ecb9d
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=21ecb9d
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=21ecb9d
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=21ecb9d
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=21ecb9d
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=21ecb9d
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=21ecb9d
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=21ecb9d
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=21ecb9d
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=21ecb9d
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=21ecb9d
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=21ecb9d
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=21ecb9d
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=21ecb9d
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=21ecb9d
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=21ecb9d
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=21ecb9d
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=21ecb9d
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=21ecb9d
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=21ecb9d
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=21ecb9d
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=21ecb9d
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=21ecb9d
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=21ecb9d
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=21ecb9d
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=21ecb9d
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=21ecb9d
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=21ecb9d
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=21ecb9d
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=21ecb9d
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -195,7 +196,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "27ec038";
+const buildNumberRaw = "21ecb9d";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -822,6 +823,7 @@ const allSiteEvents = [
     "autoplayQueueChanged",
     "songTitleChanged",
     "watchIdChanged",
+    "fullscreenToggled",
 ];
 /** EventEmitter instance that is used to detect changes to the site */
 const siteEvents = createNanoEvents();
@@ -1829,24 +1831,24 @@ function addCfgMenu() {
         //#region footer
         const footerCont = document.createElement("div");
         footerCont.className = "bytm-menu-footer-cont";
-        const footerElemCont = document.createElement("div");
-        const footerElem = document.createElement("div");
-        footerElem.classList.add("bytm-menu-footer", "hidden");
-        footerElem.setAttribute("aria-hidden", "true");
-        footerElem.textContent = t("reload_hint");
-        footerElem.role = "alert";
-        const reloadElem = document.createElement("button");
-        reloadElem.classList.add("bytm-btn");
-        reloadElem.style.marginLeft = "10px";
-        reloadElem.textContent = t("reload_now");
-        reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
-        reloadElem.addEventListener("click", () => {
+        const reloadFooterCont = document.createElement("div");
+        const reloadFooterEl = document.createElement("div");
+        reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
+        reloadFooterEl.setAttribute("aria-hidden", "true");
+        reloadFooterEl.textContent = t("reload_hint");
+        reloadFooterEl.role = "alert";
+        const reloadTxtEl = document.createElement("button");
+        reloadTxtEl.classList.add("bytm-btn");
+        reloadTxtEl.style.marginLeft = "10px";
+        reloadTxtEl.textContent = t("reload_now");
+        reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
+        reloadTxtEl.addEventListener("click", () => {
             closeCfgMenu();
             disableBeforeUnload();
             location.reload();
         });
-        footerElem.appendChild(reloadElem);
-        footerElemCont.appendChild(footerElem);
+        reloadFooterEl.appendChild(reloadTxtEl);
+        reloadFooterCont.appendChild(reloadFooterEl);
         const resetElem = document.createElement("button");
         resetElem.classList.add("bytm-btn");
         resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
@@ -1886,7 +1888,7 @@ function addCfgMenu() {
         buttonsCont.appendChild(exportElem);
         buttonsCont.appendChild(importElem);
         buttonsCont.appendChild(resetElem);
-        footerCont.appendChild(footerElemCont);
+        footerCont.appendChild(reloadFooterCont);
         footerCont.appendChild(buttonsCont);
         //#region feature list
         const featuresCont = document.createElement("div");
@@ -1906,12 +1908,12 @@ function addCfgMenu() {
             // @ts-ignore
             (_g = (_f = featInfo[key]) === null || _f === void 0 ? void 0 : _f.change) === null || _g === void 0 ? void 0 : _g.call(_f, key, initialVal, newVal);
             if (requiresReload) {
-                footerElem.classList.remove("hidden");
-                footerElem.setAttribute("aria-hidden", "false");
+                reloadFooterEl.classList.remove("hidden");
+                reloadFooterEl.setAttribute("aria-hidden", "false");
             }
             else if (!requiresReload) {
-                footerElem.classList.add("hidden");
-                footerElem.setAttribute("aria-hidden", "true");
+                reloadFooterEl.classList.add("hidden");
+                reloadFooterEl.setAttribute("aria-hidden", "true");
             }
             if (initLocale !== featConf.locale) {
                 yield initTranslations(featConf.locale);
@@ -1926,6 +1928,7 @@ function addCfgMenu() {
             }
             else if (getLocale() !== featConf.locale)
                 setLocale(featConf.locale);
+            siteEvents.emit("configOptionChanged", key, initialVal, newVal);
         });
         /** Call whenever the feature config is changed */
         const confChanged = UserUtils.debounce(onCfgChange, 200, "falling");
@@ -3168,45 +3171,101 @@ function fixSpacing() {
         }
     });
 }
-//#region scroll to active
-/** Adds a button to the queue to scroll to the active song */
-function addScrollToActiveBtn() {
+//#region above queue btns
+function addAboveQueueBtns() {
     return __awaiter(this, void 0, void 0, function* () {
-        addSelectorListener("sidePanel", "#tabsContent tp-yt-paper-tab:nth-of-type(1)", {
-            listener: (tabElem) => __awaiter(this, void 0, void 0, function* () {
-                const containerElem = document.createElement("div");
-                containerElem.id = "bytm-scroll-to-active-btn-cont";
-                const linkElem = document.createElement("div");
-                linkElem.id = "bytm-scroll-to-active-btn";
-                linkElem.tabIndex = 0;
-                linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-                linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
-                linkElem.role = "button";
-                const imgElem = document.createElement("img");
-                imgElem.classList.add("bytm-generic-btn-img");
-                imgElem.src = yield getResourceUrl("icon-skip_to");
-                const scrollToActiveInteraction = () => {
-                    const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-                    if (!activeItem)
-                        return;
-                    activeItem.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                        inline: "center",
-                    });
-                };
-                siteEvents.on("fullscreenToggled", (isFullscreen) => {
-                    if (isFullscreen)
-                        containerElem.classList.add("hidden");
-                    else
-                        containerElem.classList.remove("hidden");
+        const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
+        if (!scrollToActiveSongBtn && !clearQueueBtn)
+            return;
+        addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
+            listener(rightBtnsEl) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    const aboveQueueBtnCont = document.createElement("div");
+                    aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
+                    UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
+                    if (scrollToActiveSongBtn)
+                        yield addScrollToActiveBtn(rightBtnsEl);
+                    if (clearQueueBtn)
+                        yield addClearQueueBtn(rightBtnsEl);
                 });
-                onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
-                linkElem.appendChild(imgElem);
-                containerElem.appendChild(linkElem);
-                tabElem.appendChild(containerElem);
-            }),
+            },
         });
+    });
+}
+/** Adds a button above the queue to scroll to the active song */
+function addScrollToActiveBtn(rightBtnsEl) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const containerElem = document.createElement("div");
+        containerElem.id = "bytm-scroll-to-active-btn-cont";
+        const linkElem = document.createElement("div");
+        linkElem.id = "bytm-scroll-to-active-btn";
+        linkElem.tabIndex = 0;
+        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+        linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
+        linkElem.role = "button";
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.src = yield getResourceUrl("icon-skip_to");
+        const scrollToActiveInteraction = () => {
+            const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+            if (!activeItem)
+                return;
+            activeItem.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center",
+            });
+        };
+        siteEvents.on("fullscreenToggled", (isFullscreen) => {
+            if (isFullscreen)
+                containerElem.classList.add("hidden");
+            else
+                containerElem.classList.remove("hidden");
+        });
+        onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
+        linkElem.appendChild(imgElem);
+        containerElem.appendChild(linkElem);
+        insertBefore(rightBtnsEl, containerElem);
+    });
+}
+/** Adds a button above the queue to clear it */
+function addClearQueueBtn(rightBtnsEl) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const containerElem = document.createElement("div");
+        containerElem.id = "bytm-clear-queue-btn-cont";
+        const linkElem = document.createElement("div");
+        linkElem.id = "bytm-clear-queue-btn";
+        linkElem.tabIndex = 0;
+        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
+        linkElem.ariaLabel = linkElem.title = t("clear_queue");
+        linkElem.role = "button";
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.src = yield getResourceUrl("icon-clear_list");
+        siteEvents.on("fullscreenToggled", (isFullscreen) => {
+            if (isFullscreen)
+                containerElem.classList.add("hidden");
+            else
+                containerElem.classList.remove("hidden");
+        });
+        onInteraction(linkElem, () => {
+            try {
+                // TODO: better confirmation dialog?
+                if (!confirm(t("clear_queue_confirm")))
+                    return;
+                const url = new URL(location.href);
+                url.searchParams.delete("list");
+                location.href = String(url);
+            }
+            catch (err) {
+                error("Couldn't clear queue due to an error:", err);
+            }
+        }, {
+            capture: true,
+        });
+        linkElem.appendChild(imgElem);
+        containerElem.appendChild(linkElem);
+        insertBefore(rightBtnsEl, containerElem);
     });
 }
 //#region thumbnail overlay
@@ -3573,15 +3632,12 @@ function delRemSongData(watchID) {
     });
 }
 //#region disable darkreader
-/** Disables Dark Reader if it is enabled */
+/** Disables Dark Reader if it is present */
 function disableDarkReader() {
-    if (document.querySelector(".darkreader")) {
-        const metaElem = document.createElement("meta");
-        metaElem.name = "darkreader-lock";
-        metaElem.classList.add("bytm-disable-darkreader");
-        document.head.appendChild(metaElem);
-        info("Sent hint to Dark Reader to disable itself");
-    }
+    const metaElem = document.createElement("meta");
+    metaElem.name = "darkreader-lock";
+    metaElem.classList.add("bytm-disable-darkreader");
+    document.head.appendChild(metaElem);
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 function initArrowKeySkip() {
@@ -4334,6 +4390,12 @@ const featInfo = {
         default: true,
         textAdornment: adornments.reloadRequired,
     },
+    clearQueueBtn: {
+        type: "toggle",
+        category: "layout",
+        default: true,
+        textAdornment: adornments.reloadRequired,
+    },
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
@@ -4783,7 +4845,7 @@ const migrations = {
         "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
         "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
         "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-        "fixHdrIssues",
+        "fixHdrIssues", "clearQueueBtn",
     ], oldData))),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
     // 5 -> 6 (v1.3)
@@ -5284,6 +5346,15 @@ function currentMediaType() {
     if (!songImgElem)
         throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
     return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
+}
+/**
+ * Inserts {@linkcode beforeElement} as a sibling just before the provided {@linkcode afterElement}
+ * @returns Returns the {@linkcode beforeElement}
+ */
+function insertBefore(afterElement, beforeElement) {
+    var _a;
+    (_a = afterElement.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(beforeElement, afterElement);
+    return beforeElement;
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -5641,7 +5712,7 @@ function onDomLoad() {
                 if (features.fixSpacing)
                     ftInit.push(fixSpacing());
                 if (features.scrollToActiveSongBtn)
-                    ftInit.push(addScrollToActiveBtn());
+                    ftInit.push(addAboveQueueBtns());
                 if (features.removeUpgradeTab)
                     ftInit.push(removeUpgradeTab());
                 ftInit.push(initThumbnailOverlay());
@@ -6822,20 +6893,44 @@ hr {
   margin-top: 30px;
 }
 
+.bytm-markdown-container ul li {
+  padding-left: 0px;
+}
+
+.bytm-markdown-container ul li::marker {
+  content: none;
+}
+
 .bytm-markdown-container ul li::before {
   content: "• ";
   font-weight: bolder;
 }
 
+.bytm-markdown-container ul li > ul li {
+  padding-left: 16px;
+}
+
+.bytm-markdown-container ul li > ul li::marker {
+  content: none;
+}
+
 .bytm-markdown-container ul li > ul li::before {
   white-space: pre-wrap;
-  content: "    • ";
+  content: "• ";
   font-weight: bolder;
+}
+
+.bytm-markdown-container ul li > ul li > ul li {
+  padding-left: 16px;
+}
+
+.bytm-markdown-container ul li > ul li > ul li::marker {
+  content: none;
 }
 
 .bytm-markdown-container ul li > ul li > ul li::before {
   white-space: pre-wrap;
-  content: "        • ";
+  content: "• ";
   font-weight: bolder;
 }
 
@@ -7127,6 +7222,16 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   text-decoration: underline;
 }
 
+/* #region above queue btns */
+
+#bytm-above-queue-btn-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 /* #region scroll to active */
 
 #bytm-scroll-to-active-btn-cont {
@@ -7134,9 +7239,6 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 5px;
-  top: 0;
   height: 100%;
 }
 
