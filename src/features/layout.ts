@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, insertBefore } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, insertBefore, getVideoTime } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import "./layout.css";
@@ -472,13 +472,14 @@ export async function addClearQueueBtn(rightBtnsEl: HTMLElement) {
 
   onInteraction(
     linkElem,
-    () => {
+    async () => {
       try {
         // TODO: better confirmation dialog?
         if(!confirm(t("clear_queue_confirm")))
           return;
         const url = new URL(location.href);
         url.searchParams.delete("list");
+        url.searchParams.set("t", String(await getVideoTime(0)));
         location.href = String(url);
       }
       catch(err) {
