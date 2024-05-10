@@ -13,13 +13,13 @@ type CircularBtnOptions = (
     /** Tooltip and aria-label of the button */
     title: string;
   }
-)
-& (
-  {
+) & (
+  | {
     /** URL to navigate to when the button is clicked */
     href: string;
     onClick?: undefined;
-  } | {
+  }
+  | {
     href?: undefined;
     /** Callback function to execute when the button is clicked */
     onClick: (event: MouseEvent | KeyboardEvent) => void;

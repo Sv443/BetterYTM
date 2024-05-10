@@ -21,6 +21,8 @@ export type InterfaceEvents = {
   "bytm:pluginsLoaded": undefined;
   /** Emitted when BYTM has finished initializing all features */
   "bytm:ready": undefined;
+  /** Emitted when a fatal error occurs and the script can't continue to run. Returns a short error description (not really meant to be displayed to the user). */
+  "bytm:fatalError": string;
   /**
    * Emitted whenever the SelectorObserver instances have been initialized  
    * Use `unsafeWindow.BYTM.addObserverListener()` to add custom listener functions to the observers

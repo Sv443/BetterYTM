@@ -29,9 +29,6 @@ export type Domain = "yt" | "ytm";
 /** A selection option between one of the supported domains, or all of them */
 export type SiteSelection = Domain | "all";
 
-/** A URL string that starts with "http://" or "https://" */
-export type HttpUrlString = `http://${string}` | `https://${string}`;
-
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog";
 

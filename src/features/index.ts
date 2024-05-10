@@ -1,12 +1,12 @@
-import { getPreferredLocale, hdrEnabled, resourceToHTMLString, t, tp } from "../utils";
-import langMapping from "../../assets/locales.json" assert { type: "json" };
+import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection } from "../types";
 import { volumeSharedBetweenTabsDisabled } from "./volume";
-import { emitSiteEvent } from "src/siteEvents";
+import { emitSiteEvent } from "../siteEvents";
+import langMapping from "../../assets/locales.json" assert { type: "json" };
 
 export * from "./layout";
 export * from "./behavior";
@@ -30,9 +30,11 @@ const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }])
 }, [] as SelectOption[])
   .sort((a, b) => a.label.localeCompare(b.label));
 
+/** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
   `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceToHTMLString(resource) ?? ""}</span>`;
 
+/** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (
   adornments: Array<(
     | (() => Promise<string | undefined>)
@@ -216,7 +218,7 @@ export const featInfo = {
   fixHdrIssues: {
     type: "toggle",
     category: "layout",
-    default: hdrEnabled(),
+    default: true,
     textAdornment: adornments.reloadRequired,
   },
 

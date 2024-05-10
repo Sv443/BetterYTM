@@ -6,6 +6,7 @@ import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslation
 import { initSiteEvents } from "./siteEvents";
 import { emitInterface, initInterface, initPlugins } from "./interface";
 import { initObservers, addSelectorListener, globservers } from "./observers";
+import { getWelcomeDialog } from "./dialogs";
 import {
   // layout
   addWatermark, removeUpgradeTab,
@@ -29,8 +30,7 @@ import {
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
   // other
   initVersionCheck, initLyricsCache,
-} from "./features/index";
-import { getWelcomeDialog } from "./dialogs";
+} from "./features";
 
 {
   // console watermark with sexy gradient
@@ -262,6 +262,7 @@ async function onDomLoad() {
     }
     catch(err) {
       error("Plugin loading error:", err);
+      emitInterface("bytm:fatalError", "Error while loading plugins");
     }
 
     try {
@@ -273,6 +274,7 @@ async function onDomLoad() {
   }
   catch(err) {
     error("Feature error:", err);
+    emitInterface("bytm:fatalError", "Error while initializing features");
   }
 }
 
