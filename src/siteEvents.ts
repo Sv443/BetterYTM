@@ -9,7 +9,7 @@ export interface SiteEventsMap {
   /** Emitted whenever the feature config is changed - initialization is not counted */
   configChanged: (config: FeatureConfig) => void;
   // TODO: implement
-  /** Emitted whenever a config option is changed - contains the old and the new values */
+  /** Emitted whenever a config option is changed - contains the old and new value */
   configOptionChanged: <TKey extends keyof FeatureConfig>(key: TKey, oldValue: FeatureConfig[TKey], newValue: FeatureConfig[TKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
   rebuildCfgMenu: (config: FeatureConfig) => void;
@@ -53,6 +53,7 @@ export const allSiteEvents = [
   "autoplayQueueChanged",
   "songTitleChanged",
   "watchIdChanged",
+  "fullscreenToggled",
 ] as const;
 
 /** EventEmitter instance that is used to detect changes to the site */

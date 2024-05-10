@@ -149,27 +149,27 @@ async function addCfgMenu() {
   const footerCont = document.createElement("div");
   footerCont.className = "bytm-menu-footer-cont";
 
-  const footerElemCont = document.createElement("div");
+  const reloadFooterCont = document.createElement("div");
 
-  const footerElem = document.createElement("div");
-  footerElem.classList.add("bytm-menu-footer", "hidden");
-  footerElem.setAttribute("aria-hidden", "true");
-  footerElem.textContent = t("reload_hint");
-  footerElem.role = "alert";
+  const reloadFooterEl = document.createElement("div");
+  reloadFooterEl.classList.add("bytm-menu-footer", "hidden");
+  reloadFooterEl.setAttribute("aria-hidden", "true");
+  reloadFooterEl.textContent = t("reload_hint");
+  reloadFooterEl.role = "alert";
 
-  const reloadElem = document.createElement("button");
-  reloadElem.classList.add("bytm-btn");
-  reloadElem.style.marginLeft = "10px";
-  reloadElem.textContent = t("reload_now");
-  reloadElem.ariaLabel = reloadElem.title = t("reload_tooltip");
-  reloadElem.addEventListener("click", () => {
+  const reloadTxtEl = document.createElement("button");
+  reloadTxtEl.classList.add("bytm-btn");
+  reloadTxtEl.style.marginLeft = "10px";
+  reloadTxtEl.textContent = t("reload_now");
+  reloadTxtEl.ariaLabel = reloadTxtEl.title = t("reload_tooltip");
+  reloadTxtEl.addEventListener("click", () => {
     closeCfgMenu();
     disableBeforeUnload();
     location.reload();
   });
 
-  footerElem.appendChild(reloadElem);
-  footerElemCont.appendChild(footerElem);
+  reloadFooterEl.appendChild(reloadTxtEl);
+  reloadFooterCont.appendChild(reloadFooterEl);
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-btn");
@@ -212,7 +212,7 @@ async function addCfgMenu() {
   buttonsCont.appendChild(importElem);
   buttonsCont.appendChild(resetElem);
 
-  footerCont.appendChild(footerElemCont);
+  footerCont.appendChild(reloadFooterCont);
   footerCont.appendChild(buttonsCont);
 
 
@@ -220,7 +220,7 @@ async function addCfgMenu() {
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
 
-  const onCfgChange = async (key: keyof typeof defaultData, initialVal: number | boolean | Record<string, unknown>, newVal: number | boolean | Record<string, unknown>) => {
+  const onCfgChange = async (key: keyof typeof defaultData, initialVal: string | number | boolean | HotkeyObj, newVal: string | number | boolean | HotkeyObj) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
@@ -242,12 +242,12 @@ async function addCfgMenu() {
     featInfo[key]?.change?.(key, initialVal, newVal);
 
     if(requiresReload) {
-      footerElem.classList.remove("hidden");
-      footerElem.setAttribute("aria-hidden", "false");
+      reloadFooterEl.classList.remove("hidden");
+      reloadFooterEl.setAttribute("aria-hidden", "false");
     }
     else if(!requiresReload) {
-      footerElem.classList.add("hidden");
-      footerElem.setAttribute("aria-hidden", "true");
+      reloadFooterEl.classList.add("hidden");
+      reloadFooterEl.setAttribute("aria-hidden", "true");
     }
 
     if(initLocale !== featConf.locale) {
@@ -265,6 +265,8 @@ async function addCfgMenu() {
     }
     else if(getLocale() !== featConf.locale)
       setLocale(featConf.locale);
+
+    siteEvents.emit("configOptionChanged", key, initialVal, newVal);
   };
 
   /** Call whenever the feature config is changed */
