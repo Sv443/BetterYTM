@@ -10,7 +10,7 @@ import {
   // layout
   addWatermark, removeUpgradeTab,
   initRemShareTrackParam, fixSpacing,
-  addScrollToActiveBtn, initThumbnailOverlay,
+  addAboveQueueBtns, initThumbnailOverlay,
   initHideCursorOnIdle, fixHdrIssues,
   // volume
   initVolumeFeatures,
@@ -159,7 +159,7 @@ async function onDomLoad() {
         ftInit.push(fixSpacing());
 
       if(features.scrollToActiveSongBtn)
-        ftInit.push(addScrollToActiveBtn());
+        ftInit.push(addAboveQueueBtns());
 
       if(features.removeUpgradeTab)
         ftInit.push(removeUpgradeTab());

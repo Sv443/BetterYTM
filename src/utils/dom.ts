@@ -182,3 +182,12 @@ export function currentMediaType(): "video" | "song" {
     throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
   return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
+
+/**
+ * Inserts {@linkcode beforeElement} as a sibling just before the provided {@linkcode afterElement}
+ * @returns Returns the {@linkcode beforeElement}
+ */
+export function insertBefore(afterElement: Element, beforeElement: Element) {
+  afterElement.parentNode?.insertBefore(beforeElement, afterElement);
+  return beforeElement;
+}

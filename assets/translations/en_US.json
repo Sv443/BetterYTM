@@ -50,6 +50,8 @@
     "delete_from_list": "Delete this song from the list",
     "couldnt_remove_from_queue": "Couldn't remove this song from the queue",
     "couldnt_delete_from_list": "Couldn't delete this song from the list",
+    "clear_queue": "Clear the queue",
+    "clear_queue_confirm": "Do you really want to clear the queue and leave only the currently playing song?",
     "scroll_to_playing": "Scroll to the currently playing song",
     "scroll_to_bottom": "Click to scroll to the bottom",
     "volume_tooltip": "Volume: %1% (Sensitivity: %2%)",
@@ -172,6 +174,7 @@
     "feature_desc_listButtonsPlacement": "Where should the queue buttons show up?",
     "feature_helptext_listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.",
     "feature_desc_scrollToActiveSongBtn": "Add a button to the queue to scroll to the currently playing song",
+    "feature_desc_clearQueueBtn": "Add a button to the currently playing queue (or playlist) to quickly clear it",
 
     "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
     "feature_helptext_disableBeforeUnloadPopup": "When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of \"you have unsaved data\" or \"this site is asking if you want to close it\".\nThis feature disables that popup entirely.",

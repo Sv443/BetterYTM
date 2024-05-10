@@ -133,6 +133,12 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reloadRequired,
   },
+  clearQueueBtn: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
   removeUpgradeTab: {
     type: "toggle",
     category: "layout",
