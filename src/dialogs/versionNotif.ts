@@ -156,7 +156,7 @@ async function renderBody({
   btnWrapper.id = "bytm-version-notif-dialog-btns";
 
   const btnUpdate = document.createElement("button");
-  btnUpdate.className = "bytm-btn";
+  btnUpdate.classList.add("bytm-btn");
   btnUpdate.tabIndex = 0;
   btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
 
@@ -166,7 +166,7 @@ async function renderBody({
   });
 
   const btnClose = document.createElement("button");
-  btnClose.className = "bytm-btn";
+  btnClose.classList.add("bytm-btn");
   btnClose.tabIndex = 0;
   btnClose.textContent = t("close_and_ignore_for_24h");
 

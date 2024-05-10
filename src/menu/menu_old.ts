@@ -65,12 +65,12 @@ async function addCfgMenu() {
   headerElem.classList.add("bytm-menu-header");
 
   const titleCont = document.createElement("div");
-  titleCont.className = "bytm-menu-titlecont";
+  titleCont.classList.add("bytm-menu-titlecont");
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
 
   const titleElem = document.createElement("h2");
-  titleElem.className = "bytm-menu-title";
+  titleElem.classList.add("bytm-menu-title");
 
   const titleTextElem = document.createElement("div");
   titleTextElem.textContent = t("config_menu_title", scriptInfo.name);
@@ -90,7 +90,7 @@ async function addCfgMenu() {
 
   const addLink = (imgSrc: string, href: string, title: string, titleKey: keyof typeof linkTitlesShort) => {
     const anchorElem = document.createElement("a");
-    anchorElem.className = "bytm-menu-link bytm-no-select";
+    anchorElem.classList.add("bytm-menu-link", "bytm-no-select");
     anchorElem.rel = "noopener noreferrer";
     anchorElem.href = href;
     anchorElem.target = "_blank";
@@ -99,7 +99,7 @@ async function addCfgMenu() {
     anchorElem.ariaLabel = anchorElem.title = title;
 
     const extendedAnchorEl = document.createElement("a");
-    extendedAnchorEl.className = "bytm-menu-link extended-link bytm-no-select";
+    extendedAnchorEl.classList.add("bytm-menu-link", "extended-link", "bytm-no-select");
     extendedAnchorEl.rel = "noopener noreferrer";
     extendedAnchorEl.href = href;
     extendedAnchorEl.target = "_blank";
@@ -147,7 +147,7 @@ async function addCfgMenu() {
 
   //#region footer
   const footerCont = document.createElement("div");
-  footerCont.className = "bytm-menu-footer-cont";
+  footerCont.classList.add("bytm-menu-footer-cont");
 
   const reloadFooterCont = document.createElement("div");
 
@@ -763,7 +763,7 @@ async function addCfgMenu() {
   // ensure stuff is reset if menu was opened before being added
   isCfgMenuOpen = false;
   document.body.classList.remove("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.removeAttribute("inert");
+  document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
 
@@ -790,7 +790,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   if(enableScroll) {
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector("ytmusic-app")?.removeAttribute("inert");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
@@ -815,7 +815,7 @@ export async function openCfgMenu() {
   isCfgMenuOpen = true;
 
   document.body.classList.add("bytm-disable-scroll");
-  document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
+  document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   if(!menuBg)

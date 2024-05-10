@@ -142,7 +142,7 @@ export class BytmDialog extends NanoEmitter<{
       await this.mount();
 
     document.body.classList.add("bytm-disable-scroll");
-    document.querySelector("ytmusic-app")?.setAttribute("inert", "true");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
@@ -171,7 +171,7 @@ export class BytmDialog extends NanoEmitter<{
     this.dialogOpen = false;
 
     document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector("ytmusic-app")?.removeAttribute("inert");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)

@@ -16,7 +16,7 @@ export async function addWatermark() {
   const watermark = document.createElement("a");
   watermark.role = "button";
   watermark.id = "bytm-watermark";
-  watermark.className = "style-scope ytmusic-nav-bar bytm-no-select";
+  watermark.classList.add("style-scope", "ytmusic-nav-bar", "bytm-no-select");
   watermark.textContent = scriptInfo.name;
   watermark.ariaLabel = watermark.title = t("open_menu_tooltip", scriptInfo.name);
   watermark.tabIndex = 0;
@@ -84,7 +84,7 @@ function exchangeLogo() {
       const iconUrl = await getResourceUrl("img-logo");
 
       const newLogo = document.createElement("img");
-      newLogo.className = "bytm-mod-logo-img";
+      newLogo.classList.add("bytm-mod-logo-img");
       newLogo.src = iconUrl;
 
       logoElem.insertBefore(newLogo, logoElem.querySelector("svg"));
@@ -103,10 +103,10 @@ function exchangeLogo() {
 /** Called whenever the avatar popover menu exists on YTM to add a BYTM config menu button to the user menu popover */
 export async function addConfigMenuOptionYTM(container: HTMLElement) {
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.className = "bytm-cfg-menu-option";
+  cfgOptElem.classList.add("bytm-cfg-menu-option");
 
   const cfgOptItemElem = document.createElement("div");
-  cfgOptItemElem.className = "bytm-cfg-menu-option-item";
+  cfgOptItemElem.classList.add("bytm-cfg-menu-option-item");
   cfgOptItemElem.role = "button";
   cfgOptItemElem.tabIndex = 0;
   cfgOptItemElem.ariaLabel = cfgOptItemElem.title = t("open_menu_tooltip", scriptInfo.name);
@@ -124,11 +124,11 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
   });
 
   const cfgOptIconElem = document.createElement("img");
-  cfgOptIconElem.className = "bytm-cfg-menu-option-icon";
+  cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
   cfgOptIconElem.src = await getResourceUrl("img-logo");
 
   const cfgOptTextElem = document.createElement("div");
-  cfgOptTextElem.className = "bytm-cfg-menu-option-text";
+  cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
   cfgOptTextElem.textContent = t("config_menu_option", scriptInfo.name);
 
   cfgOptItemElem.appendChild(cfgOptIconElem);
@@ -147,22 +147,23 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 export async function addConfigMenuOptionYT(container: HTMLElement) {
   // TODO:
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.className = "bytm-yt-cfg-menu-option";
+  cfgOptElem.classList.add("bytm-yt-cfg-menu-option");
   cfgOptElem.role = "button";
   cfgOptElem.tabIndex = 0;
   cfgOptElem.ariaLabel = cfgOptElem.title = t("open_menu_tooltip", scriptInfo.name);
 
-  const cfgOptItemElem = document.createElement("div");
-  cfgOptItemElem.className = "bytm-yt-cfg-menu-option-item";
-  cfgOptItemElem.textContent = t("config_menu_option", scriptInfo.name);
+  const cfgOptImgElem = document.createElement("img");
+  cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
+  cfgOptImgElem.src = await getResourceUrl("img-logo");
 
+  const cfgOptItemElem = document.createElement("div");
+  cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
+  cfgOptItemElem.textContent = scriptInfo.name;
+
+  cfgOptElem.appendChild(cfgOptImgElem);
   cfgOptElem.appendChild(cfgOptItemElem);
 
-  onInteraction(cfgOptElem, () => {
-    const guideBtnElem = document.querySelector<HTMLElement>("ytd-masthead #start yt-icon-button#guide-button");
-    guideBtnElem?.click();
-    openCfgMenu();
-  });
+  onInteraction(cfgOptElem, openCfgMenu);
 
   const firstChild = container?.firstElementChild;
 
