@@ -7,7 +7,7 @@ import { getFeatures, setFeatures } from "./config";
 import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
 import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
-import { BytmDialog, createHotkeyInput, createToggleInput } from "./components";
+import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } from "./components";
 
 const { getUnsafeWindow } = UserUtils;
 
@@ -92,6 +92,7 @@ export function initInterface() {
     BytmDialog,
     createHotkeyInput,
     createToggleInput,
+    createCircularBtn,
   };
 
   for(const [key, value] of Object.entries(props))

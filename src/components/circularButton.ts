@@ -1,12 +1,19 @@
 import { getResourceUrl, onInteraction } from "../utils";
 import type { ResourceKey } from "../types";
 
-type CreateGenericBtnOptions = {
-  /** Resource key for the button icon */
-  resourceName: ResourceKey | "_";
-  /** Tooltip and aria-label of the button */
-  title: string;
-}
+type CircularBtnOptions = (
+  | {
+    /** Resource key for the button icon */
+    resourceName: ResourceKey | "_";
+    /** Tooltip and aria-label of the button */
+    title: string;
+  }
+  | {
+    src: string;
+    /** Tooltip and aria-label of the button */
+    title: string;
+  }
+)
 & (
   {
     /** URL to navigate to when the button is clicked */
@@ -20,16 +27,17 @@ type CreateGenericBtnOptions = {
 );
 
 /**
- * Creates a generic button element.  
+ * Creates a generic, circular button element.  
  * If `href` is provided, the button will be an anchor element.  
- * If `onClick` is provided, the button will be a div element.
+ * If `onClick` is provided, the button will be a div element.  
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
-export async function createGenericBtn({
-  resourceName,
+export async function createCircularBtn({
   title,
   href,
   onClick,
-}: CreateGenericBtnOptions) {
+  ...rest
+}: CircularBtnOptions) {
   let btnElem: HTMLElement;
   if(href) {
     btnElem = document.createElement("a");
@@ -48,7 +56,7 @@ export async function createGenericBtn({
 
   const imgElem = document.createElement("img");
   imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = await getResourceUrl(resourceName);
+  imgElem.src = "src" in rest ? rest.src : await getResourceUrl(rest.resourceName);
 
   btnElem.appendChild(imgElem);
 
