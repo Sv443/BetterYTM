@@ -1,5 +1,5 @@
-import { compress, decompress, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, domLoaded, reserialize, warn } from "./utils";
+import { compress, decompress, fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
+import { addStyle, domLoaded, getResourceUrl, reserialize, warn } from "./utils";
 import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -120,11 +120,12 @@ async function onDomLoad() {
   const ftInit = [] as Promise<void>[];
 
   try {
-    insertGlobalStyle();
-
     initObservers();
 
-    await initVersionCheck();
+    await Promise.allSettled([
+      insertGlobalStyle(),
+      initVersionCheck(),
+    ]);
   }
   catch(err) {
     error("Fatal error in feature pre-init:", err);
@@ -335,9 +336,14 @@ async function onDomLoad() {
 // }
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
-function insertGlobalStyle() {
-  // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-  addStyle("#{{GLOBAL_STYLE}}", "global");
+async function insertGlobalStyle() {
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl("css-bundle"))).text();
+    css && addStyle(css, "bundle");
+  }
+  catch(err) {
+    error("Couldn't add global CSS bundle due to an error:", err);
+  }
 }
 
 /** Registers dev commands using `GM.registerMenuCommand` */
