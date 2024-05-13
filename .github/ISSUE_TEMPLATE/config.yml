@@ -1,4 +1,4 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
   - name: "Contributor Guide"
     about: "Read the contributor guide to learn how to contribute to the project or how to create a plugin"
