@@ -30,7 +30,7 @@ export type Domain = "yt" | "ytm";
 export type SiteSelection = Domain | "all";
 
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
-export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog";
+export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog" | "css-bundle";
 
 /** Describes a single hotkey */
 export type HotkeyObj = {

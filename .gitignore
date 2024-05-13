@@ -7,7 +7,7 @@ test.css
 node_modules/
 dist/*.map
 dist/out/
-dist/*.css
+dist/*.css.map
 dist/*_gf.user.js
 dist/*_oujs.user.js
 .build.json

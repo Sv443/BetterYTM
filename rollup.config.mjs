@@ -51,7 +51,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       pluginJson(),
       pluginHtml(),
       pluginCss({
-        output: "global.css",
+        output: "BetterYTM.css",
       }),
       pluginExecute([
         `npm run --silent post-build -- ${passCliArgsStr}`,

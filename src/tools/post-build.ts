@@ -109,7 +109,8 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @noframes\
+// @noframes
+// @resource          css-bundle              ${getResourceUrl("/dist/BetterYTM.css", buildNbr)}\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
@@ -133,12 +134,8 @@ I welcome every contribution on GitHub!
     const rootPath = join(dirname(fileURLToPath(import.meta.url)), "../../");
 
     const scriptPath = join(rootPath, distFolderPath, userscriptDistFile);
-    const globalStylePath = join(rootPath, distFolderPath, "global.css");
-    let globalStyle = String(await readFile(globalStylePath));
-    if(mode === "production")
-      globalStyle = remSourcemapComments(globalStyle);
 
-    // read userscript and inject build number and global CSS
+    // read userscript and inject build number and other values
     let userscript = insertValues(
       String(await readFile(scriptPath)),
       {
@@ -147,9 +144,7 @@ I welcome every contribution on GitHub!
         HOST: host,
         BUILD_NUMBER: buildNbr,
       },
-    )
-      // needs special treatment because the double quotes need to be replaced with backticks
-      .replace(/"(\/\*)?#{{GLOBAL_STYLE}}(\*\/)?"/gm, `\`${globalStyle}\``);
+    );
 
     if(mode === "production")
       userscript = remSourcemapComments(userscript);
@@ -326,6 +321,7 @@ function getLocalizedDescriptions() {
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
+ * @param buildToken A unique token for this build or script version that forces the extension and browser to re-fetch resources once changed
  */
 function getResourceUrl(path: string, buildToken?: string) {
   let assetPath = "/assets/";
