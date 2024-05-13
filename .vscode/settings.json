@@ -18,10 +18,10 @@
       "color": "black",
       "overviewRulerColor": "#ed0",
     },
-    "((//\\s?)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&+#*'\"]+)*[:]*)": { //#region test (abc):
-      "backgroundColor": "#069",
-      "color": "#fff",
-      "overviewRulerColor": "#069",
+    "((//\\s*|/\\*\\s*)?#region ([^\\S\\r\\n]*[\\(\\)\\w,.\\-_&+#*'\"/]+)*[:]*)": { //#region test (abc):
+      "backgroundColor": "#5df",
+      "color": "#000",
+      "overviewRulerColor": "#5df",
     },
     "((<!--\\s*)?</?\\{\\{[A-Z_-]+\\}\\}>(\\s*-->)?)": { // <!-- <{{FOO}}> --> and <!-- </{{FOO}}> --> or <{{BAR}}> and </{{BAR}}>
       "backgroundColor": "#9af",

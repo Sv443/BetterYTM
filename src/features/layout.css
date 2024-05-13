@@ -141,6 +141,13 @@ button[disabled].bytm-busy {
   cursor: progress;
 }
 
+/* #region random fixes */
+
+.sponsorSkipNoticeContainer,
+.sponsorSkipObject {
+  z-index: 4;
+}
+
 /* #region menu */
 
 .bytm-cfg-menu-option {
@@ -240,7 +247,19 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
   height: 100%;
+}
+
+#bytm-above-queue-btn-wrapper {
+  white-space: nowrap;
+}
+
+.bytm-above-queue-btn {
+  width: 32px;
+  height: 32px;
+  margin-left: 0;
+  margin-right: 8px;
 }
 
 /* #region scroll to active */
@@ -274,7 +293,7 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   padding: 4px;
 }
 
-/** #region thumbnail */
+/* #region thumbnail */
 
 #bytm-thumbnail-overlay {
   position: absolute;

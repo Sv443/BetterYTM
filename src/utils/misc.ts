@@ -7,19 +7,19 @@ import langMapping from "../../assets/locales.json" assert { type: "json" };
 
 //#region misc
 
-let domain: Domain; 
+let cachedDomain: Domain; 
 
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
  */
 export function getDomain(): Domain {
-  if(domain)
-    return domain;
+  if(cachedDomain)
+    return cachedDomain;
   if(location.hostname.match(/^music\.youtube/))
-    return domain = "ytm";
+    return cachedDomain = "ytm";
   else if(location.hostname.match(/youtube\./))
-    return domain = "yt";
+    return cachedDomain = "yt";
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }

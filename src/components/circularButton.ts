@@ -17,10 +17,8 @@ type CircularBtnOptions = (
   | {
     /** URL to navigate to when the button is clicked */
     href: string;
-    onClick?: undefined;
   }
   | {
-    href?: undefined;
     /** Callback function to execute when the button is clicked */
     onClick: (event: MouseEvent | KeyboardEvent) => void;
   }
@@ -34,25 +32,27 @@ type CircularBtnOptions = (
  */
 export async function createCircularBtn({
   title,
-  href,
-  onClick,
   ...rest
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
-  if(href) {
+  if("href" in rest && rest.href) {
     btnElem = document.createElement("a");
-    (btnElem as HTMLAnchorElement).href = href;
+    (btnElem as HTMLAnchorElement).href = rest.href;
     btnElem.role = "button";
     (btnElem as HTMLAnchorElement).target = "_blank";
     (btnElem as HTMLAnchorElement).rel = "noopener noreferrer";
   }
-  else {
+  else if("onClick" in rest && rest.onClick) {
     btnElem = document.createElement("div");
-    onClick && onInteraction(btnElem, onClick);
+    rest.onClick && onInteraction(btnElem, rest.onClick);
   }
+  else
+    throw new TypeError("Either 'href' or 'onClick' must be provided");
 
   btnElem.classList.add("bytm-generic-btn");
   btnElem.ariaLabel = btnElem.title = title;
+  btnElem.tabIndex = 0;
+  btnElem.role = "button";
 
   const imgElem = document.createElement("img");
   imgElem.classList.add("bytm-generic-btn-img");

@@ -171,7 +171,6 @@
     "feature_desc_deleteFromQueueButton": "Adicionar um botão a cada música na fila para removê-la rapidamente",
     "feature_desc_listButtonsPlacement": "Onde os botões da fila devem aparecer?",
     "feature_helptext_listButtonsPlacement": "Existem várias listas de músicas no site, como páginas de álbuns, listas de reprodução e a fila de reprodução atual. Com esta opção, você pode escolher onde os botões da fila devem aparecer.",
-    "feature_desc_scrollToActiveSongBtn": "Adicionar um botão à fila para rolar até a música que está tocando atualmente",
 
     "feature_desc_disableBeforeUnloadPopup": "Evite a janela de confirmação que aparece ao tentar sair do site enquanto uma música está tocando",
     "feature_helptext_disableBeforeUnloadPopup": "Ao tentar sair do site enquanto uma música está tocando, uma janela de confirmação pode aparecer, pedindo que você confirme que deseja sair do site. Pode dizer algo como \"você tem dados não salvos\" ou \"este site está perguntando se você deseja fechá-lo\".\nEste recurso desativa completamente essa janela de confirmação.",

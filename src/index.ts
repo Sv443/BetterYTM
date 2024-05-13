@@ -56,11 +56,10 @@ import {
   console.log();
 }
 
-const domain = getDomain();
-
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
   try {
+    const domain = getDomain();
     log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
@@ -77,6 +76,8 @@ function preInit() {
 
 async function init() {
   try {
+    const domain = getDomain();
+
     const features = await initConfig();
     setLogLevel(features.logLevel);
 
@@ -114,6 +115,7 @@ async function init() {
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
+  const domain = getDomain();
   const features = getFeatures();
   const ftInit = [] as Promise<void>[];
 

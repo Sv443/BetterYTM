@@ -171,7 +171,6 @@
     "feature_desc_deleteFromQueueButton": "Füge jedem Song in der Wiedergabeliste einen Knopf hinzu, um ihn schnell zu entfernen",
     "feature_desc_listButtonsPlacement": "Wo sollen die Wiedergabelisten-Knöpfe angezeigt werden?",
     "feature_helptext_listButtonsPlacement": "Es gibt verschiedene Songlisten auf der Seite, wie z.B. Albumseiten, Playlists und die aktuelle Wiedergabeliste. Mit dieser Option kannst du auswählen, wo die Wiedergabelisten-Knöpfe angezeigt werden sollen.",
-    "feature_desc_scrollToActiveSongBtn": "Füge einen Knopf zur Wiedergabeliste hinzu, um zum aktiven Song zu scrollen",
 
     "feature_desc_disableBeforeUnloadPopup": "Verhindere das Erscheinen des Bestätigungs-Popup beim Verlassen der Seite, während ein Song läuft",
     "feature_helptext_disableBeforeUnloadPopup": "Wenn du versuchst, die Seite zu verlassen, während ein Song läuft, erscheint ein Popup, das dich fragt, ob du die Seite wirklich verlassen möchtest. Es könnte etwas in der Art von \"Du hast ungespeicherte Daten\" oder \"Diese Seite fragt, ob du sie schließen möchtest\" sein.\nDiese Funktion deaktiviert dieses Popup vollständig.",

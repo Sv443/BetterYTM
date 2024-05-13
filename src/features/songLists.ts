@@ -85,7 +85,7 @@ async function addQueueButtons(
   classes: string[] = [],
 ) {
   const queueBtnsCont = document.createElement("div");
-  queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
+  queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
 
   const lyricsIconUrl = await getResourceUrl("icon-lyrics");
   const deleteIconUrl = await getResourceUrl("icon-delete");

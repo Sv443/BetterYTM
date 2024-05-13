@@ -4,7 +4,7 @@ import { addSelectorListener } from "src/observers";
 
 //#region video time, volume
 
-export const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
+export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
@@ -20,7 +20,7 @@ export function getVideoTime(precision = 2) {
 
     try {
       if(domain === "ytm") {
-        const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
+        const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
@@ -30,7 +30,7 @@ export function getVideoTime(precision = 2) {
         });
       }
       else if(domain === "yt") {
-        const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
+        const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
@@ -108,7 +108,7 @@ function ytForceShowVideoTime() {
 /** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise((res) => {
-    addSelectorListener<HTMLVideoElement>("body", videoSelector, {
+    addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
       listener: async (vidElem) => {
         if(vidElem) {
           // this is just after YT has finished doing their own shenanigans with the video time and volume
