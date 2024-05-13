@@ -14,10 +14,10 @@
 // @description:zh-CN 可配置的布局和YouTube Music™的用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0-only
+// @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/images/logo/logo_48.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7c261f7
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,40 +35,42 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          css-fix_hdr             http://localhost:8710/assets/style/fixHDR.css?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          doc-changelog           http://localhost:8710/changelog.md?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-clear_list         http://localhost:8710/assets/icons/clear_list.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-image_filled       http://localhost:8710/assets/icons/image_filled.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-image              http://localhost:8710/assets/icons/image.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-link               http://localhost:8710/assets/icons/link.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-reload             http://localhost:8710/assets/icons/refresh.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-close               http://localhost:8710/assets/images/close.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
-// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=1ca6766c-c236-4a25-83c1-ced394071be5
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=7c261f7
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=7c261f7
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=7c261f7
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=7c261f7
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=7c261f7
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=7c261f7
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=7c261f7
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=7c261f7
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=7c261f7
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=7c261f7
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=7c261f7
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=7c261f7
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=7c261f7
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=7c261f7
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=7c261f7
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=7c261f7
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=7c261f7
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=7c261f7
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=7c261f7
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=7c261f7
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=7c261f7
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7c261f7
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=7c261f7
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=7c261f7
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=7c261f7
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=7c261f7
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=7c261f7
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=7c261f7
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=7c261f7
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=7c261f7
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=7c261f7
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=7c261f7
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=7c261f7
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=7c261f7
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=7c261f7
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=7c261f7
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -196,7 +198,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "a2258b9";
+const buildNumberRaw = "7c261f7";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -426,8 +428,8 @@ const allTrKeys = new Map();
 const initializedLocales = new Set();
 /** Initializes the translations */
 function initTranslations(locale) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         if (initializedLocales.has(locale))
             return;
         initializedLocales.add(locale);
@@ -571,8 +573,8 @@ class BytmDialog extends NanoEmitter {
      * Prevents default action and immediate propagation of the passed event
      */
     open(e) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             e === null || e === void 0 ? void 0 : e.preventDefault();
             e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
             if (this.isOpen())
@@ -659,8 +661,8 @@ class BytmDialog extends NanoEmitter {
     //#region private
     /** Returns the dialog content element and all its children */
     getDialogContent() {
-        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
             const header = (_b = (_a = this.options).renderHeader) === null || _b === void 0 ? void 0 : _b.call(_a);
             const footer = (_d = (_c = this.options).renderFooter) === null || _d === void 0 ? void 0 : _d.call(_c);
             const dialogWrapperEl = document.createElement("div");
@@ -726,22 +728,26 @@ class BytmDialog extends NanoEmitter {
  * Provide either `resourceName` or `src` to specify the icon inside the button.
  */
 function createCircularBtn(_a) {
-    var { title, href, onClick } = _a, rest = __rest(_a, ["title", "href", "onClick"]);
     return __awaiter(this, void 0, void 0, function* () {
+        var { title } = _a, rest = __rest(_a, ["title"]);
         let btnElem;
-        if (href) {
+        if ("href" in rest && rest.href) {
             btnElem = document.createElement("a");
-            btnElem.href = href;
+            btnElem.href = rest.href;
             btnElem.role = "button";
             btnElem.target = "_blank";
             btnElem.rel = "noopener noreferrer";
         }
-        else {
+        else if ("onClick" in rest && rest.onClick) {
             btnElem = document.createElement("div");
-            onClick && onInteraction(btnElem, onClick);
+            rest.onClick && onInteraction(btnElem, rest.onClick);
         }
+        else
+            throw new TypeError("Either 'href' or 'onClick' must be provided");
         btnElem.classList.add("bytm-generic-btn");
         btnElem.ariaLabel = btnElem.title = title;
+        btnElem.tabIndex = 0;
+        btnElem.role = "button";
         const imgElem = document.createElement("img");
         imgElem.classList.add("bytm-generic-btn-img");
         imgElem.src = "src" in rest ? rest.src : yield getResourceUrl(rest.resourceName);
@@ -1007,8 +1013,8 @@ function getOS() {
         return "mac";
     return "other";
 }/** Creates a simple toggle element */
-function createToggleInput({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
-    return __awaiter(this, void 0, void 0, function* () {
+function createToggleInput(_a) {
+    return __awaiter(this, arguments, void 0, function* ({ onChange, initialValue = false, id = UserUtils.randomId(8, 26), labelPos = "left", }) {
         const wrapperEl = document.createElement("div");
         wrapperEl.classList.add("bytm-toggle-input-wrapper", "bytm-no-select");
         wrapperEl.role = "switch";
@@ -1170,7 +1176,7 @@ function renderBody$4() {
         lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
         textAreaElem.value = t("click_to_reveal_sensitive_info");
         textAreaElem.setAttribute("revealed", "false");
-        const textAreaInteraction = ({ shiftKey }) => __awaiter(this, void 0, void 0, function* () {
+        const textAreaInteraction = (_a) => __awaiter(this, [_a], void 0, function* ({ shiftKey }) {
             const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
             lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
             textAreaElem.value = shiftKey
@@ -1229,8 +1235,8 @@ function renderFooter$2() {
 }let featHelpDialog = null;
 let curFeatKey = null;
 /** Creates and/or returns the help dialog for a specific feature */
-function getFeatHelpDialog({ featKey, }) {
-    return __awaiter(this, void 0, void 0, function* () {
+function getFeatHelpDialog(_a) {
+    return __awaiter(this, arguments, void 0, function* ({ featKey, }) {
         curFeatKey = featKey;
         if (!featHelpDialog) {
             featHelpDialog = new BytmDialog({
@@ -1263,8 +1269,8 @@ function renderHeader$3() {
     });
 }
 function renderBody$3() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         const contElem = document.createElement("div");
         const featDescElem = document.createElement("h3");
         featDescElem.role = "subheading";
@@ -1440,7 +1446,7 @@ var author = {
 	name: "Sv443",
 	url: "https://github.com/Sv443"
 };
-var license = "AGPL-3.0-only";
+var license = "AGPL-3.0-or-later";
 var bugs = {
 	url: "https://github.com/Sv443/BetterYTM/issues"
 };
@@ -1530,8 +1536,8 @@ var pkg = {
 	nodemonConfig: nodemonConfig
 };let verNotifDialog = null;
 /** Creates and/or returns the dialog to be shown when a new version is available */
-function getVersionNotifDialog({ latestTag, }) {
-    return __awaiter(this, void 0, void 0, function* () {
+function getVersionNotifDialog(_a) {
+    return __awaiter(this, arguments, void 0, function* ({ latestTag, }) {
         if (!verNotifDialog) {
             const changelogMdFull = yield getChangelogMd();
             const changelogMd = changelogMdFull.split("<div class=\"split\">")[1];
@@ -1569,8 +1575,8 @@ function renderHeader$1() {
     });
 }
 let disableUpdateCheck = false;
-function renderBody$1({ latestTag, changelogHtml, }) {
-    return __awaiter(this, void 0, void 0, function* () {
+function renderBody$1(_a) {
+    return __awaiter(this, arguments, void 0, function* ({ latestTag, changelogHtml, }) {
         disableUpdateCheck = false;
         const hostPlatformNames = {
             github: "GitHub",
@@ -1678,8 +1684,8 @@ let hiddenCopiedTxtTimeout;
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
 function addCfgMenu() {
-    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c, _d;
         if (isCfgMenuAdded)
             return;
         isCfgMenuAdded = true;
@@ -2312,8 +2318,8 @@ function closeCfgMenu(evt, enableScroll = true) {
 }
 /** Opens the config menu if it is closed */
 function openCfgMenu() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         if (!isCfgMenuAdded)
             yield addCfgMenu();
         if (isCfgMenuOpen)
@@ -2640,9 +2646,9 @@ function initVersionCheck() {
  * Checks for a new version of the script and shows a dialog.
  * If {@linkcode notifyNoUpdatesFound} is set to true, a dialog is also shown if no updates were found.
  */
-function doVersionCheck(notifyNoUpdatesFound = false) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
+function doVersionCheck() {
+    return __awaiter(this, arguments, void 0, function* (notifyNoUpdatesFound = false) {
+        var _a;
         yield GM.setValue("bytm-version-check", Date.now());
         const res = yield sendRequest({
             method: "GET",
@@ -3077,7 +3083,6 @@ function addAnchorImprovements() {
                     UserUtils.addParent(thumbnailElem, anchorElem);
                 }
             };
-            // TODO: needs to be optimized
             // home page
             addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
                 continuous: true,
@@ -3219,90 +3224,76 @@ function addAboveQueueBtns() {
                     const aboveQueueBtnCont = document.createElement("div");
                     aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
                     UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
-                    if (scrollToActiveSongBtn)
-                        yield addScrollToActiveBtn(rightBtnsEl);
-                    if (clearQueueBtn)
-                        yield addClearQueueBtn(rightBtnsEl);
+                    const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
+                    if (!headerEl)
+                        return error("Couldn't find queue header element while adding above queue buttons");
+                    siteEvents.on("fullscreenToggled", (isFullscreen) => {
+                        headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
+                    });
+                    const contBtns = [
+                        {
+                            condition: scrollToActiveSongBtn,
+                            id: "scroll-to-active",
+                            resourceName: "icon-skip_to",
+                            titleKey: "scroll_to_playing",
+                            interaction() {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+                                    if (!activeItem)
+                                        return;
+                                    activeItem.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center",
+                                        inline: "center",
+                                    });
+                                });
+                            },
+                        },
+                        {
+                            condition: clearQueueBtn,
+                            id: "clear-queue",
+                            resourceName: "icon-clear_list",
+                            titleKey: "clear_list",
+                            interaction() {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    try {
+                                        // TODO: better confirmation dialog?
+                                        if (!confirm(t("clear_list_confirm")))
+                                            return;
+                                        const url = new URL(location.href);
+                                        url.searchParams.delete("list");
+                                        url.searchParams.set("t", String(yield getVideoTime(0)));
+                                        location.href = String(url);
+                                    }
+                                    catch (err) {
+                                        error("Couldn't clear queue due to an error:", err);
+                                    }
+                                });
+                            },
+                        },
+                    ];
+                    if (contBtns.some(b => Boolean(b.condition))) {
+                        const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-above_queue_btns"))).text();
+                        css && addStyle(css, "above-queue-btns");
+                        const wrapperElem = document.createElement("div");
+                        wrapperElem.id = "bytm-above-queue-btn-wrapper";
+                        for (const item of contBtns) {
+                            if (Boolean(item.condition) === false)
+                                continue;
+                            const btnElem = yield createCircularBtn({
+                                resourceName: item.resourceName,
+                                onClick: item.interaction,
+                                title: t(item.titleKey),
+                            });
+                            btnElem.id = `bytm-${item.id}-btn`;
+                            btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
+                            wrapperElem.appendChild(btnElem);
+                        }
+                        insertBefore(rightBtnsEl, wrapperElem);
+                    }
                 });
             },
         });
-    });
-}
-/** Adds a button above the queue to scroll to the active song */
-function addScrollToActiveBtn(rightBtnsEl) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const containerElem = document.createElement("div");
-        containerElem.id = "bytm-scroll-to-active-btn-cont";
-        const linkElem = document.createElement("div");
-        linkElem.id = "bytm-scroll-to-active-btn";
-        linkElem.tabIndex = 0;
-        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-        linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
-        linkElem.role = "button";
-        const imgElem = document.createElement("img");
-        imgElem.classList.add("bytm-generic-btn-img");
-        imgElem.src = yield getResourceUrl("icon-skip_to");
-        const scrollToActiveInteraction = () => {
-            const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-            if (!activeItem)
-                return;
-            activeItem.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center",
-            });
-        };
-        siteEvents.on("fullscreenToggled", (isFullscreen) => {
-            if (isFullscreen)
-                containerElem.classList.add("hidden");
-            else
-                containerElem.classList.remove("hidden");
-        });
-        onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
-        linkElem.appendChild(imgElem);
-        containerElem.appendChild(linkElem);
-        insertBefore(rightBtnsEl, containerElem);
-    });
-}
-/** Adds a button above the queue to clear it */
-function addClearQueueBtn(rightBtnsEl) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const containerElem = document.createElement("div");
-        containerElem.id = "bytm-clear-queue-btn-cont";
-        const linkElem = document.createElement("div");
-        linkElem.id = "bytm-clear-queue-btn";
-        linkElem.tabIndex = 0;
-        linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-        linkElem.ariaLabel = linkElem.title = t("clear_queue");
-        linkElem.role = "button";
-        const imgElem = document.createElement("img");
-        imgElem.classList.add("bytm-generic-btn-img");
-        imgElem.src = yield getResourceUrl("icon-clear_list");
-        siteEvents.on("fullscreenToggled", (isFullscreen) => {
-            if (isFullscreen)
-                containerElem.classList.add("hidden");
-            else
-                containerElem.classList.remove("hidden");
-        });
-        onInteraction(linkElem, () => __awaiter(this, void 0, void 0, function* () {
-            try {
-                // TODO: better confirmation dialog?
-                if (!confirm(t("clear_queue_confirm")))
-                    return;
-                const url = new URL(location.href);
-                url.searchParams.delete("list");
-                url.searchParams.set("t", String(yield getVideoTime(0)));
-                location.href = String(url);
-            }
-            catch (err) {
-                error("Couldn't clear queue due to an error:", err);
-            }
-        }), {
-            capture: true,
-        });
-        linkElem.appendChild(imgElem);
-        containerElem.appendChild(linkElem);
-        insertBefore(rightBtnsEl, containerElem);
     });
 }
 //#region thumbnail overlay
@@ -3618,14 +3609,14 @@ function restoreSongTime() {
 }
 /** Only call once as this calls itself after a timeout! - Updates the currently playing song's entry in GM storage */
 function remSongUpdateEntry() {
-    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c;
         if (location.pathname.startsWith("/watch")) {
             const watchID = getWatchId();
             if (!watchID)
                 return;
             const songTime = (_a = yield getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-            const paused = (_c = (_b = document.querySelector(videoSelector)) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            const paused = (_c = (_b = document.querySelector(getVideoSelector())) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
             // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
             if (songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
@@ -3694,7 +3685,7 @@ function initArrowKeySkip() {
             if (evt.code === "ArrowLeft")
                 skipBy *= -1;
             log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
-            const vidElem = document.querySelector(videoSelector);
+            const vidElem = document.querySelector(getVideoSelector());
             if (vidElem)
                 vidElem.currentTime = UserUtils.clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
         });
@@ -3779,7 +3770,7 @@ function initNumKeysSkip() {
                 && !numKeysIgnoreTagNames.includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "") // other element active
             )
                 return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
-            const vidElem = document.querySelector(videoSelector);
+            const vidElem = document.querySelector(getVideoSelector());
             if (!vidElem)
                 return warn("Could not find video element, so the keypress is ignored");
             const newVidTime = vidElem.duration / (10 / Number(e.key));
@@ -3822,7 +3813,8 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
         const spinnerIconUrl = yield getResourceUrl("icon-spinner");
         const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
         const errorIconUrl = yield getResourceUrl("icon-error");
-        const onMutation = (mutations) => { var _a, mutations_1, mutations_1_1; return __awaiter(this, void 0, void 0, function* () {
+        const onMutation = (mutations) => __awaiter(this, void 0, void 0, function* () {
+            var _a, mutations_1, mutations_1_1;
             var _b, e_1, _c, _d;
             try {
                 for (_a = true, mutations_1 = __asyncValues(mutations); mutations_1_1 = yield mutations_1.next(), _b = mutations_1_1.done, !_b; _a = true) {
@@ -3875,7 +3867,7 @@ function addActualMediaCtrlLyricsBtn(likeContainer) {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-        }); };
+        });
         // since YT and YTM don't reload the page on video change, MutationObserver needs to be used to watch for changes in the video title
         const obs = new MutationObserver(onMutation);
         obs.observe(songTitleElem, { attributes: true, attributeFilter: ["title"] });
@@ -3952,8 +3944,8 @@ function getCurrentLyricsUrl() {
 }
 /** Fetches the top lyrics URL result from geniURL - **the passed parameters need to be sanitized first!** */
 function fetchLyricsUrlTop(artist, song) {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         try {
             return (_b = (_a = (yield fetchLyricsUrls(artist, song))) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.url;
         }
@@ -3968,8 +3960,8 @@ function fetchLyricsUrlTop(artist, song) {
  * **the passed parameters need to be sanitized first!**
  */
 function fetchLyricsUrls(artist, song) {
-    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c;
         try {
             const cacheEntry = getLyricsCacheEntry(artist, song);
             if (cacheEntry) {
@@ -4095,8 +4087,8 @@ function fetchLyricsUrls(artist, song) {
     });
 }
 /** Creates the base lyrics button element */
-function createLyricsBtn(geniusUrl, hideIfLoading = true) {
-    return __awaiter(this, void 0, void 0, function* () {
+function createLyricsBtn(geniusUrl_1) {
+    return __awaiter(this, arguments, void 0, function* (geniusUrl, hideIfLoading = true) {
         const linkElem = document.createElement("a");
         linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
         linkElem.ariaLabel = linkElem.title = geniusUrl ? t("open_lyrics") : t("lyrics_loading");
@@ -4177,11 +4169,11 @@ function initQueueButtons() {
  * @param listType The type of list the queue item is in
  * @param classes Extra CSS classes to apply to the container
  */
-function addQueueButtons(queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = []) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
+function addQueueButtons(queueItem_1) {
+    return __awaiter(this, arguments, void 0, function* (queueItem, containerParentSelector = ".song-info", listType = "currentQueue", classes = []) {
+        var _a;
         const queueBtnsCont = document.createElement("div");
-        queueBtnsCont.classList.add("bytm-queue-btn-container", ...classes);
+        queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
         const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
         const deleteIconUrl = yield getResourceUrl("icon-delete");
         //#region lyrics
@@ -4423,18 +4415,6 @@ const featInfo = {
         default: true,
         textAdornment: adornments.reloadRequired,
     },
-    scrollToActiveSongBtn: {
-        type: "toggle",
-        category: "layout",
-        default: true,
-        textAdornment: adornments.reloadRequired,
-    },
-    clearQueueBtn: {
-        type: "toggle",
-        category: "layout",
-        default: true,
-        textAdornment: adornments.reloadRequired,
-    },
     removeUpgradeTab: {
         type: "toggle",
         category: "layout",
@@ -4601,6 +4581,18 @@ const featInfo = {
             { value: "everywhere", label: t("list_button_placement_everywhere") },
         ],
         default: "everywhere",
+        textAdornment: adornments.reloadRequired,
+    },
+    scrollToActiveSongBtn: {
+        type: "toggle",
+        category: "songLists",
+        default: true,
+        textAdornment: adornments.reloadRequired,
+    },
+    clearQueueBtn: {
+        type: "toggle",
+        category: "songLists",
+        default: true,
         textAdornment: adornments.reloadRequired,
     },
     //#region behavior
@@ -5239,7 +5231,7 @@ function initObservers() {
 function addSelectorListener(observerName, selector, options) {
     globservers[observerName].addListener(selector, options);
 }//#region video time, volume
-const videoSelector = getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
+const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.
@@ -5252,7 +5244,7 @@ function getVideoTime(precision = 2) {
         yield waitVideoElementReady();
         try {
             if (domain === "ytm") {
-                const vidElem = document.querySelector(videoSelector);
+                const vidElem = document.querySelector(getVideoSelector());
                 if (vidElem)
                     return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
                 addSelectorListener("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
@@ -5260,7 +5252,7 @@ function getVideoTime(precision = 2) {
                 });
             }
             else if (domain === "yt") {
-                const vidElem = document.querySelector(videoSelector);
+                const vidElem = document.querySelector(getVideoSelector());
                 if (vidElem)
                     return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
@@ -5320,7 +5312,7 @@ function ytForceShowVideoTime() {
 /** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
 function waitVideoElementReady() {
     return new Promise((res) => {
-        addSelectorListener("body", videoSelector, {
+        addSelectorListener("body", getVideoSelector(), {
             listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
                 if (vidElem) {
                     // this is just after YT has finished doing their own shenanigans with the video time and volume
@@ -5358,8 +5350,6 @@ function onInteraction(elem, listener, listenerOptions) {
             return;
         e.preventDefault();
         e.stopImmediatePropagation();
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
         listener(e);
     };
     elem.addEventListener("click", proxListener, listenerOptions);
@@ -5437,18 +5427,18 @@ function warn(...args) {
 function error(...args) {
     console.error(consPrefix, ...args);
 }//#region misc
-let domain$1;
+let cachedDomain;
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
  */
 function getDomain() {
-    if (domain$1)
-        return domain$1;
+    if (cachedDomain)
+        return cachedDomain;
     if (location.hostname.match(/^music\.youtube/))
-        return domain$1 = "ytm";
+        return cachedDomain = "ytm";
     else if (location.hostname.match(/youtube\./))
-        return domain$1 = "yt";
+        return cachedDomain = "yt";
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
@@ -5483,8 +5473,6 @@ function compressionSupported() {
 /** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
 function arrayWithSeparators(array, separator = ", ", lastSeparator) {
     const arr = [...array];
-    if (!lastSeparator)
-        lastSeparator = separator;
     if (arr.length === 0)
         return "";
     else if (arr.length <= 2)
@@ -5541,8 +5529,8 @@ function hdrEnabled() {
  * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
  */
 function getResourceUrl(name) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         let url = yield GM.getResourceUrl(name);
         if (!url || url.length === 0) {
             const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
@@ -5673,10 +5661,10 @@ function sendRequest(details) {
     ].join("\n"));
     console.log();
 }
-const domain = getDomain();
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
     try {
+        const domain = getDomain();
         log("Session ID:", getSessionId());
         initInterface();
         setLogLevel(defaultLogLevel);
@@ -5689,9 +5677,10 @@ function preInit() {
     }
 }
 function init() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         try {
+            const domain = getDomain();
             const features = yield initConfig();
             setLogLevel(features.logLevel);
             yield initLyricsCache();
@@ -5723,12 +5712,15 @@ function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
+        const domain = getDomain();
         const features = getFeatures();
         const ftInit = [];
         try {
-            insertGlobalStyle();
             initObservers();
-            yield initVersionCheck();
+            yield Promise.allSettled([
+                insertGlobalStyle(),
+                initVersionCheck(),
+            ]);
         }
         catch (err) {
             error("Fatal error in feature pre-init:", err);
@@ -5898,1562 +5890,15 @@ function onDomLoad() {
 // }
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
-    // post-build these double quotes are replaced by backticks (because if backticks are used here, the bundler converts them to double quotes)
-    addStyle(`:root {
-  --bytm-dialog-accent-col: #3683d4;
-  --bytm-advanced-mode-color: #c5a73b;
-  --bytm-experimental-col: #d07ff0;
-  --bytm-warning-col: #ff5233;
-  --bytm-reload-col: #42b045;
-}
-
-/* TODO(v1.2): leave only dialog */
-#bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg
-{
-  --bytm-dialog-height-max: 800px;
-  --bytm-dialog-width-max: 1150px;
-  --bytm-menu-height-max: 800px;
-  --bytm-menu-width-max: 1150px;
-}
-
-.bytm-dialog-bg.bytm-dom-yt,
-.bytm-menu-bg.bytm-dom-yt {
-  z-index: 10042;
-}
-
-.bytm-dialog.bytm-dom-yt,
-.bytm-menu.bytm-dom-yt {
-  z-index: 10069;
-}
-
-.bytm-dialog-body p {
-  overflow-wrap: break-word;
-}
-
-.bytm-dialog-body details summary {
-  cursor: pointer;
-  font-style: italic;
-}
-
-#bytm-version-notif-dialog-btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-#bytm-disable-update-check-wrapper {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 35px;
-}
-
-#bytm-disable-update-check-wrapper label {
-  padding-left: 12px;
-}
-
-#bytm-version-notif-changelog-cont {
-  max-height: calc(max(var(--calc-max-height) - 280px, 0px));
-  overflow-y: auto;
-  margin: 10px 0px;
-}
-
-#bytm-version-notif-changelog-details {
-  margin-top: 15px;
-}
-
-.bytm-disable-update-check-toggle-label-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.bytm-secondary-label {
-  padding-left: 12px;
-  font-size: 1.3rem;
-}
-
-.bytm-adorn-icon {
-  display: inline-flex;
-  align-items: center;
-  cursor: help;
-}
-
-.bytm-ftconf-adv-copy-btn {
-  margin: 0px 10px;
-}
-
-.bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #fff) !important;
-}
-
-.bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff) !important;
-}
-
-.bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff) !important;
-}
-
-.bytm-warning-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff) !important;
-}
-
-.bytm-reload-icon svg path {
-  fill: var(--bytm-reload-col, #fff) !important;
-}
-
-/* #SECTION welcome dialog */
-
-#bytm-welcome-menu-title-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-welcome-menu-title-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 20px;
-}
-
-#bytm-welcome-menu-content-wrapper {
-  overflow-y: auto;
-}
-
-#bytm-welcome-menu-locale-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#bytm-welcome-menu-locale-img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
-}
-
-#bytm-welcome-menu-text-cont {
-  margin-top: 16px;
-}
-
-#bytm-welcome-menu-text {
-  font-size: 1.6rem;
-  line-height: 20px;
-}
-
-#bytm-welcome-menu-locale-select {
-  font-size: 1.6rem;
-}
-
-#bytm-welcome-menu-footer-cont {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
-}
-
-.bytm-dialog-bg {
-  --bytm-dialog-bg: #333333;
-  --bytm-dialog-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
-  --bytm-dialog-separator-color: #797979;
-  --bytm-dialog-border-radius: 10px;
-}
-
-.bytm-dialog-bg {
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.bytm-dialog {
-  --calc-max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)));
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-dialog-width-max)));
-  border-radius: var(--bytm-dialog-border-radius);
-  height: auto;
-  max-height: var(--calc-max-height);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 6;
-  color: #fff;
-  background-color: var(--bytm-dialog-bg);
-}
-
-.bytm-dialog-body {
-  font-size: 1.5rem;
-  padding: 20px;
-}
-
-.bytm-dialog-body.small {
-  padding: 15px;
-}
-
-#bytm-dialog-opts {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: 30px 0px;
-  overflow-y: auto;
-}
-
-.bytm-dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  padding: 15px 20px 15px 20px;
-  background-color: var(--bytm-dialog-bg);
-  border: 2px solid var(--bytm-dialog-separator-color);
-  border-style: none none solid none !important;
-  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
-}
-
-.bytm-dialog-header.small {
-  padding: 10px 15px;
-  border-style: none none solid none !important;
-}
-
-.bytm-dialog-header-pad {
-  content: " ";
-  min-height: 32px;
-}
-
-.bytm-dialog-header-pad.small {
-  min-height: 24px;
-}
-
-.bytm-dialog-titlecont {
-  display: flex;
-  align-items: center;
-}
-
-.bytm-dialog-titlecont-no-title {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.bytm-dialog-title {
-  position: relative;
-  display: inline-block;
-  font-size: 22px;
-}
-
-#bytm-dialog-version {
-  position: absolute;
-  width: 100%;
-  bottom: -10px;
-  left: 0;
-  font-size: 10px;
-  font-weight: normal;
-  z-index: 7;
-}
-
-#bytm-dialog-version .bytm-link {
-  color: #c6d2db !important;
-  text-decoration: none !important;
-  cursor: pointer;
-}
-
-#bytm-dialog-version .bytm-link:hover {
-  color: #c6d2db !important;
-  text-decoration: underline !important;
-}
-
-#bytm-dialog-linkscont {
-  display: flex;
-  align-items: center;
-  margin-left: 32px;
-}
-
-.bytm-dialog-link {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.bytm-dialog-link:not(:last-of-type) {
-  margin-right: 10px;
-}
-
-.bytm-dialog-link .bytm-dialog-img {
-  position: relative;
-  border-radius: 50%;
-  bottom: 0px;
-  transition: bottom 0.15s ease-out;
-}
-
-.bytm-dialog-link:hover .bytm-dialog-img {
-  bottom: 5px;
-}
-
-.bytm-dialog-close {
-  cursor: pointer;
-}
-
-.bytm-dialog-header-img,
-.bytm-dialog-close
-{
-  width: 32px;
-  height: 32px;
-}
-
-.bytm-dialog-header-img.small,
-.bytm-dialog-close.small
-{
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-dialog-footer {
-  font-size: 17px;
-  text-decoration: underline;
-}
-
-.bytm-dialog-footer.hidden {
-  display: none;
-}
-
-.bytm-dialog-footer-cont {
-  margin-top: 6px;
-  padding: 15px 20px;
-  background: var(--bytm-dialog-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
-  border: 2px solid var(--bytm-dialog-separator-color);
-  border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
-}
-
-#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-.bytm-dialog-footer-right {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  margin-top: 15px;
-}
-
-#bytm-dialog-footer-left-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-#bytm-dialog-scroll-indicator {
-  --bytm-scroll-indicator-padding: 5px;
-  position: sticky;
-  bottom: -15px;
-  left: 50%;
-  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
-  padding: var(--bytm-scroll-indicator-padding);
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
-  z-index: 7;
-  background-color: var(--bytm-scroll-indicator-bg);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.bytm-hidden {
-  visibility: hidden !important;
-}
-
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
-}
-
-.bytm-dialog .bytm-ftitem {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.4em;
-  padding: 8px 20px;
-  transition: background-color 0.15s ease-out;
-}
-
-.bytm-dialog .bytm-ftitem:hover {
-  background-color: var(--bytm-dialog-bg-highlight);
-}
-
-.bytm-ftitem-leftside {
-  display: flex;
-  align-items: center;
-  min-height: 24px;
-}
-
-.bytm-ftconf-ctrl {
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-.bytm-ftconf-label {
-  user-select: none;
-}
-
-.bytm-slider-label {
-  margin-right: 10px;
-}
-
-.bytm-ftconf-input.bytm-hotkey-input {
-  cursor: pointer;
-  min-width: 80px;
-}
-
-.bytm-ftconf-input[type=number] {
-  width: 75px;
-}
-
-.bytm-ftconf-input[type=range] {
-  width: 200px;
-}
-
-.bytm-ftconf-input[type=text] {
-  width: 200px;
-}
-
-.bytm-ftconf-input[type=checkbox] {
-  margin-left: 5px;
-}
-
-#bytm-export-dialog-text, #bytm-import-dialog-text {
-  font-size: 1.6em;
-  margin-bottom: 15px;
-}
-
-.bytm-dialog-footer-copied {
-  font-size: 1.6em;
-  margin-right: 15px;
-}
-
-#bytm-changelog-dialog-body {
-  overflow-y: auto;
-}
-
-#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
-  width: 100%;
-  height: 150px;
-  resize: none;
-}
-
-.bytm-markdown-container {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  font-size: 1.4rem;
-  line-height: 20px;
-}
-
-/* Markdown stuff */
-
-.bytm-markdown-container kbd, .bytm-kbd {
-  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
-  display: inline-block;
-  vertical-align: bottom;
-  padding: 4px;
-  padding-top: 2px;
-  font-size: 0.95em;
-  line-height: 11px;
-  background-color: #222;
-  border: 1px solid #777;
-  border-radius: 5px;
-  box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
-}
-
-.bytm-markdown-container kbd:active, .bytm-kbd:active {
-  padding-bottom: 2px;
-  margin-top: 2px;
-  box-shadow: inset 0 0 0 initial;
-}
-
-.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
-  background: rgba(0, 0, 0, 0);
-}
-
-.bytm-markdown-container code {
-  background-color: #222;
-  border-radius: 3px;
-  padding: 1px 5px;
-  font-family: monospace;
-}
-
-.bytm-markdown-container h2 {
-  margin-bottom: 5px;
-}
-
-.bytm-markdown-container h2:not(:first-of-type) {
-  margin-top: 30px;
-}
-
-.bytm-markdown-container ul li::before {
-  content: "• ";
-  font-weight: bolder;
-}
-
-.bytm-markdown-container ul li > ul li::before {
-  white-space: pre-wrap;
-  content: "    • ";
-  font-weight: bolder;
-}
-
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  font-size: 1.5em;
-}
-
-#bytm-feat-help-dialog-desc {
-  font-size: 1.65em;
-  padding-bottom: 5px;
-}
-
-.bytm-ftitem-help-btn {
-  width: 24px !important;
-  height: 24px !important;
-}
-
-.bytm-ftitem-help-btn svg {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-.bytm-ftitem-help-btn svg > path {
-  fill: #b3bec7 !important;
-}
-
-hr {
-  display: block;
-  margin: 8px 0px 12px 0px;
-  border: revert;
-}
-
-.bytm-ftitem-adornment {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-right: 6px;
-}
-
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-.bytm-toggle-input-wrapper {
-  --toggle-height: 20px;
-  --toggle-width: 40px;
-  --toggle-knob-offset: 4px;
-  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
-  --toggle-color-off: #707070;
-  --toggle-knob-color: #f5f5f5;
-
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input-wrapper .bytm-toggle-input-label {
-  cursor: pointer;
-  font-size: 1.5rem;
-  padding: 3px 12px;
-}
-
-/* sauce: https://danklammer.com/articles/simple-css-toggle-switch/ */
-
-.bytm-toggle-input {
-  display: flex;
-  align-items: center;
-}
-
-.bytm-toggle-input input {
-  appearance: none;
-  display: inline-block;
-  width: var(--toggle-width);
-  height: var(--toggle-height);
-  position: relative;
-  border-radius: 50px;
-  overflow: hidden;
-  outline: none;
-  border: none;
-  margin: 0;
-  padding: var(--toggle-knob-offset);
-  cursor: pointer;
-  background-color: var(--toggle-color-off);
-  transition: justify-content 0.2s ease, background-color 0.2s ease;
-}
-
-.bytm-toggle-input input[data-toggled="true"] {
-  background-color: var(--toggle-color-on);
-}
-
-.bytm-toggle-input input .bytm-toggle-input-knob {
-  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  width: var(--toggle-knob-calc-width);
-  height: var(--toggle-knob-calc-height);
-  background-color: var(--toggle-knob-color);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: var(--toggle-knob-offset);
-  transition: left 0.2s ease;
-}
-
-.bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
-  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
-}
-.bytm-menu-bg {
-  --bytm-menu-bg: #333333;
-  --bytm-menu-bg-highlight: #252525;
-  --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
-  --bytm-menu-separator-color: #797979;
-  --bytm-menu-border-radius: 10px;
-}
-
-.bytm-menu-bg {
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.bytm-menu {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  width: calc(min(100% - 60px, var(--bytm-menu-width-max)));
-  border-radius: var(--bytm-menu-border-radius);
-  height: auto;
-  max-height: calc(min(100% - 40px, var(--bytm-menu-height-max)));
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 6;
-  color: #fff;
-  background-color: var(--bytm-menu-bg);
-}
-
-.bytm-menu.top-aligned {
-  top: 0;
-  transform: translate(-50%, 40px);
-}
-
-.bytm-menu-body {
-  padding: 20px;
-}
-
-#bytm-menu-opts {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: 20px 0px;
-  overflow-y: auto;
-}
-
-.bytm-menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  padding: 15px 20px 15px 20px;
-  background-color: var(--bytm-menu-bg);
-  border: 2px solid var(--bytm-menu-separator-color);
-  border-style: none none solid none !important;
-  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
-}
-
-.bytm-menu-header.small {
-  padding: 10px 15px;
-  border-style: none none solid none !important;
-}
-
-.bytm-menu-titlecont {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.bytm-menu-titlecont-no-title {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.bytm-menu-title {
-  position: relative;
-  display: inline-block;
-  font-size: 22px;
-}
-
-#bytm-cfg-menu-bg .bytm-menu-title {
-  transform: translate(0px, -6px);
-}
-
-#bytm-cfg-menu {
-  --bytm-menu-subtitle-color: #c6d2db;
-}
-
-#bytm-menu-subtitle-cont {
-  width: 100%;
-  display: flex;
-  gap: 6px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: end;
-  position: absolute;
-  bottom: -12px;
-  left: 0;
-  font-size: 10px;
-  font-weight: normal;
-  z-index: 7;
-}
-
-#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
-  color: var(--bytm-menu-subtitle-color) !important;
-}
-
-#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#bytm-menu-version-anchor {
-  overflow: hidden;
-  text-wrap: nowrap;
-  text-overflow: ellipsis;
-}
-
-#bytm-menu-linkscont {
-  display: flex;
-  align-items: center;
-  margin-left: 32px;
-}
-
-.bytm-menu-link {
-  position: relative;
-  max-height: 32px;
-  max-width: 32px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.bytm-menu-link:not(:last-of-type) {
-  margin-right: 10px;
-}
-
-.bytm-menu-link .bytm-menu-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  padding: 0px;
-  transform: translateY(0px);
-  transition: transform 0.15s ease-out, padding 0.15s ease-out;
-}
-
-.bytm-menu-link:hover .bytm-menu-img {
-  padding: 7px;
-  transform: translateY(-14px);
-}
-
-.bytm-menu-link .extended-link {
-  visibility: hidden;
-  position: absolute;
-  top: 14px;
-  padding-top: 13px;
-  padding-bottom: 2px;
-  opacity: 0;
-  text-decoration: none;
-  color: var(--bytm-menu-subtitle-color) !important;
-  white-space: pre;
-  font-size: 1.1rem;
-  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
-}
-
-.bytm-menu-link:hover .extended-link {
-  visibility: visible;
-  opacity: 1;
-}
-
-.bytm-menu-close {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-}
-
-.bytm-menu-close.small {
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-menu-footer {
-  font-size: 17px;
-  text-decoration: underline;
-}
-
-.bytm-menu-footer.hidden {
-  display: none;
-}
-
-.bytm-menu-footer-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 6px;
-  padding: 15px 20px;
-  background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
-  border: 2px solid var(--bytm-menu-separator-color);
-  border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
-}
-
-#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-.bytm-menu-footer-right {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-}
-
-#bytm-menu-footer-left-buttons-cont button:not(:last-of-type) {
-  margin-right: 15px;
-}
-
-#bytm-menu-scroll-indicator {
-  --bytm-scroll-indicator-padding: 5px;
-  position: sticky;
-  bottom: -15px;
-  left: 50%;
-  margin-top: calc(-32px - var(--bytm-scroll-indicator-padding) * 2);
-  padding: var(--bytm-scroll-indicator-padding);
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
-  z-index: 7;
-  background-color: var(--bytm-scroll-indicator-bg);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.bytm-hidden {
-  visibility: hidden !important;
-}
-
-.bytm-ftconf-category-header {
-  font-size: 20px;
-  margin-top: 32px;
-  margin-bottom: 8px;
-  padding: 0px 20px;
-}
-
-.bytm-ftconf-category-header:first-of-type {
-  margin-top: 0;
-}
-
-.bytm-ftitem {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.4rem;
-  padding: 8px 20px;
-  transition: background-color 0.15s ease-out;
-}
-
-.bytm-ftitem:hover {
-  background-color: var(--bytm-menu-bg-highlight);
-}
-
-.bytm-ftitem-leftside {
-  display: flex;
-  align-items: center;
-  min-height: 24px;
-}
-
-.bytm-ftconf-ctrl {
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-.bytm-ftconf-label {
-  user-select: none;
-}
-
-.bytm-slider-label {
-  margin-right: 10px;
-}
-
-.bytm-toggle-label {
-  padding-left: 10px;
-  padding-right: 5px;
-}
-
-.bytm-ftconf-input.bytm-hotkey-input {
-  cursor: pointer;
-  min-width: 50px;
-}
-
-.bytm-ftconf-input[type=number] {
-  width: 75px;
-}
-
-.bytm-ftconf-input[type=checkbox] {
-  margin-left: 5px;
-}
-
-#bytm-export-menu-text, #bytm-import-menu-text {
-  white-space: pre-wrap;
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-}
-
-.bytm-menu-footer-copied {
-  font-size: 1.6rem;
-  margin-right: 15px;
-}
-
-#bytm-changelog-menu-body {
-  overflow-y: auto;
-}
-
-.bytm-changelog-version-details:not(:first-of-type) {
-  margin-top: 15px;
-}
-
-.bytm-changelog-version-details summary h2 {
-  display: inline-block;
-}
-
-.bytm-changelog-version-details summary {
-  cursor: pointer;
-}
-
-.bytm-changelog-version-details summary::marker {
-  font-size: 2rem;
-}
-
-#bytm-export-menu-textarea, #bytm-import-menu-textarea {
-  width: 100%;
-  height: 150px;
-  resize: none;
-}
-
-.bytm-markdown-container {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  font-size: 1.5rem;
-  line-height: 20px;
-}
-
-/* Markdown stuff */
-
-.bytm-markdown-container kbd {
-  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
-  display: inline-block;
-  vertical-align: bottom;
-  padding: 4px;
-  padding-top: 2px;
-  font-size: 0.95em;
-  line-height: 11px;
-  background-color: #222;
-  border: 1px solid #777;
-  border-radius: 5px;
-  box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
-}
-
-.bytm-markdown-container kbd:active {
-  padding-bottom: 2px;
-  box-shadow: inset 0 0 0 initial;
-}
-
-.bytm-markdown-container kbd::selection {
-  background: rgba(0, 0, 0, 0);
-}
-
-.bytm-markdown-container code {
-  background-color: #222;
-  border-radius: 3px;
-  padding: 1px 5px;
-}
-
-.bytm-markdown-container h2 {
-  margin-bottom: 5px;
-}
-
-.bytm-markdown-container h2:not(:first-of-type) {
-  margin-top: 30px;
-}
-
-.bytm-markdown-container ul li {
-  padding-left: 0px;
-}
-
-.bytm-markdown-container ul li::marker {
-  content: none;
-}
-
-.bytm-markdown-container ul li::before {
-  content: "• ";
-  font-weight: bolder;
-}
-
-.bytm-markdown-container ul li > ul li {
-  padding-left: 16px;
-}
-
-.bytm-markdown-container ul li > ul li::marker {
-  content: none;
-}
-
-.bytm-markdown-container ul li > ul li::before {
-  white-space: pre-wrap;
-  content: "• ";
-  font-weight: bolder;
-}
-
-.bytm-markdown-container ul li > ul li > ul li {
-  padding-left: 16px;
-}
-
-.bytm-markdown-container ul li > ul li > ul li::marker {
-  content: none;
-}
-
-.bytm-markdown-container ul li > ul li > ul li::before {
-  white-space: pre-wrap;
-  content: "• ";
-  font-weight: bolder;
-}
-
-.bytm-markdown-container .pr-link-cont {
-  padding-top: 10px;
-}
-
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  font-size: 1.5rem;
-  line-height: 1.25em;
-}
-
-#bytm-feat-help-dialog-desc {
-  font-size: 1.8rem;
-  padding-bottom: 10px;
-}
-
-.bytm-ftitem-help-btn {
-  width: 24px !important;
-  height: 24px !important;
-}
-
-.bytm-ftitem-help-btn svg {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-.bytm-ftitem-help-btn svg > path {
-  fill: #b3bec7 !important;
-}
-
-hr {
-  display: block;
-  margin: 8px 0px 12px 0px;
-  border: revert;
-}
-
-/* #region volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-#bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-#bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-#bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-vol-slider-shared svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* #region misc */
-
-.bytm-disable-scroll {
-  overflow: hidden !important;
-}
-
-.bytm-generic-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  vertical-align: middle;
-  cursor: pointer;
-  margin-left: 8px;
-
-  width: 36px;
-  height: 36px;
-
-  border: 1px solid transparent;
-  border-radius: 100%;
-  background-color: transparent;
-
-  transition: background-color 0.2s ease;
-}
-
-.bytm-generic-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.bytm-generic-btn:active {
-  background-color: #5f5f5f;
-  animation: flashBorder 0.4s ease 1;
-}
-
-@keyframes flashBorder {
-  0% {
-    border: 1px solid transparent;
-  }
-  20% {
-    border: 1px solid #808080;
-  }
-  100% {
-    border: 1px solid transparent;
-  }
-}
-
-.bytm-generic-btn-img {
-  display: inline-block;
-  z-index: 1;
-  width: 24px;
-  height: 24px;
-}
-
-.bytm-spinner {
-  animation: rotate 1.2s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.bytm-anchor {
-  all: unset;
-  cursor: pointer;
-}
-
-/* ytmusic-logo a[bytm-animated="true"] .bytm-mod-logo-ellipse {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out infinite;
-} */
-
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-path {
-  transform-origin: 12px 12px;
-  animation: rotate 1s ease-in-out;
-}
-
-ytmusic-logo a.bytm-logo-exchanged .bytm-mod-logo-img {
-  width: 24px;
-  height: 24px;
-  z-index: 1000;
-  position: absolute;
-  animation: rotate-fade-in 1s ease-in-out;
-}
-
-@keyframes rotate-fade-in {
-  0% {
-    opacity: 0;
-    transform: rotate(0deg);
-  }
-  30% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.bytm-no-select {
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-}
-
-/* YTM does some weird styling that breaks everything, so this reverts all of BYTM's buttons to the browser default style */
-button.bytm-btn {
-  padding: revert;
-  border: revert;
-  outline: revert;
-  font: revert;
-  text-transform: revert;
-  color: revert;
-  background: revert;
-  line-height: 1.4em;
-}
-
-.bytm-link, .bytm-markdown-container a {
-  color: #369bff !important;
-  text-decoration: none !important;
-  cursor: pointer;
-}
-
-.bytm-link:hover, .bytm-markdown-container a:hover {
-  color: #369bff !important;
-  text-decoration: underline !important;
-}
-
-button[disabled] {
-  cursor: not-allowed;
-}
-
-button[disabled].bytm-busy {
-  cursor: progress;
-}
-
-/* #region menu */
-
-.bytm-cfg-menu-option {
-  display: block;
-  padding: 8px 0;
-}
-
-.bytm-cfg-menu-option-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 24px;
-  padding: var(--yt-compact-link-paper-item-padding, 0px 36px 0 16px);
-  min-height: var(--paper-item-min-height, 40px);
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.bytm-cfg-menu-option-item:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e);
-}
-
-.bytm-cfg-menu-option-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 16px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex: none;
-}
-
-.bytm-cfg-menu-option-text {
-  font-size: 1.4rem;
-  line-height: 2rem;
-}
-
-yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
-  border-bottom: 1px solid var(--yt-spec-10-percent-layer, #3e3e3e);
-}
-
-.bytm-yt-cfg-menu-option {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0px 12px;
-  min-height: var(--paper-item-min-height,48px);
-  width: calc(100% - 12px);
-  max-width: calc(100% - 12px);
-  cursor: pointer;
-  background-color: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.bytm-yt-cfg-menu-option:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e) !important;
-}
-
-.bytm-yt-cfg-menu-option-icon {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  width: 24px;
-  height: 24px;
-  margin-right: 24px;
-}
-
-.bytm-yt-cfg-menu-option-item {
-  font-size: 14px;
-}
-
-/* #region watermark */
-
-#bytm-watermark {
-  font-size: 10px;
-  display: inline-block;
-  position: absolute;
-  left: 97px;
-  top: 45px;
-  z-index: 10;
-  color: #f1f1f1;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#bytm-watermark:hover {
-  text-decoration: underline;
-}
-
-/* #region above queue btns */
-
-#bytm-above-queue-btn-cont {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-/* #region scroll to active */
-
-#bytm-scroll-to-active-btn-cont {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-#bytm-scroll-to-active-btn-cont.hidden {
-  display: none;
-}
-
-#bytm-scroll-to-active-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-#bytm-scroll-to-active-btn {
-  width: revert;
-  height: revert;
-}
-
-#bytm-scroll-to-active-btn .bytm-generic-btn-img {
-  padding: 4px;
-}
-
-/** #region thumbnail */
-
-#bytm-thumbnail-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  background-color: #030303;
-  z-index: 0;
-}
-
-#bytm-thumbnail-overlay-img {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-#bytm-thumbnail-overlay-indicator {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: calc(min(56px, 100% - 16px));
-  height: calc(min(56px, 100% - 16px));
-  z-index: 1;
-  cursor: help;
-  filter: drop-shadow(0 0 3px #000);
-}
-
-ytmusic-player#player #bezel {
-  z-index: 1;
-}
-
-/* #region queue buttons */
-
-#side-panel ytmusic-player-queue-item .song-info.ytmusic-player-queue-item {
-  position: relative;
-}
-
-#side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-  display: none;
-  position: absolute;
-  right: 0;
-  padding-left: 25px;
-  height: 100%;
-}
-
-#side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-.bytm-generic-list-queue-btn-container {
-  /* otherwise the queue buttons render over the currently playing song page */
-  z-index: 1;
-}
-
-#side-panel ytmusic-player-queue-item:hover .bytm-queue-btn-container,
-ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
-ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-btn-container,
-/* same thing but with :focus-within */
-#side-panel ytmusic-player-queue-item:focus-within .bytm-queue-btn-container,
-ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container,
-ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container
-{
-  display: inline-flex;
-  align-items: center;
-}
-
-ytmusic-responsive-list-item-renderer .title-column {
-  align-items: center;
-}
-
-#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-}
-
-#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
-  display: none !important;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
-  visibility: hidden;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
-  visibility: hidden !important;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container
-{
-  visibility: visible;
-}
-
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container a.bytm-generic-btn
-{
-  visibility: visible !important;
-}
-`, "global");
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-bundle"))).text();
+            css && addStyle(css, "bundle");
+        }
+        catch (err) {
+            error("Couldn't add global CSS bundle due to an error:", err);
+        }
+    });
 }
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevMenuCommands() {
