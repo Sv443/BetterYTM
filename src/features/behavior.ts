@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, videoSelector, waitVideoElementReady } from "../utils";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils";
 import { LogLevel } from "../types";
 import { getFeatures } from "src/config";
 import { addSelectorListener } from "src/observers";
@@ -145,7 +145,7 @@ async function remSongUpdateEntry() {
 
     const songTime = await getVideoTime() ?? 0;
 
-    const paused = document.querySelector<HTMLVideoElement>(videoSelector)?.paused ?? false;
+    const paused = document.querySelector<HTMLVideoElement>(getVideoSelector())?.paused ?? false;
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed

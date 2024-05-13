@@ -98,11 +98,11 @@ ${lines.join("\n")}\n
 
   const banner = `\
 <!--
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    !!             THIS IS A GENERATED FILE             !!
-    !!    all changes will be overwritten next build    !!
-    !! only edit in \`src/tools/tr-progress-template.md\` !!
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!             THIS IS A GENERATED FILE             !!!
+  !!!    all changes will be overwritten next build    !!!
+  !!! only edit in \`src/tools/tr-progress-template.md\` !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 -->`;
 
   const progTableHeader = `\

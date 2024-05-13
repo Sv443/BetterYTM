@@ -1,0 +1,14 @@
+#side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer {
+  position: sticky;
+  align-items: center;
+  top: 0;
+  z-index: 2;
+  padding: 16px 8px;
+  margin: unset;
+  background-color: #030303;
+  border-bottom: 1px solid var(--ytmusic-divider);
+}
+
+#side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer.hidden {
+  z-index: 0;
+}

@@ -2,9 +2,11 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, insertBefore, getVideoTime } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, getVideoTime, insertBefore } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
+import { createCircularBtn } from "../components";
+import type { ResourceKey } from "../types";
 import "./layout.css";
 
 //#region cfg menu buttons
@@ -234,8 +236,6 @@ export async function addAnchorImprovements() {
       }
     };
 
-    // TODO: needs to be optimized
-
     // home page
 
     addSelectorListener("body", "#contents.ytmusic-section-list-renderer ytmusic-carousel-shelf-renderer ytmusic-responsive-list-item-renderer", {
@@ -398,102 +398,80 @@ export async function addAboveQueueBtns() {
 
       addParent(rightBtnsEl, aboveQueueBtnCont);
 
-      if(scrollToActiveSongBtn)
-        await addScrollToActiveBtn(rightBtnsEl);
-      if(clearQueueBtn)
-        await addClearQueueBtn(rightBtnsEl);
+      const headerEl = rightBtnsEl.closest<HTMLElement>("ytmusic-queue-header-renderer");
+      if(!headerEl)
+        return error("Couldn't find queue header element while adding above queue buttons");
+
+      siteEvents.on("fullscreenToggled", (isFullscreen) => {
+        headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
+      });
+
+      const contBtns = [
+        {
+          condition: scrollToActiveSongBtn,
+          id: "scroll-to-active",
+          resourceName: "icon-skip_to",
+          titleKey: "scroll_to_playing",
+          async interaction() {
+            const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+            if(!activeItem)
+              return;
+
+            activeItem.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "center",
+            });
+          },
+        },
+        {
+          condition: clearQueueBtn,
+          id: "clear-queue",
+          resourceName: "icon-clear_list",
+          titleKey: "clear_list",
+          async interaction() {
+            try {
+              // TODO: better confirmation dialog?
+              if(!confirm(t("clear_list_confirm")))
+                return;
+              const url = new URL(location.href);
+              url.searchParams.delete("list");
+              url.searchParams.set("t", String(await getVideoTime(0)));
+              location.href = String(url);
+            }
+            catch(err) {
+              error("Couldn't clear queue due to an error:", err);
+            }
+          },
+        },
+      ];
+
+      if(contBtns.some(b => Boolean(b.condition))) {
+        const css = await (await fetchAdvanced(await getResourceUrl("css-above_queue_btns"))).text();
+        css && addStyle(css, "above-queue-btns");
+
+        const wrapperElem = document.createElement("div");
+        wrapperElem.id = "bytm-above-queue-btn-wrapper";
+
+        for(const item of contBtns) {
+          if(Boolean(item.condition) === false)
+            continue;
+
+          const btnElem = await createCircularBtn({
+            resourceName: item.resourceName as ResourceKey,
+            onClick: item.interaction,
+            title: t(item.titleKey),
+          });
+          btnElem.id = `bytm-${item.id}-btn`;
+          btnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-above-queue-btn");
+
+          wrapperElem.appendChild(btnElem);
+        }
+
+        insertBefore(rightBtnsEl, wrapperElem);
+      }
     },
   });
-}
-
-/** Adds a button above the queue to scroll to the active song */
-export async function addScrollToActiveBtn(rightBtnsEl: HTMLElement) {
-  const containerElem = document.createElement("div");
-  containerElem.id = "bytm-scroll-to-active-btn-cont";
-
-  const linkElem = document.createElement("div");
-  linkElem.id = "bytm-scroll-to-active-btn";
-  linkElem.tabIndex = 0;
-  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-  linkElem.ariaLabel = linkElem.title = t("scroll_to_playing");
-  linkElem.role = "button";
-
-  const imgElem = document.createElement("img");
-  imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = await getResourceUrl("icon-skip_to");
-
-  const scrollToActiveInteraction = () => {
-    const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-    if(!activeItem)
-      return;
-
-    activeItem.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    });
-  };
-
-  siteEvents.on("fullscreenToggled", (isFullscreen) => {
-    if(isFullscreen)
-      containerElem.classList.add("hidden");
-    else
-      containerElem.classList.remove("hidden");
-  });
-
-  onInteraction(linkElem, scrollToActiveInteraction, { capture: true });
-
-  linkElem.appendChild(imgElem);
-  containerElem.appendChild(linkElem);
-  insertBefore(rightBtnsEl, containerElem);
-}
-
-/** Adds a button above the queue to clear it */
-export async function addClearQueueBtn(rightBtnsEl: HTMLElement) {
-  const containerElem = document.createElement("div");
-  containerElem.id = "bytm-clear-queue-btn-cont";
-
-  const linkElem = document.createElement("div");
-  linkElem.id = "bytm-clear-queue-btn";
-  linkElem.tabIndex = 0;
-  linkElem.classList.add("ytmusic-player-bar", "bytm-generic-btn");
-  linkElem.ariaLabel = linkElem.title = t("clear_queue");
-  linkElem.role = "button";
-
-  const imgElem = document.createElement("img");
-  imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = await getResourceUrl("icon-clear_list");
-
-  siteEvents.on("fullscreenToggled", (isFullscreen) => {
-    if(isFullscreen)
-      containerElem.classList.add("hidden");
-    else
-      containerElem.classList.remove("hidden");
-  });
-
-  onInteraction(
-    linkElem,
-    async () => {
-      try {
-        // TODO: better confirmation dialog?
-        if(!confirm(t("clear_queue_confirm")))
-          return;
-        const url = new URL(location.href);
-        url.searchParams.delete("list");
-        url.searchParams.set("t", String(await getVideoTime(0)));
-        location.href = String(url);
-      }
-      catch(err) {
-        error("Couldn't clear queue due to an error:", err);
-      }
-    }, {
-      capture: true,
-    }
-  );
-
-  linkElem.appendChild(imgElem);
-  containerElem.appendChild(linkElem);
-  insertBefore(rightBtnsEl, containerElem);
 }
 
 //#region thumbnail overlay

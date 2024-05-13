@@ -1,7 +1,8 @@
 {
+  "css-above_queue_btns": "style/aboveQueueBtns.css",
   "css-anchor_improvements": "style/anchorImprovements.css",
-  "css-fix_spacing": "style/fixSpacing.css",
   "css-fix_hdr": "style/fixHDR.css",
+  "css-fix_spacing": "style/fixSpacing.css",
   "doc-changelog": "/changelog.md",
   "icon-advanced_mode": "icons/plus_circle_small.svg",
   "icon-arrow_down": "icons/arrow_down.svg",

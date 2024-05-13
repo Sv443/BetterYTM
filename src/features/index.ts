@@ -129,18 +129,6 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reloadRequired,
   },
-  scrollToActiveSongBtn: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    textAdornment: adornments.reloadRequired,
-  },
-  clearQueueBtn: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    textAdornment: adornments.reloadRequired,
-  },
   removeUpgradeTab: {
     type: "toggle",
     category: "layout",
@@ -309,6 +297,18 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
+    textAdornment: adornments.reloadRequired,
+  },
+  scrollToActiveSongBtn: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
+  clearQueueBtn: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
     textAdornment: adornments.reloadRequired,
   },
 

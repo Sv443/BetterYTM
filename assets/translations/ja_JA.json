@@ -171,7 +171,6 @@
     "feature_desc_deleteFromQueueButton": "キュー内の各曲にボタンを追加して、すばやく削除できるようにする",
     "feature_desc_listButtonsPlacement": "キューボタンの表示場所を選択する",
     "feature_helptext_listButtonsPlacement": "アルバムページ、プレイリスト、現在再生中のキューなど、サイトにはさまざまな曲リストがあります。このオプションを使用して、キューボタンを表示する場所を選択できます。",
-    "feature_desc_scrollToActiveSongBtn": "キューに現在再生中の曲までスクロールするボタンを追加する",
 
     "feature_desc_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると表示される確認ポップアップを防止する",
     "feature_helptext_disableBeforeUnloadPopup": "曲が再生されている間にサイトを離れようとすると、数秒後にポップアップが表示され、サイトを離れるかどうかを確認するように求められます。それは「保存されていないデータがあります」とか「このサイトを閉じるかどうかを尋ねています」とかのようなことが書かれているかもしれません。\nこの機能はそのポップアップを完全に無効にします。",

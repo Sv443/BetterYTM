@@ -171,7 +171,6 @@
     "feature_desc_deleteFromQueueButton": "Agregue un botón a cada canción en la cola para eliminarla rápidamente",
     "feature_desc_listButtonsPlacement": "¿Dónde deberían aparecer los botones de la cola?",
     "feature_helptext_listButtonsPlacement": "Hay varias listas de canciones en el sitio, como páginas de álbumes, listas de reproducción y la cola de reproducción actual. Con esta opción, puede elegir dónde deben aparecer los botones de la cola.",
-    "feature_desc_scrollToActiveSongBtn": "Agregue un botón a la cola para desplazarse hasta la canción que se está reproduciendo actualmente",
 
     "feature_desc_disableBeforeUnloadPopup": "Evite la ventana emergente de confirmación que aparece al intentar salir del sitio mientras se reproduce una canción",
     "feature_helptext_disableBeforeUnloadPopup": "Cuando intenta salir del sitio mientras está reproduciendo una canción que lleva unos segundos, aparecerá una ventana emergente que le pedirá que confirme que desea salir del sitio. Podría decir algo así como \"tiene datos no guardados\" o \"este sitio está preguntando si desea cerrarlo\".\nEsta función deshabilita completamente esa ventana emergente.",

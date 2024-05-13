@@ -1,5 +1,5 @@
 import { clamp } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, videoSelector } from "../utils";
+import { error, getVideoTime, info, log, warn, getVideoSelector } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
@@ -31,7 +31,7 @@ export async function initArrowKeySkip() {
 
     log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
     
-    const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
+    const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
     
     if(vidElem)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
@@ -129,7 +129,7 @@ export async function initNumKeysSkip() {
     )
       return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
 
-    const vidElem = document.querySelector<HTMLVideoElement>(videoSelector);
+    const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
     if(!vidElem)
       return warn("Could not find video element, so the keypress is ignored");
 
