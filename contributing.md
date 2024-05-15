@@ -1188,8 +1188,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 3]);   // 0
 > unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 2]);   // 1
 > unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2]);      // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [-1, 2 3]);   // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1.1, 2 3]);  // throws a TypeError
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [-1, 2, 3]);  // throws a TypeError
+> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1.1, 2, 3]); // throws a TypeError
 > ```
 > 
 > </details>

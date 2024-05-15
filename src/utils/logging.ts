@@ -31,7 +31,7 @@ function getLogLevel(args: unknown[]): number {
 
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function log(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
@@ -40,7 +40,7 @@ export function log(...args: unknown[]): void {
 
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.  
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 export function info(...args: unknown[]): void {
   if(curLogLevel <= getLogLevel(args))
