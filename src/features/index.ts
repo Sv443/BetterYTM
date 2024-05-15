@@ -21,15 +21,6 @@ type SelectOption = { value: number | string, label: string };
 
 //#region dependencies
 
-/** List of all available locale SelectOptions */
-const localeOptions = Object.entries(langMapping).reduce((a, [locale, { name }]) => {
-  return [...a, {
-    value: locale,
-    label: name,
-  }];
-}, [] as SelectOption[])
-  .sort((a, b) => a.label.localeCompare(b.label));
-
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
   `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceToHTMLString(resource) ?? ""}</span>`;
@@ -66,6 +57,14 @@ const options = {
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
   ],
+  locale: () => Object.entries(langMapping)
+    .reduce((a, [locale, { name }]) => {
+      return [...a, {
+        value: locale,
+        label: name,
+      }];
+    }, [] as SelectOption[])
+    .sort((a, b) => a.label.localeCompare(b.label)),
 };
 
 //#region features
@@ -325,7 +324,7 @@ export const featInfo = {
     min: 0,
     max: 30,
     step: 0.5,
-    default: 0,
+    default: 3,
     unit: "s",
     reloadRequired: false,
     enable: noop,
@@ -516,7 +515,7 @@ export const featInfo = {
   locale: {
     type: "select",
     category: "general",
-    options: localeOptions,
+    options: options.locale,
     default: getPreferredLocale(),
     textAdornment: () => combineAdornments([adornments.globe, adornments.reloadRequired]),
   },

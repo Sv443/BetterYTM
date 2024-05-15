@@ -21,18 +21,18 @@ export const migrations: DataMigrationsDict = {
     };
   },
   // 2 -> 3 (v1.0)
-  3: (oldData: FeatureConfig) => useDefaultConfig([
+  3: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "removeShareTrackingParam", "numKeysSkipToTime",
     "fixSpacing", "scrollToActiveSongBtn", "logLevel",
-  ], oldData),
+  ]),
   // 3 -> 4 (v1.1)
   4: (oldData: FeatureConfig) => {
     const oldSwitchSitesHotkey = oldData.switchSitesHotkey as Record<string, unknown>;
     return {
-      ...useDefaultConfig([
+      ...useDefaultConfig(oldData, [
         "rememberSongTime", "rememberSongTimeSites",
         "volumeSliderScrollStep", "locale", "versionCheck",
-      ], oldData),
+      ]),
       arrowKeySkipBy: 10,
       switchSitesHotkey: {
         code: oldSwitchSitesHotkey.key ?? "F9",
@@ -45,7 +45,7 @@ export const migrations: DataMigrationsDict = {
   },
   // 4 -> 5 (v1.2)
   5: (oldData: FeatureConfig) => ({
-    ...useDefaultConfig([
+    ...useDefaultConfig(oldData, [
       "geniUrlBase", "geniUrlToken",
       "lyricsCacheMaxSize", "lyricsCacheTTL",
       "clearLyricsCache", "advancedMode",
@@ -56,8 +56,8 @@ export const migrations: DataMigrationsDict = {
       "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
       "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
       "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-      "fixHdrIssues", "clearQueueBtn",
-    ], oldData),
+      "fixHdrIssues", "clearQueueBtn", "closeToastsTimeout",
+    ]),
   }),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 5 -> 6 (v1.3)
@@ -72,7 +72,7 @@ export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   }, {}) as FeatureConfig;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
-function useDefaultConfig(resetKeys: (keyof typeof featInfo)[], baseData?: FeatureConfig): Partial<FeatureConfig> {
+function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: (keyof typeof featInfo)[]): FeatureConfig {
   const newData = { ...defaultData, ...(baseData ?? {}) };
   for(const key of resetKeys) // @ts-ignore
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
@@ -90,20 +90,40 @@ const bytmCfgStore = new DataStore({
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
 });
 
-/** Initializes the DataStore instance and loads persistent data into memory */
+/** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${bytmCfgStore.id}`, NaN));
-  const data = await bytmCfgStore.loadData();
+  let data = await bytmCfgStore.loadData();
   log(`Initialized feature config DataStore (formatVersion = ${bytmCfgStore.formatVersion})`);
   if(isNaN(oldFmtVer))
     info("  !- Config data was initialized with default values");
-  else if(oldFmtVer !== bytmCfgStore.formatVersion)
+  else if(oldFmtVer !== bytmCfgStore.formatVersion) {
+    data = fixMissingCfgKeys(data);
+    await bytmCfgStore.setData(data);
     info(`  !- Config data was migrated from version ${oldFmtVer} to ${bytmCfgStore.formatVersion}`);
+  }
 
   emitInterface("bytm:configReady", getFeaturesInterface());
 
   return { ...data };
+}
+
+/**
+ * Fixes missing keys in the passed config object with their default values and returns a copy of the fixed object.  
+ * Returns a copy of the originally passed object if nothing needs to be fixed.
+ */
+export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
+  cfg = { ...cfg };
+  const passedKeys = Object.keys(cfg);
+  const defaultKeys = Object.keys(defaultData);
+  const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
+  if(missingKeys.length > 0) {
+    info("Fixed missing feature config keys:", missingKeys);
+    for(const key of missingKeys)
+      cfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
+  }
+  return cfg as FeatureConfig;
 }
 
 /** Returns the current feature config from the in-memory cache as a copy */
