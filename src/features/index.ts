@@ -545,9 +545,7 @@ export const featInfo = {
     type: "toggle",
     category: "general",
     default: mode === "development",
-    textAdornment: () => getFeatures().advancedMode
-      ? combineAdornments([adornments.advanced, adornments.reloadRequired])
-      : undefined,
+    textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     change: (_key, prevValue, newValue) =>
       prevValue !== newValue &&
         emitSiteEvent("recreateCfgMenu"),
