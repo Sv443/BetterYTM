@@ -232,7 +232,7 @@ export function initObservers() {
  * @template TDomain This restricts which observers are available with the current domain
  */
 export function addSelectorListener<
-  TElem extends Element | 0 = HTMLElement,
+  TElem extends HTMLElement | 0 = HTMLElement,
   TDomain extends Domain = "ytm"
 >(
   observerName: ObserverNameByDomain<TDomain>,
