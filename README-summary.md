@@ -80,8 +80,8 @@ Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-
 <br><br>
 
 ## Support:
-If you have any questions, issues, or feature requests, please [open an issue here](https://github.com/Sv443/BetterYTM/issues/new/choose).  
-You can also join the Discord server and ask your questions there or just hang out with other community members and me:  
+If you have any questions, issues, or feature requests, please [open an issue here.](https://github.com/Sv443/BetterYTM/issues/new/choose)  
+You can also join my Discord server and ask your questions there or just hang out with other community members and me:  
   
 [![Discord](https://img.shields.io/discord/565933531214118942)](https://discord.gg/aBH4uRG)
 
