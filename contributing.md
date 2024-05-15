@@ -862,10 +862,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > <br>
 > 
-> Options properties:  
+> Settings properties:  
 > | Property | Description |
 > | :--- | :--- |
-> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method emit() |
+> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method `emit()`<br>If false, the only way to emit events is inside your derived class using `this.events.emit()` |
 > 
 > <br>
 > 
@@ -878,7 +878,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   The callback is called and the Promise is resolved at the same time.
 > - `emit(event: string, ...args: any[]): boolean`  
 >   Emits the specified event with the passed arguments.  
->   Has to be enabled through the `publicEmit` option in the constructor.  
+>   Has to be enabled through the `publicEmit` option in the constructor first!  
 >   Returns true if the event was emitted successfully, false if not.
 > - `unsubscribeAll(): void`  
 >   Unsubscribes all listeners from all events and clears the internal listener map.
@@ -926,14 +926,20 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
 > ```
 >   
-> A class that can be used to create a dialog with a custom header, body and footer.  
-> The dialog is fully customizable and can be used to display any kind of content.  
-> It has many helper methods and events to make it flexible and easy to work with.  
-> The CSS style is uniform and can be overridden if a different theme is needed.  
+> A class that can be used to create and manage a dialog with a fully customizable header, body and footer.  
+>   
+> Features:
+> - Can be opened, closed, mounted, unmounted and destroyed at any time for full control.
+> - The dialog is fully responsive and can be used on any screen size, but will not exceed the provided maximum width and height.
+> - Scrollability of the body is automatically removed and the body is set to be inert (ignore keyboard input) automatically. Also works with multiple dialogs open at the same time!
+> - The dialog can be closed by clicking the background, pressing the escape key or clicking the close button (freely configurable).
+> - Features many helper methods and events to make it more flexible and easier to work with.
+> - Has an optional small mode for a more compact appearance.
+> - If needed, the relatively uniform CSS naming conventions make it easy for the appearance to be overridden by a BetterYTM plugin or userstyle.
 >   
 > Options properties:
 > | Property | Description |
-> | :--- | :--- |
+> | :-- | :-- |
 > | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
 > | `maxWidth: number` | Maximum width of the dialog in pixels |
 > | `maxHeight: number` | Maximum height of the dialog in pixels |
@@ -977,18 +983,21 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - `static getLastDialogId(): string`  
 >   Returns the ID of the last dialog that was opened.  
 >   This can be used to check if a dialog is currently open and to get its ID for further use.  
->   Static method usage: `BytmDialog.getLastDialogId()`
+>   Static method usage: `unsafeWindow.BytmDialog.getLastDialogId()` (doesn't need a `new` instance)
+> - `static getOpenDialogs(): string[]`  
+>   Returns the IDs of all open dialogs, topmost (last opened) first.  
+>   Static method usage: `unsafeWindow.BytmDialog.getOpenDialogs()` (doesn't need a `new` instance)
 > 
 > <br>
 > 
 > Events:  
 > | Event | Description |
 > | :--- | :--- |
-> | `on("close", () => void)` | Called just **after** the dialog is closed |
-> | `on("open", () => void)` | Called just **after** the dialog is opened |
-> | `on("render", () => void)` | Called just **after** the dialog contents are rendered |
-> | `on("clear", () => void)` | Called just **after** the dialog contents are cleared |
-> | `on("destroy", () => void)` | Called just **after** the dialog is destroyed and **before** all listeners are removed |
+> | `on("close", () => void)` | Emitted just **after** the dialog is closed |
+> | `on("open", () => void)` | Emitted just **after** the dialog is opened |
+> | `on("render", () => void)` | Emitted just **after** the dialog contents are rendered |
+> | `on("clear", () => void)` | Emitted just **after** the dialog contents are cleared |
+> | `on("destroy", () => void)` | Emitted just **after** the dialog is destroyed and **before** all listeners are removed |
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 

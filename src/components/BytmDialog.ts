@@ -34,6 +34,8 @@ export interface BytmDialogOptions {
 
 /** ID of the last opened (top-most) dialog */
 let currentDialogId: string | null = null;
+/** IDs of all currently open dialogs, top-most first */
+const openDialogs: string[] = [];
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<{
@@ -138,6 +140,9 @@ export class BytmDialog extends NanoEmitter<{
       return;
     this.dialogOpen = true;
 
+    if(openDialogs.includes(this.id))
+      throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
+
     if(!this.isMounted())
       await this.mount();
 
@@ -153,6 +158,7 @@ export class BytmDialog extends NanoEmitter<{
     dialogBg.inert = false;
 
     currentDialogId = this.id;
+    openDialogs.unshift(this.id);
 
     this.events.emit("open");
     emitInterface("bytm:dialogOpened", this as BytmDialog);
@@ -170,8 +176,6 @@ export class BytmDialog extends NanoEmitter<{
       return;
     this.dialogOpen = false;
 
-    document.body.classList.remove("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
@@ -183,6 +187,13 @@ export class BytmDialog extends NanoEmitter<{
 
     if(BytmDialog.getCurrentDialogId() === this.id)
       currentDialogId = null;
+
+    openDialogs.splice(openDialogs.indexOf(this.id), 1);
+
+    if(openDialogs.length === 0) {
+      document.body.classList.remove("bytm-disable-scroll");
+      document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    }
 
     this.events.emit("close");
 
@@ -215,6 +226,11 @@ export class BytmDialog extends NanoEmitter<{
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getCurrentDialogId() {
     return currentDialogId;
+  }
+
+  /** Returns the IDs of all currently open dialogs, top-most first */
+  public static getOpenDialogs() {
+    return openDialogs;
   }
 
   //#region protected

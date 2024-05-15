@@ -10,7 +10,7 @@ export type FeatHelpDialogRenderProps = {
   featKey: FeatureKey;
 };
 
-/** Creates and/or returns the help dialog for a specific feature */
+/** Creates or modifies the help dialog for a specific feature and returns it */
 export async function getFeatHelpDialog({
   featKey,
 }: FeatHelpDialogRenderProps) {
