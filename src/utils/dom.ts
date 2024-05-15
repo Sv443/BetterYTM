@@ -1,6 +1,7 @@
 import { addGlobalStyle, getUnsafeWindow, randomId } from "@sv443-network/userutils";
-import { error, getDomain } from ".";
+import { error, fetchCss, getDomain } from ".";
 import { addSelectorListener } from "src/observers";
+import type { ResourceKey } from "src/types";
 
 //#region video time, volume
 
@@ -190,4 +191,14 @@ export function currentMediaType(): "video" | "song" {
 export function insertBefore(afterElement: Element, beforeElement: Element) {
   afterElement.parentNode?.insertBefore(beforeElement, afterElement);
   return beforeElement;
+}
+
+/** Adds a global style element with the contents of the specified CSS resource */
+export async function addStyleFromResource(key: ResourceKey & `css-${string}`) {
+  const css = await fetchCss(key);
+  if(css) {
+    addStyle(css, key.slice(4));
+    return true;
+  }
+  return false;
 }

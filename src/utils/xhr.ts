@@ -1,4 +1,7 @@
-import type { Stringifiable } from "@sv443-network/userutils";
+import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
+import type { ResourceKey } from "src/types";
+import { getResourceUrl } from "./misc";
+import { error } from "./logging";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
@@ -16,7 +19,7 @@ export function constructUrlString(baseUrl: string, params: Record<string, Strin
 }
 
 /**
- * Constructs a URL from a base URL and a record of query parameters.  
+ * Constructs a URL object from a base URL and a record of query parameters.  
  * If a value is null, the parameter will be valueless.  
  * All values will be URI-encoded.  
  * @returns Returns a URL object instead of a string
@@ -40,4 +43,16 @@ export function sendRequest<T = any>(details: GM.Request<T>) {
       onabort: reject,
     });
   });
+}
+
+/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+export async function fetchCss(key: ResourceKey & `css-${string}`) {
+  try {
+    const css = await (await fetchAdvanced(await getResourceUrl(key))).text();
+    return css ?? undefined;
+  }
+  catch(err) {
+    error("Couldn't fetch CSS due to an error:", err);
+    return undefined;
+  }
 }

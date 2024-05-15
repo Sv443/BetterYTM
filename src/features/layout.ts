@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, getVideoTime, insertBefore } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, getVideoTime, insertBefore, fetchCss, addStyleFromResource } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
@@ -198,7 +198,7 @@ export async function removeUpgradeTab() {
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
   try {
-    const css = await (await fetchAdvanced(await getResourceUrl("css-anchor_improvements"))).text();
+    const css = await fetchCss("css-anchor_improvements");
     if(css)
       addStyle(css, "anchor-improvements");
   }
@@ -373,14 +373,8 @@ export async function initRemShareTrackParam() {
 
 /** Applies global CSS to fix various spacings */
 export async function fixSpacing() {
-  try {
-    const css = await (await fetchAdvanced(await getResourceUrl("css-fix_spacing"))).text();
-    if(css)
-      addStyle(css, "fix-spacing");
-  }
-  catch(err) {
-    error("Couldn't fix spacing due to an error:", err);
-  }
+  if(!await addStyleFromResource("css-fix_spacing"))
+    error("Couldn't fix spacing");
 }
 
 //#region above queue btns
@@ -447,8 +441,8 @@ export async function addAboveQueueBtns() {
       ];
 
       if(contBtns.some(b => Boolean(b.condition))) {
-        const css = await (await fetchAdvanced(await getResourceUrl("css-above_queue_btns"))).text();
-        css && addStyle(css, "above-queue-btns");
+        if(!await addStyleFromResource("css-above_queue_btns"))
+          error("Couldn't add CSS for above queue buttons");
 
         const wrapperElem = document.createElement("div");
         wrapperElem.id = "bytm-above-queue-btn-wrapper";
@@ -715,9 +709,8 @@ export async function initHideCursorOnIdle() {
 export async function fixHdrIssues() {
   if(!hdrEnabled())
     return log("HDR is not enabled, skipping HDR fixes");
-  const css = await (await fetchAdvanced(await getResourceUrl("css-fix_hdr"))).text();
-  if(css) {
-    addStyle(css, "fix-hdr");
+  if(!await addStyleFromResource("css-fix_hdr"))
+    error("Couldn't fix HDR issues");
+  else
     log("Fixed HDR issues");
-  }
 }

@@ -123,8 +123,8 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
  * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage  
  * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache  
  *   
- * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
- * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
+ * ⚠️ `artist` and `song` need to be sanitized first!
+ * @param penaltyFr Fraction of the max bounds {@linkcode maxViewedPenalty} and {@linkcode maxAddedPenalty} to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the max penalty)
  */
 export function addLyricsCacheEntryPenalized(artist: string, song: string, url: string, penaltyFr = 0) {
   // refresh entry if it exists and don't overwrite / duplicate it
