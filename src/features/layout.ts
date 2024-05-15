@@ -379,7 +379,7 @@ export async function fixSpacing() {
 
 //#region above queue btns
 
-export async function addAboveQueueBtns() {
+export async function initAboveQueueBtns() {
   const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
 
   if(!scrollToActiveSongBtn && !clearQueueBtn)

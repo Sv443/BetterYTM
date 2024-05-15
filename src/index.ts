@@ -11,12 +11,12 @@ import {
   // layout
   addWatermark, removeUpgradeTab,
   initRemShareTrackParam, fixSpacing,
-  addAboveQueueBtns, initThumbnailOverlay,
-  initHideCursorOnIdle, fixHdrIssues,
+  initThumbnailOverlay, initHideCursorOnIdle,
+  fixHdrIssues,
   // volume
   initVolumeFeatures,
   // song lists
-  initQueueButtons,
+  initQueueButtons, initAboveQueueBtns,
   // behavior
   initBeforeUnloadHook, disableBeforeUnload,
   initAutoCloseToasts, initRememberSongTime,
@@ -161,9 +161,6 @@ async function onDomLoad() {
       if(features.fixSpacing)
         ftInit.push(fixSpacing());
 
-      if(features.scrollToActiveSongBtn)
-        ftInit.push(addAboveQueueBtns());
-
       if(features.removeUpgradeTab)
         ftInit.push(removeUpgradeTab());
 
@@ -183,6 +180,9 @@ async function onDomLoad() {
 
       if(features.lyricsQueueButton || features.deleteFromQueueButton)
         ftInit.push(initQueueButtons());
+
+      if(features.scrollToActiveSongBtn)
+        ftInit.push(initAboveQueueBtns());
 
       //#region (ytm) behavior
 
