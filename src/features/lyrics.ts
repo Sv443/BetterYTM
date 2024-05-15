@@ -1,6 +1,6 @@
 import { autoPlural, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
-import { constructUrlString, error, getResourceUrl, info, log, warn, t, tp, currentMediaType } from "../utils";
+import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils";
 import { emitInterface } from "../interface";
 import { mode, scriptInfo } from "../constants";
 import { getFeature } from "../config";
@@ -221,7 +221,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }
 
     const startTs = Date.now();
-    const fetchUrl = constructUrlString(`${getFeature("geniUrlBase")}/search`, {
+    const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
       utm_source: scriptInfo.name,
       utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
@@ -229,7 +229,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       song,
     });
 
-    log(`Requesting URLs from geniURL at '${fetchUrl}'`);
+    log("Requesting lyrics from geniURL:", fetchUrl);
 
     const token = getFeature("geniUrlToken");
     const fetchRes = await fetchAdvanced(fetchUrl, {

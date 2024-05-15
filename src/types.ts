@@ -287,7 +287,7 @@ type FeatureFuncProps = (
 
 /**
  * The feature info object that contains all properties necessary to construct the config menu and the feature config object.  
- * Values are loosely typed so try to only use this with the `satisfies` keyword.  
+ * All values are loosely typed so try to only use this with the `satisfies` keyword.  
  * Use `typeof featInfo` (from `src/features/index.ts`) instead for full type safety.
  */
 export type FeatureInfo = Record<

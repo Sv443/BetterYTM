@@ -1,5 +1,5 @@
-import { compress, decompress, fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
-import { addStyle, domLoaded, getResourceUrl, reserialize, warn } from "./utils";
+import { compress, decompress, type Stringifiable } from "@sv443-network/userutils";
+import { addStyleFromResource, domLoaded, reserialize, warn } from "./utils";
 import { clearConfig, defaultData as defaultFeatData, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -337,13 +337,8 @@ async function onDomLoad() {
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function insertGlobalStyle() {
-  try {
-    const css = await (await fetchAdvanced(await getResourceUrl("css-bundle"))).text();
-    css && addStyle(css, "bundle");
-  }
-  catch(err) {
-    error("Couldn't add global CSS bundle due to an error:", err);
-  }
+  if(!await addStyleFromResource("css-bundle"))
+    error("Couldn't add global CSS bundle due to an error");
 }
 
 /** Registers dev commands using `GM.registerMenuCommand` */
