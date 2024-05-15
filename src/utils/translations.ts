@@ -6,7 +6,6 @@ import { emitInterface, setGlobalProp } from "../interface";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
-export type TrInfo = (typeof langMapping)["en_US"];
 type TFuncKey = TrKey | (string & {});
 
 const fetchOpts: FetchAdvancedOpts = {

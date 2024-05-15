@@ -24,7 +24,7 @@
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#registerplugin))
-    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#nanoemitter), and the functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createhotkeyinput) and [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/0f2563541289e383a87b1dd34e6b3f86baf34c63/contributing.md#createtoggleinput)
+    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#nanoemitter), and the functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
 
 <div class="pr-link-cont">
