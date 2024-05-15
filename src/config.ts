@@ -1,6 +1,6 @@
 import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
 import { featInfo } from "./features/index";
-import { compressionSupported, info, log } from "./utils";
+import { compressionSupported, error, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat } from "./constants";
 import type { FeatureConfig, FeatureKey } from "./types";
@@ -81,7 +81,7 @@ function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKey
 
 let canCompress = true;
 
-const bytmCfgStore = new DataStore({
+const cfgDataStore = new DataStore({
   id: "bytm-config",
   formatVersion,
   defaultData,
@@ -93,15 +93,20 @@ const bytmCfgStore = new DataStore({
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
   canCompress = await compressionSupported();
-  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${bytmCfgStore.id}`, NaN));
-  let data = await bytmCfgStore.loadData();
-  log(`Initialized feature config DataStore (formatVersion = ${bytmCfgStore.formatVersion})`);
+  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgDataStore.id}`, NaN));
+  let data = await cfgDataStore.loadData();
+  log(`Initialized feature config DataStore (formatVersion = ${cfgDataStore.formatVersion})`);
   if(isNaN(oldFmtVer))
     info("  !- Config data was initialized with default values");
-  else if(oldFmtVer !== bytmCfgStore.formatVersion) {
-    data = fixMissingCfgKeys(data);
-    await bytmCfgStore.setData(data);
-    info(`  !- Config data was migrated from version ${oldFmtVer} to ${bytmCfgStore.formatVersion}`);
+  else if(oldFmtVer !== cfgDataStore.formatVersion) {
+    try {
+      await cfgDataStore.setData(data = fixMissingCfgKeys(data));
+      info(`  !- Config data was migrated from version ${oldFmtVer} to ${cfgDataStore.formatVersion}`);
+    }
+    catch(err) {
+      error("  !- Config data migration failed, falling back to default data:", err);
+      await cfgDataStore.setData(data = cfgDataStore.defaultData);
+    }
   }
 
   emitInterface("bytm:configReady", getFeaturesInterface());
@@ -128,32 +133,32 @@ export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
 
 /** Returns the current feature config from the in-memory cache as a copy */
 export function getFeatures(): FeatureConfig {
-  return bytmCfgStore.getData();
+  return cfgDataStore.getData();
 }
 
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
 export function getFeature<TKey extends FeatureKey>(key: TKey): FeatureConfig[TKey] {
-  return bytmCfgStore.getData()[key];
+  return cfgDataStore.getData()[key];
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export function setFeatures(featureConf: FeatureConfig) {
-  const res = bytmCfgStore.setData(featureConf);
-  emitSiteEvent("configChanged", bytmCfgStore.getData());
+  const res = cfgDataStore.setData(featureConf);
+  emitSiteEvent("configChanged", cfgDataStore.getData());
   info("Saved new feature config:", featureConf);
   return res;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export function setDefaultFeatures() {
-  const res = bytmCfgStore.saveDefaultData();
-  emitSiteEvent("configChanged", bytmCfgStore.getData());
+  const res = cfgDataStore.saveDefaultData();
+  emitSiteEvent("configChanged", cfgDataStore.getData());
   info("Reset feature config to its default values");
   return res;
 }
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 export async function clearConfig() {
-  await bytmCfgStore.deleteData();
+  await cfgDataStore.deleteData();
   info("Deleted config from persistent storage");
 }
