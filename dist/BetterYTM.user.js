@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7c261f7
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=2f67ea5
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,42 +35,42 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=7c261f7
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=7c261f7
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=7c261f7
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=7c261f7
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=7c261f7
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=7c261f7
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=7c261f7
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=7c261f7
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=7c261f7
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=7c261f7
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=7c261f7
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=7c261f7
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=7c261f7
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=7c261f7
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=7c261f7
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=7c261f7
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=7c261f7
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=7c261f7
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=7c261f7
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=7c261f7
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=7c261f7
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=7c261f7
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=7c261f7
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=7c261f7
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=7c261f7
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=7c261f7
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=7c261f7
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=7c261f7
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=7c261f7
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=7c261f7
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=7c261f7
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=7c261f7
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=7c261f7
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=7c261f7
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=7c261f7
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=7c261f7
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=2f67ea5
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=2f67ea5
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=2f67ea5
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=2f67ea5
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=2f67ea5
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=2f67ea5
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=2f67ea5
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=2f67ea5
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=2f67ea5
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=2f67ea5
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=2f67ea5
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=2f67ea5
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=2f67ea5
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=2f67ea5
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=2f67ea5
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=2f67ea5
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=2f67ea5
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=2f67ea5
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=2f67ea5
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=2f67ea5
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=2f67ea5
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=2f67ea5
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=2f67ea5
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=2f67ea5
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=2f67ea5
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=2f67ea5
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=2f67ea5
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=2f67ea5
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=2f67ea5
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=2f67ea5
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=2f67ea5
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=2f67ea5
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=2f67ea5
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=2f67ea5
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=2f67ea5
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=2f67ea5
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -198,7 +198,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "7c261f7";
+const buildNumberRaw = "2f67ea5";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -328,8 +328,8 @@ function addLyricsCacheEntryBest(artist, song, url) {
  * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
  * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
  *
- * ⚠️ {@linkcode artist} and {@linkcode song} need to be sanitized first!
- * @param penaltyFr Fraction to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the predefined max penalty)
+ * ⚠️ `artist` and `song` need to be sanitized first!
+ * @param penaltyFr Fraction of the max bounds {@linkcode maxViewedPenalty} and {@linkcode maxAddedPenalty} to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the max penalty)
  */
 function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     // refresh entry if it exists and don't overwrite / duplicate it
@@ -1432,7 +1432,8 @@ var scripts = {
 	"gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
 	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
 	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
-	test: "npm run node-ts -- ./test.ts"
+	test: "npm run node-ts -- ./test.ts",
+	knip: "knip"
 };
 var engines = {
 	node: ">=18",
@@ -1477,13 +1478,14 @@ var devDependencies = {
 	"@rollup/plugin-typescript": "^11.1.5",
 	"@types/express": "^4.17.17",
 	"@types/greasemonkey": "^4.0.4",
-	"@types/node": "^20.2.4",
+	"@types/node": "^20.12.12",
 	"@typescript-eslint/eslint-plugin": "^6.7.4",
 	"@typescript-eslint/parser": "^6.7.4",
 	concurrently: "^8.1.0",
 	dotenv: "^16.4.1",
 	eslint: "^8.51.0",
 	express: "^4.18.2",
+	knip: "^5.15.1",
 	nodemon: "^3.0.1",
 	rollup: "^4.6.0",
 	"rollup-plugin-execute": "^1.1.1",
@@ -1491,7 +1493,7 @@ var devDependencies = {
 	"rollup-plugin-import-css": "^3.3.5",
 	"ts-node": "^10.9.1",
 	tslib: "^2.5.2",
-	typescript: "^5.0.4"
+	typescript: "^5.4.5"
 };
 var browserslist = [
 	"last 1 version",
@@ -3053,7 +3055,7 @@ function removeUpgradeTab() {
 function addAnchorImprovements() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-anchor_improvements"))).text();
+            const css = yield fetchCss("css-anchor_improvements");
             if (css)
                 addStyle(css, "anchor-improvements");
         }
@@ -3202,18 +3204,12 @@ function initRemShareTrackParam() {
 /** Applies global CSS to fix various spacings */
 function fixSpacing() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-fix_spacing"))).text();
-            if (css)
-                addStyle(css, "fix-spacing");
-        }
-        catch (err) {
-            error("Couldn't fix spacing due to an error:", err);
-        }
+        if (!(yield addStyleFromResource("css-fix_spacing")))
+            error("Couldn't fix spacing");
     });
 }
 //#region above queue btns
-function addAboveQueueBtns() {
+function initAboveQueueBtns() {
     return __awaiter(this, void 0, void 0, function* () {
         const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
         if (!scrollToActiveSongBtn && !clearQueueBtn)
@@ -3273,8 +3269,8 @@ function addAboveQueueBtns() {
                         },
                     ];
                     if (contBtns.some(b => Boolean(b.condition))) {
-                        const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-above_queue_btns"))).text();
-                        css && addStyle(css, "above-queue-btns");
+                        if (!(yield addStyleFromResource("css-above_queue_btns")))
+                            error("Couldn't add CSS for above queue buttons");
                         const wrapperElem = document.createElement("div");
                         wrapperElem.id = "bytm-above-queue-btn-wrapper";
                         for (const item of contBtns) {
@@ -3498,11 +3494,10 @@ function fixHdrIssues() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!hdrEnabled())
             return log("HDR is not enabled, skipping HDR fixes");
-        const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-fix_hdr"))).text();
-        if (css) {
-            addStyle(css, "fix-hdr");
+        if (!(yield addStyleFromResource("css-fix_hdr")))
+            error("Couldn't fix HDR issues");
+        else
             log("Fixed HDR issues");
-        }
     });
 }//#region beforeunload popup
 let beforeUnloadEnabled = true;
@@ -3969,14 +3964,14 @@ function fetchLyricsUrls(artist, song) {
                 return [cacheEntry];
             }
             const startTs = Date.now();
-            const fetchUrl = constructUrlString(`${getFeature("geniUrlBase")}/search`, {
+            const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
                 disableFuzzy: null,
                 utm_source: scriptInfo.name,
                 utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
                 artist,
                 song,
             });
-            log(`Requesting URLs from geniURL at '${fetchUrl}'`);
+            log("Requesting lyrics from geniURL:", fetchUrl);
             const token = getFeature("geniUrlToken");
             const fetchRes = yield UserUtils.fetchAdvanced(fetchUrl, Object.assign({}, (token ? {
                 headers: {
@@ -5385,6 +5380,17 @@ function insertBefore(afterElement, beforeElement) {
     var _a;
     (_a = afterElement.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(beforeElement, afterElement);
     return beforeElement;
+}
+/** Adds a global style element with the contents of the specified CSS resource */
+function addStyleFromResource(key) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const css = yield fetchCss(key);
+        if (css) {
+            addStyle(css, key.slice(4));
+            return true;
+        }
+        return false;
+    });
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
@@ -5405,7 +5411,7 @@ function getLogLevel(args) {
 }
 /**
  * Logs all passed values to the console, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function log(...args) {
     if (curLogLevel <= getLogLevel(args))
@@ -5413,7 +5419,7 @@ function log(...args) {
 }
 /**
  * Logs all passed values to the console as info, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if they shouldn't be.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
  */
 function info(...args) {
     if (curLogLevel <= getLogLevel(args))
@@ -5637,12 +5643,34 @@ function constructUrlString(baseUrl, params) {
         .join("&")}`;
 }
 /**
+ * Constructs a URL object from a base URL and a record of query parameters.
+ * If a value is null, the parameter will be valueless.
+ * All values will be URI-encoded.
+ * @returns Returns a URL object instead of a string
+ */
+function constructUrl(base, params) {
+    return new URL(constructUrlString(base, params));
+}
+/**
  * Sends a request with the specified parameters and returns the response as a Promise.
  * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
  */
 function sendRequest(details) {
     return new Promise((resolve, reject) => {
         GM.xmlHttpRequest(Object.assign(Object.assign({ timeout: 10000 }, details), { onload: resolve, onerror: reject, ontimeout: reject, onabort: reject }));
+    });
+}
+/** Fetches a CSS file from the specified resource with a key starting with `css-` */
+function fetchCss(key) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl(key))).text();
+            return css !== null && css !== void 0 ? css : undefined;
+        }
+        catch (err) {
+            error("Couldn't fetch CSS due to an error:", err);
+            return undefined;
+        }
     });
 }{
     // console watermark with sexy gradient
@@ -5746,8 +5774,6 @@ function onDomLoad() {
                     ftInit.push(addWatermark());
                 if (features.fixSpacing)
                     ftInit.push(fixSpacing());
-                if (features.scrollToActiveSongBtn)
-                    ftInit.push(addAboveQueueBtns());
                 if (features.removeUpgradeTab)
                     ftInit.push(removeUpgradeTab());
                 ftInit.push(initThumbnailOverlay());
@@ -5760,6 +5786,8 @@ function onDomLoad() {
                 //#region (ytm) song lists
                 if (features.lyricsQueueButton || features.deleteFromQueueButton)
                     ftInit.push(initQueueButtons());
+                if (features.scrollToActiveSongBtn)
+                    ftInit.push(initAboveQueueBtns());
                 //#region (ytm) behavior
                 if (features.closeToastsTimeout > 0)
                     ftInit.push(initAutoCloseToasts());
@@ -5891,13 +5919,8 @@ function onDomLoad() {
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const css = yield (yield UserUtils.fetchAdvanced(yield getResourceUrl("css-bundle"))).text();
-            css && addStyle(css, "bundle");
-        }
-        catch (err) {
-            error("Couldn't add global CSS bundle due to an error:", err);
-        }
+        if (!(yield addStyleFromResource("css-bundle")))
+            error("Couldn't add global CSS bundle due to an error");
     });
 }
 /** Registers dev commands using `GM.registerMenuCommand` */
