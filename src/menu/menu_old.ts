@@ -1,8 +1,8 @@
-import { debounce, isScrollable } from "@sv443-network/userutils";
+import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
 import { defaultData, getFeatures, setFeatures, setDefaultFeatures } from "../config";
 import { buildNumber, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain } from "../utils";
+import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
@@ -451,7 +451,7 @@ async function addCfgMenu() {
             e.preventDefault();
             e.stopPropagation();
 
-            GM.setClipboard(String(getFeatures()[featKey as keyof FeatureConfig]));
+            copyToClipboard(getFeatures()[featKey as keyof FeatureConfig] as Stringifiable);
 
             advCopyHintElem.style.display = "inline";
             if(typeof hiddenCopiedTxtTimeout === "undefined") {
