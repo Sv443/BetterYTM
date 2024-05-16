@@ -1,10 +1,15 @@
-import { addGlobalStyle, getUnsafeWindow, randomId } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain } from ".";
-import { addSelectorListener } from "src/observers";
-import type { ResourceKey } from "src/types";
+import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import { error, fetchCss, getDomain, t } from ".";
+import { addSelectorListener } from "../observers";
+import type { ResourceKey } from "../types";
+
+/** Whether the DOM has finished loading and elements can be added or modified */
+export let domLoaded = false;
+document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 
 //#region video time, volume
 
+/** Returns the video element selector string based on the current domain */
 export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
 /**
@@ -125,10 +130,6 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
 
 //#region other
 
-/** Whether the DOM has finished loading and elements can be added or modified */
-export let domLoaded = false;
-document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-
 /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
 export function clearInner(element: Element) {
   while(element.hasChildNodes())
@@ -141,6 +142,8 @@ function clearNode(element: Element) {
   element.parentNode!.removeChild(element);
 }
 
+const interactionKeys = ["Enter", " ", "Space"];
+
 /**
  * Adds generic, accessible interaction listeners to the passed element.  
  * All listeners have the default behavior prevented and stop immediate propagation.
@@ -148,10 +151,14 @@ function clearNode(element: Element) {
  */
 export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: AddEventListenerOptions) {
   const proxListener = (e: MouseEvent | KeyboardEvent) => {
-    if(e instanceof KeyboardEvent && !(["Enter", " ", "Space", "Spacebar"].includes(e.key)))
-      return;
-    e.preventDefault();
-    e.stopImmediatePropagation();
+    if(e instanceof KeyboardEvent) {
+      if(interactionKeys.includes(e.key)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+      else return;
+    }
+    // clean up the other listener that isn't automatically removed if `once` is set
     listenerOptions?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
     listenerOptions?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
     listener(e);
@@ -201,4 +208,14 @@ export async function addStyleFromResource(key: ResourceKey & `css-${string}`) {
     return true;
   }
   return false;
+}
+
+/** Copies the provided text to the clipboard and shows an error message for manual copying if the grant `GM.setClipboard` is not given. */
+export function copyToClipboard(text: Stringifiable) {
+  try {
+    GM.setClipboard(String(text));
+  }
+  catch(err) {
+    alert(t("copy_to_clipboard_error", String(text)));
+  }
 }
