@@ -478,161 +478,164 @@ export async function initThumbnailOverlay() {
   if(getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
     return;
 
-  await waitVideoElementReady();
+  // so the script doesn't wait until a /watch page is loaded
+  (async () => {
+    await waitVideoElementReady();
 
-  const playerSelector = "ytmusic-player#player";
-  const playerEl = document.querySelector<HTMLElement>(playerSelector);
+    const playerSelector = "ytmusic-player#player";
+    const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
-  if(!playerEl)
-    return error("Couldn't find video player element while adding thumbnail overlay");
+    if(!playerEl)
+      return error("Couldn't find video player element while adding thumbnail overlay");
 
-  /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-  const updateOverlayVisibility = async () => {
-    if(!domLoaded)
-      return;
+    /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
+    const updateOverlayVisibility = async () => {
+      if(!domLoaded)
+        return;
 
-    const behavior = getFeatures().thumbnailOverlayBehavior;
+      const behavior = getFeatures().thumbnailOverlayBehavior;
 
-    let showOverlay = behavior === "always";
-    const isVideo = currentMediaType() === "video";
+      let showOverlay = behavior === "always";
+      const isVideo = currentMediaType() === "video";
 
-    if(behavior === "videosOnly" && isVideo)
-      showOverlay = true;
-    else if(behavior === "songsOnly" && !isVideo)
-      showOverlay = true;
+      if(behavior === "videosOnly" && isVideo)
+        showOverlay = true;
+      else if(behavior === "songsOnly" && !isVideo)
+        showOverlay = true;
 
-    showOverlay = invertOverlay ? !showOverlay : showOverlay;
+      showOverlay = invertOverlay ? !showOverlay : showOverlay;
 
-    const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
-    const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
-    const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
+      const overlayElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay");
+      const thumbElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-img");
+      const indicatorElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-indicator");
 
-    if(overlayElem)
-      overlayElem.style.display = showOverlay ? "block" : "none";
-    if(thumbElem)
-      thumbElem.ariaHidden = String(!showOverlay);
-    if(indicatorElem) {
-      indicatorElem.style.display = showOverlay ? "block" : "none";
-      indicatorElem.ariaHidden = String(!showOverlay);
-    }
+      if(overlayElem)
+        overlayElem.style.display = showOverlay ? "block" : "none";
+      if(thumbElem)
+        thumbElem.ariaHidden = String(!showOverlay);
+      if(indicatorElem) {
+        indicatorElem.style.display = showOverlay ? "block" : "none";
+        indicatorElem.ariaHidden = String(!showOverlay);
+      }
 
-    if(getFeatures().thumbnailOverlayToggleBtnShown) {
-      const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
-      const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
+      if(getFeatures().thumbnailOverlayToggleBtnShown) {
+        const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
+        const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
 
-      if(toggleBtnImgElem)
-        toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
-      if(toggleBtnElem)
-        toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
-    }
-  };
+        if(toggleBtnImgElem)
+          toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
+        if(toggleBtnElem)
+          toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+      }
+    };
 
-  const applyThumbUrl = async (watchId: string) => {
-    const thumbUrl = await getBestThumbnailUrl(watchId);
-    if(thumbUrl) {
-      const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
-      const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
-      if(toggleBtnElem)
-        toggleBtnElem.href = thumbUrl;
-      if(thumbImgElem)
-        thumbImgElem.src = thumbUrl;
-    }
-  };
+    const applyThumbUrl = async (watchId: string) => {
+      const thumbUrl = await getBestThumbnailUrl(watchId);
+      if(thumbUrl) {
+        const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+        const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
+        if(toggleBtnElem)
+          toggleBtnElem.href = thumbUrl;
+        if(thumbImgElem)
+          thumbImgElem.src = thumbUrl;
+      }
+    };
 
-  const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
-    unsubWatchIdChanged();
-    addSelectorListener("body", "#bytm-thumbnail-overlay", {
-      listener: () => {
+    const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+      unsubWatchIdChanged();
+      addSelectorListener("body", "#bytm-thumbnail-overlay", {
+        listener: () => {
+          applyThumbUrl(watchId);
+          updateOverlayVisibility();
+        },
+      });
+    });
+
+    const createElements = async () => {
+      // overlay
+      const overlayElem = document.createElement("div");
+      overlayElem.id = "bytm-thumbnail-overlay";
+      overlayElem.title = ""; // prevent child titles from propagating
+      overlayElem.classList.add("bytm-no-select");
+      overlayElem.style.display = "none";
+
+      let indicatorElem: HTMLImageElement | undefined;
+      if(getFeatures().thumbnailOverlayShowIndicator) {
+        indicatorElem = document.createElement("img");
+        indicatorElem.id = "bytm-thumbnail-overlay-indicator";
+        indicatorElem.src = await getResourceUrl("icon-image");
+        indicatorElem.role = "presentation";
+        indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+        indicatorElem.ariaHidden = "true";
+        indicatorElem.style.display = "none";
+        indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
+      }
+    
+      const thumbImgElem = document.createElement("img");
+      thumbImgElem.id = "bytm-thumbnail-overlay-img";
+      thumbImgElem.role = "presentation";
+      thumbImgElem.ariaHidden = "true";
+      thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
+    
+      overlayElem.appendChild(thumbImgElem);
+      playerEl.appendChild(overlayElem);
+      indicatorElem && playerEl.appendChild(indicatorElem);
+
+
+      siteEvents.on("watchIdChanged", async (watchId) => {
+        invertOverlay = false;
         applyThumbUrl(watchId);
         updateOverlayVisibility();
-      },
-    });
-  });
-
-  const createElements = async () => {
-    // overlay
-    const overlayElem = document.createElement("div");
-    overlayElem.id = "bytm-thumbnail-overlay";
-    overlayElem.title = ""; // prevent child titles from propagating
-    overlayElem.classList.add("bytm-no-select");
-    overlayElem.style.display = "none";
-
-    let indicatorElem: HTMLImageElement | undefined;
-    if(getFeatures().thumbnailOverlayShowIndicator) {
-      indicatorElem = document.createElement("img");
-      indicatorElem.id = "bytm-thumbnail-overlay-indicator";
-      indicatorElem.src = await getResourceUrl("icon-image");
-      indicatorElem.role = "presentation";
-      indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
-      indicatorElem.ariaHidden = "true";
-      indicatorElem.style.display = "none";
-      indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
-    }
-  
-    const thumbImgElem = document.createElement("img");
-    thumbImgElem.id = "bytm-thumbnail-overlay-img";
-    thumbImgElem.role = "presentation";
-    thumbImgElem.ariaHidden = "true";
-    thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
-  
-    overlayElem.appendChild(thumbImgElem);
-    playerEl.appendChild(overlayElem);
-    indicatorElem && playerEl.appendChild(indicatorElem);
-
-
-    siteEvents.on("watchIdChanged", async (watchId) => {
-      invertOverlay = false;
-      applyThumbUrl(watchId);
-      updateOverlayVisibility();
-    });
-  
-    // toggle button
-    if(toggleBtnShown) {
-      const toggleBtnElem = document.createElement("a");
-      toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
-      toggleBtnElem.role = "button";
-      toggleBtnElem.tabIndex = 0;
-      toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-  
-      onInteraction(toggleBtnElem, (e) => {
-        if(e.shiftKey)
-          return openInTab(toggleBtnElem.href, e instanceof MouseEvent);
-        invertOverlay = !invertOverlay;
-        updateOverlayVisibility();
       });
-  
-      const imgElem = document.createElement("img");
-      imgElem.classList.add("bytm-generic-btn-img");
-  
-      toggleBtnElem.appendChild(imgElem);
-  
-      addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-        listener: (likeContainer) => insertAfter(likeContainer, toggleBtnElem),
-      });
-    }
-
-    log("Added thumbnail overlay");
-  };
-
-  addSelectorListener("mainPanel", playerSelector, {
-    listener(playerEl) {
-      if(playerEl.getAttribute("player-ui-state") === "INACTIVE") {
-        const obs = new MutationObserver(() => {
-          if(playerEl.getAttribute("player-ui-state") === "INACTIVE")
-            return;
-          createElements();
-          obs.disconnect();
+    
+      // toggle button
+      if(toggleBtnShown) {
+        const toggleBtnElem = document.createElement("a");
+        toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+        toggleBtnElem.role = "button";
+        toggleBtnElem.tabIndex = 0;
+        toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+    
+        onInteraction(toggleBtnElem, (e) => {
+          if(e.shiftKey)
+            return openInTab(toggleBtnElem.href, e instanceof MouseEvent);
+          invertOverlay = !invertOverlay;
+          updateOverlayVisibility();
         });
-
-        obs.observe(playerEl, {
-          attributes: true,
-          attributeFilter: ["player-ui-state"],
+    
+        const imgElem = document.createElement("img");
+        imgElem.classList.add("bytm-generic-btn-img");
+    
+        toggleBtnElem.appendChild(imgElem);
+    
+        addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
+          listener: (likeContainer) => insertAfter(likeContainer, toggleBtnElem),
         });
       }
-      else
-        createElements();
-    },
-  });
+
+      log("Added thumbnail overlay");
+    };
+
+    addSelectorListener("mainPanel", playerSelector, {
+      listener(playerEl) {
+        if(playerEl.getAttribute("player-ui-state") === "INACTIVE") {
+          const obs = new MutationObserver(() => {
+            if(playerEl.getAttribute("player-ui-state") === "INACTIVE")
+              return;
+            createElements();
+            obs.disconnect();
+          });
+
+          obs.observe(playerEl, {
+            attributes: true,
+            attributeFilter: ["player-ui-state"],
+          });
+        }
+        else
+          createElements();
+      },
+    });
+  })();
 }
 
 //#region hide cursor on idle
