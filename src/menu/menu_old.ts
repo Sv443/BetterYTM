@@ -489,8 +489,10 @@ async function addCfgMenu() {
           if(typeof initialVal !== "undefined")
             inputElem.value = String(initialVal);
 
-          if(type === "text" && ftInfo.valueHidden)
-            inputElem.value = String(initialVal).length === 0 ? "" : "•".repeat(16);
+          if(type === "text" && ftInfo.valueHidden) {
+            inputElem.type = "password";
+            inputElem.autocomplete = "off";
+          }
 
           if(type === "number" || type === "slider" && step)
             inputElem.step = String(step);
@@ -652,9 +654,6 @@ async function addCfgMenu() {
         ftElem.checked = Boolean(value);
       else
         ftElem.value = String(value);
-
-      if(ftInfo.type === "text" && "valueHidden" in ftInfo && ftInfo.valueHidden)
-        ftElem.value = String(value).length === 0 ? "" : "•".repeat(16);
 
       if(!labelElem)
         continue;
