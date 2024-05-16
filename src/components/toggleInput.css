@@ -2,8 +2,8 @@
   --toggle-height: 20px;
   --toggle-width: 40px;
   --toggle-knob-offset: 4px;
-  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
-  --toggle-color-off: #707070;
+  --toggle-color-on: #3683d4;
+  --toggle-color-off: #666;
   --toggle-knob-color: #f5f5f5;
 
   display: flex;
