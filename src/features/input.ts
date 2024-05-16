@@ -18,8 +18,14 @@ export async function initArrowKeySkip() {
 
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
       return;
+
+    const allowedClasses = ["bytm-generic-btn", "yt-spec-button-shape-next"];
+
     // discard the event when a (text) input is currently active, like when editing a playlist
-    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? "") || ["volume-slider"].includes(document.activeElement?.id ?? ""))
+    if(
+      (inputIgnoreTagNames.includes(document.activeElement?.tagName ?? "") || ["volume-slider"].includes(document.activeElement?.id ?? ""))
+      && !allowedClasses.some((cls) => document.activeElement?.classList.contains(cls))
+    )
       return info(`Captured valid key to skip forward or backward but the current active element is <${document.activeElement?.tagName.toLowerCase()}>, so the keypress is ignored`);
 
     evt.preventDefault();
@@ -124,8 +130,8 @@ export async function initNumKeysSkip() {
     // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
     if(
       document.activeElement !== document.body // short-circuit if nothing is active
-      && !numKeysIgnoreIds.includes(document.activeElement?.id ?? "") // video element or player bar active
-      && !numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "") // other element active
+      || numKeysIgnoreIds.includes(document.activeElement?.id ?? "") // video element or player bar active
+      || numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "") // other element active
     )
       return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
 

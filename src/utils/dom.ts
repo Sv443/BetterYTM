@@ -158,6 +158,11 @@ export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: 
       }
       else return;
     }
+    else if(e instanceof MouseEvent) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+
     // clean up the other listener that isn't automatically removed if `once` is set
     listenerOptions?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
     listenerOptions?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
