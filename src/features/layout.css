@@ -206,7 +206,8 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .bytm-yt-cfg-menu-option:hover {
-  background-color: var(--yt-spec-badge-chip-background, #3e3e3e) !important;
+  /* I would've loved to just use the YT-provided var(--yt-spec-badge-chip-background) but darkreader is being a bitch and a half and overwrites it */
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .bytm-yt-cfg-menu-option-icon {

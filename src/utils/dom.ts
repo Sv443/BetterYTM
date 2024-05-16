@@ -146,7 +146,7 @@ const interactionKeys = ["Enter", " ", "Space"];
 
 /**
  * Adds generic, accessible interaction listeners to the passed element.  
- * All listeners have the default behavior prevented and stop immediate propagation.
+ * All listeners have the default behavior prevented and stop immediate propagation (for keyboard events only as long as the captured key is valid).
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: AddEventListenerOptions) {

@@ -28,8 +28,8 @@ export type YTMObserverName =
 
 // YT only
 export type YTObserverName =
-  // | "ytMasthead"
-  | "ytGuide";
+  // | "ytMasthead" // the title bar
+  | "ytGuide"; // the left sidebar menu
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {

@@ -24,8 +24,8 @@
     - Added a cache to save lyrics in. 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
   - Expanded plugin interface
-    - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#registerplugin))
-    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#nanoemitter), and the functions [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#createcircularbtn)
+    - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))
+    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
 
 <div class="pr-link-cont">
@@ -60,7 +60,7 @@
 ## 1.1.0
 - **Features / Changes:**
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
-  - Added an interface for user-created plugins ([see contributing guide for more info](https://github.com/Sv443/BetterYTM/blob/develop/contributing.md#developing-a-plugin-that-interfaces-with-betterytm))
+  - Added an interface for user-created plugins ([see contributing guide for more info](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#maining-a-plugin-that-interfaces-with-betterytm))
   - Made site switch hotkey customizable
   - Userscript will now show a welcome page after first install / update
   - Feature to restore last song's time on page reload

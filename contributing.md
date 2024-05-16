@@ -265,9 +265,10 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
-  - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
-  - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
+  - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
+  - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
   - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element
@@ -483,6 +484,48 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >       console.log("The BYTM lyrics button changed");
 >     },
 >   });
+> });
+> ```
+> </details>
+
+<br>
+
+> #### onInteraction()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.onInteraction(
+>   element: HTMLElement,
+>   callback: (event: MouseEvent | KeyboardEvent) => void,
+>   listenerOptions?: AddEventListenerOptions
+> ): void
+> ```
+>
+> Description:  
+> Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions.  
+> All events passed to the callback function automatically have the default behavior prevented and stop immediate propagation, meaning no other listener of the same type will be called.  
+> For keyboard events this only happens as long as the captured key is a valid interaction key (Space, Enter).  
+>   
+> Arguments:
+> - `element` - The element to add the listeners to
+> - `callback` - The function to call when the element is interacted with
+> - `listenerOptions` - Optional event listener options (same as the third argument of `addEventListener`, shared between the keyboard and mouse event listeners)
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const myButton = document.querySelector("button#myButton");
+> 
+> unsafeWindow.BYTM.onInteraction(myButton, (event) => {
+>   if(event instanceof MouseEvent)
+>     console.log("The button was clicked");
+>   else if(event instanceof KeyboardEvent)
+>     console.log("The button was activated with the keyboard (Space / Enter)");
+> }, {
+>   // if `once` is set, when either the mouse or keyboard event are triggered once,
+>   // the other listener is automatically removed as well to prevent double triggering
+>   once: true,
+>   // you can pass `capture` to listen in the capture phase (helpful for triggering before other listeners),
+>   // or an AbortController's `signal` to be able to abort the listener
 > });
 > ```
 > </details>

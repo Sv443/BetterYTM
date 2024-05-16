@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { createNanoEvents } from "nanoevents";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
-import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error } from "./utils";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
 import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
@@ -77,6 +77,7 @@ const globalFuncs = {
   sanitizeSong,
   compareVersions,
   compareVersionArrays,
+  onInteraction,
 };
 
 /** Initializes the BYTM interface */
