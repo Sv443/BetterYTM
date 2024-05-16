@@ -1,4 +1,4 @@
-import { compress, decompress, type Stringifiable } from "@sv443-network/userutils";
+import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
 import { addStyleFromResource, domLoaded, reserialize, warn } from "./utils";
 import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
@@ -117,7 +117,7 @@ async function init() {
 async function onDomLoad() {
   const domain = getDomain();
   const features = getFeatures();
-  const ftInit = [] as Promise<void>[];
+  const ftInit = [] as [string, Promise<void>][];
 
   try {
     initObservers();
@@ -138,7 +138,7 @@ async function onDomLoad() {
     if(domain === "ytm") {
       //#region (ytm) misc
 
-      ftInit.push(initSiteEvents());
+      ftInit.push(["initSiteEvents", initSiteEvents()]);
 
       //#region (ytm) welcome dlg
 
@@ -154,52 +154,52 @@ async function onDomLoad() {
       //#region (ytm) layout
 
       if(features.watermarkEnabled)
-        ftInit.push(addWatermark());
+        ftInit.push(["addWatermark", addWatermark()]);
 
       if(features.fixSpacing)
-        ftInit.push(fixSpacing());
+        ftInit.push(["fixSpacing", fixSpacing()]);
 
       if(features.removeUpgradeTab)
-        ftInit.push(removeUpgradeTab());
+        ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
 
-      ftInit.push(initThumbnailOverlay());
+      ftInit.push(["initThumbnailOverlay", initThumbnailOverlay()]);
 
       if(features.hideCursorOnIdle)
-        ftInit.push(initHideCursorOnIdle());
+        ftInit.push(["initHideCursorOnIdle", initHideCursorOnIdle()]);
 
       if(features.fixHdrIssues)
-        ftInit.push(fixHdrIssues());
+        ftInit.push(["fixHdrIssues", fixHdrIssues()]);
 
       //#region (ytm) volume
 
-      ftInit.push(initVolumeFeatures());
+      ftInit.push(["initVolumeFeatures", initVolumeFeatures()]);
 
       //#region (ytm) song lists
 
       if(features.lyricsQueueButton || features.deleteFromQueueButton)
-        ftInit.push(initQueueButtons());
+        ftInit.push(["initQueueButtons", initQueueButtons()]);
 
       if(features.scrollToActiveSongBtn)
-        ftInit.push(initAboveQueueBtns());
+        ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
 
       //#region (ytm) behavior
 
       if(features.closeToastsTimeout > 0)
-        ftInit.push(initAutoCloseToasts());
+        ftInit.push(["initAutoCloseToasts", initAutoCloseToasts()]);
 
       //#region (ytm) input
 
-      ftInit.push(initArrowKeySkip());
+      ftInit.push(["initArrowKeySkip", initArrowKeySkip()]);
 
       if(features.anchorImprovements)
-        ftInit.push(addAnchorImprovements());
+        ftInit.push(["addAnchorImprovements", addAnchorImprovements()]);
 
-      ftInit.push(initNumKeysSkip());
+      ftInit.push(["initNumKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm) lyrics
 
       if(features.geniusLyrics)
-        ftInit.push(addMediaCtrlLyricsBtn());
+        ftInit.push(["addMediaCtrlLyricsBtn", addMediaCtrlLyricsBtn()]);
     }
 
     //#region (ytm+yt) cfg menu option
@@ -220,11 +220,11 @@ async function onDomLoad() {
       disableDarkReader();
 
       if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
-        ftInit.push(initRemShareTrackParam());
+        ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input
 
-      ftInit.push(initSiteSwitch(domain));
+      ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
 
       // TODO: for hot reloading features
       // ftInit.push(new Promise((resolve) => {
@@ -256,9 +256,16 @@ async function onDomLoad() {
       // }));
     }
 
-    await Promise.allSettled(ftInit);
+    const initStartTs = Date.now();
+
+    // wait for feature init or timeout (in case an init function is hung up on a promise)
+    await Promise.race([
+      pauseFor(10_000),
+      Promise.allSettled(ftInit.map(([, p]) => p)),
+    ]);
 
     emitInterface("bytm:ready");
+    info("Done initializing all features after", Math.floor(Date.now() - initStartTs), "ms");
 
     try {
       initPlugins();
@@ -294,7 +301,7 @@ async function onDomLoad() {
 //       if(res instanceof Promise)
 //         ftInit.push(res);
 //       else
-//         ftInit.push(Promise.resolve());
+//         ftInit.push(["Promise.resolve", Promise.resolve()]);
 //     }
 //     catch(err) {
 //       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
@@ -473,6 +480,8 @@ function registerDevMenuCommands() {
       console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
     }
   });
+
+  log("Registered dev menu commands");
 }
 
 preInit();
