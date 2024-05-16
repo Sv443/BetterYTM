@@ -110,7 +110,7 @@ export function reserialize<T>(data: T): T {
 }
 
 /** Opens the given URL in a new tab, using GM.openInTab if available */
-export function openInTab(href: string, background = true) {
+export function openInTab(href: string, background = false) {
   try {
     openInNewTab(href, background);
   }
