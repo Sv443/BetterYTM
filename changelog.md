@@ -16,6 +16,7 @@
   - Fixed tooltip that is set on the wrong element
   - Fixed queue buttons not being shown when navigating with tab key
   - Added a feature to fix rendering issues when using HDR
+  - Tons of accessibility improvements for screenreader users (feedback regarding this is strongly welcome!)
 - **Internal Changes:**
   - Improved script performance
     - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils#selectorobserver) instances to improve overall performance by quite a lot
