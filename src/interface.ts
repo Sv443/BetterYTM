@@ -129,7 +129,7 @@ export function emitInterface<
   type: TEvt | `bytm:siteEvent:${keyof SiteEventsMap}`,
   ...data: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
-  getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+  getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data?.[0] ?? undefined }));
 }
 
 //#region register plugins
