@@ -265,7 +265,7 @@ async function onDomLoad() {
     ]);
 
     emitInterface("bytm:ready");
-    info("Done initializing all features after", Math.floor(Date.now() - initStartTs), "ms");
+    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
       initPlugins();

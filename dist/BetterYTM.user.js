@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=745e658
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=f6fd3e3
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,43 +35,43 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=745e658
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=745e658
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=745e658
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=745e658
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=745e658
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=745e658
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=745e658
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=745e658
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=745e658
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=745e658
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=745e658
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=745e658
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=745e658
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=745e658
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=745e658
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=745e658
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=745e658
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=745e658
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=745e658
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=745e658
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=745e658
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=745e658
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=745e658
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=745e658
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=745e658
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=745e658
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=745e658
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=745e658
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=745e658
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=745e658
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=745e658
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=745e658
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=745e658
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=745e658
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=745e658
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=745e658
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=745e658
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=f6fd3e3
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=f6fd3e3
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=f6fd3e3
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=f6fd3e3
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=f6fd3e3
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=f6fd3e3
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=f6fd3e3
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=f6fd3e3
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=f6fd3e3
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=f6fd3e3
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=f6fd3e3
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=f6fd3e3
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=f6fd3e3
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=f6fd3e3
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=f6fd3e3
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=f6fd3e3
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=f6fd3e3
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=f6fd3e3
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=f6fd3e3
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=f6fd3e3
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=f6fd3e3
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=f6fd3e3
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=f6fd3e3
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=f6fd3e3
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=f6fd3e3
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=f6fd3e3
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=f6fd3e3
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=f6fd3e3
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=f6fd3e3
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=f6fd3e3
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=f6fd3e3
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=f6fd3e3
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=f6fd3e3
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=f6fd3e3
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=f6fd3e3
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=f6fd3e3
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=f6fd3e3
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -199,7 +199,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "745e658";
+const buildNumberRaw = "f6fd3e3";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3315,134 +3315,137 @@ function initThumbnailOverlay() {
         const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
         if (getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
             return;
-        yield waitVideoElementReady();
-        const playerSelector = "ytmusic-player#player";
-        const playerEl = document.querySelector(playerSelector);
-        if (!playerEl)
-            return error("Couldn't find video player element while adding thumbnail overlay");
-        /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
-        const updateOverlayVisibility = () => __awaiter(this, void 0, void 0, function* () {
-            if (!domLoaded)
-                return;
-            const behavior = getFeatures().thumbnailOverlayBehavior;
-            let showOverlay = behavior === "always";
-            const isVideo = currentMediaType() === "video";
-            if (behavior === "videosOnly" && isVideo)
-                showOverlay = true;
-            else if (behavior === "songsOnly" && !isVideo)
-                showOverlay = true;
-            showOverlay = invertOverlay ? !showOverlay : showOverlay;
-            const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
-            const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
-            const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
-            if (overlayElem)
-                overlayElem.style.display = showOverlay ? "block" : "none";
-            if (thumbElem)
-                thumbElem.ariaHidden = String(!showOverlay);
-            if (indicatorElem) {
-                indicatorElem.style.display = showOverlay ? "block" : "none";
-                indicatorElem.ariaHidden = String(!showOverlay);
-            }
-            if (getFeatures().thumbnailOverlayToggleBtnShown) {
-                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-                const toggleBtnImgElem = document.querySelector("#bytm-thumbnail-overlay-toggle > img");
-                if (toggleBtnImgElem)
-                    toggleBtnImgElem.src = yield getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}`);
-                if (toggleBtnElem)
-                    toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
-            }
-        });
-        const applyThumbUrl = (watchId) => __awaiter(this, void 0, void 0, function* () {
-            const thumbUrl = yield getBestThumbnailUrl(watchId);
-            if (thumbUrl) {
-                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-                const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
-                if (toggleBtnElem)
-                    toggleBtnElem.href = thumbUrl;
-                if (thumbImgElem)
-                    thumbImgElem.src = thumbUrl;
-            }
-        });
-        const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
-            unsubWatchIdChanged();
-            addSelectorListener("body", "#bytm-thumbnail-overlay", {
-                listener: () => {
+        // so the script doesn't wait until a /watch page is loaded
+        (() => __awaiter(this, void 0, void 0, function* () {
+            yield waitVideoElementReady();
+            const playerSelector = "ytmusic-player#player";
+            const playerEl = document.querySelector(playerSelector);
+            if (!playerEl)
+                return error("Couldn't find video player element while adding thumbnail overlay");
+            /** Checks and updates the overlay and toggle button states based on the current song type (yt video or ytm song) */
+            const updateOverlayVisibility = () => __awaiter(this, void 0, void 0, function* () {
+                if (!domLoaded)
+                    return;
+                const behavior = getFeatures().thumbnailOverlayBehavior;
+                let showOverlay = behavior === "always";
+                const isVideo = currentMediaType() === "video";
+                if (behavior === "videosOnly" && isVideo)
+                    showOverlay = true;
+                else if (behavior === "songsOnly" && !isVideo)
+                    showOverlay = true;
+                showOverlay = invertOverlay ? !showOverlay : showOverlay;
+                const overlayElem = document.querySelector("#bytm-thumbnail-overlay");
+                const thumbElem = document.querySelector("#bytm-thumbnail-overlay-img");
+                const indicatorElem = document.querySelector("#bytm-thumbnail-overlay-indicator");
+                if (overlayElem)
+                    overlayElem.style.display = showOverlay ? "block" : "none";
+                if (thumbElem)
+                    thumbElem.ariaHidden = String(!showOverlay);
+                if (indicatorElem) {
+                    indicatorElem.style.display = showOverlay ? "block" : "none";
+                    indicatorElem.ariaHidden = String(!showOverlay);
+                }
+                if (getFeatures().thumbnailOverlayToggleBtnShown) {
+                    const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                    const toggleBtnImgElem = document.querySelector("#bytm-thumbnail-overlay-toggle > img");
+                    if (toggleBtnImgElem)
+                        toggleBtnImgElem.src = yield getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}`);
+                    if (toggleBtnElem)
+                        toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+                }
+            });
+            const applyThumbUrl = (watchId) => __awaiter(this, void 0, void 0, function* () {
+                const thumbUrl = yield getBestThumbnailUrl(watchId);
+                if (thumbUrl) {
+                    const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                    const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
+                    if (toggleBtnElem)
+                        toggleBtnElem.href = thumbUrl;
+                    if (thumbImgElem)
+                        thumbImgElem.src = thumbUrl;
+                }
+            });
+            const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
+                unsubWatchIdChanged();
+                addSelectorListener("body", "#bytm-thumbnail-overlay", {
+                    listener: () => {
+                        applyThumbUrl(watchId);
+                        updateOverlayVisibility();
+                    },
+                });
+            });
+            const createElements = () => __awaiter(this, void 0, void 0, function* () {
+                // overlay
+                const overlayElem = document.createElement("div");
+                overlayElem.id = "bytm-thumbnail-overlay";
+                overlayElem.title = ""; // prevent child titles from propagating
+                overlayElem.classList.add("bytm-no-select");
+                overlayElem.style.display = "none";
+                let indicatorElem;
+                if (getFeatures().thumbnailOverlayShowIndicator) {
+                    indicatorElem = document.createElement("img");
+                    indicatorElem.id = "bytm-thumbnail-overlay-indicator";
+                    indicatorElem.src = yield getResourceUrl("icon-image");
+                    indicatorElem.role = "presentation";
+                    indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+                    indicatorElem.ariaHidden = "true";
+                    indicatorElem.style.display = "none";
+                    indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
+                }
+                const thumbImgElem = document.createElement("img");
+                thumbImgElem.id = "bytm-thumbnail-overlay-img";
+                thumbImgElem.role = "presentation";
+                thumbImgElem.ariaHidden = "true";
+                thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
+                overlayElem.appendChild(thumbImgElem);
+                playerEl.appendChild(overlayElem);
+                indicatorElem && playerEl.appendChild(indicatorElem);
+                siteEvents.on("watchIdChanged", (watchId) => __awaiter(this, void 0, void 0, function* () {
+                    invertOverlay = false;
                     applyThumbUrl(watchId);
                     updateOverlayVisibility();
-                },
-            });
-        });
-        const createElements = () => __awaiter(this, void 0, void 0, function* () {
-            // overlay
-            const overlayElem = document.createElement("div");
-            overlayElem.id = "bytm-thumbnail-overlay";
-            overlayElem.title = ""; // prevent child titles from propagating
-            overlayElem.classList.add("bytm-no-select");
-            overlayElem.style.display = "none";
-            let indicatorElem;
-            if (getFeatures().thumbnailOverlayShowIndicator) {
-                indicatorElem = document.createElement("img");
-                indicatorElem.id = "bytm-thumbnail-overlay-indicator";
-                indicatorElem.src = yield getResourceUrl("icon-image");
-                indicatorElem.role = "presentation";
-                indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
-                indicatorElem.ariaHidden = "true";
-                indicatorElem.style.display = "none";
-                indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
-            }
-            const thumbImgElem = document.createElement("img");
-            thumbImgElem.id = "bytm-thumbnail-overlay-img";
-            thumbImgElem.role = "presentation";
-            thumbImgElem.ariaHidden = "true";
-            thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
-            overlayElem.appendChild(thumbImgElem);
-            playerEl.appendChild(overlayElem);
-            indicatorElem && playerEl.appendChild(indicatorElem);
-            siteEvents.on("watchIdChanged", (watchId) => __awaiter(this, void 0, void 0, function* () {
-                invertOverlay = false;
-                applyThumbUrl(watchId);
-                updateOverlayVisibility();
-            }));
-            // toggle button
-            if (toggleBtnShown) {
-                const toggleBtnElem = document.createElement("a");
-                toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
-                toggleBtnElem.role = "button";
-                toggleBtnElem.tabIndex = 0;
-                toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-                onInteraction(toggleBtnElem, (e) => {
-                    if (e.shiftKey)
-                        return openInTab(toggleBtnElem.href, e instanceof MouseEvent);
-                    invertOverlay = !invertOverlay;
-                    updateOverlayVisibility();
-                });
-                const imgElem = document.createElement("img");
-                imgElem.classList.add("bytm-generic-btn-img");
-                toggleBtnElem.appendChild(imgElem);
-                addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-                    listener: (likeContainer) => UserUtils.insertAfter(likeContainer, toggleBtnElem),
-                });
-            }
-            log("Added thumbnail overlay");
-        });
-        addSelectorListener("mainPanel", playerSelector, {
-            listener(playerEl) {
-                if (playerEl.getAttribute("player-ui-state") === "INACTIVE") {
-                    const obs = new MutationObserver(() => {
-                        if (playerEl.getAttribute("player-ui-state") === "INACTIVE")
-                            return;
-                        createElements();
-                        obs.disconnect();
+                }));
+                // toggle button
+                if (toggleBtnShown) {
+                    const toggleBtnElem = document.createElement("a");
+                    toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+                    toggleBtnElem.role = "button";
+                    toggleBtnElem.tabIndex = 0;
+                    toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+                    onInteraction(toggleBtnElem, (e) => {
+                        if (e.shiftKey)
+                            return openInTab(toggleBtnElem.href, e instanceof MouseEvent);
+                        invertOverlay = !invertOverlay;
+                        updateOverlayVisibility();
                     });
-                    obs.observe(playerEl, {
-                        attributes: true,
-                        attributeFilter: ["player-ui-state"],
+                    const imgElem = document.createElement("img");
+                    imgElem.classList.add("bytm-generic-btn-img");
+                    toggleBtnElem.appendChild(imgElem);
+                    addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
+                        listener: (likeContainer) => UserUtils.insertAfter(likeContainer, toggleBtnElem),
                     });
                 }
-                else
-                    createElements();
-            },
-        });
+                log("Added thumbnail overlay");
+            });
+            addSelectorListener("mainPanel", playerSelector, {
+                listener(playerEl) {
+                    if (playerEl.getAttribute("player-ui-state") === "INACTIVE") {
+                        const obs = new MutationObserver(() => {
+                            if (playerEl.getAttribute("player-ui-state") === "INACTIVE")
+                                return;
+                            createElements();
+                            obs.disconnect();
+                        });
+                        obs.observe(playerEl, {
+                            attributes: true,
+                            attributeFilter: ["player-ui-state"],
+                        });
+                    }
+                    else
+                        createElements();
+                },
+            });
+        }))();
     });
 }
 //#region hide cursor on idle
@@ -3508,7 +3511,7 @@ function initHideCursorOnIdle() {
 function fixHdrIssues() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!(yield addStyleFromResource("css-fix_hdr")))
-            error("Couldn't fix HDR issues");
+            error("Couldn't load stylesheet to fix HDR issues");
         else
             log("Fixed HDR issues");
     });
@@ -5034,7 +5037,8 @@ function setGlobalProp(key, value) {
 }
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...data) {
-    getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data[0] }));
+    var _a;
+    getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = data === null || data === void 0 ? void 0 : data[0]) !== null && _a !== void 0 ? _a : undefined }));
 }
 //#region register plugins
 /** Plugins that are queued up for registration */
@@ -5814,7 +5818,7 @@ function onDomLoad() {
         try {
             if (domain === "ytm") {
                 //#region (ytm) misc
-                ftInit.push(initSiteEvents());
+                ftInit.push(["initSiteEvents", initSiteEvents()]);
                 //#region (ytm) welcome dlg
                 if (typeof (yield GM.getValue("bytm-installed")) !== "string") {
                     // open welcome menu with language selector
@@ -5826,34 +5830,34 @@ function onDomLoad() {
                 }
                 //#region (ytm) layout
                 if (features.watermarkEnabled)
-                    ftInit.push(addWatermark());
+                    ftInit.push(["addWatermark", addWatermark()]);
                 if (features.fixSpacing)
-                    ftInit.push(fixSpacing());
+                    ftInit.push(["fixSpacing", fixSpacing()]);
                 if (features.removeUpgradeTab)
-                    ftInit.push(removeUpgradeTab());
-                ftInit.push(initThumbnailOverlay());
+                    ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
+                ftInit.push(["initThumbnailOverlay", initThumbnailOverlay()]);
                 if (features.hideCursorOnIdle)
-                    ftInit.push(initHideCursorOnIdle());
+                    ftInit.push(["initHideCursorOnIdle", initHideCursorOnIdle()]);
                 if (features.fixHdrIssues)
-                    ftInit.push(fixHdrIssues());
+                    ftInit.push(["fixHdrIssues", fixHdrIssues()]);
                 //#region (ytm) volume
-                ftInit.push(initVolumeFeatures());
+                ftInit.push(["initVolumeFeatures", initVolumeFeatures()]);
                 //#region (ytm) song lists
                 if (features.lyricsQueueButton || features.deleteFromQueueButton)
-                    ftInit.push(initQueueButtons());
+                    ftInit.push(["initQueueButtons", initQueueButtons()]);
                 if (features.scrollToActiveSongBtn)
-                    ftInit.push(initAboveQueueBtns());
+                    ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
                 //#region (ytm) behavior
                 if (features.closeToastsTimeout > 0)
-                    ftInit.push(initAutoCloseToasts());
+                    ftInit.push(["initAutoCloseToasts", initAutoCloseToasts()]);
                 //#region (ytm) input
-                ftInit.push(initArrowKeySkip());
+                ftInit.push(["initArrowKeySkip", initArrowKeySkip()]);
                 if (features.anchorImprovements)
-                    ftInit.push(addAnchorImprovements());
-                ftInit.push(initNumKeysSkip());
+                    ftInit.push(["addAnchorImprovements", addAnchorImprovements()]);
+                ftInit.push(["initNumKeysSkip", initNumKeysSkip()]);
                 //#region (ytm) lyrics
                 if (features.geniusLyrics)
-                    ftInit.push(addMediaCtrlLyricsBtn());
+                    ftInit.push(["addMediaCtrlLyricsBtn", addMediaCtrlLyricsBtn()]);
             }
             //#region (ytm+yt) cfg menu option
             if (domain === "ytm") {
@@ -5870,9 +5874,9 @@ function onDomLoad() {
                 //#region (ytm+yt) layout
                 disableDarkReader();
                 if (features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
-                    ftInit.push(initRemShareTrackParam());
+                    ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
                 //#region (ytm+yt) input
-                ftInit.push(initSiteSwitch(domain));
+                ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
                 // TODO: for hot reloading features
                 // ftInit.push(new Promise((resolve) => {
                 //   for(const [k, v] of Object.entries(featInfo)) {
@@ -5901,8 +5905,14 @@ function onDomLoad() {
                 //   resolve();
                 // }));
             }
-            yield Promise.allSettled(ftInit);
+            const initStartTs = Date.now();
+            // wait for feature init or timeout (in case an init function is hung up on a promise)
+            yield Promise.race([
+                UserUtils.pauseFor(10000),
+                Promise.allSettled(ftInit.map(([, p]) => p)),
+            ]);
             emitInterface("bytm:ready");
+            info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
             try {
                 initPlugins();
             }
@@ -5934,7 +5944,7 @@ function onDomLoad() {
 //       if(res instanceof Promise)
 //         ftInit.push(res);
 //       else
-//         ftInit.push(Promise.resolve());
+//         ftInit.push(["Promise.resolve", Promise.resolve()]);
 //     }
 //     catch(err) {
 //       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
@@ -6097,5 +6107,6 @@ function registerDevMenuCommands() {
             console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     }));
+    log("Registered dev menu commands");
 }
 preInit();})(UserUtils,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
