@@ -149,7 +149,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 export async function addConfigMenuOptionYT(container: HTMLElement) {
   // TODO:
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.classList.add("bytm-yt-cfg-menu-option");
+  cfgOptElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
   cfgOptElem.role = "button";
   cfgOptElem.tabIndex = 0;
   cfgOptElem.ariaLabel = cfgOptElem.title = t("open_menu_tooltip", scriptInfo.name);
