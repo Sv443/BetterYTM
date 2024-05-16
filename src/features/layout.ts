@@ -708,7 +708,7 @@ export async function initHideCursorOnIdle() {
 /** Prevents visual issues when using HDR */
 export async function fixHdrIssues() {
   if(!await addStyleFromResource("css-fix_hdr"))
-    error("Couldn't fix HDR issues");
+    error("Couldn't load stylesheet to fix HDR issues");
   else
     log("Fixed HDR issues");
 }
