@@ -138,8 +138,6 @@ async function onDomLoad() {
     if(domain === "ytm") {
       //#region (ytm) misc
 
-      disableDarkReader();
-
       ftInit.push(initSiteEvents());
 
       //#region (ytm) welcome dlg
@@ -218,6 +216,8 @@ async function onDomLoad() {
 
     if(["ytm", "yt"].includes(domain)) {
       //#region (ytm+yt) layout
+
+      disableDarkReader();
 
       if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
         ftInit.push(initRemShareTrackParam());
