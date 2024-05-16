@@ -56,7 +56,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -69,7 +69,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -82,7 +82,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -95,7 +95,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -108,7 +108,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -121,7 +121,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 
@@ -134,7 +134,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_to_clipboard_error` | `Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1` |
 | `clear_list` | `Clear the list` |
 | `clear_list_confirm` | `Do you really want to clear the list and leave only the currently playing song?` |
-| `feature_desc_fixHdrIssues` | `Fix rendering issues when using an HDR-compatible GPU and monitor` |
+| `feature_desc_fixHdrIssues` | `Prevent some rendering issues when using an HDR-compatible GPU and monitor` |
 | `feature_desc_scrollToActiveSongBtn` | `Add a button above the queue to scroll to the currently playing song` |
 | `feature_desc_clearQueueBtn` | `Add a button above the currently playing queue or playlist to quickly clear it` |
 

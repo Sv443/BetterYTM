@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor }
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, hdrEnabled, getVideoTime, insertBefore, fetchCss, addStyleFromResource } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, insertBefore, fetchCss, addStyleFromResource } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
@@ -705,10 +705,8 @@ export async function initHideCursorOnIdle() {
 
 //#region fix HDR
 
-/** Fixes visual issues when HDR is enabled */
+/** Prevents visual issues when using HDR */
 export async function fixHdrIssues() {
-  if(!hdrEnabled())
-    return log("HDR is not enabled, skipping HDR fixes");
   if(!await addStyleFromResource("css-fix_hdr"))
     error("Couldn't fix HDR issues");
   else

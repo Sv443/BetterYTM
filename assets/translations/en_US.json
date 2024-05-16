@@ -169,7 +169,7 @@
     "feature_desc_thumbnailOverlayImageFit": "How to fit the thumbnail image over the video element",
     "feature_desc_hideCursorOnIdle": "Hide the cursor after a few seconds of inactivity over the video",
     "feature_desc_hideCursorOnIdleDelay": "How many seconds of inactivity before the cursor should be hidden?",
-    "feature_desc_fixHdrIssues": "Fix rendering issues when using an HDR-compatible GPU and monitor",
+    "feature_desc_fixHdrIssues": "Prevent some rendering issues when using an HDR-compatible GPU and monitor",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",
