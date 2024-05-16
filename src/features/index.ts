@@ -45,7 +45,7 @@ const combineAdornments = (
 const adornments = {
   advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  globe: async () => await resourceToHTMLString("icon-globe") ?? "",
+  globe: async () => await resourceToHTMLString("icon-globe_small") ?? "",
   warning: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reloadRequired: async () => getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;
