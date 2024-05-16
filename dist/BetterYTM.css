@@ -1,9 +1,9 @@
 :root {
-  --bytm-dialog-accent-col: #3683d4;
-  --bytm-advanced-mode-color: #c5a73b;
-  --bytm-experimental-col: #d07ff0;
-  --bytm-warning-col: #ff5233;
-  --bytm-reload-col: #42b045;
+  --bytm-locale-color: #6a97c7;
+  --bytm-advanced-mode-color: #c5b270;
+  --bytm-experimental-col: #c698d6;
+  --bytm-warning-col: #e07664;
+  --bytm-reload-col: #7ad46a;
 }
 
 /* TODO(v1.2): leave only dialog */
@@ -86,7 +86,7 @@
 }
 
 .bytm-ftitem-adornment svg path {
-  fill: var(--bytm-dialog-accent-col, #fff) !important;
+  fill: var(--bytm-locale-color, #fff) !important;
 }
 
 .bytm-advanced-mode-icon svg path {
@@ -583,8 +583,8 @@ hr {
   --toggle-height: 20px;
   --toggle-width: 40px;
   --toggle-knob-offset: 4px;
-  --toggle-color-on: var(--bytm-dialog-accent-col, #4595c7);
-  --toggle-color-off: #707070;
+  --toggle-color-on: #3683d4;
+  --toggle-color-off: #666;
   --toggle-knob-color: #f5f5f5;
 
   display: flex;

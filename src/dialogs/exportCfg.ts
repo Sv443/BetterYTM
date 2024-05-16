@@ -1,5 +1,5 @@
 import { compress } from "@sv443-network/userutils";
-import { compressionSupported, onInteraction, t } from "../utils";
+import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils";
 import { BytmDialog } from "../components";
 import { compressionFormat, scriptInfo } from "../constants";
 import { formatVersion, getFeatures } from "../config";
@@ -120,7 +120,11 @@ async function renderFooter() {
 
   onInteraction(copyBtnElem, async (evt: MouseEvent | KeyboardEvent) => {
     evt?.bubbles && evt.stopPropagation();
-    GM.setClipboard(String(evt?.shiftKey ? lastUncompressedCfgString : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")));
+    copyToClipboard(
+      evt.shiftKey && lastUncompressedCfgString
+        ? lastUncompressedCfgString
+        : await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
+    );
     copiedTextElem.style.display = "inline-block";
     if(typeof copiedTxtTimeout === "undefined") {
       copiedTxtTimeout = setTimeout(() => {

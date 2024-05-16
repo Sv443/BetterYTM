@@ -28,6 +28,7 @@
     "reset_tooltip": "Reset all settings to their default values",
     "reset_confirm": "Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.",
     "copy_to_clipboard": "Copy to clipboard",
+    "copy_to_clipboard_error": "Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1",
     "copy_config_tooltip": "Copy the configuration to your clipboard",
     "copied": "Copied!",
     "copy_hidden_value": "Copy hidden value",
