@@ -113,7 +113,7 @@ async function switchSite(newDomain: Domain) {
   }
 }
 
-//#region num key skip to
+//#region num keys skip
 
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
 const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
