@@ -208,7 +208,8 @@ async function onDomLoad() {
     if(["ytm", "yt"].includes(domain)) {
       //#region (ytm+yt) layout
 
-      disableDarkReader();
+      if(features.disableDarkReaderSites !== "none")
+        disableDarkReader();
 
       if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);

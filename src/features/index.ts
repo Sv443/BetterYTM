@@ -3,7 +3,7 @@ import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
-import { FeatureInfo, type ResourceKey, type SiteSelection } from "../types";
+import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
 import { volumeSharedBetweenTabsDisabled } from "./volume";
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
@@ -56,6 +56,12 @@ const options = {
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
+  ],
+  siteSelectionOrNone: (): { value: SiteSelectionOrNone, label: string }[] => [
+    { value: "all", label: t("site_selection_both_sites") },
+    { value: "yt", label: t("site_selection_only_yt") },
+    { value: "ytm", label: t("site_selection_only_ytm") },
+    { value: "none", label: t("site_selection_none") },
   ],
   locale: () => Object.entries(langMapping)
     .reduce((a, [locale, { name }]) => {
@@ -206,6 +212,13 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
+    textAdornment: adornments.reloadRequired,
+  },
+  disableDarkReaderSites: {
+    type: "select",
+    category: "layout",
+    options: options.siteSelectionOrNone,
+    default: "all",
     textAdornment: adornments.reloadRequired,
   },
 

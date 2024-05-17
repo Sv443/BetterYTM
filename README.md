@@ -14,6 +14,8 @@ Supported Languages: 🇩🇪&nbsp;German, 🇺🇸&nbsp;English (US), 🇬🇧&
 </div>
 <br>
 
+<!-- TODO: -->
+
 ### Features:
 All of these can be toggled and configured in the configuration menu.
 - Layout & User Experience:
