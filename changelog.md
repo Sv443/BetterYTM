@@ -6,6 +6,8 @@
 	- Show a thumbnail overlay over the video element (or open the thumbnail in a new tab) automatically and/or manually, depending on configuration
 	- `?si` parameter is removed in YT's share menu too now
 	- Added an "above-queue" button to clear the currently playing queue / playlist
+  - Fix rendering issues when using HDR
+  - Disable the Dark Reader extension on both pages (because it messes up the layout)
 - **Changes / Fixes:**
   - Improved the config menu
     - Created new toggle input (because checkboxes don't come close to looking as good)
@@ -15,13 +17,12 @@
     - Made a bunch of features not require a page reload anymore
   - Fixed tooltip that is set on the wrong element
   - Fixed queue buttons not being shown when navigating with tab key
-  - Added a feature to fix rendering issues when using HDR
   - Tons of accessibility improvements for screenreader users (feedback regarding this is strongly welcome!)
 - **Internal Changes:**
   - Improved script performance
     - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils#selectorobserver) instances to improve overall performance by quite a lot
       - Implemented rising-edge debounce for SelectorObserver instances to massively improve responsiveness
-    - Added a cache to save lyrics in. 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
+    - Added a cache to save lyrics in. Up to 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))

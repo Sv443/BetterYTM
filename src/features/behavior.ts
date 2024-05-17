@@ -194,8 +194,13 @@ async function delRemSongData(watchID: string) {
 
 /** Disables Dark Reader if it is present */
 export function disableDarkReader() {
+  if(getFeatures().disableDarkReaderSites !== getDomain() && getFeatures().disableDarkReaderSites !== "all")
+    return;
+
   const metaElem = document.createElement("meta");
   metaElem.name = "darkreader-lock";
   metaElem.classList.add("bytm-disable-darkreader");
   document.head.appendChild(metaElem);
+
+  info("Disabled Dark Reader");
 }

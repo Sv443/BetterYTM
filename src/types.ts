@@ -29,6 +29,9 @@ export type Domain = "yt" | "ytm";
 /** A selection option between one of the supported domains, or all of them */
 export type SiteSelection = Domain | "all";
 
+/** A selection option between one of the supported domains, or none of them */
+export type SiteSelectionOrNone = SiteSelection | "none";
+
 /** Key of a resource in `assets/resources.json` and extra keys defined by `tools/post-build.ts` */
 export type ResourceKey = keyof typeof resources | `trans-${keyof typeof locales}` | "changelog" | "css-bundle";
 
@@ -343,6 +346,8 @@ export interface FeatureConfig {
   hideCursorOnIdleDelay: number;
   /** Whether to fix various issues in the layout when HDR is supported and active */
   fixHdrIssues: boolean;
+  /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
+  disableDarkReaderSites: SiteSelectionOrNone;
 
   //#region volume
   /** Add a percentage label to the volume slider */

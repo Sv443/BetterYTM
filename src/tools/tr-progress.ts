@@ -98,11 +98,11 @@ ${lines.join("\n")}\n
 
   const banner = `\
 <!--
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!!             THIS IS A GENERATED FILE             !!!
-  !!!    all changes will be overwritten next build    !!!
-  !!! only edit in \`src/tools/tr-progress-template.md\` !!!
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
+  ‼️‼️‼️             THIS IS A GENERATED FILE             ‼️‼️‼️
+  ‼️‼️‼️ all changes will be overwritten after next build ‼️‼️‼️
+  ‼️‼️‼️ only edit in \`src/tools/tr-progress-template.md\` ‼️‼️‼️
+  ‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️
 -->`;
 
   const progTableHeader = `\
@@ -111,7 +111,7 @@ ${lines.join("\n")}\n
 
   let readmeCont = String(await readFile(join(rootDir, "src/tools/tr-progress-template.md"), "utf-8"));
 
-  readmeCont = `${banner}${"\n".repeat(8)}${readmeCont}`
+  readmeCont = `${banner}${"\n".repeat(4)}${readmeCont}`
     .replace(/<!--#{{TR_PROGRESS_TABLE}}-->/m, `${progTableHeader}\n${progTableLines.join("\n")}`)
     .replace(/<!--#{{TR_MISSING_KEYS}}-->/m, missingKeys.length > 0 ? missingKeys.join("\n") : "No missing keys");
   await writeFile(join(trDir, "README.md"), readmeCont);
