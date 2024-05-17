@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=f6fd3e3
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=8f27158
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,43 +35,43 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=f6fd3e3
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=f6fd3e3
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=f6fd3e3
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=f6fd3e3
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=f6fd3e3
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=f6fd3e3
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=f6fd3e3
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=f6fd3e3
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=f6fd3e3
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=f6fd3e3
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=f6fd3e3
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=f6fd3e3
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=f6fd3e3
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=f6fd3e3
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=f6fd3e3
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=f6fd3e3
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=f6fd3e3
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=f6fd3e3
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=f6fd3e3
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=f6fd3e3
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=f6fd3e3
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=f6fd3e3
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=f6fd3e3
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=f6fd3e3
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=f6fd3e3
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=f6fd3e3
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=f6fd3e3
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=f6fd3e3
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=f6fd3e3
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=f6fd3e3
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=f6fd3e3
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=f6fd3e3
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=f6fd3e3
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=f6fd3e3
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=f6fd3e3
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=f6fd3e3
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=f6fd3e3
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=8f27158
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=8f27158
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=8f27158
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=8f27158
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=8f27158
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=8f27158
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=8f27158
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=8f27158
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=8f27158
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=8f27158
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=8f27158
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=8f27158
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=8f27158
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=8f27158
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=8f27158
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=8f27158
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=8f27158
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=8f27158
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=8f27158
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=8f27158
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=8f27158
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=8f27158
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=8f27158
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=8f27158
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=8f27158
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=8f27158
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=8f27158
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=8f27158
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=8f27158
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=8f27158
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=8f27158
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=8f27158
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=8f27158
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=8f27158
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=8f27158
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=8f27158
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=8f27158
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -199,7 +199,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f6fd3e3";
+const buildNumberRaw = "8f27158";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3673,10 +3673,13 @@ function delRemSongData(watchID) {
 //#region disable darkreader
 /** Disables Dark Reader if it is present */
 function disableDarkReader() {
+    if (getFeatures().disableDarkReaderSites !== getDomain() && getFeatures().disableDarkReaderSites !== "all")
+        return;
     const metaElem = document.createElement("meta");
     metaElem.name = "darkreader-lock";
     metaElem.classList.add("bytm-disable-darkreader");
     document.head.appendChild(metaElem);
+    info("Disabled Dark Reader");
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 function initArrowKeySkip() {
@@ -4359,6 +4362,12 @@ const options = {
         { value: "yt", label: t("site_selection_only_yt") },
         { value: "ytm", label: t("site_selection_only_ytm") },
     ],
+    siteSelectionOrNone: () => [
+        { value: "all", label: t("site_selection_both_sites") },
+        { value: "yt", label: t("site_selection_only_yt") },
+        { value: "ytm", label: t("site_selection_only_ytm") },
+        { value: "none", label: t("site_selection_none") },
+    ],
     locale: () => Object.entries(langMapping)
         .reduce((a, [locale, { name }]) => {
         return [...a, {
@@ -4506,6 +4515,13 @@ const featInfo = {
         type: "toggle",
         category: "layout",
         default: true,
+        textAdornment: adornments.reloadRequired,
+    },
+    disableDarkReaderSites: {
+        type: "select",
+        category: "layout",
+        options: options.siteSelectionOrNone,
+        default: "all",
         textAdornment: adornments.reloadRequired,
     },
     //#region volume
@@ -4875,7 +4891,7 @@ const migrations = {
                 alt: Boolean((_d = oldSwitchSitesHotkey.meta) !== null && _d !== void 0 ? _d : false),
             }, listButtonsPlacement: "queueOnly" });
     },
-    // 4 -> 5 (v1.2)
+    // 4 -> 5 (v2.0)
     5: (oldData) => (Object.assign({}, useDefaultConfig(oldData, [
         "geniUrlBase", "geniUrlToken",
         "lyricsCacheMaxSize", "lyricsCacheTTL",
@@ -4890,7 +4906,7 @@ const migrations = {
         "fixHdrIssues", "clearQueueBtn", "closeToastsTimeout",
     ]))),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-    // 5 -> 6 (v1.3)
+    // 5 -> 6 (v2.x)
     // 6: (oldData: FeatureConfig) => 
 };
 const defaultData = Object.keys(featInfo)
@@ -5787,14 +5803,6 @@ function init() {
         catch (err) {
             error("Fatal error:", err);
         }
-        // init menu separately from features
-        try {
-            void "TODO(v1.2):";
-            // initMenu();
-        }
-        catch (err) {
-            error("Error while initializing menu:", err);
-        }
     });
 }
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
@@ -5872,38 +5880,12 @@ function onDomLoad() {
             }
             if (["ytm", "yt"].includes(domain)) {
                 //#region (ytm+yt) layout
-                disableDarkReader();
+                if (features.disableDarkReaderSites !== "none")
+                    disableDarkReader();
                 if (features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
                     ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
                 //#region (ytm+yt) input
                 ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
-                // TODO: for hot reloading features
-                // ftInit.push(new Promise((resolve) => {
-                //   for(const [k, v] of Object.entries(featInfo)) {
-                //     try {
-                //       const featVal = features[k as keyof typeof featInfo];
-                //       // @ts-ignore
-                //       if(v.enable && featVal === true) {
-                //         console.log("###> enable", k);
-                //         // @ts-ignore
-                //         v.enable(features);
-                //         console.log("###>> enable ok");
-                //       }
-                //       // @ts-ignore
-                //       else if(v.disable && featVal === false) {
-                //         console.log("###> disable", k);
-                //         // @ts-ignore
-                //         v.disable(features);
-                //         console.log("###>> disable ok");
-                //       }
-                //     }
-                //     catch(err) {
-                //       error(`Couldn't initialize feature "${k}" due to error:`, err);
-                //     }
-                //   }
-                //   console.log("###>>> done for loop");
-                //   resolve();
-                // }));
             }
             const initStartTs = Date.now();
             // wait for feature init or timeout (in case an init function is hung up on a promise)
@@ -5933,55 +5915,6 @@ function onDomLoad() {
         }
     });
 }
-// TODO(v1.2):
-// async function initFeatures() {
-//   const ftInit = [] as Promise<void>[];
-//   log(`DOM loaded. Initializing features for domain "${domain}"...`);
-//   for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
-//     try {
-//       // @ts-ignore
-//       const res = ftInfo?.enable?.() as undefined | Promise<void>;
-//       if(res instanceof Promise)
-//         ftInit.push(res);
-//       else
-//         ftInit.push(["Promise.resolve", Promise.resolve()]);
-//     }
-//     catch(err) {
-//       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
-//     }
-//   }
-//   siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
-//     try {
-//       // @ts-ignore
-//       if(featInfo[ftKey].change) {
-//         // @ts-ignore
-//         featInfo[ftKey].change(oldValue, newValue);
-//       }
-//       // @ts-ignore
-//       else if(featInfo[ftKey].disable) {
-//         // @ts-ignore
-//         const disableRes = featInfo[ftKey].disable();
-//         if(disableRes instanceof Promise) // @ts-ignore
-//           disableRes.then(() => featInfo[ftKey]?.enable?.());
-//         else // @ts-ignore
-//           featInfo[ftKey]?.enable?.();
-//       }
-//       else {
-//         // TODO: set "page reload required" flag in new menu
-//         if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
-//           disableBeforeUnload();
-//           location.reload();
-//         }
-//       }
-//     }
-//     catch(err) {
-//       error(`Couldn't change feature "${ftKey}" due to error:`, err);
-//     }
-//   });
-//   Promise.all(ftInit).then(() => {
-//     emitInterface("bytm:ready");
-//   });
-// }
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 function insertGlobalStyle() {
     return __awaiter(this, void 0, void 0, function* () {

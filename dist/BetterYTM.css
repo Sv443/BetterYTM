@@ -6,7 +6,7 @@
   --bytm-reload-col: #7ad46a;
 }
 
-/* TODO(v1.2): leave only dialog */
+/* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
 {
