@@ -196,15 +196,6 @@ export function currentMediaType(): "video" | "song" {
   return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 
-/**
- * Inserts {@linkcode beforeElement} as a sibling just before the provided {@linkcode afterElement}
- * @returns Returns the {@linkcode beforeElement}
- */
-export function insertBefore(afterElement: Element, beforeElement: Element) {
-  afterElement.parentNode?.insertBefore(beforeElement, afterElement);
-  return beforeElement;
-}
-
 /** Adds a global style element with the contents of the specified CSS resource */
 export async function addStyleFromResource(key: ResourceKey & `css-${string}`) {
   const css = await fetchCss(key);

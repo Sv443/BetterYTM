@@ -1,8 +1,8 @@
-import { addParent, autoPlural, debounce, fetchAdvanced, insertAfter, pauseFor } from "@sv443-network/userutils";
+import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, insertBefore, fetchCss, addStyleFromResource } from "../utils";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
 import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
@@ -37,7 +37,7 @@ export async function addWatermark() {
   onInteraction(watermark, watermarkOpenMenu);
 
   addSelectorListener("navBar", "ytmusic-nav-bar #left-content", {
-    listener: (logoElem) => insertAfter(logoElem, watermark),
+    listener: (logoElem) => logoElem.insertAdjacentElement("afterend", watermark),
   });
 
   log("Added watermark element");
@@ -462,7 +462,7 @@ export async function initAboveQueueBtns() {
           wrapperElem.appendChild(btnElem);
         }
 
-        insertBefore(rightBtnsEl, wrapperElem);
+        rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
       }
     },
   });
@@ -609,7 +609,7 @@ export async function initThumbnailOverlay() {
         toggleBtnElem.appendChild(imgElem);
     
         addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-          listener: (likeContainer) => insertAfter(likeContainer, toggleBtnElem),
+          listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
         });
       }
 
