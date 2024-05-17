@@ -1,4 +1,4 @@
-## 1.2.0
+## 2.0.0
 - **Added features:**
 	- Keep the volume synced between tabs
 	- Set an initial volume level once per tab
