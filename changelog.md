@@ -94,7 +94,7 @@
 ## 1.0.2
 - **Changes:**
   - Script is now published to OpenUserJS!
-  - Added a OpenUserJS link to the configuration menu
+  - Added an OpenUserJS link to the configuration menu
 
 <div class="split"></div>
 <br>
