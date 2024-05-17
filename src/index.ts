@@ -102,15 +102,6 @@ async function init() {
   catch(err) {
     error("Fatal error:", err);
   }
-
-  // init menu separately from features
-  try {
-    void "TODO(v1.2):";
-    // initMenu();
-  }
-  catch(err) {
-    error("Error while initializing menu:", err);
-  }
 }
 
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
@@ -225,35 +216,6 @@ async function onDomLoad() {
       //#region (ytm+yt) input
 
       ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
-
-      // TODO: for hot reloading features
-      // ftInit.push(new Promise((resolve) => {
-      //   for(const [k, v] of Object.entries(featInfo)) {
-      //     try {
-      //       const featVal = features[k as keyof typeof featInfo];
-      
-      //       // @ts-ignore
-      //       if(v.enable && featVal === true) {
-      //         console.log("###> enable", k);
-      //         // @ts-ignore
-      //         v.enable(features);
-      //         console.log("###>> enable ok");
-      //       }
-      //       // @ts-ignore
-      //       else if(v.disable && featVal === false) {
-      //         console.log("###> disable", k);
-      //         // @ts-ignore
-      //         v.disable(features);
-      //         console.log("###>> disable ok");
-      //       }
-      //     }
-      //     catch(err) {
-      //       error(`Couldn't initialize feature "${k}" due to error:`, err);
-      //     }
-      //   }
-      //   console.log("###>>> done for loop");
-      //   resolve();
-      // }));
     }
 
     const initStartTs = Date.now();
@@ -287,60 +249,6 @@ async function onDomLoad() {
     emitInterface("bytm:fatalError", "Error while initializing features");
   }
 }
-
-// TODO(v1.2):
-// async function initFeatures() {
-//   const ftInit = [] as Promise<void>[];
-
-//   log(`DOM loaded. Initializing features for domain "${domain}"...`);
-
-//   for(const [ftKey, ftInfo] of Object.entries(featInfo)) {
-//     try {
-//       // @ts-ignore
-//       const res = ftInfo?.enable?.() as undefined | Promise<void>;
-//       if(res instanceof Promise)
-//         ftInit.push(res);
-//       else
-//         ftInit.push(["Promise.resolve", Promise.resolve()]);
-//     }
-//     catch(err) {
-//       error(`Couldn't initialize feature "${ftKey}" due to error:`, err);
-//     }
-//   }
-
-//   siteEvents.on("configOptionChanged", (ftKey, oldValue, newValue) => {
-//     try {
-//       // @ts-ignore
-//       if(featInfo[ftKey].change) {
-//         // @ts-ignore
-//         featInfo[ftKey].change(oldValue, newValue);
-//       }
-//       // @ts-ignore
-//       else if(featInfo[ftKey].disable) {
-//         // @ts-ignore
-//         const disableRes = featInfo[ftKey].disable();
-//         if(disableRes instanceof Promise) // @ts-ignore
-//           disableRes.then(() => featInfo[ftKey]?.enable?.());
-//         else // @ts-ignore
-//           featInfo[ftKey]?.enable?.();
-//       }
-//       else {
-//         // TODO: set "page reload required" flag in new menu
-//         if(confirm("[Work in progress]\nYou changed an option that requires a page reload to be applied.\nReload the page now?")) {
-//           disableBeforeUnload();
-//           location.reload();
-//         }
-//       }
-//     }
-//     catch(err) {
-//       error(`Couldn't change feature "${ftKey}" due to error:`, err);
-//     }
-//   });
-
-//   Promise.all(ftInit).then(() => {
-//     emitInterface("bytm:ready");
-//   });
-// }
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function insertGlobalStyle() {
