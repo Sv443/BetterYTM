@@ -431,7 +431,7 @@ export async function initAboveQueueBtns() {
               const url = new URL(location.href);
               url.searchParams.delete("list");
               url.searchParams.set("t", String(await getVideoTime(0)));
-              location.href = String(url);
+              location.assign(url);
             }
             catch(err) {
               error("Couldn't clear queue due to an error:", err);

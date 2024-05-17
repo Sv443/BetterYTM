@@ -3,6 +3,7 @@ import { error, info } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
+import { currentParams } from "./constants";
 
 export interface SiteEventsMap {
   // misc:
@@ -153,7 +154,7 @@ export async function initSiteEvents() {
 
     const checkWatchId = () => {
       if(location.pathname.startsWith("/watch")) {
-        const newWatchId = new URL(location.href).searchParams.get("v");
+        const newWatchId = currentParams.get("v");
         if(newWatchId && newWatchId !== lastWatchId) {
           info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
           emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
