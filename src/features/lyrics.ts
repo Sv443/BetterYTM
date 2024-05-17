@@ -1,4 +1,4 @@
-import { autoPlural, fetchAdvanced, insertAfter } from "@sv443-network/userutils";
+import { autoPlural, fetchAdvanced } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
 import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils";
 import { emitInterface } from "../interface";
@@ -39,9 +39,9 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
     const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
 
     if(thumbToggleElem)
-      insertAfter(thumbToggleElem, lyricsBtnElem);
+      thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem);
     else
-      insertAfter(likeContainer, lyricsBtnElem);
+      likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
   })();
 
   currentSongTitle = songTitleElem.title;
