@@ -44,21 +44,20 @@ export const migrations: DataMigrationsDict = {
     };
   },
   // 4 -> 5 (v2.0)
-  5: (oldData: FeatureConfig) => ({
-    ...useDefaultConfig(oldData, [
-      "geniUrlBase", "geniUrlToken",
-      "lyricsCacheMaxSize", "lyricsCacheTTL",
-      "clearLyricsCache", "advancedMode",
-      "checkVersionNow", "advancedLyricsFilter",
-      "rememberSongTimeDuration", "rememberSongTimeReduction",
-      "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
-      "setInitialTabVolume", "initialTabVolumeLevel",
-      "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
-      "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
-      "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
-      "fixHdrIssues", "clearQueueBtn", "closeToastsTimeout",
-    ]),
-  }),
+  5: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "geniUrlBase", "geniUrlToken",
+    "lyricsCacheMaxSize", "lyricsCacheTTL",
+    "clearLyricsCache", "advancedMode",
+    "checkVersionNow", "advancedLyricsFilter",
+    "rememberSongTimeDuration", "rememberSongTimeReduction",
+    "rememberSongTimeMinPlayTime", "volumeSharedBetweenTabs",
+    "setInitialTabVolume", "initialTabVolumeLevel",
+    "thumbnailOverlayBehavior", "thumbnailOverlayToggleBtnShown",
+    "thumbnailOverlayShowIndicator", "thumbnailOverlayIndicatorOpacity",
+    "thumbnailOverlayImageFit", "removeShareTrackingParamSites",
+    "fixHdrIssues", "clearQueueBtn",
+    "closeToastsTimeout", "disableDarkReaderSites",
+  ]),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 5 -> 6 (v2.x)
   // 6: (oldData: FeatureConfig) => 
