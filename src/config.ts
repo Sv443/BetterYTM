@@ -43,7 +43,7 @@ export const migrations: DataMigrationsDict = {
       listButtonsPlacement: "queueOnly",
     };
   },
-  // 4 -> 5 (v1.2)
+  // 4 -> 5 (v2.0)
   5: (oldData: FeatureConfig) => ({
     ...useDefaultConfig(oldData, [
       "geniUrlBase", "geniUrlToken",
@@ -60,7 +60,7 @@ export const migrations: DataMigrationsDict = {
     ]),
   }),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-  // 5 -> 6 (v1.3)
+  // 5 -> 6 (v2.x)
   // 6: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
 
