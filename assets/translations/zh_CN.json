@@ -206,7 +206,6 @@
     "feature_desc_geniUrlToken": "您的 geniURL 实例的身份验证令牌",
     "feature_helptext_geniUrlToken": "为了绕过速率限制，您可以提供一个身份验证令牌，该令牌也在您的 geniURL 实例的 .env 文件中定义",
     "feature_desc_lyricsCacheMaxSize": "在缓存中保留的歌词的最大数量",
-    "feature_helptext_lyricsCacheMaxSize": "您听的歌曲的歌词存储在缓存中，以减少对歌词提供者的请求。\n此功能允许您设置要在缓存中保留的最大歌词数量。\n当达到限制时，将删除最后使用的条目以为任何新条目腾出空间。",
     "feature_desc_lyricsCacheTTL": "在缓存中保留歌词条目的最大天数",
     "feature_helptext_lyricsCacheTTL": "歌词存储在缓存中，以减少对歌词提供者的请求。\n此功能允许您设置要在缓存中保留的歌词的最大天数。\n如果您想确保始终拥有最新的歌词，请将此设置为较低的值，例如 4 天。",
     "feature_desc_clearLyricsCache": "手动清除歌词缓存",

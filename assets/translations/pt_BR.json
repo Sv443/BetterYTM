@@ -206,7 +206,6 @@
     "feature_desc_geniUrlToken": "Token de autenticação para sua instância geniURL",
     "feature_helptext_geniUrlToken": "Para evitar limites de taxa, você pode fornecer um token de autenticação que também está definido no arquivo .env de sua instância geniURL",
     "feature_desc_lyricsCacheMaxSize": "Quantidade máxima de letras para manter no cache",
-    "feature_helptext_lyricsCacheMaxSize": "As letras das músicas que você ouve são armazenadas em um cache para reduzir a quantidade de solicitações ao provedor de letras.\nEste recurso permite que você defina a quantidade máxima de letras a serem mantidas no cache.\nQuando o limite é atingido, a entrada que foi usada por último será removida para dar espaço a novas.",
     "feature_desc_lyricsCacheTTL": "Quantidade máxima de dias para manter uma entrada de letras no cache",
     "feature_helptext_lyricsCacheTTL": "O cache que as letras são armazenadas excluirá automaticamente elas após esse tempo para garantir que as atualizações da fonte sejam buscadas mais cedo ou mais tarde.\nSe você quiser garantir que sempre tenha as letras mais recentes, defina isso para um valor baixo, como 4 dias.",
     "feature_desc_clearLyricsCache": "Limpar o cache de letras manualmente",

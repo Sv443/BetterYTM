@@ -206,7 +206,6 @@
     "feature_desc_geniUrlToken": "Jeton d'authentification pour votre instance geniURL",
     "feature_helptext_geniUrlToken": "Pour contourner la limitation du taux, vous pouvez fournir un jeton d'authentification qui est également défini dans le fichier .env de votre instance geniURL",
     "feature_desc_lyricsCacheMaxSize": "Quantité maximale de paroles à conserver dans le cache",
-    "feature_helptext_lyricsCacheMaxSize": "Les paroles des chansons que vous écoutez sont stockées dans un cache pour réduire le nombre de requêtes au fournisseur de paroles.\nCette fonctionnalité vous permet de définir la quantité maximale de paroles",
     "feature_desc_lyricsCacheTTL": "Quantité maximale de jours pour conserver une entrée de paroles dans le cache",
     "feature_helptext_lyricsCacheTTL": "Le cache dans lequel les paroles sont stockées les supprimera automatiquement après ce laps de temps pour garantir que les mises à jour de la source sont récupérées tôt ou tard.\nSi vous voulez vous assurer d'avoir toujours les paroles les plus récentes, définissez cette valeur sur une faible comme 4 jours.",
     "feature_desc_clearLyricsCache": "Vider le cache des paroles manuellement",

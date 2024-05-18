@@ -161,9 +161,14 @@ export async function initSiteEvents() {
           lastWatchId = newWatchId;
         }
       }
-      setTimeout(checkWatchId, 200);
     };
-    window.addEventListener("bytm:ready", checkWatchId, { once: true });
+
+    window.addEventListener("bytm:ready", () => {
+      checkWatchId();
+      setInterval(checkWatchId, 200);
+    }, {
+      once: true,
+    });
   }
   catch(err) {
     error("Couldn't initialize SiteEvents observers due to an error:\n", err);
