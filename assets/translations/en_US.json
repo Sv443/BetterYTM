@@ -209,7 +209,7 @@
     "feature_desc_geniUrlToken": "Auth token for your geniURL instance",
     "feature_helptext_geniUrlToken": "To bypass rate limiting, you can provide an auth token that is also defined in the .env file of your geniURL instance",
     "feature_desc_lyricsCacheMaxSize": "Maximum amount of lyrics to keep in the cache",
-    "feature_helptext_lyricsCacheMaxSize": "The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the entry that was used last will be removed to make space for any new ones.",
+    "feature_helptext_lyricsCacheMaxSize": "The lyrics of songs you listen to are stored in a cache to reduce the amount of requests to the lyrics provider.\nThis feature allows you to set the maximum amount of lyrics to keep in the cache.\nWhen the limit is reached, the oldest entry will be removed to make space for any new ones.",
     "feature_desc_lyricsCacheTTL": "Max amount of days to keep a lyrics entry in the cache",
     "feature_helptext_lyricsCacheTTL": "The cache that lyrics are stored in will automatically delete them after this amount of time to ensure that updates to the source are being fetched sooner or later.\nIf you wanna make sure that you always have the most recent lyrics, set this to a low value like 4 days.",
     "feature_desc_clearLyricsCache": "Clear the lyrics cache manually",

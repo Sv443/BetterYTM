@@ -206,7 +206,6 @@
     "feature_desc_geniUrlToken": "Auth Token deiner geniURL Instanz",
     "feature_helptext_geniUrlToken": "Um das Rate Limiting zu umgehen, kannst du eine Auth Token angeben, das auch in der .env Datei deiner geniURL Instanz definiert ist",
     "feature_desc_lyricsCacheMaxSize": "Maximale Anzahl an Songtexten, die im Cache gespeichert werden sollen",
-    "feature_helptext_lyricsCacheMaxSize": "Die Songtexte der Songs, die du hörst, werden im Cache gespeichert, um die Anzahl der Anfragen an den Songtext-Provider zu reduzieren.\nDiese Funktion ermöglicht es dir, die maximale Anzahl an Songtexten festzulegen, die im Cache gespeichert werden sollen.\nWenn das Limit erreicht ist, wird der Eintrag, der zuletzt verwendet wurde, entfernt, um Platz für neue zu schaffen.",
     "feature_desc_lyricsCacheTTL": "Maximale Anzahl an Tagen, die ein Songtext-Eintrag im Cache bleiben soll",
     "feature_helptext_lyricsCacheTTL": "Der Cache, in dem die Songtexte gespeichert sind, löscht sie automatisch nach dieser Zeit, um sicherzustellen, dass Aktualisierungen der Quelle früher oder später abgerufen werden.\nWenn du sicherstellen möchtest, dass du immer die aktuellsten Songtexte hast, setze diesen Wert auf einen niedrigen Wert wie 4 Tage.",
     "feature_desc_clearLyricsCache": "Lösche den Songtext-Cache manuell",

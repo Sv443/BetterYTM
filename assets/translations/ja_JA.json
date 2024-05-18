@@ -206,7 +206,6 @@
     "feature_desc_geniUrlToken": "geniURL インスタンスの認証トークン",
     "feature_helptext_geniUrlToken": "レート制限をバイパスするために、geniURL インスタンスの .env ファイルで定義されている認証トークンを提供することができます。",
     "feature_desc_lyricsCacheMaxSize": "キャッシュに保持する歌詞の最大量",
-    "feature_helptext_lyricsCacheMaxSize": "聞いた曲の歌詞はキャッシュに保存され、歌詞プロバイダへのリクエストの量を減らします。\nこの機能を使用すると、キャッシュに保持する歌詞の最大量を設定できます。\n限界に達すると、最後に使用されたエントリが新しいエントリのためにスペースを確保するために削除されます。",
     "feature_desc_lyricsCacheTTL": "キャッシュに歌詞エントリを保持する最大日数",
     "feature_helptext_lyricsCacheTTL": "歌詞はキャッシュに保存され、更新された歌詞を取得するために定期的に削除されます。\n常に最新の歌詞を持っていたい場合は、4 日などの低い値に設定してください。",
     "feature_desc_clearLyricsCache": "歌詞キャッシュを手動でクリアする",

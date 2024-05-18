@@ -3,7 +3,7 @@ import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
 import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
-import { scriptInfo } from "../constants";
+import { currentParams, scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
 import type { ResourceKey } from "../types";
@@ -479,9 +479,7 @@ export async function initThumbnailOverlay() {
     return;
 
   // so the script doesn't wait until a /watch page is loaded
-  (async () => {
-    await waitVideoElementReady();
-
+  waitVideoElementReady().then(() => {
     const playerSelector = "ytmusic-player#player";
     const playerEl = document.querySelector<HTMLElement>(playerSelector);
 
@@ -519,13 +517,16 @@ export async function initThumbnailOverlay() {
       }
 
       if(getFeatures().thumbnailOverlayToggleBtnShown) {
-        const toggleBtnElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle");
-        const toggleBtnImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-toggle > img");
+        addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
+          async listener(toggleBtnElem) {
+            const toggleBtnImgElem = toggleBtnElem.querySelector<HTMLImageElement>("img");
 
-        if(toggleBtnImgElem)
-          toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
-        if(toggleBtnElem)
-          toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+            if(toggleBtnImgElem)
+              toggleBtnImgElem.src = await getResourceUrl(`icon-image${showOverlay ? "_filled" : ""}` as "icon-image" | "icon-image_filled");
+            if(toggleBtnElem)
+              toggleBtnElem.ariaLabel = toggleBtnElem.title = t(`thumbnail_overlay_toggle_btn_tooltip${showOverlay ? "_hide" : "_show"}`);
+          },
+        });
       }
     };
 
@@ -539,6 +540,7 @@ export async function initThumbnailOverlay() {
         if(thumbImgElem)
           thumbImgElem.src = thumbUrl;
       }
+      else error("Couldn't get thumbnail URL for watch ID", watchId);
     };
 
     const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
@@ -587,6 +589,11 @@ export async function initThumbnailOverlay() {
         applyThumbUrl(watchId);
         updateOverlayVisibility();
       });
+
+      if(currentParams.has("v")) {
+        applyThumbUrl(currentParams.get("v")!);
+        updateOverlayVisibility();
+      }
     
       // toggle button
       if(toggleBtnShown) {
@@ -635,7 +642,7 @@ export async function initThumbnailOverlay() {
           createElements();
       },
     });
-  })();
+  });
 }
 
 //#region hide cursor on idle
