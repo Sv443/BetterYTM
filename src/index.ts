@@ -49,9 +49,9 @@ import {
     "─ Lots of ambition and dedication",
     "─ My song metadata API: https://api.sv443.net/geniurl",
     "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
-    "─ The fuse.js library: https://github.com/krisk/Fuse",
-    "─ This markdown parser library: https://github.com/markedjs/marked",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
+    "─ This markdown parser library: https://github.com/markedjs/marked",
+    "─ This fuzzy search library: https://github.com/krisk/Fuse",
   ].join("\n"));
   console.log();
 }
