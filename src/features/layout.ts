@@ -2,8 +2,8 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
-import { currentParams, scriptInfo } from "../constants";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, getCurrentParams } from "../utils";
+import { scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
 import type { ResourceKey } from "../types";
@@ -590,8 +590,9 @@ export async function initThumbnailOverlay() {
         updateOverlayVisibility();
       });
 
-      if(currentParams.has("v")) {
-        applyThumbUrl(currentParams.get("v")!);
+      const params = getCurrentParams();
+      if(params.has("v")) {
+        applyThumbUrl(params.get("v")!);
         updateOverlayVisibility();
       }
     

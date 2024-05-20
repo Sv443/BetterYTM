@@ -1,33 +1,35 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { PluginDef } from "../types";
 import locales from "../../assets/locales.json" assert { type: "json" };
 import pluginsJson from "../../assets/plugins.json" assert { type: "json" };
-import pkg from "../../package.json" assert { type: "json" };
-import type { PluginDef } from "../types";
+import pkgJson from "../../package.json" assert { type: "json" };
 
-const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
-const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
-
+/** Map of section name and an async function that returns the new content for that section */
 const changes = {
   HEADER: genHeader,
   PLUGINS: genPluginList,
 };
 
+/** Get the path and content of all README files that need sections to be regenerated */
+async function getReadmeFiles() {
+  const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
+  const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
+
+  return [
+    { path: readmePath, content: await readFile(readmePath, "utf-8") },
+    { path: readmeSummaryPath, content: await readFile(readmeSummaryPath, "utf-8") },
+  ];
+}
+
+
+
 const pluginList = pluginsJson as PluginDef[];
 void ["TODO:", pluginList];
 
 async function run() {
-  const readmeFiles = [
-    {
-      path: readmePath,
-      content: await readFile(readmePath, "utf-8"),
-    },
-    {
-      path: readmeSummaryPath,
-      content: await readFile(readmeSummaryPath, "utf-8"),
-    },
-  ];
+  const readmeFiles = await getReadmeFiles();
 
   for(const { path, content } of readmeFiles) {
     console.info(`- Generating '${path}'`);
@@ -48,8 +50,8 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
   for(const [name, getContent] of Object.entries(changes)) {
     retLines = [];
 
-    const beginRegex = new RegExp(`\\s{0,}<!--\\s?<\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s{0,}\\n`, "gm");
-    const endRegex = new RegExp(`\\s{0,}<!--\\s?</\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s{0,}\\n`, "gm");
+    const beginRegex = new RegExp(`\\s*<!--\\s?<\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s*`, "g");
+    const endRegex = new RegExp(`\\s*<!--\\s?</\\{\\{\\s?${name.toUpperCase()}\\s?\\}\\}>\\s?-->\\s*`, "g");
 
     // find line number that matches beginRegex
     const beginLine = lines.findIndex((line) => beginRegex.test(line));
@@ -80,9 +82,9 @@ async function genHeader() {
     return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
   }, "");
   return `\
-<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkg.userscriptName}</h1>
+<h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkgJson.userscriptName}</h1>
 
-### ${pkg.description}
+### ${pkgJson.description}
 Supported Languages: ${langStr}\
 `;
 }

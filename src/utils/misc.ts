@@ -24,6 +24,9 @@ export function getDomain(): Domain {
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
 
+/** Returns the search params of the current URL */
+export const getCurrentParams = () => new URL(location.href).searchParams;
+
 /** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
 export function getSessionId(): string | null {
   try {
