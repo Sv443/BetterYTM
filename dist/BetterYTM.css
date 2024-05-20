@@ -1,9 +1,9 @@
 :root {
-  --bytm-locale-color: #6a97c7;
-  --bytm-advanced-mode-color: #c5b270;
-  --bytm-experimental-col: #c698d6;
+  --bytm-locale-color: #5ea2ec;
+  --bytm-advanced-mode-color: #ceb663;
+  --bytm-experimental-col: #cc83e5;
   --bytm-warning-col: #e07664;
-  --bytm-reload-col: #7ad46a;
+  --bytm-reload-col: #77e064;
 }
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
