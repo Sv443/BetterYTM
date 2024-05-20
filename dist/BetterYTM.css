@@ -443,6 +443,10 @@
   margin-left: 5px;
 }
 
+select.bytm-ftconf-input {
+  cursor: pointer;
+}
+
 #bytm-export-dialog-text, #bytm-import-dialog-text {
   font-size: 1.6em;
   margin-bottom: 15px;
@@ -1283,6 +1287,7 @@ button.bytm-btn {
   text-transform: revert;
   color: revert;
   background: revert;
+  cursor: pointer;
   line-height: 1.4em;
 }
 
@@ -1356,22 +1361,26 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .bytm-yt-cfg-menu-option {
+  position: relative;
+  width: calc(100% - 12px);
+}
+
+.bytm-yt-cfg-menu-option-inner {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 0px 12px;
-  min-height: var(--paper-item-min-height,48px);
-  width: calc(100% - 12px);
+  min-height: var(--paper-item-min-height, 48px);
   max-width: calc(100% - 12px);
+  padding: 0px 12px;
+  border-radius: var(--paper-item-focused-before-border-radius, 10px);
   cursor: pointer;
   background-color: transparent;
   transition: background-color 0.2s ease;
 }
 
-.bytm-yt-cfg-menu-option:hover {
-  /* I would've loved to just use the YT-provided var(--yt-spec-badge-chip-background) but darkreader is being a bitch and a half and overwrites it */
-  background-color: rgba(255, 255, 255, 0.05);
+.bytm-yt-cfg-menu-option-inner:hover {
+  background-color: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
 }
 
 .bytm-yt-cfg-menu-option-icon {
@@ -1384,7 +1393,14 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .bytm-yt-cfg-menu-option-item {
+  width: 100%;
+  color: #fff;
   font-size: 14px;
+}
+
+.bytm-yt-cfg-menu-option-item:hover {
+  /* Support for "Enhancer for YouTube" extension's custom themes */
+  color: var(--main-color, #fff) !important;
 }
 
 /* #region watermark */
