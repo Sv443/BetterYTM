@@ -147,12 +147,14 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
 /** Called whenever the titlebar (masthead) exists on YT to add a BYTM config menu button */
 export async function addConfigMenuOptionYT(container: HTMLElement) {
-  // TODO:
+  const cfgOptWrapperElem = document.createElement("div");
+  cfgOptWrapperElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
+  cfgOptWrapperElem.role = "button";
+  cfgOptWrapperElem.tabIndex = 0;
+  cfgOptWrapperElem.ariaLabel = cfgOptWrapperElem.title = t("open_menu_tooltip", scriptInfo.name);
+
   const cfgOptElem = document.createElement("div");
-  cfgOptElem.classList.add("bytm-yt-cfg-menu-option", "darkreader-ignore");
-  cfgOptElem.role = "button";
-  cfgOptElem.tabIndex = 0;
-  cfgOptElem.ariaLabel = cfgOptElem.title = t("open_menu_tooltip", scriptInfo.name);
+  cfgOptElem.classList.add("bytm-yt-cfg-menu-option-inner");
 
   const cfgOptImgElem = document.createElement("img");
   cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
@@ -165,12 +167,14 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
   cfgOptElem.appendChild(cfgOptImgElem);
   cfgOptElem.appendChild(cfgOptItemElem);
 
-  onInteraction(cfgOptElem, openCfgMenu);
+  cfgOptWrapperElem.appendChild(cfgOptElem);
+
+  onInteraction(cfgOptWrapperElem, openCfgMenu);
 
   const firstChild = container?.firstElementChild;
 
   if(firstChild)
-    container.insertBefore(cfgOptElem, firstChild);
+    container.insertBefore(cfgOptWrapperElem, firstChild);
   else
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }

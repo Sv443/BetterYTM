@@ -442,7 +442,7 @@ async function addCfgMenu() {
           advCopyHintElem.style.display = "none";
 
           const advCopyHiddenBtn = document.createElement("button");
-          advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn");
+          advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
           advCopyHiddenBtn.tabIndex = 0;
           advCopyHiddenBtn.textContent = t("copy_hidden_value");
           advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
@@ -597,6 +597,7 @@ async function addCfgMenu() {
             break;
           case "button":
             wrapperElem = document.createElement("button");
+            wrapperElem.classList.add("bytm-btn");
             wrapperElem.tabIndex = 0;
             wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
 
