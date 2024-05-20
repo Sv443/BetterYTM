@@ -281,6 +281,10 @@
   margin-left: 5px;
 }
 
+select.bytm-ftconf-input {
+  cursor: pointer;
+}
+
 #bytm-export-dialog-text, #bytm-import-dialog-text {
   font-size: 1.6em;
   margin-bottom: 15px;
