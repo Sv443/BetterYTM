@@ -32,10 +32,13 @@ export interface BytmDialogOptions {
   renderFooter?: () => HTMLElement | Promise<HTMLElement>;
 }
 
+// TODO: remove export as soon as config menu is migrated to use BytmDialog
 /** ID of the last opened (top-most) dialog */
-let currentDialogId: string | null = null;
+export let currentDialogId: string | null = null;
 /** IDs of all currently open dialogs, top-most first */
-const openDialogs: string[] = [];
+export const openDialogs: string[] = [];
+/** TODO: remove as soon as config menu is migrated to use BytmDialog */
+export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
 
 /** Creates and manages a modal dialog element */
 export class BytmDialog extends NanoEmitter<{
