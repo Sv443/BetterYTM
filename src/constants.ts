@@ -42,9 +42,6 @@ export const sessionStorageAllowed =
     }
   })();
 
-/** The search params of the current URL */
-export const currentParams = new URL(location.href).searchParams;
-
 /**
  * How much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)

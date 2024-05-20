@@ -2,7 +2,7 @@
   "name": "betterytm",
   "userscriptName": "BetterYTM",
   "version": "1.1.1",
-  "description": "Lots of configurable layout and user experience improvements for YouTube Music™",
+  "description": "Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™",
   "homepage": "https://github.com/Sv443/BetterYTM",
   "main": "./src/index.ts",
   "type": "module",

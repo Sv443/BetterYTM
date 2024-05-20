@@ -1,8 +1,7 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, getCurrentParams } from "../utils";
 import { getFeatures } from "../config";
 import { addSelectorListener } from "../observers";
-import { currentParams } from "../constants";
 import { LogLevel } from "../types";
 
 //#region beforeunload popup
@@ -107,7 +106,7 @@ export async function initRememberSongTime() {
 /** Tries to restore the time of the currently playing song */
 async function restoreSongTime() {
   if(location.pathname.startsWith("/watch")) {
-    const watchID = currentParams.get("v");
+    const watchID = getCurrentParams().get("v");
     if(!watchID)
       return;
 

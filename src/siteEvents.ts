@@ -1,9 +1,8 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info } from "./utils";
+import { error, info, log, getCurrentParams } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
-import { currentParams } from "./constants";
 
 export interface SiteEventsMap {
   // misc:
@@ -154,7 +153,7 @@ export async function initSiteEvents() {
 
     const checkWatchId = () => {
       if(location.pathname.startsWith("/watch")) {
-        const newWatchId = currentParams.get("v");
+        const newWatchId = getCurrentParams().get("v");
         if(newWatchId && newWatchId !== lastWatchId) {
           info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
           emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
@@ -175,8 +174,19 @@ export async function initSiteEvents() {
   }
 }
 
-/** Emits a site event with the given key and arguments */
+let bytmReady = false;
+window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
+
+/** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
+  if(!bytmReady) {
+    window.addEventListener("bytm:ready", () => {
+      bytmReady = true;
+      emitSiteEvent(key, ...args);
+    }, { once: true });
+    return;
+  }
+  log("Emitting site event", key, "with args:", args);
   siteEvents.emit(key, ...args);
   emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
 }
