@@ -7,7 +7,7 @@ import { siteEvents } from "../siteEvents";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
-import { createHotkeyInput, createToggleInput } from "../components";
+import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components";
 import pkg from "../../package.json" assert { type: "json" };
 
 //#region create menu
@@ -804,6 +804,9 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
+
+  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
+  setCurrentDialogId(openDialogs?.[0] ?? null);
 }
 
 /** Opens the config menu if it is closed */
@@ -823,6 +826,9 @@ export async function openCfgMenu() {
 
   menuBg.style.visibility = "visible";
   menuBg.style.display = "block";
+
+  setCurrentDialogId("cfg-menu");
+  openDialogs.unshift("cfg-menu");
 
   checkToggleScrollIndicator();
 }
