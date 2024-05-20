@@ -9,3 +9,8 @@ ytmusic-carousel-shelf-renderer ytmusic-carousel {
 ytmusic-responsive-list-item-renderer div.left-items:not(a.bytm-anchor > div.left-items) {
   margin-right: var(--ytmusic-responsive-list-item-thumbnail-margin-right, 16px) !important;
 }
+
+/* Because the autoplay queue doesn't have the three dot menu anymore, the buttons weren't aligned with the currently-playing-queue ones anymore */
+ytmusic-tab-renderer #automix-contents .bytm-queue-btn-container {
+  padding-right: 13px;
+}
