@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d9fc908
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=c30a704
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,43 +35,43 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=d9fc908
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=d9fc908
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=d9fc908
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=d9fc908
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=d9fc908
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=d9fc908
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=d9fc908
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=d9fc908
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=d9fc908
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=d9fc908
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=d9fc908
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=d9fc908
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=d9fc908
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=d9fc908
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=d9fc908
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=d9fc908
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=d9fc908
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=d9fc908
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=d9fc908
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=d9fc908
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=d9fc908
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=d9fc908
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=d9fc908
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=d9fc908
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=d9fc908
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=d9fc908
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=d9fc908
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=d9fc908
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=d9fc908
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=d9fc908
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=d9fc908
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=d9fc908
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=d9fc908
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=d9fc908
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=d9fc908
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=d9fc908
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=d9fc908
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=c30a704
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=c30a704
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=c30a704
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=c30a704
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=c30a704
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=c30a704
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=c30a704
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=c30a704
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=c30a704
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=c30a704
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=c30a704
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=c30a704
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=c30a704
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=c30a704
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=c30a704
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=c30a704
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=c30a704
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=c30a704
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=c30a704
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=c30a704
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=c30a704
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=c30a704
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=c30a704
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=c30a704
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=c30a704
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=c30a704
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=c30a704
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=c30a704
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=c30a704
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=c30a704
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=c30a704
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=c30a704
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=c30a704
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=c30a704
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=c30a704
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=c30a704
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=c30a704
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -199,7 +199,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d9fc908";
+const buildNumberRaw = "c30a704";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -4997,7 +4997,7 @@ function initConfig() {
                 yield cfgDataStore.setData(data = cfgDataStore.defaultData);
             }
         }
-        emitInterface("bytm:configReady", getFeaturesInterface());
+        emitInterface("bytm:configReady");
         return Object.assign({}, data);
     });
 }
@@ -5045,7 +5045,23 @@ function clearConfig() {
         yield cfgDataStore.deleteData();
         info("Deleted config from persistent storage");
     });
-}const { getUnsafeWindow } = UserUtils__namespace;
+}const { getUnsafeWindow, randomId } = UserUtils__namespace;
+const allInterfaceEvents = [
+    "bytm:initPlugins",
+    "bytm:pluginsRegistered",
+    "bytm:ready",
+    "bytm:fatalError",
+    "bytm:observersReady",
+    "bytm:configReady",
+    "bytm:setLocale",
+    "bytm:dialogOpened",
+    "bytm:dialogOpened:id",
+    "bytm:lyricsLoaded",
+    "bytm:lyricsCacheReady",
+    "bytm:lyricsCacheCleared",
+    "bytm:lyricsCacheEntryAdded",
+    ...allSiteEvents.map(evt => `bytm:siteEvent:${evt}`),
+];
 /** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
 const globalFuncs = {
     // meta
@@ -5056,14 +5072,14 @@ const globalFuncs = {
     getResourceUrl,
     getSessionId,
     getVideoTime,
-    setLocale,
+    setLocale: setLocaleInterface,
     getLocale,
     hasKey,
     hasKeyFor,
     t,
     tp,
     getFeatures: getFeaturesInterface,
-    saveFeatures: setFeatures,
+    saveFeatures: saveFeaturesInterface,
     fetchLyricsUrlTop,
     getLyricsCacheEntry,
     sanitizeArtists,
@@ -5103,25 +5119,27 @@ function emitInterface(type, ...data) {
 }
 //#region register plugins
 /** Plugins that are queued up for registration */
-const pluginQueue = new Map();
+const pluginsQueued = new Map();
 /** Registered plugins including their event listener instance */
-const pluginMap = new Map();
+const pluginsRegistered = new Map();
+/** Auth tokens for plugins that have been registered */
+const pluginTokens = new Map();
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 function initPlugins() {
     // TODO(v1.3): check perms and ask user for initial activation
-    for (const [key, { def, events }] of pluginQueue) {
+    for (const [key, { def, events }] of pluginsQueued) {
         try {
-            pluginMap.set(key, { def, events });
-            pluginQueue.delete(key);
+            pluginsRegistered.set(key, { def, events });
+            pluginsQueued.delete(key);
             emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def));
         }
         catch (err) {
             error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
         }
     }
-    for (const evt of allSiteEvents) // @ts-ignore
-        siteEvents.on(evt, (...args) => emitOnPlugins(evt, () => true, ...args));
-    emitInterface("bytm:pluginsLoaded");
+    for (const evt of allInterfaceEvents) // @ts-ignore
+        getUnsafeWindow().addEventListener(evt, (...args) => emitOnPlugins(evt, undefined, ...args));
+    emitInterface("bytm:pluginsRegistered");
 }
 /** Returns the key for a given plugin definition */
 function getPluginKey(plugin) {
@@ -5141,19 +5159,22 @@ function sameDef(def1, def2) {
 }
 /** Emits an event on all plugins that match the predicate (all plugins by default) */
 function emitOnPlugins(event, predicate = true, ...data) {
-    for (const { def, events } of pluginMap.values())
+    for (const { def, events } of pluginsRegistered.values())
         if (typeof predicate === "boolean" ? predicate : predicate(def))
             events.emit(event, ...data);
 }
 /**
  * Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered.
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  * @public Intended for general use in plugins.
  */
 function getPluginInfo(...args) {
-    var _a, _b;
-    return pluginDefToInfo(args.length === 2
-        ? (_a = pluginMap.get(`${args[1]}/${args[0]}`)) === null || _a === void 0 ? void 0 : _a.def
-        : (_b = pluginMap.get(getPluginKey(args[0]))) === null || _b === void 0 ? void 0 : _b.def);
+    var _a;
+    if (resolveToken(args[0]) === undefined)
+        return undefined;
+    return pluginDefToInfo((_a = pluginsRegistered.get(args.length === 2
+        ? `${args[2]}/${args[1]}`
+        : getPluginKey(args[1]))) === null || _a === void 0 ? void 0 : _a.def);
 }
 /** Validates the passed PluginDef object and returns an array of errors - returns undefined if there were no errors - never returns an empty array */
 function validatePluginDef(pluginDef) {
@@ -5176,20 +5197,43 @@ function registerPlugin(def) {
         throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
     }
     const events = createNanoEvents();
+    const token = randomId(32, 36);
     const { plugin: { name } } = def;
-    pluginQueue.set(getPluginKey(def), {
+    pluginsQueued.set(getPluginKey(def), {
         def: def,
         events,
     });
+    pluginTokens.set(getPluginKey(def), token);
     info(`Registered plugin: ${name}`, LogLevel.Info);
     return {
-        info: getPluginInfo(def),
+        info: getPluginInfo(token, def),
         events,
+        token,
     };
 }
+/** Checks whether the passed token is a valid auth token for any registered plugin and returns the resolvable plugin ID, else returns undefined */
+function resolveToken(token) {
+    var _a, _b;
+    return token ? (_b = (_a = [...pluginTokens.entries()].find(([, v]) => v === token)) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : undefined : undefined;
+}
 //#region proxy funcs
-/** Returns the current feature config, with sensitive values replaced by `undefined` */
-function getFeaturesInterface() {
+/**
+ * Sets the new locale on the BYTM interface
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function setLocaleInterface(token, locale) {
+    if (resolveToken(token) === undefined)
+        return;
+    setLocale(locale);
+    emitInterface("bytm:setLocale", { locale });
+}
+/**
+ * Returns the current feature config, with sensitive values replaced by `undefined`
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function getFeaturesInterface(token) {
+    if (resolveToken(token) === undefined)
+        return undefined;
     const features = getFeatures();
     for (const ftKey of Object.keys(features)) {
         const info = featInfo[ftKey];
@@ -5197,6 +5241,15 @@ function getFeaturesInterface() {
             features[ftKey] = undefined;
     }
     return features;
+}
+/**
+ * Saves the passed feature config synchronously to the in-memory cache and asynchronously to the persistent storage.
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function saveFeaturesInterface(token, features) {
+    if (resolveToken(token) === undefined)
+        return;
+    setFeatures(features);
 }/** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions = {
     disableOnNoListeners: false,
