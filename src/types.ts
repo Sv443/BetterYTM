@@ -7,6 +7,7 @@ import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
 import type { getFeatures, setFeatures } from "./config";
 import type { SiteEventsMap } from "./siteEvents";
+import type { InterfaceEventsMap } from "./interface";
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
@@ -163,13 +164,16 @@ export type PluginDef = {
   }>;
 };
 
-/** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} - these don't have a prefix since they can't conflict with other events */
+/** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} and {@linkcode InterfaceEventsMap} - these don't have a prefix since they can't conflict with other events */
 export type PluginEventMap =
+  // Emitted on each plugin individually:
   & {
-    /** Called when the plugin is registered on BYTM's side */
+    /** Emitted when the plugin is registered on BYTM's side */
     pluginRegistered: (info: PluginInfo) => void;
   }
-  & SiteEventsMap;
+  // Emitted on every plugin simultaneously:
+  & SiteEventsMap
+  & InterfaceEventsMap;
 
 /** A plugin in either the queue or registered map */
 export type PluginItem = 
