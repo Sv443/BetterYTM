@@ -307,7 +307,12 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
 >   
 > The function will either throw an error if the plugin object is invalid or return a registration result object.  
-> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)
+> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)  
+>   
+> The returned properties include:  
+> - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
+> - `events` - An object containing all event listeners that the plugin can use to listen for BetterYTM events
+> - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
@@ -352,8 +357,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > unsafeWindow.addEventListener("bytm:initPlugins", () => {
 >   // register the plugin
 >   const { events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>   let token: string | undefined;
 >   // listen for the pluginRegistered event
 >   events.on("pluginRegistered", (info) => {
+>     // store the (private!) token for later use in authenticated function calls
+>     token = info.token;
 >     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
 >   });
 >   // for other events search for "type PluginEventMap" in "src/types.ts"
@@ -366,8 +374,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getPluginInfo()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getPluginInfo(name: string, namespace: string): PluginInfo | undefined
-> unsafeWindow.BYTM.getPluginInfo(pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
+> unsafeWindow.BYTM.getPluginInfo(token: string | undefined, name: string, namespace: string): PluginInfo | undefined
+> unsafeWindow.BYTM.getPluginInfo(token: string | undefined, pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
 > ```
 >   
 > Description:  
@@ -375,6 +383,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > This object contains all information that other plugins will be able to see about your plugin.  
 >   
 > Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will always return `undefined`)
 > - `name` - The 'name' property of the plugin
 > - `namespace` - The 'namespace' property of the plugin
 > OR:
@@ -386,7 +395,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.addEventListener("bytm:pluginsLoaded", () => {
+> unsafeWindow.addEventListener("bytm:pluginsRegistered", () => {
 >   const pluginInfo = unsafeWindow.BYTM.getPluginInfo("My cool plugin", "https://github.com/MyUsername");
 >   if(pluginInfo) {
 >     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
@@ -565,7 +574,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### setLocale()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.setLocale(locale: string): void
+> unsafeWindow.BYTM.setLocale(token: string | undefined, locale: string): void
 > ```
 >   
 > Description:  
@@ -573,12 +582,13 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The new locale is used for all translations *after* this function is called.  
 >   
 > Arguments:  
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
 > - `locale` - The locale to set. Refer to the file [`assets/locales.json`](assets/locales.json) for a list of available locales.
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.setLocale("en_UK");
+> unsafeWindow.BYTM.setLocale(myToken, "en_UK");
 > ```
 > </details>
 
@@ -740,7 +750,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### saveFeatures()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.saveFeatures(config: FeatureConfig): Promise<void>
+> unsafeWindow.BYTM.saveFeatures(token: string | undefined, config: FeatureConfig): Promise<void>
 > ```
 >   
 > Description:  
@@ -748,6 +758,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > The object in memory is updated synchronously, while the one in GM storage is updated asynchronously once the Promise resolves.  
 >   
 > Arguments:  
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will do nothing).
 > - `config` - The full config object to save. If properties are missing, BYTM will break!  
 >   To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 >   
@@ -758,7 +769,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   const oldConfig = unsafeWindow.BYTM.getFeatures();
 >   const newConfig = { ...oldConfig, volumeSliderStep: 1 };
 > 
->   const promise = unsafeWindow.BYTM.saveFeatures(newConfig);
+>   const promise = unsafeWindow.BYTM.saveFeatures(myToken, newConfig);
 >   // new config is now saved in memory, but not yet in GM storage
 >   // so this already returns the updated config:
 >   console.log(unsafeWindow.BYTM.getFeatures());

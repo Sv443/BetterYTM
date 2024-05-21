@@ -5,11 +5,11 @@ import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, 
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
 import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
-import { allSiteEvents, siteEvents, type SiteEventsMap } from "./siteEvents";
+import { allSiteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
 import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } from "./components";
 
-const { getUnsafeWindow } = UserUtils;
+const { getUnsafeWindow, randomId } = UserUtils;
 
 //#region interface globals
 
@@ -18,7 +18,7 @@ export type InterfaceEvents = {
   /** Emitted whenever the plugins should be registered using `unsafeWindow.BYTM.registerPlugin()` */
   "bytm:initPlugins": undefined;
   /** Emitted whenever all plugins have been loaded */
-  "bytm:pluginsLoaded": undefined;
+  "bytm:pluginsRegistered": undefined;
   /** Emitted when BYTM has finished initializing all features */
   "bytm:ready": undefined;
   /** Emitted when a fatal error occurs and the script can't continue to run. Returns a short error description (not really meant to be displayed to the user). */
@@ -28,15 +28,15 @@ export type InterfaceEvents = {
    * Use `unsafeWindow.BYTM.addObserverListener()` to add custom listener functions to the observers
    */
   "bytm:observersReady": undefined;
-  /** Emitted as soon as the feature config has been loaded */
-  "bytm:configReady": FeatureConfig;
+  /** Emitted as soon as the feature config has finished loading and can be accessed via `unsafeWindow.BYTM.getFeatures(token)` */
+  "bytm:configReady": undefined;
 
   /** Emitted whenever the locale is changed */
   "bytm:setLocale": { locale: TrLocale };
 
   /** Emitted when a dialog was opened - returns the dialog's instance */
   "bytm:dialogOpened": BytmDialog;
-  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - in TS, use `"..." as "bytm:dialogOpened:id"` to make the error go away */
+  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - in TS, use `"bytm:dialogOpened:myIdWhatever" as "bytm:dialogOpened:id"` to make the error go away */
   "bytm:dialogOpened:id": BytmDialog;
 
   /** Emitted whenever the lyrics URL for a song is loaded */
@@ -52,6 +52,23 @@ export type InterfaceEvents = {
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
 };
 
+export const allInterfaceEvents = [
+  "bytm:initPlugins",
+  "bytm:pluginsRegistered",
+  "bytm:ready",
+  "bytm:fatalError",
+  "bytm:observersReady",
+  "bytm:configReady",
+  "bytm:setLocale",
+  "bytm:dialogOpened",
+  "bytm:dialogOpened:id",
+  "bytm:lyricsLoaded",
+  "bytm:lyricsCacheReady",
+  "bytm:lyricsCacheCleared",
+  "bytm:lyricsCacheEntryAdded",
+  ...allSiteEvents.map(evt => `bytm:siteEvent:${evt}`),
+] as const;
+
 /** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
 const globalFuncs = {
   // meta
@@ -63,14 +80,14 @@ const globalFuncs = {
   getResourceUrl,
   getSessionId,
   getVideoTime,
-  setLocale,
+  setLocale: setLocaleInterface,
   getLocale,
   hasKey,
   hasKeyFor,
   t,
   tp,
   getFeatures: getFeaturesInterface,
-  saveFeatures: setFeatures,
+  saveFeatures: saveFeaturesInterface,
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
   sanitizeArtists,
@@ -108,7 +125,7 @@ export function initInterface() {
 export function setGlobalProp<
   TKey extends keyof Window["BYTM"],
   TValue = Window["BYTM"][TKey],
-> (
+>(
   key: TKey | (string & {}),
   value: TValue,
 ) {
@@ -135,19 +152,22 @@ export function emitInterface<
 //#region register plugins
 
 /** Plugins that are queued up for registration */
-const pluginQueue = new Map<string, PluginItem>();
+const pluginsQueued = new Map<string, PluginItem>();
 
 /** Registered plugins including their event listener instance */
-const pluginMap = new Map<string, PluginItem>();
+const pluginsRegistered = new Map<string, PluginItem>();
+
+/** Auth tokens for plugins that have been registered */
+const pluginTokens = new Map<string, string>();
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
   // TODO(v1.3): check perms and ask user for initial activation
 
-  for(const [key, { def, events }] of pluginQueue) {
+  for(const [key, { def, events }] of pluginsQueued) {
     try {
-      pluginMap.set(key, { def, events });
-      pluginQueue.delete(key);
+      pluginsRegistered.set(key, { def, events });
+      pluginsQueued.delete(key);
       emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
     }
     catch(err) {
@@ -155,10 +175,10 @@ export function initPlugins() {
     }
   }
 
-  for(const evt of allSiteEvents) // @ts-ignore
-    siteEvents.on(evt, (...args) => emitOnPlugins(evt, () => true, ...args));
+  for(const evt of allInterfaceEvents) // @ts-ignore
+    getUnsafeWindow().addEventListener(evt, (...args) => emitOnPlugins(evt, undefined, ...args));
 
-  emitInterface("bytm:pluginsLoaded");
+  emitInterface("bytm:pluginsRegistered");
 }
 
 /** Returns the key for a given plugin definition */
@@ -186,7 +206,7 @@ export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
   predicate: ((def: PluginDef) => boolean) | boolean = true,
   ...data: Parameters<PluginEventMap[TEvtKey]>
 ) {
-  for(const { def, events } of pluginMap.values())
+  for(const { def, events } of pluginsRegistered.values())
     if(typeof predicate === "boolean" ? predicate : predicate(def))
       events.emit(event, ...data);
 }
@@ -207,29 +227,37 @@ export function getPlugin(plugin: PluginDefResolvable): PluginItem | undefined
  */
 export function getPlugin(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
   return args.length === 2
-    ? pluginMap.get(`${args[1]}/${args[0]}`)
-    : pluginMap.get(getPluginKey(args[0] as PluginDefResolvable));
+    ? pluginsRegistered.get(`${args[1]}/${args[0]}`)
+    : pluginsRegistered.get(getPluginKey(args[0] as PluginDefResolvable));
 }
 
 /**
  * Returns info about a registered plugin on the BYTM interface by its name and namespace properties, or undefined if the plugin isn't registered.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
  * @public Intended for general use in plugins.
  */
-export function getPluginInfo(name: string, namespace: string): PluginInfo | undefined
+export function getPluginInfo(token: string | undefined, name: string, namespace: string): PluginInfo | undefined
 /**
  * Returns info about a registered plugin on the BYTM interface by a resolvable definition object, or undefined if the plugin isn't registered.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
  * @public Intended for general use in plugins.
  */
-export function getPluginInfo(plugin: PluginDefResolvable): PluginInfo | undefined
+export function getPluginInfo(token: string | undefined, plugin: PluginDefResolvable): PluginInfo | undefined
 /**
  * Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
  * @public Intended for general use in plugins.
  */
-export function getPluginInfo(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
+export function getPluginInfo(...args: [token: string | undefined, pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
+  if(resolveToken(args[0]) === undefined)
+    return undefined;
+
   return pluginDefToInfo(
-    args.length === 2
-      ? pluginMap.get(`${args[1]}/${args[0]}`)?.def
-      : pluginMap.get(getPluginKey(args[0] as PluginDefResolvable))?.def
+    pluginsRegistered.get(
+      args.length === 2
+        ? `${args[2]}/${args[1]}`
+        : getPluginKey(args[1] as PluginDefResolvable)
+    )?.def
   );
 }
 
@@ -259,25 +287,49 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
   }
 
   const events = createNanoEvents<PluginEventMap>();
+  const token = randomId(32, 36);
 
   const { plugin: { name } } = def;
-  pluginQueue.set(getPluginKey(def), {
+  pluginsQueued.set(getPluginKey(def), {
     def: def,
     events,
   });
+  pluginTokens.set(getPluginKey(def), token);
 
   info(`Registered plugin: ${name}`, LogLevel.Info);
 
   return {
-    info: getPluginInfo(def)!,
+    info: getPluginInfo(token, def)!,
     events,
+    token,
   };
+}
+
+/** Checks whether the passed token is a valid auth token for any registered plugin and returns the resolvable plugin ID, else returns undefined */
+export function resolveToken(token: string | undefined): string | undefined {
+  return token ? [...pluginTokens.entries()].find(([, v]) => v === token)?.[0] ?? undefined : undefined;
 }
 
 //#region proxy funcs
 
-/** Returns the current feature config, with sensitive values replaced by `undefined` */
-export function getFeaturesInterface() {
+/**
+ * Sets the new locale on the BYTM interface  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function setLocaleInterface(token: string | undefined, locale: TrLocale) {
+  if(resolveToken(token) === undefined)
+    return;
+  setLocale(locale);
+  emitInterface("bytm:setLocale", { locale });
+}
+
+/**
+ * Returns the current feature config, with sensitive values replaced by `undefined`  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function getFeaturesInterface(token: string | undefined) {
+  if(resolveToken(token) === undefined)
+    return undefined;
   const features = getFeatures();
   for(const ftKey of Object.keys(features)) {
     const info = featInfo[ftKey as keyof typeof featInfo] as FeatureInfo[keyof FeatureInfo];
@@ -285,4 +337,14 @@ export function getFeaturesInterface() {
       features[ftKey as keyof typeof features] = undefined;
   }
   return features as FeatureConfig;
+}
+
+/**
+ * Saves the passed feature config synchronously to the in-memory cache and asynchronously to the persistent storage.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function saveFeaturesInterface(token: string | undefined, features: FeatureConfig) {
+  if(resolveToken(token) === undefined)
+    return;
+  setFeatures(features);
 }

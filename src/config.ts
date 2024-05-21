@@ -3,8 +3,8 @@ import { featInfo } from "./features/index";
 import { compressionSupported, error, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat } from "./constants";
+import { emitInterface } from "./interface";
 import type { FeatureConfig, FeatureKey } from "./types";
-import { emitInterface, getFeaturesInterface } from "./interface";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 5;
@@ -108,7 +108,7 @@ export async function initConfig() {
     }
   }
 
-  emitInterface("bytm:configReady", getFeaturesInterface());
+  emitInterface("bytm:configReady");
 
   return { ...data };
 }
