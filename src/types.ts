@@ -105,6 +105,8 @@ export type PluginRegisterResult = {
   info: PluginInfo;
   /** Emitter for plugin events - see {@linkcode PluginEventMap} for a list of events */
   events: Emitter<PluginEventMap>;
+  /** Authentication token for the plugin to use in certain restricted function calls */
+  token: string;
 }
 
 /** Minimal object that describes a plugin - this is all info the other installed plugins can see */
