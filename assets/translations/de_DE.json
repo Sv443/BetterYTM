@@ -7,7 +7,7 @@
     "import_menu_title": "%1 - Einstellungen importieren",
     "open_menu_tooltip": "%1's Einstellungen öffnen",
     "close_menu_tooltip": "Klicke um das Menü zu schließen",
-    "reload_hint": "Deine Änderungen wurden gespeichert, aber du musst die Seite neu laden, um sie anzuwenden",
+    "reload_hint": "Bitte lade die Seite neu, um die Änderungen anzuwenden",
     "reload_now": "Jetzt neu laden",
     "reload_tooltip": "Seite neu laden",
     "feature_requires_reload": "Die Seite muss neu geladen werden, wenn diese Funktion geändert wird",
