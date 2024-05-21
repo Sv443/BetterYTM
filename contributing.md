@@ -269,6 +269,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
+  - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
+  - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
   - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element
@@ -311,7 +313,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - An object containing all event listeners that the plugin can use to listen for BetterYTM events
+> - `events` - A nano-events emitter object that allows you to listen for events that are dispatched by BetterYTM  
+>   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
@@ -354,14 +357,21 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   ],
 > };
 > 
+> // private token that should not be stored persistently (in memory like this should be enough)
+> let authToken: string | undefined;
+> 
+> // since some function calls require the token, this function can be called to get it once the plugin is fully registered
+> export function getToken() {
+>   return authToken;
+> }
+> 
 > unsafeWindow.addEventListener("bytm:initPlugins", () => {
 >   // register the plugin
->   const { events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
->   let token: string | undefined;
+>   const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
 >   // listen for the pluginRegistered event
 >   events.on("pluginRegistered", (info) => {
 >     // store the (private!) token for later use in authenticated function calls
->     token = info.token;
+>     authToken = token;
 >     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
 >   });
 >   // for other events search for "type PluginEventMap" in "src/types.ts"
@@ -566,6 +576,59 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > catch(err) {
 >   console.error("Couldn't get the video time, probably due to automated interaction restrictions");
 > }
+> ```
+> </details>
+
+<br>
+
+> #### getThumbnailUrl()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getThumbnailUrl(
+>   watchID: string,
+>   qualityOrIndex: "maxresdefault" | "sddefault" | "hqdefault" | "mqdefault" | "default" | 0 | 1 | 2 | 3
+> ): string
+> ```
+>   
+> Description:  
+> Returns the URL to the thumbnail of the video with the specified watch/video ID and quality.  
+> If a number is passed, 0 will return a low quality thumbnail and 1-3 will return a low quality frame from the video.  
+>   
+> Arguments:
+> - `watchID` - The watch/video ID of the video to get the thumbnail for
+> - `qualityOrIndex` - The quality or index of the thumbnail to get. Quality strings sorted highest resolution first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`. If no quality is specified, `maxresdefault` (highest resolution) is used.
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const thumbnailUrl = unsafeWindow.BYTM.getThumbnailUrl("dQw4w9WgXcQ", "maxresdefault");
+> console.log(thumbnailUrl); // "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+> ```
+> </details>
+
+<br>
+
+> #### getBestThumbnailUrl()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getBestThumbnailUrl(watchID: string): Promise<string | undefined>
+> ```
+>   
+> Description:  
+> Returns the URL to the best quality thumbnail of the video with the specified watch/video ID.  
+> Will sequentially try to get the highest quality thumbnail available until one is found.  
+> Order of quality values tried: `maxresdefault` > `sddefault` > `hqdefault` > `0`  
+>   
+> If no thumbnail is found, the Promise will resolve with `undefined`  
+>   
+> Arguments:
+> - `watchID` - The watch/video ID of the video to get the thumbnail for
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const thumbnailUrl = await unsafeWindow.BYTM.getBestThumbnailUrl("dQw4w9WgXcQ");
+> console.log(thumbnailUrl); // "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
 > ```
 > </details>
 
