@@ -105,6 +105,7 @@
     "site_selection_both_sites": "Les deux sites",
     "site_selection_only_yt": "Seulement YouTube",
     "site_selection_only_ytm": "Seulement YouTube Music",
+    "site_selection_none": "Aucun (désactivé)",
 
     "new_version_available": "Une nouvelle version de %1 est disponible!\nVous avez actuellement la version %2 installée et vous pouvez mettre à jour vers la version %3",
     "open_update_page_install_manually": "Installer sur %1",
@@ -170,6 +171,8 @@
     "feature_desc_hideCursorOnIdle": "Masquer le curseur après quelques secondes d'inactivité sur la vidéo",
     "feature_desc_hideCursorOnIdleDelay": "Combien de secondes d'inactivité avant que le curseur ne soit masqué?",
     "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
+    "feature_desc_disableDarkReaderSites": "Sur quels sites devrait-on désactiver l'extension Dark Reader pour corriger les problèmes de mise en page?",
+    "feature_helptext_disableDarkReaderSites": "L'extension Dark Reader peut causer des problèmes de mise en page sur le site.\nCette fonctionnalité vous permet de désactiver Dark Reader sur certains ou tous les sites pour éviter ces problèmes.\nSi l'extension n'est pas installée, cette fonctionnalité n'aura aucun effet et peut être laissée activée.",
 
     "feature_desc_lyricsQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour ouvrir rapidement sa page de paroles",
     "feature_desc_deleteFromQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour la supprimer rapidement",
@@ -206,6 +209,7 @@
     "feature_desc_geniUrlToken": "Jeton d'authentification pour votre instance geniURL",
     "feature_helptext_geniUrlToken": "Pour contourner la limitation du taux, vous pouvez fournir un jeton d'authentification qui est également défini dans le fichier .env de votre instance geniURL",
     "feature_desc_lyricsCacheMaxSize": "Quantité maximale de paroles à conserver dans le cache",
+    "feature_helptext_lyricsCacheMaxSize": "Les paroles des chansons que vous écoutez sont stockées dans un cache afin de réduire le nombre de requêtes adressées au fournisseur de paroles.\nCette fonction vous permet de définir la quantité maximale de paroles à conserver dans le cache.\nLorsque la limite est atteinte, l'entrée la plus ancienne est supprimée pour faire de la place aux nouvelles.",
     "feature_desc_lyricsCacheTTL": "Quantité maximale de jours pour conserver une entrée de paroles dans le cache",
     "feature_helptext_lyricsCacheTTL": "Le cache dans lequel les paroles sont stockées les supprimera automatiquement après ce laps de temps pour garantir que les mises à jour de la source sont récupérées tôt ou tard.\nSi vous voulez vous assurer d'avoir toujours les paroles les plus récentes, définissez cette valeur sur une faible comme 4 jours.",
     "feature_desc_clearLyricsCache": "Vider le cache des paroles manuellement",

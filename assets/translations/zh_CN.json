@@ -105,6 +105,7 @@
     "site_selection_both_sites": "所有网站",
     "site_selection_only_yt": "仅 YouTube",
     "site_selection_only_ytm": "仅 YouTube Music",
+    "site_selection_none": "无（禁用）",
 
     "new_version_available": "有新版本可用！\n您当前安装的版本是 %1，您可以更新到版本 %2",
     "open_update_page_install_manually": "在 %1 上手动安装",
@@ -170,6 +171,8 @@
     "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
     "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
     "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",
+    "feature_desc_disableDarkReaderSites": "在哪些网站上应该禁用 Dark Reader 扩展以修复布局问题？",
+    "feature_helptext_disableDarkReaderSites": "Dark Reader 扩展可能会导致网站布局问题。\n此功能允许您禁用某些或所有网站上的 Dark Reader 以防止这些问题。\n如果未安装扩展，此功能将不起作用，可以保持激活。",
 
     "feature_desc_lyricsQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速打开其歌词页面",
     "feature_desc_deleteFromQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速删除它",
@@ -206,6 +209,7 @@
     "feature_desc_geniUrlToken": "您的 geniURL 实例的身份验证令牌",
     "feature_helptext_geniUrlToken": "为了绕过速率限制，您可以提供一个身份验证令牌，该令牌也在您的 geniURL 实例的 .env 文件中定义",
     "feature_desc_lyricsCacheMaxSize": "在缓存中保留的歌词的最大数量",
+    "feature_helptext_lyricsCacheMaxSize": "您听的歌曲的歌词存储在缓存中，以减少对歌词提供者的请求。\n此功能允许您设置要在缓存中保留的歌词的最大数量。\n当达到限制时，将删除最旧的条目以为任何新条目腾出空间。",
     "feature_desc_lyricsCacheTTL": "在缓存中保留歌词条目的最大天数",
     "feature_helptext_lyricsCacheTTL": "歌词存储在缓存中，以减少对歌词提供者的请求。\n此功能允许您设置要在缓存中保留的歌词的最大天数。\n如果您想确保始终拥有最新的歌词，请将此设置为较低的值，例如 4 天。",
     "feature_desc_clearLyricsCache": "手动清除歌词缓存",

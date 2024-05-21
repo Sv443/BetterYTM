@@ -105,6 +105,7 @@
     "site_selection_both_sites": "Ambos sitios",
     "site_selection_only_yt": "Solo YouTube",
     "site_selection_only_ytm": "Solo YouTube Music",
+    "site_selection_none": "Ninguno (deshabilitado)",
 
     "new_version_available": "¡Nueva versión disponible!",
     "open_update_page_install_manually": "Haga clic para abrir la página de actualización / instalación manual",
@@ -170,6 +171,8 @@
     "feature_desc_hideCursorOnIdle": "Ocultar el cursor después de unos segundos de inactividad sobre el video",
     "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
     "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
+    "feature_desc_disableDarkReaderSites": "En qué sitios debería deshabilitarse la extensión Dark Reader para corregir problemas de diseño",
+    "feature_helptext_disableDarkReaderSites": "La extensión Dark Reader puede causar problemas con el diseño del sitio.\nEsta función le permite deshabilitar Dark Reader en ciertos o todos los sitios para evitar esos problemas.\nSi la extensión no está instalada, esta función no tendrá efecto y se puede dejar activada.",
 
     "feature_desc_lyricsQueueButton": "Agregue un botón a cada canción en la cola para abrir rápidamente su página de letras",
     "feature_desc_deleteFromQueueButton": "Agregue un botón a cada canción en la cola para eliminarla rápidamente",
@@ -206,6 +209,7 @@
     "feature_desc_geniUrlToken": "Token de autenticación para su instancia de geniURL",
     "feature_helptext_geniUrlToken": "Para evitar la limitación de velocidad, puede proporcionar un token de autenticación que también está definido en el archivo .env de su instancia de geniURL",
     "feature_desc_lyricsCacheMaxSize": "Cantidad máxima de letras para mantener en la caché",
+    "feature_helptext_lyricsCacheMaxSize": "Las letras de las canciones que escuchas se almacenan en una caché para reducir la cantidad de solicitudes al proveedor de letras.\nEsta función le permite establecer la cantidad máxima de letras para mantener en la caché.\nCuando se alcanza el límite, la entrada más antigua se eliminará para hacer espacio para cualquier nueva.",
     "feature_desc_lyricsCacheTTL": "Cantidad máxima de días para mantener una entrada de letras en la caché",
     "feature_helptext_lyricsCacheTTL": "La caché en la que se almacenan las letras eliminará automáticamente las entradas después de este tiempo para asegurarse de que las actualizaciones de la fuente se estén obteniendo más temprano o más tarde.\nSi quieres asegurarte de que siempre tienes las letras más recientes, establece esto en un valor bajo como 4 días.",
     "feature_desc_clearLyricsCache": "Borrar la caché de letras manualmente",
