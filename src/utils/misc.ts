@@ -166,7 +166,7 @@ export function getPreferredLocale(): TrLocale {
   // if navigator.languages has entries that aren't locale codes in the format xx_XX
   if(navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
     for(const lang of navLangs) {
-      const foundLoc = Object.entries(langMapping).find(([key]) => key.startsWith(lang))?.[0];
+      const foundLoc = Object.entries(langMapping).find(([ key ]) => key.startsWith(lang))?.[0];
       if(foundLoc)
         return foundLoc as TrLocale;
     }

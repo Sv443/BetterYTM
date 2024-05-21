@@ -532,6 +532,13 @@ export const featInfo = {
     default: getPreferredLocale(),
     textAdornment: () => combineAdornments([adornments.globe, adornments.reloadRequired]),
   },
+  localeFallback: {
+    type: "toggle",
+    category: "general",
+    default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
   versionCheck: {
     type: "toggle",
     category: "general",

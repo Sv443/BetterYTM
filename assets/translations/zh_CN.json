@@ -220,6 +220,7 @@
     "feature_helptext_advancedLyricsFilter": "高级过滤包括多层过滤器，旨在使歌词查找更可靠。\n这些过滤器可能不适用于您的语言的歌曲，以及标题不太独特的歌曲和艺术家。\n警告：此功能仍处于实验阶段，可能实际上并不比默认歌词查找更好。确保确认更改此设置时出现的提示。",
 
     "feature_desc_locale": "语言",
+    "feature_desc_localeFallback": "如果找不到翻译，请使用英语（如果您提供翻译，请禁用）。",
     "feature_desc_versionCheck": "检查更新",
     "feature_helptext_versionCheck": "此功能每 24 小时检查更新，如果有新版本可用，会通知您并允许您手动更新脚本。\n如果您的用户脚本管理器扩展自动更新脚本，您可以禁用此功能。",
     "feature_desc_checkVersionNow": "手动检查新版本",

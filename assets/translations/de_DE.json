@@ -220,6 +220,7 @@
     "feature_helptext_advancedLyricsFilter": "Erweiterte Filterung beinhaltet mehrere Schichten von Filtern, die darauf abzielen, die Songtext-Suchen zuverlässiger zu machen.\nDiese Filter funktionieren möglicherweise nicht gut für Songs in deiner Sprache und Songs und Künstler mit weniger eindeutigen Titeln im Allgemeinen.\nWarnung: Diese Funktion ist immer noch experimentell und könnte tatsächlich nicht besser funktionieren als die Standard-Songtext-Suche. Stelle sicher, dass du die Meldung bestätigst, die erscheint, wenn du diese Einstellung geändert hast.",
 
     "feature_desc_locale": "Sprache",
+    "feature_desc_localeFallback": "Verwende für fehlende Übersetzungen Englisch (deaktivieren, wenn du zu Übersetzungen beiträgst)",
     "feature_desc_versionCheck": "Prüfe alle 24 Stunden auf Updates",
     "feature_helptext_versionCheck": "Diese Funktion prüft alle 24 Stunden auf Updates, benachrichtigt dich, wenn eine neue Version verfügbar ist und ermöglicht es dir, das Skript manuell zu aktualisieren.\nWenn dein Userscript-Manager Skripte automatisch aktualisiert, kannst du diese Funktion deaktivieren.",
     "feature_desc_checkVersionNow": "Manuell nach einer neuen Version suchen",

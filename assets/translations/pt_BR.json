@@ -220,6 +220,7 @@
     "feature_helptext_advancedLyricsFilter": "A filtragem avançada inclui várias camadas de filtros que visam tornar as pesquisas de letras mais confiáveis.\nEsses filtros podem não funcionar bem para músicas em seu idioma e músicas e artistas com títulos menos únicos em geral.\nAviso: Este recurso ainda é experimental e pode não funcionar melhor do que a pesquisa de letras padrão. Certifique-se de confirmar o prompt que aparece se você alterou esta configuração.",
 
     "feature_desc_locale": "Idioma",
+    "feature_desc_localeFallback": "Utilizar o inglês para traduções em falta (desativar se contribuir para traduções)",
     "feature_desc_versionCheck": "Verificar atualizações",
     "feature_helptext_versionCheck": "Este recurso verifica atualizações a cada 24 horas, notifica você se uma nova versão estiver disponível e permite que você atualize o script manualmente.\nSe o seu gerenciador de scripts de usuário atualiza scripts automaticamente, você pode desativar este recurso.",
     "feature_desc_checkVersionNow": "Verificar manualmente uma nova versão",
