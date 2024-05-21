@@ -105,6 +105,7 @@
     "site_selection_both_sites": "すべてのサイト",
     "site_selection_only_yt": "YouTube のみ",
     "site_selection_only_ytm": "YouTube Music のみ",
+    "site_selection_none": "なし（無効）",
 
     "new_version_available": "新しいバージョンが利用可能です！\n現在のバージョンは %1 ですが、バージョン %2 に更新できます",
     "open_update_page_install_manually": "%1 にインストールする",
@@ -170,6 +171,8 @@
     "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
     "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
     "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
+    "feature_desc_disableDarkReaderSites": "レイアウト問題を修正するために Dark Reader 拡張機能を無効にするサイト",
+    "feature_helptext_disableDarkReaderSites": "Dark Reader 拡張機能はサイトのレイアウトに問題を引き起こす可能性があります。\nこの機能を使用すると、それらの問題を防ぐために特定のサイトまたはすべてのサイトで Dark Reader を無効にできます。\n拡張機能がインストールされていない場合、この機能は効果がありませんので、有効にしたままにしておいてください。",
 
     "feature_desc_lyricsQueueButton": "キュー内の各曲にボタンを追加して、すばやく歌詞ページを開く",
     "feature_desc_deleteFromQueueButton": "キュー内の各曲にボタンを追加して、すばやく削除できるようにする",
@@ -206,6 +209,7 @@
     "feature_desc_geniUrlToken": "geniURL インスタンスの認証トークン",
     "feature_helptext_geniUrlToken": "レート制限をバイパスするために、geniURL インスタンスの .env ファイルで定義されている認証トークンを提供することができます。",
     "feature_desc_lyricsCacheMaxSize": "キャッシュに保持する歌詞の最大量",
+    "feature_helptext_lyricsCacheMaxSize": "聞いた曲の歌詞はキャッシュに保存され、歌詞プロバイダへのリクエストを減らすために使用されます。\nこの機能を使用して、キャッシュに保持する歌詞の最大量を設定できます。\nこの制限に達すると、最も古いエントリが新しいエントリのために削除されます。",
     "feature_desc_lyricsCacheTTL": "キャッシュに歌詞エントリを保持する最大日数",
     "feature_helptext_lyricsCacheTTL": "歌詞はキャッシュに保存され、更新された歌詞を取得するために定期的に削除されます。\n常に最新の歌詞を持っていたい場合は、4 日などの低い値に設定してください。",
     "feature_desc_clearLyricsCache": "歌詞キャッシュを手動でクリアする",
