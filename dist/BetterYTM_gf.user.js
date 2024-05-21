@@ -3,21 +3,21 @@
 // @namespace         https://github.com/Sv443/BetterYTM
 // @version           1.1.1
 // @description       Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
-// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™
-// @description:en-US Configurable layout and user experience improvements for YouTube Music™
-// @description:en-UK Configurable layout and user experience improvements for YouTube Music™
-// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™
-// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™
-// @description:hi-IN YouTube Music™ के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार
-// @description:ja-JA YouTube Music™のレイアウトとユーザーエクスペリエンスの改善を設定可能にする
-// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™
-// @description:zh-CN 可配置的布局和YouTube Music™的用户体验改进
+// @description:de-DE Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™
+// @description:en-US Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:en-UK Configurable layout and user experience improvements for YouTube Music™ and YouTube™
+// @description:es-ES Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™
+// @description:fr-FR Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™
+// @description:hi-IN YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार
+// @description:ja-JA YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上
+// @description:pt-BR Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™
+// @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
 // @license           AGPL-3.0-or-later
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_48.png?b=357229e
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4db30e8
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,43 +35,43 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.css?b=357229e
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/aboveQueueBtns.css?b=357229e
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/anchorImprovements.css?b=357229e
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/fixHDR.css?b=357229e
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/style/fixSpacing.css?b=357229e
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/main/changelog.md?b=357229e
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/plus_circle_small.svg?b=357229e
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/arrow_down.svg?b=357229e
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/clear_list.svg?b=357229e
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/delete.svg?b=357229e
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/error.svg?b=357229e
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/beaker_small.svg?b=357229e
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/globe.svg?b=357229e
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/globe_small.svg?b=357229e
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/help.svg?b=357229e
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/image_filled.svg?b=357229e
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/image.svg?b=357229e
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/link.svg?b=357229e
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/lyrics.svg?b=357229e
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/refresh.svg?b=357229e
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/skip_to.svg?b=357229e
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/icons/spinner.svg?b=357229e
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_48.png?b=357229e
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/close.png?b=357229e
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/external/discord.png?b=357229e
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/external/github.png?b=357229e
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/external/greasyfork.png?b=357229e
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/external/openuserjs.png?b=357229e
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/de_DE.json?b=357229e
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_US.json?b=357229e
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/en_UK.json?b=357229e
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/es_ES.json?b=357229e
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/fr_FR.json?b=357229e
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/hi_IN.json?b=357229e
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/ja_JA.json?b=357229e
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/pt_BR.json?b=357229e
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/translations/zh_CN.json?b=357229e
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=4db30e8
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=4db30e8
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4db30e8
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=4db30e8
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4db30e8
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4db30e8
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4db30e8
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4db30e8
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=4db30e8
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4db30e8
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4db30e8
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4db30e8
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4db30e8
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=4db30e8
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4db30e8
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=4db30e8
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=4db30e8
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=4db30e8
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4db30e8
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=4db30e8
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4db30e8
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4db30e8
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4db30e8
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4db30e8
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4db30e8
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4db30e8
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4db30e8
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4db30e8
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4db30e8
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4db30e8
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4db30e8
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4db30e8
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4db30e8
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4db30e8
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4db30e8
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4db30e8
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4db30e8
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -225,7 +225,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "greasyfork";
-    const buildNumberRaw = "357229e";
+    const buildNumberRaw = "4db30e8";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -2458,7 +2458,7 @@ I welcome every contribution on GitHub!
     	name: "Deutsch (Deutschland)",
     	nameEnglish: "German",
     	emoji: "🇩🇪",
-    	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™",
+    	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2467,7 +2467,7 @@ I welcome every contribution on GitHub!
     	name: "English (United States)",
     	nameEnglish: "English (US)",
     	emoji: "🇺🇸",
-    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™",
+    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2476,7 +2476,7 @@ I welcome every contribution on GitHub!
     	name: "English (United Kingdom)",
     	nameEnglish: "English (UK)",
     	emoji: "🇬🇧",
-    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™",
+    	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2485,7 +2485,7 @@ I welcome every contribution on GitHub!
     	name: "Español (España)",
     	nameEnglish: "Spanish",
     	emoji: "🇪🇸",
-    	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™",
+    	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2494,7 +2494,7 @@ I welcome every contribution on GitHub!
     	name: "Français (France)",
     	nameEnglish: "French",
     	emoji: "🇫🇷",
-    	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™",
+    	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2503,7 +2503,7 @@ I welcome every contribution on GitHub!
     	name: "हिंदी (भारत)",
     	nameEnglish: "Hindi",
     	emoji: "🇮🇳",
-    	userscriptDesc: "YouTube Music™ के लिए विन्यास और यूजर अनुभव में सुधार करने योग्य लेआउट और यूजर अनुभव सुधार",
+    	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
     	authors: [
     		"Sv443"
     	]
@@ -2512,7 +2512,7 @@ I welcome every contribution on GitHub!
     	name: "日本語 (日本)",
     	nameEnglish: "Japanese",
     	emoji: "🇯🇵",
-    	userscriptDesc: "YouTube Music™のレイアウトとユーザーエクスペリエンスの改善を設定可能にする",
+    	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
     	authors: [
     		"Sv443"
     	]
@@ -2521,7 +2521,7 @@ I welcome every contribution on GitHub!
     	name: "Português (Brasil)",
     	nameEnglish: "Portuguese",
     	emoji: "🇵🇹",
-    	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™",
+    	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
     	authors: [
     		"Sv443"
     	]
@@ -2530,7 +2530,7 @@ I welcome every contribution on GitHub!
     	name: "中文（简化，中国）",
     	nameEnglish: "Chinese (simpl.)",
     	emoji: "🇨🇳",
-    	userscriptDesc: "可配置的布局和YouTube Music™的用户体验改进",
+    	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
     	authors: [
     		"Sv443"
     	]
