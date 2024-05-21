@@ -17,7 +17,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 213 (default locale) |  |
-| ✅ | [`de_DE`](./de_DE.json) | `213/213` (100%) | ─ |
+| ⚠ | [`de_DE`](./de_DE.json) | `207/213` (97.2%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `213/213` (100%) | `en_US` |
 | ✅ | [`es_ES`](./es_ES.json) | `213/213` (100%) | ─ |
 | ✅ | [`fr_FR`](./fr_FR.json) | `213/213` (100%) | ─ |
@@ -44,4 +44,16 @@ This means to figure out which keys are untranslated, you will need to manually 
 <br>
 
 ### Missing keys:
-No missing keys
+
+<details><summary><code>de_DE</code> - 6 missing keys <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `config_menu_option` | `%1 Configuration` |
+| `config_menu_title` | `%1 - Configuration` |
+| `changelog_menu_title` | `%1 - Changelog` |
+| `export_menu_title` | `%1 - Export Configuration` |
+| `import_menu_title` | `%1 - Import Configuration` |
+| `open_menu_tooltip` | `Open %1's configuration menu` |
+
+<br></details>

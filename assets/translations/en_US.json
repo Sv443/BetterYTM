@@ -220,6 +220,7 @@
     "feature_helptext_advancedLyricsFilter": "Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that appears if you changed this setting.",
 
     "feature_desc_locale": "Language",
+    "feature_desc_localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",
     "feature_desc_versionCheck": "Check for updates every 24 hours",
     "feature_helptext_versionCheck": "This feature checks for updates every 24 hours, notifies you if a new version is available and allows you to update the script manually.\nIf your userscript manager extension updates scripts automatically, you can disable this feature.",
     "feature_desc_checkVersionNow": "Manually check for a new version",

@@ -45,7 +45,7 @@ export const migrations: DataMigrationsDict = {
   },
   // 4 -> 5 (v2.0)
   5: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "geniUrlBase", "geniUrlToken",
+    "localeFallback", "geniUrlBase", "geniUrlToken",
     "lyricsCacheMaxSize", "lyricsCacheTTL",
     "clearLyricsCache", "advancedMode",
     "checkVersionNow", "advancedLyricsFilter",

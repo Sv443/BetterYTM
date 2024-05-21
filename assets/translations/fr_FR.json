@@ -220,6 +220,7 @@
     "feature_helptext_advancedLyricsFilter": "Le filtrage avancé comprend plusieurs couches de filtres qui visent à rendre les recherches de paroles plus fiables.\nCes filtres peuvent ne pas bien fonctionner pour les chansons dans votre langue et les chansons et artistes avec des titres moins uniques en général.\nAvertissement: Cette fonctionnalité est encore expérimentale et pourrait ne pas fonctionner mieux que la recherche de paroles par défaut. Assurez-vous de confirmer l'invite qui apparaît si vous avez modifié ce paramètre.",
 
     "feature_desc_locale": "Langue",
+    "feature_desc_localeFallback": "Utiliser l'anglais pour les traductions manquantes (désactiver si vous contribuez aux traductions)",
     "feature_desc_versionCheck": "Vérifier les mises à jour",
     "feature_helptext_versionCheck": "Cette fonctionnalité vérifie les mises à jour toutes les 24 heures, vous avertit si une nouvelle version est disponible et vous permet de mettre à jour le script manuellement.\nSi votre gestionnaire de scripts utilisateur met à jour les scripts automatiquement, vous pouvez désactiver cette fonctionnalité.",
     "feature_desc_checkVersionNow": "Rechercher manuellement une nouvelle version",

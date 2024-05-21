@@ -49,11 +49,11 @@ To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `npm run tr-format -- -p -o=languageCode_localeCode`, where `languageCode_localeCode` is the part of the file name before the `.json` extension  
+3. Run the command `npm run tr-format -- -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en_US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
 5. Make sure there are no duplicate keys in the file
-6. Run the command `npm run tr-format -- -o=languageCode_localeCode` to make sure the file is formatted correctly
+6. Run the command `npm run tr-format -- -o=language_LOCALE` to make sure the file is formatted correctly
 7. Test for syntax errors and update translation progress with the command `npm run tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)

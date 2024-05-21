@@ -1,15 +1,16 @@
 import { tr, Stringifiable, fetchAdvanced, FetchAdvancedOpts } from "@sv443-network/userutils";
 import { error, getResourceUrl, info } from ".";
+import { emitInterface, setGlobalProp } from "../interface";
+import { getFeature } from "../config";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 import type tr_enUS from "../../assets/translations/en_US.json";
-import { emitInterface, setGlobalProp } from "../interface";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
 type TFuncKey = TrKey | (string & {});
 
 const fetchOpts: FetchAdvancedOpts = {
-  timeout: 10000,
+  timeout: 6_000,
 };
 
 /** Contains all translation keys of all initialized and loaded translations */
@@ -28,11 +29,20 @@ export async function initTranslations(locale: TrLocale) {
     const transUrl = await getResourceUrl(`trans-${locale}` as "_");
     const transFile = await (await fetchAdvanced(transUrl, fetchOpts)).json();
 
+    let fallbackTrans: Partial<typeof tr_enUS["translations"]> = {};
+
+    if(getFeature("localeFallback"))
+      fallbackTrans = (await (await fetchAdvanced(await getResourceUrl("trans-en_US"), fetchOpts)).json()).translations;
+
     // merge with base translations if specified
     const baseTransUrl = transFile.base ? await getResourceUrl(`trans-${transFile.base}` as "_") : undefined;
     const baseTransFile = baseTransUrl ? await (await fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
 
-    const translations = { ...(baseTransFile?.translations ?? {}), ...transFile.translations };
+    const translations: typeof tr_enUS["translations"] = {
+      ...fallbackTrans,
+      ...(baseTransFile?.translations ?? {}),
+      ...transFile.translations,
+    };
 
     tr.addLanguage(locale, translations);
     allTrKeys.set(locale, new Set(Object.keys(translations) as TrKey[]));

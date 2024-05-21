@@ -424,6 +424,8 @@ export interface FeatureConfig {
   //#region misc
   /** The locale to use for translations */
   locale: TrLocale;
+  /** Whether to default to US-English if the translation for the set locale is missing */
+  localeFallback: boolean;
   /** Whether to check for updates to the script */
   versionCheck: boolean;
   /** Button to check for updates */
