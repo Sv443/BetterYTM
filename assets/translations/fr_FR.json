@@ -207,7 +207,7 @@
     "feature_desc_geniUrlBase": "URL de base de votre instance geniURL, voir https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "Si vous avez votre propre instance de geniURL en cours d'exécution (par exemple pour contourner la limitation du taux), vous pouvez entrer son URL de base ici pour l'utiliser pour le bouton de paroles de genius.com.\nSi vous ne savez pas ce que c'est, vous pouvez laisser cette option telle quelle.",
     "feature_desc_geniUrlToken": "Jeton d'authentification pour votre instance geniURL",
-    "feature_helptext_geniUrlToken": "Pour contourner la limitation du taux, vous pouvez fournir un jeton d'authentification qui est également défini dans le fichier .env de votre instance geniURL",
+    "feature_helptext_geniUrlToken": "Pour contourner la limitation du taux, vous pouvez fournir un jeton d'authentification qui est également défini dans le fichier .env de votre instance geniURL.",
     "feature_desc_lyricsCacheMaxSize": "Quantité maximale de paroles à conserver dans le cache",
     "feature_helptext_lyricsCacheMaxSize": "Les paroles des chansons que vous écoutez sont stockées dans un cache afin de réduire le nombre de requêtes adressées au fournisseur de paroles.\nCette fonction vous permet de définir la quantité maximale de paroles à conserver dans le cache.\nLorsque la limite est atteinte, l'entrée la plus ancienne est supprimée pour faire de la place aux nouvelles.",
     "feature_desc_lyricsCacheTTL": "Quantité maximale de jours pour conserver une entrée de paroles dans le cache",

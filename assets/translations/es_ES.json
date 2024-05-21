@@ -207,7 +207,7 @@
     "feature_desc_geniUrlBase": "Base URL de su instancia de geniURL, consulte https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "Si tiene su propia instancia de geniURL en ejecución (por ejemplo, para evitar la limitación de velocidad), puede ingresar su base URL aquí para usarla para el botón de letras de genius.com.\nSi no sabe qué es esto, puede dejar esta opción como está.",
     "feature_desc_geniUrlToken": "Token de autenticación para su instancia de geniURL",
-    "feature_helptext_geniUrlToken": "Para evitar la limitación de velocidad, puede proporcionar un token de autenticación que también está definido en el archivo .env de su instancia de geniURL",
+    "feature_helptext_geniUrlToken": "Para evitar la limitación de velocidad, puede proporcionar un token de autenticación que también está definido en el archivo .env de su instancia de geniURL.",
     "feature_desc_lyricsCacheMaxSize": "Cantidad máxima de letras para mantener en la caché",
     "feature_helptext_lyricsCacheMaxSize": "Las letras de las canciones que escuchas se almacenan en una caché para reducir la cantidad de solicitudes al proveedor de letras.\nEsta función le permite establecer la cantidad máxima de letras para mantener en la caché.\nCuando se alcanza el límite, la entrada más antigua se eliminará para hacer espacio para cualquier nueva.",
     "feature_desc_lyricsCacheTTL": "Cantidad máxima de días para mantener una entrada de letras en la caché",
