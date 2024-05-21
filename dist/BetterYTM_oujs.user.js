@@ -21,8 +21,8 @@
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
-// @downloadURL       https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
-// @updateURL         https://raw.githubusercontent.com/Sv443/BetterYTM/main/dist/BetterYTM.user.js
+// @downloadURL       https://openuserjs.org/install/Sv443/BetterYTM.user.js
+// @updateURL         https://openuserjs.org/install/Sv443/BetterYTM.user.js
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -224,7 +224,7 @@ I welcome every contribution on GitHub!
 
     const modeRaw = "production";
     const branchRaw = "main";
-    const hostRaw = "github";
+    const hostRaw = "openuserjs";
     const buildNumberRaw = "9e71f6f";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
