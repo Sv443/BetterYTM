@@ -2,7 +2,7 @@ import { compress, fetchAdvanced, openInNewTab, randomId } from "@sv443-network/
 import { marked } from "marked";
 import { branch, compressionFormat, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
-import { error, type TrLocale, warn } from ".";
+import { error, type TrLocale, warn, sendRequest } from ".";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 
 //#region misc
@@ -23,9 +23,6 @@ export function getDomain(): Domain {
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
-
-/** Returns the search params of the current URL */
-export const getCurrentParams = () => new URL(location.href).searchParams;
 
 /** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
 export function getSessionId(): string | null {
@@ -78,38 +75,34 @@ export function getWatchId() {
   return pathname.includes("/watch") ? searchParams.get("v") : null;
 }
 
-type ThumbQuality = `${"" | "hq" | "mq" | "sd" | "maxres"}default`;
+/** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
+type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq" | ""}default`;
 
 /** Returns the thumbnail URL for a video with the given watch ID and quality (defaults to "hqdefault") */
 export function getThumbnailUrl(watchId: string, quality?: ThumbQuality): string
-/** Returns the thumbnail URL for a video with the given watch ID and index */
+/** Returns the thumbnail URL for a video with the given watch ID and index (0 is low quality thumbnail, 1-3 are low quality frames from the video) */
 export function getThumbnailUrl(watchId: string, index: 0 | 1 | 2 | 3): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
-export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 0 | 1 | 2 | 3 = "hqdefault") {
+export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 0 | 1 | 2 | 3 = "maxresdefault") {
   return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
 }
 
 /** Returns the best available thumbnail URL for a video with the given watch ID */
 export async function getBestThumbnailUrl(watchId: string) {
-  const priorityList = ["maxresdefault", "sddefault", 0];
+  const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
 
   for(const quality of priorityList) {
-    let response: Response | undefined;
+    let response: GM.Response<unknown> | undefined;
     const url = getThumbnailUrl(watchId, quality as ThumbQuality);
     try {
-      response = await fetchAdvanced(url, { method: "HEAD", timeout: 5000 });
+      response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
     }
     catch(e) {
       void e;
     }
-    if(response?.ok)
+    if(response && response.status < 300 && response.status >= 200)
       return url;
   }
-}
-
-/** Copies a JSON-serializable object */
-export function reserialize<T>(data: T): T {
-  return JSON.parse(JSON.stringify(data));
 }
 
 /** Opens the given URL in a new tab, using GM.openInTab if available */

@@ -1,5 +1,5 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info, log, getCurrentParams } from "./utils";
+import { error, info, log } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
@@ -153,7 +153,7 @@ export async function initSiteEvents() {
 
     const checkWatchId = () => {
       if(location.pathname.startsWith("/watch")) {
-        const newWatchId = getCurrentParams().get("v");
+        const newWatchId = new URL(location.href).searchParams.get("v");
         if(newWatchId && newWatchId !== lastWatchId) {
           info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
           emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);

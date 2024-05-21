@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import { createNanoEvents } from "nanoevents";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
-import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction } from "./utils";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
 import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
@@ -12,6 +12,11 @@ import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } f
 const { getUnsafeWindow, randomId } = UserUtils;
 
 //#region interface globals
+
+/** All events that can be emitted on the BYTM interface and the data they provide */
+export type InterfaceEventsMap = {
+  [K in keyof InterfaceEvents]: (data: InterfaceEvents[K]) => void;
+};
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export type InterfaceEvents = {
@@ -66,7 +71,7 @@ export const allInterfaceEvents = [
   "bytm:lyricsCacheReady",
   "bytm:lyricsCacheCleared",
   "bytm:lyricsCacheEntryAdded",
-  ...allSiteEvents.map(evt => `bytm:siteEvent:${evt}`),
+  ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
 ] as const;
 
 /** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
@@ -95,6 +100,8 @@ const globalFuncs = {
   compareVersions,
   compareVersionArrays,
   onInteraction,
+  getThumbnailUrl,
+  getBestThumbnailUrl,
 };
 
 /** Initializes the BYTM interface */

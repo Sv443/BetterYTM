@@ -1,5 +1,5 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyleFromResource, domLoaded, reserialize, warn } from "./utils";
+import { addStyleFromResource, domLoaded, warn } from "./utils";
 import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
@@ -7,29 +7,24 @@ import { initSiteEvents } from "./siteEvents";
 import { emitInterface, initInterface, initPlugins } from "./interface";
 import { initObservers, addSelectorListener, globservers } from "./observers";
 import { getWelcomeDialog } from "./dialogs";
+import type { FeatureConfig } from "./types";
 import {
   // layout
-  addWatermark, removeUpgradeTab,
-  initRemShareTrackParam, fixSpacing,
-  initThumbnailOverlay, initHideCursorOnIdle,
-  fixHdrIssues,
+  addWatermark, removeUpgradeTab, initRemShareTrackParam, fixSpacing, initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
   // volume
   initVolumeFeatures,
   // song lists
   initQueueButtons, initAboveQueueBtns,
   // behavior
-  initBeforeUnloadHook, disableBeforeUnload,
-  initAutoCloseToasts, initRememberSongTime,
-  disableDarkReader,
+  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts, initRememberSongTime, disableDarkReader,
   // input
-  initArrowKeySkip, initSiteSwitch,
-  addAnchorImprovements, initNumKeysSkip,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip,
   // lyrics
-  addMediaCtrlLyricsBtn,
+  addMediaCtrlLyricsBtn, initLyricsCache,
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
-  // other
-  initVersionCheck, initLyricsCache,
+  // general
+  initVersionCheck,
 } from "./features";
 
 {
@@ -194,15 +189,20 @@ async function onDomLoad() {
     }
 
     //#region (ytm+yt) cfg menu option
-    if(domain === "ytm") {
-      addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
-        listener: addConfigMenuOptionYTM,
-      });
+    try {
+      if(domain === "ytm") {
+        addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
+          listener: addConfigMenuOptionYTM,
+        });
+      }
+      else if(domain === "yt") {
+        addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
+          listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
+        });
+      }
     }
-    if(domain === "yt") {
-      addSelectorListener<0, "yt">("ytGuide", "#sections ytd-guide-section-renderer:nth-child(5) #items ytd-guide-entry-renderer:nth-child(1)", {
-        listener: (el) => el.parentElement && addConfigMenuOptionYT(el.parentElement),
-      });
+    catch(err) {
+      error("Couldn't add config menu option:", err);
     }
 
     if(["ytm", "yt"].includes(domain)) {
@@ -271,7 +271,7 @@ function registerDevMenuCommands() {
   }, "r");
 
   GM.registerMenuCommand("Fix missing config values", async () => {
-    const oldFeats = reserialize(getFeatures());
+    const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
     await setFeatures(fixMissingCfgKeys(oldFeats));
     console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
     if(confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
