@@ -7,7 +7,7 @@
     "import_menu_title": "%1 - Import Configuration",
     "open_menu_tooltip": "Open %1's configuration menu",
     "close_menu_tooltip": "Click to close the menu",
-    "reload_hint": "Your changes were saved, but you need to reload the page to apply them",
+    "reload_hint": "Please reload the page to apply your changes",
     "reload_now": "Reload now",
     "reload_tooltip": "Reload the page",
     "feature_requires_reload": "Changing this feature requires a page reload",
