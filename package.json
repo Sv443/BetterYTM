@@ -29,7 +29,7 @@
     "knip": "knip"
   },
   "engines": {
-    "node": ">=18<22",
+    "node": ">=18 <22",
     "npm": ">=8"
   },
   "repository": {
