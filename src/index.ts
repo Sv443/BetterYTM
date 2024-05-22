@@ -165,8 +165,7 @@ async function onDomLoad() {
       if(features.lyricsQueueButton || features.deleteFromQueueButton)
         ftInit.push(["initQueueButtons", initQueueButtons()]);
 
-      if(features.scrollToActiveSongBtn)
-        ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
+      ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
 
       //#region (ytm) behavior
 
