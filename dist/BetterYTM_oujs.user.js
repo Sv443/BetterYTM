@@ -14,10 +14,10 @@
 // @description:zh-CN YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进
 // @homepageURL       https://github.com/Sv443/BetterYTM#readme
 // @supportURL        https://github.com/Sv443/BetterYTM/issues
-// @license           AGPL-3.0-or-later
+// @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4db30e8
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,43 +35,44 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/dist/BetterYTM.css?b=4db30e8
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/aboveQueueBtns.css?b=4db30e8
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/anchorImprovements.css?b=4db30e8
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixHDR.css?b=4db30e8
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/style/fixSpacing.css?b=4db30e8
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/develop/changelog.md?b=4db30e8
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/plus_circle_small.svg?b=4db30e8
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/arrow_down.svg?b=4db30e8
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/clear_list.svg?b=4db30e8
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/delete.svg?b=4db30e8
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/error.svg?b=4db30e8
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/beaker_small.svg?b=4db30e8
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe.svg?b=4db30e8
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/globe_small.svg?b=4db30e8
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/help.svg?b=4db30e8
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image_filled.svg?b=4db30e8
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/image.svg?b=4db30e8
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/link.svg?b=4db30e8
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/lyrics.svg?b=4db30e8
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/refresh.svg?b=4db30e8
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/skip_to.svg?b=4db30e8
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/icons/spinner.svg?b=4db30e8
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/logo/logo_48.png?b=4db30e8
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/close.png?b=4db30e8
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/discord.png?b=4db30e8
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/github.png?b=4db30e8
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/greasyfork.png?b=4db30e8
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/images/external/openuserjs.png?b=4db30e8
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/de_DE.json?b=4db30e8
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_US.json?b=4db30e8
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/en_UK.json?b=4db30e8
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/es_ES.json?b=4db30e8
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/fr_FR.json?b=4db30e8
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/hi_IN.json?b=4db30e8
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/ja_JA.json?b=4db30e8
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/pt_BR.json?b=4db30e8
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/translations/zh_CN.json?b=4db30e8
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/arrow_down.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/delete.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/icons/spinner.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/preview-2.0.0-rc2/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -225,7 +226,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "openuserjs";
-    const buildNumberRaw = "4db30e8";
+    const buildNumberRaw = "3ad6e3e";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -1501,12 +1502,12 @@ I welcome every contribution on GitHub!
     var main = "./src/index.ts";
     var type = "module";
     var scripts = {
-    	dev: "concurrently \"nodemon --exec npm run build-watch\" \"npm run serve\"",
+    	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
     	serve: "npm run node-ts -- ./src/tools/serve.ts",
     	lint: "tsc --noEmit && eslint .",
     	build: "rollup -c",
-    	"build-watch": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
-    	"build-develop": "rollup -c --config-mode development --config-host github --config-branch develop",
+    	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
+    	"build-preview": "rollup -c --config-mode development --config-host github --config-branch develop",
     	"build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
     	"build-prod-base": "rollup -c --config-mode production --config-branch main",
     	"build-prod-gh": "npm run build-prod-base -- --config-host github",
@@ -1534,7 +1535,7 @@ I welcome every contribution on GitHub!
     	name: "Sv443",
     	url: "https://github.com/Sv443"
     };
-    var license = "AGPL-3.0-or-later";
+    var license = "AGPL-3.0-only";
     var bugs = {
     	url: "https://github.com/Sv443/BetterYTM/issues"
     };
@@ -2935,11 +2936,8 @@ I welcome every contribution on GitHub!
     function setVolSliderSize() {
         const { volumeSliderSize: size } = getFeatures();
         if (typeof size !== "number" || isNaN(Number(size)))
-            return;
-        addStyle(`\
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
-  width: ${size}px !important;
-}`, "vol-slider-size");
+            return error("Invalid volume slider size:", size);
+        addStyleFromResource("css-vol_slider_size", (css) => css.replace(/\/\*\{WIDTH\}\*\//m, `${size}px`));
     }
     //#region volume slider step
     /** Sets the `step` attribute of the volume slider */
@@ -3320,65 +3318,65 @@ I welcome every contribution on GitHub!
     function initAboveQueueBtns() {
         return __awaiter(this, void 0, void 0, function* () {
             const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
-            if (!scrollToActiveSongBtn && !clearQueueBtn)
+            const contBtns = [
+                {
+                    condition: scrollToActiveSongBtn,
+                    id: "scroll-to-active",
+                    resourceName: "icon-skip_to",
+                    titleKey: "scroll_to_playing",
+                    interaction() {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
+                            if (!activeItem)
+                                return;
+                            activeItem.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                                inline: "center",
+                            });
+                        });
+                    },
+                },
+                {
+                    condition: clearQueueBtn,
+                    id: "clear-queue",
+                    resourceName: "icon-clear_list",
+                    titleKey: "clear_list",
+                    interaction() {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            try {
+                                // TODO: better confirmation dialog?
+                                if (!confirm(t("clear_list_confirm")))
+                                    return;
+                                const url = new URL(location.href);
+                                url.searchParams.delete("list");
+                                url.searchParams.set("t", String(yield getVideoTime(0)));
+                                location.assign(url);
+                            }
+                            catch (err) {
+                                error("Couldn't clear queue due to an error:", err);
+                            }
+                        });
+                    },
+                },
+            ];
+            if (!contBtns.some(b => Boolean(b.condition)))
                 return;
             addSelectorListener("sidePanel", "ytmusic-tab-renderer ytmusic-queue-header-renderer #buttons", {
                 listener(rightBtnsEl) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        const aboveQueueBtnCont = document.createElement("div");
-                        aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
-                        UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
-                        const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
-                        if (!headerEl)
-                            return error("Couldn't find queue header element while adding above queue buttons");
-                        siteEvents.on("fullscreenToggled", (isFullscreen) => {
-                            headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
-                        });
-                        const contBtns = [
-                            {
-                                condition: scrollToActiveSongBtn,
-                                id: "scroll-to-active",
-                                resourceName: "icon-skip_to",
-                                titleKey: "scroll_to_playing",
-                                interaction() {
-                                    return __awaiter(this, void 0, void 0, function* () {
-                                        const activeItem = document.querySelector("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
-                                        if (!activeItem)
-                                            return;
-                                        activeItem.scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "center",
-                                            inline: "center",
-                                        });
-                                    });
-                                },
-                            },
-                            {
-                                condition: clearQueueBtn,
-                                id: "clear-queue",
-                                resourceName: "icon-clear_list",
-                                titleKey: "clear_list",
-                                interaction() {
-                                    return __awaiter(this, void 0, void 0, function* () {
-                                        try {
-                                            // TODO: better confirmation dialog?
-                                            if (!confirm(t("clear_list_confirm")))
-                                                return;
-                                            const url = new URL(location.href);
-                                            url.searchParams.delete("list");
-                                            url.searchParams.set("t", String(yield getVideoTime(0)));
-                                            location.assign(url);
-                                        }
-                                        catch (err) {
-                                            error("Couldn't clear queue due to an error:", err);
-                                        }
-                                    });
-                                },
-                            },
-                        ];
-                        if (contBtns.some(b => Boolean(b.condition))) {
+                        try {
+                            const aboveQueueBtnCont = document.createElement("div");
+                            aboveQueueBtnCont.id = "bytm-above-queue-btn-cont";
+                            UserUtils.addParent(rightBtnsEl, aboveQueueBtnCont);
+                            const headerEl = rightBtnsEl.closest("ytmusic-queue-header-renderer");
+                            if (!headerEl)
+                                return error("Couldn't find queue header element while adding above queue buttons");
+                            siteEvents.on("fullscreenToggled", (isFullscreen) => {
+                                headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
+                            });
                             if (!(yield addStyleFromResource("css-above_queue_btns")))
-                                error("Couldn't add CSS for above queue buttons");
+                                return error("Couldn't add CSS for above queue buttons");
                             const wrapperElem = document.createElement("div");
                             wrapperElem.id = "bytm-above-queue-btn-wrapper";
                             for (const item of contBtns) {
@@ -3394,6 +3392,9 @@ I welcome every contribution on GitHub!
                                 wrapperElem.appendChild(btnElem);
                             }
                             rightBtnsEl.insertAdjacentElement("beforebegin", wrapperElem);
+                        }
+                        catch (err) {
+                            error("Couldn't add above queue buttons due to an error:", err);
                         }
                     });
                 },
@@ -5609,11 +5610,12 @@ I welcome every contribution on GitHub!
      * Adds a style element to the DOM at runtime.
      * @param css The CSS stylesheet to add
      * @param ref A reference string to identify the style element - defaults to a random 5-character string
+     * @param transform A function to transform the CSS before adding it to the DOM
      */
-    function addStyle(css, ref) {
+    function addStyle(css, ref, transform = (c) => c) {
         if (!domLoaded)
             throw new Error("DOM has not finished loading yet");
-        const elem = UserUtils.addGlobalStyle(css);
+        const elem = UserUtils.addGlobalStyle(transform(css));
         elem.id = `bytm-global-style-${ref !== null && ref !== void 0 ? ref : UserUtils.randomId(5, 36)}`;
         return elem;
     }
@@ -5628,11 +5630,11 @@ I welcome every contribution on GitHub!
         return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
     }
     /** Adds a global style element with the contents of the specified CSS resource */
-    function addStyleFromResource(key) {
-        return __awaiter(this, void 0, void 0, function* () {
+    function addStyleFromResource(key_1) {
+        return __awaiter(this, arguments, void 0, function* (key, transform = (c) => c) {
             const css = yield fetchCss(key);
             if (css) {
-                addStyle(css, key.slice(4));
+                addStyle(transform(css), key.slice(4));
                 return true;
             }
             return false;
@@ -6032,8 +6034,7 @@ I welcome every contribution on GitHub!
                     //#region (ytm) song lists
                     if (features.lyricsQueueButton || features.deleteFromQueueButton)
                         ftInit.push(["initQueueButtons", initQueueButtons()]);
-                    if (features.scrollToActiveSongBtn)
-                        ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
+                    ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
                     //#region (ytm) behavior
                     if (features.closeToastsTimeout > 0)
                         ftInit.push(["initAutoCloseToasts", initAutoCloseToasts()]);
