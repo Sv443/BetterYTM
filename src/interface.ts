@@ -4,7 +4,7 @@ import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
-import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong, type LyricsCache } from "./features";
+import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
 import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } from "./components";
@@ -47,7 +47,7 @@ export type InterfaceEvents = {
   /** Emitted whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
   /** Emitted when the lyrics cache has been loaded */
-  "bytm:lyricsCacheReady": LyricsCache;
+  "bytm:lyricsCacheReady": undefined;
   /** Emitted when the lyrics cache has been cleared */
   "bytm:lyricsCacheCleared": undefined;
   /** Emitted when an entry is added to the lyrics cache - "penalized" entries get removed from cache faster because they were less related in lyrics lookups, opposite to the "best" entries */
@@ -154,6 +154,9 @@ export function emitInterface<
   ...data: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
   getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data?.[0] ?? undefined }));
+  //@ts-ignore
+  emitOnPlugins(type, undefined, ...data);
+  log(`Emitted interface event '${type}'${data && data.length > 0 ? " with data:" : ""}`, ...data);
 }
 
 //#region register plugins
@@ -181,9 +184,6 @@ export function initPlugins() {
       error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
     }
   }
-
-  for(const evt of allInterfaceEvents) // @ts-ignore
-    getUnsafeWindow().addEventListener(evt, (...args) => emitOnPlugins(evt, undefined, ...args));
 
   emitInterface("bytm:pluginsRegistered");
 }
@@ -220,22 +220,29 @@ export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
 
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin object by its name and namespace, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via its name and namespace, or undefined if it doesn't exist
  */
 export function getPlugin(name: string, namespace: string): PluginItem | undefined
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin object by a resolvable definition object, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via resolvable definition, or undefined if it doesn't exist
  */
 export function getPlugin(plugin: PluginDefResolvable): PluginItem | undefined
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin object, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via plugin ID (consisting of namespace and name), or undefined if it doesn't exist
  */
-export function getPlugin(...args: [pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
-  return args.length === 2
-    ? pluginsRegistered.get(`${args[1]}/${args[0]}`)
-    : pluginsRegistered.get(getPluginKey(args[0] as PluginDefResolvable));
+export function getPlugin(pluginId: string): PluginItem | undefined
+/**
+ * @private FOR INTERNAL USE ONLY!  
+ * Returns the internal plugin def and events objects, or undefined if it doesn't exist
+ */
+export function getPlugin(...args: [pluginDefOrNameOrId: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
+  return typeof args[0] === "string" && typeof args[1] === "undefined"
+    ? pluginsRegistered.get(args[0])
+    : args.length === 2
+      ? pluginsRegistered.get(`${args[1]}/${args[0]}`)
+      : pluginsRegistered.get(getPluginKey(args[0] as PluginDefResolvable));
 }
 
 /**
@@ -312,7 +319,7 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
   };
 }
 
-/** Checks whether the passed token is a valid auth token for any registered plugin and returns the resolvable plugin ID, else returns undefined */
+/** Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined */
 export function resolveToken(token: string | undefined): string | undefined {
   return token ? [...pluginTokens.entries()].find(([, v]) => v === token)?.[0] ?? undefined : undefined;
 }
@@ -324,10 +331,11 @@ export function resolveToken(token: string | undefined): string | undefined {
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
 function setLocaleInterface(token: string | undefined, locale: TrLocale) {
-  if(resolveToken(token) === undefined)
+  const pluginId = resolveToken(token);
+  if(pluginId === undefined)
     return;
   setLocale(locale);
-  emitInterface("bytm:setLocale", { locale });
+  emitInterface("bytm:setLocale", { pluginId, locale });
 }
 
 /**
