@@ -1118,54 +1118,6 @@ hr {
   border: revert;
 }
 
-/* #region volume slider */
-
-#bytm-vol-slider-cont {
-  position: relative;
-}
-
-#bytm-vol-slider-label {
-  opacity: 0.000001;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  top: 50%;
-  left: 0;
-  transform: translate(calc(-50% - 10px), -50%);
-  text-align: right;
-  transition: opacity 0.2s ease;
-}
-
-#bytm-vol-slider-label.has-icon {
-  transform: translate(calc(-50% - 25px), -50%);
-}
-
-#bytm-vol-slider-label svg {
-  padding: 4px;
-}
-
-#bytm-vol-slider-label svg path {
-  fill: #909090;
-}
-
-#bytm-vol-slider-label.bytm-visible {
-  opacity: 1;
-}
-
-#bytm-vol-slider-shared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-#bytm-vol-slider-shared svg {
-  width: 20px;
-  height: 20px;
-}
-
 /* #region misc */
 
 .bytm-disable-scroll {
@@ -1587,4 +1539,52 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-li
 ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container a.bytm-generic-btn
 {
   visibility: visible !important;
+}
+
+/* #region volume slider */
+
+#bytm-vol-slider-cont {
+  position: relative;
+}
+
+#bytm-vol-slider-label {
+  opacity: 0.000001;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
+  top: 50%;
+  left: 0;
+  transform: translate(calc(-50% - 10px), -50%);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+#bytm-vol-slider-label.has-icon {
+  transform: translate(calc(-50% - 25px), -50%);
+}
+
+#bytm-vol-slider-label svg {
+  padding: 4px;
+}
+
+#bytm-vol-slider-label svg path {
+  fill: #909090;
+}
+
+#bytm-vol-slider-label.bytm-visible {
+  opacity: 1;
+}
+
+#bytm-vol-slider-shared {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bytm-vol-slider-shared svg {
+  width: 20px;
+  height: 20px;
 }
