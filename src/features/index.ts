@@ -4,7 +4,6 @@ import { doVersionCheck } from "./versionCheck";
 import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
-import { volumeSharedBetweenTabsDisabled } from "./volume";
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" assert { type: "json" };
 
@@ -17,7 +16,10 @@ export * from "./songLists";
 export * from "./versionCheck";
 export * from "./volume";
 
-type SelectOption = { value: number | string, label: string };
+interface SelectOption<TValue = number | string> {
+  value: TValue;
+  label: string;
+}
 
 //#region dependencies
 
@@ -46,18 +48,18 @@ const adornments = {
   advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
   globe: async () => await resourceToHTMLString("icon-globe_small") ?? "",
-  warning: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
+  alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reloadRequired: async () => getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;
 
 /** Common options for config items of type "select" */
 const options = {
-  siteSelection: (): { value: SiteSelection, label: string }[] => [
+  siteSelection: (): SelectOption<SiteSelection>[] => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
   ],
-  siteSelectionOrNone: (): { value: SiteSelectionOrNone, label: string }[] => [
+  siteSelectionOrNone: (): SelectOption<SiteSelectionOrNone>[] => [
     { value: "all", label: t("site_selection_both_sites") },
     { value: "yt", label: t("site_selection_only_yt") },
     { value: "ytm", label: t("site_selection_only_ytm") },
@@ -261,16 +263,14 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: false,
-    reloadRequired: false,
-    enable: noop,
-    disable: () => volumeSharedBetweenTabsDisabled,
+    textAdornment: adornments.reloadRequired,
   },
   setInitialTabVolume: {
     type: "toggle",
     category: "volume",
     default: false,
     textAdornment: () => getFeatures().volumeSharedBetweenTabs
-      ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
   },
   initialTabVolumeLevel: {
@@ -282,7 +282,7 @@ export const featInfo = {
     default: 100,
     unit: "%",
     textAdornment: () => getFeatures().volumeSharedBetweenTabs
-      ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+      ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
     reloadRequired: false,
     enable: noop,

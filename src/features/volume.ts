@@ -210,6 +210,7 @@ async function checkSharedVolume() {
 
 export async function volumeSharedBetweenTabsDisabled() {
   await GM.deleteValue("bytm-shared-volume");
+  document.querySelector<HTMLElement>("#bytm-vol-slider-shared")?.remove();
 }
 
 //#region initial volume
