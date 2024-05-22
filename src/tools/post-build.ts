@@ -60,7 +60,7 @@ const scriptUrl = (() => {
     return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
   case "github":
   default:
-    return `https://raw.githubusercontent.com/${repo}/${branch}/dist/${userscriptDistFile}`;
+    return `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
   }
 })();
 
@@ -321,15 +321,15 @@ function getLocalizedDescriptions() {
 /**
  * Returns the full URL for a given resource path, based on the current mode and branch
  * @param path If the path starts with a /, it is treated as an absolute path, starting at project root. Otherwise it will be relative to the assets folder.
- * @param buildToken A unique token for this build or script version that forces the extension and browser to re-fetch resources once changed
+ * @param buildNbr The current build number (last shortened or full-length Git commit SHA1)
  */
-function getResourceUrl(path: string, buildToken?: string) {
+function getResourceUrl(path: string, buildNbr: string) {
   let assetPath = "/assets/";
   if(path.startsWith("/"))
     assetPath = "";
   return assetSource === "local"
     ? `http://localhost:${devServerPort}${assetPath}${path}?b=${buildUuid}`
-    : `https://raw.githubusercontent.com/${repo}/${branch}${assetPath}${path}?b=${buildToken ?? pkg.version}`;
+    : `https://raw.githubusercontent.com/${repo}/${mode === "development" ? buildNbr : `v${pkg.version}`}${assetPath}${path}`;
 }
 
 /** Returns the value of a CLI argument (in the format `--arg=<value>`) or the value of `defaultVal` if it doesn't exist */
