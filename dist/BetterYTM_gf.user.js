@@ -226,7 +226,7 @@ I welcome every contribution on GitHub!
     const modeRaw = "production";
     const branchRaw = "main";
     const hostRaw = "greasyfork";
-    const buildNumberRaw = "8a0a2b7";
+    const buildNumberRaw = "72eece3";
     /** The mode in which the script was built (production or development) */
     const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
     /** The branch to use in various URLs that point to the GitHub repo */
@@ -2817,191 +2817,6 @@ I welcome every contribution on GitHub!
         return 0;
     }
 
-    //#region init vol features
-    /** Initializes all volume-related features */
-    function initVolumeFeatures() {
-        return __awaiter(this, void 0, void 0, function* () {
-            // not technically an input element but behaves pretty much the same
-            addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-                listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
-                    const volSliderCont = document.createElement("div");
-                    volSliderCont.id = "bytm-vol-slider-cont";
-                    if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
-                        initScrollStep(volSliderCont, sliderElem);
-                    UserUtils.addParent(sliderElem, volSliderCont);
-                    if (typeof getFeatures().volumeSliderSize === "number")
-                        setVolSliderSize();
-                    if (getFeatures().volumeSliderLabel)
-                        yield addVolumeSliderLabel(sliderElem, volSliderCont);
-                    setVolSliderStep(sliderElem);
-                    if (getFeatures().volumeSharedBetweenTabs) {
-                        sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
-                        checkSharedVolume();
-                    }
-                    if (getFeatures().setInitialTabVolume)
-                        setInitialTabVolume(sliderElem);
-                }),
-            });
-        });
-    }
-    //#region scroll step
-    /** Initializes the volume slider scroll step features */
-    function initScrollStep(volSliderCont, sliderElem) {
-        for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
-            volSliderCont.addEventListener(evtName, (e) => {
-                var _a, _b;
-                e.preventDefault();
-                // cancels all the other events that would be fired
-                e.stopImmediatePropagation();
-                const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
-                const volumeDir = -Math.sign(delta);
-                const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
-                sliderElem.value = newVolume;
-                sliderElem.setAttribute("aria-valuenow", newVolume);
-                // make the site actually change the volume
-                sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-            }, {
-                // takes precedence over the slider's own event listener
-                capture: true,
-            });
-        }
-    }
-    //#region volume slider label
-    /** Adds a percentage label to the volume slider and tooltip */
-    function addVolumeSliderLabel(sliderElem, sliderContainer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const labelContElem = document.createElement("div");
-            labelContElem.id = "bytm-vol-slider-label";
-            const volShared = getFeatures().volumeSharedBetweenTabs;
-            if (volShared) {
-                const linkIconHtml = yield resourceToHTMLString("icon-link");
-                if (linkIconHtml) {
-                    const linkIconElem = document.createElement("div");
-                    linkIconElem.id = "bytm-vol-slider-shared";
-                    linkIconElem.innerHTML = linkIconHtml;
-                    linkIconElem.role = "alert";
-                    linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
-                    labelContElem.classList.add("has-icon");
-                    labelContElem.appendChild(linkIconElem);
-                }
-            }
-            const getLabel = (value) => `${value}%`;
-            const labelElem = document.createElement("div");
-            labelElem.classList.add("label");
-            labelElem.textContent = getLabel(sliderElem.value);
-            labelContElem.appendChild(labelElem);
-            // prevent video from minimizing
-            labelContElem.addEventListener("click", (e) => e.stopPropagation());
-            labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-            const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
-            const labelFull = getLabelText(sliderElem);
-            sliderContainer.setAttribute("title", labelFull);
-            sliderElem.setAttribute("title", labelFull);
-            sliderElem.setAttribute("aria-valuetext", labelFull);
-            const updateLabel = () => {
-                const labelFull = getLabelText(sliderElem);
-                sliderContainer.setAttribute("title", labelFull);
-                sliderElem.setAttribute("title", labelFull);
-                sliderElem.setAttribute("aria-valuetext", labelFull);
-                const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
-                if (labelElem2)
-                    labelElem2.textContent = getLabel(sliderElem.value);
-            };
-            sliderElem.addEventListener("change", () => updateLabel());
-            siteEvents.on("configChanged", () => {
-                updateLabel();
-            });
-            addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
-                listener: (volumeCont) => volumeCont.appendChild(labelContElem),
-            });
-            let lastSliderVal = Number(sliderElem.value);
-            // show label if hovering over slider or slider is focused
-            const sliderHoverObserver = new MutationObserver(() => {
-                if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
-                    labelContElem.classList.add("bytm-visible");
-                else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
-                    labelContElem.classList.remove("bytm-visible");
-                if (Number(sliderElem.value) !== lastSliderVal) {
-                    lastSliderVal = Number(sliderElem.value);
-                    updateLabel();
-                }
-            });
-            sliderHoverObserver.observe(sliderElem, {
-                attributes: true,
-            });
-        });
-    }
-    //#region volume slider size
-    /** Sets the volume slider to a set size */
-    function setVolSliderSize() {
-        const { volumeSliderSize: size } = getFeatures();
-        if (typeof size !== "number" || isNaN(Number(size)))
-            return error("Invalid volume slider size:", size);
-        addStyleFromResource("css-vol_slider_size", (css) => css.replace(/\/\*\{WIDTH\}\*\//m, `${size}px`));
-    }
-    //#region volume slider step
-    /** Sets the `step` attribute of the volume slider */
-    function setVolSliderStep(sliderElem) {
-        sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
-    }
-    //#region shared volume
-    /** Saves the shared volume level to persistent storage */
-    function sharedVolumeChanged(vol) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
-            }
-            catch (err) {
-                error("Couldn't save shared volume level due to an error:", err);
-            }
-        });
-    }
-    let ignoreVal = -1;
-    let lastCheckedSharedVolume = -1;
-    /** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
-    function checkSharedVolume() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const vol = yield GM.getValue("bytm-shared-volume");
-                if (vol && lastCheckedSharedVolume !== Number(vol)) {
-                    if (ignoreVal === Number(vol))
-                        return;
-                    lastCheckedSharedVolume = Number(vol);
-                    const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
-                    if (sliderElem) {
-                        sliderElem.value = String(vol);
-                        sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-                    }
-                }
-                setTimeout(checkSharedVolume, 333);
-            }
-            catch (err) {
-                error("Couldn't check for shared volume level due to an error:", err);
-            }
-        });
-    }
-    function volumeSharedBetweenTabsDisabled() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield GM.deleteValue("bytm-shared-volume");
-        });
-    }
-    //#region initial volume
-    /** Sets the volume slider to a set volume level when the session starts */
-    function setInitialTabVolume(sliderElem) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield waitVideoElementReady();
-            const initialVol = getFeatures().initialTabVolumeLevel;
-            if (getFeatures().volumeSharedBetweenTabs) {
-                lastCheckedSharedVolume = ignoreVal = initialVol;
-                if (getFeatures().volumeSharedBetweenTabs)
-                    GM.setValue("bytm-shared-volume", String(initialVol));
-            }
-            sliderElem.value = String(initialVol);
-            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
-            log(`Set initial tab volume to ${initialVol}%`);
-        });
-    }
-
     //#region cfg menu buttons
     let logoExchanged = false, improveLogoCalled = false;
     /** Adds a watermark beneath the logo */
@@ -4449,6 +4264,186 @@ I welcome every contribution on GitHub!
         });
     }
 
+    //#region init vol features
+    /** Initializes all volume-related features */
+    function initVolumeFeatures() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // not technically an input element but behaves pretty much the same
+            addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
+                listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
+                    const volSliderCont = document.createElement("div");
+                    volSliderCont.id = "bytm-vol-slider-cont";
+                    if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
+                        initScrollStep(volSliderCont, sliderElem);
+                    UserUtils.addParent(sliderElem, volSliderCont);
+                    if (typeof getFeatures().volumeSliderSize === "number")
+                        setVolSliderSize();
+                    if (getFeatures().volumeSliderLabel)
+                        yield addVolumeSliderLabel(sliderElem, volSliderCont);
+                    setVolSliderStep(sliderElem);
+                    if (getFeatures().volumeSharedBetweenTabs) {
+                        sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+                        checkSharedVolume();
+                    }
+                    if (getFeatures().setInitialTabVolume)
+                        setInitialTabVolume(sliderElem);
+                }),
+            });
+        });
+    }
+    //#region scroll step
+    /** Initializes the volume slider scroll step features */
+    function initScrollStep(volSliderCont, sliderElem) {
+        for (const evtName of ["wheel", "scroll", "mousewheel", "DOMMouseScroll"]) {
+            volSliderCont.addEventListener(evtName, (e) => {
+                var _a, _b;
+                e.preventDefault();
+                // cancels all the other events that would be fired
+                e.stopImmediatePropagation();
+                const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
+                const volumeDir = -Math.sign(delta);
+                const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
+                sliderElem.value = newVolume;
+                sliderElem.setAttribute("aria-valuenow", newVolume);
+                // make the site actually change the volume
+                sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+            }, {
+                // takes precedence over the slider's own event listener
+                capture: true,
+            });
+        }
+    }
+    //#region volume slider label
+    /** Adds a percentage label to the volume slider and tooltip */
+    function addVolumeSliderLabel(sliderElem, sliderContainer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const labelContElem = document.createElement("div");
+            labelContElem.id = "bytm-vol-slider-label";
+            const volShared = getFeatures().volumeSharedBetweenTabs;
+            if (volShared) {
+                const linkIconHtml = yield resourceToHTMLString("icon-link");
+                if (linkIconHtml) {
+                    const linkIconElem = document.createElement("div");
+                    linkIconElem.id = "bytm-vol-slider-shared";
+                    linkIconElem.innerHTML = linkIconHtml;
+                    linkIconElem.role = "alert";
+                    linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
+                    labelContElem.classList.add("has-icon");
+                    labelContElem.appendChild(linkIconElem);
+                }
+            }
+            const getLabel = (value) => `${value}%`;
+            const labelElem = document.createElement("div");
+            labelElem.classList.add("label");
+            labelElem.textContent = getLabel(sliderElem.value);
+            labelContElem.appendChild(labelElem);
+            // prevent video from minimizing
+            labelContElem.addEventListener("click", (e) => e.stopPropagation());
+            labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
+            const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+            const labelFull = getLabelText(sliderElem);
+            sliderContainer.setAttribute("title", labelFull);
+            sliderElem.setAttribute("title", labelFull);
+            sliderElem.setAttribute("aria-valuetext", labelFull);
+            const updateLabel = () => {
+                const labelFull = getLabelText(sliderElem);
+                sliderContainer.setAttribute("title", labelFull);
+                sliderElem.setAttribute("title", labelFull);
+                sliderElem.setAttribute("aria-valuetext", labelFull);
+                const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
+                if (labelElem2)
+                    labelElem2.textContent = getLabel(sliderElem.value);
+            };
+            sliderElem.addEventListener("change", () => updateLabel());
+            siteEvents.on("configChanged", () => {
+                updateLabel();
+            });
+            addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
+                listener: (volumeCont) => volumeCont.appendChild(labelContElem),
+            });
+            let lastSliderVal = Number(sliderElem.value);
+            // show label if hovering over slider or slider is focused
+            const sliderHoverObserver = new MutationObserver(() => {
+                if (sliderElem.classList.contains("on-hover") || document.activeElement === sliderElem)
+                    labelContElem.classList.add("bytm-visible");
+                else if (labelContElem.classList.contains("bytm-visible") || document.activeElement !== sliderElem)
+                    labelContElem.classList.remove("bytm-visible");
+                if (Number(sliderElem.value) !== lastSliderVal) {
+                    lastSliderVal = Number(sliderElem.value);
+                    updateLabel();
+                }
+            });
+            sliderHoverObserver.observe(sliderElem, {
+                attributes: true,
+            });
+        });
+    }
+    //#region volume slider size
+    /** Sets the volume slider to a set size */
+    function setVolSliderSize() {
+        const { volumeSliderSize: size } = getFeatures();
+        if (typeof size !== "number" || isNaN(Number(size)))
+            return error("Invalid volume slider size:", size);
+        addStyleFromResource("css-vol_slider_size", (css) => css.replace(/\/\*\{WIDTH\}\*\//m, `${size}px`));
+    }
+    //#region volume slider step
+    /** Sets the `step` attribute of the volume slider */
+    function setVolSliderStep(sliderElem) {
+        sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
+    }
+    //#region shared volume
+    /** Saves the shared volume level to persistent storage */
+    function sharedVolumeChanged(vol) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield GM.setValue("bytm-shared-volume", String(lastCheckedSharedVolume = ignoreVal = vol));
+            }
+            catch (err) {
+                error("Couldn't save shared volume level due to an error:", err);
+            }
+        });
+    }
+    let ignoreVal = -1;
+    let lastCheckedSharedVolume = -1;
+    /** Only call once as this calls itself after a timeout! - Checks if the shared volume has changed and updates the volume slider accordingly */
+    function checkSharedVolume() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const vol = yield GM.getValue("bytm-shared-volume");
+                if (vol && lastCheckedSharedVolume !== Number(vol)) {
+                    if (ignoreVal === Number(vol))
+                        return;
+                    lastCheckedSharedVolume = Number(vol);
+                    const sliderElem = document.querySelector("tp-yt-paper-slider#volume-slider");
+                    if (sliderElem) {
+                        sliderElem.value = String(vol);
+                        sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                }
+                setTimeout(checkSharedVolume, 333);
+            }
+            catch (err) {
+                error("Couldn't check for shared volume level due to an error:", err);
+            }
+        });
+    }
+    //#region initial volume
+    /** Sets the volume slider to a set volume level when the session starts */
+    function setInitialTabVolume(sliderElem) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield waitVideoElementReady();
+            const initialVol = getFeatures().initialTabVolumeLevel;
+            if (getFeatures().volumeSharedBetweenTabs) {
+                lastCheckedSharedVolume = ignoreVal = initialVol;
+                if (getFeatures().volumeSharedBetweenTabs)
+                    GM.setValue("bytm-shared-volume", String(initialVol));
+            }
+            sliderElem.value = String(initialVol);
+            sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
+            log(`Set initial tab volume to ${initialVol}%`);
+        });
+    }
+
     //#region dependencies
     /** Creates an HTML string for the given adornment properties */
     const getAdornHtml = (className, title, resource, extraParams) => __awaiter(void 0, void 0, void 0, function* () { var _a; return `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${(_a = yield resourceToHTMLString(resource)) !== null && _a !== void 0 ? _a : ""}</span>`; });
@@ -4466,7 +4461,7 @@ I welcome every contribution on GitHub!
         advanced: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"); }),
         experimental: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"); }),
         globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe_small")) !== null && _b !== void 0 ? _b : ""; }),
-        warning: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
+        alert: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
         reloadRequired: () => __awaiter(void 0, void 0, void 0, function* () { return getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined; }),
     };
     /** Common options for config items of type "select" */
@@ -4677,16 +4672,14 @@ I welcome every contribution on GitHub!
             type: "toggle",
             category: "volume",
             default: false,
-            reloadRequired: false,
-            enable: noop,
-            disable: () => volumeSharedBetweenTabsDisabled,
+            textAdornment: adornments.reloadRequired,
         },
         setInitialTabVolume: {
             type: "toggle",
             category: "volume",
             default: false,
             textAdornment: () => getFeatures().volumeSharedBetweenTabs
-                ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
                 : adornments.reloadRequired(),
         },
         initialTabVolumeLevel: {
@@ -4698,7 +4691,7 @@ I welcome every contribution on GitHub!
             default: 100,
             unit: "%",
             textAdornment: () => getFeatures().volumeSharedBetweenTabs
-                ? combineAdornments([adornments.warning(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
+                ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
                 : adornments.reloadRequired(),
             reloadRequired: false,
             enable: noop,
