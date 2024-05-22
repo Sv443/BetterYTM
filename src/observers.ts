@@ -144,7 +144,7 @@ export function initObservers() {
         attributeFilter: ["title"],
       });
 
-      globservers.playerBarInfo.addListener(playerBarInfoSelector, {
+      globservers.playerBar.addListener(playerBarInfoSelector, {
         listener: () => globservers.playerBarInfo.enable(),
       });
 
