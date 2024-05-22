@@ -37,7 +37,7 @@ export type InterfaceEvents = {
   "bytm:configReady": undefined;
 
   /** Emitted whenever the locale is changed */
-  "bytm:setLocale": { locale: TrLocale };
+  "bytm:setLocale": { locale: TrLocale, pluginId?: string };
 
   /** Emitted when a dialog was opened - returns the dialog's instance */
   "bytm:dialogOpened": BytmDialog;
