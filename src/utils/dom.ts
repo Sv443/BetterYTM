@@ -176,11 +176,12 @@ export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: 
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
  * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ * @param transform A function to transform the CSS before adding it to the DOM
  */
-export function addStyle(css: string, ref?: string) {
+export function addStyle(css: string, ref?: string, transform: (css: string) => string = (c) => c) {
   if(!domLoaded)
     throw new Error("DOM has not finished loading yet");
-  const elem = addGlobalStyle(css);
+  const elem = addGlobalStyle(transform(css));
   elem.id = `bytm-global-style-${ref ?? randomId(5, 36)}`;
   return elem;
 }
@@ -197,10 +198,10 @@ export function currentMediaType(): "video" | "song" {
 }
 
 /** Adds a global style element with the contents of the specified CSS resource */
-export async function addStyleFromResource(key: ResourceKey & `css-${string}`) {
+export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
-    addStyle(css, key.slice(4));
+    addStyle(transform(css), key.slice(4));
     return true;
   }
   return false;
