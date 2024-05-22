@@ -444,7 +444,7 @@
 }
 
 select.bytm-ftconf-input {
-  cursor: pointer;
+  cursor: revert;
 }
 
 #bytm-export-dialog-text, #bytm-import-dialog-text {
