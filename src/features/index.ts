@@ -1,7 +1,6 @@
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
-import { mode } from "../constants";
 import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
 import { emitSiteEvent } from "../siteEvents";
@@ -563,7 +562,7 @@ export const featInfo = {
   advancedMode: {
     type: "toggle",
     category: "general",
-    default: mode === "development",
+    default: false,
     textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
     change: (_key, prevValue, newValue) =>
       prevValue !== newValue &&
