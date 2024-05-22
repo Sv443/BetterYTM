@@ -29,6 +29,7 @@
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
     - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
+  - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs could change
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/52" rel="noopener noreferrer">See pull request for more info</a>
