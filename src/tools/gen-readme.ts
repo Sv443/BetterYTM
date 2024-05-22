@@ -2,9 +2,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { PluginDef } from "../types";
-import locales from "../../assets/locales.json" assert { type: "json" };
-import pluginsJson from "../../assets/plugins.json" assert { type: "json" };
-import pkgJson from "../../package.json" assert { type: "json" };
+import locales from "../../assets/locales.json" with { type: "json" };
+import pluginsJson from "../../assets/plugins.json" with { type: "json" };
+import pkgJson from "../../package.json" with { type: "json" };
 
 /** Map of section name and an async function that returns the new content for that section */
 const changes = {
