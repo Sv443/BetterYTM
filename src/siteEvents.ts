@@ -1,5 +1,5 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info, log } from "./utils";
+import { error, info } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
@@ -186,7 +186,6 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
     }, { once: true });
     return;
   }
-  log("Emitting site event", key, "with args:", args);
   siteEvents.emit(key, ...args);
   emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
 }
