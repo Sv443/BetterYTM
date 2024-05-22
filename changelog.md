@@ -1,3 +1,6 @@
+<!-- I messed up with the changelog parsing so this is just how it will have to be -->
+<div class="split"></div>
+
 ## 2.0.0
 - **Added features:**
 	- Keep the volume synced between tabs
