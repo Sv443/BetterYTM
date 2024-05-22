@@ -1,6 +1,6 @@
 import { addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeatures } from "../config";
-import { addStyle, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
+import { addStyleFromResource, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from ".";
 import "./volume.css";
@@ -155,12 +155,12 @@ function setVolSliderSize() {
   const { volumeSliderSize: size } = getFeatures();
 
   if(typeof size !== "number" || isNaN(Number(size)))
-    return;
+    return error("Invalid volume slider size:", size);
 
-  addStyle(`\
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
-  width: ${size}px !important;
-}`, "vol-slider-size");
+  addStyleFromResource(
+    "css-vol_slider_size",
+    (css) => css.replace(/\/\*\{WIDTH\}\*\//m, `${size}px`),
+  );
 }
 
 //#region volume slider step
