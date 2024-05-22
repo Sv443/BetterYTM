@@ -98,10 +98,10 @@ To edit an existing translation, please follow these steps:
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
-  - `npm run build-prod-base` - Sets `--config-mode=production` and `--config-branch=main`  
-    Used for building for production, targeting the main branch
-  - `npm run build-develop` - Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`  
-    Used for building for experimental versions, targeting the develop branch
+  - `npm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
+    Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
+  - `npm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+    Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
 - **`npm run gen-readme`**  
@@ -118,11 +118,17 @@ To edit an existing translation, please follow these steps:
 - **`npm run tr-prep`**  
   Shorthand for `npm run tr-format -- -p` (see above)
 - **`npm run --silent invisible -- "<command>"`**  
-  Runs the passed command as a detached child process without giving any console output.  
+  Runs the passed command as a detached child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see npm's info and error messages.
 - **`npm run node-ts -- <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the node-ts loader.  
   Also enables source map support and disables experimental warnings.
+
+> [!NOTE]
+> 
+> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and must be preserved.  
+> Any arguments before that will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
+> Here, `--silent` is an argument that makes npm shut up and `"echo hello"` is an argument we wanna pass to the script.
 
 <br>
 
