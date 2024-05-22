@@ -5,8 +5,8 @@ import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
 import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
-import locales from "../../assets/locales.json" assert { type: "json" };
-import pkg from "../../package.json" assert { type: "json" };
+import locales from "../../assets/locales.json" with { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 import type { RollupArgs } from "../types";
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */

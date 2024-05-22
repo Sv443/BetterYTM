@@ -2,7 +2,7 @@ import { host, scriptInfo } from "../constants";
 import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils";
 import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, setFeatures } from "../config";
-import pkg from "../../package.json" assert { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 import { siteEvents } from "src/siteEvents";
 
 let verNotifDialog: BytmDialog | null = null;

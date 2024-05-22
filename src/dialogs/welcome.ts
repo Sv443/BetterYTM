@@ -4,8 +4,8 @@ import { openCfgMenu } from "../menu/menu_old";
 import { scriptInfo } from "../constants";
 import { getFeatures, setFeatures } from "../config";
 import { getChangelogDialog } from ".";
-import pkg from "../../package.json" assert { type: "json" };
-import locales from "../../assets/locales.json" assert { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
+import locales from "../../assets/locales.json" with { type: "json" };
 
 let welcomeDialog: BytmDialog | null = null;
 

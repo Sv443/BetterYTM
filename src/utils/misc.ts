@@ -3,7 +3,7 @@ import { marked } from "marked";
 import { branch, compressionFormat, repo } from "../constants";
 import { type Domain, type ResourceKey } from "../types";
 import { error, type TrLocale, warn, sendRequest } from ".";
-import langMapping from "../../assets/locales.json" assert { type: "json" };
+import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc
 

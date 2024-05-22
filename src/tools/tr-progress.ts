@@ -3,7 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { TrLocale } from "../utils";
-import locales from "../../assets/locales.json" assert { type: "json" };
+import locales from "../../assets/locales.json" with { type: "json" };
 
 const { exit } = process;
 

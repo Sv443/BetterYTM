@@ -8,7 +8,7 @@ import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
 import "./menu_old.css";
 import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components";
-import pkg from "../../package.json" assert { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 
 //#region create menu
 
