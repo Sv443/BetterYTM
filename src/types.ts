@@ -423,6 +423,8 @@ export interface FeatureConfig {
   autoLikeChannels: boolean;
   /** Opens the auto-like channels management dialog */
   openAutoLikeChannelsDialog: undefined;
+  /** Whether to show toggle buttons in the media controls to enable/disable auto-liking for that channel */
+  autoLikeChannelToggleButtons: boolean;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

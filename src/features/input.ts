@@ -204,6 +204,14 @@ export async function initAutoLikeChannels() {
           }
         }, 5_000);
       });
+
+      if(getFeatures().autoLikeChannelToggleButtons) {
+        // TODO:
+        const artistEls = document.querySelectorAll<HTMLElement>(".content-info-wrapper .subtitle a.yt-formatted-string[href]");
+
+        for(const artistEl of artistEls)
+          addAutoLikeToggleBtn(artistEl);
+      }
     }
     else if(getDomain() === "yt") {
       // TODO:
@@ -212,4 +220,9 @@ export async function initAutoLikeChannels() {
   catch(err) {
     error("Error while auto-liking channel:", err);
   }
+}
+
+function addAutoLikeToggleBtn(sibling: HTMLElement) {
+  // TODO:
+  void sibling;
 }
