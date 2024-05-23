@@ -18,7 +18,7 @@ import {
   // behavior
   initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts, initRememberSongTime, disableDarkReader,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip, initAutoLikeChannels,
   // lyrics
   addMediaCtrlLyricsBtn, initLyricsCache,
   // menu
@@ -226,6 +226,9 @@ async function onDomLoad() {
       //#region (ytm+yt) input
 
       ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
+
+      if(getFeatures().autoLikeChannels)
+        ftInit.push(["initAutoLikeChannels", initAutoLikeChannels()]);
     }
 
     const initStartTs = Date.now();

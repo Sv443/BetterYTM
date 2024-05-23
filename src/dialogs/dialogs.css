@@ -159,3 +159,8 @@
   justify-content: space-between;
   border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
+
+#bytm-auto-like-channels-dialog-body {
+  padding-left: 0;
+  padding-right: 0;
+}

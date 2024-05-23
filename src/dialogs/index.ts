@@ -1,5 +1,6 @@
 import "./dialogs.css";
 
+export * from "./autoLikeChannels";
 export * from "./changelog";
 export * from "./exportCfg";
 export * from "./featConfig";
