@@ -54,9 +54,7 @@ I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/fir
 
 </b>
 
-Once you have the extension, click this button to install the userscript:  
-  
-<a href="https://github.com/Sv443/BetterYTM/raw/main/dist/BetterYTM.user.js" target="_blank"><img src="https://img.shields.io/badge/Install-%E2%96%BA-039e10" height="24"></a>
+Once you have the extension, **[visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button** on the latest release.
 
 <br>
 
@@ -67,7 +65,7 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 </sup>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (the script should auto-update to the next release version)
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (the script should auto-update when the next release comes out)
 
 </sup>
 
