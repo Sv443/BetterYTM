@@ -120,8 +120,8 @@ export type PluginInfo = {
    * I recommend to set this value to a URL pointing to your homepage, or the author's username.
    */
   namespace: string;
-  /** Version of the plugin as an array containing three whole numbers: `[major_version, minor_version, patch_version]` */
-  version: [major: number, minor: number, patch: number];
+  /** Version of the plugin as a semver-compliant string */
+  version: string;
 };
 
 /** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */

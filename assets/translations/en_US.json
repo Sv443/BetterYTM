@@ -231,6 +231,8 @@
     "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",
     "feature_helptext_advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu.",
 
-    "plugin_validation_error_no_property": "No property '%1' with type '%2'"
+    "plugin_validation_error_no_property": "No property '%1' with type '%2'",
+    "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
+    "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3"
   }
 }

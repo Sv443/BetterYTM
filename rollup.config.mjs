@@ -1,7 +1,6 @@
 import pluginTypeScript from "@rollup/plugin-typescript";
 import pluginNodeResolve from "@rollup/plugin-node-resolve";
 import pluginJson from "@rollup/plugin-json";
-import pluginHtml from "rollup-plugin-html";
 import pluginCss from "rollup-plugin-import-css";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
@@ -49,7 +48,6 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         sourceMap: mode === "development",
       }),
       pluginJson(),
-      pluginHtml(),
       pluginCss({
         output: "BetterYTM.css",
       }),

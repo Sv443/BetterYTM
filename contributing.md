@@ -145,6 +145,20 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
+<br>
+
+**Strongly recommended knowledge:**
+- Intermediate JavaScript knowledge (DOM, events, async functions, fetch, localStorage, etc.)
+  - Understanding JS types and reading TypeScript definitions
+  - Semantic versioning (for versioning your plugin in the correct format)
+- Basic knowledge of userscripts (start on the [GreaseSpot wiki](https://wiki.greasespot.net/Greasemonkey_Manual))
+  
+**Helpful knowledge:**
+- TypeScript (for type safety and better autocomplete)
+- This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find it
+  
+<br>
+
 These are the ways to interact with BetterYTM; constants, events and global functions:  
 - Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `window` object.  
   These read-only properties tell you more about how BetterYTM is currently being run.  
@@ -161,7 +175,12 @@ These are the ways to interact with BetterYTM; constants, events and global func
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
   There is also a summary with examples [below.](#global-functions)  
-  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)
+
+- Additionally, the following namespaces expose entire libraries for you that BetterYTM has already loaded in:
+  - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
+    This library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.
+  - `unsafeWindow.BYTM.compareVersions` has all functions from the [compare-versions library.](https://npmjs.com/package/compare-versions)  
+    Use it to compare semver-compliant version strings.
 
 All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
   
@@ -297,8 +316,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [compareVersions()](#compareversions) - Crudely compares two semver version strings and returns which one is newer
-  - [compareVersionArrays()](#compareversionarrays) - Crudely compares two semver version number arrays and returns which one is newer
 
 <br><br>
 
@@ -1269,61 +1286,6 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > 
 > document.querySelector("#my-element").appendChild(circularBtn);
 > ```
-> </details>
-
-<br>
-
-> ### compareVersions()
-> Usage:
-> ```ts
-> unsafeWindow.BYTM.compareVersions(verA: string, verB: string): -1 | 0 | 1
-> ```
->   
-> Description:
-> Crudely compares two semver version strings.  
-> The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a positive integer number without leading zeroes.  
-> The function returns:
-> - `-1`, when `verA < verB`
-> - `0`, when `verA == verB`
-> - `1`, when `verA > verB`
-> 
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.4");   // -1
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.3");   // 0
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.2");   // 1
-> unsafeWindow.BYTM.compareVersions("1.2.3", "invalid"); // throws a TypeError
-> ```
-> </details>
-
-<br>
-
-> ### compareVersionArrays()
-> Usage:
-> ```ts
-> unsafeWindow.BYTM.compareVersionArrays(verA: [number, number, number], verB: [number, number, number]): -1 | 0 | 1
-> ```
->   
-> Description:  
-> Crudely compares two semver version arrays.  
-> The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.  
-> The function returns:
-> - `-1`, when `verA < verB`
-> - `0`, when `verA == verB`
-> - `1`, when `verA > verB`
->   
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 4]);   // -1
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 3]);   // 0
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 2]);   // 1
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2]);      // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [-1, 2, 3]);  // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1.1, 2, 3]); // throws a TypeError
-> ```
-> 
 > </details>
 
 <br><br><br><br><br><br>
