@@ -5,6 +5,9 @@
 }
 
 .bytm-generic-btn {
+  --bytm-generic-btn-width: 36px;
+  --bytm-generic-btn-height: 36px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -13,8 +16,10 @@
   cursor: pointer;
   margin-left: 8px;
 
-  width: 36px;
-  height: 36px;
+  min-width: var(--bytm-generic-btn-width);
+  max-width: var(--bytm-generic-btn-width);
+  min-height: var(--bytm-generic-btn-height);
+  max-height: var(--bytm-generic-btn-height);
 
   border: 1px solid transparent;
   border-radius: 100%;

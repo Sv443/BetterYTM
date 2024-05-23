@@ -455,7 +455,7 @@ export const featInfo = {
   openAutoLikeChannelsDialog: {
     type: "button",
     category: "input",
-    click: () => getAutoLikeChannelsDialog().open(),
+    click: () => getAutoLikeChannelsDialog().then(d => d.open()),
   },
 
   //#region lyrics

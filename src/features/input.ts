@@ -174,7 +174,6 @@ export const autoLikeChannelsStore = new DataStore<{
 export async function initAutoLikeChannels() {
   try {
     canCompress = await compressionSupported();
-    await autoLikeChannelsStore.loadData();
     if(getDomain() === "ytm") {
       let timeout: NodeJS.Timeout;
       // TODO:FIXME: needs actual fix instead of timeout

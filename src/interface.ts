@@ -155,23 +155,23 @@ export function emitInterface<
   TDetail extends InterfaceEvents[TEvt],
 >(
   type: TEvt | `bytm:siteEvent:${keyof SiteEventsMap}`,
-  ...data: (TDetail extends undefined ? [undefined?] : [TDetail])
+  ...detail: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
-  getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: data?.[0] ?? undefined }));
+  getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
   //@ts-ignore
-  emitOnPlugins(type, undefined, ...data);
-  log(`Emitted interface event '${type}'${data && data.length > 0 ? " with data:" : ""}`, ...data);
+  emitOnPlugins(type, undefined, ...detail);
+  log(`Emitted interface event '${type}'${detail && detail.length > 0 ? " with data:" : ""}`, ...detail);
 }
 
 //#region register plugins
 
-/** Plugins that are queued up for registration */
+/** Map of plugin ID and plugins that are queued up for registration */
 const pluginsQueued = new Map<string, PluginItem>();
 
-/** Registered plugins including their event listener instance */
+/** Map of plugin ID and all registered plugins */
 const pluginsRegistered = new Map<string, PluginItem>();
 
-/** Auth tokens for plugins that have been registered */
+/** Map of plugin ID to auth token for plugins that have been registered */
 const pluginTokens = new Map<string, string>();
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
@@ -199,11 +199,13 @@ function getPluginKey(plugin: PluginDefResolvable) {
 
 /** Converts a PluginDef object (full definition) into a PluginInfo object (restricted definition) or undefined, if undefined is passed */
 function pluginDefToInfo(plugin?: PluginDef): PluginInfo | undefined {
-  return plugin && {
-    name: plugin.plugin.name,
-    namespace: plugin.plugin.namespace,
-    version: plugin.plugin.version,
-  };
+  return plugin
+    ? {
+      name: plugin.plugin.name,
+      namespace: plugin.plugin.namespace,
+      version: plugin.plugin.version,
+    }
+    : undefined;
 }
 
 /** Checks whether two plugins are the same, given their resolvable definition objects */
@@ -224,22 +226,22 @@ export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
 
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin def and events objects via its name and namespace, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via its name and namespace, or undefined if it doesn't exist.
  */
-export function getPlugin(name: string, namespace: string): PluginItem | undefined
+export function getPlugin(pluginName: string, namespace: string): PluginItem | undefined
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin def and events objects via resolvable definition, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via resolvable definition, or undefined if it doesn't exist.
  */
-export function getPlugin(plugin: PluginDefResolvable): PluginItem | undefined
+export function getPlugin(pluginDef: PluginDefResolvable): PluginItem | undefined
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin def and events objects via plugin ID (consisting of namespace and name), or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects via plugin ID (consisting of namespace and name), or undefined if it doesn't exist.
  */
 export function getPlugin(pluginId: string): PluginItem | undefined
 /**
  * @private FOR INTERNAL USE ONLY!  
- * Returns the internal plugin def and events objects, or undefined if it doesn't exist
+ * Returns the internal plugin def and events objects, or undefined if it doesn't exist.
  */
 export function getPlugin(...args: [pluginDefOrNameOrId: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
   return typeof args[0] === "string" && typeof args[1] === "undefined"
@@ -262,19 +264,27 @@ export function getPluginInfo(token: string | undefined, name: string, namespace
  */
 export function getPluginInfo(token: string | undefined, plugin: PluginDefResolvable): PluginInfo | undefined
 /**
+ * Returns info about a registered plugin on the BYTM interface by its ID (consisting of namespace and name), or undefined if the plugin isn't registered.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
+ * @public Intended for general use in plugins.
+ */
+export function getPluginInfo(token: string | undefined, pluginId: string): PluginInfo | undefined
+/**
  * Returns info about a registered plugin on the BYTM interface, or undefined if the plugin isn't registered.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.  
  * @public Intended for general use in plugins.
  */
-export function getPluginInfo(...args: [token: string | undefined, pluginDefOrName: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
+export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNameOrId: PluginDefResolvable | string, namespace?: string]): PluginInfo | undefined {
   if(resolveToken(args[0]) === undefined)
     return undefined;
 
   return pluginDefToInfo(
     pluginsRegistered.get(
-      args.length === 2
-        ? `${args[2]}/${args[1]}`
-        : getPluginKey(args[1] as PluginDefResolvable)
+      typeof args[1] === "string" && typeof args[2] === "undefined"
+        ? args[1]
+        : args.length === 2
+          ? `${args[2]}/${args[1]}`
+          : getPluginKey(args[1] as PluginDefResolvable)
     )?.def
   );
 }

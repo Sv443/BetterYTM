@@ -85,7 +85,8 @@ declare global {
 
 /**
  * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
- * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.
+ * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
+ * Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
  */
 export enum PluginIntent {
   /** Plugin has access to hidden config values */
@@ -139,12 +140,20 @@ export type PluginDef = {
     };
     /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
     iconUrl?: string;
+    license?: {
+      /** License name */
+      name: string;
+      /** URL to the license text */
+      url: string;
+    };
     /** Homepage URLs for the plugin */
-    homepage?: {
+    homepage: {
       /** Any other homepage URL */
       other?: string;
-      /** URL to the plugin's source code (i.e. Git repo) */
-      source?: string;
+      /** URL to the plugin's source code (i.e. Git repo) - closed source plugins are not officially accepted at the moment. */
+      source: string;
+      /** URL to the plugin's bug tracker page, like GitHub issues */
+      bug?: string;
       /** URL to the plugin's GreasyFork page */
       greasyfork?: string;
       /** URL to the plugin's OpenUserJS page */
