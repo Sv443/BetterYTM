@@ -1,6 +1,7 @@
 import { getDomain, t } from "../utils";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
 import { autoLikeChannelsStore } from "../features";
+import { debounce } from "@sv443-network/userutils";
 
 let autoLikeChannelsDialog: BytmDialog | null = null;
 
@@ -44,13 +45,21 @@ async function renderBody() {
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
 
-  const removeChannel = (id: string) => autoLikeChannelsStore.setData({
-    channels: autoLikeChannelsStore.getData().channels.filter((ch) => ch.id !== id),
-  });
+  const removeChannel = (id: string) => debounce(
+    () => autoLikeChannelsStore.setData({
+      channels: autoLikeChannelsStore.getData().channels.filter((ch) => ch.id !== id),
+    }),
+    250,
+    "falling"
+  );
 
-  const setChannelEnabled = (id: string, enabled: boolean) => autoLikeChannelsStore.setData({
-    channels: autoLikeChannelsStore.getData().channels.map((ch) => ch.id === id ? { ...ch, enabled } : ch),
-  });
+  const setChannelEnabled = (id: string, enabled: boolean) => debounce(
+    () => autoLikeChannelsStore.setData({
+      channels: autoLikeChannelsStore.getData().channels.map((ch) => ch.id === id ? { ...ch, enabled } : ch),
+    }),
+    250,
+    "falling"
+  );
 
   for(const { name, id, enabled } of autoLikeChannelsStore.getData().channels) {
     const rowElem = document.createElement("div");
