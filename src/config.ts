@@ -58,9 +58,13 @@ export const migrations: DataMigrationsDict = {
     "fixHdrIssues", "clearQueueBtn",
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
+  // 5 -> 6 (v2.1)
+  6: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "openAutoLikeChannelsDialog",
+  ]),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-  // 5 -> 6 (v2.x)
-  // 6: (oldData: FeatureConfig) => 
+  // 6 -> 7 (v2.x)
+  // 7: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])

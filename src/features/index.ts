@@ -5,6 +5,7 @@ import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" with { type: "json" };
+import { getAutoLikeChannelsDialog } from "../dialogs";
 
 export * from "./layout";
 export * from "./behavior";
@@ -444,6 +445,17 @@ export const featInfo = {
     default: true,
     reloadRequired: false,
     enable: noop,
+  },
+  autoLikeChannels: {
+    type: "toggle",
+    category: "input",
+    default: false,
+    textAdornment: adornments.reloadRequired,
+  },
+  openAutoLikeChannelsDialog: {
+    type: "button",
+    category: "input",
+    click: () => getAutoLikeChannelsDialog().open(),
   },
 
   //#region lyrics

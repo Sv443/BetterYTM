@@ -267,7 +267,7 @@ type FeatureTypeProps = ({
   | {
     type: "button";
     default?: undefined;
-    click: () => Promise<void> | void;
+    click: () => Promise<void | unknown> | void | unknown;
   }
 
 type FeatureFuncProps = (
@@ -410,6 +410,10 @@ export interface FeatureConfig {
   switchSitesHotkey: HotkeyObj;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
+  /** Whether to auto-like all played videos of configured channels */
+  autoLikeChannels: boolean;
+  /** Opens the auto-like channels management dialog */
+  openAutoLikeChannelsDialog: undefined;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */

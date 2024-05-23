@@ -1,6 +1,9 @@
+:root {
+  --bytm-menu-bg-highlight: #252525;
+}
+
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-menu-bg-highlight: #252525;
   --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;

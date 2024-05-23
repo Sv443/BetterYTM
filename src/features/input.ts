@@ -1,11 +1,13 @@
-import { clamp } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector } from "../utils";
+import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
 import { getFeatures } from "../config";
+import { compressionFormat } from "../constants";
+import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 
@@ -146,4 +148,69 @@ export async function initNumKeysSkip() {
     }
   });
   log("Added number key press listener");
+}
+
+//#region auto-like channels
+
+let canCompress = false;
+
+export const autoLikeChannelsStore = new DataStore<{
+  channels: {
+    id: string;
+    name: string;
+    enabled: boolean;
+  }[];
+}>({
+  id: "bytm-auto-like-channels",
+  formatVersion: 1,
+  defaultData: {
+    channels: [],
+  },
+  encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
+  decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
+  // migrations: {},
+});
+
+export async function initAutoLikeChannels() {
+  try {
+    canCompress = await compressionSupported();
+    await autoLikeChannelsStore.loadData();
+    if(getDomain() === "ytm") {
+      let timeout: NodeJS.Timeout;
+      // TODO:FIXME: needs actual fix instead of timeout
+      siteEvents.on("songTitleChanged", () => {
+        timeout && clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          // TODO: support multiple artists
+          const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
+          const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string") as string[];
+
+          const likeChan = autoLikeChannelsStore.getData().channels.find((ch) => channelIds.includes(ch.id));
+
+          if(!likeChan || !likeChan.enabled)
+            return;
+
+          if(artistEls.length === 0)
+            return error("Couldn't auto-like channel because the artist element couldn't be found");
+
+          const likeRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
+          const likeBtn = likeRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button");
+
+          if(!likeRenderer || !likeBtn)
+            return error("Couldn't auto-like channel because the like button couldn't be found");
+
+          if(likeRenderer.getAttribute("like-status") !== "LIKE") {
+            likeBtn.click();
+            log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
+          }
+        }, 5_000);
+      });
+    }
+    else if(getDomain() === "yt") {
+      // TODO:
+    }
+  }
+  catch(err) {
+    error("Error while auto-liking channel:", err);
+  }
 }
