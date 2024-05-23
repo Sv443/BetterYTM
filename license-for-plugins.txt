@@ -1,6 +1,7 @@
 For the purpose of creating plugins, anyone is hereby allowed to freely copy,
 modify, embed, redistribute, sublicense and sell copies of the source code of
-all `.d.ts` and `.json` files in the BetterYTM project.
+the `src/` folder (*excluding* the subfolders in `src/`), and also all files
+inside `assets/` (*excluding* those in `assets/images/external/`)
 
 Furthermore, you may include the source code of this project in yours, as long
 as only the above mentioned files are included in the final build.
@@ -9,12 +10,12 @@ All files not mentioned above are licensed under the AGPL-3.0-only license.
 Lastly, you are to make the source code of your plugin available to anyone who
 requests it, and you are to provide a link to said source code in the plugin
 definition object needed for registering the plugin at runtime.
-
-Failure to comply with these terms will result in your plugin not being
-endorsed by the BetterYTM project or even legal action if necessary.
+The exact license of the plugin is up to you, but it must be open-source.
 
 Use is granted under the condition that the original author and the BetterYTM
 project is credited in the source code of the plugin.
+Failure to comply with these terms will result in your plugin not being
+endorsed by the BetterYTM project or even legal action if necessary.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
