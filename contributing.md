@@ -152,6 +152,7 @@ If you want your plugin to be displayed in the readme and possibly inside the us
   - Understanding JS types and reading TypeScript definitions
   - Semantic versioning (for versioning your plugin in the correct format)
 - Basic knowledge of userscripts (start on the [GreaseSpot wiki](https://wiki.greasespot.net/Greasemonkey_Manual))
+- Reading the file [`license-for-plugins.txt`](./license-for-plugins.txt) to understand the licensing conditions for plugins
   
 **Helpful knowledge:**
 - TypeScript (for type safety and better autocomplete)
