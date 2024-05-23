@@ -2,6 +2,8 @@ import { scriptInfo } from "../constants";
 import { getFeatures } from "../config";
 import { error, info, sendRequest, t } from "../utils";
 import { getVersionNotifDialog } from "../dialogs";
+import { compare } from "compare-versions";
+import { LogLevel } from "../types";
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 
@@ -42,60 +44,12 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
   if(!latestTag)
     return noUpdateFound();
 
-  const versionComp = compareVersions(scriptInfo.version, latestTag);
+  info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
 
-  info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag);
-
-  if(versionComp < 0) {
+  if(compare(scriptInfo.version, latestTag, "<")) {
     const dialog = await getVersionNotifDialog({ latestTag });
     await dialog.open();
     return;
   }
   return noUpdateFound();
-}
-
-/**
- * Crudely compares two semver version strings.  
- * The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a number.
- * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
- */
-export function compareVersions(a: string, b: string) {
-  a = String(a).trim();
-  b = String(b).trim();
-
-  if([a, b].some(v => !v.match(/^\d+\.\d+\.\d+$/)))
-    throw new TypeError("Invalid version format, expected 'MAJOR.MINOR.PATCH'");
-
-  const pa = a.split(".");
-  const pb = b.split(".");
-  for(let i = 0; i < 3; i++) {
-    const na = Number(pa[i]);
-    const nb = Number(pb[i]);
-    if(na > nb)
-      return 1;
-    if(nb > na)
-      return -1;
-    if(!isNaN(na) && isNaN(nb))
-      return 1;
-    if(isNaN(na) && !isNaN(nb))
-      return -1;
-  }
-  return 0;
-}
-
-/**
- * Compares two version arrays.  
- * The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.
- * @returns Returns 1 if `a > b`, or -1 if `a < b`, or 0 if `a == b`
- */
-export function compareVersionArrays(a: [major: number, minor: number, patch: number], b: [major: number, minor: number, patch: number]) {
-  if([a, b].some(v => !Array.isArray(v) || v.length !== 3 || v.some(iv => !Number.isInteger(iv) || iv < 0)))
-    throw new TypeError("Invalid version format, expected '[MAJOR, MINOR, PATCH]' consisting only of positive integers");
-  for(let i = 0; i < 3; i++) {
-    if(a[i] > b[i])
-      return 1;
-    if(b[i] > a[i])
-      return -1;
-  }
-  return 0;
 }

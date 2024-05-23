@@ -10,7 +10,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
 
-    timeout-minutes: 5
+    timeout-minutes: 8
 
     strategy:
       matrix:

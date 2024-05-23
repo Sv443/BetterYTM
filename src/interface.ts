@@ -1,10 +1,11 @@
 import * as UserUtils from "@sv443-network/userutils";
+import * as compareVersions from "compare-versions";
 import { createNanoEvents } from "nanoevents";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils";
 import { addSelectorListener } from "./observers";
 import { getFeatures, setFeatures } from "./config";
-import { compareVersionArrays, compareVersions, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features";
+import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
 import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } from "./components";
@@ -97,29 +98,32 @@ const globalFuncs = {
   getLyricsCacheEntry,
   sanitizeArtists,
   sanitizeSong,
-  compareVersions,
-  compareVersionArrays,
   onInteraction,
   getThumbnailUrl,
   getBestThumbnailUrl,
+  createHotkeyInput,
+  createToggleInput,
+  createCircularBtn,
 };
 
 /** Initializes the BYTM interface */
 export function initInterface() {
   const props = {
+    // meta / constants
     mode,
     branch,
     host,
     buildNumber,
     compressionFormat,
     ...scriptInfo,
+    // functions
     ...globalFuncs,
-    UserUtils,
+    // classes
     NanoEmitter,
     BytmDialog,
-    createHotkeyInput,
-    createToggleInput,
-    createCircularBtn,
+    // libraries
+    UserUtils,
+    compareVersions,
   };
 
   for(const [key, value] of Object.entries(props))
@@ -279,15 +283,21 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
 function validatePluginDef(pluginDef: Partial<PluginDef>) {
   const errors = [] as string[];
 
-  const addNoPropErr = (prop: string, type: string) =>
-    errors.push(t("plugin_validation_error_no_property", prop, type));
+  const addNoPropErr = (jsonPath: string, type: string) =>
+    errors.push(t("plugin_validation_error_no_property", jsonPath, type));
+
+  const addInvalidPropErr = (jsonPath: string, value: string, examples: string[]) =>
+    errors.push(tp("plugin_validation_error_invalid_property", examples, jsonPath, value, `'${examples.join("', '")}'`));
 
   // def.plugin and its properties:
   typeof pluginDef.plugin !== "object" && addNoPropErr("plugin", "object");
   const { plugin } = pluginDef;
   !plugin?.name && addNoPropErr("plugin.name", "string");
   !plugin?.namespace && addNoPropErr("plugin.namespace", "string");
-  !plugin?.version && addNoPropErr("plugin.version", "[major: number, minor: number, patch: number]");
+  if(typeof plugin?.version !== "string")
+    addNoPropErr("plugin.version", "MAJOR.MINOR.PATCH");
+  else if(!compareVersions.validateStrict(plugin.version))
+    addInvalidPropErr("plugin.version", plugin.version, ["0.0.1", "2.5.21-rc.1"]);
 
   return errors.length > 0 ? errors : undefined;
 }

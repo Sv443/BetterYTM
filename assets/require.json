@@ -13,5 +13,10 @@
     "pkgName": "marked",
     "path": "lib/marked.umd.js",
     "global": "marked"
+  },
+  {
+    "pkgName": "compare-versions",
+    "path": "lib/umd/index.js",
+    "global": "compareVersions"
   }
 ]

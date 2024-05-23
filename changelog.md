@@ -1,6 +1,17 @@
 <!-- I messed up with the changelog parsing so this is just how it will have to be -->
 <div class="split"></div>
 
+## 2.1.0
+- **Internal Changes:**
+  - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
+
+<!-- <div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
+</div> -->
+
+<div class="split"></div>
+<br>
+
 ## 2.0.0
 - **Added features:**
 	- Keep the volume synced between tabs
