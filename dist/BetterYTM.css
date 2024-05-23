@@ -1133,6 +1133,9 @@ hr {
 }
 
 .bytm-generic-btn {
+  --bytm-generic-btn-width: 36px;
+  --bytm-generic-btn-height: 36px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1141,8 +1144,10 @@ hr {
   cursor: pointer;
   margin-left: 8px;
 
-  width: 36px;
-  height: 36px;
+  min-width: var(--bytm-generic-btn-width);
+  max-width: var(--bytm-generic-btn-width);
+  min-height: var(--bytm-generic-btn-height);
+  max-height: var(--bytm-generic-btn-height);
 
   border: 1px solid transparent;
   border-radius: 100%;
@@ -1489,6 +1494,11 @@ ytmusic-player#player #bezel {
   margin-bottom: 15px;
 }
 
+#bytm-auto-like-channels-add-new {
+  padding: 4px 15px;
+  margin-top: 20px;
+}
+
 .bytm-auto-like-channel-row:hover {
   background-color: var(--bytm-menu-bg-highlight);
 }
@@ -1496,6 +1506,19 @@ ytmusic-player#player #bezel {
 .bytm-auto-like-channel-row .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
   --toggle-height: 18px !important;
   --toggle-width: 36px !important;
+}
+
+.bytm-auto-like-channel-name-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bytm-auto-like-channel-id {
+  cursor: text;
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-left: 10px;
 }
 
 /* #region queue buttons */
