@@ -107,8 +107,10 @@ export class BytmDialog extends NanoEmitter<{
     return bgElem;
   }
 
-  /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
+  /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
   public unmount() {
+    this.close();
+
     this.dialogMounted = false;
 
     const clearSelectors = [
