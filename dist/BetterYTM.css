@@ -160,6 +160,11 @@
   border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
 
+#bytm-auto-like-channels-dialog-body {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .bytm-dialog-bg {
   --bytm-dialog-bg: #333333;
   --bytm-dialog-bg-highlight: #252525;
@@ -646,9 +651,12 @@ hr {
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }
+:root {
+  --bytm-menu-bg-highlight: #252525;
+}
+
 .bytm-menu-bg {
   --bytm-menu-bg: #333333;
-  --bytm-menu-bg-highlight: #252525;
   --bytm-scroll-indicator-bg: rgba(10, 10, 10, 0.7);
   --bytm-menu-separator-color: #797979;
   --bytm-menu-border-radius: 10px;
@@ -1458,6 +1466,36 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 
 ytmusic-player#player #bezel {
   z-index: 1;
+}
+
+.bytm-auto-like-channel-row-left-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bytm-auto-like-channel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 15px;
+  transition: background-color 0.15s ease-out;
+}
+
+.bytm-auto-like-channels-desc {
+  padding: 0px 15px;
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.bytm-auto-like-channel-row:hover {
+  background-color: var(--bytm-menu-bg-highlight);
+}
+
+.bytm-auto-like-channel-row .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
+  --toggle-height: 18px !important;
+  --toggle-width: 36px !important;
 }
 
 /* #region queue buttons */
