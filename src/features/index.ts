@@ -457,6 +457,12 @@ export const featInfo = {
     category: "input",
     click: () => getAutoLikeChannelsDialog().then(d => d.open()),
   },
+  autoLikeChannelToggleButtons: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
 
   //#region lyrics
   geniusLyrics: {

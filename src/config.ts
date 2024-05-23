@@ -61,6 +61,7 @@ export const migrations: DataMigrationsDict = {
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
     "autoLikeChannels", "openAutoLikeChannelsDialog",
+    "autoLikeChannelToggleButtons",
   ]),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 6 -> 7 (v2.x)
