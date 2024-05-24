@@ -453,6 +453,8 @@ export interface FeatureConfig {
   checkVersionNow: undefined;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
 }

@@ -89,7 +89,7 @@ async function init() {
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
 
-    emitInterface("bytm:initPlugins");
+    emitInterface("bytm:registerPlugins");
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
@@ -231,16 +231,7 @@ async function onDomLoad() {
         ftInit.push(["initAutoLikeChannels", initAutoLikeChannels()]);
     }
 
-    const initStartTs = Date.now();
-
-    // wait for feature init or timeout (in case an init function is hung up on a promise)
-    await Promise.race([
-      pauseFor(10_000),
-      Promise.allSettled(ftInit.map(([, p]) => p)),
-    ]);
-
-    emitInterface("bytm:ready");
-    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    emitInterface("bytm:featureInitStarted");
 
     try {
       initPlugins();
@@ -249,6 +240,25 @@ async function onDomLoad() {
       error("Plugin loading error:", err);
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
+
+    const initStartTs = Date.now();
+
+    // wait for feature init or timeout (in case an init function is hung up on a promise)
+    await Promise.race([
+      pauseFor(getFeatures().initTimeout > 0 ? getFeatures().initTimeout * 1000 : 8_000),
+      Promise.allSettled(
+        ftInit.map(([name, prom]) =>
+          new Promise(async (res) => {
+            const v = await prom;
+            emitInterface("bytm:featureInitialized", name);
+            res(v);
+          })
+        )
+      ),
+    ]);
+
+    emitInterface("bytm:ready");
+    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
       registerDevMenuCommands();

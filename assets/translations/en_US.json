@@ -135,9 +135,10 @@
     "auto_like": "Auto-like",
     "auto_like_button_tooltip_enabled": "Click to disable auto-liking. Shift-click to open the management dialog.",
     "auto_like_button_tooltip_disabled": "Click to enable auto-liking. Shift-click to open the management dialog.",
-    "add_auto_like_channel_id_prompt": "Enter the channel ID (the part after \"channel/\" in the URL) of the channel you want to auto-like.\nPress \"cancel\" to exit.",
-    "add_auto_like_channel_name_prompt": "Enter the name of the channel.\nPress \"cancel\" to exit.",
+    "add_auto_like_channel_id_prompt": "Enter the channel ID (the part after \"/channel/\" in the URL) of the channel you want to auto-like.\nPress \"cancel\" to exit.",
+    "add_auto_like_channel_invalid_id": "The entered channel ID is invalid.\nPlease make sure you copy only the part *after* \"/channel/\" in the URL, excluding the slash.",
     "add_auto_like_channel_already_exists_prompt_new_name": "A channel with that ID is already in the list.\nDo you instead want to change its name?",
+    "add_auto_like_channel_name_prompt": "Enter the name of the channel.\nPress \"cancel\" to exit.",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
@@ -244,6 +245,8 @@
     "feature_btn_checkVersionNow_running": "Checking...",
     "feature_desc_logLevel": "How much information to log to the console",
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
+    "feature_desc_initTimeout": "How long to wait for features to initialize before considering them to likely be in an errored state",
+    "feature_helptext_initTimeout": "This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
     "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",
     "feature_helptext_advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu.",
 
