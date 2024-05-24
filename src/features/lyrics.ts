@@ -27,23 +27,6 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   if(!songTitleElem)
     return warn("Couldn't find song title element");
 
-  // run parallel without awaiting so the MutationObserver below can observe the title element in time
-  (async () => {
-    const gUrl = await getCurrentLyricsUrl();
-
-    const lyricsBtnElem = await createLyricsBtn(gUrl ?? undefined);
-    lyricsBtnElem.id = "betterytm-lyrics-button";
-
-    log("Inserted lyrics button into media controls bar");
-
-    const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
-
-    if(thumbToggleElem)
-      thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem);
-    else
-      likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
-  })();
-
   currentSongTitle = songTitleElem.title;
 
   const spinnerIconUrl = await getResourceUrl("icon-spinner");
@@ -55,7 +38,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
       const newTitle = (mut.target as HTMLElement).title;
 
       if(newTitle !== currentSongTitle && newTitle.length > 0) {
-        const lyricsBtn = document.querySelector<HTMLAnchorElement>("#betterytm-lyrics-button");
+        const lyricsBtn = document.querySelector<HTMLAnchorElement>("#bytm-player-bar-lyrics-btn");
 
         if(!lyricsBtn)
           continue;
@@ -108,6 +91,23 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const obs = new MutationObserver(onMutation);
 
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
+
+  const lyricsBtnElem = await createLyricsBtn(undefined);
+  lyricsBtnElem.id = "bytm-player-bar-lyrics-btn";
+
+  // run parallel so the element is inserted as soon as possible
+  getCurrentLyricsUrl().then(url => {
+    url && addGeniusUrlToLyricsBtn(lyricsBtnElem, url);
+  });
+
+  log("Inserted lyrics button into media controls bar");
+
+  const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
+
+  if(thumbToggleElem)
+    thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem);
+  else
+    likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
 }
 
 //#region lyrics utils
@@ -372,6 +372,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
+}
+
+/** Adds the genius URL to the passed lyrics button element if it was previously instantiated with an undefined URL */
+export async function addGeniusUrlToLyricsBtn(btnElem: HTMLAnchorElement, geniusUrl: string) {
+  btnElem.href = geniusUrl;
+  btnElem.ariaLabel = btnElem.title = t("open_lyrics");
+  btnElem.style.visibility = "visible";
+  btnElem.style.display = "inline-flex";
 }
 
 /** Creates the base lyrics button element */

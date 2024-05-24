@@ -1,4 +1,4 @@
-/* {WIDTH} will be replaced with the width number set in the config menu */
+/* {WIDTH} (in comments) will be replaced with the width number set in the config menu */
 #bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
   --bytm-slider-width: /*{WIDTH}*/;
   width: var(--bytm-slider-width, 120px) !important;

@@ -159,7 +159,7 @@ function setVolSliderSize() {
 
   addStyleFromResource(
     "css-vol_slider_size",
-    (css) => css.replace(/\/\*\{WIDTH\}\*\//m, `${size}px`),
+    (css) => css.replace(/\/\*\s*\{WIDTH\}\s*\*\//gm, `${size}px`),
   );
 }
 

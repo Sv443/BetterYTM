@@ -197,7 +197,10 @@ export function currentMediaType(): "video" | "song" {
   return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 
-/** Adds a global style element with the contents of the specified CSS resource */
+/**
+ * Adds a global style element with the contents fetched from the specified CSS resource.  
+ * The CSS can be transformed using the provided function before being added to the DOM.
+ */
 export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
