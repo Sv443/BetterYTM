@@ -136,7 +136,8 @@ export function clearInner(element: Element) {
     clearNode(element!.firstChild as Element);
 }
 
-function clearNode(element: Element) {
+/** Removes all child nodes of an element recursively and also removes the element itself */
+export function clearNode(element: Element) {
   while(element.hasChildNodes())
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);

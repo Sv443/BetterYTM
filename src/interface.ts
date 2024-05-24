@@ -160,7 +160,7 @@ export function emitInterface<
   getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
   //@ts-ignore
   emitOnPlugins(type, undefined, ...detail);
-  log(`Emitted interface event '${type}'${detail && detail.length > 0 ? " with data:" : ""}`, ...detail);
+  log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
 }
 
 //#region register plugins

@@ -1,3 +1,9 @@
+:root {
+  --bytm-auto-like-btn-color: #c47df4;
+  --bytm-auto-like-btn-color-toggled: rgba(201, 122, 254, 0.25);
+  --bytm-auto-like-btn-color-toggled-hover: rgba(201, 122, 254, 0.5);
+}
+
 .bytm-auto-like-channel-row-left-cont {
   display: flex;
   align-items: center;
@@ -50,4 +56,26 @@
   font-size: 1.1rem;
   color: #aaa;
   margin-left: 10px;
+}
+
+.bytm-auto-like-toggle-btn {
+  margin-right: 8px;
+  border: 1px solid var(--bytm-auto-like-btn-color);
+  box-sizing: border-box;
+}
+
+.bytm-auto-like-toggle-btn.toggled {
+  background-color: var(--bytm-auto-like-btn-color-toggled, rgba(255, 255, 255, 0.25));
+}
+
+.bytm-auto-like-toggle-btn.toggled:hover {
+  background-color: var(--bytm-auto-like-btn-color-toggled-hover, rgba(255, 255, 255, 0.5));
+}
+
+.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
+  color: var(--bytm-auto-like-btn-color);
+}
+
+.bytm-auto-like-toggle-btn svg path {
+  fill: var(--bytm-auto-like-btn-color);
 }

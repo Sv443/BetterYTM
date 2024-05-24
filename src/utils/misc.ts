@@ -169,7 +169,7 @@ export function getPreferredLocale(): TrLocale {
 }
 
 /** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
-export async function resourceToHTMLString(resource: ResourceKey) {
+export async function resourceToHTMLString(resource: ResourceKey | "_") {
   try {
     const resourceUrl = await getResourceUrl(resource);
     if(!resourceUrl)

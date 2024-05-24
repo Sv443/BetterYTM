@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported } from "../utils";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
@@ -7,6 +7,9 @@ import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
 import { getFeatures } from "../config";
 import { compressionFormat } from "../constants";
+import { addSelectorListener } from "../observers";
+import { createLongBtn } from "../components/longButton";
+import { initAutoLikeChannelsStore } from "../dialogs";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -174,6 +177,7 @@ export const autoLikeChannelsStore = new DataStore<{
 export async function initAutoLikeChannels() {
   try {
     canCompress = await compressionSupported();
+    await initAutoLikeChannelsStore();
     if(getDomain() === "ytm") {
       let timeout: NodeJS.Timeout;
       // TODO:FIXME: needs actual fix instead of timeout
@@ -205,13 +209,23 @@ export async function initAutoLikeChannels() {
         }, 5_000);
       });
 
-      if(getFeatures().autoLikeChannelToggleButtons) {
-        // TODO:
-        const artistEls = document.querySelectorAll<HTMLElement>(".content-info-wrapper .subtitle a.yt-formatted-string[href]");
+      siteEvents.on("pathChanged", (path) => {
+        if(path.match(/\/channel\/.+/)) {
+          const chanId = path.split("/").pop();
+          if(!chanId)
+            return error("Couldn't extract channel ID from URL");
 
-        for(const artistEl of artistEls)
-          addAutoLikeToggleBtn(artistEl);
-      }
+          document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+
+          addSelectorListener("browseResponse", "ytmusic-browse-response #header .actions .buttons", {
+            listener(buttonsCont) {
+              const lastBtn = buttonsCont.querySelector<HTMLElement>("ytmusic-subscribe-button-renderer");
+              const chanName = document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
+              lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
+            }
+          });
+        }
+      });
     }
     else if(getDomain() === "yt") {
       // TODO:
@@ -222,7 +236,39 @@ export async function initAutoLikeChannels() {
   }
 }
 
-function addAutoLikeToggleBtn(sibling: HTMLElement) {
-  // TODO:
-  void sibling;
+async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanName: string | null) {
+  const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId);
+
+  const buttonEl = await createLongBtn({
+    resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : "_disabled"}`,
+    text: t("auto_like"),
+    title: t("auto_like_channel_toggle"),
+    toggle: true,
+    toggleInitialState: chan?.enabled ?? false,
+    async onToggle(toggled) {
+      const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
+      const imgHtml = await resourceToHTMLString(`icon-auto_like_${toggled ? "enabled" : "disabled"}`);
+      if(imgEl && imgHtml)
+        imgEl.innerHTML = imgHtml;
+
+      if(autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+        await autoLikeChannelsStore.setData({
+          channels: [
+            ...autoLikeChannelsStore.getData().channels,
+            { id: chanId, name: chanName ?? "", enabled: toggled },
+          ],
+        });
+      }
+      else {
+        await autoLikeChannelsStore.setData({
+          channels: autoLikeChannelsStore.getData().channels
+            .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
+        });
+      }
+    }
+  });
+  buttonEl.classList.add("bytm-auto-like-toggle-btn");
+  buttonEl.dataset.channelId = chanId;
+
+  sibling.insertAdjacentElement("afterend", buttonEl);
 }

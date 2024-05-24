@@ -15,6 +15,7 @@ export type SharedObserverName =
 
 // YTM only
 export type YTMObserverName =
+  | "browseResponse"
   | "navBar"
   | "mainPanel"
   | "sideBar"
@@ -60,6 +61,18 @@ export function initObservers() {
     switch(getDomain()) {
     case "ytm": {
       //#region YTM
+
+      //#region browseResponse
+      // -> for example the /channel/UC... page
+      const browseResponseSelector = "ytmusic-browse-response";
+      globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(browseResponseSelector, {
+        listener: () => globservers.browseResponse.enable(),
+      });
 
       //#region navBar
       // -> the navigation / title bar at the top of the page
@@ -223,6 +236,8 @@ export function initObservers() {
     error("Failed to initialize observers:", err);
   }
 }
+
+//#region add listener func
 
 /**
  * Interface function for adding listeners to the {@linkcode globservers}  

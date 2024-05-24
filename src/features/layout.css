@@ -22,19 +22,40 @@
   max-height: var(--bytm-generic-btn-height);
 
   border: 1px solid transparent;
-  border-radius: 100%;
+  border-radius: calc(var(--bytm-generic-btn-height, 36px) / 2);
   background-color: transparent;
 
   transition: background-color 0.2s ease;
 }
 
-.bytm-generic-btn:hover {
+.bytm-generic-btn:not(.long):hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 .bytm-generic-btn:active {
   background-color: #5f5f5f;
   animation: flashBorder 0.4s ease 1;
+}
+
+.bytm-generic-btn.long {
+  --bytm-generic-btn-width: 136px;
+  padding: 0px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 0px;
+}
+
+.bytm-generic-btn.long .bytm-generic-btn-img {
+  margin-right: 6px;
+}
+
+.bytm-generic-long-btn-txt {
+  font-size: 14px;
 }
 
 .bytm-ftitem-help-btn.bytm-generic-btn {
