@@ -43,6 +43,7 @@
 .bytm-generic-btn.long {
   --bytm-generic-btn-width: 136px;
   padding: 0px;
+  line-height: 36px;
 
   display: inline-flex;
   align-items: center;
@@ -53,8 +54,12 @@
   margin-left: 0px;
 }
 
-.bytm-generic-btn.long .bytm-generic-btn-img {
-  margin-right: 6px;
+.bytm-generic-btn.long .bytm-generic-btn-img.left {
+  margin-right: 8px;
+}
+
+.bytm-generic-btn.long .bytm-generic-btn-img.right {
+  margin-left: 8px;
 }
 
 .bytm-generic-long-btn-txt {

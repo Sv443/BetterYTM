@@ -39,7 +39,7 @@ async function renderHeader() {
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("auto_like_channels_dialog_title"); // TODO
+  headerEl.textContent = t("auto_like_channels_dialog_title");
 
   return headerEl;
 }
@@ -49,7 +49,8 @@ async function renderBody() {
 
   const descriptionEl = document.createElement("p");
   descriptionEl.classList.add("bytm-auto-like-channels-desc");
-  descriptionEl.textContent = t("auto_like_channels_dialog_desc"); // TODO
+  descriptionEl.textContent = t("auto_like_channels_dialog_desc");
+  descriptionEl.tabIndex = 0;
 
   contElem.appendChild(descriptionEl);
 
@@ -57,24 +58,24 @@ async function renderBody() {
   addNewEl.id = "bytm-auto-like-channels-add-new";
   addNewEl.role = "button";
   addNewEl.tabIndex = 0;
-  addNewEl.textContent = `+ ${t("add_new")}`;
-  addNewEl.classList.add("bytm-link");
+  addNewEl.textContent = `+ ${t("create_new_entry")}`;
+  addNewEl.classList.add("bytm-link", "bytm-no-select");
 
   onInteraction(addNewEl, async () => {
-    const id = prompt(t("add_auto_like_channel_id_prompt")); // TODO
-    if(!id)
+    const id = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
+    if(!id || !id.match(/^[a-zA-Z0-9_-]{20,}$/))
       return;
 
     let overwriteName = false;
 
     if(autoLikeChannelsStore.getData().channels.some((ch) => ch.id === id)) {
-      if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name"))) // TODO
+      if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
         return;
       overwriteName = true;
     }
 
-    const name = prompt(t("add_auto_like_channel_name_prompt")); // TODO
-    if(!name)
+    const name = prompt(t("add_auto_like_channel_name_prompt"))?.trim();
+    if(!name || name.length === 0)
       return;
 
     await autoLikeChannelsStore.setData(

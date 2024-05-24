@@ -32,6 +32,8 @@ type LongBtnOptions = (
     text: string;
     /** Tooltip and aria-label of the button */
     title: string;
+    /** Icon position inside the button - defaults to `left` */
+    iconPosition?: "left" | "right";
   }
 );
 
@@ -44,6 +46,8 @@ type LongBtnOptions = (
  */
 export async function createLongBtn({
   title,
+  text,
+  iconPosition,
   ...rest
 }: LongBtnOptions) {
   if(["href", "onClick", "onToggle"].every((key) => !(key in rest)))
@@ -79,15 +83,16 @@ export async function createLongBtn({
   btnElem.role = "button";
 
   const imgElem = document.createElement("div");
-  imgElem.classList.add("bytm-generic-btn-img");
+  imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
   imgElem.innerHTML = "src" in rest ? rest.src : await resourceToHTMLString(rest.resourceName as "_") ?? "";
 
   const txtElem = document.createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
-  txtElem.textContent = txtElem.ariaLabel = rest.text;
+  txtElem.textContent = txtElem.ariaLabel = text;
 
-  btnElem.appendChild(imgElem);
+  iconPosition === "left" || !iconPosition && btnElem.appendChild(imgElem);
   btnElem.appendChild(txtElem);
+  iconPosition === "right" && btnElem.appendChild(imgElem);
 
   return btnElem;
 }
