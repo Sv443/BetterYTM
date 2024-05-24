@@ -1,5 +1,5 @@
 import { autoPlural, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t, warn } from "../utils";
+import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t } from "../utils";
 import { SiteEventsMap, siteEvents } from "../siteEvents";
 import { emitInterface } from "../interface";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
@@ -225,27 +225,25 @@ async function addQueueButtons(
             queuePopupCont.setAttribute("data-bytm-hidden", "true");
 
           dotsBtnElem.click();
-          await pauseFor(10);
 
           queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
           queuePopupCont?.setAttribute("data-bytm-hidden", "true");
 
-          // a little bit janky and unreliable but the only way afaik
+          // TODO: think of something better than this
+          await pauseFor(25);
+
           const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-
-          await pauseFor(10);
-
           removeFromQueueBtn?.click();
 
           // queue items aren't removed automatically outside of the current queue
           if(removeFromQueueBtn && listType === "genericQueue") {
-            await pauseFor(500);
+            await pauseFor(200);
             clearInner(queueItem);
             queueItem.remove();
           }
 
           if(!removeFromQueueBtn) {
-            warn("Couldn't find 'remove from queue' button in queue item three dots menu");
+            error("Couldn't find 'remove from queue' button in queue item three dots menu");
             dotsBtnElem.click();
             imgElem.src = await getResourceUrl("icon-error");
             if(deleteBtnElem)
