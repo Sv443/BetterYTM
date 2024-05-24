@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/logo/logo_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/logo/logo_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,44 +35,46 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/arrow_down.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/beaker_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/globe.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/globe_small.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/icons/spinner.svg
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/logo/logo_48.png
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/external/greasyfork.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/5fa3161/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_disabled https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/auto_like_disabled.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/delete.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/icons/spinner.svg
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/logo/logo_48.png
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/external/greasyfork.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/21072f93/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -202,7 +204,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "5fa3161";
+const buildNumberRaw = "21072f93";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -780,6 +782,9 @@ function createCircularBtn(_a) {
 }/** EventEmitter instance that is used to detect changes to the site */
 const siteEvents = createNanoEvents();
 let observers = [];
+let lastWatchId = null;
+let lastPathname = null;
+let lastFullscreen;
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 function initSiteEvents() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -815,7 +820,6 @@ function initSiteEvents() {
             });
             //#region player bar
             let lastTitle = null;
-            let initialPlay = true;
             addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
                 continuous: true,
                 listener: (titleElem) => {
@@ -824,9 +828,8 @@ function initSiteEvents() {
                     if (newTitle === lastTitle || !newTitle)
                         return;
                     lastTitle = newTitle;
-                    info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}" - initial play: ${initialPlay}`);
-                    emitSiteEvent("songTitleChanged", newTitle, oldTitle, initialPlay);
-                    initialPlay = false;
+                    info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+                    emitSiteEvent("songTitleChanged", newTitle, oldTitle);
                 },
             });
             info("Successfully initialized SiteEvents observers");
@@ -838,7 +841,10 @@ function initSiteEvents() {
             const playerFullscreenObs = new MutationObserver(([{ target }]) => {
                 var _a;
                 const isFullscreen = ((_a = target.getAttribute("player-ui-state")) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "FULLSCREEN";
-                emitSiteEvent("fullscreenToggled", isFullscreen);
+                if (lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
+                    emitSiteEvent("fullscreenToggled", isFullscreen);
+                    lastFullscreen = isFullscreen;
+                }
             });
             addSelectorListener("mainPanel", "ytmusic-player#player", {
                 listener: (el) => {
@@ -848,8 +854,7 @@ function initSiteEvents() {
                 },
             });
             //#region other
-            let lastWatchId = null;
-            const checkWatchId = () => {
+            const runIntervalChecks = () => {
                 if (location.pathname.startsWith("/watch")) {
                     const newWatchId = new URL(location.href).searchParams.get("v");
                     if (newWatchId && newWatchId !== lastWatchId) {
@@ -858,10 +863,14 @@ function initSiteEvents() {
                         lastWatchId = newWatchId;
                     }
                 }
+                if (location.pathname !== lastPathname) {
+                    emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
+                    lastPathname = String(location.pathname);
+                }
             };
             window.addEventListener("bytm:ready", () => {
-                checkWatchId();
-                setInterval(checkWatchId, 200);
+                runIntervalChecks();
+                setInterval(runIntervalChecks, 100);
             }, {
                 once: true,
             });
@@ -1088,7 +1097,7 @@ function createToggleInput(_a) {
 function getAutoLikeChannelsDialog() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!autoLikeChannelsDialog) {
-            yield autoLikeChannelsStore.loadData();
+            yield initAutoLikeChannelsStore();
             autoLikeChannelsDialog = new BytmDialog({
                 id: "auto-like-channels",
                 width: 600,
@@ -1103,6 +1112,14 @@ function getAutoLikeChannelsDialog() {
         }
         return autoLikeChannelsDialog;
     });
+}
+let isLoaded = false;
+/** Inits autoLikeChannels DataStore instance */
+function initAutoLikeChannelsStore() {
+    if (isLoaded)
+        return;
+    isLoaded = true;
+    return autoLikeChannelsStore.loadData();
 }
 function renderHeader$6() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3612,6 +3629,53 @@ function disableDarkReader() {
     metaElem.classList.add("bytm-disable-darkreader");
     document.head.appendChild(metaElem);
     info("Disabled Dark Reader");
+}/**
+ * Creates a generic, circular, long button element with an icon and text.
+ * Has classes for the enabled and disabled states for easier styling.
+ * If `href` is provided, the button will be an anchor element.
+ * If `onClick` or `onToggle` is provided, the button will be a div element.
+ * Provide either `resourceName` or `src` to specify the icon inside the button.
+ */
+function createLongBtn(_a) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _b;
+        var { title } = _a, rest = __rest(_a, ["title"]);
+        if (["href", "onClick", "onToggle"].every((key) => !(key in rest)))
+            throw new TypeError("Either 'href', 'onClick' or 'onToggle' must be provided");
+        let btnElem;
+        if ("href" in rest && rest.href) {
+            btnElem = document.createElement("a");
+            btnElem.href = rest.href;
+            btnElem.role = "button";
+            btnElem.target = "_blank";
+            btnElem.rel = "noopener noreferrer";
+        }
+        else
+            btnElem = document.createElement("div");
+        if ("toggle" in rest && rest.toggle) {
+            if ("toggleInitialState" in rest && rest.toggleInitialState)
+                btnElem.classList.add("toggled");
+        }
+        onInteraction(btnElem, (evt) => {
+            if ("onClick" in rest && rest.onClick)
+                rest.onClick(evt);
+            if ("toggle" in rest && rest.toggle && "onToggle" in rest && rest.onToggle)
+                rest.onToggle(btnElem.classList.toggle("toggled"), evt);
+        });
+        btnElem.classList.add("bytm-generic-btn", "long");
+        btnElem.ariaLabel = btnElem.title = title;
+        btnElem.tabIndex = 0;
+        btnElem.role = "button";
+        const imgElem = document.createElement("div");
+        imgElem.classList.add("bytm-generic-btn-img");
+        imgElem.innerHTML = "src" in rest ? rest.src : (_b = yield resourceToHTMLString(rest.resourceName)) !== null && _b !== void 0 ? _b : "";
+        const txtElem = document.createElement("span");
+        txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
+        txtElem.textContent = txtElem.ariaLabel = rest.text;
+        btnElem.appendChild(imgElem);
+        btnElem.appendChild(txtElem);
+        return btnElem;
+    });
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 function initArrowKeySkip() {
@@ -3746,6 +3810,7 @@ function initAutoLikeChannels() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             canCompress$1 = yield compressionSupported();
+            yield initAutoLikeChannelsStore();
             if (getDomain() === "ytm") {
                 let timeout;
                 // TODO:FIXME: needs actual fix instead of timeout
@@ -3770,12 +3835,22 @@ function initAutoLikeChannels() {
                         }
                     }, 5000);
                 });
-                if (getFeatures().autoLikeChannelToggleButtons) {
-                    // TODO:
-                    const artistEls = document.querySelectorAll(".content-info-wrapper .subtitle a.yt-formatted-string[href]");
-                    for (const artistEl of artistEls)
-                        addAutoLikeToggleBtn(artistEl);
-                }
+                siteEvents.on("pathChanged", (path) => {
+                    if (path.match(/\/channel\/.+/)) {
+                        const chanId = path.split("/").pop();
+                        if (!chanId)
+                            return error("Couldn't extract channel ID from URL");
+                        document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+                        addSelectorListener("browseResponse", "ytmusic-browse-response #header .actions .buttons", {
+                            listener(buttonsCont) {
+                                var _a, _b;
+                                const lastBtn = buttonsCont.querySelector("ytmusic-subscribe-button-renderer");
+                                const chanName = (_b = (_a = document.querySelector("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                                lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
+                            }
+                        });
+                    }
+                });
             }
             else if (getDomain() === "yt") {
                 // TODO:
@@ -3786,7 +3861,48 @@ function initAutoLikeChannels() {
         }
     });
 }
-function addAutoLikeToggleBtn(sibling) {
+function addAutoLikeToggleBtn(sibling, chanId, chanName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId);
+        const buttonEl = yield createLongBtn({
+            resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : "_disabled"}`,
+            text: t("auto_like"),
+            title: t("auto_like_channel_toggle"),
+            toggle: true,
+            toggleInitialState: (_a = chan === null || chan === void 0 ? void 0 : chan.enabled) !== null && _a !== void 0 ? _a : false,
+            onToggle(toggled, evt) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    if (evt.shiftKey) {
+                        buttonEl.classList.toggle("toggled");
+                        getAutoLikeChannelsDialog().then((dlg) => dlg.open());
+                        return;
+                    }
+                    const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+                    const imgHtml = yield resourceToHTMLString(`icon-auto_like_${toggled ? "enabled" : "disabled"}`);
+                    if (imgEl && imgHtml)
+                        imgEl.innerHTML = imgHtml;
+                    if (autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+                        yield autoLikeChannelsStore.setData({
+                            channels: [
+                                ...autoLikeChannelsStore.getData().channels,
+                                { id: chanId, name: chanName !== null && chanName !== void 0 ? chanName : "", enabled: toggled },
+                            ],
+                        });
+                    }
+                    else {
+                        yield autoLikeChannelsStore.setData({
+                            channels: autoLikeChannelsStore.getData().channels
+                                .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
+                        });
+                    }
+                });
+            }
+        });
+        buttonEl.classList.add("bytm-auto-like-toggle-btn");
+        buttonEl.dataset.channelId = chanId;
+        sibling.insertAdjacentElement("afterend", buttonEl);
+    });
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 //#region media control bar
@@ -5268,7 +5384,7 @@ function emitInterface(type, ...detail) {
     getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = detail === null || detail === void 0 ? void 0 : detail[0]) !== null && _a !== void 0 ? _a : undefined }));
     //@ts-ignore
     emitOnPlugins(type, undefined, ...detail);
-    log(`Emitted interface event '${type}'${detail && detail.length > 0 ? " with data:" : ""}`, ...detail);
+    log(`Emitted interface event '${type}'${detail.length > 0 && (detail === null || detail === void 0 ? void 0 : detail[0]) ? " with data:" : ""}`, ...detail);
 }
 //#region register plugins
 /** Map of plugin ID and plugins that are queued up for registration */
@@ -5430,6 +5546,13 @@ function initObservers() {
         switch (getDomain()) {
             case "ytm": {
                 //#region YTM
+                //#region browseResponse
+                // -> for example the /channel/UC... page
+                const browseResponseSelector = "ytmusic-browse-response";
+                globservers.browseResponse = new UserUtils.SelectorObserver(browseResponseSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.body.addListener(browseResponseSelector, {
+                    listener: () => globservers.browseResponse.enable(),
+                });
                 //#region navBar
                 // -> the navigation / title bar at the top of the page
                 const navBarSelector = "ytmusic-nav-bar";
@@ -5532,6 +5655,7 @@ function initObservers() {
         error("Failed to initialize observers:", err);
     }
 }
+//#region add listener func
 /**
  * Interface function for adding listeners to the {@linkcode globservers}
  * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
@@ -5646,6 +5770,7 @@ function clearInner(element) {
     while (element.hasChildNodes())
         clearNode(element.firstChild);
 }
+/** Removes all child nodes of an element recursively and also removes the element itself */
 function clearNode(element) {
     while (element.hasChildNodes())
         clearNode(element.firstChild);
@@ -5654,7 +5779,7 @@ function clearNode(element) {
 const interactionKeys = ["Enter", " ", "Space"];
 /**
  * Adds generic, accessible interaction listeners to the passed element.
- * All listeners have the default behavior prevented and stop immediate propagation (for keyboard events only as long as the captured key is valid).
+ * All listeners have the default behavior prevented and stop propagation (for keyboard events only as long as the captured key is valid).
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 function onInteraction(elem, listener, listenerOptions) {
@@ -5662,14 +5787,14 @@ function onInteraction(elem, listener, listenerOptions) {
         if (e instanceof KeyboardEvent) {
             if (interactionKeys.includes(e.key)) {
                 e.preventDefault();
-                e.stopImmediatePropagation();
+                e.stopPropagation();
             }
             else
                 return;
         }
         else if (e instanceof MouseEvent) {
             e.preventDefault();
-            e.stopImmediatePropagation();
+            e.stopPropagation();
         }
         // clean up the other listener that isn't automatically removed if `once` is set
         (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
