@@ -47,6 +47,7 @@
     "toggled_off": "Off",
     "trigger_btn_action": "Run action",
     "trigger_btn_action_running": "Running...",
+    "create_new_entry": "Create a new entry",
     "remove_entry": "Remove this entry",
     "remove_from_queue": "Remove this song from the queue",
     "delete_from_list": "Delete this song from the list",
@@ -128,6 +129,15 @@
     "thumbnail_overlay_image_fit_crop": "Crop if necessary",
     "thumbnail_overlay_image_fit_full": "Show full image",
     "thumbnail_overlay_image_fit_stretch": "Stretch to fit",
+
+    "auto_like_channels_dialog_title": "Manage auto-liked channels",
+    "auto_like_channels_dialog_desc": "Auto-liking of currently playing songs and videos is enabled for the following channels:",
+    "auto_like": "Auto-like",
+    "auto_like_button_tooltip_enabled": "Click to disable auto-liking. Shift-click to open the management dialog.",
+    "auto_like_button_tooltip_disabled": "Click to enable auto-liking. Shift-click to open the management dialog.",
+    "add_auto_like_channel_id_prompt": "Enter the channel ID (the part after \"channel/\" in the URL) of the channel you want to auto-like.\nPress \"cancel\" to exit.",
+    "add_auto_like_channel_name_prompt": "Enter the name of the channel.\nPress \"cancel\" to exit.",
+    "add_auto_like_channel_already_exists_prompt_new_name": "A channel with that ID is already in the list.\nDo you instead want to change its name?",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",

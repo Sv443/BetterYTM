@@ -236,13 +236,13 @@ export async function initAutoLikeChannels() {
   }
 }
 
-async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanName: string | null) {
-  const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId);
+async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null) {
+  const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === channelId);
 
   const buttonEl = await createLongBtn({
-    resourceName: "icon-auto_like",
+    resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
     text: t("auto_like"),
-    title: t("auto_like_channel_toggle"),
+    title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
     toggle: true,
     toggleInitialState: chan?.enabled ?? false,
     async onToggle(toggled, evt) {
@@ -252,8 +252,12 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
         return;
       }
 
+      buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
+
+      const chanId = buttonEl.dataset.channelId ?? channelId;
+
       const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-      const imgHtml = await resourceToHTMLString("icon-auto_like");
+      const imgHtml = await resourceToHTMLString(`icon-auto_like${toggled ? "_enabled" : ""}`);
       if(imgEl && imgHtml)
         imgEl.innerHTML = imgHtml;
 
@@ -261,7 +265,7 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
         await autoLikeChannelsStore.setData({
           channels: [
             ...autoLikeChannelsStore.getData().channels,
-            { id: chanId, name: chanName ?? "", enabled: toggled },
+            { id: chanId, name: channelName ?? "", enabled: toggled },
           ],
         });
       }
@@ -274,7 +278,7 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
     }
   });
   buttonEl.classList.add("bytm-auto-like-toggle-btn");
-  buttonEl.dataset.channelId = chanId;
+  buttonEl.dataset.channelId = channelId;
 
-  sibling.insertAdjacentElement("afterend", buttonEl);
+  siblingEl.insertAdjacentElement("afterend", buttonEl);
 }
