@@ -16,6 +16,7 @@ export async function getAutoLikeChannelsDialog() {
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
+      destroyOnClose: true,
       small: true,
       renderHeader,
       renderBody,
@@ -54,17 +55,24 @@ async function renderBody() {
 
   contElem.appendChild(descriptionEl);
 
-  const addNewEl = document.createElement("div");
+  const addNewWrapper = document.createElement("div");
+
+  const addNewEl = document.createElement("span");
   addNewEl.id = "bytm-auto-like-channels-add-new";
   addNewEl.role = "button";
   addNewEl.tabIndex = 0;
   addNewEl.textContent = `+ ${t("create_new_entry")}`;
   addNewEl.classList.add("bytm-link", "bytm-no-select");
 
+  addNewWrapper.appendChild(addNewEl);
+
   onInteraction(addNewEl, async () => {
     const id = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
-    if(!id || !id.match(/^[a-zA-Z0-9_-]{20,}$/))
+    if(!id)
       return;
+
+    if(!id.match(/^[a-zA-Z0-9_-]{20,}$/))
+      return alert(t("add_auto_like_channel_invalid_id"));
 
     let overwriteName = false;
 
@@ -100,7 +108,7 @@ async function renderBody() {
     autoLikeChannelsDialog?.unmount();
   });
 
-  contElem.appendChild(addNewEl);
+  contElem.appendChild(addNewWrapper);
 
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";

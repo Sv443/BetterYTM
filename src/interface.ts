@@ -21,24 +21,50 @@ export type InterfaceEventsMap = {
 
 /** All events that can be emitted on the BYTM interface and the data they provide */
 export type InterfaceEvents = {
-  /** Emitted whenever the plugins should be registered using `unsafeWindow.BYTM.registerPlugin()` */
-  "bytm:initPlugins": undefined;
-  /** Emitted whenever all plugins have been loaded */
-  "bytm:pluginsRegistered": undefined;
-  /** Emitted when BYTM has finished initializing all features */
-  "bytm:ready": undefined;
-  /** Emitted when a fatal error occurs and the script can't continue to run. Returns a short error description (not really meant to be displayed to the user). */
-  "bytm:fatalError": string;
-  /**
-   * Emitted whenever the SelectorObserver instances have been initialized  
-   * Use `unsafeWindow.BYTM.addObserverListener()` to add custom listener functions to the observers
-   */
-  "bytm:observersReady": undefined;
+  //#region startup events
+  // (sorted in order of execution)
+
   /** Emitted as soon as the feature config has finished loading and can be accessed via `unsafeWindow.BYTM.getFeatures(token)` */
   "bytm:configReady": undefined;
-
+  /** Emitted when the lyrics cache has been loaded */
+  "bytm:lyricsCacheReady": undefined;
   /** Emitted whenever the locale is changed */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
+  /**
+   * When this is emitted, this is your call to register your plugin using `unsafeWindow.BYTM.registerPlugin()`  
+   * To be safe, you should wait for this event before doing anything else in your plugin script.
+   */
+  "bytm:registerPlugins": undefined;
+  /**
+   * Emitted whenever the SelectorObserver instances have been initialized and can be used to listen for DOM changes and wait for elements to be available.  
+   * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
+   */
+  "bytm:observersReady": undefined;
+  /**
+   * Emitted when the feature initialization has started.  
+   * This is the last event that is emitted before the `bytm:ready` event.  
+   * As soon as this is emitted, you cannot register any more plugins.
+   */
+  "bytm:featureInitStarted": undefined;
+  /**
+   * Emitted whenever all plugins have been registered and are allowed to call token-authenticated functions.  
+   * All parts of your plugin that require those functions should wait for this event to be emitted.
+   */
+  "bytm:pluginsRegistered": undefined;
+  /** Emitted when a feature has been initialized. The data is the feature's key as seen in `onDomLoad()` of `src/index.ts` */
+  "bytm:featureInitialized": string;
+  /** Emitted when BYTM has finished initializing all features or has reached the init timeout and has entered an idle state. */
+  "bytm:ready": undefined;
+
+  //#region additional events
+  // (not sorted)
+
+  /**
+   * Emitted when a fatal error occurs and the script can't continue to run.  
+   * Returns a short error description that's not really meant to be displayed to the user (console is fine).  
+   * But may be helpful in plugin development if the plugin causes an internal error.
+   */
+  "bytm:fatalError": string;
 
   /** Emitted when a dialog was opened - returns the dialog's instance */
   "bytm:dialogOpened": BytmDialog;
@@ -47,21 +73,22 @@ export type InterfaceEvents = {
 
   /** Emitted whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
-  /** Emitted when the lyrics cache has been loaded */
-  "bytm:lyricsCacheReady": undefined;
   /** Emitted when the lyrics cache has been cleared */
   "bytm:lyricsCacheCleared": undefined;
   /** Emitted when an entry is added to the lyrics cache - "penalized" entries get removed from cache faster because they were less related in lyrics lookups, opposite to the "best" entries */
   "bytm:lyricsCacheEntryAdded": { type: "best" | "penalized", entry: LyricsCacheEntry };
 
-  // additionally all events from SiteEventsMap in `src/siteEvents.ts`
+  // NOTE:
+  // Additionally, all events from `SiteEventsMap` in `src/siteEvents.ts`
   // are emitted in this format: "bytm:siteEvent:nameOfSiteEvent"
 };
 
+/** Array of all events emittable on the interface (excluding plugin-specific, private events) */
 export const allInterfaceEvents = [
-  "bytm:initPlugins",
+  "bytm:registerPlugins",
   "bytm:pluginsRegistered",
   "bytm:ready",
+  "bytm:featureInitfeatureInitStarted",
   "bytm:fatalError",
   "bytm:observersReady",
   "bytm:configReady",

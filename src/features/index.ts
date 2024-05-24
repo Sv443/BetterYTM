@@ -577,6 +577,17 @@ export const featInfo = {
     default: 1,
     textAdornment: adornments.reloadRequired,
   },
+  initTimeout: {
+    type: "number",
+    category: "general",
+    min: 1,
+    max: 30,
+    default: 8,
+    step: 0.1,
+    unit: "s",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
   advancedMode: {
     type: "toggle",
     category: "general",

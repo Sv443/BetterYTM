@@ -389,7 +389,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   return authToken;
 > }
 > 
-> unsafeWindow.addEventListener("bytm:initPlugins", () => {
+> unsafeWindow.addEventListener("bytm:registerPlugins", () => {
 >   // register the plugin
 >   const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
 >   // listen for the pluginRegistered event
