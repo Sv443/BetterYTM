@@ -240,7 +240,7 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
   const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId);
 
   const buttonEl = await createLongBtn({
-    resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : "_disabled"}`,
+    resourceName: "icon-auto_like",
     text: t("auto_like"),
     title: t("auto_like_channel_toggle"),
     toggle: true,
@@ -253,7 +253,7 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
       }
 
       const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-      const imgHtml = await resourceToHTMLString(`icon-auto_like_${toggled ? "enabled" : "disabled"}`);
+      const imgHtml = await resourceToHTMLString("icon-auto_like");
       if(imgEl && imgHtml)
         imgEl.innerHTML = imgHtml;
 

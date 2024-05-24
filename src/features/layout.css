@@ -33,8 +33,11 @@
 }
 
 .bytm-generic-btn:active {
-  background-color: #5f5f5f;
   animation: flashBorder 0.4s ease 1;
+}
+
+.bytm-generic-btn:not(.bytm-toggle):active {
+  background-color: #5f5f5f;
 }
 
 .bytm-generic-btn.long {
@@ -65,13 +68,13 @@
 
 @keyframes flashBorder {
   0% {
-    border: 1px solid transparent;
+    border: 1px solid initial;
   }
   20% {
     border: 1px solid #808080;
   }
   100% {
-    border: 1px solid transparent;
+    border: 1px solid initial;
   }
 }
 

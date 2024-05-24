@@ -61,6 +61,7 @@ export async function createLongBtn({
     btnElem = document.createElement("div");
 
   if("toggle" in rest && rest.toggle) {
+    btnElem.classList.add("bytm-toggle");
     if("toggleInitialState" in rest && rest.toggleInitialState)
       btnElem.classList.add("toggled");
   }
