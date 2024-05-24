@@ -4,6 +4,10 @@
 ## 2.1.0
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
+- **Plugin Changes:**
+  - Renamed interface events to be more consistent
+  - Added new component `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
+    The design matches that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
 
 <!-- <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>

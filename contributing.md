@@ -156,6 +156,9 @@ If you want your plugin to be displayed in the readme and possibly inside the us
   
 **Helpful knowledge:**
 - TypeScript (for type safety and better autocomplete)
+- The source code of BetterYTM  
+  This is especially regarding the files `src/interface.ts`, `src/types.ts`, `src/siteEvents.ts` and `src/observers.ts`
+- Being on the lookout for pull requests, since they will list new features and changes to the interface
 - This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find it
   
 <br>
