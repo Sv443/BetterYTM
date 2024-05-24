@@ -1,7 +1,7 @@
 import { getResourceUrl, initTranslations, setLocale, t, warn, type TrLocale } from "../utils";
 import { BytmDialog } from "../components";
 import { openCfgMenu } from "../menu/menu_old";
-import { scriptInfo } from "../constants";
+import { mode, scriptInfo } from "../constants";
 import { getFeatures, setFeatures } from "../config";
 import { getChangelogDialog } from ".";
 import pkg from "../../package.json" with { type: "json" };
@@ -36,7 +36,7 @@ async function renderHeader() {
   const titleLogoElem = document.createElement("img");
   titleLogoElem.id = "bytm-welcome-menu-title-logo";
   titleLogoElem.classList.add("bytm-no-select");
-  titleLogoElem.src = await getResourceUrl("img-logo");
+  titleLogoElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
   const titleElem = document.createElement("h2");
   titleElem.id = "bytm-welcome-menu-title";

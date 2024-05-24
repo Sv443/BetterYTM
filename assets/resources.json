@@ -7,8 +7,8 @@
   "doc-changelog": "/changelog.md",
   "icon-advanced_mode": "icons/plus_circle_small.svg",
   "icon-arrow_down": "icons/arrow_down.svg",
-  "icon-auto_like": "icons/auto_like.svg",
   "icon-auto_like_enabled": "icons/auto_like_enabled.svg",
+  "icon-auto_like": "icons/auto_like.svg",
   "icon-clear_list": "icons/clear_list.svg",
   "icon-delete": "icons/delete.svg",
   "icon-error": "icons/error.svg",
@@ -23,10 +23,11 @@
   "icon-reload": "icons/refresh.svg",
   "icon-skip_to": "icons/skip_to.svg",
   "icon-spinner": "icons/spinner.svg",
-  "img-logo": "images/logo/logo_48.png",
   "img-close": "images/close.png",
   "img-discord": "images/external/discord.png",
   "img-github": "images/external/github.png",
   "img-greasyfork": "images/external/greasyfork.png",
+  "img-logo_dev": "images/logo/logo_dev_48.png",
+  "img-logo": "images/logo/logo_48.png",
   "img-openuserjs": "images/external/openuserjs.png"
 }
