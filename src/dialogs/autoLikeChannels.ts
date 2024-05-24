@@ -62,6 +62,7 @@ async function renderBody() {
   addNewEl.role = "button";
   addNewEl.tabIndex = 0;
   addNewEl.textContent = `+ ${t("create_new_entry")}`;
+  addNewEl.title = addNewEl.ariaLabel = t("create_new_entry");
   addNewEl.classList.add("bytm-link", "bytm-no-select");
 
   addNewWrapper.appendChild(addNewEl);
