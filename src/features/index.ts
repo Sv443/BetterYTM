@@ -580,7 +580,7 @@ export const featInfo = {
   initTimeout: {
     type: "number",
     category: "general",
-    min: 1,
+    min: 3,
     max: 30,
     default: 8,
     step: 0.1,
