@@ -1161,13 +1161,17 @@ hr {
 }
 
 .bytm-generic-btn:active {
-  background-color: #5f5f5f;
   animation: flashBorder 0.4s ease 1;
+}
+
+.bytm-generic-btn:not(.bytm-toggle):active {
+  background-color: #5f5f5f;
 }
 
 .bytm-generic-btn.long {
   --bytm-generic-btn-width: 136px;
   padding: 0px;
+  line-height: 36px;
 
   display: inline-flex;
   align-items: center;
@@ -1178,8 +1182,12 @@ hr {
   margin-left: 0px;
 }
 
-.bytm-generic-btn.long .bytm-generic-btn-img {
-  margin-right: 6px;
+.bytm-generic-btn.long .bytm-generic-btn-img.left {
+  margin-right: 8px;
+}
+
+.bytm-generic-btn.long .bytm-generic-btn-img.right {
+  margin-left: 8px;
 }
 
 .bytm-generic-long-btn-txt {
@@ -1193,13 +1201,13 @@ hr {
 
 @keyframes flashBorder {
   0% {
-    border: 1px solid transparent;
+    border: 1px solid initial;
   }
   20% {
     border: 1px solid #808080;
   }
   100% {
-    border: 1px solid transparent;
+    border: 1px solid initial;
   }
 }
 
@@ -1500,9 +1508,7 @@ ytmusic-player#player #bezel {
 }
 
 :root {
-  --bytm-auto-like-btn-color: #c47df4;
-  --bytm-auto-like-btn-color-toggled: rgba(201, 122, 254, 0.25);
-  --bytm-auto-like-btn-color-toggled-hover: rgba(201, 122, 254, 0.5);
+  --bytm-auto-like-btn-color: #bf87f0;
 }
 
 .bytm-auto-like-channel-row-left-cont {
@@ -1563,22 +1569,40 @@ ytmusic-player#player #bezel {
   margin-right: 8px;
   border: 1px solid var(--bytm-auto-like-btn-color);
   box-sizing: border-box;
+  background-color: transparent;
+  transition: border-color 0.2s ease;
+  animation: none;
 }
 
+.bytm-auto-like-toggle-btn:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bytm-auto-like-toggle-btn:active,
 .bytm-auto-like-toggle-btn.toggled {
-  background-color: var(--bytm-auto-like-btn-color-toggled, rgba(255, 255, 255, 0.25));
-}
-
-.bytm-auto-like-toggle-btn.toggled:hover {
-  background-color: var(--bytm-auto-like-btn-color-toggled-hover, rgba(255, 255, 255, 0.5));
-}
-
-.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
-  color: var(--bytm-auto-like-btn-color);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .bytm-auto-like-toggle-btn svg path {
   fill: var(--bytm-auto-like-btn-color);
+  transition: fill 0.2s ease;
+}
+
+.bytm-auto-like-toggle-btn:active svg path,
+.bytm-auto-like-toggle-btn.toggled svg path {
+  fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
+}
+
+.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
+  font-weight: 500;
+  color: var(--bytm-auto-like-btn-color);
+  transition: color 0.2s ease;
+}
+
+.bytm-auto-like-toggle-btn:active .bytm-generic-long-btn-txt,
+.bytm-auto-like-toggle-btn.toggled .bytm-generic-long-btn-txt
+{
+  color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
 /* #region queue buttons */
