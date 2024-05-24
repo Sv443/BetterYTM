@@ -485,7 +485,7 @@ export async function initThumbnailOverlay() {
   if(getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
     return;
 
-  // so the script doesn't wait until a /watch page is loaded
+  // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
     const playerSelector = "ytmusic-player#player";
     const playerEl = document.querySelector<HTMLElement>(playerSelector);
