@@ -9,7 +9,7 @@ import { getFeatures } from "../config";
 import { compressionFormat } from "../constants";
 import { addSelectorListener } from "../observers";
 import { createLongBtn } from "../components/longButton";
-import { initAutoLikeChannelsStore } from "../dialogs";
+import { getAutoLikeChannelsDialog, initAutoLikeChannelsStore } from "../dialogs";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -245,7 +245,13 @@ async function addAutoLikeToggleBtn(sibling: HTMLElement, chanId: string, chanNa
     title: t("auto_like_channel_toggle"),
     toggle: true,
     toggleInitialState: chan?.enabled ?? false,
-    async onToggle(toggled) {
+    async onToggle(toggled, evt) {
+      if(evt.shiftKey) {
+        buttonEl.classList.toggle("toggled");
+        getAutoLikeChannelsDialog().then((dlg) => dlg.open());
+        return;
+      }
+
       const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
       const imgHtml = await resourceToHTMLString(`icon-auto_like_${toggled ? "enabled" : "disabled"}`);
       if(imgEl && imgHtml)
