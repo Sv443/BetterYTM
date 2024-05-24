@@ -545,7 +545,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >
 > Description:  
 > Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions.  
-> All events passed to the callback function automatically have the default behavior prevented and stop immediate propagation, meaning no other listener of the same type will be called.  
+> All events passed to the callback function automatically have the default behavior prevented and stop propagation, meaning no other listener of the same type will be called.  
 > For keyboard events this only happens as long as the captured key is a valid interaction key (Space, Enter).  
 >   
 > Arguments:
