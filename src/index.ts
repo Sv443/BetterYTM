@@ -20,7 +20,7 @@ import {
   // input
   initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip, initAutoLikeChannels,
   // lyrics
-  addMediaCtrlLyricsBtn, initLyricsCache,
+  addPlayerBarLyricsBtn, initLyricsCache,
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
   // general
@@ -158,43 +158,43 @@ async function onDomLoad() {
       if(features.removeUpgradeTab)
         ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
 
-      ftInit.push(["initThumbnailOverlay", initThumbnailOverlay()]);
+      ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 
       if(features.hideCursorOnIdle)
-        ftInit.push(["initHideCursorOnIdle", initHideCursorOnIdle()]);
+        ftInit.push(["hideCursorOnIdle", initHideCursorOnIdle()]);
 
       if(features.fixHdrIssues)
         ftInit.push(["fixHdrIssues", fixHdrIssues()]);
 
       //#region (ytm) volume
 
-      ftInit.push(["initVolumeFeatures", initVolumeFeatures()]);
+      ftInit.push(["volumeFeatures", initVolumeFeatures()]);
 
       //#region (ytm) song lists
 
       if(features.lyricsQueueButton || features.deleteFromQueueButton)
-        ftInit.push(["initQueueButtons", initQueueButtons()]);
+        ftInit.push(["queueButtons", initQueueButtons()]);
 
-      ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
+      ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
 
       //#region (ytm) behavior
 
       if(features.closeToastsTimeout > 0)
-        ftInit.push(["initAutoCloseToasts", initAutoCloseToasts()]);
+        ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
       //#region (ytm) input
 
-      ftInit.push(["initArrowKeySkip", initArrowKeySkip()]);
+      ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
 
       if(features.anchorImprovements)
-        ftInit.push(["addAnchorImprovements", addAnchorImprovements()]);
+        ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 
-      ftInit.push(["initNumKeysSkip", initNumKeysSkip()]);
+      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm) lyrics
 
       if(features.geniusLyrics)
-        ftInit.push(["addMediaCtrlLyricsBtn", addMediaCtrlLyricsBtn()]);
+        ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
     }
 
     //#region (ytm+yt) cfg menu option
@@ -225,10 +225,10 @@ async function onDomLoad() {
 
       //#region (ytm+yt) input
 
-      ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
+      ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
 
       if(getFeatures().autoLikeChannels)
-        ftInit.push(["initAutoLikeChannels", initAutoLikeChannels()]);
+        ftInit.push(["autoLikeChannels", initAutoLikeChannels()]);
     }
 
     emitInterface("bytm:featureInitStarted");
