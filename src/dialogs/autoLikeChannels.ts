@@ -11,8 +11,8 @@ export async function getAutoLikeChannelsDialog() {
     await autoLikeChannelsStore.loadData();
     autoLikeChannelsDialog = new BytmDialog({
       id: "auto-like-channels",
-      width: 700,
-      height: 600,
+      width: 600,
+      height: 800,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
@@ -55,19 +55,31 @@ async function renderBody() {
     if(!id)
       return;
 
-    if(autoLikeChannelsStore.getData().channels.some((ch) => ch.id === id))
-      return alert(t("add_auto_like_channel_already_exists")); // TODO
+    let overwriteName = false;
+
+    if(autoLikeChannelsStore.getData().channels.some((ch) => ch.id === id)) {
+      if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name"))) // TODO
+        return;
+      overwriteName = true;
+    }
 
     const name = prompt(t("add_auto_like_channel_name_prompt")); // TODO
     if(!name)
       return;
 
-    await autoLikeChannelsStore.setData({
-      channels: [
-        ...autoLikeChannelsStore.getData().channels,
-        { id, name, enabled: true },
-      ],
-    });
+    await autoLikeChannelsStore.setData(
+      overwriteName
+        ? {
+          channels: autoLikeChannelsStore.getData().channels
+            .map((ch) => ch.id === id ? { ...ch, name } : ch),
+        }
+        : {
+          channels: [
+            ...autoLikeChannelsStore.getData().channels,
+            { id, name, enabled: true },
+          ],
+        }
+    );
 
     const unsub = autoLikeChannelsDialog?.on("clear", async () => {
       unsub?.();

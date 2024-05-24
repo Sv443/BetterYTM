@@ -15,6 +15,8 @@ Supported Languages: 🇩🇪&nbsp;German, 🇺🇸&nbsp;English (US), 🇬🇧&
 ### Features:
 All of these can be toggled and configured in the configuration menu.
 - Layout & User Experience:
+  - Auto-like your favorite channels' songs and videos
+  - Show the amount of likes and dislikes on songs (powered by returnyoutubedislike.com)
   - Open any song's lyrics on genius.com which generally has higher quality than YouTube's providers
   - Quick actions on songs in a queue, to quickly open their lyrics or remove them from the queue
   - Set a custom size and step resolution for the volume slider and show a percentage label next to it

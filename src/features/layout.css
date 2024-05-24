@@ -37,6 +37,11 @@
   animation: flashBorder 0.4s ease 1;
 }
 
+.bytm-ftitem-help-btn.bytm-generic-btn {
+  --bytm-generic-btn-width: 24px;
+  --bytm-generic-btn-height: 24px;
+}
+
 @keyframes flashBorder {
   0% {
     border: 1px solid transparent;

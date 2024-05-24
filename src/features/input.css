@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 15px;
+  padding: 8px 15px;
   transition: background-color 0.15s ease-out;
 }
 
@@ -22,6 +22,7 @@
 #bytm-auto-like-channels-add-new {
   padding: 4px 15px;
   margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .bytm-auto-like-channel-row:hover {
@@ -31,6 +32,11 @@
 .bytm-auto-like-channel-row .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
   --toggle-height: 18px !important;
   --toggle-width: 36px !important;
+}
+
+.bytm-auto-like-channel-row .bytm-generic-btn {
+  --bytm-generic-btn-width: 30px;
+  --bytm-generic-btn-height: 30px;
 }
 
 .bytm-auto-like-channel-name-label {
