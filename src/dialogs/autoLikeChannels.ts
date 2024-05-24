@@ -8,7 +8,7 @@ let autoLikeChannelsDialog: BytmDialog | null = null;
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeChannelsDialog() {
   if(!autoLikeChannelsDialog) {
-    await autoLikeChannelsStore.loadData();
+    await initAutoLikeChannelsStore();
     autoLikeChannelsDialog = new BytmDialog({
       id: "auto-like-channels",
       width: 600,
@@ -22,6 +22,16 @@ export async function getAutoLikeChannelsDialog() {
     });
   }
   return autoLikeChannelsDialog;
+}
+
+let isLoaded = false;
+
+/** Inits autoLikeChannels DataStore instance */
+export function initAutoLikeChannelsStore() {
+  if(isLoaded)
+    return;
+  isLoaded = true;
+  return autoLikeChannelsStore.loadData();
 }
 
 async function renderHeader() {

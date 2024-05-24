@@ -28,14 +28,21 @@ export interface SiteEventsMap {
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
   autoplayQueueChanged: (queueElement: HTMLElement) => void;
   /**
-   * Emitted whenever the current song title changes
-   * @param newTitle The new song title
-   * @param oldTitle The old song title, or `null` if no previous title was found
-   * @param initialPlay Whether this is the first played song
+   * Emitted whenever the current song title changes.  
+   * Uses the DOM element `yt-formatted-string.title` to detect changes and emit instantaneously.  
+   * If `oldTitle` is `null`, this is the first song played in the session.
    */
-  songTitleChanged: (newTitle: string, oldTitle: string | null, initialPlay: boolean) => void;
-  /** Emitted whenever the current song's watch ID changes - `oldId` is `null` if this is the first song played in the session */
+  songTitleChanged: (newTitle: string, oldTitle: string | null) => void;
+  /**
+   * Emitted whenever the current song's watch ID changes.  
+   * If `oldId` is `null`, this is the first song played in the session.
+   */
   watchIdChanged: (newId: string, oldId: string | null) => void;
+  /**
+   * Emitted whenever the URL path (`location.pathname`) changes.  
+   * If `oldPath` is `null`, this is the first path in the session.
+   */
+  pathChanged: (newPath: string, oldPath: string | null) => void;
   /** Emitted whenever the player enters or exits fullscreen mode */
   fullscreenToggled: (isFullscreen: boolean) => void;
 }
@@ -53,6 +60,7 @@ export const allSiteEvents = [
   "autoplayQueueChanged",
   "songTitleChanged",
   "watchIdChanged",
+  "pathChanged",
   "fullscreenToggled",
 ] as const;
 
@@ -69,6 +77,10 @@ export function removeAllObservers() {
   });
   observers = [];
 }
+
+let lastWatchId: string | null = null;
+let lastPathname: string | null = null;
+let lastFullscreen: boolean;
 
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 export async function initSiteEvents() {
@@ -109,7 +121,6 @@ export async function initSiteEvents() {
     //#region player bar
 
     let lastTitle: string | null = null;
-    let initialPlay = true;
 
     addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
       continuous: true,
@@ -119,9 +130,8 @@ export async function initSiteEvents() {
         if(newTitle === lastTitle || !newTitle)
           return;
         lastTitle = newTitle;
-        info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}" - initial play: ${initialPlay}`);
-        emitSiteEvent("songTitleChanged", newTitle, oldTitle, initialPlay);
-        initialPlay = false;
+        info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+        emitSiteEvent("songTitleChanged", newTitle, oldTitle);
       },
     });
 
@@ -136,7 +146,10 @@ export async function initSiteEvents() {
 
     const playerFullscreenObs = new MutationObserver(([{ target }]) => {
       const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
-      emitSiteEvent("fullscreenToggled", isFullscreen);
+      if(lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
+        emitSiteEvent("fullscreenToggled", isFullscreen);
+        lastFullscreen = isFullscreen;
+      }
     });
 
     addSelectorListener("mainPanel", "ytmusic-player#player", {
@@ -149,9 +162,7 @@ export async function initSiteEvents() {
 
     //#region other
 
-    let lastWatchId: string | null = null;
-
-    const checkWatchId = () => {
+    const runIntervalChecks = () => {
       if(location.pathname.startsWith("/watch")) {
         const newWatchId = new URL(location.href).searchParams.get("v");
         if(newWatchId && newWatchId !== lastWatchId) {
@@ -160,11 +171,16 @@ export async function initSiteEvents() {
           lastWatchId = newWatchId;
         }
       }
+
+      if(location.pathname !== lastPathname) {
+        emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
+        lastPathname = String(location.pathname);
+      }
     };
 
     window.addEventListener("bytm:ready", () => {
-      checkWatchId();
-      setInterval(checkWatchId, 200);
+      runIntervalChecks();
+      setInterval(runIntervalChecks, 100);
     }, {
       once: true,
     });
