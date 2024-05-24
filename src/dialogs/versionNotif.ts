@@ -1,4 +1,4 @@
-import { host, scriptInfo } from "../constants";
+import { host, mode, scriptInfo } from "../constants";
 import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils";
 import { BytmDialog, createToggleInput } from "../components";
 import { getFeatures, setFeatures } from "../config";
@@ -47,7 +47,7 @@ async function renderHeader() {
 
   const logoEl = document.createElement("img");
   logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
-  logoEl.src = await getResourceUrl("img-logo");
+  logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   logoEl.alt = "BetterYTM logo";
 
   headerEl.appendChild(logoEl);

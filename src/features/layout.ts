@@ -3,7 +3,7 @@ import { getFeatures } from "../config";
 import { siteEvents } from "../siteEvents";
 import { addSelectorListener } from "../observers";
 import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
-import { scriptInfo } from "../constants";
+import { mode, scriptInfo } from "../constants";
 import { openCfgMenu } from "../menu/menu_old";
 import { createCircularBtn } from "../components";
 import type { ResourceKey } from "../types";
@@ -83,7 +83,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl("img-logo");
+      const iconUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
       const newLogo = document.createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
@@ -127,7 +127,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
-  cfgOptIconElem.src = await getResourceUrl("img-logo");
+  cfgOptIconElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
@@ -158,7 +158,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 
   const cfgOptImgElem = document.createElement("img");
   cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
-  cfgOptImgElem.src = await getResourceUrl("img-logo");
+  cfgOptImgElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
