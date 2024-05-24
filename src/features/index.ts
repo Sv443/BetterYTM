@@ -452,16 +452,16 @@ export const featInfo = {
     default: false,
     textAdornment: adornments.reloadRequired,
   },
-  openAutoLikeChannelsDialog: {
-    type: "button",
-    category: "input",
-    click: () => getAutoLikeChannelsDialog().then(d => d.open()),
-  },
   autoLikeChannelToggleButtons: {
     type: "toggle",
     category: "input",
     default: true,
     textAdornment: adornments.reloadRequired,
+  },
+  openAutoLikeChannelsDialog: {
+    type: "button",
+    category: "input",
+    click: () => getAutoLikeChannelsDialog().then(d => d.open()),
   },
 
   //#region lyrics

@@ -1082,8 +1082,8 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | Property | Description |
 > | :-- | :-- |
 > | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
-> | `maxWidth: number` | Maximum width of the dialog in pixels |
-> | `maxHeight: number` | Maximum height of the dialog in pixels |
+> | `width: number` | Maximum and default width of the dialog in pixels |
+> | `height: number` | Maximum height of the dialog in pixels |
 > | `closeOnBgClick?: boolean` | Whether the dialog should close when the background is clicked - defaults to true |
 > | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
 > | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
