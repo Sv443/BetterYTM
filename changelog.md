@@ -2,12 +2,22 @@
 <div class="split"></div>
 
 ## 2.1.0
+- **Features:**
+  - Auto-like videos and songs of channels where you have enabled this feature
+  - 
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
+  - Added advanced feature to change the startup timeout
 - **Plugin Changes:**
-  - Renamed interface events to be more consistent
   - Added new component `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
     The design matches that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+  - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
+  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+  - Added events
+    - `bytm:featureInitStarted` - emitted when the feature initialization process starts
+    - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
+    - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
+  - Event `bytm:siteEvent:fullscreenToggled` will now only emit once per fullscreen change
 
 <!-- <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
