@@ -22,12 +22,15 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 ### Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
-Before submitting a translation, please check on [this document](./assets/translations/README.md) if the language you want to translate to has already been translated and how many strings are still missing.
+Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.
 
 <br>
 
 #### Adding translations for a new language:
-To submit a translation, please follow these steps:  
+> [!NOTE]
+> 
+> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
@@ -45,6 +48,9 @@ To submit a translation, please follow these steps:
 <br>
 
 #### Editing an existing translation:
+> [!NOTE]
+> 
+> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
@@ -67,8 +73,10 @@ To edit an existing translation, please follow these steps:
 ### Setting up the project for local development:
 #### Requirements:
 1. Have Node.js, npm and Git installed
-2. Clone this repository (if you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead)
-3. Switch to the `develop` branch by running `git checkout develop` in the project root.  
+2. Clone this repository  
+  If you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.  
+  Make sure to clone or fork from the `develop` branch since the `main` branch is only used for releases!
+3. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
   Skip this step if you are using your own forked repository.
 4. Open a terminal in the project root and run `npm i`
 5. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
