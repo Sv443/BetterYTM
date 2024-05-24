@@ -15,13 +15,13 @@ const geniUrlRatelimitTimeframe = 30;
 
 let currentSongTitle = "";
 
-/** Adds a lyrics button to the media controls bar */
-export async function addMediaCtrlLyricsBtn() {
-  addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+/** Adds a lyrics button to the player bar */
+export async function addPlayerBarLyricsBtn() {
+  addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualLyricsBtn });
 }
 
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
-async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
+async function addActualLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector<HTMLDivElement>(".content-info-wrapper > yt-formatted-string");
 
   if(!songTitleElem)
