@@ -262,7 +262,7 @@ export async function initAutoLikeChannels() {
                 listener(likeBtn) {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
-                    showIconToast({
+                    getFeature("autoLikeShowToast") && showIconToast({
                       message: t("auto_liked_video"),
                       icon: "icon-auto_like",
                     });

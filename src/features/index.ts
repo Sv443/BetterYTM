@@ -478,6 +478,15 @@ export const featInfo = {
     enable: noop,
     textAdornment: adornments.advanced,
   },
+  autoLikeShowToast: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    reloadRequired: false,
+    advanced: true,
+    enable: noop,
+    textAdornment: adornments.advanced,
+  },
   autoLikeOpenMgmtDialog: {
     type: "button",
     category: "input",

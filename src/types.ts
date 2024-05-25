@@ -427,6 +427,8 @@ export interface FeatureConfig {
   autoLikePlayerBarToggleBtn: boolean;
   /** How long to wait after a video has started playing to auto-like it */
   autoLikeTimeout: number;
+  /** Whether to show a toast when a video is auto-liked */
+  autoLikeShowToast: boolean;
   /** Opens the auto-like channels management dialog */
   autoLikeOpenMgmtDialog: undefined;
 
