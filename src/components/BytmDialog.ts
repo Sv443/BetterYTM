@@ -155,6 +155,10 @@ export class BytmDialog extends NanoEmitter<{
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
+    // cfg menu compatibility
+    const cfgMenuBgEl = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+    cfgMenuBgEl?.setAttribute("inert", "true");
+
     if(!dialogBg)
       return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
 
@@ -198,6 +202,10 @@ export class BytmDialog extends NanoEmitter<{
     if(openDialogs.length === 0) {
       document.body.classList.remove("bytm-disable-scroll");
       document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+
+      // cfg menu compatibility
+      const cfgMenuBgEl = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
+      cfgMenuBgEl?.removeAttribute("inert");
     }
 
     this.events.emit("close");
