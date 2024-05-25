@@ -5,8 +5,8 @@ interface NanoEmitterSettings {
   publicEmit: boolean;
 }
 
-/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
-export abstract class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
+/** Class that can be extended or instantiated by itself to create an event emitter with helper methods and a strongly typed event map */
+export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
   protected readonly events = createNanoEvents<TEvtMap>();
   protected eventUnsubscribes: Unsubscribe[] = [];
   protected emitterSettings: NanoEmitterSettings;
@@ -43,7 +43,7 @@ export abstract class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
       let unsub: Unsubscribe | undefined;
 
       const onceProxy = ((...args: Parameters<TEvtMap[TKey]>) => {
-        unsub?.();
+        unsub!();
         cb?.(...args);
         resolve(args);
       }) as TEvtMap[TKey];

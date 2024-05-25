@@ -135,14 +135,20 @@ async function restoreSongTime() {
   }
 }
 
+let lastSongTime = -1;
+
 /** Only call once as this calls itself after a timeout! - Updates the currently playing song's entry in GM storage */
 async function remSongUpdateEntry() {
   if(location.pathname.startsWith("/watch")) {
+    const songTime = await getVideoTime() ?? 0;
+
+    if(songTime === lastSongTime)
+      return;
+    lastSongTime = songTime;
+
     const watchID = getWatchId();
     if(!watchID)
       return;
-
-    const songTime = await getVideoTime() ?? 0;
 
     const paused = document.querySelector<HTMLVideoElement>(getVideoSelector())?.paused ?? false;
 
