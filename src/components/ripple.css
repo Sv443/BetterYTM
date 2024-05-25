@@ -1,0 +1,30 @@
+:root html body .bytm-ripple {
+  position: relative;
+  width: var(--bytm-ripple-width, 100%);
+  height: var(--bytm-ripple-height, 100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bytm-ripple-area {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: bytm-scale-ripple 0.25s ease-in;
+}
+
+@keyframes bytm-scale-ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
