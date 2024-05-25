@@ -394,7 +394,7 @@ function registerDevMenuCommands() {
         listenersAmt += v.length;
         lines.push(`    [${v.length}] ${k}`);
         v.forEach(({ all, continuous }, i) => {
-          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}${all ? ", multiple" : ""}`);
         });
       });
     }
