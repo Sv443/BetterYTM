@@ -133,13 +133,12 @@ async function onDomLoad() {
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
 
   try {
-    //#region (ytm) welcome dlg
+    //#region welcome dlg
 
     if(typeof await GM.getValue("bytm-installed") !== "string") {
       // open welcome menu with language selector
       const dlg = await getWelcomeDialog();
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
-      await dlg.mount();
       info("Showing welcome menu");
       await dlg.open();
     }
