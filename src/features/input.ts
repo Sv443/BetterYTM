@@ -245,6 +245,8 @@ export async function initAutoLikeChannels() {
       let timeout: NodeJS.Timeout;
       siteEvents.on("watchIdChanged", () => {
         timeout && clearTimeout(timeout);
+        if(!location.pathname.startsWith("/watch"))
+          return;
         timeout = setTimeout(() => {
           addSelectorListener<HTMLAnchorElement, "yt">("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
             listener(chanElem) {

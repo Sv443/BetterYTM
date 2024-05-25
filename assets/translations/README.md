@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 237 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `214/237` (90.3%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `237/237` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `214/237` (90.3%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `214/237` (90.3%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `214/237` (90.3%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `214/237` (90.3%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `214/237` (90.3%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `214/237` (90.3%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 240 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `214/240` (89.2%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `240/240` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `214/240` (89.2%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `214/240` (89.2%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `214/240` (89.2%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `214/240` (89.2%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `214/240` (89.2%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `214/240` (89.2%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -65,6 +65,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -75,7 +78,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -95,6 +98,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -105,7 +111,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -125,6 +131,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -135,7 +144,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -155,6 +164,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -165,7 +177,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -185,6 +197,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -195,7 +210,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -215,6 +230,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -225,7 +243,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 23 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 26 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -245,6 +263,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_video` | `Auto-liked the video` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
+| `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
+| `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
