@@ -3,16 +3,16 @@ import { BytmDialog, createCircularBtn, createToggleInput } from "../components"
 import { autoLikeStore } from "../features";
 import { debounce } from "@sv443-network/userutils";
 
-let autoLikeChannelsDialog: BytmDialog | null = null;
+let autoLikeDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the import dialog */
-export async function getAutoLikeChannelsDialog() {
-  if(!autoLikeChannelsDialog) {
-    await initAutoLikeChannelsStore();
-    autoLikeChannelsDialog = new BytmDialog({
+export async function getAutoLikeDialog() {
+  if(!autoLikeDialog) {
+    await initAutoLikeStore();
+    autoLikeDialog = new BytmDialog({
       id: "auto-like-channels",
       width: 600,
-      height: 800,
+      height: 1000,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
@@ -22,13 +22,13 @@ export async function getAutoLikeChannelsDialog() {
       renderBody,
     });
   }
-  return autoLikeChannelsDialog;
+  return autoLikeDialog;
 }
 
 let isLoaded = false;
 
 /** Inits autoLikeChannels DataStore instance */
-export function initAutoLikeChannelsStore() {
+export function initAutoLikeStore() {
   if(isLoaded)
     return;
   isLoaded = true;
@@ -112,12 +112,12 @@ async function renderBody() {
         }
     );
 
-    const unsub = autoLikeChannelsDialog?.on("clear", async () => {
+    const unsub = autoLikeDialog?.on("clear", async () => {
       unsub?.();
-      await autoLikeChannelsDialog?.open();
+      await autoLikeDialog?.open();
     });
 
-    autoLikeChannelsDialog?.unmount();
+    autoLikeDialog?.unmount();
   });
 
   contElem.appendChild(addNewWrapper);
