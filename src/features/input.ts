@@ -325,6 +325,8 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
     toggleInitialState: chan?.enabled ?? false,
     async onToggle(toggled, evt) {
       try {
+        await autoLikeStore.loadData();
+
         if(evt.shiftKey) {
           buttonEl.classList.toggle("toggled");
           getAutoLikeChannelsDialog().then((dlg) => dlg.open());

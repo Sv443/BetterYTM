@@ -68,9 +68,9 @@ async function renderBody() {
 
   addNewWrapper.appendChild(addNewEl);
 
-  await autoLikeStore.loadData();
-
   onInteraction(addNewEl, async () => {
+    await autoLikeStore.loadData();
+
     const idPrompt = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
     if(!idPrompt)
       return;
