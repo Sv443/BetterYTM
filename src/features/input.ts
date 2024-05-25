@@ -258,18 +258,18 @@ export async function initAutoLikeChannels() {
               if(!likeChan || !likeChan.enabled)
                 return;
 
-              const likeBtn = document.querySelector<HTMLButtonElement>("#actions ytd-menu-renderer like-button-view-model button");
-              if(!likeBtn)
-                return error("Couldn't auto-like channel because the like button couldn't be found");
-
-              if(likeBtn.getAttribute("aria-pressed") !== "true") {
-                likeBtn.click();
-                showIconToast({
-                  message: t("auto_liked_video"),
-                  icon: "icon-auto_like",
-                });
-                log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
-              }
+              addSelectorListener<0, "yt">("watchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+                listener(likeBtn) {
+                  if(likeBtn.getAttribute("aria-pressed") !== "true") {
+                    likeBtn.click();
+                    showIconToast({
+                      message: t("auto_liked_video"),
+                      icon: "icon-auto_like",
+                    });
+                    log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
+                  }
+                }
+              });
             }
           });
         }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
