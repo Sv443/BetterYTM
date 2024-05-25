@@ -476,7 +476,7 @@ export const featInfo = {
     advanced: true,
     reloadRequired: false,
     enable: noop,
-    textAdornment: adornments.reloadRequired,
+    textAdornment: adornments.advanced,
   },
   autoLikeOpenMgmtDialog: {
     type: "button",
