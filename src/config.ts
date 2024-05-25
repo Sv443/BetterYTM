@@ -63,6 +63,8 @@ export const migrations: DataMigrationsDict = {
     "autoLikeChannels", "autoLikeChannelToggleBtn",
     "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
     "autoLikeShowToast", "autoLikeOpenMgmtDialog",
+    // reset existing:
+    "rememberSongTimeSites",
   ]),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 6 -> 7 (v2.x)

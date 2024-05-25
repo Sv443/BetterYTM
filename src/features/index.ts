@@ -353,7 +353,7 @@ export const featInfo = {
     type: "select",
     category: "behavior",
     options: options.siteSelection,
-    default: "ytm",
+    default: "all",
     textAdornment: adornments.reloadRequired,
   },
   rememberSongTimeDuration: {
