@@ -588,15 +588,49 @@ hr {
   white-space: nowrap;
 }
 
-#bytm-toast {
+:root html body .bytm-ripple {
+  position: relative;
+  width: var(--bytm-ripple-width, 100%);
+  height: var(--bytm-ripple-height, 100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bytm-ripple-area {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: bytm-scale-ripple 0.25s ease-in;
+}
+
+@keyframes bytm-scale-ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+:root {
   --bytm-toast-bg-color: #323232;
   --bytm-toast-text-color: #fff;
-  --bytm-toast-offset: 25px;
-  --bytm-toast-transform-distance: 100px;
+  --bytm-toast-offset-ver: 80px;
+  --bytm-toast-offset-hor: 25px;
   --bytm-toast-transition-time: 0.5s;
+  --bytm-toast-transform-distance: 175px;
+}
 
+#bytm-toast {
   position: fixed;
-  z-index: 100;
+  z-index: 1042069;
   opacity: 0.000001;
   pointer-events: none;
   padding: 10px 20px;
@@ -615,26 +649,26 @@ hr {
 }
 
 #bytm-toast.pos-tl {
-  top: var(--bytm-toast-offset);
-  left: var(--bytm-toast-offset);
+  top: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
   transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
 }
 
 #bytm-toast.pos-tr {
-  top: var(--bytm-toast-offset);
-  right: var(--bytm-toast-offset);
+  top: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
   transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
 }
 
 #bytm-toast.pos-br {
-  bottom: var(--bytm-toast-offset);
-  right: var(--bytm-toast-offset);
+  bottom: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
   transform: translate(0, var(--bytm-toast-transform-distance));
 }
 
 #bytm-toast.pos-bl {
-  bottom: var(--bytm-toast-offset);
-  left: var(--bytm-toast-offset);
+  bottom: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
   transform: translate(0, var(--bytm-toast-transform-distance));
 }
 
@@ -1576,6 +1610,15 @@ ytmusic-player#player #bezel {
   --bytm-auto-like-btn-color: #bf87f0;
 }
 
+#bytm-auto-like-channels-list {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .bytm-auto-like-channel-row-left-cont {
   display: flex;
   align-items: center;
@@ -1597,10 +1640,9 @@ ytmusic-player#player #bezel {
   margin-bottom: 15px;
 }
 
-#bytm-auto-like-channels-add-new {
-  padding: 4px 15px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+#bytm-auto-like-channels-add-new-wrapper {
+  margin: 15px;
+  margin-top: 5px;
 }
 
 .bytm-auto-like-channel-row:hover {
@@ -1637,6 +1679,11 @@ ytmusic-player#player #bezel {
   background-color: transparent;
   transition: border-color 0.2s ease;
   animation: none;
+}
+
+.bytm-auto-like-toggle-btn.left-margin {
+  margin: 0;
+  margin-left: 8px;
 }
 
 .bytm-auto-like-toggle-btn:active {
