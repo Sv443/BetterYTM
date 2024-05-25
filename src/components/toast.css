@@ -1,12 +1,15 @@
-#bytm-toast {
+:root {
   --bytm-toast-bg-color: #323232;
   --bytm-toast-text-color: #fff;
-  --bytm-toast-offset: 25px;
-  --bytm-toast-transform-distance: 100px;
+  --bytm-toast-offset-ver: 80px;
+  --bytm-toast-offset-hor: 25px;
   --bytm-toast-transition-time: 0.5s;
+  --bytm-toast-transform-distance: 175px;
+}
 
+#bytm-toast {
   position: fixed;
-  z-index: 100;
+  z-index: 1042069;
   opacity: 0.000001;
   pointer-events: none;
   padding: 10px 20px;
@@ -25,26 +28,26 @@
 }
 
 #bytm-toast.pos-tl {
-  top: var(--bytm-toast-offset);
-  left: var(--bytm-toast-offset);
+  top: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
   transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
 }
 
 #bytm-toast.pos-tr {
-  top: var(--bytm-toast-offset);
-  right: var(--bytm-toast-offset);
+  top: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
   transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
 }
 
 #bytm-toast.pos-br {
-  bottom: var(--bytm-toast-offset);
-  right: var(--bytm-toast-offset);
+  bottom: var(--bytm-toast-offset-ver);
+  right: var(--bytm-toast-offset-hor);
   transform: translate(0, var(--bytm-toast-transform-distance));
 }
 
 #bytm-toast.pos-bl {
-  bottom: var(--bytm-toast-offset);
-  left: var(--bytm-toast-offset);
+  bottom: var(--bytm-toast-offset-ver);
+  left: var(--bytm-toast-offset-hor);
   transform: translate(0, var(--bytm-toast-transform-distance));
 }
 
