@@ -5,7 +5,7 @@ import { getFeatures } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { getAutoLikeChannelsDialog } from "../dialogs";
+import { getAutoLikeDialog } from "../dialogs";
 
 export * from "./layout";
 export * from "./behavior";
@@ -481,7 +481,7 @@ export const featInfo = {
   autoLikeOpenMgmtDialog: {
     type: "button",
     category: "input",
-    click: () => getAutoLikeChannelsDialog().then(d => d.open()),
+    click: () => getAutoLikeDialog().then(d => d.open()),
   },
 
   //#region lyrics

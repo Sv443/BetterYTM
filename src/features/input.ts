@@ -9,7 +9,7 @@ import { getFeature } from "../config";
 import { compressionFormat } from "../constants";
 import { addSelectorListener } from "../observers";
 import { createLongBtn, showIconToast } from "../components";
-import { getAutoLikeChannelsDialog, initAutoLikeChannelsStore } from "../dialogs";
+import { getAutoLikeDialog, initAutoLikeStore } from "../dialogs";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -181,7 +181,7 @@ export const autoLikeStore = new DataStore<{
 export async function initAutoLikeChannels() {
   try {
     canCompress = await compressionSupported();
-    await initAutoLikeChannelsStore();
+    await initAutoLikeStore();
     if(getDomain() === "ytm") {
       let timeout: NodeJS.Timeout;
       siteEvents.on("songTitleChanged", () => {
@@ -329,7 +329,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
 
         if(evt.shiftKey) {
           buttonEl.classList.toggle("toggled");
-          getAutoLikeChannelsDialog().then((dlg) => dlg.open());
+          getAutoLikeDialog().then((dlg) => dlg.open());
           return;
         }
 
