@@ -2,7 +2,7 @@ import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443
 import { featInfo } from "./features/index";
 import { compressionSupported, error, info, log } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
-import { compressionFormat } from "./constants";
+import { compressionFormat, mode } from "./constants";
 import { emitInterface } from "./interface";
 import type { FeatureConfig, FeatureKey } from "./types";
 
@@ -100,6 +100,11 @@ export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgDataStore.id}`, NaN));
   let data = await cfgDataStore.loadData();
+
+  // since the config changes so much in development keys need to be fixed in this special way
+  if(mode === "development")
+    data = fixMissingCfgKeys(data);
+
   log(`Initialized feature config DataStore (formatVersion = ${cfgDataStore.formatVersion})`);
   if(isNaN(oldFmtVer))
     info("  !- Config data was initialized with default values");
