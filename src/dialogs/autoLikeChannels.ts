@@ -155,6 +155,7 @@ async function renderBody() {
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
     nameElem.ariaLabel = nameElem.textContent = name;
+    // TODO:FIXME: @-channel links are not working
     nameElem.href = `https://${getDomain() === "yt" ? "" : "music."}youtube.com/channel/${id}`;
     nameElem.target = "_blank";
     nameElem.rel = "noopener noreferrer";
