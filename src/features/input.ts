@@ -324,39 +324,44 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
     toggle: true,
     toggleInitialState: chan?.enabled ?? false,
     async onToggle(toggled, evt) {
-      if(evt.shiftKey) {
-        buttonEl.classList.toggle("toggled");
-        getAutoLikeChannelsDialog().then((dlg) => dlg.open());
-        return;
-      }
+      try {
+        if(evt.shiftKey) {
+          buttonEl.classList.toggle("toggled");
+          getAutoLikeChannelsDialog().then((dlg) => dlg.open());
+          return;
+        }
 
-      buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
+        buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
 
-      const chanId = buttonEl.dataset.channelId ?? channelId;
+        const chanId = buttonEl.dataset.channelId ?? channelId;
 
-      const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-      const imgHtml = await resourceToHTMLString(`icon-auto_like${toggled ? "_enabled" : ""}`);
-      if(imgEl && imgHtml)
-        imgEl.innerHTML = imgHtml;
+        const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
+        const imgHtml = await resourceToHTMLString(`icon-auto_like${toggled ? "_enabled" : ""}`);
+        if(imgEl && imgHtml)
+          imgEl.innerHTML = imgHtml;
 
-      showIconToast({
-        message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
-        icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
-      });
-
-      if(autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
-        await autoLikeStore.setData({
-          channels: [
-            ...autoLikeStore.getData().channels,
-            { id: chanId, name: channelName ?? "", enabled: toggled },
-          ],
+        if(autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+          await autoLikeStore.setData({
+            channels: [
+              ...autoLikeStore.getData().channels,
+              { id: chanId, name: channelName ?? "", enabled: toggled },
+            ],
+          });
+        }
+        else {
+          await autoLikeStore.setData({
+            channels: autoLikeStore.getData().channels
+              .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
+          });
+        }
+        showIconToast({
+          message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+          icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
         });
+        log(`Toggled auto-like for channel '${channelName}' (ID: '${chanId}') to ${toggled ? "enabled" : "disabled"}`);
       }
-      else {
-        await autoLikeStore.setData({
-          channels: autoLikeStore.getData().channels
-            .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
-        });
+      catch(err) {
+        error("Error while toggling auto-like channel:", err);
       }
     }
   });
