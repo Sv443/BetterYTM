@@ -1,6 +1,6 @@
 import { getDomain, onInteraction, t } from "../utils";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
-import { autoLikeStore } from "../features";
+import { autoLikeStore, initAutoLikeStore } from "../features";
 import { debounce } from "@sv443-network/userutils";
 
 let autoLikeDialog: BytmDialog | null = null;
@@ -23,16 +23,6 @@ export async function getAutoLikeDialog() {
     });
   }
   return autoLikeDialog;
-}
-
-let isLoaded = false;
-
-/** Inits autoLikeChannels DataStore instance */
-export function initAutoLikeStore() {
-  if(isLoaded)
-    return;
-  isLoaded = true;
-  return autoLikeStore.loadData();
 }
 
 async function renderHeader() {

@@ -9,7 +9,7 @@ import { getFeature } from "../config";
 import { compressionFormat } from "../constants";
 import { addSelectorListener } from "../observers";
 import { createLongBtn, showIconToast } from "../components";
-import { getAutoLikeDialog, initAutoLikeStore } from "../dialogs";
+import { getAutoLikeDialog } from "../dialogs";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -178,7 +178,18 @@ export const autoLikeStore = new DataStore<{
   // migrations: {},
 });
 
-export async function initAutoLikeChannels() {
+let autoLikeStoreLoaded = false;
+
+/** Inits the auto-like DataStore instance */
+export function initAutoLikeStore() {
+  if(autoLikeStoreLoaded)
+    return;
+  autoLikeStoreLoaded = true;
+  return autoLikeStore.loadData();
+}
+
+/** Initializes the auto-like feature */
+export async function initAutoLike() {
   try {
     canCompress = await compressionSupported();
     await initAutoLikeStore();
