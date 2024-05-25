@@ -18,7 +18,7 @@ import {
   // behavior
   initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts, initRememberSongTime, disableDarkReader,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip, initAutoLikeChannels,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip, initAutoLike,
   // lyrics
   addPlayerBarLyricsBtn, initLyricsCache,
   // menu
@@ -229,7 +229,7 @@ async function onDomLoad() {
       ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
 
       if(getFeatures().autoLikeChannels)
-        ftInit.push(["autoLikeChannels", initAutoLikeChannels()]);
+        ftInit.push(["autoLikeChannels", initAutoLike()]);
     }
 
     emitInterface("bytm:featureInitStarted");
