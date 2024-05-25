@@ -2,6 +2,15 @@
   --bytm-auto-like-btn-color: #bf87f0;
 }
 
+#bytm-auto-like-channels-list {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .bytm-auto-like-channel-row-left-cont {
   display: flex;
   align-items: center;
@@ -23,10 +32,9 @@
   margin-bottom: 15px;
 }
 
-#bytm-auto-like-channels-add-new {
-  padding: 4px 15px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+#bytm-auto-like-channels-add-new-wrapper {
+  margin: 15px;
+  margin-top: 5px;
 }
 
 .bytm-auto-like-channel-row:hover {
@@ -63,6 +71,11 @@
   background-color: transparent;
   transition: border-color 0.2s ease;
   animation: none;
+}
+
+.bytm-auto-like-toggle-btn.left-margin {
+  margin: 0;
+  margin-left: 8px;
 }
 
 .bytm-auto-like-toggle-btn:active {

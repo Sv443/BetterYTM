@@ -5,7 +5,7 @@ import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
 import { siteEvents } from "../siteEvents";
 import { featInfo } from "./index";
-import { getFeatures } from "../config";
+import { getFeature } from "../config";
 import { compressionFormat } from "../constants";
 import { addSelectorListener } from "../observers";
 import { createLongBtn, showIconToast } from "../components";
@@ -18,7 +18,7 @@ export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"
 
 export async function initArrowKeySkip() {
   document.addEventListener("keydown", (evt) => {
-    if(!getFeatures().arrowKeySupport)
+    if(!getFeature("arrowKeySupport"))
       return;
 
     if(!["ArrowLeft", "ArrowRight"].includes(evt.code))
@@ -36,7 +36,7 @@ export async function initArrowKeySkip() {
     evt.preventDefault();
     evt.stopImmediatePropagation();
 
-    let skipBy = getFeatures().arrowKeySkipBy ?? featInfo.arrowKeySkipBy.default;
+    let skipBy = getFeature("arrowKeySkipBy") ?? featInfo.arrowKeySkipBy.default;
     if(evt.code === "ArrowLeft")
       skipBy *= -1;
 
@@ -59,14 +59,14 @@ let siteSwitchEnabled = true;
 /** Initializes the site switch feature */
 export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
-    if(!getFeatures().switchBetweenSites)
+    if(!getFeature("switchBetweenSites"))
       return;
-    const hk = getFeatures().switchSitesHotkey;
+    const hk = getFeature("switchSitesHotkey");
     if(siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
   });
   siteEvents.on("hotkeyInputActive", (state) => {
-    if(!getFeatures().switchBetweenSites)
+    if(!getFeature("switchBetweenSites"))
       return;
     siteSwitchEnabled = !state;
   });
@@ -126,7 +126,7 @@ const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
   document.addEventListener("keydown", (e) => {
-    if(!getFeatures().numKeysSkipToTime)
+    if(!getFeature("numKeysSkipToTime"))
       return;
     if(!e.key.trim().match(/^[0-9]$/))
       return;
@@ -157,10 +157,14 @@ export async function initNumKeysSkip() {
 
 let canCompress = false;
 
-export const autoLikeChannelsStore = new DataStore<{
+/** DataStore instance for all auto-liked channels */
+export const autoLikeStore = new DataStore<{
   channels: {
+    /** 24-character channel ID or user ID without the @ */
     id: string;
+    /** Channel name (for display purposes only) */
     name: string;
+    /** Whether the channel should be auto-liked */
     enabled: boolean;
   }[];
 }>({
@@ -180,7 +184,6 @@ export async function initAutoLikeChannels() {
     await initAutoLikeChannelsStore();
     if(getDomain() === "ytm") {
       let timeout: NodeJS.Timeout;
-      // TODO:FIXME: needs actual fix instead of timeout
       siteEvents.on("songTitleChanged", () => {
         timeout && clearTimeout(timeout);
         timeout = setTimeout(() => {
@@ -188,7 +191,7 @@ export async function initAutoLikeChannels() {
           const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
           const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string") as string[];
 
-          const likeChan = autoLikeChannelsStore.getData().channels.find((ch) => channelIds.includes(ch.id));
+          const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
 
           if(!likeChan || !likeChan.enabled)
             return;
@@ -206,38 +209,111 @@ export async function initAutoLikeChannels() {
             likeBtn.click();
             log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
           }
-        }, 5_000);
+        }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
       });
 
       siteEvents.on("pathChanged", (path) => {
-        if(path.match(/\/channel\/.+/)) {
+        if(getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
           const chanId = path.split("/").pop();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
 
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
-          addSelectorListener("browseResponse", "ytmusic-browse-response #header .actions .buttons", {
-            listener(buttonsCont) {
-              const lastBtn = buttonsCont.querySelector<HTMLElement>("ytmusic-subscribe-button-renderer");
-              const chanName = document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
-              lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
+          addSelectorListener("browseResponse", "ytmusic-browse-response #header.ytmusic-browse-response", {
+            listener(headerCont) {
+              const buttonsCont = headerCont.querySelector<HTMLElement>(".buttons");
+              if(buttonsCont) {
+                const lastBtn = buttonsCont.querySelector<HTMLElement>("ytmusic-subscribe-button-renderer");
+                const chanName = document.querySelector<HTMLElement>("ytmusic-immersive-header-renderer .content-container yt-formatted-string[role=\"heading\"]")?.textContent ?? null;
+                lastBtn && addAutoLikeToggleBtn(lastBtn, chanId, chanName);
+              }
+              else {
+                // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
+                // (this is only the case on YTM, on YT the subscribe button exists and works perfectly fine)
+
+                const shareBtnEl = headerCont.querySelector<HTMLElement>("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
+                const chanName = headerCont.querySelector<HTMLElement>("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
+                shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
+              }
             }
           });
         }
       });
     }
     else if(getDomain() === "yt") {
-      // TODO:
+      let timeout: NodeJS.Timeout;
+      siteEvents.on("watchIdChanged", () => {
+        timeout && clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          addSelectorListener<HTMLAnchorElement, "yt">("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+            listener(chanElem) {
+              let chanId = chanElem.href.split("/").pop();
+              if(chanId?.startsWith("@"))
+                chanId = chanId.slice(1);
+
+              const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanId);
+              if(!likeChan || !likeChan.enabled)
+                return;
+
+              const likeBtn = document.querySelector<HTMLButtonElement>("#actions ytd-menu-renderer like-button-view-model button");
+              if(!likeBtn)
+                return error("Couldn't auto-like channel because the like button couldn't be found");
+
+              if(likeBtn.getAttribute("aria-pressed") !== "true") {
+                likeBtn.click();
+                showIconToast({
+                  message: t("auto_liked_video"),
+                  icon: "icon-auto_like",
+                });
+                log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
+              }
+            }
+          });
+        }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
+      });
+
+      siteEvents.on("pathChanged", (path) => {
+        if(path.match(/(\/?@|\/channel\/).+/)) {
+          const chanId = path.split("/").pop()?.replace(/@/g, "");
+          if(!chanId)
+            return error("Couldn't extract channel ID from URL");
+
+          document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
+
+          addSelectorListener<0, "yt">("ytChannelHeader", "#channel-header-container", {
+            listener(headerCont) {
+              const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container");
+              if(!titleCont)
+                return;
+
+              const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string")?.textContent ?? null;
+
+              const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons");
+              if(buttonsCont) {
+                addSelectorListener<0, "yt">("ytChannelHeader", "#channel-header-container #other-buttons", {
+                  listener(otherBtns) {
+                    addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]);
+                  }
+                });
+              }
+              else if(titleCont)
+                addAutoLikeToggleBtn(titleCont, chanId, chanName);
+            }
+          });
+        }
+      });
     }
+
+    log("Initialized auto-like channels feature");
   }
   catch(err) {
     error("Error while auto-liking channel:", err);
   }
 }
 
-async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null) {
-  const chan = autoLikeChannelsStore.getData().channels.find((ch) => ch.id === channelId);
+async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
+  const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
   const buttonEl = await createLongBtn({
     resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
@@ -261,28 +337,28 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
       if(imgEl && imgHtml)
         imgEl.innerHTML = imgHtml;
 
-      showIconToast(
-        toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
-        `icon-auto_like${toggled ? "_enabled" : ""}`,
-      );
+      showIconToast({
+        message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+        icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
+      });
 
-      if(autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
-        await autoLikeChannelsStore.setData({
+      if(autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
+        await autoLikeStore.setData({
           channels: [
-            ...autoLikeChannelsStore.getData().channels,
+            ...autoLikeStore.getData().channels,
             { id: chanId, name: channelName ?? "", enabled: toggled },
           ],
         });
       }
       else {
-        await autoLikeChannelsStore.setData({
-          channels: autoLikeChannelsStore.getData().channels
+        await autoLikeStore.setData({
+          channels: autoLikeStore.getData().channels
             .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
         });
       }
     }
   });
-  buttonEl.classList.add("bytm-auto-like-toggle-btn");
+  buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses ?? [])]);
   buttonEl.dataset.channelId = channelId;
 
   siblingEl.insertAdjacentElement("afterend", buttonEl);

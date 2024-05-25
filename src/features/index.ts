@@ -449,16 +449,36 @@ export const featInfo = {
   autoLikeChannels: {
     type: "toggle",
     category: "input",
-    default: false,
-    textAdornment: adornments.reloadRequired,
-  },
-  autoLikeChannelToggleButtons: {
-    type: "toggle",
-    category: "input",
     default: true,
     textAdornment: adornments.reloadRequired,
   },
-  openAutoLikeChannelsDialog: {
+  autoLikeChannelToggleBtn: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  autoLikePlayerBarToggleBtn: {
+    type: "toggle",
+    category: "input",
+    default: false,
+    textAdornment: adornments.reloadRequired,
+  },
+  autoLikeTimeout: {
+    type: "slider",
+    category: "input",
+    min: 3,
+    max: 30,
+    step: 0.5,
+    default: 5,
+    unit: "s",
+    advanced: true,
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.reloadRequired,
+  },
+  autoLikeOpenMgmtDialog: {
     type: "button",
     category: "input",
     click: () => getAutoLikeChannelsDialog().then(d => d.open()),

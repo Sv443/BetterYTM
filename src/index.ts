@@ -115,6 +115,8 @@ async function onDomLoad() {
   const features = getFeatures();
   const ftInit = [] as [string, Promise<void>][];
 
+  document.body.classList.add(`bytm-dom-${domain}`);
+
   try {
     initObservers();
 
@@ -132,10 +134,6 @@ async function onDomLoad() {
 
   try {
     if(domain === "ytm") {
-      //#region (ytm) misc
-
-      ftInit.push(["initSiteEvents", initSiteEvents()]);
-
       //#region (ytm) welcome dlg
 
       if(typeof await GM.getValue("bytm-installed") !== "string") {
@@ -215,6 +213,10 @@ async function onDomLoad() {
     }
 
     if(["ytm", "yt"].includes(domain)) {
+      //#region general
+
+      ftInit.push(["initSiteEvents", initSiteEvents()]);
+
       //#region (ytm+yt) layout
 
       if(features.disableDarkReaderSites !== "none")

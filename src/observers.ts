@@ -9,28 +9,31 @@ export type ObserverName = SharedObserverName | YTMObserverName | YTObserverName
 /** Observer names available to each site */
 export type ObserverNameByDomain<TDomain extends Domain> = SharedObserverName | (TDomain extends "ytm" ? YTMObserverName : YTObserverName);
 
-// both YTM and YT
+// Shared between YTM and YT
 export type SharedObserverName =
-  | "body";
+  | "body"; // the entire <body> element
 
 // YTM only
 export type YTMObserverName =
-  | "browseResponse"
-  | "navBar"
-  | "mainPanel"
-  | "sideBar"
-  | "sideBarMini"
-  | "sidePanel"
-  | "playerBar"
-  | "playerBarInfo"
-  | "playerBarMiddleButtons"
-  | "playerBarRightControls"
-  | "popupContainer";
+  | "browseResponse"         // the /channel/UC... page
+  | "navBar"                 // the navigation / title bar at the top of the page
+  | "mainPanel"              // the main content panel - includes things like the video element
+  | "sideBar"                // the sidebar on the left side of the page
+  | "sideBarMini"            // the minimized sidebar on the left side of the page
+  | "sidePanel"              // the side panel on the right side of the /watch page
+  | "playerBar"              // media controls bar at the bottom of the page
+  | "playerBarInfo"          // song title, artist, album, etc. inside the player bar
+  | "playerBarMiddleButtons" // the buttons inside the player bar (like, dislike, lyrics, etc.)
+  | "playerBarRightControls" // the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+  | "popupContainer";        // the container for popups (e.g. the queue popup)
 
 // YT only
 export type YTObserverName =
-  // | "ytMasthead" // the title bar
-  | "ytGuide"; // the left sidebar menu
+  | "ytGuide"         // the left sidebar menu
+  | "ytdBrowse"       // channel pages for example
+  | "ytChannelHeader" // header of a channel page
+  | "watchFlexy"      // the main content of the /watch page
+  | "watchMetadata";  // the metadata section of the /watch page
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
@@ -212,6 +215,54 @@ export function initObservers() {
 
       globservers.body.addListener(ytGuideSelector, {
         listener: () => globservers.ytGuide.enable(),
+      });
+
+      //#region ytdBrowse
+      // -> channel pages for example
+      const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
+      globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(ytdBrowseSelector, {
+        listener: () => globservers.ytdBrowse.enable(),
+      });
+
+      //#region ytChannelHeader
+      // -> header of a channel page
+      const ytChannelHeaderSelector = "#header tp-yt-app-header #channel-header";
+      globservers.ytChannelHeader = new SelectorObserver(ytChannelHeaderSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.ytdBrowse.addListener(ytChannelHeaderSelector, {
+        listener: () => globservers.ytChannelHeader.enable(),
+      });
+
+      //#region watchFlexy
+      // -> the main content of the /watch page
+      const watchFlexySelector = "ytd-app ytd-watch-flexy";
+      globservers.watchFlexy = new SelectorObserver(watchFlexySelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(watchFlexySelector, {
+        listener: () => globservers.watchFlexy.enable(),
+      });
+
+      //#region watchMetadata
+      // -> the metadata section of the /watch page (title, channel, views, description, buttons, etc. but not comments)
+      const watchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
+      globservers.watchMetadata = new SelectorObserver(watchMetadataSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.watchFlexy.addListener(watchMetadataSelector, {
+        listener: () => globservers.watchMetadata.enable(),
       });
 
       // //#region ytMasthead

@@ -1,6 +1,6 @@
 import { getDomain, onInteraction, t } from "../utils";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
-import { autoLikeChannelsStore } from "../features";
+import { autoLikeStore } from "../features";
 import { debounce } from "@sv443-network/userutils";
 
 let autoLikeChannelsDialog: BytmDialog | null = null;
@@ -32,7 +32,7 @@ export function initAutoLikeChannelsStore() {
   if(isLoaded)
     return;
   isLoaded = true;
-  return autoLikeChannelsStore.loadData();
+  return autoLikeStore.loadData();
 }
 
 async function renderHeader() {
@@ -56,6 +56,7 @@ async function renderBody() {
   contElem.appendChild(descriptionEl);
 
   const addNewWrapper = document.createElement("div");
+  addNewWrapper.id = "bytm-auto-like-channels-add-new-wrapper";
 
   const addNewEl = document.createElement("span");
   addNewEl.id = "bytm-auto-like-channels-add-new";
@@ -68,16 +69,24 @@ async function renderBody() {
   addNewWrapper.appendChild(addNewEl);
 
   onInteraction(addNewEl, async () => {
-    const id = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
-    if(!id)
+    const idPrompt = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
+    if(!idPrompt)
       return;
 
-    if(!id.match(/^[a-zA-Z0-9_-]{20,}$/))
+    const isId = idPrompt.match(/^@?.+$/);
+    const isUrl = idPrompt.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
+
+    if(isId?.[0]?.startsWith("@"))
+      isId[0] = isId[0].slice(1);
+
+    const id = (isId?.[0] || isUrl?.[1] || "").trim();
+
+    if(!id || id.length <= 0)
       return alert(t("add_auto_like_channel_invalid_id"));
 
     let overwriteName = false;
 
-    if(autoLikeChannelsStore.getData().channels.some((ch) => ch.id === id)) {
+    if(autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
       if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
         return;
       overwriteName = true;
@@ -87,15 +96,15 @@ async function renderBody() {
     if(!name || name.length === 0)
       return;
 
-    await autoLikeChannelsStore.setData(
+    await autoLikeStore.setData(
       overwriteName
         ? {
-          channels: autoLikeChannelsStore.getData().channels
+          channels: autoLikeStore.getData().channels
             .map((ch) => ch.id === id ? { ...ch, name } : ch),
         }
         : {
           channels: [
-            ...autoLikeChannelsStore.getData().channels,
+            ...autoLikeStore.getData().channels,
             { id, name, enabled: true },
           ],
         }
@@ -114,20 +123,20 @@ async function renderBody() {
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
 
-  const removeChannel = (id: string) => autoLikeChannelsStore.setData({
-    channels: autoLikeChannelsStore.getData().channels.filter((ch) => ch.id !== id),
+  const removeChannel = (id: string) => autoLikeStore.setData({
+    channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== id),
   });
 
   const setChannelEnabled = (id: string, enabled: boolean) => debounce(
-    () => autoLikeChannelsStore.setData({
-      channels: autoLikeChannelsStore.getData().channels
+    () => autoLikeStore.setData({
+      channels: autoLikeStore.getData().channels
         .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
     }),
     250,
     "rising"
   );
 
-  const sortedChannels = autoLikeChannelsStore
+  const sortedChannels = autoLikeStore
     .getData().channels
     .sort((a, b) => a.name.localeCompare(b.name));
 

@@ -10,7 +10,7 @@ import type { FeatureConfig, FeatureKey } from "./types";
 export const formatVersion = 5;
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
-  // 1 -> 2 (v1.0)
+  // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
@@ -60,8 +60,8 @@ export const migrations: DataMigrationsDict = {
   ]),
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "autoLikeChannels", "openAutoLikeChannelsDialog",
-    "autoLikeChannelToggleButtons",
+    "autoLikeChannels", "autoLikeChannelToggleBtn", "autoLikePlayerBarToggleBtn",
+    "autoLikeTimeout", "autoLikeOpenMgmtDialog",
   ]),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 6 -> 7 (v2.x)

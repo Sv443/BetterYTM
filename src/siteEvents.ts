@@ -1,5 +1,5 @@
 import { createNanoEvents } from "nanoevents";
-import { error, info } from "./utils";
+import { error, getDomain, info } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
@@ -85,80 +85,82 @@ let lastFullscreen: boolean;
 /** Creates MutationObservers that check if parts of the site have changed, then emit an event on the `siteEvents` instance. */
 export async function initSiteEvents() {
   try {
-    //#region queue
-    // the queue container always exists so it doesn't need an extra init function
-    const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
-      if(addedNodes.length > 0 || removedNodes.length > 0) {
-        info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        emitSiteEvent("queueChanged", target as HTMLElement);
-      }
-    });
+    if(getDomain() === "ytm") {
+      //#region queue
+      // the queue container always exists so it doesn't need an extra init function
+      const queueObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+        if(addedNodes.length > 0 || removedNodes.length > 0) {
+          info(`Detected queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          emitSiteEvent("queueChanged", target as HTMLElement);
+        }
+      });
 
-    // only observe added or removed elements
-    addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
-      listener: (el) => {
-        queueObs.observe(el, {
-          childList: true,
-        });
-      },
-    });
+      // only observe added or removed elements
+      addSelectorListener("sidePanel", "#contents.ytmusic-player-queue", {
+        listener: (el) => {
+          queueObs.observe(el, {
+            childList: true,
+          });
+        },
+      });
 
-    const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
-      if(addedNodes.length > 0 || removedNodes.length > 0) {
-        info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
-        emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
-      }
-    });
+      const autoplayObs = new MutationObserver(([ { addedNodes, removedNodes, target } ]) => {
+        if(addedNodes.length > 0 || removedNodes.length > 0) {
+          info(`Detected autoplay queue change - added nodes: ${[...addedNodes.values()].length} - removed nodes: ${[...removedNodes.values()].length}`);
+          emitSiteEvent("autoplayQueueChanged", target as HTMLElement);
+        }
+      });
 
-    addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
-      listener: (el) => {
-        autoplayObs.observe(el, {
-          childList: true,
-        });
-      },
-    });
+      addSelectorListener("sidePanel", "ytmusic-player-queue #automix-contents", {
+        listener: (el) => {
+          autoplayObs.observe(el, {
+            childList: true,
+          });
+        },
+      });
 
-    //#region player bar
+      //#region player bar
 
-    let lastTitle: string | null = null;
+      let lastTitle: string | null = null;
 
-    addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
-      continuous: true,
-      listener: (titleElem) => {
-        const oldTitle = lastTitle;
-        const newTitle = titleElem.textContent;
-        if(newTitle === lastTitle || !newTitle)
-          return;
-        lastTitle = newTitle;
-        info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
-        emitSiteEvent("songTitleChanged", newTitle, oldTitle);
-      },
-    });
+      addSelectorListener("playerBarInfo", "yt-formatted-string.title", {
+        continuous: true,
+        listener: (titleElem) => {
+          const oldTitle = lastTitle;
+          const newTitle = titleElem.textContent;
+          if(newTitle === lastTitle || !newTitle)
+            return;
+          lastTitle = newTitle;
+          info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
+          emitSiteEvent("songTitleChanged", newTitle, oldTitle);
+        },
+      });
 
-    info("Successfully initialized SiteEvents observers");
+      info("Successfully initialized SiteEvents observers");
 
-    observers = observers.concat([
-      queueObs,
-      autoplayObs,
-    ]);
+      observers = observers.concat([
+        queueObs,
+        autoplayObs,
+      ]);
 
-    //#region player
+      //#region player
 
-    const playerFullscreenObs = new MutationObserver(([{ target }]) => {
-      const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
-      if(lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
-        emitSiteEvent("fullscreenToggled", isFullscreen);
-        lastFullscreen = isFullscreen;
-      }
-    });
+      const playerFullscreenObs = new MutationObserver(([{ target }]) => {
+        const isFullscreen = (target as HTMLElement).getAttribute("player-ui-state")?.toUpperCase() === "FULLSCREEN";
+        if(lastFullscreen !== isFullscreen || typeof lastFullscreen === "undefined") {
+          emitSiteEvent("fullscreenToggled", isFullscreen);
+          lastFullscreen = isFullscreen;
+        }
+      });
 
-    addSelectorListener("mainPanel", "ytmusic-player#player", {
-      listener: (el) => {
-        playerFullscreenObs.observe(el, {
-          attributeFilter: ["player-ui-state"],
-        });
-      },
-    });
+      addSelectorListener("mainPanel", "ytmusic-player#player", {
+        listener: (el) => {
+          playerFullscreenObs.observe(el, {
+            attributeFilter: ["player-ui-state"],
+          });
+        },
+      });
+    }
 
     //#region other
 

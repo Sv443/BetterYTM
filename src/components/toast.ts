@@ -1,13 +1,13 @@
 import { pauseFor } from "@sv443-network/userutils";
+import { resourceToHTMLString } from "../utils";
 import type { ResourceKey } from "../types";
 import "./toast.css";
-import { resourceToHTMLString } from "src/utils";
 
 type ToastPos = "tl" | "tr" | "bl" | "br";
 
 type ToastProps = {
-  duration: number;
-  position: ToastPos;
+  duration?: number;
+  position?: ToastPos;
 } & (
   | {
     message: string;
@@ -18,10 +18,19 @@ type ToastProps = {
   }
 );
 
+type IconToastProps = ToastProps & {
+  icon: ResourceKey;
+};
+
 let timeout: NodeJS.Timeout | undefined;
 
 /** Shows a toast message with an icon */
-export async function showIconToast(message: string, icon: ResourceKey, duration = 3000, position: ToastPos = "tr") {
+export async function showIconToast({
+  icon,
+  duration = 3000,
+  position = "tr",
+  ...rest
+}: IconToastProps) {
   const toastWrapper = document.createElement("div");
   toastWrapper.classList.add("bytm-toast-flex-wrapper");
 
@@ -33,7 +42,10 @@ export async function showIconToast(message: string, icon: ResourceKey, duration
 
   const toastMessage = document.createElement("div");
   toastMessage.classList.add("bytm-toast-message");
-  toastMessage.textContent = message;
+  if("message" in rest)
+    toastMessage.textContent = rest.message;
+  else
+    toastMessage.appendChild(rest.element);
 
   toastWrapper.appendChild(toastIcon);
   toastWrapper.appendChild(toastMessage);
@@ -42,7 +54,7 @@ export async function showIconToast(message: string, icon: ResourceKey, duration
     duration,
     position,
     element: toastWrapper,
-    title: message,
+    title: "message" in rest ? rest.message : rest.title,
   });
 }
 
@@ -61,6 +73,8 @@ export async function showToast({
   toastElem.role = "alert";
   toastElem.ariaLive = "assertive";
   toastElem.ariaAtomic = "true";
+
+  toastElem.addEventListener("click", async () => await closeToast(), { once: true });
 
   if("message" in rest)
     toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
