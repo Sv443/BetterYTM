@@ -131,7 +131,7 @@
     "thumbnail_overlay_image_fit_stretch": "Stretch to fit",
 
     "auto_like_channels_dialog_title": "Manage auto-liked channels",
-    "auto_like_channels_dialog_desc": "Auto-liking of currently playing songs and videos is enabled for the following channels:",
+    "auto_like_channels_dialog_desc": "Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.",
     "auto_like": "Auto-like",
     "auto_like_button_tooltip_enabled": "Click to disable auto-liking. Shift-click to open the management dialog.",
     "auto_like_button_tooltip_disabled": "Click to enable auto-liking. Shift-click to open the management dialog.",
@@ -139,6 +139,8 @@
     "add_auto_like_channel_invalid_id": "The entered channel ID is invalid.\nPlease make sure you copy only the part *after* \"/channel/\" in the URL, excluding the slash.",
     "add_auto_like_channel_already_exists_prompt_new_name": "A channel with that ID is already in the list.\nDo you instead want to change its name?",
     "add_auto_like_channel_name_prompt": "Enter the name of the channel.\nPress \"cancel\" to exit.",
+    "auto_like_enabled_toast": "Auto-liking enabled",
+    "auto_like_disabled_toast": "Auto-liking disabled",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",

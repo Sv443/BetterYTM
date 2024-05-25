@@ -8,7 +8,7 @@ import { featInfo } from "./index";
 import { getFeatures } from "../config";
 import { compressionFormat } from "../constants";
 import { addSelectorListener } from "../observers";
-import { createLongBtn } from "../components/longButton";
+import { createLongBtn, showIconToast } from "../components";
 import { getAutoLikeChannelsDialog, initAutoLikeChannelsStore } from "../dialogs";
 import "./input.css";
 
@@ -260,6 +260,11 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
       const imgHtml = await resourceToHTMLString(`icon-auto_like${toggled ? "_enabled" : ""}`);
       if(imgEl && imgHtml)
         imgEl.innerHTML = imgHtml;
+
+      showIconToast(
+        toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
+        `icon-auto_like${toggled ? "_enabled" : ""}`,
+      );
 
       if(autoLikeChannelsStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
         await autoLikeChannelsStore.setData({
