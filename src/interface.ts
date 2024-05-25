@@ -8,7 +8,7 @@ import { getFeatures, setFeatures } from "./config";
 import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
-import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput } from "./components";
+import { BytmDialog, createCircularBtn, createHotkeyInput, createToggleInput, showIconToast, showToast } from "./components";
 
 const { getUnsafeWindow, randomId } = UserUtils;
 
@@ -131,6 +131,9 @@ const globalFuncs = {
   createHotkeyInput,
   createToggleInput,
   createCircularBtn,
+  // TODO: document
+  showToast,
+  showIconToast,
 };
 
 /** Initializes the BYTM interface */

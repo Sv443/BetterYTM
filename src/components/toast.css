@@ -1,0 +1,64 @@
+#bytm-toast {
+  --bytm-toast-bg-color: #323232;
+  --bytm-toast-text-color: #fff;
+  --bytm-toast-offset: 25px;
+  --bytm-toast-transform-distance: 100px;
+  --bytm-toast-transition-time: 0.5s;
+
+  position: fixed;
+  z-index: 100;
+  opacity: 0.000001;
+  pointer-events: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  font-size: 14px;
+
+  background-color: var(--bytm-toast-bg-color);
+  color: var(--bytm-toast-text-color);
+
+  transition: opacity var(--bytm-toast-transition-time) ease, transform var(--bytm-toast-transition-time) ease;
+}
+
+#bytm-toast.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+#bytm-toast.pos-tl {
+  top: var(--bytm-toast-offset);
+  left: var(--bytm-toast-offset);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-tr {
+  top: var(--bytm-toast-offset);
+  right: var(--bytm-toast-offset);
+  transform: translate(0, calc(var(--bytm-toast-transform-distance) * -1));
+}
+
+#bytm-toast.pos-br {
+  bottom: var(--bytm-toast-offset);
+  right: var(--bytm-toast-offset);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.pos-bl {
+  bottom: var(--bytm-toast-offset);
+  left: var(--bytm-toast-offset);
+  transform: translate(0, var(--bytm-toast-transform-distance));
+}
+
+#bytm-toast.visible.pos-tl,
+#bytm-toast.visible.pos-tr,
+#bytm-toast.visible.pos-br,
+#bytm-toast.visible.pos-bl
+{
+  transform: translate(0, 0);
+}
+
+.bytm-toast-flex-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
