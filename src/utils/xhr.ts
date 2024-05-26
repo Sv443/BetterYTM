@@ -5,14 +5,14 @@ import { error } from "./logging";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
- * If a value is null, the parameter will be valueless.  
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
  * All values will be stringified using their `toString()` method and then URI-encoded.
  * @returns Returns a string instead of a URL object
  */
 export function constructUrlString(baseUrl: string, params: Record<string, Stringifiable | null>) {
   return `${baseUrl}?${
     Object.entries(params)
-      .filter(([,v]) => v !== undefined)
+      .filter(([, v]) => v !== undefined)
       .map(([key, val]) => `${key}${val === null ? "" : `=${encodeURIComponent(String(val))}`}`)
       .join("&")
   }`;
@@ -20,7 +20,7 @@ export function constructUrlString(baseUrl: string, params: Record<string, Strin
 
 /**
  * Constructs a URL object from a base URL and a record of query parameters.  
- * If a value is null, the parameter will be valueless.  
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.  
  * All values will be URI-encoded.  
  * @returns Returns a URL object instead of a string
  */
