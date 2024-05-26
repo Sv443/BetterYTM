@@ -1,10 +1,10 @@
 For the purpose of creating plugins, anyone is hereby allowed to freely copy,
 modify, embed, redistribute, sublicense and sell copies of the source code of
-the `src/` folder (*excluding* the subfolders in `src/`), and also all files
-inside `assets/` (*excluding* those in `assets/images/external/`)
+the `src/` folder, *excluding* the subfolders in `src/`, and also all files
+inside `assets/`, *excluding* those in `assets/images/external/`.
 
-Furthermore, you may include the source code of this project in yours, as long
-as only the above mentioned files are included in the final build.
+Furthermore, you may include the source code of this project in the source of
+yours, as long as only the above mentioned files are included in the final build.
 All files not mentioned above are licensed under the AGPL-3.0-only license.
 
 Lastly, you are to make the source code of your plugin available to anyone who
