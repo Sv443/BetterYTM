@@ -223,10 +223,8 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     const startTs = Date.now();
     const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
-      utm_source: scriptInfo.name,
-      utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
-      artist,
-      song,
+      utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+      q: `${artist} ${song}`,
     });
 
     log("Requesting lyrics from geniURL:", fetchUrl);
