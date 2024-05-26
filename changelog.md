@@ -5,12 +5,20 @@
 - **Features:**
   - Auto-like videos and songs of channels where you have enabled this feature
   - 
+- **Changes / Fixes:**
+  - Welcome menu is shown on YT too now
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Added advanced feature to change the startup timeout
+  - A blue logo is shown instead of the red BetterYTM logo when the script was compiled in development (preview) mode
+  - In development mode, missing configuration keys will now be set to their default value instead of potentially breaking the script
 - **Plugin Changes:**
-  - Added new component `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
-    The design matches that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+  - Added new components:
+    -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
+      The design matches that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+    - `showToast()` to show a custom toast notification with a message string or element and duration
+    - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
+    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
   - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
   - Added events
@@ -57,7 +65,7 @@
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
     - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
-  - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs could change
+  - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs potentially change
 
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/52" rel="noopener noreferrer">See pull request for more info</a>
