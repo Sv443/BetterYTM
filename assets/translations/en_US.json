@@ -25,7 +25,6 @@
     "import_error_no_data": "The imported object does not contain any data",
     "import_error_wrong_format_version": "The imported data is in an unsupported format version (expected %1 or lower but got %2)",
     "import_success_confirm_reload": "Successfully imported the configuration.\nDo you want to reload the page now to apply changes?",
-    "reset_config_tooltip": "Reset all settings to their default values",
     "reset_config_confirm": "Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.",
     "copy_to_clipboard": "Copy to clipboard",
     "copy_to_clipboard_error": "Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1",
@@ -253,6 +252,9 @@
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
     "feature_desc_initTimeout": "How long to wait for features to initialize before considering them to likely be in an errored state",
     "feature_helptext_initTimeout": "This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
+    "feature_desc_resetConfig": "Reset all settings to their default values",
+    "feature_btn_resetConfig": "Reset settings",
+    "feature_btn_resetConfig_running": "Confirming...",
     "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",
     "feature_helptext_advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu.",
 
