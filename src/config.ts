@@ -69,14 +69,11 @@ export const migrations: DataMigrationsDict = {
   ]),
   // 5 -> 6 (v2.1)
   6: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
-    useDefaultConfig(
-      JSON.parse(JSON.stringify(oldData)),
-      [
-        "autoLikeChannels", "autoLikeChannelToggleBtn",
-        "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
-        "autoLikeShowToast", "autoLikeOpenMgmtDialog",
-      ],
-    ), [
+    useDefaultConfig(oldData, [
+      "autoLikeChannels", "autoLikeChannelToggleBtn",
+      "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
+      "autoLikeShowToast", "autoLikeOpenMgmtDialog",
+    ]), [
       { key: "rememberSongTimeSites", oldDefault: "ytm" },
       { key: "volumeSliderScrollStep", oldDefault: 10 },
     ],
