@@ -1,13 +1,22 @@
 import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
-import { featInfo } from "./features/index";
-import { compressionSupported, error, info, log } from "./utils";
+import { disableBeforeUnload, featInfo } from "./features/index";
+import { compressionSupported, error, getVideoTime, info, log, t } from "./utils";
 import { emitSiteEvent } from "./siteEvents";
 import { compressionFormat, mode } from "./constants";
 import { emitInterface } from "./interface";
+import { closeCfgMenu } from "./menu/menu_old";
 import type { FeatureConfig, FeatureKey } from "./types";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 5;
+export const formatVersion = 6;
+
+export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
+  .reduce<Partial<FeatureConfig>>((acc, key) => {
+    // @ts-ignore
+    acc[key] = featInfo?.[key]?.default as unknown as undefined;
+    return acc;
+  }, {}) as FeatureConfig;
+
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
   // 1 -> 2 (<=v1.0)
@@ -59,24 +68,23 @@ export const migrations: DataMigrationsDict = {
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
   // 5 -> 6 (v2.1)
-  6: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "autoLikeChannels", "autoLikeChannelToggleBtn",
-    "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
-    "autoLikeShowToast", "autoLikeOpenMgmtDialog",
-    // reset existing:
-    "rememberSongTimeSites",
-  ]),
+  6: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
+    useDefaultConfig(
+      JSON.parse(JSON.stringify(oldData)),
+      [
+        "autoLikeChannels", "autoLikeChannelToggleBtn",
+        "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
+        "autoLikeShowToast", "autoLikeOpenMgmtDialog",
+      ],
+    ), [
+      { key: "rememberSongTimeSites", oldDefault: "ytm" },
+      { key: "volumeSliderScrollStep", oldDefault: 10 },
+    ],
+  ),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 6 -> 7 (v2.x)
   // 7: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
-
-export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
-  .reduce<Partial<FeatureConfig>>((acc, key) => {
-    // @ts-ignore
-    acc[key] = featInfo?.[key]?.default as unknown as undefined;
-    return acc;
-  }, {}) as FeatureConfig;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: (keyof typeof featInfo)[]): FeatureConfig {
@@ -84,6 +92,25 @@ function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKey
   for(const key of resetKeys) // @ts-ignore
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
+}
+
+/**
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.  
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its default value, it will be reset to the new default value.  
+ * Returns a copy of the object.
+ */
+function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
+  oldData: TConfig,
+  defaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
+) {
+  const newData = { ...oldData };
+  for(const { key, oldDefault } of defaults) {
+    // @ts-ignore
+    const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
+    if(newData[key] === oldDefault)
+      newData[key] = defaultVal as never; // we love TS
+  }
+  return newData as TConfig;
 }
 
 let canCompress = true;
@@ -167,6 +194,24 @@ export function setDefaultFeatures() {
   emitSiteEvent("configChanged", cfgDataStore.getData());
   info("Reset feature config to its default values");
   return res;
+}
+
+export async function promptResetConfig() {
+  if(confirm(t("reset_config_confirm"))) {
+    closeCfgMenu();
+    disableBeforeUnload();
+    await setDefaultFeatures();
+    if(location.pathname.startsWith("/watch")) {
+      const videoTime = await getVideoTime(0);
+      const url = new URL(location.href);
+      url.searchParams.delete("t");
+      if(videoTime)
+        url.searchParams.set("t", String(videoTime));
+      location.replace(url.href);
+    }
+    else
+      location.reload();
+  }
 }
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
