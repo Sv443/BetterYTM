@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,47 +35,47 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/f90f8a44/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/delete.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -159,26 +159,7 @@ function __asyncValues(o) {
 typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};let createNanoEvents = () => ({
-  emit(event, ...args) {
-    for (
-      let i = 0,
-        callbacks = this.events[event] || [],
-        length = callbacks.length;
-      i < length;
-      i++
-    ) {
-      callbacks[i](...args);
-    }
-  },
-  events: {},
-  on(event, cb) {
-(this.events[event] ||= []).push(cb);
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i);
-    }
-  }
-});// I know TS enums are impure but it doesn't really matter here, plus they look cooler
+};// I know TS enums are impure but it doesn't really matter here, plus they look cooler
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -205,7 +186,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f90f8a44";
+const buildNumberRaw = "4485ad95";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -361,7 +342,26 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
-}/** Class that can be extended or instantiated by itself to create an event emitter with helper methods and a strongly typed event map */
+}let createNanoEvents = () => ({
+  emit(event, ...args) {
+    for (
+      let i = 0,
+        callbacks = this.events[event] || [],
+        length = callbacks.length;
+      i < length;
+      i++
+    ) {
+      callbacks[i](...args);
+    }
+  },
+  events: {},
+  on(event, cb) {
+(this.events[event] ||= []).push(cb);
+    return () => {
+      this.events[event] = this.events[event]?.filter(i => cb !== i);
+    }
+  }
+});/** Class that can be extended or instantiated by itself to create an event emitter with helper methods and a strongly typed event map */
 class NanoEmitter {
     constructor(settings = {}) {
         Object.defineProperty(this, "events", {
@@ -781,7 +781,7 @@ function createCircularBtn(_a) {
         return btnElem;
     });
 }/** EventEmitter instance that is used to detect changes to the site */
-const siteEvents = createNanoEvents();
+const siteEvents = new NanoEmitter({ publicEmit: true });
 let observers = [];
 let lastWatchId = null;
 let lastPathname = null;
@@ -2122,23 +2122,11 @@ function addCfgMenu() {
         });
         reloadFooterEl.appendChild(reloadTxtEl);
         reloadFooterCont.appendChild(reloadFooterEl);
-        const resetElem = document.createElement("button");
-        resetElem.classList.add("bytm-btn");
-        resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
-        resetElem.textContent = t("reset");
-        resetElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
-            if (confirm(t("reset_confirm"))) {
-                yield setDefaultFeatures();
-                closeCfgMenu();
-                disableBeforeUnload();
-                location.reload();
-            }
-        }));
         const exportElem = document.createElement("button");
         exportElem.classList.add("bytm-btn");
         exportElem.ariaLabel = exportElem.title = t("export_tooltip");
         exportElem.textContent = t("export");
-        exportElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+        onInteraction(exportElem, () => __awaiter(this, void 0, void 0, function* () {
             const dlg = yield getExportDialog();
             dlg.on("close", openCfgMenu);
             yield dlg.mount();
@@ -2149,7 +2137,7 @@ function addCfgMenu() {
         importElem.classList.add("bytm-btn");
         importElem.ariaLabel = importElem.title = t("import_tooltip");
         importElem.textContent = t("import");
-        importElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+        onInteraction(importElem, () => __awaiter(this, void 0, void 0, function* () {
             const dlg = yield getImportDialog();
             dlg.on("close", openCfgMenu);
             yield dlg.mount();
@@ -2160,7 +2148,6 @@ function addCfgMenu() {
         buttonsCont.id = "bytm-menu-footer-buttons-cont";
         buttonsCont.appendChild(exportElem);
         buttonsCont.appendChild(importElem);
-        buttonsCont.appendChild(resetElem);
         footerCont.appendChild(reloadFooterCont);
         footerCont.appendChild(buttonsCont);
         //#region feature list
@@ -3868,7 +3855,7 @@ function switchSite(newDomain) {
 }
 //#region num keys skip
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
-const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
+const numKeysIgnoreIds = ["song-media-window"];
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 function initNumKeysSkip() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3881,10 +3868,9 @@ function initNumKeysSkip() {
             if (isCfgMenuOpen)
                 return;
             // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-            if (document.activeElement !== document.body // short-circuit if nothing is active
-                || numKeysIgnoreIds.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "") // video element or player bar active
-                || numKeysIgnoreTagNames.includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : "") // other element active
-            )
+            const ignoreElement = numKeysIgnoreIds.includes((_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "") // video element or player bar active
+                || numKeysIgnoreTagNames.includes((_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.tagName) !== null && _d !== void 0 ? _d : ""); // other element active
+            if ((document.activeElement !== document.body && ignoreElement) || ignoreElement)
                 return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
             const vidElem = document.querySelector(getVideoSelector());
             if (!vidElem)
@@ -4290,10 +4276,8 @@ function fetchLyricsUrls(artist, song) {
             const startTs = Date.now();
             const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
                 disableFuzzy: null,
-                utm_source: scriptInfo.name,
-                utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
-                artist,
-                song,
+                utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+                q: `${artist} ${song}`,
             });
             log("Requesting lyrics from geniURL:", fetchUrl);
             const token = getFeature("geniUrlToken");
@@ -5044,7 +5028,7 @@ const featInfo = {
         category: "volume",
         min: 1,
         max: 25,
-        default: 10,
+        default: 4,
         unit: "%",
         textAdornment: adornments.reloadRequired,
     },
@@ -5403,6 +5387,12 @@ const featInfo = {
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
+    resetConfig: {
+        type: "button",
+        category: "general",
+        click: promptResetConfig,
+        textAdornment: adornments.reloadRequired,
+    },
     advancedMode: {
         type: "toggle",
         category: "general",
@@ -5414,7 +5404,14 @@ const featInfo = {
 };
 function noop() {
 }/** If this number is incremented, the features object data will be migrated to the new format */
-const formatVersion = 5;
+const formatVersion = 6;
+const defaultData = Object.keys(featInfo)
+    .reduce((acc, key) => {
+    var _a;
+    // @ts-ignore
+    acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
+    return acc;
+}, {});
 /** Config data format migration dictionary */
 const migrations = {
     // 1 -> 2 (<=v1.0)
@@ -5458,30 +5455,40 @@ const migrations = {
         "closeToastsTimeout", "disableDarkReaderSites",
     ]),
     // 5 -> 6 (v2.1)
-    6: (oldData) => useDefaultConfig(oldData, [
+    6: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "autoLikeChannels", "autoLikeChannelToggleBtn",
         "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
         "autoLikeShowToast", "autoLikeOpenMgmtDialog",
-        // reset existing:
-        "rememberSongTimeSites",
+    ]), [
+        { key: "rememberSongTimeSites", oldDefault: "ytm" },
+        { key: "volumeSliderScrollStep", oldDefault: 10 },
     ]),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
     // 6 -> 7 (v2.x)
     // 7: (oldData: FeatureConfig) => 
 };
-const defaultData = Object.keys(featInfo)
-    .reduce((acc, key) => {
-    var _a;
-    // @ts-ignore
-    acc[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
-    return acc;
-}, {});
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData, resetKeys) {
     var _a;
     const newData = Object.assign(Object.assign({}, defaultData), (baseData !== null && baseData !== void 0 ? baseData : {}));
     for (const key of resetKeys) // @ts-ignore
         newData[key] = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default; // typescript funny moments
+    return newData;
+}
+/**
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its default value, it will be reset to the new default value.
+ * Returns a copy of the object.
+ */
+function useNewDefaultIfUnchanged(oldData, defaults) {
+    var _a;
+    const newData = Object.assign({}, oldData);
+    for (const { key, oldDefault } of defaults) {
+        // @ts-ignore
+        const defaultVal = (_a = featInfo === null || featInfo === void 0 ? void 0 : featInfo[key]) === null || _a === void 0 ? void 0 : _a.default;
+        if (newData[key] === oldDefault)
+            newData[key] = defaultVal; // we love TS
+    }
     return newData;
 }
 let canCompress = true;
@@ -5556,6 +5563,25 @@ function setDefaultFeatures() {
     emitSiteEvent("configChanged", cfgDataStore.getData());
     info("Reset feature config to its default values");
     return res;
+}
+function promptResetConfig() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (confirm(t("reset_config_confirm"))) {
+            closeCfgMenu();
+            disableBeforeUnload();
+            yield setDefaultFeatures();
+            if (location.pathname.startsWith("/watch")) {
+                const videoTime = yield getVideoTime(0);
+                const url = new URL(location.href);
+                url.searchParams.delete("t");
+                if (videoTime)
+                    url.searchParams.set("t", String(videoTime));
+                location.replace(url.href);
+            }
+            else
+                location.reload();
+        }
+    });
 }
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 function clearConfig() {
@@ -5717,7 +5743,7 @@ function registerPlugin(def) {
         error(`Failed to register plugin${((_a = def === null || def === void 0 ? void 0 : def.plugin) === null || _a === void 0 ? void 0 : _a.name) ? ` '${(_b = def === null || def === void 0 ? void 0 : def.plugin) === null || _b === void 0 ? void 0 : _b.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
         throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
     }
-    const events = createNanoEvents();
+    const events = new NanoEmitter({ publicEmit: true });
     const token = randomId(32, 36);
     const { plugin: { name } } = def;
     pluginsQueued.set(getPluginKey(def), {
@@ -5953,10 +5979,9 @@ const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : 
  */
 function getVideoTime(precision = 2) {
     return new Promise((res) => __awaiter(this, void 0, void 0, function* () {
-        const domain = getDomain();
         yield waitVideoElementReady();
         try {
-            if (domain === "ytm") {
+            if (getDomain() === "ytm") {
                 const vidElem = document.querySelector(getVideoSelector());
                 if (vidElem)
                     return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -5964,7 +5989,7 @@ function getVideoTime(precision = 2) {
                     listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
                 });
             }
-            else if (domain === "yt") {
+            else if (getDomain() === "yt") {
                 const vidElem = document.querySelector(getVideoSelector());
                 if (vidElem)
                     return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -6025,7 +6050,7 @@ function ytForceShowVideoTime() {
 /** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
 function waitVideoElementReady() {
     return new Promise((res) => {
-        addSelectorListener("body", getVideoSelector(), {
+        const waitForEl = () => addSelectorListener("body", getVideoSelector(), {
             listener: (vidElem) => __awaiter(this, void 0, void 0, function* () {
                 if (vidElem) {
                     // this is just after YT has finished doing their own shenanigans with the video time and volume
@@ -6036,6 +6061,10 @@ function waitVideoElementReady() {
                 }
             }),
         });
+        if (location.pathname.startsWith("/watch"))
+            waitForEl();
+        else
+            siteEvents.once("watchIdChanged", waitForEl);
     });
 }
 //#region other
@@ -6356,7 +6385,7 @@ function getChangelogHtmlWithDetails() {
     });
 }/**
  * Constructs a URL from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
  * All values will be stringified using their `toString()` method and then URI-encoded.
  * @returns Returns a string instead of a URL object
  */
@@ -6368,7 +6397,7 @@ function constructUrlString(baseUrl, params) {
 }
 /**
  * Constructs a URL object from a base URL and a record of query parameters.
- * If a value is null, the parameter will be valueless.
+ * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
  * All values will be URI-encoded.
  * @returns Returns a URL object instead of a string
  */
