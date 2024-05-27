@@ -7,6 +7,9 @@
   - 
 - **Changes / Fixes:**
   - Welcome menu is shown on YT too now
+  - Changed default settings for these features:
+    - Remember Song Time Sites: from `YTM only` to `both sites`
+    - Volume Slider Scroll Sensitivity: from `10%` to `4%`
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Added advanced feature to change the startup timeout
@@ -26,10 +29,12 @@
     - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
     - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
   - Event `bytm:siteEvent:fullscreenToggled` will now only emit once per fullscreen change
+  - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
+    In practice this changes nothing, but it benefits from having the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
-<!-- <div class="pr-link-cont">
-  <a href="https://github.com/Sv443/BetterYTM/pull/TODO" rel="noopener noreferrer">See pull request for more info</a>
-</div> -->
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
+</div>
 
 <div class="split"></div>
 <br>

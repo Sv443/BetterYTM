@@ -2,6 +2,7 @@ import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@
 import { error, fetchCss, getDomain, t } from ".";
 import { addSelectorListener } from "../observers";
 import type { ResourceKey } from "../types";
+import { siteEvents } from "src/siteEvents";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;
@@ -20,12 +21,10 @@ export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player vi
  */
 export function getVideoTime(precision = 2) {
   return new Promise<number | null>(async (res) => {
-    const domain = getDomain();
-
     await waitVideoElementReady();
 
     try {
-      if(domain === "ytm") {
+      if(getDomain() === "ytm") {
         const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -35,7 +34,7 @@ export function getVideoTime(precision = 2) {
             res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
       }
-      else if(domain === "yt") {
+      else if(getDomain() === "yt") {
         const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -114,10 +113,10 @@ function ytForceShowVideoTime() {
 /** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise((res) => {
-    addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
+    const waitForEl = () => addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
       listener: async (vidElem) => {
         if(vidElem) {
-          // this is just after YT has finished doing their own shenanigans with the video time and volume
+        // this is just after YT has finished doing their own shenanigans with the video time and volume
           if(vidElem.readyState === 4)
             res(vidElem);
           else
@@ -125,6 +124,11 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
         }
       },
     });
+  
+    if(location.pathname.startsWith("/watch"))
+      waitForEl();
+    else
+      siteEvents.once("watchIdChanged", waitForEl);
   });
 }
 

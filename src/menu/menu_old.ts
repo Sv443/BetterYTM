@@ -1,5 +1,5 @@
 import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, setFeatures, setDefaultFeatures } from "../config";
+import { defaultData, getFeatures, setFeatures, promptResetConfig } from "../config";
 import { buildNumber, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils";
@@ -173,32 +173,27 @@ async function addCfgMenu() {
 
   const resetElem = document.createElement("button");
   resetElem.classList.add("bytm-btn");
-  resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
+  resetElem.ariaLabel = resetElem.title = t("reset_config_tooltip");
   resetElem.textContent = t("reset");
-  resetElem.addEventListener("click", async () => {
-    if(confirm(t("reset_confirm"))) {
-      await setDefaultFeatures();
-      closeCfgMenu();
-      disableBeforeUnload();
-      location.reload();
-    }
-  });
+  onInteraction(resetElem, promptResetConfig);
+
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
   exportElem.ariaLabel = exportElem.title = t("export_tooltip");
   exportElem.textContent = t("export");
-  exportElem.addEventListener("click", async () => {
+  onInteraction(exportElem, async () => {
     const dlg = await getExportDialog();
     dlg.on("close", openCfgMenu);
     await dlg.mount();
     closeCfgMenu(undefined, false);
     await dlg.open();
   });
+
   const importElem = document.createElement("button");
   importElem.classList.add("bytm-btn");
   importElem.ariaLabel = importElem.title = t("import_tooltip");
   importElem.textContent = t("import");
-  importElem.addEventListener("click", async () => {
+  onInteraction(importElem, async () => {
     const dlg = await getImportDialog();
     dlg.on("close", openCfgMenu);
     await dlg.mount();

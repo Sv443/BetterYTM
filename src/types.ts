@@ -1,10 +1,9 @@
-import type { Emitter } from "nanoevents";
 import type * as consts from "./constants";
 import type { scriptInfo } from "./constants";
 import type { addSelectorListener } from "./observers";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter } from "./utils";
 import type { getFeatures, setFeatures } from "./config";
 import type { SiteEventsMap } from "./siteEvents";
 import type { InterfaceEventsMap } from "./interface";
@@ -105,8 +104,8 @@ export enum PluginIntent {
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
-  /** Emitter for plugin events - see {@linkcode PluginEventMap} for a list of events */
-  events: Emitter<PluginEventMap>;
+  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: NanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
 }
@@ -461,6 +460,8 @@ export interface FeatureConfig {
   logLevel: LogLevel;
   /** Amount of seconds until the feature initialization times out */
   initTimeout: number;
+  /** Button that resets the config to the default state */
+  resetConfig: undefined;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
 }

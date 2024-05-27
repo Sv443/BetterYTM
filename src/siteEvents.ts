@@ -1,5 +1,4 @@
-import { createNanoEvents } from "nanoevents";
-import { error, getDomain, info } from "./utils";
+import { NanoEmitter, error, getDomain, info } from "./utils";
 import { FeatureConfig } from "./types";
 import { emitInterface } from "./interface";
 import { addSelectorListener } from "./observers";
@@ -65,7 +64,7 @@ export const allSiteEvents = [
 ] as const;
 
 /** EventEmitter instance that is used to detect changes to the site */
-export const siteEvents = createNanoEvents<SiteEventsMap>();
+export const siteEvents = new NanoEmitter<SiteEventsMap>({ publicEmit: true });
 
 let observers: MutationObserver[] = [];
 

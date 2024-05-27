@@ -1,7 +1,7 @@
 import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
-import { getFeatures } from "../config";
+import { getFeatures, promptResetConfig } from "../config";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" with { type: "json" };
@@ -255,7 +255,7 @@ export const featInfo = {
     category: "volume",
     min: 1,
     max: 25,
-    default: 10,
+    default: 4,
     unit: "%",
     textAdornment: adornments.reloadRequired,
   },
@@ -616,6 +616,12 @@ export const featInfo = {
     unit: "s",
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
+  resetConfig: {
+    type: "button",
+    category: "general",
+    click: promptResetConfig,
+    textAdornment: adornments.reloadRequired,
   },
   advancedMode: {
     type: "toggle",
