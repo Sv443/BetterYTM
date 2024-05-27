@@ -1,6 +1,5 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
-import { createNanoEvents } from "nanoevents";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils";
 import { addSelectorListener } from "./observers";
@@ -351,7 +350,7 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
     throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
   }
 
-  const events = createNanoEvents<PluginEventMap>();
+  const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
   const token = randomId(32, 36);
 
   const { plugin: { name } } = def;

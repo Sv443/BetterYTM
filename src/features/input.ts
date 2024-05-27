@@ -121,7 +121,7 @@ async function switchSite(newDomain: Domain) {
 //#region num keys skip
 
 const numKeysIgnoreTagNames = [...inputIgnoreTagNames, "TP-YT-PAPER-TAB"];
-const numKeysIgnoreIds = ["progress-bar", "song-media-window"];
+const numKeysIgnoreIds = ["song-media-window"];
 
 /** Adds the ability to skip to a certain time in the video by pressing a number key (0-9) */
 export async function initNumKeysSkip() {
@@ -133,11 +133,9 @@ export async function initNumKeysSkip() {
     if(isCfgMenuOpen)
       return;
     // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
-    if(
-      document.activeElement !== document.body // short-circuit if nothing is active
-      || numKeysIgnoreIds.includes(document.activeElement?.id ?? "") // video element or player bar active
-      || numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "") // other element active
-    )
+    const ignoreElement = numKeysIgnoreIds.includes(document.activeElement?.id ?? "") // video element or player bar active
+      || numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? ""); // other element active
+    if((document.activeElement !== document.body && ignoreElement) || ignoreElement)
       return info("Captured valid key to skip video to, but ignored it since an unexpected element is active:", document.activeElement);
 
     const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
