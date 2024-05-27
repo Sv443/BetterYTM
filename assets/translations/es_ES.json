@@ -25,7 +25,6 @@
     "import_error_no_data": "El objeto importado no contiene ningún dato",
     "import_error_wrong_format_version": "Los datos importados están en una versión de formato no compatible (se esperaba %1 o inferior pero se obtuvo %2)",
     "import_success_confirm_reload": "Configuración importada con éxito.\n¿Quieres recargar la página ahora para aplicar los cambios?",
-    "reset_config_tooltip": "Restablecer todos los ajustes a sus valores predeterminados",
     "reset_config_confirm": "¿Realmente quieres restablecer todos los ajustes a sus valores predeterminados?\nLa página se volverá a cargar automáticamente.",
     "copy_to_clipboard": "Copiar al portapapeles",
     "copy_to_clipboard_error": "No se pudo copiar el texto al portapapeles. Cópielo manualmente desde aquí:\n%1",

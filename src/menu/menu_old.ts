@@ -1,5 +1,5 @@
 import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, setFeatures, promptResetConfig } from "../config";
+import { defaultData, getFeatures, setFeatures } from "../config";
 import { buildNumber, host, mode, scriptInfo } from "../constants";
 import { featInfo, disableBeforeUnload } from "../features/index";
 import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils";
@@ -171,12 +171,6 @@ async function addCfgMenu() {
   reloadFooterEl.appendChild(reloadTxtEl);
   reloadFooterCont.appendChild(reloadFooterEl);
 
-  const resetElem = document.createElement("button");
-  resetElem.classList.add("bytm-btn");
-  resetElem.ariaLabel = resetElem.title = t("reset_config_tooltip");
-  resetElem.textContent = t("reset");
-  onInteraction(resetElem, promptResetConfig);
-
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
   exportElem.ariaLabel = exportElem.title = t("export_tooltip");
@@ -205,7 +199,6 @@ async function addCfgMenu() {
   buttonsCont.id = "bytm-menu-footer-buttons-cont";
   buttonsCont.appendChild(exportElem);
   buttonsCont.appendChild(importElem);
-  buttonsCont.appendChild(resetElem);
 
   footerCont.appendChild(reloadFooterCont);
   footerCont.appendChild(buttonsCont);
