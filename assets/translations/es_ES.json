@@ -174,8 +174,6 @@
     "feature_helptext_disableDarkReaderSites": "La extensión Dark Reader puede causar problemas con el diseño del sitio.\nEsta función le permite deshabilitar Dark Reader en ciertos o todos los sitios para evitar esos problemas.\nSi la extensión no está instalada, esta función no tendrá efecto y se puede dejar activada.",
 
     "feature_desc_lyricsQueueButton": "Agregue un botón a cada canción en la cola para abrir rápidamente su página de letras",
-    "feature_desc_deleteFromQueueButton": "Agregue un botón a cada canción en la cola para eliminarla rápidamente",
-    "feature_desc_listButtonsPlacement": "¿Dónde deberían aparecer los botones de la cola?",
     "feature_helptext_listButtonsPlacement": "Hay varias listas de canciones en el sitio, como páginas de álbumes, listas de reproducción y la cola de reproducción actual. Con esta opción, puede elegir dónde deben aparecer los botones de la cola.",
     "feature_desc_scrollToActiveSongBtn": "Agregue un botón para desplazarse hasta la canción que se está reproduciendo actualmente",
     "feature_desc_clearQueueBtn": "Agregue un botón para borrar rápidamente la cola de reproducción o la lista de reproducción actual",
