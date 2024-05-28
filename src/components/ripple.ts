@@ -35,7 +35,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem) {
     else
       rippleEl.appendChild(rippleAreaEl);
 
-    // setTimeout(() => rippleAreaEl.remove(), 250);
+    setTimeout(() => rippleAreaEl.remove(), 250);
   });
 
   return rippleEl;
