@@ -80,7 +80,7 @@ export const migrations: DataMigrationsDict = {
     ],
   ),
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-  // 6 -> 7 (v2.x)
+  // 6 -> 7 (vX.X)
   // 7: (oldData: FeatureConfig) => 
 } as const satisfies DataMigrationsDict;
 
@@ -94,7 +94,7 @@ function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKey
 
 /**
  * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.  
- * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its default value, it will be reset to the new default value.  
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.  
  * Returns a copy of the object.
  */
 function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(

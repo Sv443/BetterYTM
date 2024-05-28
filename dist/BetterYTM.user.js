@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,47 +35,47 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/delete.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/b95e2495/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -186,7 +186,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "69ad80ce";
+const buildNumberRaw = "b95e2495";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -2209,7 +2209,7 @@ function addCfgMenu() {
             siteEvents.emit("configOptionChanged", key, initialVal, newVal);
         });
         /** Call whenever the feature config is changed */
-        const confChanged = UserUtils.debounce(onCfgChange, 200, "falling");
+        const confChanged = UserUtils.debounce(onCfgChange, 333, "falling");
         const featureCfg = getFeatures();
         const featureCfgWithCategories = Object.entries(featInfo)
             .reduce((acc, [key, { category }]) => {
@@ -3941,7 +3941,6 @@ function initAutoLike() {
                     var _a;
                     timeout && clearTimeout(timeout);
                     timeout = setTimeout(() => {
-                        // TODO: support multiple artists
                         const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
                         const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
                         const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
@@ -3961,7 +3960,7 @@ function initAutoLike() {
                 });
                 siteEvents.on("pathChanged", (path) => {
                     if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-                        const chanId = path.split("/").pop(); // TODO:FIXME: this doesn't work for paths like /channel/@User/videos
+                        const chanId = getCurrentChannelId();
                         if (!chanId)
                             return error("Couldn't extract channel ID from URL");
                         document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
@@ -3997,8 +3996,8 @@ function initAutoLike() {
                         addSelectorListener("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
                             listener(chanElem) {
                                 let chanId = chanElem.href.split("/").pop();
-                                if (chanId === null || chanId === void 0 ? void 0 : chanId.startsWith("@"))
-                                    chanId = chanId.slice(1);
+                                if (!(chanId === null || chanId === void 0 ? void 0 : chanId.startsWith("@")))
+                                    chanId = `@${chanId}`;
                                 const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanId);
                                 if (!likeChan || !likeChan.enabled)
                                     return;
@@ -4019,9 +4018,8 @@ function initAutoLike() {
                     }, ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000);
                 });
                 siteEvents.on("pathChanged", (path) => {
-                    var _a;
                     if (path.match(/(\/?@|\/channel\/).+/)) {
-                        const chanId = (_a = path.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/@/g, "");
+                        const chanId = getCurrentChannelId();
                         if (!chanId)
                             return error("Couldn't extract channel ID from URL");
                         document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
@@ -4880,6 +4878,7 @@ const options = {
  * Contains all possible features with their default values and other configuration.
  *
  * **Required props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property             | Description                                                                                                                      |
  * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
  * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
@@ -4887,7 +4886,9 @@ const options = {
  * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
  * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
  *
+ *
  * **Optional props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property                                                       | Description                                                                                                                                              |
  * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
@@ -4905,6 +4906,7 @@ const options = {
  * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * | `renderValue: (val: any) => string`                            | If provided, is called before rendering the value's label in the config menu                                                                             |
  *
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -5417,7 +5419,7 @@ const featInfo = {
         category: "general",
         min: 0,
         max: 15,
-        default: 5,
+        default: 3,
         step: 0.5,
         unit: "s",
         reloadRequired: false,
@@ -5508,7 +5510,7 @@ const migrations = {
         { key: "volumeSliderScrollStep", oldDefault: 10 },
     ]),
     // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-    // 6 -> 7 (v2.x)
+    // 6 -> 7 (vX.X)
     // 7: (oldData: FeatureConfig) => 
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -5521,7 +5523,7 @@ function useDefaultConfig(baseData, resetKeys) {
 }
 /**
  * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.
- * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its default value, it will be reset to the new default value.
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.
  * Returns a copy of the object.
  */
 function useNewDefaultIfUnchanged(oldData, defaults) {
@@ -6295,6 +6297,24 @@ function arrayWithSeparators(array, separator = ", ", lastSeparator) {
 function getWatchId() {
     const { searchParams, pathname } = new URL(location.href);
     return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+function getCurrentChannelId() {
+    try {
+        const { pathname } = new URL(location.href);
+        if (pathname.includes("/channel/"))
+            return pathname.split("/channel/")[1].split("/")[0];
+        else if (pathname.includes("/@"))
+            return pathname.split("/@")[1].split("/")[0];
+        else
+            return null;
+    }
+    catch (e) {
+        return null;
+    }
 }
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
 function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
