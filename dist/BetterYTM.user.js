@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,47 +35,48 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/4b8a8499/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/a8f40a8c/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -186,7 +187,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4b8a8499";
+const buildNumberRaw = "a8f40a8c";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1270,6 +1271,14 @@ function getAutoLikeDialog() {
                 renderHeader: renderHeader$6,
                 renderBody: renderBody$6,
             });
+            siteEvents.on("autoLikeChannelsUpdated", () => __awaiter(this, void 0, void 0, function* () {
+                if (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.isOpen()) {
+                    autoLikeDialog.close();
+                    autoLikeDialog.unmount();
+                    yield autoLikeDialog.open();
+                    log("Auto-like channels updated, refreshed dialog");
+                }
+            }));
         }
         return autoLikeDialog;
     });
@@ -1308,11 +1317,7 @@ function renderBody$6() {
             const idPrompt = (_a = prompt(t("add_auto_like_channel_id_prompt"))) === null || _a === void 0 ? void 0 : _a.trim();
             if (!idPrompt)
                 return;
-            const isId = idPrompt.match(/^@?.+$/);
-            const isUrl = idPrompt.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
-            if ((_b = isId === null || isId === void 0 ? void 0 : isId[0]) === null || _b === void 0 ? void 0 : _b.startsWith("@"))
-                isId[0] = isId[0].slice(1);
-            const id = ((isId === null || isId === void 0 ? void 0 : isId[0]) || (isUrl === null || isUrl === void 0 ? void 0 : isUrl[1]) || "").trim();
+            const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
             if (!id || id.length <= 0)
                 return alert(t("add_auto_like_channel_invalid_id"));
             let overwriteName = false;
@@ -1335,6 +1340,7 @@ function renderBody$6() {
                         { id, name, enabled: true },
                     ],
                 });
+            siteEvents.emit("autoLikeChannelsUpdated");
             const unsub = autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.on("clear", () => __awaiter(this, void 0, void 0, function* () {
                 unsub === null || unsub === void 0 ? void 0 : unsub();
                 yield (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.open());
@@ -1354,52 +1360,85 @@ function renderBody$6() {
         const sortedChannels = autoLikeStore
             .getData().channels
             .sort((a, b) => a.name.localeCompare(b.name));
-        for (const { name, id, enabled } of sortedChannels) {
+        for (const { name: chanName, id: chanId, enabled } of sortedChannels) {
             const rowElem = document.createElement("div");
             rowElem.classList.add("bytm-auto-like-channel-row");
             const leftCont = document.createElement("div");
             leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
             const nameLabelEl = document.createElement("label");
-            nameLabelEl.ariaLabel = nameLabelEl.title = name;
-            nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${id}`;
+            nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
+            nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
             nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
             const nameElem = document.createElement("a");
             nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
-            nameElem.ariaLabel = nameElem.textContent = name;
-            // TODO:FIXME: @-channel links are not working
-            nameElem.href = `https://${getDomain() === "yt" ? "" : "music."}youtube.com/channel/${id}`;
+            nameElem.ariaLabel = nameElem.textContent = chanName;
+            nameElem.href = `https://${getDomain() === "ytm" ? "music." : ""}youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
             nameElem.target = "_blank";
             nameElem.rel = "noopener noreferrer";
             nameElem.tabIndex = 0;
             const idElem = document.createElement("span");
             idElem.classList.add("bytm-auto-like-channel-id");
-            idElem.textContent = idElem.title = id;
+            idElem.textContent = idElem.title = chanId;
             nameLabelEl.appendChild(nameElem);
             nameLabelEl.appendChild(idElem);
             const toggleElem = yield createToggleInput({
-                id: `bytm-auto-like-channel-list-toggle-${id}`,
+                id: `bytm-auto-like-channel-list-toggle-${chanId}`,
                 labelPos: "off",
                 initialValue: enabled,
-                onChange: (en) => setChannelEnabled(id, en),
+                onChange: (en) => setChannelEnabled(chanId, en),
             });
             toggleElem.classList.add("bytm-auto-like-channel-toggle");
+            const btnCont = document.createElement("div");
+            btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
+            const editBtn = yield createCircularBtn({
+                resourceName: "icon-edit",
+                title: t("edit_entry"),
+                onClick() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        var _a, _b, _c;
+                        const newNamePr = (_a = prompt(t("auto_like_channel_edit_name_prompt"), chanName)) === null || _a === void 0 ? void 0 : _a.trim();
+                        if (!newNamePr || newNamePr.length === 0)
+                            return;
+                        const newName = newNamePr.length > 0 ? newNamePr : chanName;
+                        const newIdPr = (_b = prompt(t("auto_like_channel_edit_id_prompt"), chanId)) === null || _b === void 0 ? void 0 : _b.trim();
+                        if (!newIdPr || newIdPr.length === 0)
+                            return;
+                        const newId = newIdPr.length > 0 ? (_c = getChannelIdFromPrompt(newIdPr)) !== null && _c !== void 0 ? _c : chanId : chanId;
+                        yield autoLikeStore.setData({
+                            channels: autoLikeStore.getData().channels
+                                .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { name: newName, id: newId }) : ch),
+                        });
+                        siteEvents.emit("autoLikeChannelsUpdated");
+                    });
+                },
+            });
+            btnCont.appendChild(editBtn);
             const removeBtn = yield createCircularBtn({
                 resourceName: "icon-delete",
                 title: t("remove_entry"),
                 onClick() {
-                    removeChannel(id);
-                    rowElem.remove();
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield removeChannel(chanId);
+                        rowElem.remove();
+                    });
                 },
             });
+            btnCont.appendChild(removeBtn);
             leftCont.appendChild(toggleElem);
             leftCont.appendChild(nameLabelEl);
             rowElem.appendChild(leftCont);
-            rowElem.appendChild(removeBtn);
+            rowElem.appendChild(btnCont);
             channelListCont.appendChild(rowElem);
         }
         contElem.appendChild(channelListCont);
         return contElem;
     });
+}
+function getChannelIdFromPrompt(promptStr) {
+    const isId = promptStr.match(/^@?.+$/);
+    const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
+    const id = ((isId === null || isId === void 0 ? void 0 : isId[0]) || (isUrl === null || isUrl === void 0 ? void 0 : isUrl[1]) || "").trim();
+    return id.length > 0 ? id : null;
 }let changelogDialog = null;
 /** Creates and/or returns the changelog dialog */
 function getChangelogDialog() {
@@ -3917,13 +3956,20 @@ let canCompress$1 = false;
 /** DataStore instance for all auto-liked channels */
 const autoLikeStore = new UserUtils.DataStore({
     id: "bytm-auto-like-channels",
-    formatVersion: 1,
+    formatVersion: 2,
     defaultData: {
         channels: [],
     },
     encodeData: (data) => canCompress$1 ? UserUtils.compress(data, compressionFormat, "string") : data,
     decodeData: (data) => canCompress$1 ? UserUtils.decompress(data, compressionFormat, "string") : data,
-    // migrations: {},
+    migrations: {
+        // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
+        2: (oldData) => ({
+            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: ch.id.trim().match(/^(UC|@).+$/)
+                    ? ch.id.trim()
+                    : `@${ch.id.trim()}` }))),
+        }),
+    },
 });
 let autoLikeStoreLoaded = false;
 /** Inits the auto-like DataStore instance */
@@ -3958,6 +4004,10 @@ function initAutoLike() {
                             return error("Couldn't auto-like channel because the like button couldn't be found");
                         if (likeRenderer.getAttribute("like-status") !== "LIKE") {
                             likeBtn.click();
+                            getFeature("autoLikeShowToast") && showIconToast({
+                                message: t("auto_liked_channel", likeChan.name),
+                                icon: "icon-auto_like",
+                            });
                             log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
                         }
                     }, ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000);
@@ -3979,7 +4029,6 @@ function initAutoLike() {
                                 }
                                 else {
                                     // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                                    // (this is only the case on YTM, on YT the subscribe button exists and works perfectly fine)
                                     const shareBtnEl = headerCont.querySelector("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
                                     const chanName = (_d = (_c = headerCont.querySelector("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")) === null || _c === void 0 ? void 0 : _c.textContent) !== null && _d !== void 0 ? _d : null;
                                     shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
@@ -3999,10 +4048,9 @@ function initAutoLike() {
                     timeout = setTimeout(() => {
                         addSelectorListener("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
                             listener(chanElem) {
-                                let chanId = chanElem.href.split("/").pop();
-                                if (!(chanId === null || chanId === void 0 ? void 0 : chanId.startsWith("@")))
-                                    chanId = `@${chanId}`;
-                                const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanId);
+                                var _a, _b;
+                                const chanElemId = (_b = (_a = chanElem.href.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split("/")[0]) !== null && _b !== void 0 ? _b : null;
+                                const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
                                 if (!likeChan || !likeChan.enabled)
                                     return;
                                 addSelectorListener("watchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
@@ -4010,7 +4058,7 @@ function initAutoLike() {
                                         if (likeBtn.getAttribute("aria-pressed") !== "true") {
                                             likeBtn.click();
                                             getFeature("autoLikeShowToast") && showIconToast({
-                                                message: t("auto_liked_video"),
+                                                message: t("auto_liked_channel", likeChan.name),
                                                 icon: "icon-auto_like",
                                             });
                                             log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
@@ -4060,6 +4108,17 @@ function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
+        siteEvents.on("autoLikeChannelsUpdated", () => {
+            var _a, _b;
+            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+            if (!buttonEl)
+                return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+            if (enabled)
+                buttonEl.classList.add("toggled");
+            else
+                buttonEl.classList.remove("toggled");
+        });
         const buttonEl = yield createLongBtn({
             resourceName: `icon-auto_like${(chan === null || chan === void 0 ? void 0 : chan.enabled) ? "_enabled" : ""}`,
             text: t("auto_like"),
@@ -4096,6 +4155,7 @@ function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
                                     .map((ch) => ch.id === chanId ? Object.assign(Object.assign({}, ch), { enabled: toggled }) : ch),
                             });
                         }
+                        siteEvents.emit("autoLikeChannelsUpdated");
                         showIconToast({
                             message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
                             icon: `icon-auto_like${toggled ? "_enabled" : ""}`,
@@ -5026,7 +5086,8 @@ const featInfo = {
         category: "layout",
         options: options.siteSelectionOrNone,
         default: "all",
-        textAdornment: adornments.reloadRequired,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.reloadRequired, adornments.advanced]),
     },
     //#region volume
     volumeSliderLabel: {
@@ -6306,8 +6367,12 @@ function getWatchId() {
  * Returns null if the current page is not a channel page or there was an error parsing the URL
  */
 function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+}
+/** Returns the channel ID from a URL or null if the URL is invalid */
+function parseChannelIdFromUrl(url) {
     try {
-        const { pathname } = new URL(location.href);
+        const { pathname } = url instanceof URL ? url : new URL(url);
         if (pathname.includes("/channel/"))
             return pathname.split("/channel/")[1].split("/")[0];
         else if (pathname.includes("/@"))
