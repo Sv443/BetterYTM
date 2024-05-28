@@ -628,7 +628,7 @@ export const featInfo = {
     category: "general",
     min: 0,
     max: 15,
-    default: 5,
+    default: 3,
     step: 0.5,
     unit: "s",
     reloadRequired: false,
