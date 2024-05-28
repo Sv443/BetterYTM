@@ -1,4 +1,4 @@
-import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
+import { getPreferredLocale, getResourceUrl, resourceToHTMLString, t, tp } from "../utils";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
 import { doVersionCheck } from "./versionCheck";
 import { getFeatures, promptResetConfig } from "../config";
@@ -6,6 +6,8 @@ import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOr
 import { emitSiteEvent } from "../siteEvents";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog } from "../dialogs";
+import { showIconToast } from "../components";
+import { mode } from "../constants";
 
 export * from "./layout";
 export * from "./behavior";
@@ -616,6 +618,22 @@ export const featInfo = {
     unit: "s",
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
+  toastTimeout: {
+    type: "slider",
+    category: "general",
+    min: 0,
+    max: 15,
+    default: 5,
+    step: 0.5,
+    unit: "s",
+    reloadRequired: false,
+    enable: noop,
+    change: () => showIconToast({
+      duration: getFeatures().toastTimeout * 1000,
+      message: "Example",
+      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+    }),
   },
   resetConfig: {
     type: "button",

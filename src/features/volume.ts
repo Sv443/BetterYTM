@@ -80,6 +80,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
       linkIconElem.id = "bytm-vol-slider-shared";
       linkIconElem.innerHTML = linkIconHtml;
       linkIconElem.role = "alert";
+      linkIconElem.ariaLive = "polite";
       linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
 
       labelContElem.classList.add("has-icon");
