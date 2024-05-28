@@ -619,7 +619,7 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
-  toastTimeout: {
+  toastDuration: {
     type: "slider",
     category: "general",
     min: 0,
@@ -628,9 +628,11 @@ export const featInfo = {
     step: 0.5,
     unit: "s",
     reloadRequired: false,
+    advanced: true,
+    textAdornment: adornments.advanced,
     enable: noop,
     change: () => showIconToast({
-      duration: getFeatures().toastTimeout * 1000,
+      duration: getFeatures().toastDuration * 1000,
       message: "Example",
       iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
     }),

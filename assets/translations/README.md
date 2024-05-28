@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 242 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `213/242` (88%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `242/242` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `213/242` (88%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `213/242` (88%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `213/242` (88%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `213/242` (88%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `213/242` (88%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `213/242` (88%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 243 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `213/243` (87.7%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `243/243` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `213/243` (87.7%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `213/243` (87.7%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `213/243` (87.7%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `213/243` (87.7%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `213/243` (87.7%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `213/243` (87.7%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -71,8 +71,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -81,7 +82,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -107,8 +108,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -117,7 +119,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -143,8 +145,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -153,7 +156,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -179,8 +182,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -189,7 +193,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -215,8 +219,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -225,7 +230,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -251,8 +256,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
@@ -261,7 +267,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 29 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 30 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -287,8 +293,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
-| `feature_desc_initTimeout` | `How long to wait for features to initialize before considering them to likely be in an errored state` |
+| `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
+| `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
 | `feature_desc_resetConfig` | `Reset all settings to their default values` |
 | `feature_btn_resetConfig` | `Reset settings` |
 | `feature_btn_resetConfig_running` | `Confirming...` |
