@@ -1,5 +1,5 @@
 import { debounce } from "@sv443-network/userutils";
-import { getDomain, onInteraction, t } from "../utils";
+import { getDomain, log, onInteraction, parseChannelIdFromUrl, t } from "../utils";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
 import { autoLikeStore, initAutoLikeStore } from "../features";
 import { siteEvents } from "../siteEvents";
@@ -10,6 +10,7 @@ let autoLikeDialog: BytmDialog | null = null;
 export async function getAutoLikeDialog() {
   if(!autoLikeDialog) {
     await initAutoLikeStore();
+
     autoLikeDialog = new BytmDialog({
       id: "auto-like-channels",
       width: 600,
@@ -21,6 +22,15 @@ export async function getAutoLikeDialog() {
       small: true,
       renderHeader,
       renderBody,
+    });
+
+    siteEvents.on("autoLikeChannelsUpdated", async () => {
+      if(autoLikeDialog?.isOpen()) {
+        autoLikeDialog.close();
+        autoLikeDialog.unmount();
+        await autoLikeDialog.open();
+        log("Auto-like channels updated, refreshed dialog");
+      }
     });
   }
   return autoLikeDialog;
@@ -66,13 +76,7 @@ async function renderBody() {
     if(!idPrompt)
       return;
 
-    const isId = idPrompt.match(/^@?.+$/);
-    const isUrl = idPrompt.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
-
-    if(isId?.[0]?.startsWith("@"))
-      isId[0] = isId[0].slice(1);
-
-    const id = (isId?.[0] || isUrl?.[1] || "").trim();
+    const id = parseChannelIdFromUrl(idPrompt) ?? (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
 
     if(!id || id.length <= 0)
       return alert(t("add_auto_like_channel_invalid_id"));
@@ -135,7 +139,7 @@ async function renderBody() {
     .getData().channels
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  for(const { name, id, enabled } of sortedChannels) {
+  for(const { name: chanName, id: chanId, enabled } of sortedChannels) {
     const rowElem = document.createElement("div");
     rowElem.classList.add("bytm-auto-like-channel-row");
 
@@ -143,48 +147,75 @@ async function renderBody() {
     leftCont.classList.add("bytm-auto-like-channel-row-left-cont");
 
     const nameLabelEl = document.createElement("label");
-    nameLabelEl.ariaLabel = nameLabelEl.title = name;
-    nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${id}`;
+    nameLabelEl.ariaLabel = nameLabelEl.title = chanName;
+    nameLabelEl.htmlFor = `bytm-auto-like-channel-list-toggle-${chanId}`;
     nameLabelEl.classList.add("bytm-auto-like-channel-name-label");
 
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
-    nameElem.ariaLabel = nameElem.textContent = name;
-    // TODO:FIXME: @-channel links are not working
-    nameElem.href = `https://${getDomain() === "yt" ? "" : "music."}youtube.com/channel/${id}`;
+    nameElem.ariaLabel = nameElem.textContent = chanName;
+    nameElem.href = `https://${getDomain() === "ytm" ? "music." : ""}youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
     nameElem.target = "_blank";
     nameElem.rel = "noopener noreferrer";
     nameElem.tabIndex = 0;
 
     const idElem = document.createElement("span");
     idElem.classList.add("bytm-auto-like-channel-id");
-    idElem.textContent = idElem.title = id;
+    idElem.textContent = idElem.title = chanId;
 
     nameLabelEl.appendChild(nameElem);
     nameLabelEl.appendChild(idElem);
 
     const toggleElem = await createToggleInput({
-      id: `bytm-auto-like-channel-list-toggle-${id}`,
+      id: `bytm-auto-like-channel-list-toggle-${chanId}`,
       labelPos: "off",
       initialValue: enabled,
-      onChange: (en) => setChannelEnabled(id, en),
+      onChange: (en) => setChannelEnabled(chanId, en),
     });
     toggleElem.classList.add("bytm-auto-like-channel-toggle");
+
+    const btnCont = document.createElement("div");
+    btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");
+
+    const editBtn = await createCircularBtn({
+      resourceName: "icon-edit",
+      title: t("edit_entry"),
+      async onClick() {
+        const newNamePr = prompt(t("auto_like_channel_edit_name_prompt"), chanName)?.trim();
+        if(!newNamePr || newNamePr.length === 0)
+          return;
+        const newName = newNamePr.length > 0 ? newNamePr : chanName;
+
+        const newIdPr = prompt(t("auto_like_channel_edit_id_prompt"), chanId)?.trim();
+        if(!newIdPr || newIdPr.length === 0)
+          return;
+        const newId = newIdPr.length > 0 ? getChannelIdFromPrompt(newIdPr) ?? chanId : chanId;
+
+        await autoLikeStore.setData({
+          channels: autoLikeStore.getData().channels
+            .map((ch) => ch.id === chanId ? { ...ch, name: newName, id: newId } : ch),
+        });
+
+        siteEvents.emit("autoLikeChannelsUpdated");
+      },
+    });
+    btnCont.appendChild(editBtn);
 
     const removeBtn = await createCircularBtn({
       resourceName: "icon-delete",
       title: t("remove_entry"),
-      onClick() {
-        removeChannel(id);
+      async onClick() {
+        await removeChannel(chanId);
         rowElem.remove();
       },
     });
+    btnCont.appendChild(removeBtn);
 
     leftCont.appendChild(toggleElem);
     leftCont.appendChild(nameLabelEl);
 
     rowElem.appendChild(leftCont);
-    rowElem.appendChild(removeBtn);
+    rowElem.appendChild(btnCont);
 
     channelListCont.appendChild(rowElem);
   }
@@ -192,4 +223,12 @@ async function renderBody() {
   contElem.appendChild(channelListCont);
 
   return contElem;
+}
+
+function getChannelIdFromPrompt(promptStr: string) {
+  const isId = promptStr.match(/^@?.+$/);
+  const isUrl = promptStr.match(/^(?:https?:\/\/)?(?:www\.)?(?:music\.)?youtube\.com\/(?:channel\/|@)([a-zA-Z0-9_-]+)/);
+
+  const id = (isId?.[0] || isUrl?.[1] || "").trim();
+  return id.length > 0 ? id : null;
 }

@@ -80,8 +80,13 @@ export function getWatchId() {
  * Returns null if the current page is not a channel page or there was an error parsing the URL
  */
 export function getCurrentChannelId() {
+  return parseChannelIdFromUrl(location.href);
+}
+
+/** Returns the channel ID from a URL or null if the URL is invalid */
+export function parseChannelIdFromUrl(url: string | URL) {
   try {
-    const { pathname } = new URL(location.href);
+    const { pathname } = url instanceof URL ? url : new URL(url);
     if(pathname.includes("/channel/"))
       return pathname.split("/channel/")[1].split("/")[0];
     else if(pathname.includes("/@"))

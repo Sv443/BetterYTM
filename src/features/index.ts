@@ -227,7 +227,8 @@ export const featInfo = {
     category: "layout",
     options: options.siteSelectionOrNone,
     default: "all",
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.reloadRequired, adornments.advanced]),
   },
 
   //#region volume

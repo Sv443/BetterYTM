@@ -64,6 +64,7 @@ export const allSiteEvents = [
   "watchIdChanged",
   "pathChanged",
   "fullscreenToggled",
+  "autoLikeChannelsUpdated",
 ] as const;
 
 /** EventEmitter instance that is used to detect changes to the site */

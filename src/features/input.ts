@@ -155,8 +155,7 @@ export async function initNumKeysSkip() {
 
 let canCompress = false;
 
-/** DataStore instance for all auto-liked channels */
-export const autoLikeStore = new DataStore<{
+type AutoLikeData = {
   channels: {
     /** 24-character channel ID or user ID including the @ prefix */
     id: string;
@@ -165,15 +164,28 @@ export const autoLikeStore = new DataStore<{
     /** Whether the channel should be auto-liked */
     enabled: boolean;
   }[];
-}>({
+};
+
+/** DataStore instance for all auto-liked channels */
+export const autoLikeStore = new DataStore<AutoLikeData>({
   id: "bytm-auto-like-channels",
-  formatVersion: 1,
+  formatVersion: 2,
   defaultData: {
     channels: [],
   },
   encodeData: (data) => canCompress ? compress(data, compressionFormat, "string") : data,
   decodeData: (data) => canCompress ? decompress(data, compressionFormat, "string") : data,
-  // migrations: {},
+  migrations: {
+    // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
+    2: (oldData: AutoLikeData) => ({
+      channels: oldData.channels.map((ch) => ({
+        ...ch,
+        id: ch.id.trim().match(/^(UC|@).+$/)
+          ? ch.id.trim()
+          : `@${ch.id.trim()}`,
+      })),
+    }),
+  },
 });
 
 let autoLikeStoreLoaded = false;
@@ -215,6 +227,10 @@ export async function initAutoLike() {
 
           if(likeRenderer.getAttribute("like-status") !== "LIKE") {
             likeBtn.click();
+            getFeature("autoLikeShowToast") && showIconToast({
+              message: t("auto_liked_channel", likeChan.name),
+              icon: "icon-auto_like",
+            });
             log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
           }
         }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
@@ -238,8 +254,6 @@ export async function initAutoLike() {
               }
               else {
                 // some channels don't have a subscribe button and instead only have a "share" button for some bullshit reason
-                // (this is only the case on YTM, on YT the subscribe button exists and works perfectly fine)
-
                 const shareBtnEl = headerCont.querySelector<HTMLElement>("ytmusic-menu-renderer #top-level-buttons yt-button-renderer:last-of-type");
                 const chanName = headerCont.querySelector<HTMLElement>("ytmusic-visual-header-renderer .content-container h2 yt-formatted-string")?.textContent ?? null;
                 shareBtnEl && chanName && addAutoLikeToggleBtn(shareBtnEl, chanId, chanName);
@@ -258,11 +272,9 @@ export async function initAutoLike() {
         timeout = setTimeout(() => {
           addSelectorListener<HTMLAnchorElement, "yt">("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
             listener(chanElem) {
-              let chanId = chanElem.href.split("/").pop();
-              if(!chanId?.startsWith("@"))
-                chanId = `@${chanId}`;
+              const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
 
-              const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanId);
+              const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanElemId);
               if(!likeChan || !likeChan.enabled)
                 return;
 
@@ -271,7 +283,7 @@ export async function initAutoLike() {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
                     getFeature("autoLikeShowToast") && showIconToast({
-                      message: t("auto_liked_video"),
+                      message: t("auto_liked_channel", likeChan.name),
                       icon: "icon-auto_like",
                     });
                     log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
