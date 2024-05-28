@@ -308,9 +308,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
+- Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
-  - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element
+  - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element with just an icon
+  - [createLongBtn()](#createlongbtn) - Creates a generic, long and circular button element with an icon and text
+  - [showToast()](#showtoast) - Shows a toast notification and a message string or element
+  - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
+  - [createRipple()](#createripple) - Creates a click ripple effect on the given element
 - Translations:
   - [setLocale()](#setlocale) - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -1267,23 +1272,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### createCircularBtn()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.createCircularBtn(btnProps: {
->   title: string,
->   // either resourceName or src has to be specified:
->   resourceName: string | undefined,
->   src: string | undefined,
->   // either href or onClick has to be specified:
->   href: string | undefined,
->   onClick: (event: MouseEvent | KeyboardEvent) => void | undefined,
-> }): HTMLElement
+> unsafeWindow.BYTM.createCircularBtn(props: CircularBtnProps): Promise<HTMLElement>
 > ```
->
-> Creates a circular button element that can be used to trigger an action or navigate to a different page.  
-> - `title` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility.
-> - `resourceName` - The name of the resource to use as the button icon (`src` can't be specified).
-> - `src` - The URL of the image to use as the button icon (`resourceName` can't be specified).
-> - `href` - The URL to navigate to when the button is interacted with (`onClick` can't be specified).
-> - `onClick` - The function that is called when the button is clicked or interacted with (`href` can't be specified).
+> 
+> Creates a circular button element containing an icon that can be used to trigger an action or navigate to a different page.  
+> 
+> Properties:
+> - `title: string` - The title that is displayed when hovering over the button. Also used as a description for accessibility.
+> - either of:
+>   - `resourceName: string` - Name of the resource starting with `icon-` to use as the button icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `src: string | Promise<string>` - URL of the image to use as the button icon
+> - either of:
+>   - `href: string` - URL to navigate to when the button is clicked or interacted with.
+>   - `onClick: (evt: MouseEvent | KeyboardEvent) => void` - Function that's called when the button is clicked or interacted with
 >
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 >
@@ -1299,5 +1300,144 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > document.querySelector("#my-element").appendChild(circularBtn);
 > ```
 > </details>
+
+<br>
+
+> #### createLongBtn()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createLongBtn(props: LongBtnProps): Promise<HTMLElement>
+> ```
+>   
+> Creates a long button element that can be used to trigger an action or navigate to a different page.  
+> It can also be set up to act as a toggle button with rich CSS classes for customization.  
+>   
+> Properties:
+> - `text: string` - The text to display on the button
+> - `title: string` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility
+> - `iconPosition?: "left" | "right"` - The position of the icon relative to the text. Can be "left" or "right" (defaults to "left")
+> - either of:
+>   - `resourceName: string` - Name of the resource to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `src: string` - URL of the image to use as the icon
+> - either of:
+>   - `href: string` - URL to navigate to when the button is clicked or interacted with.
+>   - `onClick: (evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is clicked or interacted with
+>   - `toggle: true` - Set to true to make the button act as a toggle button  
+>     In addition, there are these props:
+>     - `onInteraction: (state: boolean, evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is interacted with
+>     - `toggleInitialState?: boolean` - The initial value of the toggle button (optional, defaults to false)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> // link:
+> const longBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-help",
+>   href: "https://example.com/help?topic=foo",
+>   text: "Help",
+>   title: "Click to open the help page",
+>   iconPosition: "right",
+> });
+> 
+> // toggle:
+> const toggleBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-globe",
+>   toggle: true,
+>   onInteraction(state: boolean, event: MouseEvent | KeyboardEvent) {
+>     console.log(`The button was toggled to ${state}`);
+>   },
+>   text: "Toggle",
+>   title: "Click to toggle something",
+> });
+> ```
+> </details>
+
+<br>
+
+> #### showToast()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>
+> ```
+>   
+> Shows a toast notification with the specified message or element for the given duration and anchored in the specified corner of the viewport.  
+> If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
+>   
+> Properties:
+> - either of:
+>   - `message: string` - The message to show in the toast
+>   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
+> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
+> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.showToast({
+>   message: "This is a normal toast",
+>   duration: 2_524_140,
+>   position: "bl",
+> });
+> ```
+> </details>
+
+<br>
+
+> #### showIconToast()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.showIconToast(props: IconToastProps): Promise<void>
+> ```
+>   
+> Shows a toast notification with the specified icon, message and duration anchored in the specified corner of the viewport.  
+> If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
+>   
+> Properties:
+> - either of:
+>   - `message: string` - The message to show in the toast
+>   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
+> - either of:
+>   - `icon: string` - A resource name starting with `icon-` to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `iconSrc: string | Promise<string>` - URL of the image to use as the icon
+> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
+> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.showIconToast({
+>   message: "This is an icon toast",
+>   icon: "icon-help",
+>   duration: 3_000,
+>   position: "bl",
+> });
+> ```
+> </details>
+
+<br>
+
+> #### createRipple()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createRipple(rippleElement?: HTMLElement): HTMLElement
+> ```
+>   
+> Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
+> Returns either the new element or the initially passed one.  
+> Custom CSS overrides can be applied to change the color, size and transparency.  
+> Just make sure not to make the animation slower than it is, since the script will automatically remove the ripple elements after the animation is done.  
+>   
+> **This component is still experimental and might not work in some cases!**
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const myBoringButton = document.querySelector("#my-boring-button");
+> unsafeWindow.BYTM.createRipple(myBoringButton); // it's as easy as this
+> ```
+> </details>
+
+<br>
+
 
 <br><br><br><br><br><br>
