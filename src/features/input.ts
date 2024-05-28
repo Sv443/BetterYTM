@@ -325,6 +325,18 @@ export async function initAutoLike() {
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
   const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
+  siteEvents.on("autoLikeChannelsUpdated", () => {
+    const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+    if(!buttonEl)
+      return warn("Couldn't find auto-like toggle button for channel ID:", channelId);
+
+    const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
+    if(enabled)
+      buttonEl.classList.add("toggled");
+    else
+      buttonEl.classList.remove("toggled");
+  });
+
   const buttonEl = await createLongBtn({
     resourceName: `icon-auto_like${chan?.enabled ? "_enabled" : ""}`,
     text: t("auto_like"),
@@ -364,6 +376,8 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
               .map((ch) => ch.id === chanId ? { ...ch, enabled: toggled } : ch),
           });
         }
+
+        siteEvents.emit("autoLikeChannelsUpdated");
         showIconToast({
           message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
           icon: `icon-auto_like${toggled ? "_enabled" : ""}`,

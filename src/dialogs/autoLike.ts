@@ -1,7 +1,8 @@
+import { debounce } from "@sv443-network/userutils";
 import { getDomain, onInteraction, t } from "../utils";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
 import { autoLikeStore, initAutoLikeStore } from "../features";
-import { debounce } from "@sv443-network/userutils";
+import { siteEvents } from "../siteEvents";
 
 let autoLikeDialog: BytmDialog | null = null;
 
@@ -101,6 +102,8 @@ async function renderBody() {
           ],
         }
     );
+
+    siteEvents.emit("autoLikeChannelsUpdated");
 
     const unsub = autoLikeDialog?.on("clear", async () => {
       unsub?.();
