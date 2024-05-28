@@ -75,6 +75,25 @@ export function getWatchId() {
   return pathname.includes("/watch") ? searchParams.get("v") : null;
 }
 
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+export function getCurrentChannelId() {
+  try {
+    const { pathname } = new URL(location.href);
+    if(pathname.includes("/channel/"))
+      return pathname.split("/channel/")[1].split("/")[0];
+    else if(pathname.includes("/@"))
+      return pathname.split("/@")[1].split("/")[0];
+    else
+      return null;
+  }
+  catch(e) {
+    return null;
+  }
+}
+
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
 type ThumbQuality = `${"maxres" | "sd" | "hq" | "mq" | ""}default`;
 

@@ -21,7 +21,7 @@ type ToastProps = {
 
 type IconToastProps = ToastProps & (
   | {
-    icon: ResourceKey;
+    icon: ResourceKey & `icon-${string}`;
   }
   | {
     iconSrc: string | Promise<string>;
