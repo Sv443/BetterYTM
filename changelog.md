@@ -8,8 +8,14 @@
 - **Changes / Fixes:**
   - Welcome menu is shown on YT too now
   - Changed default settings for these features:
-    - Remember Song Time Sites: from `YTM only` to `both sites`
-    - Volume Slider Scroll Sensitivity: from `10%` to `4%`
+    - Remember song time sites: from `YTM only` to `both sites`
+    - Volume slider scroll sensitivity: from `10%` to `4%`
+  - Made some settings require advanced mode that didn't before:
+    - Fix spacing/layout issues
+    - Fix HDR issues
+    - Disable Dark Reader sites
+    - Remove share tracking parameter sites
+    - Placement of list/queue buttons
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Added advanced feature to change the startup timeout

@@ -134,13 +134,15 @@ export const featInfo = {
     category: "layout",
     options: options.siteSelection,
     default: "all",
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   removeUpgradeTab: {
     type: "toggle",
@@ -220,7 +222,8 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   disableDarkReaderSites: {
     type: "select",
@@ -228,7 +231,7 @@ export const featInfo = {
     options: options.siteSelectionOrNone,
     default: "all",
     advanced: true,
-    textAdornment: () => combineAdornments([adornments.reloadRequired, adornments.advanced]),
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
 
   //#region volume
@@ -316,7 +319,8 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   scrollToActiveSongBtn: {
     type: "toggle",
