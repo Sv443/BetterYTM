@@ -17,14 +17,14 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 247 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`de_DE`](./de_DE.json) | `211/247` (85.4%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `247/247` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `213/247` (86.2%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `213/247` (86.2%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `213/247` (86.2%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `213/247` (86.2%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `213/247` (86.2%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`es_ES`](./es_ES.json) | `211/247` (85.4%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `211/247` (85.4%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `211/247` (85.4%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `211/247` (85.4%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `211/247` (85.4%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `211/247` (85.4%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -66,6 +66,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -86,7 +88,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -107,6 +109,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -127,7 +131,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -148,6 +152,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -168,7 +174,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -189,6 +195,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -209,7 +217,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -230,6 +238,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -250,7 +260,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -271,6 +281,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -291,7 +303,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 34 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 36 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -312,6 +324,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_channel` | `Auto-liked %1` |
+| `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
+| `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
