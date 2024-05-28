@@ -174,8 +174,6 @@
     "feature_helptext_disableDarkReaderSites": "L'extension Dark Reader peut causer des problèmes de mise en page sur le site.\nCette fonctionnalité vous permet de désactiver Dark Reader sur certains ou tous les sites pour éviter ces problèmes.\nSi l'extension n'est pas installée, cette fonctionnalité n'aura aucun effet et peut être laissée activée.",
 
     "feature_desc_lyricsQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour ouvrir rapidement sa page de paroles",
-    "feature_desc_deleteFromQueueButton": "Ajouter un bouton à chaque chanson de la file d'attente pour la supprimer rapidement",
-    "feature_desc_listButtonsPlacement": "Où les boutons de file d'attente doivent-ils apparaître?",
     "feature_helptext_listButtonsPlacement": "Il existe diverses listes de chansons sur le site comme les pages d'album, les listes de lecture et la file d'attente de lecture actuelle. Avec cette option, vous pouvez choisir où les boutons de file d'attente doivent apparaître.",
     "feature_desc_scrollToActiveSongBtn": "Ajouter un bouton au-dessus de la file d'attente pour faire défiler jusqu'à la chanson en cours de lecture",
     "feature_desc_clearQueueBtn": "Ajouter un bouton au-dessus de la file d'attente ou de la liste de lecture en cours pour la vider rapidement",

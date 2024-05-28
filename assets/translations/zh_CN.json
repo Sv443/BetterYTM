@@ -174,8 +174,6 @@
     "feature_helptext_disableDarkReaderSites": "Dark Reader 扩展可能会导致网站布局问题。\n此功能允许您禁用某些或所有网站上的 Dark Reader 以防止这些问题。\n如果未安装扩展，此功能将不起作用，可以保持激活。",
 
     "feature_desc_lyricsQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速打开其歌词页面",
-    "feature_desc_deleteFromQueueButton": "在队列中的每首歌曲旁边添加一个按钮，以快速删除它",
-    "feature_desc_listButtonsPlacement": "队列按钮应该显示在哪里？",
     "feature_helptext_listButtonsPlacement": "网站上有各种歌曲列表，如专辑页面、播放列表和当前播放的队列。使用此选项，您可以选择队列按钮应该显示在哪里。",
     "feature_desc_scrollToActiveSongBtn": "在队列中添加一个按钮，以滚动到当前播放的歌曲",
     "feature_desc_clearQueueBtn": "在当前播放的队列或播放列表上方添加一个按钮，以快速清除它",

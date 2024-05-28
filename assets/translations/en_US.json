@@ -192,8 +192,8 @@
     "feature_helptext_disableDarkReaderSites": "The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\nIf the extension is not installed, this feature will have no effect and can be left activated.",
 
     "feature_desc_lyricsQueueButton": "Add a button to each song in a queue to quickly open its lyrics page",
-    "feature_desc_deleteFromQueueButton": "Add a button to each song in a queue to quickly remove it",
-    "feature_desc_listButtonsPlacement": "Where should the queue buttons show up?",
+    "feature_desc_deleteFromQueueButton": "Add a button to each song in a list to quickly remove it",
+    "feature_desc_listButtonsPlacement": "Where should the list buttons show up?",
     "feature_helptext_listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue. With this option you can choose where the queue buttons should show up.",
     "feature_desc_scrollToActiveSongBtn": "Add a button above the queue to scroll to the currently playing song",
     "feature_desc_clearQueueBtn": "Add a button above the currently playing queue or playlist to quickly clear it",
