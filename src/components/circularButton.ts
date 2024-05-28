@@ -4,12 +4,12 @@ import type { ResourceKey } from "../types";
 type CircularBtnOptions = (
   | {
     /** Resource key for the button icon */
-    resourceName: ResourceKey | "_";
+    resourceName: (ResourceKey & `icon-${string}`) | "_";
     /** Tooltip and aria-label of the button */
     title: string;
   }
   | {
-    src: string;
+    src: string | Promise<string>;
     /** Tooltip and aria-label of the button */
     title: string;
   }
@@ -56,7 +56,11 @@ export async function createCircularBtn({
 
   const imgElem = document.createElement("img");
   imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = "src" in rest ? rest.src : await getResourceUrl(rest.resourceName);
+  imgElem.src = "src" in rest
+    ? rest.src instanceof Promise
+      ? await rest.src
+      : rest.src
+    : await getResourceUrl(rest.resourceName);
 
   btnElem.appendChild(imgElem);
 

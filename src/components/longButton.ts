@@ -4,7 +4,7 @@ import type { ResourceKey } from "../types";
 type LongBtnOptions = (
   | {
     /** Resource key for the button icon */
-    resourceName: ResourceKey | "_";
+    resourceName: (ResourceKey & `icon-${string}`) | "_";
   }
   | {
     src: string;
