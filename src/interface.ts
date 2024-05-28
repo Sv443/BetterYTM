@@ -130,7 +130,6 @@ const globalFuncs = {
   createHotkeyInput,
   createToggleInput,
   createCircularBtn,
-  // TODO: document
   showToast,
   showIconToast,
   createRipple,
