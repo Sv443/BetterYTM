@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString } from "../utils";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId } from "../utils";
 import type { Domain } from "../types";
 import { isCfgMenuOpen } from "../menu/menu_old";
 import { disableBeforeUnload } from "./behavior";
@@ -158,7 +158,7 @@ let canCompress = false;
 /** DataStore instance for all auto-liked channels */
 export const autoLikeStore = new DataStore<{
   channels: {
-    /** 24-character channel ID or user ID without the @ */
+    /** 24-character channel ID or user ID including the @ prefix */
     id: string;
     /** Channel name (for display purposes only) */
     name: string;
@@ -196,7 +196,6 @@ export async function initAutoLike() {
       siteEvents.on("songTitleChanged", () => {
         timeout && clearTimeout(timeout);
         timeout = setTimeout(() => {
-          // TODO: support multiple artists
           const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
           const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string") as string[];
 
@@ -223,7 +222,7 @@ export async function initAutoLike() {
 
       siteEvents.on("pathChanged", (path) => {
         if(getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-          const chanId = path.split("/").pop(); // TODO:FIXME: this doesn't work for paths like /channel/@User/videos
+          const chanId = getCurrentChannelId();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
 
@@ -260,8 +259,8 @@ export async function initAutoLike() {
           addSelectorListener<HTMLAnchorElement, "yt">("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
             listener(chanElem) {
               let chanId = chanElem.href.split("/").pop();
-              if(chanId?.startsWith("@"))
-                chanId = chanId.slice(1);
+              if(!chanId?.startsWith("@"))
+                chanId = `@${chanId}`;
 
               const likeChan = autoLikeStore.getData().channels.find((ch) => ch.id === chanId);
               if(!likeChan || !likeChan.enabled)
@@ -286,7 +285,7 @@ export async function initAutoLike() {
 
       siteEvents.on("pathChanged", (path) => {
         if(path.match(/(\/?@|\/channel\/).+/)) {
-          const chanId = path.split("/").pop()?.replace(/@/g, "");
+          const chanId = getCurrentChannelId();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
 

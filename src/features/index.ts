@@ -83,14 +83,17 @@ const options = {
  * Contains all possible features with their default values and other configuration.  
  *   
  * **Required props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property             | Description                                                                                                                      |
  * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
  * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
  * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
  * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
  * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
- *   
+ * 
+ * 
  * **Optional props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property                                                       | Description                                                                                                                                              |
  * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
@@ -108,6 +111,7 @@ const options = {
  * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * | `renderValue: (val: any) => string`                            | If provided, is called before rendering the value's label in the config menu                                                                             |
  * 
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
