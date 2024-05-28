@@ -416,7 +416,7 @@ export async function initAboveQueueBtns() {
             return;
           const url = new URL(location.href);
           url.searchParams.delete("list");
-          url.searchParams.set("t", String(await getVideoTime(0)));
+          url.searchParams.set("time_continue", String(await getVideoTime(0)));
           location.assign(url);
         }
         catch(err) {

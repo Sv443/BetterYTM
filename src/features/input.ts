@@ -97,7 +97,7 @@ async function switchSite(newDomain: Domain) {
     log(`Found video time of ${vt} seconds`);
 
     const cleanSearch = search.split("&")
-      .filter((param) => !param.match(/^\??t=/))
+      .filter((param) => !param.match(/^\??(t|time_continue)=/))
       .join("&");
 
     const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
@@ -105,8 +105,8 @@ async function switchSite(newDomain: Domain) {
         ? `${cleanSearch.startsWith("?")
           ? cleanSearch
           : "?" + cleanSearch
-        }&t=${vt}`
-        : `?t=${vt}`
+        }&time_continue=${vt}`
+        : `?time_continue=${vt}`
       : cleanSearch;
     const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
 
@@ -223,7 +223,7 @@ export async function initAutoLike() {
 
       siteEvents.on("pathChanged", (path) => {
         if(getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-          const chanId = path.split("/").pop();
+          const chanId = path.split("/").pop(); // TODO:FIXME: this doesn't work for paths like /channel/@User/videos
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
 
