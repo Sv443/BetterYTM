@@ -460,6 +460,8 @@ export interface FeatureConfig {
   logLevel: LogLevel;
   /** Amount of seconds until the feature initialization times out */
   initTimeout: number;
+  /** Amount of seconds to show BYTM's toasts for */
+  toastDuration: number;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Whether to show advanced settings in the config menu */
