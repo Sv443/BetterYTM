@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,47 +35,47 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/delete.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/4485ad95/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/delete.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/69ad80ce/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -186,7 +186,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "4485ad95";
+const buildNumberRaw = "69ad80ce";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -197,6 +197,8 @@ const repo = "Sv443/BetterYTM";
 const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
 /** The build number of the userscript */
 const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw); // asserted as generic string instead of literal
+/** URL search parameters at the earliest possible time */
+const initialParams = new URL(location.href).searchParams;
 /** Default compression format used throughout BYTM */
 const compressionFormat = "deflate-raw";
 /** Whether sessionStorage is available and working */
@@ -1121,21 +1123,31 @@ function createRipple(rippleElement) {
 /** Shows a toast message with an icon */
 function showIconToast(_a) {
     return __awaiter(this, void 0, void 0, function* () {
-        var { icon, duration = 3000, position = "tr" } = _a, rest = __rest(_a, ["icon", "duration", "position"]);
+        var { duration = getFeature("toastDuration"), position = "tr" } = _a, rest = __rest(_a, ["duration", "position"]);
+        if (duration <= 0)
+            return info("Toast duration is <= 0, so it won't be shown");
         const toastWrapper = document.createElement("div");
         toastWrapper.classList.add("bytm-toast-flex-wrapper");
-        const toastIcon = document.createElement("div");
-        toastIcon.classList.add("bytm-toast-icon");
-        const iconHtml = yield resourceToHTMLString(icon);
-        if (iconHtml)
-            toastIcon.innerHTML = iconHtml;
+        if ("iconSrc" in rest) {
+            const toastIcon = document.createElement("img");
+            toastIcon.classList.add("bytm-toast-icon", "img");
+            toastIcon.src = rest.iconSrc instanceof Promise ? yield rest.iconSrc : rest.iconSrc;
+            toastWrapper.appendChild(toastIcon);
+        }
+        else {
+            const toastIcon = document.createElement("div");
+            toastIcon.classList.add("bytm-toast-icon");
+            const iconHtml = yield resourceToHTMLString(rest.icon);
+            if (iconHtml)
+                toastIcon.innerHTML = iconHtml;
+            toastWrapper.appendChild(toastIcon);
+        }
         const toastMessage = document.createElement("div");
         toastMessage.classList.add("bytm-toast-message");
         if ("message" in rest)
             toastMessage.textContent = rest.message;
         else
             toastMessage.appendChild(rest.element);
-        toastWrapper.appendChild(toastIcon);
         toastWrapper.appendChild(toastMessage);
         yield showToast({
             duration,
@@ -1148,14 +1160,16 @@ function showIconToast(_a) {
 /** Shows a toast message in the bottom left corner of the screen by default */
 function showToast(_a) {
     return __awaiter(this, void 0, void 0, function* () {
-        var { duration = 3000, position = "tr" } = _a, rest = __rest(_a, ["duration", "position"]);
+        var { duration = getFeature("toastDuration"), position = "tr" } = _a, rest = __rest(_a, ["duration", "position"]);
+        if (duration <= 0)
+            return info("Toast duration is <= 0, so it won't be shown");
         const toastEl = document.querySelector("#bytm-toast");
         if (toastEl)
             yield closeToast();
         const toastElem = document.createElement("div");
         toastElem.id = "bytm-toast";
         toastElem.role = "alert";
-        toastElem.ariaLive = "assertive";
+        toastElem.ariaLive = "polite";
         toastElem.ariaAtomic = "true";
         toastElem.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () { return yield closeToast(); }), { once: true });
         if ("message" in rest)
@@ -1173,13 +1187,16 @@ function showToast(_a) {
 /** Closes the currently open toast */
 function closeToast() {
     return __awaiter(this, void 0, void 0, function* () {
-        const toastEl = document.querySelector("#bytm-toast");
         timeout && clearTimeout(timeout);
-        if (toastEl) {
+        const toastEls = document.querySelectorAll("#bytm-toast");
+        if (toastEls.length === 0)
+            return;
+        yield Promise.allSettled(Array.from(toastEls).map((toastEl) => __awaiter(this, void 0, void 0, function* () {
             toastEl.classList.remove("visible");
             yield UserUtils.pauseFor(300);
             toastEl.remove();
-        }
+            yield UserUtils.pauseFor(100);
+        })));
     });
 }/** Creates a simple toggle element */
 function createToggleInput(_a) {
@@ -2110,6 +2127,7 @@ function addCfgMenu() {
         reloadFooterEl.setAttribute("aria-hidden", "true");
         reloadFooterEl.textContent = t("reload_hint");
         reloadFooterEl.role = "alert";
+        reloadFooterEl.ariaLive = "polite";
         const reloadTxtEl = document.createElement("button");
         reloadTxtEl.classList.add("bytm-btn");
         reloadTxtEl.style.marginLeft = "10px";
@@ -3329,7 +3347,7 @@ function initAboveQueueBtns() {
                                 return;
                             const url = new URL(location.href);
                             url.searchParams.delete("list");
-                            url.searchParams.set("t", String(yield getVideoTime(0)));
+                            url.searchParams.set("time_continue", String(yield getVideoTime(0)));
                             location.assign(url);
                         }
                         catch (err) {
@@ -3616,13 +3634,13 @@ function initBeforeUnloadHook() {
 /** Closes toasts after a set amount of time */
 function initAutoCloseToasts() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const animTimeout = 300;
-            addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
-                all: true,
-                continuous: true,
-                listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
-                    var _a;
+        const animTimeout = 300;
+        addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
+            all: true,
+            continuous: true,
+            listener: (toastElems) => __awaiter(this, void 0, void 0, function* () {
+                var _a;
+                try {
                     for (const toastElem of toastElems) {
                         if (!toastElem.hasAttribute("allow-click-through"))
                             continue;
@@ -3635,21 +3653,22 @@ function initAutoCloseToasts() {
                         log(`Automatically closed toast '${(_a = toastElem.querySelector("#text-container yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent}' after ${getFeatures().closeToastsTimeout * 1000}ms`);
                         // wait for the transition to finish
                         yield UserUtils.pauseFor(animTimeout);
+                        toastElem.classList.remove("bytm-closing");
                         toastElem.style.display = "none";
                     }
-                }),
-            });
-            log("Initialized automatic toast closing");
-        }
-        catch (err) {
-            error("Error in automatic toast closing:", err);
-        }
+                }
+                catch (err) {
+                    error("Error in automatic toast closing:", err);
+                }
+            }),
+        });
+        log("Initialized automatic toast closing");
     });
 }
-let remSongsCache = [];
+let remVidsCache = [];
 /**
- * Remembers the time of the last played song and resumes playback from that time
- * CALLED BEFORE DOM IS READY!
+ * Remembers the time of the last played video and resumes playback from that time.
+ * **Needs to be called *before* DOM is ready!**
  */
 function initRememberSongTime() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3658,38 +3677,40 @@ function initRememberSongTime() {
         const storedDataRaw = yield GM.getValue("bytm-rem-songs");
         if (!storedDataRaw)
             yield GM.setValue("bytm-rem-songs", "[]");
-        remSongsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
-        log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
         if (location.pathname.startsWith("/watch"))
-            yield restoreSongTime();
+            yield restVidRestoreTime();
         if (!domLoaded)
-            document.addEventListener("DOMContentLoaded", remSongUpdateEntry);
+            document.addEventListener("DOMContentLoaded", restVidStartUpdateLoop);
         else
-            remSongUpdateEntry();
+            restVidStartUpdateLoop();
     });
 }
-/** Tries to restore the time of the currently playing song */
-function restoreSongTime() {
+/** Tries to restore the time of the currently playing video */
+function restVidRestoreTime() {
     return __awaiter(this, void 0, void 0, function* () {
         if (location.pathname.startsWith("/watch")) {
             const watchID = new URL(location.href).searchParams.get("v");
             if (!watchID)
                 return;
-            const entry = remSongsCache.find(entry => entry.watchID === watchID);
+            if (initialParams.has("t"))
+                return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+            const entry = remVidsCache.find(entry => entry.watchID === watchID);
             if (entry) {
                 if (Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
-                    yield delRemSongData(entry.watchID);
+                    yield restVidDeleteEntry(entry.watchID);
                     return;
                 }
+                else if (isNaN(Number(entry.songTime)))
+                    return;
                 else {
-                    if (isNaN(entry.songTime))
-                        return;
                     const doRestoreTime = () => __awaiter(this, void 0, void 0, function* () {
                         var _a;
                         const vidElem = yield waitVideoElementReady();
                         const vidRestoreTime = entry.songTime - ((_a = getFeatures().rememberSongTimeReduction) !== null && _a !== void 0 ? _a : 0);
                         vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                        yield delRemSongData(entry.watchID);
+                        yield restVidDeleteEntry(entry.watchID);
                         info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                     });
                     if (!domLoaded)
@@ -3702,8 +3723,9 @@ function restoreSongTime() {
     });
 }
 let lastSongTime = -1;
-/** Only call once as this calls itself after a timeout! - Updates the currently playing song's entry in GM storage */
-function remSongUpdateEntry() {
+let remVidCheckTimeout;
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+function restVidStartUpdateLoop() {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c;
         if (location.pathname.startsWith("/watch")) {
@@ -3723,38 +3745,40 @@ function remSongUpdateEntry() {
                     songTime,
                     updateTimestamp: Date.now(),
                 };
-                yield setRemSongData(entry);
+                yield restVidSetEntry(entry);
             }
             // if the song is rewound to the beginning, delete the entry
             else {
-                const entry = remSongsCache.find(entry => entry.watchID === watchID);
+                const entry = remVidsCache.find(entry => entry.watchID === watchID);
                 if (entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
-                    yield delRemSongData(entry.watchID);
+                    yield restVidDeleteEntry(entry.watchID);
             }
         }
-        const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
+        const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
         for (const entry of expiredEntries)
-            yield delRemSongData(entry.watchID);
-        // for no overlapping calls and better error handling
-        setTimeout(remSongUpdateEntry, 1000);
+            yield restVidDeleteEntry(entry.watchID);
+        // for no overlapping calls and better error handling:
+        if (remVidCheckTimeout)
+            clearTimeout(remVidCheckTimeout);
+        remVidCheckTimeout = setTimeout(restVidStartUpdateLoop, 1000);
     });
 }
-/** Adds an entry or updates it if it already exists */
-function setRemSongData(data) {
+/** Updates an existing or creates a new entry */
+function restVidSetEntry(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
+        const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
         if (foundIdx >= 0)
-            remSongsCache[foundIdx] = data;
+            remVidsCache[foundIdx] = data;
         else
-            remSongsCache.push(data);
-        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+            remVidsCache.push(data);
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
     });
 }
 /** Deletes an entry */
-function delRemSongData(watchID) {
+function restVidDeleteEntry(watchID) {
     return __awaiter(this, void 0, void 0, function* () {
-        remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
-        yield GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+        remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+        yield GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
     });
 }
 //#region disable darkreader
@@ -3835,14 +3859,14 @@ function switchSite(newDomain) {
             const vt = yield getVideoTime(0);
             log(`Found video time of ${vt} seconds`);
             const cleanSearch = search.split("&")
-                .filter((param) => !param.match(/^\??t=/))
+                .filter((param) => !param.match(/^\??(t|time_continue)=/))
                 .join("&");
             const newSearch = typeof vt === "number" && vt > videoTimeThreshold ?
                 cleanSearch.includes("?")
                     ? `${cleanSearch.startsWith("?")
                         ? cleanSearch
-                        : "?" + cleanSearch}&t=${vt}`
-                    : `?t=${vt}`
+                        : "?" + cleanSearch}&time_continue=${vt}`
+                    : `?time_continue=${vt}`
                 : cleanSearch;
             const newUrl = `https://${subdomain}.youtube.com${pathname}${newSearch}${hash}`;
             info(`Switching to domain '${newDomain}' at ${newUrl}`);
@@ -3937,7 +3961,7 @@ function initAutoLike() {
                 });
                 siteEvents.on("pathChanged", (path) => {
                     if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
-                        const chanId = path.split("/").pop();
+                        const chanId = path.split("/").pop(); // TODO:FIXME: this doesn't work for paths like /channel/@User/videos
                         if (!chanId)
                             return error("Couldn't extract channel ID from URL");
                         document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
@@ -4693,6 +4717,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
                 linkIconElem.id = "bytm-vol-slider-shared";
                 linkIconElem.innerHTML = linkIconHtml;
                 linkIconElem.role = "alert";
+                linkIconElem.ariaLive = "polite";
                 linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
                 labelContElem.classList.add("has-icon");
                 labelContElem.appendChild(linkIconElem);
@@ -5387,6 +5412,24 @@ const featInfo = {
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
+    toastDuration: {
+        type: "slider",
+        category: "general",
+        min: 0,
+        max: 15,
+        default: 5,
+        step: 0.5,
+        unit: "s",
+        reloadRequired: false,
+        advanced: true,
+        textAdornment: adornments.advanced,
+        enable: noop,
+        change: () => showIconToast({
+            duration: getFeatures().toastDuration * 1000,
+            message: "Example",
+            iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+        }),
+    },
     resetConfig: {
         type: "button",
         category: "general",
@@ -5459,6 +5502,7 @@ const migrations = {
         "autoLikeChannels", "autoLikeChannelToggleBtn",
         "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
         "autoLikeShowToast", "autoLikeOpenMgmtDialog",
+        "toastDuration", "initTimeout",
     ]), [
         { key: "rememberSongTimeSites", oldDefault: "ytm" },
         { key: "volumeSliderScrollStep", oldDefault: 10 },
@@ -5575,7 +5619,7 @@ function promptResetConfig() {
                 const url = new URL(location.href);
                 url.searchParams.delete("t");
                 if (videoTime)
-                    url.searchParams.set("t", String(videoTime));
+                    url.searchParams.set("time_continue", String(videoTime));
                 location.replace(url.href);
             }
             else
@@ -6448,11 +6492,10 @@ function fetchCss(key) {
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
     try {
-        const domain = getDomain();
         log("Session ID:", getSessionId());
         initInterface();
         setLogLevel(defaultLogLevel);
-        if (domain === "ytm")
+        if (getDomain() === "ytm")
             initBeforeUnloadHook();
         init();
     }
