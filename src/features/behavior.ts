@@ -84,8 +84,8 @@ let remVidsCache: RemVidObj[] = [];
  * Remembers the time of the last played video and resumes playback from that time.  
  * **Needs to be called *before* DOM is ready!**
  */
-export async function initRestoreVideoTime() {
-  if(getFeatures().restoreVideoTimeSites !== "all" && getFeatures().restoreVideoTimeSites !== getDomain())
+export async function initRememberSongTime() {
+  if(getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
     return;
 
   const storedDataRaw = await GM.getValue("bytm-rem-songs");
@@ -117,7 +117,7 @@ async function restVidRestoreTime() {
 
     const entry = remVidsCache.find(entry => entry.watchID === watchID);
     if(entry) {
-      if(Date.now() - entry.updateTimestamp > getFeatures().restoreVideoTimeDuration * 1000) {
+      if(Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
         await restVidDeleteEntry(entry.watchID);
         return;
       }
@@ -126,7 +126,7 @@ async function restVidRestoreTime() {
       else {
         const doRestoreTime = async () => {
           const vidElem = await waitVideoElementReady();
-          const vidRestoreTime = entry.songTime - (getFeatures().restoreVideoTimeReduction ?? 0);
+          const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
           vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
           await restVidDeleteEntry(entry.watchID);
           info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -161,7 +161,7 @@ async function restVidStartUpdateLoop() {
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > getFeatures().restoreVideoTimeMinPlayTime && !paused) {
+    if(songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
       const entry = {
         watchID,
         songTime,
@@ -172,12 +172,12 @@ async function restVidStartUpdateLoop() {
     // if the song is rewound to the beginning, delete the entry
     else {
       const entry = remVidsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= getFeatures().restoreVideoTimeMinPlayTime)
+      if(entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
         await restVidDeleteEntry(entry.watchID);
     }
   }
 
-  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().restoreVideoTimeDuration * 1000);
+  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
   for(const entry of expiredEntries)
     await restVidDeleteEntry(entry.watchID);
 
