@@ -73,6 +73,7 @@ export const migrations: DataMigrationsDict = {
       "autoLikeChannels", "autoLikeChannelToggleBtn",
       "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
       "autoLikeShowToast", "autoLikeOpenMgmtDialog",
+      "toastTimeout", "initTimeout",
     ]), [
       { key: "rememberSongTimeSites", oldDefault: "ytm" },
       { key: "volumeSliderScrollStep", oldDefault: 10 },

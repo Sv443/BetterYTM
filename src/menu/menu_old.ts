@@ -156,6 +156,7 @@ async function addCfgMenu() {
   reloadFooterEl.setAttribute("aria-hidden", "true");
   reloadFooterEl.textContent = t("reload_hint");
   reloadFooterEl.role = "alert";
+  reloadFooterEl.ariaLive = "polite";
 
   const reloadTxtEl = document.createElement("button");
   reloadTxtEl.classList.add("bytm-btn");
