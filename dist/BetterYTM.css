@@ -633,9 +633,9 @@ hr {
   z-index: 1042069;
   opacity: 0.000001;
   pointer-events: none;
-  padding: 10px 20px;
+  padding: 10px 16px;
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 1.5rem;
 
   background-color: var(--bytm-toast-bg-color);
   color: var(--bytm-toast-text-color);
@@ -685,6 +685,11 @@ hr {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+}
+
+.bytm-toast-icon.img {
+  width: 24px;
+  height: 24px;
 }
 
 .bytm-toggle-input-wrapper {
