@@ -18,7 +18,7 @@
 - **Plugin Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
-      The design matches that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+      The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)

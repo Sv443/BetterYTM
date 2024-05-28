@@ -203,7 +203,7 @@ export async function promptResetConfig() {
       const url = new URL(location.href);
       url.searchParams.delete("t");
       if(videoTime)
-        url.searchParams.set("t", String(videoTime));
+        url.searchParams.set("time_continue", String(videoTime));
       location.replace(url.href);
     }
     else

@@ -60,12 +60,11 @@ import {
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
   try {
-    const domain = getDomain();
     log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
 
-    if(domain === "ytm")
+    if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
     init();
