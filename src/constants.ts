@@ -17,6 +17,9 @@ export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github
 /** The build number of the userscript */
 export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw) as string; // asserted as generic string instead of literal
 
+/** URL search parameters at the earliest possible time */
+export const initialParams = new URL(location.href).searchParams;
+
 /** Names of platforms by value of {@linkcode host} */
 export const platformNames: Record<typeof host, string> = {
   github: "GitHub",
