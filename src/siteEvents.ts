@@ -44,6 +44,9 @@ export interface SiteEventsMap {
   pathChanged: (newPath: string, oldPath: string | null) => void;
   /** Emitted whenever the player enters or exits fullscreen mode */
   fullscreenToggled: (isFullscreen: boolean) => void;
+
+  /** Emitted whenever a channel was added, edited or removed from the auto-like list */
+  autoLikeChannelsUpdated: () => void;
 }
 
 /** Array of all site events */
