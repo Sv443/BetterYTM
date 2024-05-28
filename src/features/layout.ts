@@ -456,7 +456,7 @@ export async function initAboveQueueBtns() {
             continue;
 
           const btnElem = await createCircularBtn({
-            resourceName: item.resourceName as ResourceKey,
+            resourceName: item.resourceName as ResourceKey & `icon-${string}`,
             onClick: item.interaction,
             title: t(item.titleKey),
           });
