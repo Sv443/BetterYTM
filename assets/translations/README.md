@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 243 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `213/243` (87.7%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `243/243` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `213/243` (87.7%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `213/243` (87.7%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `213/243` (87.7%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `213/243` (87.7%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `213/243` (87.7%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `213/243` (87.7%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 247 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `213/247` (86.2%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `247/247` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `213/247` (86.2%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `213/247` (86.2%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,29 +45,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -82,29 +86,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -119,29 +127,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -156,29 +168,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -193,29 +209,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -230,29 +250,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
@@ -267,29 +291,33 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 30 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 34 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
-| `auto_like_channels_dialog_title` | `Manage auto-liked channels` |
-| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and remove them if you want.\nYou can also manually create them, though it's easier to visit their channel page and click the button.` |
+| `edit_entry` | `Edit this entry` |
+| `auto_like_channels_dialog_title` | `Auto-liked channels` |
+| `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
-| `add_auto_like_channel_id_prompt` | `Enter the channel ID or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered channel ID is invalid.\nPlease make sure you copy only the part *after* "/channel/" in the URL, excluding the slash.` |
+| `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
+| `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_video` | `Auto-liked the video` |
+| `auto_liked_channel` | `Auto-liked %1` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
 | `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
