@@ -608,33 +608,41 @@ html body .bytm-ripple {
   user-select: none;
 }
 
-html body .bytm-ripple,
-html body .bytm-ripple.normal {
-  --bytm-ripple-anim-duration: 0.35s;
+html body .bytm-ripple.faster {
+  --bytm-ripple-anim-duration: 0.15s;
 }
 
 html body .bytm-ripple.fast {
-  --bytm-ripple-anim-duration: 0.2s;
+  --bytm-ripple-anim-duration: 0.35s;
+}
+
+html body .bytm-ripple,
+html body .bytm-ripple.normal {
+  --bytm-ripple-anim-duration: 0.55s;
 }
 
 html body .bytm-ripple.slow {
-  --bytm-ripple-anim-duration: 0.5s;
+  --bytm-ripple-anim-duration: 0.75s;
+}
+
+html body .bytm-ripple.slower {
+  --bytm-ripple-anim-duration: 1s;
 }
 
 .bytm-ripple-area {
   position: absolute;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.25);
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
-  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration) ease-out;
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration) cubic-bezier(0.375, 0.330, 0.225, 0.930);
 }
 
 @keyframes bytm-scale-ripple {
   0% {
     width: 0;
     height: 0;
-    opacity: 0.5;
+    opacity: 1;
   }
   100% {
     /* Variable is added to .bytm-ripple by JS at runtime since there's no better way of getting the parent's width inside of here */
