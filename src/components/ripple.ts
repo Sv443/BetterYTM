@@ -1,29 +1,44 @@
 import "./ripple.css";
 
+type RippleProps = {
+  /** How fast should the animation be */
+  speed?: "normal" | "fast" | "slow";
+};
+
 /**
  * Creates an element with a ripple effect on click.
  * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
-export function createRipple<TElem extends HTMLElement>(rippleElement: TElem): TElem;
+export function createRipple<TElem extends HTMLElement>(rippleElement: TElem, properties?: RippleProps): TElem;
 /**
  * Creates an element with a ripple effect on click.
  * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
-export function createRipple(rippleElement: undefined): HTMLDivElement;
+export function createRipple(rippleElement?: undefined, properties?: RippleProps): HTMLDivElement;
 /**
  * Creates an element with a ripple effect on click.
  * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
-export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem) {
+export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, properties?: RippleProps) {
+  const props = {
+    speed: "normal",
+    ...properties,
+  };
+
   const rippleEl = rippleElement ?? document.createElement("div");
-  rippleEl.classList.add("bytm-ripple");
+  rippleEl.classList.add("bytm-ripple", props.speed);
+
+  const updateRippleWidth = () => 
+    rippleEl.style.setProperty("--bytm-ripple-cont-width", rippleEl.clientWidth + "px");
 
   rippleEl.addEventListener("click", (e) => {
-    const x = (e as MouseEvent).clientX - (e.target as HTMLElement)?.offsetLeft ?? 0;
-    const y = (e as MouseEvent).clientY - (e.target as HTMLElement)?.offsetTop ?? 0;
+    updateRippleWidth();
+
+    const x = (e as MouseEvent).clientX - rippleEl.getBoundingClientRect().left;
+    const y = (e as MouseEvent).clientY - rippleEl.getBoundingClientRect().top;
 
     const rippleAreaEl = document.createElement("span");
     rippleAreaEl.classList.add("bytm-ripple-area");
@@ -35,8 +50,9 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem) {
     else
       rippleEl.appendChild(rippleAreaEl);
 
-    setTimeout(() => rippleAreaEl.remove(), 250);
+    rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
   });
 
+  updateRippleWidth();
   return rippleEl;
 }
