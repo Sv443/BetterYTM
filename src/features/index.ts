@@ -470,12 +470,13 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
-  autoLikePlayerBarToggleBtn: {
-    type: "toggle",
-    category: "input",
-    default: false,
-    textAdornment: adornments.reloadRequired,
-  },
+  // TODO(v2.2):
+  // autoLikePlayerBarToggleBtn: {
+  //   type: "toggle",
+  //   category: "input",
+  //   default: false,
+  //   textAdornment: adornments.reloadRequired,
+  // },
   autoLikeTimeout: {
     type: "slider",
     category: "input",
