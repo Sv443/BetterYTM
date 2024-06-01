@@ -84,7 +84,10 @@ export async function createLongBtn({
 
   const imgElem = document.createElement("src" in rest ? "img" : "div");
   imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
-  imgElem.innerHTML = "src" in rest ? rest.src : await resourceToHTMLString(rest.resourceName as "_") ?? "";
+  if("src" in rest)
+    (imgElem as HTMLImageElement).src = rest.src;
+  else
+    imgElem.innerHTML = await resourceToHTMLString(rest.resourceName as "_") ?? "";
 
   const txtElem = document.createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");

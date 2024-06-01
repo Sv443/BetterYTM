@@ -34,7 +34,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
   const updateRippleWidth = () => 
     rippleEl.style.setProperty("--bytm-ripple-cont-width", rippleEl.clientWidth + "px");
 
-  rippleEl.addEventListener("click", (e) => {
+  rippleEl.addEventListener("mousedown", (e) => {
     updateRippleWidth();
 
     const x = (e as MouseEvent).clientX - rippleEl.getBoundingClientRect().left;

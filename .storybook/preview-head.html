@@ -1,9 +1,11 @@
 <script>
   // shim for GM functions
   var GM = GM || {
-    getResourceURL: function() {
-      return `https://picsum.photos/200`;
-    },
+    getResourceUrl: (path) => new Promise((res) => {
+      if(typeof path === "string")
+        return res(`https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/${path}`);
+      return res(`https://picsum.photos/200`);
+    }),
     copyToClipboard: function() {
       console.log("GM.copyToClipboard shim called (discarded)");
     },

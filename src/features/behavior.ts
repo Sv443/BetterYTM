@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, t, clearNode } from "../utils/index.js";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, clearNode } from "../utils/index.js";
 import { getFeatures } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
