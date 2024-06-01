@@ -39,47 +39,49 @@ type Story = StoryObj<RippleProps>;
 //#region render
 
 function render(props: RippleProps) {
-  if(props.type === "area") {
-    const area = document.createElement("div");
-    area.style.minWidth = "800px";
-    area.style.minHeight = "400px";
-    area.style.position = "relative";
-    area.style.display = "inline-flex";
-    area.style.justifyContent = "center";
-    area.style.alignItems = "center";
-    area.style.overflow = "hidden";
-    area.style.borderRadius = "32px";
-    area.style.height = "24px";
-    area.style.cursor = "pointer";
-    area.tabIndex = 0;
+  const rippleEl = createRipple(document.createElement("div"), { speed: props.speed });
 
-    area.style.backgroundColor = props.backgroundColor;
-    area.style.color = props.color;
-    area.style.fontSize = props.fontSize;
-    area.appendChild(document.createTextNode(props.label));
+  switch(props.type) {
+  case "area":
+    rippleEl.style.minWidth = "1000px";
+    rippleEl.style.minHeight = "600px";
+    rippleEl.style.position = "relative";
+    rippleEl.style.display = "inline-flex";
+    rippleEl.style.justifyContent = "center";
+    rippleEl.style.alignItems = "center";
+    rippleEl.style.overflow = "hidden";
+    rippleEl.style.borderRadius = "32px";
+    rippleEl.style.height = "24px";
+    rippleEl.style.cursor = "pointer";
+    rippleEl.tabIndex = 0;
 
-    area.addEventListener("click", props.onClick);
-    return createRipple(area, { speed: props.speed });
+    rippleEl.style.backgroundColor = props.backgroundColor;
+    rippleEl.style.color = props.color;
+    rippleEl.style.fontSize = props.fontSize;
+    rippleEl.appendChild(document.createTextNode(props.label));
+
+    rippleEl.addEventListener("click", props.onClick);
+    break;
+  case "button":
+    rippleEl.tabIndex = 0;
+    rippleEl.style.height = "24px";
+    rippleEl.style.display = "inline-flex";
+    rippleEl.style.justifyContent = "center";
+    rippleEl.style.alignItems = "center";
+    rippleEl.style.borderRadius = "24px";
+    rippleEl.style.cursor = "pointer";
+
+    rippleEl.innerHTML = props.label;
+    rippleEl.style.backgroundColor = props.backgroundColor;
+    rippleEl.style.color = props.color;
+    rippleEl.style.fontSize = props.fontSize;
+    rippleEl.style.padding = props.padding;
+
+    rippleEl.addEventListener("click", props.onClick);
+    break;
   }
-  else {
-    const btn = document.createElement("div");
-    btn.tabIndex = 0;
-    btn.style.height = "24px";
-    btn.style.display = "inline-flex";
-    btn.style.justifyContent = "center";
-    btn.style.alignItems = "center";
-    btn.style.borderRadius = "24px";
-    btn.style.cursor = "pointer";
 
-    btn.innerHTML = props.label;
-    btn.style.backgroundColor = props.backgroundColor;
-    btn.style.color = props.color;
-    btn.style.fontSize = props.fontSize;
-    btn.style.padding = props.padding;
-
-    btn.addEventListener("click", props.onClick);
-    return createRipple(btn, { speed: props.speed });
-  }
+  return rippleEl;
 }
 
 //#region stories
