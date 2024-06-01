@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
 import type { Domain } from "../types.js";
 import { isCfgMenuOpen } from "../menu/menu_old.js";
 import { disableBeforeUnload } from "./behavior.js";
@@ -231,7 +231,7 @@ export async function initAutoLike() {
               message: t("auto_liked_channel", likeChan.name),
               icon: "icon-auto_like",
             });
-            log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
+            log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
           }
         }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
       });
@@ -286,7 +286,7 @@ export async function initAutoLike() {
                       message: t("auto_liked_channel", likeChan.name),
                       icon: "icon-auto_like",
                     });
-                    log(`Auto-liked channel '${likeChan.name}' (ID: '${likeChan.id}')`);
+                    log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
                   }
                 }
               });
