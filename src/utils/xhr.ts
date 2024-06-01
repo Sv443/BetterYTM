@@ -1,5 +1,5 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
-import type { ResourceKey } from "src/types";
+import type { ResourceKey } from "../types.js";
 import { getResourceUrl } from "./misc.js";
 import { error } from "./logging.js";
 
