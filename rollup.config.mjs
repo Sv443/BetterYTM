@@ -5,6 +5,7 @@ import pluginCss from "rollup-plugin-import-css";
 import pluginExecute from "rollup-plugin-execute";
 import typescript from "typescript";
 
+import "dotenv/config";
 import requireJson from "./assets/require.json" with { type: "json" };
 
 const globalPkgs = requireJson.reduce((acc, pkg) => {

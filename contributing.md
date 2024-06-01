@@ -110,26 +110,28 @@ To edit an existing translation, please follow these steps:
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
   - `npm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
+  - `npm run preview` - Same as `npm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
 - **`npm run lint`**  
-  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
+  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
 - **`npm run gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
 - **`npm run tr-progress`**  
-  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
+  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
+  Will also be run automatically after every script build.
 - **`npm run tr-format -- <arguments>`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
-  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a comma separated list (e.g. `-o="fr_FR,de_DE"`)
+  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr_FR,de_DE"` or `-o="pt_BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
 - **`npm run tr-prep`**  
-  Shorthand for `npm run tr-format -- -p` (see above)
+  Shorthand for `npm run tr-format -- --prep` (see above)
 - **`npm run --silent invisible -- "<command>"`**  
-  Runs the passed command as a detached child process without giving any console output. (`--` and double quotes are required!)  
+  Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see npm's info and error messages.
 - **`npm run node-ts -- <path>`**  
-  Runs the TypeScript file at the given path using the regular node binary and the node-ts loader.  
+  Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
 
 > [!NOTE]
