@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils/index.js";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, t, clearNode } from "../utils/index.js";
 import { getFeatures } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -32,13 +32,14 @@ export async function initBeforeUnloadHook() {
 export async function initAutoCloseToasts() {
   const animTimeout = 300;
 
-  addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
+  addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
     all: true,
     continuous: true,
-    listener: async (toastElems) => {
+    listener: async (toastContElems) => {
       try {
-        for(const toastElem of toastElems) {
-          if(!toastElem.hasAttribute("allow-click-through"))
+        for(const toastContElem of toastContElems) {
+          const toastElem = toastContElem.querySelector<HTMLElement>("tp-yt-paper-toast#toast");
+          if(!toastElem || !toastElem.hasAttribute("allow-click-through"))
             continue;
 
           if(toastElem.classList.contains("bytm-closing"))
@@ -49,13 +50,14 @@ export async function initAutoCloseToasts() {
           await pauseFor(closeTimeout);
 
           toastElem.classList.remove("paper-toast-open");
-          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.textContent}' after ${getFeatures().closeToastsTimeout * 1000}ms`);
 
-          // wait for the transition to finish
-          await pauseFor(animTimeout);
+          toastElem.addEventListener("transitionend", () => {
+            toastElem.classList.remove("bytm-closing");
+            toastElem.style.display = "none";
 
-          toastElem.classList.remove("bytm-closing");
-          toastElem.style.display = "none";
+            clearNode(toastElem);
+            log(`Automatically closed toast after ${getFeatures().closeToastsTimeout * 1000}ms`);
+          }, { once: true });
         }
       }
       catch(err) {
