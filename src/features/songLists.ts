@@ -1,12 +1,12 @@
 import { autoPlural, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t } from "../utils";
-import { SiteEventsMap, siteEvents } from "../siteEvents";
-import { emitInterface } from "../interface";
-import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics";
-import { getLyricsCacheEntry } from "./lyricsCache";
-import type { LyricsCacheEntry } from "../types";
-import { addSelectorListener } from "../observers";
-import { getFeatures } from "../config";
+import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t } from "../utils/index.js";
+import { SiteEventsMap, siteEvents } from "../siteEvents.js";
+import { emitInterface } from "../interface.js";
+import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
+import { getLyricsCacheEntry } from "./lyricsCache.js";
+import type { LyricsCacheEntry } from "../types.js";
+import { addSelectorListener } from "../observers.js";
+import { getFeatures } from "../config.js";
 import "./songLists.css";
 
 /** Initializes the queue buttons */

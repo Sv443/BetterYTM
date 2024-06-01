@@ -1,15 +1,15 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId } from "../utils";
-import type { Domain } from "../types";
-import { isCfgMenuOpen } from "../menu/menu_old";
-import { disableBeforeUnload } from "./behavior";
-import { siteEvents } from "../siteEvents";
-import { featInfo } from "./index";
-import { getFeature } from "../config";
-import { compressionFormat } from "../constants";
-import { addSelectorListener } from "../observers";
-import { createLongBtn, showIconToast } from "../components";
-import { getAutoLikeDialog } from "../dialogs";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId } from "../utils/index.js";
+import type { Domain } from "../types.js";
+import { isCfgMenuOpen } from "../menu/menu_old.js";
+import { disableBeforeUnload } from "./behavior.js";
+import { siteEvents } from "../siteEvents.js";
+import { featInfo } from "./index.js";
+import { getFeature } from "../config.js";
+import { compressionFormat } from "../constants.js";
+import { addSelectorListener } from "../observers.js";
+import { createLongBtn, showIconToast } from "../components/index.js";
+import { getAutoLikeDialog } from "../dialogs/index.js";
 import "./input.css";
 
 export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -270,7 +270,7 @@ export async function initAutoLike() {
         if(!location.pathname.startsWith("/watch"))
           return;
         timeout = setTimeout(() => {
-          addSelectorListener<HTMLAnchorElement, "yt">("watchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
+          addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
             listener(chanElem) {
               const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
 
@@ -278,7 +278,7 @@ export async function initAutoLike() {
               if(!likeChan || !likeChan.enabled)
                 return;
 
-              addSelectorListener<0, "yt">("watchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
+              addSelectorListener<0, "yt">("ytWatchMetadata", "#actions ytd-menu-renderer like-button-view-model button", {
                 listener(likeBtn) {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();

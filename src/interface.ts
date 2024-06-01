@@ -1,13 +1,13 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
-import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants";
-import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils";
-import { addSelectorListener } from "./observers";
-import { getFeatures, setFeatures } from "./config";
-import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features";
-import { allSiteEvents, type SiteEventsMap } from "./siteEvents";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types";
-import { BytmDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components";
+import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants.js";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils/index.js";
+import { addSelectorListener } from "./observers.js";
+import { getFeatures, setFeatures } from "./config.js";
+import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
+import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types.js";
+import { BytmDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 
 const { getUnsafeWindow, randomId } = UserUtils;
 

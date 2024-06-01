@@ -1,5 +1,5 @@
-import { onInteraction, resourceToHTMLString } from "../utils";
-import type { ResourceKey } from "../types";
+import { onInteraction, resourceToHTMLString } from "../utils/index.js";
+import type { ResourceKey } from "../types.js";
 
 type LongBtnOptions = (
   | {

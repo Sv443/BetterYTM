@@ -1,22 +1,22 @@
-import { getPreferredLocale, getResourceUrl, resourceToHTMLString, t, tp } from "../utils";
-import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
-import { doVersionCheck } from "./versionCheck";
-import { getFeatures, promptResetConfig } from "../config";
-import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
-import { emitSiteEvent } from "../siteEvents";
+import { getPreferredLocale, getResourceUrl, resourceToHTMLString, t, tp } from "../utils/index.js";
+import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
+import { doVersionCheck } from "./versionCheck.js";
+import { getFeatures, promptResetConfig } from "../config.js";
+import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { getAutoLikeDialog } from "../dialogs";
-import { showIconToast } from "../components";
-import { mode } from "../constants";
+import { getAutoLikeDialog } from "../dialogs/index.js";
+import { showIconToast } from "../components/index.js";
+import { mode } from "../constants.js";
 
-export * from "./layout";
-export * from "./behavior";
-export * from "./input";
-export * from "./lyrics";
-export * from "./lyricsCache";
-export * from "./songLists";
-export * from "./versionCheck";
-export * from "./volume";
+export * from "./layout.js";
+export * from "./behavior.js";
+export * from "./input.js";
+export * from "./lyrics.js";
+export * from "./lyricsCache.js";
+export * from "./songLists.js";
+export * from "./versionCheck.js";
+export * from "./volume.js";
 
 interface SelectOption<TValue = number | string> {
   value: TValue;

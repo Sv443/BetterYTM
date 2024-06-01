@@ -1,5 +1,5 @@
-import { getResourceUrl, onInteraction } from "../utils";
-import type { ResourceKey } from "../types";
+import { getResourceUrl, onInteraction } from "../utils/index.js";
+import type { ResourceKey } from "../types.js";
 
 type CircularBtnOptions = (
   | {

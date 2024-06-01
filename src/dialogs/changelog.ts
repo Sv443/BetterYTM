@@ -1,6 +1,6 @@
-import { getChangelogHtmlWithDetails, t } from "../utils";
-import { BytmDialog } from "../components";
-import { scriptInfo } from "../constants";
+import { getChangelogHtmlWithDetails, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { scriptInfo } from "../constants.js";
 
 let changelogDialog: BytmDialog | null = null;
 

@@ -1,9 +1,9 @@
-import { scriptInfo } from "../constants";
-import { getFeatures } from "../config";
-import { error, info, sendRequest, t } from "../utils";
-import { getVersionNotifDialog } from "../dialogs";
+import { scriptInfo } from "../constants.js";
+import { getFeatures } from "../config.js";
+import { error, info, sendRequest, t } from "../utils/index.js";
+import { getVersionNotifDialog } from "../dialogs/index.js";
 import { compare } from "compare-versions";
-import { LogLevel } from "../types";
+import { LogLevel } from "../types.js";
 
 const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 

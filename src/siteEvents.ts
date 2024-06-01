@@ -1,7 +1,7 @@
-import { NanoEmitter, error, getDomain, info } from "./utils";
-import { FeatureConfig } from "./types";
-import { emitInterface } from "./interface";
-import { addSelectorListener } from "./observers";
+import { NanoEmitter, error, getDomain, info } from "./utils/index.js";
+import { FeatureConfig } from "./types.js";
+import { emitInterface } from "./interface.js";
+import { addSelectorListener } from "./observers.js";
 
 export interface SiteEventsMap {
   // misc:

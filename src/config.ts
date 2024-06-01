@@ -1,11 +1,11 @@
 import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
-import { disableBeforeUnload, featInfo } from "./features/index";
-import { compressionSupported, error, getVideoTime, info, log, t } from "./utils";
-import { emitSiteEvent } from "./siteEvents";
-import { compressionFormat, mode } from "./constants";
-import { emitInterface } from "./interface";
-import { closeCfgMenu } from "./menu/menu_old";
-import type { FeatureConfig, FeatureKey } from "./types";
+import { disableBeforeUnload, featInfo } from "./features/index.js";
+import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
+import { emitSiteEvent } from "./siteEvents.js";
+import { compressionFormat, mode } from "./constants.js";
+import { emitInterface } from "./interface.js";
+import { closeCfgMenu } from "./menu/menu_old.js";
+import type { FeatureConfig, FeatureKey } from "./types.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 6;

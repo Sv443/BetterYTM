@@ -1,8 +1,8 @@
 import { debounce } from "@sv443-network/userutils";
-import { getDomain, log, onInteraction, parseChannelIdFromUrl, t } from "../utils";
-import { BytmDialog, createCircularBtn, createToggleInput } from "../components";
-import { autoLikeStore, initAutoLikeStore } from "../features";
-import { siteEvents } from "../siteEvents";
+import { getDomain, log, onInteraction, parseChannelIdFromUrl, t } from "../utils/index.js";
+import { BytmDialog, createCircularBtn, createToggleInput } from "../components/index.js";
+import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
+import { siteEvents } from "../siteEvents.js";
 
 let autoLikeDialog: BytmDialog | null = null;
 

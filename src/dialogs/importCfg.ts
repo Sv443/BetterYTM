@@ -1,10 +1,10 @@
 import { decompress } from "@sv443-network/userutils";
-import { error, t, warn } from "../utils";
-import { BytmDialog } from "../components";
-import { compressionFormat, scriptInfo } from "../constants";
-import { emitSiteEvent } from "../siteEvents";
-import { formatVersion, getFeatures, migrations, setFeatures } from "../config";
-import { disableBeforeUnload } from "../features";
+import { error, t, warn } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { compressionFormat, scriptInfo } from "../constants.js";
+import { emitSiteEvent } from "../siteEvents.js";
+import { formatVersion, getFeatures, migrations, setFeatures } from "../config.js";
+import { disableBeforeUnload } from "../features/index.js";
 
 let importDialog: BytmDialog | null = null;
 

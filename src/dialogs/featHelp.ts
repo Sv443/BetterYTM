@@ -1,7 +1,7 @@
-import { resourceToHTMLString, t } from "../utils";
-import { BytmDialog } from "../components";
-import { featInfo } from "../features";
-import type { FeatureKey } from "../types";
+import { resourceToHTMLString, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { featInfo } from "../features/index.js";
+import type { FeatureKey } from "../types.js";
 
 let featHelpDialog: BytmDialog | null = null;
 let curFeatKey: FeatureKey | null = null;

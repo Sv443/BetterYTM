@@ -1,7 +1,7 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
 import type { ResourceKey } from "src/types";
-import { getResourceUrl } from "./misc";
-import { error } from "./logging";
+import { getResourceUrl } from "./misc.js";
+import { error } from "./logging.js";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
