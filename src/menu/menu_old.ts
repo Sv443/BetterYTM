@@ -41,7 +41,7 @@ async function addCfgMenu() {
   //#region bg & container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
-  backgroundElem.classList.add("bytm-menu-bg", `bytm-dom-${getDomain()}`);
+  backgroundElem.classList.add("bytm-menu-bg");
   backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
@@ -56,7 +56,7 @@ async function addCfgMenu() {
 
   const menuContainer = document.createElement("div");
   menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.classList.add("bytm-menu", `bytm-dom-${getDomain()}`);
+  menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-cfg-menu";
 
 

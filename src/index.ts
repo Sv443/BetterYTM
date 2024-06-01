@@ -114,6 +114,7 @@ async function onDomLoad() {
   const features = getFeatures();
   const ftInit = [] as [string, Promise<void>][];
 
+  // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
   document.body.classList.add(`bytm-dom-${domain}`);
 
   try {

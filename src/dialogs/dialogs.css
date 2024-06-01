@@ -1,3 +1,4 @@
+/* #region general */
 :root {
   --bytm-locale-color: #5ea2ec;
   --bytm-advanced-mode-color: #ceb663;
@@ -10,19 +11,20 @@
 #bytm-cfg-dialog-bg,
 #bytm-cfg-menu-bg
 {
-  --bytm-dialog-height-max: 800px;
   --bytm-dialog-width-max: 1150px;
-  --bytm-menu-height-max: 800px;
   --bytm-menu-width-max: 1150px;
+  --bytm-dialog-height-max: 800px;
+  --bytm-menu-height-max: 800px;
 }
 
-.bytm-dialog-bg.bytm-dom-yt,
-.bytm-menu-bg.bytm-dom-yt {
+/* Have to do it like this since various extensions use a pretty damn high z-index and since I haven't implemented top layer for dialogs yet (https://developer.mozilla.org/en-US/docs/Glossary/Top_layer) */
+.bytm-dom-yt .bytm-dialog-bg,
+.bytm-dom-yt .bytm-menu-bg {
   z-index: 10042;
 }
 
-.bytm-dialog.bytm-dom-yt,
-.bytm-menu.bytm-dom-yt {
+.bytm-dom-yt .bytm-dialog,
+.bytm-dom-yt .bytm-menu {
   z-index: 10069;
 }
 
@@ -34,6 +36,13 @@
   cursor: pointer;
   font-style: italic;
 }
+
+.bytm-secondary-label {
+  padding-left: 12px;
+  font-size: 1.3rem;
+}
+
+/* #region version notification */
 
 #bytm-version-notif-dialog-btns {
   display: flex;
@@ -70,9 +79,10 @@
   justify-content: flex-start;
 }
 
-.bytm-secondary-label {
-  padding-left: 12px;
-  font-size: 1.3rem;
+/* #region cfg menu */
+
+.bytm-ftconf-adv-copy-btn {
+  margin: 0px 10px;
 }
 
 .bytm-adorn-icon {
@@ -81,9 +91,7 @@
   cursor: help;
 }
 
-.bytm-ftconf-adv-copy-btn {
-  margin: 0px 10px;
-}
+/* #region cfg menu adornments */
 
 .bytm-ftitem-adornment svg path {
   fill: var(--bytm-locale-color, #fff) !important;
@@ -110,7 +118,7 @@
   fill: var(--bytm-reload-col, #fff) !important;
 }
 
-/* #SECTION welcome dialog */
+/* #region welcome dialog */
 
 #bytm-welcome-menu-title-wrapper {
   display: flex;

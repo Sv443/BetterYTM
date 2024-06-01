@@ -84,7 +84,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
-    bgElem.classList.add("bytm-dialog-bg", `bytm-dom-${getDomain()}`);
+    bgElem.classList.add("bytm-dialog-bg");
     if(this.options.closeOnBgClick)
       bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
@@ -266,7 +266,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const dialogWrapperEl = document.createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-    dialogWrapperEl.classList.add("bytm-dialog", `bytm-dom-${getDomain()}`);
+    dialogWrapperEl.classList.add("bytm-dialog");
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
     dialogWrapperEl.role = "dialog";
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
