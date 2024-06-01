@@ -8,7 +8,7 @@ import "../features/layout.css";
 //#region meta
 
 const meta = {
-  title: "Ripple",
+  title: "Generic Buttons",
   render,
   argTypes: {
     backgroundColor: { control: "color" },
@@ -42,17 +42,17 @@ function render(args: GenericBtnStoryArgs) {
   switch(args.type) {
   case "circular":
     createCircularBtn({
-      src: args.src,
+      resourceName: "icons/globe.svg" as "_",
       onClick: args.onClick,
       title: args.label,
     }).then((btnEl) => wrapperEl.appendChild(btnEl));
     break;
   case "long":
     createLongBtn({
+      resourceName: "icons/globe.svg" as "_",
       onClick: args.onClick,
       title: args.label,
       text: args.label,
-      src: args.src,
     }).then((btnEl) => wrapperEl.appendChild(btnEl));
     break;
   }

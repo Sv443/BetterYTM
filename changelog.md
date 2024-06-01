@@ -27,6 +27,7 @@
       - From `watchFlexy` to `ytWatchFlexy`
       - From `watchMetadata` to `ytWatchMetadata`
   - Added Storybook for easier and faster development of components
+  - Improved ripple component design and functionality (refer to the contributing guide for more info)
 - **Plugin Interface Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  

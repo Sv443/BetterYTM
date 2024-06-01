@@ -1,7 +1,10 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
 import { createRipple } from "../components/ripple.js";
+import { createCircularBtn } from "../components/circularButton.js";
+import { createLongBtn } from "../components/longButton.js";
 import "../components/ripple.css";
+import "../features/layout.css";
 
 //#region meta
 
@@ -24,11 +27,11 @@ const meta = {
 export default meta;
 
 type RippleProps = {
-  type: "button" | "area";
+  type: "area" | "circularRippleBtn" | "longRippleBtn";
   backgroundColor: string;
   color: string;
   label: string;
-  onClick: (e: MouseEvent) => void;
+  onClick: (e: MouseEvent | KeyboardEvent) => void;
   padding: string;
   fontSize: string;
   speed: "faster" | "fast" | "normal" | "slow" | "slower";
@@ -39,64 +42,64 @@ type Story = StoryObj<RippleProps>;
 //#region render
 
 function render(props: RippleProps) {
-  const rippleEl = createRipple(document.createElement("div"), { speed: props.speed });
+  let rippleElem: HTMLElement;
 
   switch(props.type) {
   case "area":
-    rippleEl.style.minWidth = "1000px";
-    rippleEl.style.minHeight = "600px";
-    rippleEl.style.position = "relative";
-    rippleEl.style.display = "inline-flex";
-    rippleEl.style.justifyContent = "center";
-    rippleEl.style.alignItems = "center";
-    rippleEl.style.overflow = "hidden";
-    rippleEl.style.borderRadius = "32px";
-    rippleEl.style.height = "24px";
-    rippleEl.style.cursor = "pointer";
-    rippleEl.tabIndex = 0;
+    rippleElem = createRipple(document.createElement("div"), { speed: props.speed });
 
-    rippleEl.style.backgroundColor = props.backgroundColor;
-    rippleEl.style.color = props.color;
-    rippleEl.style.fontSize = props.fontSize;
-    rippleEl.appendChild(document.createTextNode(props.label));
+    rippleElem.style.minWidth = "1000px";
+    rippleElem.style.minHeight = "600px";
+    rippleElem.style.position = "relative";
+    rippleElem.style.display = "inline-flex";
+    rippleElem.style.justifyContent = "center";
+    rippleElem.style.alignItems = "center";
+    rippleElem.style.overflow = "hidden";
+    rippleElem.style.borderRadius = "50px";
+    rippleElem.style.height = "24px";
+    rippleElem.style.cursor = "pointer";
+    rippleElem.tabIndex = 0;
 
-    rippleEl.addEventListener("click", props.onClick);
+    rippleElem.style.backgroundColor = props.backgroundColor;
+    rippleElem.style.color = props.color;
+    rippleElem.style.fontSize = props.fontSize;
+    rippleElem.appendChild(document.createTextNode(props.label));
+
+    rippleElem.addEventListener("click", props.onClick);
     break;
-  case "button":
-    rippleEl.tabIndex = 0;
-    rippleEl.style.height = "24px";
-    rippleEl.style.display = "inline-flex";
-    rippleEl.style.justifyContent = "center";
-    rippleEl.style.alignItems = "center";
-    rippleEl.style.borderRadius = "24px";
-    rippleEl.style.cursor = "pointer";
+  case "circularRippleBtn":
+    rippleElem = document.createElement("span");
+    createCircularBtn({
+      resourceName: "icons/image.svg" as "_",
+      onClick: props.onClick,
+      title: props.label,
+    }).then((btnEl) => {
+      const rippleBtnEl = createRipple(btnEl, { speed: props.speed });
+      rippleElem.appendChild(rippleBtnEl);
+    }).catch((err) => console.error("Error creating circular button:", err));
 
-    rippleEl.innerHTML = props.label;
-    rippleEl.style.backgroundColor = props.backgroundColor;
-    rippleEl.style.color = props.color;
-    rippleEl.style.fontSize = props.fontSize;
-    rippleEl.style.padding = props.padding;
+    rippleElem.addEventListener("click", props.onClick);
+    break;
+  case "longRippleBtn":
+    rippleElem = document.createElement("span");
+    createLongBtn({
+      resourceName: "icons/image.svg" as "_",
+      onClick: props.onClick,
+      title: props.label,
+      text: props.label,
+    }).then((btnEl) => {
+      const rippleBtnEl = createRipple(btnEl, { speed: props.speed });
+      rippleElem.appendChild(rippleBtnEl);
+    }).catch((err) => console.error("Error creating long button:", err));
 
-    rippleEl.addEventListener("click", props.onClick);
+    rippleElem.addEventListener("click", props.onClick);
     break;
   }
 
-  return rippleEl;
+  return rippleElem;
 }
 
 //#region stories
-
-export const Button: Story = {
-  args: {
-    type: "button",
-    backgroundColor: "#123489",
-    color: "white",
-    label: "Hello I am a button",
-    padding: "8px 36px",
-    fontSize: "16px",
-    speed: "normal",
-  },
-};
 
 export const Area: Story = {
   args: {
@@ -106,5 +109,21 @@ export const Area: Story = {
     label: "Hello I am an area",
     fontSize: "32px",
     speed: "slow",
+  },
+};
+
+export const CircularRippleBtn: Story = {
+  args: {
+    type: "circularRippleBtn",
+    label: "Button da circular",
+    speed: "normal",
+  },
+};
+
+export const LongRippleBtn: Story = {
+  args: {
+    type: "longRippleBtn",
+    label: "Button da long way",
+    speed: "normal",
   },
 };
