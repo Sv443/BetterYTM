@@ -15,6 +15,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:require-extensions/recommended",
+    "plugin:storybook/recommended"
   ],
   globals: {
     Atomics: "readonly",

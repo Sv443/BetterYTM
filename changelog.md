@@ -26,6 +26,7 @@
     - Renamed all YT-specific instances to have the `yt` prefix
       - From `watchFlexy` to `ytWatchFlexy`
       - From `watchMetadata` to `ytWatchMetadata`
+  - Added Storybook for easier and faster development of components
 - **Plugin Interface Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
