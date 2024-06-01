@@ -1,10 +1,10 @@
 import "./dialogs.css";
 
-export * from "./autoLike";
-export * from "./changelog";
-export * from "./exportCfg";
-export * from "./featConfig";
-export * from "./featHelp";
-export * from "./importCfg";
-export * from "./versionNotif";
-export * from "./welcome";
+export * from "./autoLike.js";
+export * from "./changelog.js";
+export * from "./exportCfg.js";
+export * from "./featConfig.js";
+export * from "./featHelp.js";
+export * from "./importCfg.js";
+export * from "./versionNotif.js";
+export * from "./welcome.js";

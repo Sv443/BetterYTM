@@ -1,7 +1,7 @@
 import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain, t } from ".";
-import { addSelectorListener } from "../observers";
-import type { ResourceKey } from "../types";
+import { error, fetchCss, getDomain, t } from "./index.js";
+import { addSelectorListener } from "../observers.js";
+import type { ResourceKey } from "../types.js";
 import { siteEvents } from "src/siteEvents";
 
 /** Whether the DOM has finished loading and elements can be added or modified */

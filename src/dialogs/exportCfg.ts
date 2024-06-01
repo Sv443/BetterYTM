@@ -1,8 +1,8 @@
 import { compress } from "@sv443-network/userutils";
-import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils";
-import { BytmDialog } from "../components";
-import { compressionFormat, scriptInfo } from "../constants";
-import { formatVersion, getFeatures } from "../config";
+import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { compressionFormat, scriptInfo } from "../constants.js";
+import { formatVersion, getFeatures } from "../config.js";
 import { siteEvents } from "src/siteEvents";
 
 let exportDialog: BytmDialog | null = null;

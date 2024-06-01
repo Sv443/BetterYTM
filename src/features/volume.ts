@@ -1,8 +1,8 @@
 import { addParent, type Stringifiable } from "@sv443-network/userutils";
-import { getFeatures } from "../config";
-import { addStyleFromResource, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils";
-import { siteEvents } from "../siteEvents";
-import { featInfo } from ".";
+import { getFeatures } from "../config.js";
+import { addStyleFromResource, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils/index.js";
+import { siteEvents } from "../siteEvents.js";
+import { featInfo } from "./index.js";
 import "./volume.css";
 import { addSelectorListener } from "src/observers";
 

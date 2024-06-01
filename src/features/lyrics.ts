@@ -1,11 +1,11 @@
 import { autoPlural, fetchAdvanced } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
-import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils";
-import { emitInterface } from "../interface";
-import { mode, scriptInfo } from "../constants";
-import { getFeature } from "../config";
-import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
-import type { LyricsCacheEntry } from "../types";
+import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils/index.js";
+import { emitInterface } from "../interface.js";
+import { mode, scriptInfo } from "../constants.js";
+import { getFeature } from "../config.js";
+import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache.js";
+import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "src/observers";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */

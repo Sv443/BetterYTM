@@ -1,8 +1,8 @@
 import { compress, fetchAdvanced, openInNewTab, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, compressionFormat, repo } from "../constants";
-import { type Domain, type ResourceKey } from "../types";
-import { error, type TrLocale, warn, sendRequest } from ".";
+import { branch, compressionFormat, repo } from "../constants.js";
+import { type Domain, type ResourceKey } from "../types.js";
+import { error, type TrLocale, warn, sendRequest } from "./index.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc

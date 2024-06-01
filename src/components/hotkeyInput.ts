@@ -1,6 +1,6 @@
-import { siteEvents } from "../siteEvents";
-import { onInteraction, t } from "../utils";
-import type { HotkeyObj } from "../types";
+import { siteEvents } from "../siteEvents.js";
+import { onInteraction, t } from "../utils/index.js";
+import type { HotkeyObj } from "../types.js";
 import "./hotkeyInput.css";
 
 interface HotkeyInputProps {

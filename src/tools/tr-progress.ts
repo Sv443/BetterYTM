@@ -2,7 +2,7 @@ import { autoPlural, mapRange } from "@sv443-network/userutils";
 import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { TrLocale } from "../utils";
+import type { TrLocale } from "../utils/index.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 
 const { exit } = process;

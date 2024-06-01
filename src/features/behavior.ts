@@ -1,9 +1,9 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils";
-import { getFeatures } from "../config";
-import { addSelectorListener } from "../observers";
-import { initialParams } from "../constants";
-import { LogLevel } from "../types";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils/index.js";
+import { getFeatures } from "../config.js";
+import { addSelectorListener } from "../observers.js";
+import { initialParams } from "../constants.js";
+import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
 

@@ -1,12 +1,12 @@
 import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
-import { getFeatures } from "../config";
-import { siteEvents } from "../siteEvents";
-import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
-import { mode, scriptInfo } from "../constants";
-import { openCfgMenu } from "../menu/menu_old";
-import { createCircularBtn } from "../components";
-import type { ResourceKey } from "../types";
+import { getFeatures } from "../config.js";
+import { siteEvents } from "../siteEvents.js";
+import { addSelectorListener } from "../observers.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils/index.js";
+import { mode, scriptInfo } from "../constants.js";
+import { openCfgMenu } from "../menu/menu_old.js";
+import { createCircularBtn } from "../components/index.js";
+import type { ResourceKey } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu buttons

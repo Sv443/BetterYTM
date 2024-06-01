@@ -1,13 +1,13 @@
 import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, setFeatures } from "../config";
-import { buildNumber, host, mode, scriptInfo } from "../constants";
-import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils";
-import { siteEvents } from "../siteEvents";
-import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs";
-import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
+import { defaultData, getFeatures, setFeatures } from "../config.js";
+import { buildNumber, host, mode, scriptInfo } from "../constants.js";
+import { featInfo, disableBeforeUnload } from "../features/index.js";
+import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils/index.js";
+import { siteEvents } from "../siteEvents.js";
+import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs/index.js";
+import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import "./menu_old.css";
-import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components";
+import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import pkg from "../../package.json" with { type: "json" };
 
 //#region create menu

@@ -1,9 +1,9 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { compressionFormat } from "../constants";
-import { compressionSupported, log } from "../utils";
-import { emitInterface } from "../interface";
-import { getFeatures } from "../config";
-import type { LyricsCacheEntry } from "../types";
+import { compressionFormat } from "../constants.js";
+import { compressionSupported, log } from "../utils/index.js";
+import { emitInterface } from "../interface.js";
+import { getFeatures } from "../config.js";
+import type { LyricsCacheEntry } from "../types.js";
 
 export type LyricsCache = {
   cache: LyricsCacheEntry[];

@@ -1,7 +1,7 @@
 import { clamp } from "@sv443-network/userutils";
-import { scriptInfo } from "../constants";
-import { setGlobalProp } from "../interface";
-import { LogLevel } from "../types";
+import { scriptInfo } from "../constants.js";
+import { setGlobalProp } from "../interface.js";
+import { LogLevel } from "../types.js";
 
 let curLogLevel = LogLevel.Info;
 

@@ -1,7 +1,7 @@
 import { pauseFor } from "@sv443-network/userutils";
-import { info, resourceToHTMLString } from "../utils";
-import { getFeature } from "../config";
-import type { ResourceKey } from "../types";
+import { info, resourceToHTMLString } from "../utils/index.js";
+import { getFeature } from "../config.js";
+import type { ResourceKey } from "../types.js";
 import "./toast.css";
 
 type ToastPos = "tl" | "tr" | "bl" | "br";

@@ -7,7 +7,7 @@ import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
-import type { RollupArgs } from "../types";
+import type { RollupArgs } from "../types.js";
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };

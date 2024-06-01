@@ -1,13 +1,13 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyleFromResource, domLoaded, warn } from "./utils";
-import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config";
-import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
-import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
-import { initSiteEvents } from "./siteEvents";
-import { emitInterface, initInterface, initPlugins } from "./interface";
-import { initObservers, addSelectorListener, globservers } from "./observers";
-import { getWelcomeDialog } from "./dialogs";
-import type { FeatureConfig } from "./types";
+import { addStyleFromResource, domLoaded, warn } from "./utils/index.js";
+import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
+import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
+import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
+import { initSiteEvents } from "./siteEvents.js";
+import { emitInterface, initInterface, initPlugins } from "./interface.js";
+import { initObservers, addSelectorListener, globservers } from "./observers.js";
+import { getWelcomeDialog } from "./dialogs/index.js";
+import type { FeatureConfig } from "./types.js";
 import {
   // layout
   addWatermark, removeUpgradeTab, initRemShareTrackParam, fixSpacing, initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
@@ -25,7 +25,7 @@ import {
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
   // general
   initVersionCheck,
-} from "./features";
+} from "./features/index.js";
 
 //#region console watermark
 

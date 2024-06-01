@@ -1,12 +1,12 @@
-import type * as consts from "./constants";
-import type { scriptInfo } from "./constants";
-import type { addSelectorListener } from "./observers";
+import type * as consts from "./constants.js";
+import type { scriptInfo } from "./constants.js";
+import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter } from "./utils";
-import type { getFeatures, setFeatures } from "./config";
-import type { SiteEventsMap } from "./siteEvents";
-import type { InterfaceEventsMap } from "./interface";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter } from "./utils/index.js";
+import type { getFeatures, setFeatures } from "./config.js";
+import type { SiteEventsMap } from "./siteEvents.js";
+import type { InterfaceEventsMap } from "./interface.js";
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{

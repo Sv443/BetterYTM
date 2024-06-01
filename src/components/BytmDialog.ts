@@ -1,8 +1,8 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "../utils/NanoEmitter";
-import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils";
-import { t } from "../utils/translations";
-import { emitInterface } from "../interface";
+import { NanoEmitter } from "../utils/NanoEmitter.js";
+import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { t } from "../utils/translations.js";
+import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
 
 export interface BytmDialogOptions {

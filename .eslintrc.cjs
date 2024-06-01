@@ -14,6 +14,7 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:require-extensions/recommended",
   ],
   globals: {
     Atomics: "readonly",
@@ -31,6 +32,7 @@ module.exports = {
   },
   plugins: [
     "@typescript-eslint",
+    "require-extensions",
   ],
   rules: {
     "no-unreachable": "off",

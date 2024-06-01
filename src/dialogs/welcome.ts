@@ -1,9 +1,9 @@
-import { getResourceUrl, initTranslations, setLocale, t, warn, type TrLocale } from "../utils";
-import { BytmDialog } from "../components";
-import { openCfgMenu } from "../menu/menu_old";
-import { mode, scriptInfo } from "../constants";
-import { getFeatures, setFeatures } from "../config";
-import { getChangelogDialog } from ".";
+import { getResourceUrl, initTranslations, setLocale, t, warn, type TrLocale } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { openCfgMenu } from "../menu/menu_old.js";
+import { mode, scriptInfo } from "../constants.js";
+import { getFeatures, setFeatures } from "../config.js";
+import { getChangelogDialog } from "./index.js";
 import pkg from "../../package.json" with { type: "json" };
 import locales from "../../assets/locales.json" with { type: "json" };
 

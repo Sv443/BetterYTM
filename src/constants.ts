@@ -1,5 +1,5 @@
 import { randomId } from "@sv443-network/userutils";
-import { LogLevel } from "./types";
+import { LogLevel } from "./types.js";
 
 const modeRaw = "#{{MODE}}";
 const branchRaw = "#{{BRANCH}}";
