@@ -4,7 +4,7 @@ import { addStyleFromResource, error, log, resourceToHTMLString, t, waitVideoEle
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import "./volume.css";
-import { addSelectorListener } from "src/observers";
+import { addSelectorListener } from "../observers.js";
 
 //#region init vol features
 

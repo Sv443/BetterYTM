@@ -3,7 +3,7 @@ import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from 
 import { BytmDialog, createToggleInput } from "../components/index.js";
 import { getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
-import { siteEvents } from "src/siteEvents";
+import { siteEvents } from "../siteEvents.js";
 
 let verNotifDialog: BytmDialog | null = null;
 

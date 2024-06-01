@@ -2,7 +2,7 @@ import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@
 import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey } from "../types.js";
-import { siteEvents } from "src/siteEvents";
+import { siteEvents } from "../siteEvents.js";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;

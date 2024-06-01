@@ -3,7 +3,7 @@ import { compressionSupported, copyToClipboard, onInteraction, t } from "../util
 import { BytmDialog } from "../components/index.js";
 import { compressionFormat, scriptInfo } from "../constants.js";
 import { formatVersion, getFeatures } from "../config.js";
-import { siteEvents } from "src/siteEvents";
+import { siteEvents } from "../siteEvents.js";
 
 let exportDialog: BytmDialog | null = null;
 let copiedTxtTimeout: ReturnType<typeof setTimeout> | undefined = undefined;

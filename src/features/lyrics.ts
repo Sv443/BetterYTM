@@ -6,7 +6,7 @@ import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
 import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
-import { addSelectorListener } from "src/observers";
+import { addSelectorListener } from "../observers.js";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
