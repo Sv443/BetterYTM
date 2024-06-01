@@ -189,7 +189,8 @@ export async function removeUpgradeTab() {
       log("Removed large upgrade tab");
     },
   });
-  addSelectorListener("sideBarMini", "ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
+  // TODO:FIXME: see https://github.com/Sv443/BetterYTM/issues/91
+  addSelectorListener("sideBarMini", "#sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
     listener: (tabElemSmall) => {
       tabElemSmall.remove();
       log("Removed small upgrade tab");

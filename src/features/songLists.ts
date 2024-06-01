@@ -1,5 +1,5 @@
 import { autoPlural, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t } from "../utils/index.js";
+import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t, warn } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
@@ -225,30 +225,33 @@ async function addQueueButtons(
             queuePopupCont.setAttribute("data-bytm-hidden", "true");
 
           dotsBtnElem.click();
+        }
+        else {
+          warn("Couldn't find three dots button in queue item, trying to open the context menu manually");
+          queueItem.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: false }));
+        }
 
-          queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
-          queuePopupCont?.setAttribute("data-bytm-hidden", "true");
+        queuePopupCont = document.querySelector<HTMLElement>("ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown");
+        queuePopupCont?.setAttribute("data-bytm-hidden", "true");
 
-          // TODO: think of something better than this
-          await pauseFor(25);
+        await pauseFor(15);
 
-          const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
-          removeFromQueueBtn?.click();
+        const removeFromQueueBtn = queuePopupCont?.querySelector<HTMLElement>("tp-yt-paper-listbox ytmusic-menu-service-item-renderer:nth-of-type(3)");
+        removeFromQueueBtn?.click();
 
-          // queue items aren't removed automatically outside of the current queue
-          if(removeFromQueueBtn && listType === "genericQueue") {
-            await pauseFor(200);
-            clearInner(queueItem);
-            queueItem.remove();
-          }
+        // queue items aren't removed automatically outside of the current queue
+        if(removeFromQueueBtn && listType === "genericQueue") {
+          await pauseFor(200);
+          clearInner(queueItem);
+          queueItem.remove();
+        }
 
-          if(!removeFromQueueBtn) {
-            error("Couldn't find 'remove from queue' button in queue item three dots menu");
-            dotsBtnElem.click();
-            imgElem.src = await getResourceUrl("icon-error");
-            if(deleteBtnElem)
-              deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
-          }
+        if(!removeFromQueueBtn) {
+          error("Couldn't find 'remove from queue' button in queue item three dots menu.\nPlease make sure all autoplay restrictions on your browser's side are disabled for this page.");
+          dotsBtnElem?.click();
+          imgElem.src = await getResourceUrl("icon-error");
+          if(deleteBtnElem)
+            deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("couldnt_remove_from_queue") : t("couldnt_delete_from_list"));
         }
       }
       catch(err) {

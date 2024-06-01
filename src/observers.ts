@@ -92,6 +92,7 @@ export function initObservers() {
     //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
+      defaultDebounceEdge: "falling",
       defaultDebounce: 150,
       subtree: false,
     });
