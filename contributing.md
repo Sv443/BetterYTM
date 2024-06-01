@@ -524,12 +524,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 >   
 > Description:  
-> Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
-> These instances are created by BetterYTM to observe the DOM for changes.  
-> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
+> Adds a listener to the specified SelectorObserver instance that gets called when the element/s behind the passed selector is/are found.  
+> They are immediately checked for and then checked again whenever the part of the DOM tree changes (elements get added or removed) that is observed by that specific SelectorObserver.  
+>   
+> The instances are chained together in a way that the least specific observer is the parent of the more specific ones.  
+> This is done to limit the amount of checks that need to be run, especially on pages with a lot of dynamic content and if `continuous` listeners are used.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info and example code.  
+>   
+> ⚠️ Due to this chained architecture, the selector you pass can only start with an element that is a child of the observer's base element.  
+> If you provide a selector that starts higher up or directly on the base element, the listener will never be called.  
+> You can check which observer has which base element in the file [`src/observers.ts`](src/observers.ts)  
 >   
 > Arguments:  
-> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which parent element they observe in the file [`src/observers.ts`](src/observers.ts).
+> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which base element they observe in the file [`src/observers.ts`](src/observers.ts)
 > - `selector` - The CSS selector to observe for changes.
 > - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
 >   
@@ -538,11 +545,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > // wait for the observers to exist
 > unsafeWindow.addEventListener("bytm:observersReady", () => {
->   // use the "lowest" possible SelectorObserver (playerBar)
->   // and check if the lyrics button gets added or removed
->   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
->     listener: (elem) => {
->       console.log("The BYTM lyrics button changed");
+>   // use the "lowest" possible SelectorObserver (playerBar) to prevent unnecessary checks
+>   // and call the listener as soon as the passed selector is found in the DOM
+>   unsafeWindow.BYTM.addSelectorListener<HTMLAnchorElement>("playerBar", "#bytm-player-bar-lyrics-btn", {
+>     listener: (lyricsBtnElem) => {
+>       console.log("The player bar lyrics button was added or removed:", lyricsBtnElem);
 >     },
 >   });
 > });

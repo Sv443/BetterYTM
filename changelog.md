@@ -19,9 +19,14 @@
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Added advanced feature to change the startup timeout
-  - A blue logo is shown instead of the red BetterYTM logo when the script was compiled in development (preview) mode
-  - In development mode, missing configuration keys will now be set to their default value instead of potentially breaking the script
-- **Plugin Changes:**
+  - A blue logo is shown instead of the red BetterYTM logo when the script was compiled in development / preview mode
+  - In dev/preview mode, missing configuration keys will now be set to their default value instead of potentially breaking the script
+  - SelectorObserver changes:
+    - Added `ytMasthead` instance for the title bar on YT
+    - Renamed all YT-specific instances to have the `yt` prefix
+      - From `watchFlexy` to `ytWatchFlexy`
+      - From `watchMetadata` to `ytWatchMetadata`
+- **Plugin Interface Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
@@ -30,6 +35,7 @@
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
   - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+  - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
   - Added events
     - `bytm:featureInitStarted` - emitted when the feature initialization process starts
     - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
