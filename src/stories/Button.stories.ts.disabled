@@ -5,7 +5,7 @@ import { createButton, type ButtonProps } from "./Button.js";
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Example/Example Button",
-  tags: ["autodocs"],
+  // tags: ["autodocs"],
   render: (args) => {
     // You can either use a function to create DOM elements or use a plain html string!
     // return `<div>${label}</div>`;

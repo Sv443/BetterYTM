@@ -1,10 +1,26 @@
-:root html body .bytm-ripple {
+/* use `html body` prefix for more specificity */
+
+html body .bytm-ripple {
   position: relative;
-  width: var(--bytm-ripple-width, 100%);
-  height: var(--bytm-ripple-height, 100%);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  width: var(--bytm-ripple-width);
+  height: var(--bytm-ripple-height);
+  user-select: none;
+}
+
+html body .bytm-ripple,
+html body .bytm-ripple.normal {
+  --bytm-ripple-anim-duration: 0.35s;
+}
+
+html body .bytm-ripple.fast {
+  --bytm-ripple-anim-duration: 0.2s;
+}
+
+html body .bytm-ripple.slow {
+  --bytm-ripple-anim-duration: 0.5s;
 }
 
 .bytm-ripple-area {
@@ -13,7 +29,7 @@
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
-  animation: bytm-scale-ripple 0.25s ease-in;
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration) ease-out;
 }
 
 @keyframes bytm-scale-ripple {
@@ -23,8 +39,8 @@
     opacity: 0.5;
   }
   100% {
-    width: 400px;
-    height: 400px;
+    width: calc(var(--bytm-ripple-cont-width) * 2);
+    height: calc(var(--bytm-ripple-cont-width) * 2);
     opacity: 0;
   }
 }

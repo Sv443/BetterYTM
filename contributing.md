@@ -113,6 +113,8 @@ To edit an existing translation, please follow these steps:
   - `npm run preview` - Same as `npm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
 - **`npm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
+- **`npm run storybook`**  
+  Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`npm run gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
 - **`npm run tr-progress`**  
@@ -1428,15 +1430,15 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### createRipple()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.createRipple(rippleElement?: HTMLElement): HTMLElement
+> unsafeWindow.BYTM.createRipple(rippleElement?: HTMLElement, props?: RippleProps): HTMLElement
 > ```
 >   
 > Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
 > Returns either the new element or the initially passed one.  
 > Custom CSS overrides can be applied to change the color, size and transparency.  
-> Just make sure not to make the animation slower than it is, since the script will automatically remove the ripple elements after the animation is done.  
 >   
-> **This component is still experimental and might not work in some cases!**
+> Properties:  
+> - `speed?: string` - The speed of the ripple effect. Can be "fast", "normal" or "slow" (defaults to "normal")
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
