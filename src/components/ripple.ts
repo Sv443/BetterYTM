@@ -1,8 +1,8 @@
 import "./ripple.css";
 
 type RippleProps = {
-  /** How fast should the animation be */
-  speed?: "normal" | "fast" | "slow";
+  /** How fast should the animation be - defaults to "normal" */
+  speed?: "faster" | "fast" | "normal" | "slow" | "slower";
 };
 
 /**
