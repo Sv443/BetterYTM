@@ -7,7 +7,7 @@ import { siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import "./menu_old.css";
-import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
+import { BytmDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import pkg from "../../package.json" with { type: "json" };
 
 //#region create menu
@@ -50,7 +50,7 @@ async function addCfgMenu() {
       closeCfgMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
-    if(isCfgMenuOpen && e.key === "Escape")
+    if(isCfgMenuOpen && e.key === "Escape" && !BytmDialog.getCurrentDialogId())
       closeCfgMenu(e);
   });
 
