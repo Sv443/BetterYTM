@@ -82,7 +82,7 @@ export async function createLongBtn({
   btnElem.tabIndex = 0;
   btnElem.role = "button";
 
-  const imgElem = document.createElement("div");
+  const imgElem = document.createElement("src" in rest ? "img" : "div");
   imgElem.classList.add("bytm-generic-btn-img", iconPosition ?? "left");
   imgElem.innerHTML = "src" in rest ? rest.src : await resourceToHTMLString(rest.resourceName as "_") ?? "";
 
