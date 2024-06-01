@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,48 +35,48 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/3029c25f/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/179da517/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -187,7 +187,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "3029c25f";
+const buildNumberRaw = "179da517";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1106,13 +1106,15 @@ function createLongBtn(_a) {
  * @param clickEl If passed, this element will be modified to have the ripple effect. Otherwise, a new element will be created.
  * @returns The passed element or the newly created element with the ripple effect.
  */
-function createRipple(rippleElement) {
+function createRipple(rippleElement, properties) {
+    const props = Object.assign({ speed: "normal" }, properties);
     const rippleEl = rippleElement !== null && rippleElement !== void 0 ? rippleElement : document.createElement("div");
-    rippleEl.classList.add("bytm-ripple");
+    rippleEl.classList.add("bytm-ripple", props.speed);
+    const updateRippleWidth = () => rippleEl.style.setProperty("--bytm-ripple-cont-width", rippleEl.clientWidth + "px");
     rippleEl.addEventListener("click", (e) => {
-        var _a, _b, _c, _d;
-        const x = (_b = e.clientX - ((_a = e.target) === null || _a === void 0 ? void 0 : _a.offsetLeft)) !== null && _b !== void 0 ? _b : 0;
-        const y = (_d = e.clientY - ((_c = e.target) === null || _c === void 0 ? void 0 : _c.offsetTop)) !== null && _d !== void 0 ? _d : 0;
+        updateRippleWidth();
+        const x = e.clientX - rippleEl.getBoundingClientRect().left;
+        const y = e.clientY - rippleEl.getBoundingClientRect().top;
         const rippleAreaEl = document.createElement("span");
         rippleAreaEl.classList.add("bytm-ripple-area");
         rippleAreaEl.style.left = x + "px";
@@ -1121,8 +1123,9 @@ function createRipple(rippleElement) {
             rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
         else
             rippleEl.appendChild(rippleAreaEl);
-        setTimeout(() => rippleAreaEl.remove(), 250);
+        rippleAreaEl.addEventListener("animationend", () => rippleAreaEl.remove());
     });
+    updateRippleWidth();
     return rippleEl;
 }let timeout;
 /** Shows a toast message with an icon */
@@ -1813,7 +1816,9 @@ var scripts = {
 	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
 	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
 	test: "npm run node-ts -- ./test.ts",
-	knip: "knip"
+	knip: "knip",
+	storybook: "storybook dev -p 6006",
+	"build-storybook": "storybook build"
 };
 var engines = {
 	node: ">=18 <22",
@@ -1853,10 +1858,18 @@ var dependencies = {
 	nanoevents: "^9.0.0"
 };
 var devDependencies = {
+	"@chromatic-com/storybook": "^1.5.0",
 	"@rollup/plugin-json": "^6.0.1",
 	"@rollup/plugin-node-resolve": "^15.2.3",
 	"@rollup/plugin-terser": "^0.4.4",
 	"@rollup/plugin-typescript": "^11.1.5",
+	"@storybook/addon-essentials": "^8.1.5",
+	"@storybook/addon-interactions": "^8.1.5",
+	"@storybook/addon-links": "^8.1.5",
+	"@storybook/blocks": "^8.1.5",
+	"@storybook/html": "^8.1.5",
+	"@storybook/html-vite": "^8.1.5",
+	"@storybook/test": "^8.1.5",
 	"@types/express": "^4.17.17",
 	"@types/greasemonkey": "^4.0.4",
 	"@types/node": "^20.12.12",
@@ -1866,12 +1879,15 @@ var devDependencies = {
 	dotenv: "^16.4.1",
 	eslint: "^8.51.0",
 	"eslint-plugin-require-extensions": "^0.1.3",
+	"eslint-plugin-storybook": "^0.8.0",
 	express: "^4.18.2",
 	knip: "^5.15.1",
 	nodemon: "^3.0.1",
 	rollup: "^4.6.0",
 	"rollup-plugin-execute": "^1.1.1",
 	"rollup-plugin-import-css": "^3.3.5",
+	storybook: "^8.1.5",
+	"storybook-dark-mode": "^4.0.1",
 	"ts-node": "^10.9.1",
 	tslib: "^2.5.2",
 	typescript: "^5.4.5"
@@ -1893,7 +1909,8 @@ var nodemonConfig = {
 	ext: "ts,mts,js,jsx,mjs,json,html,css,svg,png",
 	ignore: [
 		"dist/*",
-		"dev/*"
+		"dev/*",
+		"*/stories/*"
 	]
 };
 var pkg = {
@@ -6212,34 +6229,6 @@ function clearNode(element) {
         clearNode(element.firstChild);
     element.parentNode.removeChild(element);
 }
-const interactionKeys = ["Enter", " ", "Space"];
-/**
- * Adds generic, accessible interaction listeners to the passed element.
- * All listeners have the default behavior prevented and stop propagation (for keyboard events only as long as the captured key is valid).
- * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
- */
-function onInteraction(elem, listener, listenerOptions) {
-    const proxListener = (e) => {
-        if (e instanceof KeyboardEvent) {
-            if (interactionKeys.includes(e.key)) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            else
-                return;
-        }
-        else if (e instanceof MouseEvent) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        // clean up the other listener that isn't automatically removed if `once` is set
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
-        listener(e);
-    };
-    elem.addEventListener("click", proxListener, listenerOptions);
-    elem.addEventListener("keydown", proxListener, listenerOptions);
-}
 /**
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
@@ -6285,6 +6274,33 @@ function copyToClipboard(text) {
     catch (err) {
         alert(t("copy_to_clipboard_error", String(text)));
     }
+}const interactionKeys = ["Enter", " ", "Space"];
+/**
+ * Adds generic, accessible interaction listeners to the passed element.
+ * All listeners have the default behavior prevented and stop propagation (for keyboard events only as long as the captured key is valid).
+ * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
+ */
+function onInteraction(elem, listener, listenerOptions) {
+    const proxListener = (e) => {
+        if (e instanceof KeyboardEvent) {
+            if (interactionKeys.includes(e.key)) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            else
+                return;
+        }
+        else if (e instanceof MouseEvent) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        // clean up the other listener that isn't automatically removed if `once` is set
+        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
+        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
+        listener(e);
+    };
+    elem.addEventListener("click", proxListener, listenerOptions);
+    elem.addEventListener("keydown", proxListener, listenerOptions);
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
