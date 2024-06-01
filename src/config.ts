@@ -71,14 +71,16 @@ export const migrations: DataMigrationsDict = {
   6: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
     useDefaultConfig(oldData, [
       "autoLikeChannels", "autoLikeChannelToggleBtn",
-      "autoLikePlayerBarToggleBtn", "autoLikeTimeout",
-      "autoLikeShowToast", "autoLikeOpenMgmtDialog",
-      "toastDuration", "initTimeout",
+      "autoLikeTimeout", "autoLikeShowToast",
+      "autoLikeOpenMgmtDialog", "toastDuration",
+      "initTimeout",
     ]), [
       { key: "rememberSongTimeSites", oldDefault: "ytm" },
       { key: "volumeSliderScrollStep", oldDefault: 10 },
     ],
   ),
+  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
+
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
   // 6 -> 7 (vX.X)
   // 7: (oldData: FeatureConfig) => 
