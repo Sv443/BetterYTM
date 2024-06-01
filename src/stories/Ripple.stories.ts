@@ -6,7 +6,7 @@ import "../components/ripple.css";
 //#region meta
 
 const meta = {
-  title: "Ripple/Button",
+  title: "Ripple",
   render,
   argTypes: {
     backgroundColor: { control: "color" },
