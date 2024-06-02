@@ -316,7 +316,7 @@ select.bytm-ftconf-input {
 /* Markdown stuff */
 
 .bytm-markdown-container kbd, .bytm-kbd {
-  --bytm-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
+  --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
   padding: 4px;
@@ -327,7 +327,7 @@ select.bytm-ftconf-input {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), margin-top 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+  transition: padding 0.1s var(--bytm-kbd-easing), margin-top 0.1s var(--bytm-kbd-easing), box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
 .bytm-markdown-container kbd:active, .bytm-kbd:active {

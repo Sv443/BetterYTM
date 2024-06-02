@@ -32,7 +32,7 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
   rippleEl.classList.add("bytm-ripple", props.speed);
 
   const updateRippleWidth = () => 
-    rippleEl.style.setProperty("--bytm-ripple-cont-width", rippleEl.clientWidth + "px");
+    rippleEl.style.setProperty("--bytm-ripple-cont-width", `${rippleEl.clientWidth}px`);
 
   rippleEl.addEventListener("mousedown", (e) => {
     updateRippleWidth();
@@ -42,8 +42,8 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
 
     const rippleAreaEl = document.createElement("span");
     rippleAreaEl.classList.add("bytm-ripple-area");
-    rippleAreaEl.style.left = x + "px";
-    rippleAreaEl.style.top = y + "px";
+    rippleAreaEl.style.left = `${x}px`;
+    rippleAreaEl.style.top = `${y}px`;
 
     if(rippleEl.firstChild)
       rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
