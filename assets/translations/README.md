@@ -72,7 +72,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -115,7 +115,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -158,7 +158,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -201,7 +201,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -244,7 +244,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -287,7 +287,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
@@ -330,7 +330,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
 | `feature_desc_autoLikePlayerBarToggleBtn` | `Add a button to the media controls to enable or disable auto-liking` |
-| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being liked` |
+| `feature_desc_autoLikeTimeout` | `How many seconds a song needs to play before being auto-liked` |
 | `feature_desc_autoLikeShowToast` | `Show a toast notification when a song is auto-liked` |
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
