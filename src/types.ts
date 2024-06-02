@@ -362,6 +362,10 @@ export interface FeatureConfig {
   fixHdrIssues: boolean;
   /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
   disableDarkReaderSites: SiteSelectionOrNone;
+  /** Whether to show the like/dislike ratio on the currently playing song */
+  showVotes: boolean;
+  /** Whether to show a bar graph of the like/dislike ratio on the currently playing song and which design it should use */
+  showVoteRatio: "disabled" | "redGreen" | "blueGray";
 
   //#region volume
   /** Add a percentage label to the volume slider */

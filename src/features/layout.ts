@@ -1,8 +1,8 @@
 import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
-import { getFeatures } from "../config.js";
+import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type ReturnYoutubeDislikesVotesObj } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn } from "../components/index.js";
@@ -730,4 +730,40 @@ export async function fixHdrIssues() {
     error("Couldn't load stylesheet to fix HDR issues");
   else
     log("Fixed HDR issues");
+}
+
+//#region show likes&dislikes
+
+/** Shows the amount of likes and dislikes on the current song */
+export async function initShowVotes() {
+  addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
+    async listener(voteCont) {
+      try {
+        const watchId = getWatchId();
+        if(!watchId)
+          return error("Couldn't get watch ID while initializing showVotes");
+        const voteObj = await fetchVideoVotes(watchId);
+        if(!voteObj)
+          return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
+
+        getFeature("showVotes") && addVoteNumbers(voteCont, voteObj);
+        getFeature("showVoteRatio") && addVoteRatio(voteCont, voteObj);
+      }
+      catch(err) {
+        error("Couldn't initialize show votes feature due to an error:", err);
+      }
+    },
+  });
+
+  siteEvents.on("watchIdChanged", async (watchId) => {
+    void ["TODO", watchId];
+  });
+}
+
+function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
+  void ["TODO", voteCont, voteObj];
+}
+
+function addVoteRatio(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
+  void ["TODO", voteCont, voteObj];
 }

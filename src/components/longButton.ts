@@ -1,7 +1,17 @@
 import { onInteraction, resourceToHTMLString } from "../utils/index.js";
+import { createRipple } from "./ripple.js";
 import type { ResourceKey } from "../types.js";
 
-type LongBtnOptions = (
+type LongBtnOptions = {
+  /** Button text */
+  text: string;
+  /** Tooltip and aria-label of the button */
+  title: string;
+  /** Icon position inside the button - defaults to `left` */
+  iconPosition?: "left" | "right";
+  /** Whether the button should have a ripple effect - defaults to true */
+  ripple?: boolean;
+} & (
   | {
     /** Resource key for the button icon */
     resourceName: (ResourceKey & `icon-${string}`) | "_";
@@ -26,15 +36,6 @@ type LongBtnOptions = (
     /** Callback function to execute when the button is toggled */
     onToggle: (enabled: boolean, event: MouseEvent | KeyboardEvent) => void;
   }
-) & (
-  {
-    /** Button text */
-    text: string;
-    /** Tooltip and aria-label of the button */
-    title: string;
-    /** Icon position inside the button - defaults to `left` */
-    iconPosition?: "left" | "right";
-  }
 );
 
 /**
@@ -48,6 +49,7 @@ export async function createLongBtn({
   title,
   text,
   iconPosition,
+  ripple,
   ...rest
 }: LongBtnOptions) {
   if(["href", "onClick", "onToggle"].every((key) => !(key in rest)))
@@ -97,5 +99,5 @@ export async function createLongBtn({
   btnElem.appendChild(txtElem);
   iconPosition === "right" && btnElem.appendChild(imgElem);
 
-  return btnElem;
+  return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
 }

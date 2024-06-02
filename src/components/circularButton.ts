@@ -1,17 +1,19 @@
 import { getResourceUrl, onInteraction } from "../utils/index.js";
+import { createRipple } from "./ripple.js";
 import type { ResourceKey } from "../types.js";
 
-type CircularBtnOptions = (
+type CircularBtnOptions = {
+  /** Tooltip and aria-label of the button */
+  title: string;
+  /** Whether the button should have a ripple effect - defaults to true */
+  ripple?: boolean;
+} & (
   | {
     /** Resource key for the button icon */
     resourceName: (ResourceKey & `icon-${string}`) | "_";
-    /** Tooltip and aria-label of the button */
-    title: string;
   }
   | {
     src: string | Promise<string>;
-    /** Tooltip and aria-label of the button */
-    title: string;
   }
 ) & (
   | {
@@ -32,6 +34,7 @@ type CircularBtnOptions = (
  */
 export async function createCircularBtn({
   title,
+  ripple = true,
   ...rest
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
@@ -64,5 +67,5 @@ export async function createCircularBtn({
 
   btnElem.appendChild(imgElem);
 
-  return btnElem;
+  return ripple ? createRipple(btnElem, { speed: "slow" }) : btnElem;
 }
