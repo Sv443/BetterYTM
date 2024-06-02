@@ -11,6 +11,8 @@ import type { FeatureConfig, FeatureKey } from "./types.js";
 export const formatVersion = 6;
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
+  // @ts-ignore
+  .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
   .reduce<Partial<FeatureConfig>>((acc, key) => {
     // @ts-ignore
     acc[key] = featInfo?.[key]?.default as unknown as undefined;
@@ -166,7 +168,6 @@ export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const defaultKeys = Object.keys(defaultData);
   const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
   if(missingKeys.length > 0) {
-    info("Fixed missing feature config keys:", missingKeys);
     for(const key of missingKeys)
       cfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
   }

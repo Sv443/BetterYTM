@@ -3,9 +3,9 @@ import { emitInterface } from "./interface.js";
 import { error, getDomain } from "./utils/index.js";
 import type { Domain } from "./types.js";
 
-// >> If you came here looking for which observer to use, start out by looking at the types `YTMObserverName` and `YTObserverName`
-// >> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`
-// >> Just above that line, you'll find the selector to that observer's base element. Make sure all your selectors start **below** that element!
+// !> If you came here looking for which observer to use, start out by looking at the types `YTMObserverName` and `YTObserverName`
+// !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`
+// !> Just above that line, you'll find the selector to that observer's base element. Make sure all your selectors start **below** that element!
 
 
 //#region types
