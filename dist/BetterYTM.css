@@ -579,23 +579,6 @@ hr {
   margin-right: 6px;
 }
 
-.bytm-hotkey-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.bytm-hotkey-reset {
-  font-size: 0.9em;
-  margin-right: 10px;
-}
-
-.bytm-hotkey-info {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
 /* use `html body` prefix for more specificity */
 
 html body .bytm-ripple {
@@ -646,6 +629,23 @@ html body .bytm-ripple.slower {
     height: calc(max(var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2, var(--bytm-ripple-min-size)));
     opacity: 0;
   }
+}
+
+.bytm-hotkey-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bytm-hotkey-reset {
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.bytm-hotkey-info {
+  font-size: 0.9em;
+  white-space: nowrap;
 }
 
 :root {

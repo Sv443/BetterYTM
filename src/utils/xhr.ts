@@ -30,7 +30,7 @@ export function constructUrl(base: string, params: Record<string, Stringifiable 
 
 /**
  * Sends a request with the specified parameters and returns the response as a Promise.  
- * Ignores the CORS policy, contrary to fetch and fetchAdvanced.
+ * Ignores [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), contrary to fetch and fetchAdvanced.
  */
 export function sendRequest<T = any>(details: GM.Request<T>) {
   return new Promise<GM.Response<T>>((resolve, reject) => {
@@ -55,4 +55,32 @@ export async function fetchCss(key: ResourceKey & `css-${string}`) {
     error("Couldn't fetch CSS due to an error:", err);
     return undefined;
   }
+}
+
+export type ReturnYoutubeDislikesVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** ISO timestamp of when the video was uploaded */
+  dateCreated: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Amount of views */
+  viewCount: number;
+  /** Whether the video was deleted */
+  deleted: boolean;
+};
+
+/**
+ * Fetches the votes object for a YouTube video from the [Return YouTube Dislikes API.](https://returnyoutubedislike.com/docs)
+ * @param watchId The watch ID of the video
+ */
+export async function fetchVideoVotes(watchId: string) {
+  return (await sendRequest<ReturnYoutubeDislikesVotesObj>({
+    method: "GET",
+    url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+  })).response as ReturnYoutubeDislikesVotesObj;
 }

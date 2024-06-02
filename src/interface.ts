@@ -195,22 +195,22 @@ export function emitInterface<
 //#region register plugins
 
 /** Map of plugin ID and plugins that are queued up for registration */
-const pluginsQueued = new Map<string, PluginItem>();
+const queuedPlugins = new Map<string, PluginItem>();
 
 /** Map of plugin ID and all registered plugins */
-const pluginsRegistered = new Map<string, PluginItem>();
+const registeredPlugins = new Map<string, PluginItem>();
 
 /** Map of plugin ID to auth token for plugins that have been registered */
-const pluginTokens = new Map<string, string>();
+const registeredPluginTokens = new Map<string, string>();
 
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
   // TODO(v1.3): check perms and ask user for initial activation
 
-  for(const [key, { def, events }] of pluginsQueued) {
+  for(const [key, { def, events }] of queuedPlugins) {
     try {
-      pluginsRegistered.set(key, { def, events });
-      pluginsQueued.delete(key);
+      registeredPlugins.set(key, { def, events });
+      queuedPlugins.delete(key);
       emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
     }
     catch(err) {
@@ -248,7 +248,7 @@ export function emitOnPlugins<TEvtKey extends keyof PluginEventMap>(
   predicate: ((def: PluginDef) => boolean) | boolean = true,
   ...data: Parameters<PluginEventMap[TEvtKey]>
 ) {
-  for(const { def, events } of pluginsRegistered.values())
+  for(const { def, events } of registeredPlugins.values())
     if(typeof predicate === "boolean" ? predicate : predicate(def))
       events.emit(event, ...data);
 }
@@ -274,10 +274,10 @@ export function getPlugin(pluginId: string): PluginItem | undefined
  */
 export function getPlugin(...args: [pluginDefOrNameOrId: PluginDefResolvable | string, namespace?: string]): PluginItem | undefined {
   return typeof args[0] === "string" && typeof args[1] === "undefined"
-    ? pluginsRegistered.get(args[0])
+    ? registeredPlugins.get(args[0])
     : args.length === 2
-      ? pluginsRegistered.get(`${args[1]}/${args[0]}`)
-      : pluginsRegistered.get(getPluginKey(args[0] as PluginDefResolvable));
+      ? registeredPlugins.get(`${args[1]}/${args[0]}`)
+      : registeredPlugins.get(getPluginKey(args[0] as PluginDefResolvable));
 }
 
 /**
@@ -308,7 +308,7 @@ export function getPluginInfo(...args: [token: string | undefined, pluginDefOrNa
     return undefined;
 
   return pluginDefToInfo(
-    pluginsRegistered.get(
+    registeredPlugins.get(
       typeof args[1] === "string" && typeof args[2] === "undefined"
         ? args[1]
         : args.length === 2
@@ -353,11 +353,11 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
   const token = randomId(32, 36);
 
   const { plugin: { name } } = def;
-  pluginsQueued.set(getPluginKey(def), {
+  queuedPlugins.set(getPluginKey(def), {
     def: def,
     events,
   });
-  pluginTokens.set(getPluginKey(def), token);
+  registeredPluginTokens.set(getPluginKey(def), token);
 
   info(`Registered plugin: ${name}`, LogLevel.Info);
 
@@ -370,7 +370,7 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
 
 /** Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined */
 export function resolveToken(token: string | undefined): string | undefined {
-  return token ? [...pluginTokens.entries()].find(([, v]) => v === token)?.[0] ?? undefined : undefined;
+  return token ? [...registeredPluginTokens.entries()].find(([, v]) => v === token)?.[0] ?? undefined : undefined;
 }
 
 //#region proxy funcs

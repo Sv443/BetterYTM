@@ -233,6 +233,23 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
+  showVotes: {
+    type: "toggle",
+    category: "layout",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
+  showVoteRatio: {
+    type: "select",
+    category: "layout",
+    options: () => [
+      { value: "disabled", label: t("vote_ratio_disabled") },
+      { value: "redGreen", label: t("vote_ratio_red_green") },
+      { value: "blueGray", label: t("vote_ratio_blue_gray") },
+    ],
+    default: "disabled",
+    textAdornment: adornments.reloadRequired,
+  },
 
   //#region volume
   volumeSliderLabel: {

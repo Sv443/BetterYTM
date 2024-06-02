@@ -10,15 +10,19 @@ import { getWelcomeDialog } from "./dialogs/index.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
-  addWatermark, removeUpgradeTab, initRemShareTrackParam, fixSpacing, initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
+  addWatermark, removeUpgradeTab, initRemShareTrackParam,
+  fixSpacing, initThumbnailOverlay, initHideCursorOnIdle,
+  fixHdrIssues, initShowVotes,
   // volume
   initVolumeFeatures,
   // song lists
   initQueueButtons, initAboveQueueBtns,
   // behavior
-  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts, initRememberSongTime, disableDarkReader,
+  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts,
+  initRememberSongTime, disableDarkReader,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip, initAutoLike,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
+  initNumKeysSkip, initAutoLike,
   // lyrics
   addPlayerBarLyricsBtn, initLyricsCache,
   // menu
@@ -162,6 +166,9 @@ async function onDomLoad() {
 
       if(features.fixHdrIssues)
         ftInit.push(["fixHdrIssues", fixHdrIssues()]);
+
+      if(features.showVotes || features.showVoteRatio !== "disabled")
+        ftInit.push(["showVotes", initShowVotes()]);
 
       //#region (ytm) volume
 
