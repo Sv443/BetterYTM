@@ -3,10 +3,10 @@
 
 ## 2.1.0
 - **Features:**
-  - Auto-like videos and songs of channels where you have enabled this feature
-  - 
+  - Auto-like videos and songs of channels where this feature was enabled
+    - Added an auto-like toggle button to the channel pages on YT and YTM
 - **Changes / Fixes:**
-  - Welcome menu is shown on YT too now
+  - Now the welcome menu is shown on YT too
   - Changed default settings for these features:
     - Remember song time sites: from `YTM only` to `both sites`
     - Volume slider scroll sensitivity: from `10%` to `4%`
@@ -16,6 +16,9 @@
     - Disable Dark Reader sites
     - Remove share tracking parameter sites
     - Placement of list/queue buttons
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Added advanced feature to change the startup timeout
@@ -46,6 +49,8 @@
   - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
     In practice this changes nothing, but it benefits from having the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
+</details>
+
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
 </div>
@@ -73,12 +78,16 @@
   - Fixed tooltip that is set on the wrong element
   - Fixed queue buttons not being shown when navigating with tab key
   - Tons of accessibility improvements for screenreader users (feedback regarding this is strongly welcome!)
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
 - **Internal Changes:**
   - Improved script performance
     - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils#selectorobserver) instances to improve overall performance by quite a lot
       - Implemented rising-edge debounce for SelectorObserver instances to massively improve responsiveness
     - Added a cache to save lyrics in. Up to 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
+- **Plugin Interface Changes:**
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))  
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
@@ -86,6 +95,7 @@
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
   - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs potentially change
 
+</details>
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/52" rel="noopener noreferrer">See pull request for more info</a>
 </div>
