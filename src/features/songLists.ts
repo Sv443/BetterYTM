@@ -8,6 +8,7 @@ import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "../observers.js";
 import { getFeatures } from "../config.js";
 import "./songLists.css";
+import { createRipple } from "src/components/ripple.js";
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
@@ -265,8 +266,8 @@ async function addQueueButtons(
     deleteBtnElem.appendChild(imgElem);
   }
 
-  lyricsBtnElem && queueBtnsCont.appendChild(lyricsBtnElem);
-  deleteBtnElem && queueBtnsCont.appendChild(deleteBtnElem);
+  lyricsBtnElem && queueBtnsCont.appendChild(createRipple(lyricsBtnElem, { speed: "slow" }));
+  deleteBtnElem && queueBtnsCont.appendChild(createRipple(deleteBtnElem, { speed: "slow" }));
 
   queueItem.querySelector<HTMLElement>(containerParentSelector)?.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");

@@ -5,7 +5,7 @@ import { addSelectorListener } from "../observers.js";
 import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type ReturnYoutubeDislikesVotesObj } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
-import { createCircularBtn } from "../components/index.js";
+import { createCircularBtn, createRipple } from "../components/index.js";
 import type { ResourceKey } from "../types.js";
 import "./layout.css";
 
@@ -606,7 +606,7 @@ export async function initThumbnailOverlay() {
     
       // toggle button
       if(toggleBtnShown) {
-        const toggleBtnElem = document.createElement("a");
+        const toggleBtnElem = createRipple(document.createElement("a"), { speed: "slow" });
         toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
         toggleBtnElem.role = "button";
         toggleBtnElem.tabIndex = 0;
