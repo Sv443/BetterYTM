@@ -1435,16 +1435,18 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
 > Returns either the new element or the initially passed one.  
-> Custom CSS overrides can be applied to change the color, size and transparency.  
+> External CSS overrides can be used to change the color, size, speed values and opacity.  
+> The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
 >   
 > Properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "fast", "normal" or "slow" (defaults to "normal")
+> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const myBoringButton = document.querySelector("#my-boring-button");
-> unsafeWindow.BYTM.createRipple(myBoringButton); // it's as easy as this
+> if(myBoringButton)
+>   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
 > ```
 > </details>
 
