@@ -1,35 +1,33 @@
-/* use `html body` prefix for more specificity */
+/* some variables are not defined on purpose to allow plugin authors to more easily provide overrides */
 
-html body .bytm-ripple {
+/* use `body` prefix for more specificity: */
+body .bytm-ripple {
   position: relative;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: var(--bytm-ripple-width);
-  height: var(--bytm-ripple-height);
-  user-select: none;
+  width: var(--bytm-ripple-width, auto);
+  height: var(--bytm-ripple-height, auto);
 }
 
-html body .bytm-ripple.faster {
+body .bytm-ripple.faster {
   --bytm-ripple-anim-duration: 0.15s;
 }
 
-html body .bytm-ripple.fast {
+body .bytm-ripple.fast {
   --bytm-ripple-anim-duration: 0.35s;
 }
 
-html body .bytm-ripple.slow {
+body .bytm-ripple.slow {
   --bytm-ripple-anim-duration: 0.75s;
 }
 
-html body .bytm-ripple.slower {
+body .bytm-ripple.slower {
   --bytm-ripple-anim-duration: 1s;
 }
 
 .bytm-ripple-area {
-  --bytm-ripple-min-size: 110px;
+  --bytm-ripple-min-size: 100px;
   position: absolute;
-  background: rgba(255, 255, 255, 0.325);
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.325));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
