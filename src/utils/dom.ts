@@ -110,9 +110,12 @@ function ytForceShowVideoTime() {
   return true;
 }
 
-/** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
+/**
+ * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
+ * Resolves immediately if the video element is already ready.
+ */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
-  return new Promise((res) => {
+  return new Promise(async (res) => {
     const waitForEl = () => addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
       listener: async (vidElem) => {
         if(vidElem) {
@@ -124,11 +127,10 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
         }
       },
     });
-  
-    if(location.pathname.startsWith("/watch"))
-      waitForEl();
-    else
-      siteEvents.once("watchIdChanged", waitForEl);
+
+    if(!location.pathname.startsWith("/watch"))
+      await siteEvents.once("watchIdChanged");
+    waitForEl();
   });
 }
 
@@ -163,7 +165,7 @@ export function addStyle(css: string, ref?: string, transform: (css: string) => 
 
 /**
  * Checks if the currently playing media is a song or a video.  
- * This function should only be called after awaiting `waitVideoElementReady()`!
+ * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
  */
 export function currentMediaType(): "video" | "song" {
   const songImgElem = document.querySelector("ytmusic-player #song-image");
