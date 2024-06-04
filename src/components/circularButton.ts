@@ -67,5 +67,5 @@ export async function createCircularBtn({
 
   btnElem.appendChild(imgElem);
 
-  return ripple ? createRipple(btnElem, { speed: "slow" }) : btnElem;
+  return ripple ? createRipple(btnElem) : btnElem;
 }

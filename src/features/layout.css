@@ -4,6 +4,7 @@
   overflow: hidden !important;
 }
 
+/* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
   --bytm-generic-btn-height: 36px;
@@ -44,7 +45,7 @@
     border: 1px solid initial;
   }
   25% {
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
   100% {
     border: 1px solid initial;

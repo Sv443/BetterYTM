@@ -27,7 +27,7 @@ body .bytm-ripple.slower {
 .bytm-ripple-area {
   --bytm-ripple-min-size: 100px;
   position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.325));
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.275));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
