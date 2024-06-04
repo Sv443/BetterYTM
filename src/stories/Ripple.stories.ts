@@ -1,8 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/html";
 import { fn } from "@storybook/test";
-import { createRipple } from "../components/ripple.js";
-import { createCircularBtn } from "../components/circularButton.js";
-import { createLongBtn } from "../components/longButton.js";
+import { createCircularBtn, createLongBtn, createRipple } from "../components/index.js";
 import "../components/ripple.css";
 import "../features/layout.css";
 
@@ -58,6 +56,7 @@ function render(props: RippleProps) {
     rippleElem.style.borderRadius = "50px";
     rippleElem.style.height = "24px";
     rippleElem.style.cursor = "pointer";
+    rippleElem.style.userSelect = "none";
     rippleElem.tabIndex = 0;
 
     rippleElem.style.backgroundColor = props.backgroundColor;

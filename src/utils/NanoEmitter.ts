@@ -48,7 +48,6 @@ export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
         resolve(args);
       }) as TEvtMap[TKey];
 
-      // eslint-disable-next-line prefer-const
       unsub = this.on(event, onceProxy);
     });
   }

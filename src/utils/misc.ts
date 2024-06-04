@@ -50,7 +50,7 @@ export async function compressionSupported() {
     await compress(".", compressionFormat, "string");
     return isCompressionSupported = true;
   }
-  catch(e) {
+  catch {
     return isCompressionSupported = false;
   }
 }
@@ -94,7 +94,7 @@ export function parseChannelIdFromUrl(url: string | URL) {
     else
       return null;
   }
-  catch(e) {
+  catch {
     return null;
   }
 }
@@ -134,7 +134,7 @@ export function openInTab(href: string, background = false) {
   try {
     openInNewTab(href, background);
   }
-  catch(err) {
+  catch {
     window.open(href, "_blank", "noopener noreferrer");
   }
 }
