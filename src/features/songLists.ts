@@ -266,8 +266,8 @@ async function addQueueButtons(
     deleteBtnElem.appendChild(imgElem);
   }
 
-  lyricsBtnElem && queueBtnsCont.appendChild(createRipple(lyricsBtnElem, { speed: "slow" }));
-  deleteBtnElem && queueBtnsCont.appendChild(createRipple(deleteBtnElem, { speed: "slow" }));
+  lyricsBtnElem && queueBtnsCont.appendChild(createRipple(lyricsBtnElem));
+  deleteBtnElem && queueBtnsCont.appendChild(createRipple(deleteBtnElem));
 
   queueItem.querySelector<HTMLElement>(containerParentSelector)?.appendChild(queueBtnsCont);
   queueItem.classList.add("bytm-has-queue-btns");

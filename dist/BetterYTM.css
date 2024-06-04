@@ -608,7 +608,7 @@ body .bytm-ripple.slower {
 .bytm-ripple-area {
   --bytm-ripple-min-size: 100px;
   position: absolute;
-  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.325));
+  background: var(--bytm-ripple-color, rgba(255, 255, 255, 0.275));
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
@@ -1263,6 +1263,7 @@ hr {
   overflow: hidden !important;
 }
 
+/* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
   --bytm-generic-btn-height: 36px;
@@ -1303,7 +1304,7 @@ hr {
     border: 1px solid initial;
   }
   25% {
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
   100% {
     border: 1px solid initial;

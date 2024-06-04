@@ -606,7 +606,7 @@ export async function initThumbnailOverlay() {
     
       // toggle button
       if(toggleBtnShown) {
-        const toggleBtnElem = createRipple(document.createElement("a"), { speed: "slow" });
+        const toggleBtnElem = createRipple(document.createElement("a"));
         toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
         toggleBtnElem.role = "button";
         toggleBtnElem.tabIndex = 0;
