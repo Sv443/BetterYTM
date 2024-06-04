@@ -7,8 +7,8 @@ import { getLyricsCacheEntry } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "../observers.js";
 import { getFeatures } from "../config.js";
+import { createRipple } from "../components/index.js";
 import "./songLists.css";
-import { createRipple } from "src/components/ripple.js";
 
 /** Initializes the queue buttons */
 export async function initQueueButtons() {

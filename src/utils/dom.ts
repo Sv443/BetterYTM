@@ -192,7 +192,7 @@ export function copyToClipboard(text: Stringifiable) {
   try {
     GM.setClipboard(String(text));
   }
-  catch(err) {
+  catch {
     alert(t("copy_to_clipboard_error", String(text)));
   }
 }

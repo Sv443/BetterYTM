@@ -280,7 +280,7 @@ async function addCfgMenu() {
       const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
       return renderValue ? renderValue(retVal) : retVal;
     }
-    catch(_e) {
+    catch {
       // because stringify throws on circular refs
       return String(v).trim();
     }
