@@ -219,16 +219,16 @@ export async function initAutoLike() {
           if(artistEls.length === 0)
             return error("Couldn't auto-like channel because the artist element couldn't be found");
 
-          const likeRenderer = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
-          const likeBtn = likeRenderer?.querySelector<HTMLButtonElement>("#button-shape-like button");
+          const likeRendererEl = document.querySelector<HTMLElement>(".middle-controls-buttons ytmusic-like-button-renderer");
+          const likeBtnEl = likeRendererEl?.querySelector<HTMLButtonElement>("#button-shape-like button");
 
-          if(!likeRenderer || !likeBtn)
+          if(!likeRendererEl || !likeBtnEl)
             return error("Couldn't auto-like channel because the like button couldn't be found");
 
-          if(likeRenderer.getAttribute("like-status") !== "LIKE") {
-            likeBtn.click();
+          if(likeRendererEl.getAttribute("like-status") !== "LIKE") {
+            likeBtnEl.click();
             getFeature("autoLikeShowToast") && showIconToast({
-              message: t("auto_liked_channel", likeChan.name),
+              message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
               icon: "icon-auto_like",
             });
             log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
@@ -283,7 +283,7 @@ export async function initAutoLike() {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
                     getFeature("autoLikeShowToast") && showIconToast({
-                      message: t("auto_liked_channel", likeChan.name),
+                      message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
                       icon: "icon-auto_like",
                     });
                     log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
