@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 247 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `211/247` (85.4%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `247/247` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `211/247` (85.4%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `211/247` (85.4%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `211/247` (85.4%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `211/247` (85.4%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `211/247` (85.4%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `211/247` (85.4%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 248 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `211/248` (85.1%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `248/248` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `211/248` (85.1%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `211/248` (85.1%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `211/248` (85.1%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `211/248` (85.1%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `211/248` (85.1%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `211/248` (85.1%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -65,7 +65,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -88,7 +89,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -108,7 +109,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -131,7 +133,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -151,7 +153,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -174,7 +177,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -194,7 +197,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -217,7 +221,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -237,7 +241,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -260,7 +265,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -280,7 +285,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -303,7 +309,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 36 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 37 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -323,7 +329,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
 | `auto_like_enabled_toast` | `Auto-liking enabled` |
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
-| `auto_liked_channel` | `Auto-liked %1` |
+| `auto_liked_a_channels_song` | `Liked song by %1` |
+| `auto_liked_a_channels_video` | `Liked video by %1` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
