@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,48 +35,48 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/89f13781/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -187,7 +187,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "89f13781";
+const buildNumberRaw = "1e85f082";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -812,8 +812,10 @@ function createCircularBtn(_a) {
         btnElem.appendChild(imgElem);
         return ripple ? createRipple(btnElem) : btnElem;
     });
-}/** EventEmitter instance that is used to detect changes to the site */
-const siteEvents = new NanoEmitter({ publicEmit: true });
+}/** EventEmitter instance that is used to detect various changes to the site and userscript */
+const siteEvents = new NanoEmitter({
+    publicEmit: true,
+});
 let observers = [];
 let lastWatchId = null;
 let lastPathname = null;
@@ -4053,14 +4055,14 @@ function initAutoLike() {
                             return;
                         if (artistEls.length === 0)
                             return error("Couldn't auto-like channel because the artist element couldn't be found");
-                        const likeRenderer = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
-                        const likeBtn = likeRenderer === null || likeRenderer === void 0 ? void 0 : likeRenderer.querySelector("#button-shape-like button");
-                        if (!likeRenderer || !likeBtn)
+                        const likeRendererEl = document.querySelector(".middle-controls-buttons ytmusic-like-button-renderer");
+                        const likeBtnEl = likeRendererEl === null || likeRendererEl === void 0 ? void 0 : likeRendererEl.querySelector("#button-shape-like button");
+                        if (!likeRendererEl || !likeBtnEl)
                             return error("Couldn't auto-like channel because the like button couldn't be found");
-                        if (likeRenderer.getAttribute("like-status") !== "LIKE") {
-                            likeBtn.click();
+                        if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
+                            likeBtnEl.click();
                             getFeature("autoLikeShowToast") && showIconToast({
-                                message: t("auto_liked_channel", likeChan.name),
+                                message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
                                 icon: "icon-auto_like",
                             });
                             log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
@@ -4113,7 +4115,7 @@ function initAutoLike() {
                                         if (likeBtn.getAttribute("aria-pressed") !== "true") {
                                             likeBtn.click();
                                             getFeature("autoLikeShowToast") && showIconToast({
-                                                message: t("auto_liked_channel", likeChan.name),
+                                                message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
                                                 icon: "icon-auto_like",
                                             });
                                             log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
