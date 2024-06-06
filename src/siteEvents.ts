@@ -4,14 +4,13 @@ import { emitInterface } from "./interface.js";
 import { addSelectorListener } from "./observers.js";
 
 export interface SiteEventsMap {
-  // misc:
+  //#region misc:
   /** Emitted whenever the feature config is changed - initialization is not counted */
-  configChanged: (config: FeatureConfig) => void;
-  // TODO: implement
+  configChanged: (newConfig: FeatureConfig) => void;
   /** Emitted whenever a config option is changed - contains the old and new value */
-  configOptionChanged: <TKey extends keyof FeatureConfig>(key: TKey, oldValue: FeatureConfig[TKey], newValue: FeatureConfig[TKey]) => void;
+  configOptionChanged: <TFeatKey extends keyof FeatureConfig>(key: TFeatKey, oldValue: FeatureConfig[TFeatKey], newValue: FeatureConfig[TFeatKey]) => void;
   /** Emitted whenever the config menu should be rebuilt, like when a config was imported */
-  rebuildCfgMenu: (config: FeatureConfig) => void;
+  rebuildCfgMenu: (newConfig: FeatureConfig) => void;
   /** Emitted whenever the config menu should be unmounted and recreated in the DOM */
   recreateCfgMenu: () => void;
   /** Emitted whenever the config menu is closed */
@@ -21,7 +20,7 @@ export interface SiteEventsMap {
   /** Emitted whenever the user interacts with a hotkey input, used so other keyboard input event listeners don't get called while mid-input */
   hotkeyInputActive: (active: boolean) => void;
 
-  // DOM:
+  //#region DOM:
   /** Emitted whenever child nodes are added to or removed from the song queue */
   queueChanged: (queueElement: HTMLElement) => void;
   /** Emitted whenever child nodes are added to or removed from the autoplay queue underneath the song queue */
@@ -45,6 +44,7 @@ export interface SiteEventsMap {
   /** Emitted whenever the player enters or exits fullscreen mode */
   fullscreenToggled: (isFullscreen: boolean) => void;
 
+  //#region features:
   /** Emitted whenever a channel was added, edited or removed from the auto-like list */
   autoLikeChannelsUpdated: () => void;
 }
@@ -67,17 +67,16 @@ export const allSiteEvents = [
   "autoLikeChannelsUpdated",
 ] as const;
 
-/** EventEmitter instance that is used to detect changes to the site */
-export const siteEvents = new NanoEmitter<SiteEventsMap>({ publicEmit: true });
+/** EventEmitter instance that is used to detect various changes to the site and userscript */
+export const siteEvents = new NanoEmitter<SiteEventsMap>({
+  publicEmit: true,
+});
 
 let observers: MutationObserver[] = [];
 
 /** Disconnects and deletes all observers. Run `initSiteEvents()` again to create new ones. */
 export function removeAllObservers() {
-  observers.forEach((observer, i) => {
-    observer.disconnect();
-    delete observers[i];
-  });
+  observers.forEach((ob) => ob.disconnect());
   observers = [];
 }
 
