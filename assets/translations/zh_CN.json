@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "修复布局中的间距问题",
     "feature_helptext_fixSpacing": "在用户界面中有各种位置的元素之间的间距不一致。此功能修复了这些问题。",
 
-    "feature_desc_removeUpgradeTab": "删除升级 / 高级标签",
     "feature_desc_volumeSliderLabel": "在音量滑块旁边添加百分比标签",
     "feature_desc_volumeSliderSize": "音量滑块的宽度（像素）",
     "feature_desc_volumeSliderStep": "音量滑块灵敏度（音量每次可以改变多少百分比）",

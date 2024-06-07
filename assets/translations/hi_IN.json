@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "लेआउट में स्पेसिंग समस्याओं को ठीक करें",
     "feature_helptext_fixSpacing": "यहां विभिन्न स्थान हैं जहां तत्वों के बीच स्पेसिंग असंगत है। यह सुविधा उन समस्याओं को ठीक करती है।",
 
-    "feature_desc_removeUpgradeTab": "अपग्रेड/प्रीमियम टैब हटाएँ",
     "feature_desc_volumeSliderLabel": "वॉल्यूम स्लाइडर के पास एक प्रतिशत लेबल जोड़ें",
     "feature_desc_volumeSliderSize": "वॉल्यूम स्लाइडर की चौड़ाई पिक्सेल में",
     "feature_desc_volumeSliderStep": "वॉल्यूम स्लाइडर संवेदनशीलता (वॉल्यूम कितने प्रतिशत कम किया जा सकता है)",

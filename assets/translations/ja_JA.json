@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",
     "feature_helptext_fixSpacing": "ユーザーインターフェイスには、要素間のスペーシングが一貫していない場所がいくつかあります。この機能はそれらの問題を修正します。",
 
-    "feature_desc_removeUpgradeTab": "アップグレード / プレミアムタブを削除する",
     "feature_desc_volumeSliderLabel": "音量スライダーの横にパーセンテージラベルを追加する",
     "feature_desc_volumeSliderSize": "音量スライダーの幅（ピクセル単位）",
     "feature_desc_volumeSliderStep": "音量スライダーの感度（音量を一度にどれだけのパーセントで変更できるか）",

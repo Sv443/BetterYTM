@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "Solucionar problemas de espaciado en el diseño",
     "feature_helptext_fixSpacing": "Hay varios lugares en la interfaz de usuario donde el espaciado entre elementos es inconsistente. Esta función soluciona esos problemas.",
 
-    "feature_desc_removeUpgradeTab": "Eliminar la pestaña Actualizar / Premium",
     "feature_desc_volumeSliderLabel": "Agregue una etiqueta de porcentaje junto al control deslizante de volumen",
     "feature_desc_volumeSliderSize": "El ancho del control deslizante de volumen en píxeles",
     "feature_desc_volumeSliderStep": "Sensibilidad del control deslizante de volumen (en qué porcentaje se puede cambiar el volumen a la vez)",

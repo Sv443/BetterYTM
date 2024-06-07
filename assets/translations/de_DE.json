@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "Behebe diverse Abstandprobleme im Layout",
     "feature_helptext_fixSpacing": "Es gibt verschiedene Stellen im User Interface, an denen der Abstand zwischen Elementen inkonsistent ist. Diese Funktion behebt diese Probleme.",
 
-    "feature_desc_removeUpgradeTab": "Entferne den Upgrade / Premium Tab",
     "feature_desc_volumeSliderLabel": "Füge eine Prozent-Beschriftung neben dem Lautstärkeregler hinzu",
     "feature_desc_volumeSliderSize": "Die Breite des Lautstärkereglers in Pixeln",
     "feature_desc_volumeSliderStep": "Lautstärkeregler-Sensitivität (um wie wenig Prozent die Lautstärke auf einmal geändert werden kann)",

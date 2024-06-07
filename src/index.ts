@@ -10,9 +10,9 @@ import { getWelcomeDialog } from "./dialogs/index.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
-  addWatermark, removeUpgradeTab, initRemShareTrackParam,
-  fixSpacing, initThumbnailOverlay, initHideCursorOnIdle,
-  fixHdrIssues, initShowVotes,
+  addWatermark, initRemShareTrackParam, fixSpacing,
+  initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
+  initShowVotes,
   // volume
   initVolumeFeatures,
   // song lists
@@ -38,7 +38,6 @@ import {
   const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
   const styleCommon = "color: #fff; font-size: 1.3rem;";
 
-  console.log();
   console.log(
     `%c${scriptInfo.name}%c${scriptInfo.version}%c • ${scriptInfo.namespace}%c\n\nBuild #${buildNumber}`,
     `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`,
@@ -56,7 +55,6 @@ import {
     "─ This markdown parser library: https://github.com/markedjs/marked",
     "─ This fuzzy search library: https://github.com/krisk/Fuse",
   ].join("\n"));
-  console.log();
 }
 
 //#region preInit
@@ -155,9 +153,6 @@ async function onDomLoad() {
 
       if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);
-
-      if(feats.removeUpgradeTab)
-        ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
 
       ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 

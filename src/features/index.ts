@@ -144,12 +144,6 @@ export const featInfo = {
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
-  removeUpgradeTab: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    textAdornment: adornments.reloadRequired,
-  },
   thumbnailOverlayBehavior: {
     type: "select",
     category: "layout",

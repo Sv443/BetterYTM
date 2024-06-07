@@ -178,7 +178,6 @@
     "feature_desc_fixSpacing": "Fix spacing issues in the layout",
     "feature_helptext_fixSpacing": "There are various locations in the user interface where the spacing between elements is inconsistent. This feature fixes those issues.",
 
-    "feature_desc_removeUpgradeTab": "Remove the Upgrade / Premium tab",
     "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
     "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",
     "feature_desc_volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
