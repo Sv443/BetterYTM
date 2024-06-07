@@ -74,8 +74,8 @@ export const migrations: DataMigrationsDict = {
     useDefaultConfig(oldData, [
       "autoLikeChannels", "autoLikeChannelToggleBtn",
       "autoLikeTimeout", "autoLikeShowToast",
-      "autoLikeOpenMgmtDialog",
-      "showVotes", "showVoteRatio",
+      "autoLikeOpenMgmtDialog", "showVotes",
+      "showVotesFormat", "showVoteRatio",
       "toastDuration", "initTimeout",
       // forgot to add this to the migration when adding the feature so now will have to do:
       "volumeSliderLabel",
@@ -136,8 +136,10 @@ export async function initConfig() {
   let data = await cfgDataStore.loadData();
 
   // since the config changes so much in development keys need to be fixed in this special way
-  if(mode === "development")
-    data = fixMissingCfgKeys(data);
+  if(mode === "development") {
+    await cfgDataStore.setData(fixMissingCfgKeys(data));
+    data = cfgDataStore.getData();
+  }
 
   log(`Initialized feature config DataStore (formatVersion = ${cfgDataStore.formatVersion})`);
   if(isNaN(oldFmtVer))
@@ -163,15 +165,15 @@ export async function initConfig() {
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
 export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
-  cfg = { ...cfg };
+  const newCfg = { ...cfg };
   const passedKeys = Object.keys(cfg);
   const defaultKeys = Object.keys(defaultData);
   const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
   if(missingKeys.length > 0) {
     for(const key of missingKeys)
-      cfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
+      newCfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
   }
-  return cfg as FeatureConfig;
+  return newCfg as FeatureConfig;
 }
 
 /** Returns the current feature config from the in-memory cache as a copy */
