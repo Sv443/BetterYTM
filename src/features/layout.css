@@ -382,3 +382,11 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 ytmusic-player#player #bezel {
   z-index: 1;
 }
+
+/* #region auto-like */
+
+.bytm-vote-label {
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 4px;
+}

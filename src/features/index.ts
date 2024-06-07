@@ -239,12 +239,23 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reloadRequired,
   },
+  showVotesFormat: {
+    type: "select",
+    category: "layout",
+    options: () => [
+      { value: "full", label: t("votes_format_full") },
+      { value: "short", label: t("votes_format_short") },
+    ],
+    default: "short",
+    reloadRequired: false,
+    enable: noop,
+  },
   showVoteRatio: {
     type: "select",
     category: "layout",
     options: () => [
       { value: "disabled", label: t("vote_ratio_disabled") },
-      { value: "redGreen", label: t("vote_ratio_red_green") },
+      { value: "greenRed", label: t("vote_ratio_green_red") },
       { value: "blueGray", label: t("vote_ratio_blue_gray") },
     ],
     default: "disabled",
