@@ -66,9 +66,17 @@ async function run() {
           : "‼️"
       );
 
-    const keysCol = locale === "en_US" ? `${origKeys} (default locale)` : `\`${trKeys}/${origKeys}\` (${percent}%)`;
-
     const baseTr = trFiles[locale as TrLocale]?.base;
+
+    const keysCol = (
+      locale === "en_US"
+        ? `${origKeys} (default locale)`
+        : (
+          baseTr
+            ? `\`${origKeys}\` (100%)`
+            : `\`${trKeys}/${origKeys}\` (${percent}%)`
+        )
+    );
 
     progTableLines.push(`| ${locale === "en_US" || baseTr ? "─" : sym} | [\`${locale}\`](./${locale}.json) | ${keysCol} | ${baseTr ? `\`${baseTr}\`` : (locale === "en_US" ? "" : "─")} |`);
     console.log(`  ${sym} ${locale}: ${trKeys}/${origKeys} (${percent}%)${baseTr ? ` (base: ${baseTr})`: ""}`);
