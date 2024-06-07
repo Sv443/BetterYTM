@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type ReturnYoutubeDislikesVotesObj } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type ReturnYouTubeDislikeVotesObj } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -757,22 +757,30 @@ export async function initShowVotes() {
   });
 
   siteEvents.on("watchIdChanged", async (watchId) => {
-    const voteObj = await fetchVideoVotes(watchId);
-    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-      return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
-
     const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
     const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
 
     if(!labelLikes || !labelDislikes)
       return error("Couldn't find vote label elements while updating like and dislike counts");
 
-    labelLikes.textContent = voteObj.likes.toLocaleString(undefined, getVoteNumberFormat());
-    labelDislikes.textContent = voteObj.dislikes.toLocaleString(undefined, getVoteNumberFormat());
+    if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+      return log("Vote labels already updated for this video");
+
+    const voteObj = await fetchVideoVotes(watchId);
+    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+      return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
+
+    labelLikes.dataset.watchId = getWatchId() ?? "";
+    labelLikes.textContent = formatVoteNumber(voteObj.likes);
+    labelLikes.title = labelLikes.ariaLabel = t("vote_label_likes", voteObj.likes);
+
+    labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
+    labelDislikes.title = labelDislikes.ariaLabel = t("vote_label_dislikes", voteObj.dislikes);
+    labelDislikes.dataset.watchId = getWatchId() ?? "";
   });
 }
 
-function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
+function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYouTubeDislikeVotesObj) {
   const likeBtn = voteCont.querySelector<HTMLElement>("#button-shape-like");
   const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
 
@@ -782,8 +790,9 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVot
   const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
-    label.textContent = amount.toLocaleString(undefined, getVoteNumberFormat());
+    label.textContent = String(formatVoteNumber(amount));
     label.title = label.ariaLabel = t(`vote_label_${type}`, amount);
+    label.dataset.watchId = getWatchId() ?? "";
     label.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -801,18 +810,23 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVot
   dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
 }
 
-function getVoteNumberFormat(): Partial<Intl.NumberFormatOptions> {
-  return getFeature("showVotesFormat") === "short"
-    ? {
-      notation: "compact",
-      compactDisplay: "short",
-    }
-    : {
-      style: "decimal",
-      maximumFractionDigits: 0,
-    };
+/** Formats a number with the notation based on the config */
+function formatVoteNumber(num: number) {
+  return num.toLocaleString(
+    undefined,
+    getFeature("showVotesFormat") === "short"
+      ? {
+        notation: "compact",
+        compactDisplay: "short",
+        maximumFractionDigits: 1,
+      }
+      : {
+        style: "decimal",
+        maximumFractionDigits: 0,
+      },
+  );
 }
 
-function addVoteRatio(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
+function addVoteRatio(voteCont: HTMLElement, voteObj: ReturnYouTubeDislikeVotesObj) {
   console.log("># TODO: addVoteRatio", voteCont, voteObj);
 }

@@ -388,5 +388,10 @@ ytmusic-player#player #bezel {
 .bytm-vote-label {
   cursor: pointer;
   font-size: 1.25rem;
-  padding: 4px;
+  padding: 6px;
+  padding-left: 3px;
+}
+
+.bytm-vote-label:last-child {
+  padding-right: 0px;
 }

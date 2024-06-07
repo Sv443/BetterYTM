@@ -75,9 +75,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -130,9 +130,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -185,9 +185,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -240,9 +240,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -295,9 +295,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -350,9 +350,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -405,9 +405,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `votes_format_short` | `Shortened` |
 | `votes_format_full` | `Full number` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
-| `feature_helptext_showVotes` | `This feature is powered by ReturnYoutubeDislikes and will show the approximate amount of likes and dislikes on the currently playing song.` |
+| `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
+| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
