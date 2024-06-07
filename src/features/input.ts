@@ -1,7 +1,6 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
 import type { Domain } from "../types.js";
-import { isCfgMenuOpen } from "../menu/menu_old.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
@@ -128,8 +127,6 @@ export async function initNumKeysSkip() {
     if(!getFeature("numKeysSkipToTime"))
       return;
     if(!e.key.trim().match(/^[0-9]$/))
-      return;
-    if(isCfgMenuOpen)
       return;
     // discard the event when an unexpected element is currently active or in focus, like when editing a playlist or when the search bar is focused
     const ignoreElement = numKeysIgnoreTagNames.includes(document.activeElement?.tagName ?? "");
