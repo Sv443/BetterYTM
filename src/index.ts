@@ -1,6 +1,6 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
 import { addStyleFromResource, domLoaded, warn } from "./utils/index.js";
-import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
+import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
@@ -301,7 +301,7 @@ function registerDevMenuCommands() {
 
   GM.registerMenuCommand("Fix missing config values", async () => {
     const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
-    await setFeatures(fixMissingCfgKeys(oldFeats));
+    await setFeatures(fixCfgKeys(oldFeats));
     console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
     if(confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
       location.reload();

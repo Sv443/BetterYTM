@@ -141,7 +141,7 @@ export async function initConfig() {
 
   // since the config changes so much in development keys need to be fixed in this special way
   if(mode === "development") {
-    await cfgDataStore.setData(fixMissingCfgKeys(data));
+    await cfgDataStore.setData(fixCfgKeys(data));
     data = cfgDataStore.getData();
   }
 
@@ -150,7 +150,7 @@ export async function initConfig() {
     info("  !- Config data was initialized with default values");
   else if(oldFmtVer !== cfgDataStore.formatVersion) {
     try {
-      await cfgDataStore.setData(data = fixMissingCfgKeys(data));
+      await cfgDataStore.setData(data = fixCfgKeys(data));
       info(`  !- Config data was migrated from version ${oldFmtVer} to ${cfgDataStore.formatVersion}`);
     }
     catch(err) {
@@ -165,10 +165,10 @@ export async function initConfig() {
 }
 
 /**
- * Fixes missing keys in the passed config object with their default values and returns a copy of the fixed object.  
+ * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
-export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
+export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   const newCfg = { ...cfg };
   const passedKeys = Object.keys(cfg);
   const defaultKeys = Object.keys(defaultData);
@@ -176,6 +176,11 @@ export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
   if(missingKeys.length > 0) {
     for(const key of missingKeys)
       newCfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
+  }
+  const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
+  if(extraKeys.length > 0) {
+    for(const key of extraKeys)
+      delete newCfg[key as keyof FeatureConfig];
   }
   return newCfg as FeatureConfig;
 }
