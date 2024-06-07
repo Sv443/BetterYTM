@@ -1,5 +1,5 @@
 import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, setFeatures } from "../config.js";
+import { defaultData, getFeature, getFeatures, setFeatures } from "../config.js";
 import { buildNumber, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils/index.js";
@@ -33,7 +33,7 @@ async function addCfgMenu() {
   if(isCfgMenuAdded)
     return;
   isCfgMenuAdded = true;
-  initLocale = getFeatures().locale;
+  initLocale = getFeature("locale");
   initConfig = getFeatures();
 
   const initLangReloadText = t("lang_changed_prompt_reload");
@@ -209,7 +209,11 @@ async function addCfgMenu() {
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
 
-  const onCfgChange = async (key: keyof typeof defaultData, initialVal: string | number | boolean | HotkeyObj, newVal: string | number | boolean | HotkeyObj) => {
+  const onCfgChange = async (
+    key: keyof typeof defaultData,
+    initialVal: string | number | boolean | HotkeyObj,
+    newVal: string | number | boolean | HotkeyObj,
+  ) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
@@ -319,7 +323,7 @@ async function addCfgMenu() {
       {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
-        if(getFeatures().advancedMode) {
+        if(getFeature("advancedMode")) {
           const defVal = fmtVal(ftDefault, featKey as FeatureKey);
           const extraTxts = [
             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -423,7 +427,7 @@ async function addCfgMenu() {
 
         let advCopyHiddenCont: HTMLElement | undefined;
 
-        if((getFeatures().advancedMode || mode === "development") && ftInfo.valueHidden) {
+        if((getFeature("advancedMode") || mode === "development") && ftInfo.valueHidden) {
           const advCopyHintElem = document.createElement("span");
           advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
           advCopyHintElem.textContent = t("copied");
@@ -729,7 +733,7 @@ async function addCfgMenu() {
 
   const modeItems = [] as TrKey[];
   mode === "development" && modeItems.push("dev_mode");
-  getFeatures().advancedMode && modeItems.push("advanced_mode");
+  getFeature("advancedMode") && modeItems.push("advanced_mode");
 
   if(modeItems.length > 0) {
     const modeDisplayEl = document.createElement("span");

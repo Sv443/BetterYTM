@@ -79,8 +79,14 @@ export type ReturnYoutubeDislikesVotesObj = {
  * @param watchId The watch ID of the video
  */
 export async function fetchVideoVotes(watchId: string) {
-  return (await sendRequest<ReturnYoutubeDislikesVotesObj>({
-    method: "GET",
-    url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
-  })).response as ReturnYoutubeDislikesVotesObj;
+  try {
+    return (await sendRequest<ReturnYoutubeDislikesVotesObj>({
+      method: "GET",
+      url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+    })).response as ReturnYoutubeDislikesVotesObj;
+  }
+  catch(err) {
+    error("Couldn't fetch video votes due to an error:", err);
+    return undefined;
+  }
 }

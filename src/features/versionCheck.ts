@@ -1,5 +1,5 @@
 import { scriptInfo } from "../constants.js";
-import { getFeatures } from "../config.js";
+import { getFeature } from "../config.js";
 import { error, info, sendRequest, t } from "../utils/index.js";
 import { getVersionNotifDialog } from "../dialogs/index.js";
 import { compare } from "compare-versions";
@@ -10,7 +10,7 @@ const releaseURL = "https://github.com/Sv443/BetterYTM/releases/latest";
 /** Initializes the version check feature */
 export async function initVersionCheck() {
   try {
-    if(getFeatures().versionCheck === false)
+    if(getFeature("versionCheck") === false)
       return info("Version check is disabled");
 
     const lastCheck = await GM.getValue("bytm-version-check", 0);

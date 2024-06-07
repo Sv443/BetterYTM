@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -35,48 +35,48 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/fixSpacing.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/1e85f082/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/style/fixSpacing.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/7b2ba25/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -187,7 +187,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "1e85f082";
+const buildNumberRaw = "7b2ba25";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -256,7 +256,7 @@ function initLyricsCache() {
 function getLyricsCacheEntry(artist, song, refreshEntry = true) {
     const { cache } = lyricsCacheMgr.getData();
     const entry = cache.find(e => e.artist === artist && e.song === song);
-    if (entry && Date.now() - (entry === null || entry === void 0 ? void 0 : entry.added) > getFeatures().lyricsCacheTTL * 1000 * 60 * 60 * 24) {
+    if (entry && Date.now() - (entry === null || entry === void 0 ? void 0 : entry.added) > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
         deleteLyricsCacheEntry(artist, song);
         return undefined;
     }
@@ -310,7 +310,7 @@ function addLyricsCacheEntryBest(artist, song, url) {
     cache.push(entry);
     cache.sort((a, b) => b.viewed - a.viewed);
     // always keep the cache <= max size
-    cache.splice(getFeatures().lyricsCacheMaxSize);
+    cache.splice(getFeature("lyricsCacheMaxSize"));
     log("Added cache entry for best result", artist, "-", song, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
@@ -341,7 +341,7 @@ function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
     cache.push(entry);
     cache.sort((a, b) => b.viewed - a.viewed);
     // always keep the cache <= max size
-    cache.splice(getFeatures().lyricsCacheMaxSize);
+    cache.splice(getFeature("lyricsCacheMaxSize"));
     log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
@@ -2016,7 +2016,7 @@ function renderBody$1(_a) {
         wrapperEl.appendChild(changelogDetailsEl);
         const disableUpdCheckEl = document.createElement("div");
         disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
-        if (getFeatures().versionCheck === false)
+        if (!getFeature("versionCheck"))
             disableUpdateCheck = true;
         const disableToggleEl = yield createToggleInput({
             id: "disable-update-check",
@@ -2095,7 +2095,7 @@ function addCfgMenu() {
         if (isCfgMenuAdded)
             return;
         isCfgMenuAdded = true;
-        initLocale = getFeatures().locale;
+        initLocale = getFeature("locale");
         initConfig$1 = getFeatures();
         const initLangReloadText = t("lang_changed_prompt_reload");
         //#region bg & container
@@ -2322,7 +2322,7 @@ function addCfgMenu() {
                 {
                     const featLeftSideElem = document.createElement("div");
                     featLeftSideElem.classList.add("bytm-ftitem-leftside");
-                    if (getFeatures().advancedMode) {
+                    if (getFeature("advancedMode")) {
                         const defVal = fmtVal(ftDefault, featKey);
                         const extraTxts = [
                             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -2409,7 +2409,7 @@ function addCfgMenu() {
                     const ctrlElem = document.createElement("span");
                     ctrlElem.classList.add("bytm-ftconf-ctrl");
                     let advCopyHiddenCont;
-                    if ((getFeatures().advancedMode || mode === "development") && ftInfo.valueHidden) {
+                    if ((getFeature("advancedMode") || mode === "development") && ftInfo.valueHidden) {
                         const advCopyHintElem = document.createElement("span");
                         advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
                         advCopyHintElem.textContent = t("copied");
@@ -2659,7 +2659,7 @@ function addCfgMenu() {
         titleElem.appendChild(subtitleElemCont);
         const modeItems = [];
         mode === "development" && modeItems.push("dev_mode");
-        getFeatures().advancedMode && modeItems.push("advanced_mode");
+        getFeature("advancedMode") && modeItems.push("advanced_mode");
         if (modeItems.length > 0) {
             const modeDisplayEl = document.createElement("span");
             modeDisplayEl.id = "bytm-menu-mode-display";
@@ -2903,7 +2903,7 @@ function renderBody() {
             localeOptionElem.textContent = name;
             localeSelectElem.appendChild(localeOptionElem);
         }
-        localeSelectElem.value = getFeatures().locale;
+        localeSelectElem.value = getFeature("locale");
         localeSelectElem.addEventListener("change", () => __awaiter(this, void 0, void 0, function* () {
             const selectedLocale = localeSelectElem.value;
             const feats = Object.assign({}, getFeatures());
@@ -3029,7 +3029,7 @@ function renderFooter() {
 function initVersionCheck() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (getFeatures().versionCheck === false)
+            if (getFeature("versionCheck") === false)
                 return info("Version check is disabled");
             const lastCheck = yield GM.getValue("bytm-version-check", 0);
             if (Date.now() - lastCheck < 1000 * 60 * 60 * 24)
@@ -3471,8 +3471,8 @@ function initAboveQueueBtns() {
 let invertOverlay = false;
 function initThumbnailOverlay() {
     return __awaiter(this, void 0, void 0, function* () {
-        const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
-        if (getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
+        const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
+        if (getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
             return;
         // so the script init doesn't keep waiting until a /watch page is loaded
         waitVideoElementReady().then(() => {
@@ -3484,7 +3484,7 @@ function initThumbnailOverlay() {
             const updateOverlayVisibility = () => __awaiter(this, void 0, void 0, function* () {
                 if (!domLoaded)
                     return;
-                const behavior = getFeatures().thumbnailOverlayBehavior;
+                const behavior = getFeature("thumbnailOverlayBehavior");
                 let showOverlay = behavior === "always";
                 const isVideo = currentMediaType() === "video";
                 if (behavior === "videosOnly" && isVideo)
@@ -3503,7 +3503,7 @@ function initThumbnailOverlay() {
                     indicatorElem.style.display = showOverlay ? "block" : "none";
                     indicatorElem.ariaHidden = String(!showOverlay);
                 }
-                if (getFeatures().thumbnailOverlayToggleBtnShown) {
+                if (getFeature("thumbnailOverlayToggleBtnShown")) {
                     addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
                         listener(toggleBtnElem) {
                             return __awaiter(this, void 0, void 0, function* () {
@@ -3547,7 +3547,7 @@ function initThumbnailOverlay() {
                 overlayElem.classList.add("bytm-no-select");
                 overlayElem.style.display = "none";
                 let indicatorElem;
-                if (getFeatures().thumbnailOverlayShowIndicator) {
+                if (getFeature("thumbnailOverlayShowIndicator")) {
                     indicatorElem = document.createElement("img");
                     indicatorElem.id = "bytm-thumbnail-overlay-indicator";
                     indicatorElem.src = yield getResourceUrl("icon-image");
@@ -3555,13 +3555,13 @@ function initThumbnailOverlay() {
                     indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
                     indicatorElem.ariaHidden = "true";
                     indicatorElem.style.display = "none";
-                    indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
+                    indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
                 }
                 const thumbImgElem = document.createElement("img");
                 thumbImgElem.id = "bytm-thumbnail-overlay-img";
                 thumbImgElem.role = "presentation";
                 thumbImgElem.ariaHidden = "true";
-                thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
+                thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
                 overlayElem.appendChild(thumbImgElem);
                 playerEl.appendChild(overlayElem);
                 indicatorElem && playerEl.appendChild(indicatorElem);
@@ -3632,7 +3632,7 @@ function initHideCursorOnIdle() {
                 /** Timer for the opacity transition while switching to the hidden state */
                 let hideTransTimer;
                 const hide = () => {
-                    if (!getFeatures().hideCursorOnIdle)
+                    if (!getFeature("hideCursorOnIdle"))
                         return;
                     if (vidContainer.classList.contains("bytm-cursor-hidden"))
                         return;
@@ -3653,7 +3653,7 @@ function initHideCursorOnIdle() {
                     overlayElem.style.display = "initial";
                     overlayElem.style.opacity = "1 !important";
                 };
-                const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
+                const cursorHideTimerCb = () => cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1000);
                 const onMove = () => {
                     cursorHideTimer && clearTimeout(cursorHideTimer);
                     show();
@@ -3746,14 +3746,14 @@ function initAutoCloseToasts() {
                         if (toastElem.classList.contains("bytm-closing"))
                             continue;
                         toastElem.classList.add("bytm-closing");
-                        const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
+                        const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
                         yield UserUtils.pauseFor(closeTimeout);
                         toastElem.classList.remove("paper-toast-open");
                         toastElem.addEventListener("transitionend", () => {
                             toastElem.classList.remove("bytm-closing");
                             toastElem.style.display = "none";
                             clearNode(toastElem);
-                            log(`Automatically closed toast after ${getFeatures().closeToastsTimeout * 1000}ms`);
+                            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
                         }, { once: true });
                     }
                 }
@@ -3772,7 +3772,7 @@ let remVidsCache = [];
  */
 function initRememberSongTime() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
+        if (getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
             return;
         const storedDataRaw = yield GM.getValue("bytm-rem-songs");
         if (!storedDataRaw)
@@ -3798,7 +3798,7 @@ function restVidRestoreTime() {
                 return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
             const entry = remVidsCache.find(entry => entry.watchID === watchID);
             if (entry) {
-                if (Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
+                if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
                     yield restVidDeleteEntry(entry.watchID);
                     return;
                 }
@@ -3808,7 +3808,7 @@ function restVidRestoreTime() {
                     const doRestoreTime = () => __awaiter(this, void 0, void 0, function* () {
                         var _a;
                         const vidElem = yield waitVideoElementReady();
-                        const vidRestoreTime = entry.songTime - ((_a = getFeatures().rememberSongTimeReduction) !== null && _a !== void 0 ? _a : 0);
+                        const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
                         vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                         yield restVidDeleteEntry(entry.watchID);
                         info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -3839,7 +3839,7 @@ function restVidStartUpdateLoop() {
             const paused = (_c = (_b = document.querySelector(getVideoSelector())) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
             // don't immediately update to reduce race conditions and only update if the video is playing
             // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-            if (songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
                 const entry = {
                     watchID,
                     songTime,
@@ -3850,11 +3850,11 @@ function restVidStartUpdateLoop() {
             // if the song is rewound to the beginning, delete the entry
             else {
                 const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
+                if (entry && songTime <= getFeature("rememberSongTimeMinPlayTime"))
                     yield restVidDeleteEntry(entry.watchID);
             }
         }
-        const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
+        const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
         for (const entry of expiredEntries)
             yield restVidDeleteEntry(entry.watchID);
         // for no overlapping calls and better error handling:
@@ -3884,7 +3884,7 @@ function restVidDeleteEntry(watchID) {
 //#region disable darkreader
 /** Disables Dark Reader if it is present */
 function disableDarkReader() {
-    if (getFeatures().disableDarkReaderSites !== getDomain() && getFeatures().disableDarkReaderSites !== "all")
+    if (getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
         return;
     const metaElem = document.createElement("meta");
     metaElem.name = "darkreader-lock";
@@ -4603,7 +4603,7 @@ function initQueueButtons() {
             "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents",
             "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents",
         ];
-        if (getFeatures().listButtonsPlacement === "everywhere") {
+        if (getFeature("listButtonsPlacement") === "everywhere") {
             for (const selector of listSelectors) {
                 addSelectorListener("body", selector, {
                     all: true,
@@ -4633,7 +4633,7 @@ function addQueueButtons(queueItem_1) {
         const deleteIconUrl = yield getResourceUrl("icon-delete");
         //#region lyrics
         let lyricsBtnElem;
-        if (getFeatures().lyricsQueueButton) {
+        if (getFeature("lyricsQueueButton")) {
             lyricsBtnElem = yield createLyricsBtn(undefined, false);
             lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
             lyricsBtnElem.style.display = "inline-flex";
@@ -4716,7 +4716,7 @@ function addQueueButtons(queueItem_1) {
         }
         //#region delete from queue
         let deleteBtnElem;
-        if (getFeatures().deleteFromQueueButton) {
+        if (getFeature("deleteFromQueueButton")) {
             deleteBtnElem = document.createElement("a");
             deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
             deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");
@@ -4785,19 +4785,19 @@ function initVolumeFeatures() {
             listener: (sliderElem) => __awaiter(this, void 0, void 0, function* () {
                 const volSliderCont = document.createElement("div");
                 volSliderCont.id = "bytm-vol-slider-cont";
-                if (getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
+                if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
                     initScrollStep(volSliderCont, sliderElem);
                 UserUtils.addParent(sliderElem, volSliderCont);
-                if (typeof getFeatures().volumeSliderSize === "number")
+                if (typeof getFeature("volumeSliderSize") === "number")
                     setVolSliderSize();
-                if (getFeatures().volumeSliderLabel)
+                if (getFeature("volumeSliderLabel"))
                     yield addVolumeSliderLabel(sliderElem, volSliderCont);
                 setVolSliderStep(sliderElem);
-                if (getFeatures().volumeSharedBetweenTabs) {
+                if (getFeature("volumeSharedBetweenTabs")) {
                     sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
                     checkSharedVolume();
                 }
-                if (getFeatures().setInitialTabVolume)
+                if (getFeature("setInitialTabVolume"))
                     setInitialTabVolume(sliderElem);
             }),
         });
@@ -4814,7 +4814,7 @@ function initScrollStep(volSliderCont, sliderElem) {
             e.stopImmediatePropagation();
             const delta = (_b = (_a = e.deltaY) !== null && _a !== void 0 ? _a : e.detail) !== null && _b !== void 0 ? _b : 1;
             const volumeDir = -Math.sign(delta);
-            const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
+            const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
             sliderElem.value = newVolume;
             sliderElem.setAttribute("aria-valuenow", newVolume);
             // make the site actually change the volume
@@ -4831,7 +4831,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
     return __awaiter(this, void 0, void 0, function* () {
         const labelContElem = document.createElement("div");
         labelContElem.id = "bytm-vol-slider-label";
-        const volShared = getFeatures().volumeSharedBetweenTabs;
+        const volShared = getFeature("volumeSharedBetweenTabs");
         if (volShared) {
             const linkIconHtml = yield resourceToHTMLString("icon-link");
             if (linkIconHtml) {
@@ -4853,7 +4853,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
         // prevent video from minimizing
         labelContElem.addEventListener("click", (e) => e.stopPropagation());
         labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
-        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeatures().volumeSliderStep) !== null && _a !== void 0 ? _a : slider.step); };
+        const getLabelText = (slider) => { var _a; return t("volume_tooltip", slider.value, (_a = getFeature("volumeSliderStep")) !== null && _a !== void 0 ? _a : slider.step); };
         const labelFull = getLabelText(sliderElem);
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
@@ -4894,7 +4894,7 @@ function addVolumeSliderLabel(sliderElem, sliderContainer) {
 //#region volume slider size
 /** Sets the volume slider to a set size */
 function setVolSliderSize() {
-    const { volumeSliderSize: size } = getFeatures();
+    const size = getFeature("volumeSliderSize");
     if (typeof size !== "number" || isNaN(Number(size)))
         return error("Invalid volume slider size:", size);
     addStyleFromResource("css-vol_slider_size", (css) => css.replace(/\/\*\s*\{WIDTH\}\s*\*\//gm, `${size}px`));
@@ -4902,7 +4902,7 @@ function setVolSliderSize() {
 //#region volume slider step
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep(sliderElem) {
-    sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
+    sliderElem.setAttribute("step", String(getFeature("volumeSliderStep")));
 }
 //#region shared volume
 /** Saves the shared volume level to persistent storage */
@@ -4945,10 +4945,10 @@ function checkSharedVolume() {
 function setInitialTabVolume(sliderElem) {
     return __awaiter(this, void 0, void 0, function* () {
         yield waitVideoElementReady();
-        const initialVol = getFeatures().initialTabVolumeLevel;
-        if (getFeatures().volumeSharedBetweenTabs) {
+        const initialVol = getFeature("initialTabVolumeLevel");
+        if (getFeature("volumeSharedBetweenTabs")) {
             lastCheckedSharedVolume = ignoreVal = initialVol;
-            if (getFeatures().volumeSharedBetweenTabs)
+            if (getFeature("volumeSharedBetweenTabs"))
                 GM.setValue("bytm-shared-volume", String(initialVol));
         }
         sliderElem.value = String(initialVol);
@@ -4973,7 +4973,7 @@ const adornments = {
     experimental: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"); }),
     globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe_small")) !== null && _b !== void 0 ? _b : ""; }),
     alert: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
-    reloadRequired: () => __awaiter(void 0, void 0, void 0, function* () { return getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined; }),
+    reloadRequired: () => __awaiter(void 0, void 0, void 0, function* () { return getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined; }),
 };
 /** Common options for config items of type "select" */
 const options = {
@@ -5214,7 +5214,7 @@ const featInfo = {
         type: "toggle",
         category: "volume",
         default: false,
-        textAdornment: () => getFeatures().volumeSharedBetweenTabs
+        textAdornment: () => getFeature("volumeSharedBetweenTabs")
             ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
             : adornments.reloadRequired(),
     },
@@ -5226,7 +5226,7 @@ const featInfo = {
         step: 1,
         default: 100,
         unit: "%",
-        textAdornment: () => getFeatures().volumeSharedBetweenTabs
+        textAdornment: () => getFeature("volumeSharedBetweenTabs")
             ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
             : adornments.reloadRequired(),
         reloadRequired: false,
@@ -5290,7 +5290,7 @@ const featInfo = {
         type: "toggle",
         category: "behavior",
         default: true,
-        helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime),
+        helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
         textAdornment: adornments.reloadRequired,
     },
     rememberSongTimeSites: {
@@ -5574,7 +5574,7 @@ const featInfo = {
         textAdornment: adornments.advanced,
         enable: noop,
         change: () => showIconToast({
-            duration: getFeatures().toastDuration * 1000,
+            duration: getFeature("toastDuration") * 1000,
             message: "Example",
             iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
         }),
@@ -5589,7 +5589,7 @@ const featInfo = {
         type: "toggle",
         category: "general",
         default: false,
-        textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
+        textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
         change: (_key, prevValue, newValue) => prevValue !== newValue &&
             emitSiteEvent("recreateCfgMenu"),
     },
@@ -6669,10 +6669,16 @@ function fetchCss(key) {
  */
 function fetchVideoVotes(watchId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return (yield sendRequest({
-            method: "GET",
-            url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
-        })).response;
+        try {
+            return (yield sendRequest({
+                method: "GET",
+                url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+            })).response;
+        }
+        catch (err) {
+            error("Couldn't fetch video votes due to an error:", err);
+            return undefined;
+        }
     });
 }//#region console watermark
 {
@@ -6739,7 +6745,7 @@ function init() {
 function onDomLoad() {
     return __awaiter(this, void 0, void 0, function* () {
         const domain = getDomain();
-        const features = getFeatures();
+        const feats = getFeatures();
         const ftInit = [];
         // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
         document.body.classList.add(`bytm-dom-${domain}`);
@@ -6766,35 +6772,35 @@ function onDomLoad() {
             }
             if (domain === "ytm") {
                 //#region (ytm) layout
-                if (features.watermarkEnabled)
+                if (feats.watermarkEnabled)
                     ftInit.push(["addWatermark", addWatermark()]);
-                if (features.fixSpacing)
+                if (feats.fixSpacing)
                     ftInit.push(["fixSpacing", fixSpacing()]);
-                if (features.removeUpgradeTab)
+                if (feats.removeUpgradeTab)
                     ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
                 ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
-                if (features.hideCursorOnIdle)
+                if (feats.hideCursorOnIdle)
                     ftInit.push(["hideCursorOnIdle", initHideCursorOnIdle()]);
-                if (features.fixHdrIssues)
+                if (feats.fixHdrIssues)
                     ftInit.push(["fixHdrIssues", fixHdrIssues()]);
-                if (features.showVotes || features.showVoteRatio !== "disabled")
+                if (feats.showVotes || feats.showVoteRatio !== "disabled")
                     ftInit.push(["showVotes", initShowVotes()]);
                 //#region (ytm) volume
                 ftInit.push(["volumeFeatures", initVolumeFeatures()]);
                 //#region (ytm) song lists
-                if (features.lyricsQueueButton || features.deleteFromQueueButton)
+                if (feats.lyricsQueueButton || feats.deleteFromQueueButton)
                     ftInit.push(["queueButtons", initQueueButtons()]);
                 ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
                 //#region (ytm) behavior
-                if (features.closeToastsTimeout > 0)
+                if (feats.closeToastsTimeout > 0)
                     ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
                 //#region (ytm) input
                 ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
-                if (features.anchorImprovements)
+                if (feats.anchorImprovements)
                     ftInit.push(["anchorImprovements", addAnchorImprovements()]);
                 ftInit.push(["numKeysSkip", initNumKeysSkip()]);
                 //#region (ytm) lyrics
-                if (features.geniusLyrics)
+                if (feats.geniusLyrics)
                     ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
             }
             //#region (ytm+yt) cfg menu option
@@ -6817,13 +6823,13 @@ function onDomLoad() {
                 //#region general
                 ftInit.push(["initSiteEvents", initSiteEvents()]);
                 //#region (ytm+yt) layout
-                if (features.disableDarkReaderSites !== "none")
+                if (feats.disableDarkReaderSites !== "none")
                     disableDarkReader();
-                if (features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
+                if (feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
                     ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
                 //#region (ytm+yt) input
                 ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
-                if (getFeatures().autoLikeChannels)
+                if (feats.autoLikeChannels)
                     ftInit.push(["autoLikeChannels", initAutoLike()]);
             }
             emitInterface("bytm:featureInitStarted");
@@ -6837,7 +6843,7 @@ function onDomLoad() {
             const initStartTs = Date.now();
             // wait for feature init or timeout (in case an init function is hung up on a promise)
             yield Promise.race([
-                UserUtils.pauseFor(getFeatures().initTimeout > 0 ? getFeatures().initTimeout * 1000 : 8000),
+                UserUtils.pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8000),
                 Promise.allSettled(ftInit.map(([name, prom]) => new Promise((res) => __awaiter(this, void 0, void 0, function* () {
                     const v = yield prom;
                     emitInterface("bytm:featureInitialized", name);

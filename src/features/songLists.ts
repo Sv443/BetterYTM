@@ -4,10 +4,10 @@ import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
 import { getLyricsCacheEntry } from "./lyricsCache.js";
-import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "../observers.js";
-import { getFeatures } from "../config.js";
-import { createRipple } from "../components/index.js";
+import { createRipple } from "../components/ripple.js";
+import { getFeature } from "../config.js";
+import type { LyricsCacheEntry } from "../types.js";
 import "./songLists.css";
 
 /** Initializes the queue buttons */
@@ -58,7 +58,7 @@ export async function initQueueButtons() {
     "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents",
   ];
 
-  if(getFeatures().listButtonsPlacement === "everywhere") {
+  if(getFeature("listButtonsPlacement") === "everywhere") {
     for(const selector of listSelectors) {
       addSelectorListener("body", selector, {
         all: true,
@@ -94,7 +94,7 @@ async function addQueueButtons(
   //#region lyrics
   let lyricsBtnElem: HTMLAnchorElement | undefined;
 
-  if(getFeatures().lyricsQueueButton) {
+  if(getFeature("lyricsQueueButton")) {
     lyricsBtnElem = await createLyricsBtn(undefined, false);
 
     lyricsBtnElem.ariaLabel = lyricsBtnElem.title = t("open_lyrics");
@@ -199,7 +199,7 @@ async function addQueueButtons(
   //#region delete from queue
   let deleteBtnElem: HTMLAnchorElement | undefined;
 
-  if(getFeatures().deleteFromQueueButton) {
+  if(getFeature("deleteFromQueueButton")) {
     deleteBtnElem = document.createElement("a");
     deleteBtnElem.ariaLabel = deleteBtnElem.title = (listType === "currentQueue" ? t("remove_from_queue") : t("delete_from_list"));
     deleteBtnElem.classList.add("ytmusic-player-bar", "bytm-delete-from-queue", "bytm-generic-btn");

@@ -1,7 +1,7 @@
 import { getPreferredLocale, getResourceUrl, resourceToHTMLString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
-import { getFeatures, promptResetConfig } from "../config.js";
+import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
@@ -51,7 +51,7 @@ const adornments = {
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
   globe: async () => await resourceToHTMLString("icon-globe_small") ?? "",
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  reloadRequired: async () => getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+  reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;
 
 /** Common options for config items of type "select" */
@@ -296,7 +296,7 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: false,
-    textAdornment: () => getFeatures().volumeSharedBetweenTabs
+    textAdornment: () => getFeature("volumeSharedBetweenTabs")
       ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
   },
@@ -308,7 +308,7 @@ export const featInfo = {
     step: 1,
     default: 100,
     unit: "%",
-    textAdornment: () => getFeatures().volumeSharedBetweenTabs
+    textAdornment: () => getFeature("volumeSharedBetweenTabs")
       ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
     reloadRequired: false,
@@ -374,7 +374,7 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: true,
-    helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime),
+    helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
     textAdornment: adornments.reloadRequired,
   },
   rememberSongTimeSites: {
@@ -659,7 +659,7 @@ export const featInfo = {
     textAdornment: adornments.advanced,
     enable: noop,
     change: () => showIconToast({
-      duration: getFeatures().toastDuration * 1000,
+      duration: getFeature("toastDuration") * 1000,
       message: "Example",
       iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
     }),
@@ -674,7 +674,7 @@ export const featInfo = {
     type: "toggle",
     category: "general",
     default: false,
-    textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
+    textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
     change: (_key, prevValue, newValue) =>
       prevValue !== newValue &&
         emitSiteEvent("recreateCfgMenu"),

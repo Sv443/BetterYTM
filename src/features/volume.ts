@@ -1,5 +1,5 @@
 import { addParent, type Stringifiable } from "@sv443-network/userutils";
-import { getFeatures } from "../config.js";
+import { getFeature } from "../config.js";
 import { addStyleFromResource, error, log, resourceToHTMLString, t, waitVideoElementReady } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
@@ -16,25 +16,25 @@ export async function initVolumeFeatures() {
       const volSliderCont = document.createElement("div");
       volSliderCont.id = "bytm-vol-slider-cont";
 
-      if(getFeatures().volumeSliderScrollStep !== featInfo.volumeSliderScrollStep.default)
+      if(getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
         initScrollStep(volSliderCont, sliderElem);
 
       addParent(sliderElem, volSliderCont);
 
-      if(typeof getFeatures().volumeSliderSize === "number")
+      if(typeof getFeature("volumeSliderSize") === "number")
         setVolSliderSize();
 
-      if(getFeatures().volumeSliderLabel)
+      if(getFeature("volumeSliderLabel"))
         await addVolumeSliderLabel(sliderElem, volSliderCont);
 
       setVolSliderStep(sliderElem);
 
-      if(getFeatures().volumeSharedBetweenTabs) {
+      if(getFeature("volumeSharedBetweenTabs")) {
         sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
         checkSharedVolume();
       }
 
-      if(getFeatures().setInitialTabVolume)
+      if(getFeature("setInitialTabVolume"))
         setInitialTabVolume(sliderElem);
     },
   });
@@ -52,7 +52,7 @@ function initScrollStep(volSliderCont: HTMLDivElement, sliderElem: HTMLInputElem
 
       const delta = (e as WheelEvent).deltaY ?? (e as CustomEvent<number | undefined>).detail ?? 1;
       const volumeDir = -Math.sign(delta);
-      const newVolume = String(Number(sliderElem.value) + (getFeatures().volumeSliderScrollStep * volumeDir));
+      const newVolume = String(Number(sliderElem.value) + (getFeature("volumeSliderScrollStep") * volumeDir));
 
       sliderElem.value = newVolume;
       sliderElem.setAttribute("aria-valuenow", newVolume);
@@ -72,7 +72,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   const labelContElem = document.createElement("div");
   labelContElem.id = "bytm-vol-slider-label";
 
-  const volShared = getFeatures().volumeSharedBetweenTabs;
+  const volShared = getFeature("volumeSharedBetweenTabs");
   if(volShared) {
     const linkIconHtml = await resourceToHTMLString("icon-link");
     if(linkIconHtml) {
@@ -101,7 +101,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
   labelContElem.addEventListener("keydown", (e) => ["Enter", "Space", " "].includes(e.key) && e.stopPropagation());
 
   const getLabelText = (slider: HTMLInputElement) =>
-    t("volume_tooltip", slider.value, getFeatures().volumeSliderStep ?? slider.step);
+    t("volume_tooltip", slider.value, getFeature("volumeSliderStep") ?? slider.step);
 
   const labelFull = getLabelText(sliderElem);
   sliderContainer.setAttribute("title", labelFull);
@@ -153,7 +153,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
 
 /** Sets the volume slider to a set size */
 function setVolSliderSize() {
-  const { volumeSliderSize: size } = getFeatures();
+  const size = getFeature("volumeSliderSize");
 
   if(typeof size !== "number" || isNaN(Number(size)))
     return error("Invalid volume slider size:", size);
@@ -168,7 +168,7 @@ function setVolSliderSize() {
 
 /** Sets the `step` attribute of the volume slider */
 function setVolSliderStep(sliderElem: HTMLInputElement) {
-  sliderElem.setAttribute("step", String(getFeatures().volumeSliderStep));
+  sliderElem.setAttribute("step", String(getFeature("volumeSliderStep")));
 }
 
 //#region shared volume
@@ -219,10 +219,10 @@ export async function volumeSharedBetweenTabsDisabled() {
 /** Sets the volume slider to a set volume level when the session starts */
 async function setInitialTabVolume(sliderElem: HTMLInputElement) {
   await waitVideoElementReady();
-  const initialVol = getFeatures().initialTabVolumeLevel;
-  if(getFeatures().volumeSharedBetweenTabs) {
+  const initialVol = getFeature("initialTabVolumeLevel");
+  if(getFeature("volumeSharedBetweenTabs")) {
     lastCheckedSharedVolume = ignoreVal = initialVol;
-    if(getFeatures().volumeSharedBetweenTabs)
+    if(getFeature("volumeSharedBetweenTabs"))
       GM.setValue("bytm-shared-volume", String(initialVol));
   }
   sliderElem.value = String(initialVol);
