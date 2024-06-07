@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "Corrigir problemas de espaçamento no layout",
     "feature_helptext_fixSpacing": "Há vários locais na interface do usuário onde o espaçamento entre os elementos é inconsistente. Este recurso corrige esses problemas.",
 
-    "feature_desc_removeUpgradeTab": "Remover a guia Upgrade / Premium",
     "feature_desc_volumeSliderLabel": "Adicionar um rótulo de porcentagem ao lado do controle de volume",
     "feature_desc_volumeSliderSize": "A largura do controle deslizante de volume em pixels",
     "feature_desc_volumeSliderStep": "Sensibilidade do controle deslizante de volume (por quantos porcento o volume pode ser alterado de cada vez)",

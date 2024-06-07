@@ -60,7 +60,7 @@ export default [{
       ignoredNodes: ["VariableDeclaration[declarations.length=0]"],
     }],
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": ["error", {
+    "@typescript-eslint/no-unused-vars": ["warn", {
       vars: "local",
       ignoreRestSiblings: true,
       args: "after-used",

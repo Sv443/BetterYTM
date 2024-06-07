@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type ReturnYouTubeDislikeVotesObj } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj, dbg } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -177,25 +177,6 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
     container.insertBefore(cfgOptWrapperElem, firstChild);
   else
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
-}
-
-//#region upgrade tab
-
-/** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
-export async function removeUpgradeTab() {
-  addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-    listener: (tabElemLarge) => {
-      tabElemLarge.remove();
-      log("Removed large upgrade tab");
-    },
-  });
-  // TODO:FIXME: see https://github.com/Sv443/BetterYTM/issues/91
-  addSelectorListener("sideBarMini", "#sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-    listener: (tabElemSmall) => {
-      tabElemSmall.remove();
-      log("Removed small upgrade tab");
-    },
-  });
 }
 
 //#region anchor impr.
@@ -780,7 +761,7 @@ export async function initShowVotes() {
   });
 }
 
-function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYouTubeDislikeVotesObj) {
+function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   const likeBtn = voteCont.querySelector<HTMLElement>("#button-shape-like");
   const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
 
@@ -827,6 +808,6 @@ function formatVoteNumber(num: number) {
   );
 }
 
-function addVoteRatio(voteCont: HTMLElement, voteObj: ReturnYouTubeDislikeVotesObj) {
-  console.log("># TODO: addVoteRatio", voteCont, voteObj);
+function addVoteRatio(voteCont: HTMLElement, voteObj: VideoVotesObj) {
+  dbg("># TODO: addVoteRatio", voteCont, voteObj);
 }

@@ -149,7 +149,6 @@
     "feature_desc_fixSpacing": "Corriger les problèmes d'espacement dans la mise en page",
     "feature_helptext_fixSpacing": "Il existe divers endroits dans l'interface utilisateur où l'espacement entre les éléments est incohérent. Cette fonctionnalité corrige ces problèmes.",
 
-    "feature_desc_removeUpgradeTab": "Supprimer l'onglet Mise à niveau / Premium",
     "feature_desc_volumeSliderLabel": "Ajouter une étiquette de pourcentage à côté du curseur de volume",
     "feature_desc_volumeSliderSize": "La largeur du curseur de volume en pixels",
     "feature_desc_volumeSliderStep": "Sensibilité du curseur de volume (de combien de pour cent le volume peut être modifié à la fois)",

@@ -57,7 +57,7 @@ export async function fetchCss(key: ResourceKey & `css-${string}`) {
   }
 }
 
-export type ReturnYouTubeDislikeVotesObj = {
+export type ReturnYouTubeDislikeVotes = {
   /** The watch ID of the video */
   id: string;
   /** ISO timestamp of when the video was uploaded */
@@ -74,16 +74,60 @@ export type ReturnYouTubeDislikeVotesObj = {
   deleted: boolean;
 };
 
+export type VideoVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Timestamp of when the data was fetched */
+  timestamp: number;
+};
+
+/** Cache for the vote data of YouTube videos to prevent unnecessary requests */
+const voteCache = new Map<string, VideoVotesObj>();
+/** Time-to-live for the vote cache in milliseconds */
+const voteCacheTTL = 1000 * 60 * 5;
+
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
  * @param watchId The watch ID of the video
  */
 export async function fetchVideoVotes(watchId: string) {
   try {
-    return JSON.parse((await sendRequest<ReturnYouTubeDislikeVotesObj>({
-      method: "GET",
-      url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
-    })).response) as ReturnYouTubeDislikeVotesObj;
+    if(voteCache.has(watchId)) {
+      const cached = voteCache.get(watchId)!;
+      if(Date.now() - cached.timestamp < voteCacheTTL)
+        return cached;
+      else
+        voteCache.delete(watchId);
+    }
+
+    const votesRaw = JSON.parse(
+      (await sendRequest({
+        method: "GET",
+        url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
+      })).response
+    ) as ReturnYouTubeDislikeVotes;
+
+    if(!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
+      error("Couldn't parse video votes due to an error:", votesRaw);
+      return undefined;
+    }
+
+    const votesObj = {
+      id: votesRaw.id,
+      likes: votesRaw.likes,
+      dislikes: votesRaw.dislikes,
+      rating: votesRaw.rating,
+      timestamp: Date.now(),
+    };
+    voteCache.set(votesObj.id, votesObj);
+
+    return votesObj;
   }
   catch(err) {
     error("Couldn't fetch video votes due to an error:", err);

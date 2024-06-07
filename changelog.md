@@ -20,6 +20,7 @@
     - Placement of list/queue buttons
   - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
   - Arrow key and number key skipping works more reliably and also in the config menu now
+  - Removed broken feature "remove upgrade tab"
 
 <details><summary>Click to expand internal and plugin changes</summary>
 

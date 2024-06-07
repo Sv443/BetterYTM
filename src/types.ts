@@ -342,8 +342,6 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
-  /** Remove the \"Upgrade\" / YT Music Premium tab */
-  removeUpgradeTab: boolean;
   /** Where to show a thumbnail overlay over the video element and whether to show it at all */
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */

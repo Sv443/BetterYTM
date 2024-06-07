@@ -70,20 +70,24 @@ export const migrations: DataMigrationsDict = {
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
   // 5 -> 6 (v2.1)
-  6: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
-    useDefaultConfig(oldData, [
-      "autoLikeChannels", "autoLikeChannelToggleBtn",
-      "autoLikeTimeout", "autoLikeShowToast",
-      "autoLikeOpenMgmtDialog", "showVotes",
-      "showVotesFormat", "showVoteRatio",
-      "toastDuration", "initTimeout",
-      // forgot to add this to the migration when adding the feature so now will have to do:
-      "volumeSliderLabel",
-    ]), [
-      { key: "rememberSongTimeSites", oldDefault: "ytm" },
-      { key: "volumeSliderScrollStep", oldDefault: 10 },
-    ],
-  ),
+  6: (oldData: FeatureConfig) => {
+    const newData = useNewDefaultIfUnchanged(
+      useDefaultConfig(oldData, [
+        "autoLikeChannels", "autoLikeChannelToggleBtn",
+        "autoLikeTimeout", "autoLikeShowToast",
+        "autoLikeOpenMgmtDialog", "showVotes",
+        "showVotesFormat", "showVoteRatio",
+        "toastDuration", "initTimeout",
+        // forgot to add this to the migration when adding the feature so now will have to do:
+        "volumeSliderLabel",
+      ]), [
+        { key: "rememberSongTimeSites", oldDefault: "ytm" },
+        { key: "volumeSliderScrollStep", oldDefault: 10 },
+      ],
+    );
+    "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
+    return newData;
+  },
   // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
 
   // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
