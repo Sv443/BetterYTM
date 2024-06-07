@@ -2,7 +2,7 @@ import { debounce, isScrollable, type Stringifiable } from "@sv443-network/useru
 import { defaultData, getFeature, getFeatures, setFeatures } from "../config.js";
 import { buildNumber, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils/index.js";
+import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
@@ -779,6 +779,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   if(!isCfgMenuOpen)
     return;
   isCfgMenuOpen = false;
+
   evt?.bubbles && evt.stopPropagation();
 
   if(enableScroll) {
@@ -787,19 +788,20 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
-  siteEvents.emit("cfgMenuClosed");
-
-  if(!menuBg)
-    return;
-
-  menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
   clearTimeout(hiddenCopiedTxtTimeout);
-
-  menuBg.style.visibility = "hidden";
-  menuBg.style.display = "none";
 
   openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
   setCurrentDialogId(openDialogs?.[0] ?? null);
+
+  siteEvents.emit("cfgMenuClosed");
+
+  if(!menuBg)
+    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+
+  menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
+
+  menuBg.style.visibility = "hidden";
+  menuBg.style.display = "none";
 }
 
 /** Opens the config menu if it is closed */
