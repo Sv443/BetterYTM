@@ -9,7 +9,7 @@ import { createCircularBtn, createRipple } from "../components/index.js";
 import type { ResourceKey } from "../types.js";
 import "./layout.css";
 
-//#region cfg menu buttons
+//#region cfg menu btns
 
 let logoExchanged = false, improveLogoCalled = false;
 
@@ -179,7 +179,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
-//#region rem upgrade tab
+//#region upgrade tab
 
 /** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
 export async function removeUpgradeTab() {
@@ -198,7 +198,7 @@ export async function removeUpgradeTab() {
   });
 }
 
-//#region anchor improvements
+//#region anchor impr.
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
@@ -331,7 +331,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#region rem tracking param
+//#region share tracking
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
@@ -382,7 +382,7 @@ export async function fixSpacing() {
     error("Couldn't fix spacing");
 }
 
-//#region above queue btns
+//#region ab.queue btns
 
 export async function initAboveQueueBtns() {
   const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
@@ -476,7 +476,7 @@ export async function initAboveQueueBtns() {
   });
 }
 
-//#region thumbnail overlay
+//#region thumb.overlay
 
 /** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
@@ -654,7 +654,7 @@ export async function initThumbnailOverlay() {
   });
 }
 
-//#region hide cursor on idle
+//#region idle hide cursor
 
 export async function initHideCursorOnIdle() {
   addSelectorListener("mainPanel", "ytmusic-player#player", {
@@ -732,18 +732,19 @@ export async function fixHdrIssues() {
     log("Fixed HDR issues");
 }
 
-//#region show likes&dislikes
+//#region show dis-/likes
 
 /** Shows the amount of likes and dislikes on the current song */
 export async function initShowVotes() {
-  addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
+  const voteContSelector = ".middle-controls-buttons ytmusic-like-button-renderer";
+  addSelectorListener("playerBar", voteContSelector, {
     async listener(voteCont) {
       try {
         const watchId = getWatchId();
         if(!watchId)
           return error("Couldn't get watch ID while initializing showVotes");
         const voteObj = await fetchVideoVotes(watchId);
-        if(!voteObj)
+        if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
 
         getFeature("showVotes") && addVoteNumbers(voteCont, voteObj);
@@ -756,14 +757,62 @@ export async function initShowVotes() {
   });
 
   siteEvents.on("watchIdChanged", async (watchId) => {
-    void ["TODO", watchId];
+    const voteObj = await fetchVideoVotes(watchId);
+    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+      return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
+
+    const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
+    const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
+
+    if(!labelLikes || !labelDislikes)
+      return error("Couldn't find vote label elements while updating like and dislike counts");
+
+    labelLikes.textContent = voteObj.likes.toLocaleString(undefined, getVoteNumberFormat());
+    labelDislikes.textContent = voteObj.dislikes.toLocaleString(undefined, getVoteNumberFormat());
   });
 }
 
 function addVoteNumbers(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
-  void ["TODO", voteCont, voteObj];
+  const likeBtn = voteCont.querySelector<HTMLElement>("#button-shape-like");
+  const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
+
+  if(!likeBtn || !dislikeBtn)
+    return error("Couldn't find like or dislike button while adding vote numbers");
+
+  const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
+    const label = document.createElement("span");
+    label.classList.add("bytm-vote-label", "bytm-no-select", type);
+    label.textContent = amount.toLocaleString(undefined, getVoteNumberFormat());
+    label.title = label.ariaLabel = t(`vote_label_${type}`, amount);
+    label.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      (type === "likes" ? likeBtn : dislikeBtn).querySelector("button")?.click();
+    });
+    return label;
+  };
+
+  addStyleFromResource("css-show_votes").catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
+
+  const likeLblEl = createLabel(voteObj.likes, "likes");
+  likeBtn.insertAdjacentElement("afterend", likeLblEl);
+
+  const dislikeLblEl = createLabel(voteObj.dislikes, "dislikes");
+  dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
+}
+
+function getVoteNumberFormat(): Partial<Intl.NumberFormatOptions> {
+  return getFeature("showVotesFormat") === "short"
+    ? {
+      notation: "compact",
+      compactDisplay: "short",
+    }
+    : {
+      style: "decimal",
+      maximumFractionDigits: 0,
+    };
 }
 
 function addVoteRatio(voteCont: HTMLElement, voteObj: ReturnYoutubeDislikesVotesObj) {
-  void ["TODO", voteCont, voteObj];
+  console.log("># TODO: addVoteRatio", voteCont, voteObj);
 }

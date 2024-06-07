@@ -1642,6 +1642,14 @@ ytmusic-player#player #bezel {
   z-index: 1;
 }
 
+/* #region auto-like */
+
+.bytm-vote-label {
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 4px;
+}
+
 :root {
   --bytm-auto-like-btn-color: #bf87f0;
 }

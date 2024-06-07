@@ -80,10 +80,10 @@ export type ReturnYoutubeDislikesVotesObj = {
  */
 export async function fetchVideoVotes(watchId: string) {
   try {
-    return (await sendRequest<ReturnYoutubeDislikesVotesObj>({
+    return JSON.parse((await sendRequest<ReturnYoutubeDislikesVotesObj>({
       method: "GET",
       url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
-    })).response as ReturnYoutubeDislikesVotesObj;
+    })).response) as ReturnYoutubeDislikesVotesObj;
   }
   catch(err) {
     error("Couldn't fetch video votes due to an error:", err);

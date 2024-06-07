@@ -6,6 +6,7 @@
   - Auto-like videos and songs of channels where this feature was enabled
     - Added an auto-like toggle button to the channel pages on YT and YTM
   - Show the amount of likes and dislikes on the currently playing song
+  - Show the like and dislike ratio as a colored bar on the currently playing song
 - **Changes / Fixes:**
   - Now the welcome menu is shown on YT too
   - Changed default settings for these features:
