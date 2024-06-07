@@ -1,6 +1,6 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
 import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, clearNode } from "../utils/index.js";
-import { getFeatures } from "../config.js";
+import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
 import { LogLevel } from "../types.js";
@@ -46,7 +46,7 @@ export async function initAutoCloseToasts() {
             continue;
           toastElem.classList.add("bytm-closing");
 
-          const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
+          const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
           await pauseFor(closeTimeout);
 
           toastElem.classList.remove("paper-toast-open");
@@ -56,7 +56,7 @@ export async function initAutoCloseToasts() {
             toastElem.style.display = "none";
 
             clearNode(toastElem);
-            log(`Automatically closed toast after ${getFeatures().closeToastsTimeout * 1000}ms`);
+            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
           }, { once: true });
         }
       }
@@ -87,7 +87,7 @@ let remVidsCache: RemVidObj[] = [];
  * **Needs to be called *before* DOM is ready!**
  */
 export async function initRememberSongTime() {
-  if(getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
+  if(getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
     return;
 
   const storedDataRaw = await GM.getValue("bytm-rem-songs");
@@ -119,7 +119,7 @@ async function restVidRestoreTime() {
 
     const entry = remVidsCache.find(entry => entry.watchID === watchID);
     if(entry) {
-      if(Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
+      if(Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
         await restVidDeleteEntry(entry.watchID);
         return;
       }
@@ -128,7 +128,7 @@ async function restVidRestoreTime() {
       else {
         const doRestoreTime = async () => {
           const vidElem = await waitVideoElementReady();
-          const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
+          const vidRestoreTime = entry.songTime - (getFeature("rememberSongTimeReduction") ?? 0);
           vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
           await restVidDeleteEntry(entry.watchID);
           info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
@@ -163,7 +163,7 @@ async function restVidStartUpdateLoop() {
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
+    if(songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
       const entry = {
         watchID,
         songTime,
@@ -174,12 +174,12 @@ async function restVidStartUpdateLoop() {
     // if the song is rewound to the beginning, delete the entry
     else {
       const entry = remVidsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
+      if(entry && songTime <= getFeature("rememberSongTimeMinPlayTime"))
         await restVidDeleteEntry(entry.watchID);
     }
   }
 
-  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
+  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
   for(const entry of expiredEntries)
     await restVidDeleteEntry(entry.watchID);
 
@@ -210,7 +210,7 @@ async function restVidDeleteEntry(watchID: string) {
 
 /** Disables Dark Reader if it is present */
 export function disableDarkReader() {
-  if(getFeatures().disableDarkReaderSites !== getDomain() && getFeatures().disableDarkReaderSites !== "all")
+  if(getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
     return;
 
   const metaElem = document.createElement("meta");

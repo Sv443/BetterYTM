@@ -2,7 +2,7 @@ import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils
 import { compressionFormat } from "../constants.js";
 import { compressionSupported, log } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
-import { getFeatures } from "../config.js";
+import { getFeature } from "../config.js";
 import type { LyricsCacheEntry } from "../types.js";
 
 export type LyricsCache = {
@@ -42,7 +42,7 @@ export async function initLyricsCache() {
 export function getLyricsCacheEntry(artist: string, song: string, refreshEntry = true) {
   const { cache } = lyricsCacheMgr.getData();
   const entry = cache.find(e => e.artist === artist && e.song === song);
-  if(entry && Date.now() - entry?.added > getFeatures().lyricsCacheTTL * 1000 * 60 * 60 * 24) {
+  if(entry && Date.now() - entry?.added > getFeature("lyricsCacheTTL") * 1000 * 60 * 60 * 24) {
     deleteLyricsCacheEntry(artist, song);
     return undefined;
   }
@@ -111,7 +111,7 @@ export function addLyricsCacheEntryBest(artist: string, song: string, url: strin
   cache.sort((a, b) => b.viewed - a.viewed);
 
   // always keep the cache <= max size
-  cache.splice(getFeatures().lyricsCacheMaxSize);
+  cache.splice(getFeature("lyricsCacheMaxSize"));
 
   log("Added cache entry for best result", artist, "-", song, "\n", entry);
 
@@ -151,7 +151,7 @@ export function addLyricsCacheEntryPenalized(artist: string, song: string, url: 
   cache.sort((a, b) => b.viewed - a.viewed);
 
   // always keep the cache <= max size
-  cache.splice(getFeatures().lyricsCacheMaxSize);
+  cache.splice(getFeature("lyricsCacheMaxSize"));
 
   log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
 

@@ -482,8 +482,8 @@ export async function initAboveQueueBtns() {
 let invertOverlay = false;
 
 export async function initThumbnailOverlay() {
-  const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
-  if(getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
+  const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
+  if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
 
   // so the script init doesn't keep waiting until a /watch page is loaded
@@ -499,7 +499,7 @@ export async function initThumbnailOverlay() {
       if(!domLoaded)
         return;
 
-      const behavior = getFeatures().thumbnailOverlayBehavior;
+      const behavior = getFeature("thumbnailOverlayBehavior");
 
       let showOverlay = behavior === "always";
       const isVideo = currentMediaType() === "video";
@@ -524,7 +524,7 @@ export async function initThumbnailOverlay() {
         indicatorElem.ariaHidden = String(!showOverlay);
       }
 
-      if(getFeatures().thumbnailOverlayToggleBtnShown) {
+      if(getFeature("thumbnailOverlayToggleBtnShown")) {
         addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
           async listener(toggleBtnElem) {
             const toggleBtnImgElem = toggleBtnElem.querySelector<HTMLImageElement>("img");
@@ -570,7 +570,7 @@ export async function initThumbnailOverlay() {
       overlayElem.style.display = "none";
 
       let indicatorElem: HTMLImageElement | undefined;
-      if(getFeatures().thumbnailOverlayShowIndicator) {
+      if(getFeature("thumbnailOverlayShowIndicator")) {
         indicatorElem = document.createElement("img");
         indicatorElem.id = "bytm-thumbnail-overlay-indicator";
         indicatorElem.src = await getResourceUrl("icon-image");
@@ -578,14 +578,14 @@ export async function initThumbnailOverlay() {
         indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
         indicatorElem.ariaHidden = "true";
         indicatorElem.style.display = "none";
-        indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
+        indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
       }
     
       const thumbImgElem = document.createElement("img");
       thumbImgElem.id = "bytm-thumbnail-overlay-img";
       thumbImgElem.role = "presentation";
       thumbImgElem.ariaHidden = "true";
-      thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
+      thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
     
       overlayElem.appendChild(thumbImgElem);
       playerEl.appendChild(overlayElem);
@@ -672,7 +672,7 @@ export async function initHideCursorOnIdle() {
       let hideTransTimer: ReturnType<typeof setTimeout> | undefined;
 
       const hide = () => {
-        if(!getFeatures().hideCursorOnIdle)
+        if(!getFeature("hideCursorOnIdle"))
           return;
         if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
@@ -696,7 +696,7 @@ export async function initHideCursorOnIdle() {
       };
 
       const cursorHideTimerCb = () =>
-        cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
+        cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1000);
 
       const onMove = () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);

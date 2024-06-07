@@ -2,7 +2,7 @@ import { getResourceUrl, initTranslations, setLocale, t, warn, type TrLocale } f
 import { BytmDialog } from "../components/index.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { mode, scriptInfo } from "../constants.js";
-import { getFeatures, setFeatures } from "../config.js";
+import { getFeature, getFeatures, setFeatures } from "../config.js";
 import { getChangelogDialog } from "./index.js";
 import pkg from "../../package.json" with { type: "json" };
 import locales from "../../assets/locales.json" with { type: "json" };
@@ -73,7 +73,7 @@ async function renderBody() {
     localeOptionElem.textContent = name;
     localeSelectElem.appendChild(localeOptionElem);
   }
-  localeSelectElem.value = getFeatures().locale;
+  localeSelectElem.value = getFeature("locale");
 
   localeSelectElem.addEventListener("change", async () => {
     const selectedLocale = localeSelectElem.value;

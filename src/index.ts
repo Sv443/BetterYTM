@@ -115,7 +115,7 @@ async function init() {
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
   const domain = getDomain();
-  const features = getFeatures();
+  const feats = getFeatures();
   const ftInit = [] as [string, Promise<void>][];
 
   // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
@@ -150,24 +150,24 @@ async function onDomLoad() {
     if(domain === "ytm") {
       //#region (ytm) layout
 
-      if(features.watermarkEnabled)
+      if(feats.watermarkEnabled)
         ftInit.push(["addWatermark", addWatermark()]);
 
-      if(features.fixSpacing)
+      if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);
 
-      if(features.removeUpgradeTab)
+      if(feats.removeUpgradeTab)
         ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
 
       ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 
-      if(features.hideCursorOnIdle)
+      if(feats.hideCursorOnIdle)
         ftInit.push(["hideCursorOnIdle", initHideCursorOnIdle()]);
 
-      if(features.fixHdrIssues)
+      if(feats.fixHdrIssues)
         ftInit.push(["fixHdrIssues", fixHdrIssues()]);
 
-      if(features.showVotes || features.showVoteRatio !== "disabled")
+      if(feats.showVotes || feats.showVoteRatio !== "disabled")
         ftInit.push(["showVotes", initShowVotes()]);
 
       //#region (ytm) volume
@@ -176,28 +176,28 @@ async function onDomLoad() {
 
       //#region (ytm) song lists
 
-      if(features.lyricsQueueButton || features.deleteFromQueueButton)
+      if(feats.lyricsQueueButton || feats.deleteFromQueueButton)
         ftInit.push(["queueButtons", initQueueButtons()]);
 
       ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
 
       //#region (ytm) behavior
 
-      if(features.closeToastsTimeout > 0)
+      if(feats.closeToastsTimeout > 0)
         ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
       //#region (ytm) input
 
       ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
 
-      if(features.anchorImprovements)
+      if(feats.anchorImprovements)
         ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 
       ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm) lyrics
 
-      if(features.geniusLyrics)
+      if(feats.geniusLyrics)
         ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
     }
 
@@ -225,17 +225,17 @@ async function onDomLoad() {
 
       //#region (ytm+yt) layout
 
-      if(features.disableDarkReaderSites !== "none")
+      if(feats.disableDarkReaderSites !== "none")
         disableDarkReader();
 
-      if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
+      if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input
 
       ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
 
-      if(getFeatures().autoLikeChannels)
+      if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);
     }
 
@@ -253,7 +253,7 @@ async function onDomLoad() {
 
     // wait for feature init or timeout (in case an init function is hung up on a promise)
     await Promise.race([
-      pauseFor(getFeatures().initTimeout > 0 ? getFeatures().initTimeout * 1000 : 8_000),
+      pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000),
       Promise.allSettled(
         ftInit.map(([name, prom]) =>
           new Promise(async (res) => {

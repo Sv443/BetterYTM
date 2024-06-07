@@ -1,7 +1,7 @@
 import { host, mode, scriptInfo } from "../constants.js";
 import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils/index.js";
 import { BytmDialog, createToggleInput } from "../components/index.js";
-import { getFeatures, setFeatures } from "../config.js";
+import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
 import { siteEvents } from "../siteEvents.js";
 
@@ -107,7 +107,7 @@ async function renderBody({
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
-  if(getFeatures().versionCheck === false)
+  if(!getFeature("versionCheck"))
     disableUpdateCheck = true;
 
   const disableToggleEl = await createToggleInput({
