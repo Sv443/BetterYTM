@@ -299,11 +299,11 @@ function registerDevMenuCommands() {
     }
   }, "r");
 
-  GM.registerMenuCommand("Fix missing config values", async () => {
+  GM.registerMenuCommand("Fix config values", async () => {
     const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
     await setFeatures(fixCfgKeys(oldFeats));
-    console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
-    if(confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
+    console.log("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
+    if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
       location.reload();
   });
 
