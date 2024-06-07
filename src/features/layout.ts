@@ -393,14 +393,14 @@ export async function initAboveQueueBtns() {
       id: "scroll-to-active",
       resourceName: "icon-skip_to",
       titleKey: "scroll_to_playing",
-      async interaction() {
+      async interaction(evt: KeyboardEvent | MouseEvent) {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
 
         activeItem.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
+          behavior: evt.shiftKey ? "instant" : "smooth",
+          block: evt.ctrlKey ? "end" : "center",
           inline: "center",
         });
       },
@@ -410,15 +410,15 @@ export async function initAboveQueueBtns() {
       id: "clear-queue",
       resourceName: "icon-clear_list",
       titleKey: "clear_list",
-      async interaction() {
+      async interaction(evt: KeyboardEvent | MouseEvent) {
         try {
           // TODO: better confirmation dialog?
-          if(!confirm(t("clear_list_confirm")))
-            return;
-          const url = new URL(location.href);
-          url.searchParams.delete("list");
-          url.searchParams.set("time_continue", String(await getVideoTime(0)));
-          location.assign(url);
+          if(evt.shiftKey || confirm(t("clear_list_confirm"))) {
+            const url = new URL(location.href);
+            url.searchParams.delete("list");
+            url.searchParams.set("time_continue", String(await getVideoTime(0)));
+            location.assign(url);
+          }
         }
         catch(err) {
           error("Couldn't clear queue due to an error:", err);

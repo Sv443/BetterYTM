@@ -5,6 +5,7 @@
 - **Features:**
   - Auto-like videos and songs of channels where this feature was enabled
     - Added an auto-like toggle button to the channel pages on YT and YTM
+  - Show the amount of likes and dislikes on the currently playing song
 - **Changes / Fixes:**
   - Now the welcome menu is shown on YT too
   - Changed default settings for these features:
@@ -16,6 +17,8 @@
     - Disable Dark Reader sites
     - Remove share tracking parameter sites
     - Placement of list/queue buttons
+  - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
+  - Arrow key and number key skipping works more reliably and also in the config menu now
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
