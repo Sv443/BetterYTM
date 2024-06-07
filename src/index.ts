@@ -2,7 +2,7 @@ import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-netwo
 import { addStyleFromResource, domLoaded, warn } from "./utils/index.js";
 import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
-import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
+import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
 import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
@@ -302,16 +302,16 @@ function registerDevMenuCommands() {
   GM.registerMenuCommand("Fix config values", async () => {
     const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
     await setFeatures(fixCfgKeys(oldFeats));
-    console.log("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
+    dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
     if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
       location.reload();
   });
 
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
     const keys = await GM.listValues();
-    console.log(`GM values (${keys.length}):`);
+    dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      console.log("  No values found.");
+      dbg("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -325,15 +325,15 @@ function registerDevMenuCommands() {
     for(const [key, finalVal] of Object.entries(values)) {
       const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
       const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
     }
   }, "l");
 
   GM.registerMenuCommand("List GM values in console, without decompression", async () => {
     const keys = await GM.listValues();
-    console.log(`GM values (${keys.length}):`);
+    dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      console.log("  No values found.");
+      dbg("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -345,19 +345,19 @@ function registerDevMenuCommands() {
     }
     for(const [key, val] of Object.entries(values)) {
       const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
     }
   });
 
   GM.registerMenuCommand("Delete all GM values", async () => {
     const keys = await GM.listValues();
     if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
-      console.log(`Clearing ${keys.length} GM values:`);
+      dbg(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
-        console.log("  No values found.");
+        dbg("  No values found.");
       for(const key of keys) {
         await GM.deleteValue(key);
-        console.log(`  Deleted ${key}`);
+        dbg(`  Deleted ${key}`);
       }
     }
   }, "d");
@@ -371,19 +371,19 @@ function registerDevMenuCommands() {
         const truncLength = 400;
         const oldVal = await GM.getValue(key);
         await GM.deleteValue(key);
-        console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
+        dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
       }
     }
   }, "n");
 
   GM.registerMenuCommand("Reset install timestamp", async () => {
     await GM.deleteValue("bytm-installed");
-    console.log("Reset install time.");
+    dbg("Reset install time.");
   }, "t");
 
   GM.registerMenuCommand("Reset version check timestamp", async () => {
     await GM.deleteValue("bytm-version-check");
-    console.log("Reset version check time.");
+    dbg("Reset version check time.");
   }, "v");
 
   GM.registerMenuCommand("List active selector listeners in console", async () => {
@@ -400,14 +400,14 @@ function registerDevMenuCommands() {
         });
       });
     }
-    console.log(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   }, "s");
 
   GM.registerMenuCommand("Compress value", async () => {
     const input = prompt("Enter the value to compress.\nSee console for output.");
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
-      console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+      dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
     }
   });
 
@@ -415,7 +415,7 @@ function registerDevMenuCommands() {
     const input = prompt("Enter the value to decompress.\nSee console for output.");
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
-      console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+      dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
     }
   });
 
