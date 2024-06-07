@@ -57,7 +57,7 @@ export async function fetchCss(key: ResourceKey & `css-${string}`) {
   }
 }
 
-export type ReturnYoutubeDislikesVotesObj = {
+export type ReturnYouTubeDislikeVotesObj = {
   /** The watch ID of the video */
   id: string;
   /** ISO timestamp of when the video was uploaded */
@@ -75,15 +75,15 @@ export type ReturnYoutubeDislikesVotesObj = {
 };
 
 /**
- * Fetches the votes object for a YouTube video from the [Return YouTube Dislikes API.](https://returnyoutubedislike.com/docs)
+ * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
  * @param watchId The watch ID of the video
  */
 export async function fetchVideoVotes(watchId: string) {
   try {
-    return JSON.parse((await sendRequest<ReturnYoutubeDislikesVotesObj>({
+    return JSON.parse((await sendRequest<ReturnYouTubeDislikeVotesObj>({
       method: "GET",
       url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
-    })).response) as ReturnYoutubeDislikesVotesObj;
+    })).response) as ReturnYouTubeDislikeVotesObj;
   }
   catch(err) {
     error("Couldn't fetch video votes due to an error:", err);
