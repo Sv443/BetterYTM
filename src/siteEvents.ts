@@ -135,6 +135,7 @@ export async function initSiteEvents() {
           lastTitle = newTitle;
           info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
           emitSiteEvent("songTitleChanged", newTitle, oldTitle);
+          runIntervalChecks();
         },
       });
 
@@ -164,24 +165,6 @@ export async function initSiteEvents() {
       });
     }
 
-    //#region other
-
-    const runIntervalChecks = () => {
-      if(location.pathname.startsWith("/watch")) {
-        const newWatchId = new URL(location.href).searchParams.get("v");
-        if(newWatchId && newWatchId !== lastWatchId) {
-          info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-          emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-          lastWatchId = newWatchId;
-        }
-      }
-
-      if(location.pathname !== lastPathname) {
-        emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
-        lastPathname = String(location.pathname);
-      }
-    };
-
     window.addEventListener("bytm:ready", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
@@ -209,3 +192,22 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
   siteEvents.emit(key, ...args);
   emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
 }
+
+//#region other
+
+/** Periodically called to check for changes in the URL and emit associated siteEvents */
+export function runIntervalChecks() {
+  if(location.pathname.startsWith("/watch")) {
+    const newWatchId = new URL(location.href).searchParams.get("v");
+    if(newWatchId && newWatchId !== lastWatchId) {
+      info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+      emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+      lastWatchId = newWatchId;
+    }
+  }
+
+  if(location.pathname !== lastPathname) {
+    emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
+    lastPathname = String(location.pathname);
+  }
+};
