@@ -1696,11 +1696,6 @@ ytmusic-player#player #bezel {
   margin-bottom: 15px;
 }
 
-#bytm-auto-like-channels-add-new-wrapper {
-  margin: 15px;
-  margin-top: 5px;
-}
-
 .bytm-auto-like-channel-row:hover {
   background-color: var(--bytm-menu-bg-highlight);
 }

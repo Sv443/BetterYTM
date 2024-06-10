@@ -38,6 +38,8 @@ export async function getAutoLikeDialog() {
   return autoLikeDialog;
 }
 
+//#region header
+
 async function renderHeader() {
   const headerEl = document.createElement("h2");
   headerEl.classList.add("bytm-dialog-title");
@@ -48,6 +50,8 @@ async function renderHeader() {
   return headerEl;
 }
 
+//#region body
+
 async function renderBody() {
   const contElem = document.createElement("div");
 
@@ -55,26 +59,7 @@ async function renderBody() {
   descriptionEl.classList.add("bytm-auto-like-channels-desc");
   descriptionEl.textContent = t("auto_like_channels_dialog_desc");
   descriptionEl.tabIndex = 0;
-
   contElem.appendChild(descriptionEl);
-
-  // TODO: remove
-  const addNewWrapper = document.createElement("div");
-  addNewWrapper.id = "bytm-auto-like-channels-add-new-wrapper";
-
-  const addNewEl = document.createElement("span");
-  addNewEl.id = "bytm-auto-like-channels-add-new";
-  addNewEl.role = "button";
-  addNewEl.tabIndex = 0;
-  addNewEl.textContent = `+ ${t("new_entry_tooltip")}`;
-  addNewEl.title = addNewEl.ariaLabel = t("new_entry_tooltip");
-  addNewEl.classList.add("bytm-link", "bytm-no-select");
-
-  addNewWrapper.appendChild(addNewEl);
-
-  onInteraction(addNewEl, addAutoLikeEntryPrompts);
-
-  contElem.appendChild(addNewWrapper);
 
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
@@ -182,37 +167,26 @@ async function renderBody() {
   return contElem;
 }
 
+//#region footer
+
 function renderFooter() {
   const wrapperEl = document.createElement("div");
   wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
-
-  const leftItemsWrapper = document.createElement("div");
-  leftItemsWrapper.classList.add("bytm-dialog-footer-buttons-cont");
 
   const addNewBtnElem = document.createElement("button");
   addNewBtnElem.classList.add("bytm-btn");
   addNewBtnElem.textContent = t("new_entry");
   addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
-  leftItemsWrapper.appendChild(addNewBtnElem);
+  wrapperEl.appendChild(addNewBtnElem);
 
   const importExportBtnElem = document.createElement("button");
   importExportBtnElem.classList.add("bytm-btn");
   importExportBtnElem.textContent = t("export_import");
   importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
-  leftItemsWrapper.appendChild(importExportBtnElem);
-
-  wrapperEl.appendChild(leftItemsWrapper);
-
-  const closeBtnElem = document.createElement("button");
-  closeBtnElem.classList.add("bytm-btn");
-  closeBtnElem.textContent = t("close");
-  closeBtnElem.ariaLabel = closeBtnElem.title = t("close_tooltip");
-
-  wrapperEl.appendChild(closeBtnElem);
+  wrapperEl.appendChild(importExportBtnElem);
 
   onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
   onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
-  onInteraction(closeBtnElem, () => autoLikeDialog?.close());
 
   return wrapperEl;
 }
@@ -220,6 +194,8 @@ function renderFooter() {
 function openImportExportAutoLikeChannelsDialog() {
   alert("TODO: ImportExportDialog stuff");
 }
+
+//#region add prompt
 
 async function addAutoLikeEntryPrompts() {
   await autoLikeStore.loadData();
