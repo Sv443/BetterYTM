@@ -1,6 +1,6 @@
 import { autoPlural, fetchAdvanced } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
-import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils/index.js";
+import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl, onInteraction, openInTab } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
@@ -398,6 +398,20 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   imgElem.src = await getResourceUrl("icon-lyrics");
 
   linkElem.appendChild(imgElem);
+
+  onInteraction(linkElem, async (e) => {
+    if(e.ctrlKey) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const search = prompt(t("open_lyrics_search_prompt"));
+      if(search)
+        openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+    }
+  }, {
+    preventDefault: false,
+    stopPropagation: false,
+  });
 
   return linkElem;
 }

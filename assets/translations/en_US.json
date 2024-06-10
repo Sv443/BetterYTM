@@ -71,6 +71,7 @@
 
     "open_current_lyrics": "Open the current song's lyrics in a new tab",
     "open_lyrics": "Open this song's lyrics in a new tab",
+    "open_lyrics_search_prompt": "Enter the song title and artist to search for the lyrics:",
     "lyrics_loading": "Loading lyrics URL...",
     "lyrics_rate_limited-1": "You are being rate limited.\nPlease wait a few seconds before requesting more lyrics.",
     "lyrics_rate_limited-n": "You are being rate limited.\nPlease wait %1 seconds before requesting more lyrics.",

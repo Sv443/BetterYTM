@@ -10,6 +10,8 @@ import { getFeature } from "../config.js";
 import type { LyricsCacheEntry } from "../types.js";
 import "./songLists.css";
 
+//#region init queue btns
+
 /** Initializes the queue buttons */
 export async function initQueueButtons() {
   const addCurrentQueueBtns = (
@@ -72,6 +74,8 @@ export async function initQueueButtons() {
   }
 }
 
+//#region add queue btns
+
 /**
  * Adds the buttons to each item in the current song queue.  
  * Also observes for changes to add new buttons to new items in the queue.
@@ -91,7 +95,7 @@ async function addQueueButtons(
   const lyricsIconUrl = await getResourceUrl("icon-lyrics");
   const deleteIconUrl = await getResourceUrl("icon-delete");
 
-  //#region lyrics
+  //#region lyrics btn
   let lyricsBtnElem: HTMLAnchorElement | undefined;
 
   if(getFeature("lyricsQueueButton")) {
@@ -196,7 +200,7 @@ async function addQueueButtons(
     });
   }
 
-  //#region delete from queue
+  //#region delete btn
   let deleteBtnElem: HTMLAnchorElement | undefined;
 
   if(getFeature("deleteFromQueueButton")) {
