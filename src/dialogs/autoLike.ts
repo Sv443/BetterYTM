@@ -3,6 +3,7 @@ import { getDomain, log, onInteraction, parseChannelIdFromUrl, t } from "../util
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { siteEvents } from "../siteEvents.js";
+import "./autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
 
@@ -22,6 +23,7 @@ export async function getAutoLikeDialog() {
       small: true,
       renderHeader,
       renderBody,
+      renderFooter,
     });
 
     siteEvents.on("autoLikeChannelsUpdated", async () => {
@@ -223,6 +225,32 @@ async function renderBody() {
   contElem.appendChild(channelListCont);
 
   return contElem;
+}
+
+function renderFooter() {
+  const wrapperEl = document.createElement("div");
+  wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
+
+  const importExportBtnElem = document.createElement("button");
+  importExportBtnElem.classList.add("bytm-btn");
+  importExportBtnElem.textContent = t("export_import");
+  importExportBtnElem.ariaLabel = importExportBtnElem.title = t("TODO:auto_like_import_or_export_tooltip");
+  wrapperEl.appendChild(importExportBtnElem);
+
+  const closeBtnElem = document.createElement("button");
+  closeBtnElem.classList.add("bytm-btn");
+  closeBtnElem.textContent = t("close");
+  closeBtnElem.ariaLabel = closeBtnElem.title = t("close_tooltip");
+  wrapperEl.appendChild(closeBtnElem);
+
+  onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
+  onInteraction(closeBtnElem, () => autoLikeDialog?.close());
+
+  return wrapperEl;
+}
+
+function openImportExportAutoLikeChannelsDialog() {
+  void "TODO: ImportExportDialog stuff";
 }
 
 function getChannelIdFromPrompt(promptStr: string) {

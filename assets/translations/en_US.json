@@ -12,6 +12,7 @@
     "reload_tooltip": "Reload the page",
     "feature_requires_reload": "Changing this feature requires a page reload",
     "version_tooltip": "Version %1 (build %2) - click to open the changelog",
+    "export_import": "Export/Import",
     "export": "Export",
     "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
     "click_to_reveal_sensitive_info": "(click to reveal sensitive information)",
@@ -40,6 +41,7 @@
 
     "reset": "Reset",
     "close": "Close",
+    "close_tooltip": "Click to close",
     "log_level_debug": "Debug (most)",
     "log_level_info": "Info (only important)",
     "toggled_on": "On",
