@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,49 +33,49 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/44e45a08/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/clear_list.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/icons/spinner.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/cc10f97b/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -186,7 +186,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "44e45a08";
+const buildNumberRaw = "cc10f97b";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -865,6 +865,7 @@ function initSiteEvents() {
                         lastTitle = newTitle;
                         info(`Detected song change - old title: "${oldTitle}" - new title: "${newTitle}"`);
                         emitSiteEvent("songTitleChanged", newTitle, oldTitle);
+                        runIntervalChecks();
                     },
                 });
                 info("Successfully initialized SiteEvents observers");
@@ -889,21 +890,6 @@ function initSiteEvents() {
                     },
                 });
             }
-            //#region other
-            const runIntervalChecks = () => {
-                if (location.pathname.startsWith("/watch")) {
-                    const newWatchId = new URL(location.href).searchParams.get("v");
-                    if (newWatchId && newWatchId !== lastWatchId) {
-                        info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-                        emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-                        lastWatchId = newWatchId;
-                    }
-                }
-                if (location.pathname !== lastPathname) {
-                    emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
-                    lastPathname = String(location.pathname);
-                }
-            };
             window.addEventListener("bytm:ready", () => {
                 runIntervalChecks();
                 setInterval(runIntervalChecks, 100);
@@ -929,6 +915,22 @@ function emitSiteEvent(key, ...args) {
     }
     siteEvents.emit(key, ...args);
     emitInterface(`bytm:siteEvent:${key}`, args);
+}
+//#region other
+/** Periodically called to check for changes in the URL and emit associated siteEvents */
+function runIntervalChecks() {
+    if (location.pathname.startsWith("/watch")) {
+        const newWatchId = new URL(location.href).searchParams.get("v");
+        if (newWatchId && newWatchId !== lastWatchId) {
+            info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+            emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+            lastWatchId = newWatchId;
+        }
+    }
+    if (location.pathname !== lastPathname) {
+        emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
+        lastPathname = String(location.pathname);
+    }
 }let otherHotkeyInputActive = false;
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
 /** Creates a hotkey input element */
@@ -1276,6 +1278,7 @@ function getAutoLikeDialog() {
                 small: true,
                 renderHeader: renderHeader$6,
                 renderBody: renderBody$6,
+                renderFooter: renderFooter$3,
             });
             siteEvents.on("autoLikeChannelsUpdated", () => __awaiter(this, void 0, void 0, function* () {
                 if (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.isOpen()) {
@@ -1289,6 +1292,7 @@ function getAutoLikeDialog() {
         return autoLikeDialog;
     });
 }
+//#region header
 function renderHeader$6() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
@@ -1299,6 +1303,7 @@ function renderHeader$6() {
         return headerEl;
     });
 }
+//#region body
 function renderBody$6() {
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
@@ -1307,53 +1312,6 @@ function renderBody$6() {
         descriptionEl.textContent = t("auto_like_channels_dialog_desc");
         descriptionEl.tabIndex = 0;
         contElem.appendChild(descriptionEl);
-        const addNewWrapper = document.createElement("div");
-        addNewWrapper.id = "bytm-auto-like-channels-add-new-wrapper";
-        const addNewEl = document.createElement("span");
-        addNewEl.id = "bytm-auto-like-channels-add-new";
-        addNewEl.role = "button";
-        addNewEl.tabIndex = 0;
-        addNewEl.textContent = `+ ${t("create_new_entry")}`;
-        addNewEl.title = addNewEl.ariaLabel = t("create_new_entry");
-        addNewEl.classList.add("bytm-link", "bytm-no-select");
-        addNewWrapper.appendChild(addNewEl);
-        onInteraction(addNewEl, () => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c;
-            yield autoLikeStore.loadData();
-            const idPrompt = (_a = prompt(t("add_auto_like_channel_id_prompt"))) === null || _a === void 0 ? void 0 : _a.trim();
-            if (!idPrompt)
-                return;
-            const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
-            if (!id || id.length <= 0)
-                return alert(t("add_auto_like_channel_invalid_id"));
-            let overwriteName = false;
-            if (autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
-                if (!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
-                    return;
-                overwriteName = true;
-            }
-            const name = (_c = prompt(t("add_auto_like_channel_name_prompt"))) === null || _c === void 0 ? void 0 : _c.trim();
-            if (!name || name.length === 0)
-                return;
-            yield autoLikeStore.setData(overwriteName
-                ? {
-                    channels: autoLikeStore.getData().channels
-                        .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { name }) : ch),
-                }
-                : {
-                    channels: [
-                        ...autoLikeStore.getData().channels,
-                        { id, name, enabled: true },
-                    ],
-                });
-            siteEvents.emit("autoLikeChannelsUpdated");
-            const unsub = autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.on("clear", () => __awaiter(this, void 0, void 0, function* () {
-                unsub === null || unsub === void 0 ? void 0 : unsub();
-                yield (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.open());
-            }));
-            autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.unmount();
-        }));
-        contElem.appendChild(addNewWrapper);
         const channelListCont = document.createElement("div");
         channelListCont.id = "bytm-auto-like-channels-list";
         const removeChannel = (id) => autoLikeStore.setData({
@@ -1438,6 +1396,66 @@ function renderBody$6() {
         }
         contElem.appendChild(channelListCont);
         return contElem;
+    });
+}
+//#region footer
+function renderFooter$3() {
+    const wrapperEl = document.createElement("div");
+    wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
+    const addNewBtnElem = document.createElement("button");
+    addNewBtnElem.classList.add("bytm-btn");
+    addNewBtnElem.textContent = t("new_entry");
+    addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
+    wrapperEl.appendChild(addNewBtnElem);
+    const importExportBtnElem = document.createElement("button");
+    importExportBtnElem.classList.add("bytm-btn");
+    importExportBtnElem.textContent = t("export_import");
+    importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
+    wrapperEl.appendChild(importExportBtnElem);
+    onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
+    onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
+    return wrapperEl;
+}
+function openImportExportAutoLikeChannelsDialog() {
+    alert("TODO: ImportExportDialog stuff");
+}
+//#region add prompt
+function addAutoLikeEntryPrompts() {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b, _c;
+        yield autoLikeStore.loadData();
+        const idPrompt = (_a = prompt(t("add_auto_like_channel_id_prompt"))) === null || _a === void 0 ? void 0 : _a.trim();
+        if (!idPrompt)
+            return;
+        const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
+        if (!id || id.length <= 0)
+            return alert(t("add_auto_like_channel_invalid_id"));
+        let overwriteName = false;
+        if (autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
+            if (!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
+                return;
+            overwriteName = true;
+        }
+        const name = (_c = prompt(t("add_auto_like_channel_name_prompt"))) === null || _c === void 0 ? void 0 : _c.trim();
+        if (!name || name.length === 0)
+            return;
+        yield autoLikeStore.setData(overwriteName
+            ? {
+                channels: autoLikeStore.getData().channels
+                    .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { name }) : ch),
+            }
+            : {
+                channels: [
+                    ...autoLikeStore.getData().channels,
+                    { id, name, enabled: true },
+                ],
+            });
+        siteEvents.emit("autoLikeChannelsUpdated");
+        const unsub = autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.on("clear", () => __awaiter(this, void 0, void 0, function* () {
+            unsub === null || unsub === void 0 ? void 0 : unsub();
+            yield (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.open());
+        }));
+        autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.unmount();
     });
 }
 function getChannelIdFromPrompt(promptStr) {
@@ -1799,26 +1817,26 @@ var homepage = "https://github.com/Sv443/BetterYTM";
 var main = "./src/index.ts";
 var type = "module";
 var scripts = {
-	dev: "concurrently \"nodemon --exec npm run build-dev\" \"npm run serve\"",
-	serve: "npm run node-ts -- ./src/tools/serve.ts",
+	dev: "concurrently \"nodemon --exec pnpm run build-dev\" \"pnpm run serve\"",
+	serve: "pnpm run node-ts -- ./src/tools/serve.ts",
 	lint: "tsc --noEmit && eslint .",
 	build: "rollup -c",
 	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
 	"build-preview": "rollup -c --config-mode development --config-host github --config-branch develop",
-	preview: "npm run build-preview && npm run serve -- --auto-exit=3",
-	"build-prod": "npm run build-prod-gh && npm run build-prod-gf && npm run build-prod-oujs",
+	preview: "pnpm run build-preview && pnpm run serve -- --auto-exit=3",
+	"build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
 	"build-prod-base": "rollup -c --config-mode production --config-branch main",
-	"build-prod-gh": "npm run build-prod-base -- --config-host github",
-	"build-prod-gf": "npm run build-prod-base -- --config-host greasyfork --config-suffix _gf",
-	"build-prod-oujs": "npm run build-prod-base -- --config-host openuserjs --config-suffix _oujs",
-	"post-build": "npm run node-ts -- ./src/tools/post-build.ts",
-	"tr-progress": "npm run node-ts -- ./src/tools/tr-progress.ts",
-	"tr-format": "npm run node-ts -- ./src/tools/tr-format.ts",
-	"tr-prep": "npm run tr-format -- -p",
-	"gen-readme": "npm run node-ts -- ./src/tools/gen-readme.ts",
+	"build-prod-gh": "pnpm run build-prod-base -- --config-host github",
+	"build-prod-gf": "pnpm run build-prod-base -- --config-host greasyfork --config-suffix _gf",
+	"build-prod-oujs": "pnpm run build-prod-base -- --config-host openuserjs --config-suffix _oujs",
+	"post-build": "pnpm run node-ts -- ./src/tools/post-build.ts",
+	"tr-progress": "pnpm run node-ts -- ./src/tools/tr-progress.ts",
+	"tr-format": "pnpm run node-ts -- ./src/tools/tr-format.ts",
+	"tr-prep": "pnpm run tr-format -- -p",
+	"gen-readme": "pnpm run node-ts -- ./src/tools/gen-readme.ts",
 	"node-ts": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ts-node/esm",
 	invisible: "node --enable-source-maps src/tools/run-invisible.mjs",
-	test: "npm run node-ts -- ./test.ts",
+	test: "pnpm run node-ts -- ./test.ts",
 	knip: "knip",
 	storybook: "storybook dev -p 6006",
 	"build-storybook": "storybook build"
@@ -1887,6 +1905,7 @@ var devDependencies = {
 	express: "^4.18.2",
 	knip: "^5.15.1",
 	nodemon: "^3.0.1",
+	pnpm: "^9.2.0",
 	rollup: "^4.6.0",
 	"rollup-plugin-execute": "^1.1.1",
 	"rollup-plugin-import-css": "^3.3.5",
@@ -2229,7 +2248,7 @@ function addCfgMenu() {
             yield dlg.open();
         }));
         const buttonsCont = document.createElement("div");
-        buttonsCont.id = "bytm-menu-footer-buttons-cont";
+        buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
         buttonsCont.appendChild(exportElem);
         buttonsCont.appendChild(importElem);
         footerCont.appendChild(reloadFooterCont);
@@ -4589,6 +4608,18 @@ function createLyricsBtn(geniusUrl_1) {
         imgElem.classList.add("bytm-generic-btn-img");
         imgElem.src = yield getResourceUrl("icon-lyrics");
         linkElem.appendChild(imgElem);
+        onInteraction(linkElem, (e) => __awaiter(this, void 0, void 0, function* () {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                e.stopPropagation();
+                const search = prompt(t("open_lyrics_search_prompt"));
+                if (search)
+                    openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+            }
+        }), {
+            preventDefault: false,
+            stopPropagation: false,
+        });
         return linkElem;
     });
 }
@@ -4596,7 +4627,8 @@ function createLyricsBtn(geniusUrl_1) {
 function splitVideoTitle(title) {
     const [artist, ...rest] = title.split("-").map((v, i) => i < 2 ? v.trim() : v);
     return { artist, song: rest.join("-") };
-}/** Initializes the queue buttons */
+}//#region init queue btns
+/** Initializes the queue buttons */
 function initQueueButtons() {
     return __awaiter(this, void 0, void 0, function* () {
         const addCurrentQueueBtns = (evt) => {
@@ -4648,6 +4680,7 @@ function initQueueButtons() {
         }
     });
 }
+//#region add queue btns
 /**
  * Adds the buttons to each item in the current song queue.
  * Also observes for changes to add new buttons to new items in the queue.
@@ -4662,7 +4695,7 @@ function addQueueButtons(queueItem_1) {
         queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
         const lyricsIconUrl = yield getResourceUrl("icon-lyrics");
         const deleteIconUrl = yield getResourceUrl("icon-delete");
-        //#region lyrics
+        //#region lyrics btn
         let lyricsBtnElem;
         if (getFeature("lyricsQueueButton")) {
             lyricsBtnElem = yield createLyricsBtn(undefined, false);
@@ -4745,7 +4778,7 @@ function addQueueButtons(queueItem_1) {
                 lyricsUrl && openInTab(lyricsUrl);
             }));
         }
-        //#region delete from queue
+        //#region delete btn
         let deleteBtnElem;
         if (getFeature("deleteFromQueueButton")) {
             deleteBtnElem = document.createElement("a");
@@ -6394,26 +6427,27 @@ function copyToClipboard(text) {
  * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
  */
 function onInteraction(elem, listener, listenerOptions) {
+    const _a = listenerOptions !== null && listenerOptions !== void 0 ? listenerOptions : {}, { preventDefault = true, stopPropagation = true } = _a, listenerOpts = __rest(_a, ["preventDefault", "stopPropagation"]);
     const proxListener = (e) => {
         if (e instanceof KeyboardEvent) {
             if (interactionKeys.includes(e.key)) {
-                e.preventDefault();
-                e.stopPropagation();
+                preventDefault && e.preventDefault();
+                stopPropagation && e.stopPropagation();
             }
             else
                 return;
         }
         else if (e instanceof MouseEvent) {
-            e.preventDefault();
-            e.stopPropagation();
+            preventDefault && e.preventDefault();
+            stopPropagation && e.stopPropagation();
         }
         // clean up the other listener that isn't automatically removed if `once` is set
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
-        (listenerOptions === null || listenerOptions === void 0 ? void 0 : listenerOptions.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
+        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOpts);
+        (listenerOpts === null || listenerOpts === void 0 ? void 0 : listenerOpts.once) && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOpts);
         listener(e);
     };
-    elem.addEventListener("click", proxListener, listenerOptions);
-    elem.addEventListener("keydown", proxListener, listenerOptions);
+    elem.addEventListener("click", proxListener, listenerOpts);
+    elem.addEventListener("keydown", proxListener, listenerOpts);
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
