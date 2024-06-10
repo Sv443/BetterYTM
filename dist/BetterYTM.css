@@ -782,6 +782,11 @@ body .bytm-ripple.slower {
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
   left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
 }
+.bytm-auto-like-channels-footer-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 :root {
   --bytm-menu-bg-highlight: #252525;
 }
