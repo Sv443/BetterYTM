@@ -18,8 +18,9 @@
     - Disable Dark Reader sites
     - Remove share tracking parameter sites
     - Placement of list/queue buttons
+  - Added Ctrl modifier key to every lyrics button to open a lyrics search prompt
   - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
-  - Arrow key and number key skipping works more reliably and also in the config menu now
+  - Arrow key and number key skipping works more reliably and now also in the config menu
   - Removed broken feature "remove upgrade tab"
 
 <details><summary>Click to expand internal and plugin changes</summary>
@@ -37,6 +38,7 @@
   - Added Storybook for easier and faster development of components
   - Improved ripple component design and functionality (refer to the contributing guide for more info)
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
+  - Migrated to pnpm for faster compilation and development scripts
 - **Plugin Interface Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
