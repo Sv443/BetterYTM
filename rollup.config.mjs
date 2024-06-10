@@ -53,7 +53,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         output: "BetterYTM.css",
       }),
       pluginExecute([
-        `pnpm run --silent post-build -- ${passCliArgsStr}`,
+        `pnpm run --silent post-build ${passCliArgsStr}`,
         ...(mode === "development" ? ["pnpm run --silent invisible \"pnpm run tr-progress\""] : []),
       ]),
     ],
