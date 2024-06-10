@@ -354,7 +354,7 @@
   border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
 }
 
-#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
+.bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
 
@@ -1002,7 +1002,7 @@ body .bytm-ripple.slower {
   border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
 
-#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+.bytm-menu-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
 

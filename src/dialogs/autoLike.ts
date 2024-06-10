@@ -58,6 +58,7 @@ async function renderBody() {
 
   contElem.appendChild(descriptionEl);
 
+  // TODO: remove
   const addNewWrapper = document.createElement("div");
   addNewWrapper.id = "bytm-auto-like-channels-add-new-wrapper";
 
@@ -65,59 +66,13 @@ async function renderBody() {
   addNewEl.id = "bytm-auto-like-channels-add-new";
   addNewEl.role = "button";
   addNewEl.tabIndex = 0;
-  addNewEl.textContent = `+ ${t("create_new_entry")}`;
-  addNewEl.title = addNewEl.ariaLabel = t("create_new_entry");
+  addNewEl.textContent = `+ ${t("new_entry_tooltip")}`;
+  addNewEl.title = addNewEl.ariaLabel = t("new_entry_tooltip");
   addNewEl.classList.add("bytm-link", "bytm-no-select");
 
   addNewWrapper.appendChild(addNewEl);
 
-  onInteraction(addNewEl, async () => {
-    await autoLikeStore.loadData();
-
-    const idPrompt = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
-    if(!idPrompt)
-      return;
-
-    const id = parseChannelIdFromUrl(idPrompt) ?? (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
-
-    if(!id || id.length <= 0)
-      return alert(t("add_auto_like_channel_invalid_id"));
-
-    let overwriteName = false;
-
-    if(autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
-      if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
-        return;
-      overwriteName = true;
-    }
-
-    const name = prompt(t("add_auto_like_channel_name_prompt"))?.trim();
-    if(!name || name.length === 0)
-      return;
-
-    await autoLikeStore.setData(
-      overwriteName
-        ? {
-          channels: autoLikeStore.getData().channels
-            .map((ch) => ch.id === id ? { ...ch, name } : ch),
-        }
-        : {
-          channels: [
-            ...autoLikeStore.getData().channels,
-            { id, name, enabled: true },
-          ],
-        }
-    );
-
-    siteEvents.emit("autoLikeChannelsUpdated");
-
-    const unsub = autoLikeDialog?.on("clear", async () => {
-      unsub?.();
-      await autoLikeDialog?.open();
-    });
-
-    autoLikeDialog?.unmount();
-  });
+  onInteraction(addNewEl, addAutoLikeEntryPrompts);
 
   contElem.appendChild(addNewWrapper);
 
@@ -231,18 +186,31 @@ function renderFooter() {
   const wrapperEl = document.createElement("div");
   wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
 
+  const leftItemsWrapper = document.createElement("div");
+  leftItemsWrapper.classList.add("bytm-dialog-footer-buttons-cont");
+
+  const addNewBtnElem = document.createElement("button");
+  addNewBtnElem.classList.add("bytm-btn");
+  addNewBtnElem.textContent = t("new_entry");
+  addNewBtnElem.ariaLabel = addNewBtnElem.title = t("new_entry_tooltip");
+  leftItemsWrapper.appendChild(addNewBtnElem);
+
   const importExportBtnElem = document.createElement("button");
   importExportBtnElem.classList.add("bytm-btn");
   importExportBtnElem.textContent = t("export_import");
-  importExportBtnElem.ariaLabel = importExportBtnElem.title = t("TODO:auto_like_import_or_export_tooltip");
-  wrapperEl.appendChild(importExportBtnElem);
+  importExportBtnElem.ariaLabel = importExportBtnElem.title = t("auto_like_export_or_import_tooltip");
+  leftItemsWrapper.appendChild(importExportBtnElem);
+
+  wrapperEl.appendChild(leftItemsWrapper);
 
   const closeBtnElem = document.createElement("button");
   closeBtnElem.classList.add("bytm-btn");
   closeBtnElem.textContent = t("close");
   closeBtnElem.ariaLabel = closeBtnElem.title = t("close_tooltip");
+
   wrapperEl.appendChild(closeBtnElem);
 
+  onInteraction(addNewBtnElem, addAutoLikeEntryPrompts);
   onInteraction(importExportBtnElem, openImportExportAutoLikeChannelsDialog);
   onInteraction(closeBtnElem, () => autoLikeDialog?.close());
 
@@ -250,7 +218,55 @@ function renderFooter() {
 }
 
 function openImportExportAutoLikeChannelsDialog() {
-  void "TODO: ImportExportDialog stuff";
+  alert("TODO: ImportExportDialog stuff");
+}
+
+async function addAutoLikeEntryPrompts() {
+  await autoLikeStore.loadData();
+
+  const idPrompt = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
+  if(!idPrompt)
+    return;
+
+  const id = parseChannelIdFromUrl(idPrompt) ?? (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
+
+  if(!id || id.length <= 0)
+    return alert(t("add_auto_like_channel_invalid_id"));
+
+  let overwriteName = false;
+
+  if(autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
+    if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
+      return;
+    overwriteName = true;
+  }
+
+  const name = prompt(t("add_auto_like_channel_name_prompt"))?.trim();
+  if(!name || name.length === 0)
+    return;
+
+  await autoLikeStore.setData(
+    overwriteName
+      ? {
+        channels: autoLikeStore.getData().channels
+          .map((ch) => ch.id === id ? { ...ch, name } : ch),
+      }
+      : {
+        channels: [
+          ...autoLikeStore.getData().channels,
+          { id, name, enabled: true },
+        ],
+      }
+  );
+
+  siteEvents.emit("autoLikeChannelsUpdated");
+
+  const unsub = autoLikeDialog?.on("clear", async () => {
+    unsub?.();
+    await autoLikeDialog?.open();
+  });
+
+  autoLikeDialog?.unmount();
 }
 
 function getChannelIdFromPrompt(promptStr: string) {

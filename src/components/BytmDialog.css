@@ -179,7 +179,7 @@
   border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
 }
 
-#bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
+.bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
 

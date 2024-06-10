@@ -197,7 +197,7 @@ async function addCfgMenu() {
   });
 
   const buttonsCont = document.createElement("div");
-  buttonsCont.id = "bytm-menu-footer-buttons-cont";
+  buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
   buttonsCont.appendChild(exportElem);
   buttonsCont.appendChild(importElem);
 
