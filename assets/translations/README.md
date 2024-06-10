@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 258 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `210/258` (81.4%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `258` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `210/258` (81.4%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `210/258` (81.4%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `210/258` (81.4%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `210/258` (81.4%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `210/258` (81.4%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `210/258` (81.4%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 259 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `210/259` (81.1%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `259` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `210/259` (81.1%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `210/259` (81.1%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `210/259` (81.1%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `210/259` (81.1%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `210/259` (81.1%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `210/259` (81.1%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,13 +45,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -100,13 +101,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -155,13 +157,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -210,13 +213,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -265,13 +269,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -320,13 +325,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -375,13 +381,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 48 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 49 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `create_new_entry` | `Create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
+| `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `auto_like_channels_dialog_title` | `Auto-liked channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
