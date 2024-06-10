@@ -213,7 +213,7 @@
   border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
 }
 
-#bytm-menu-footer-buttons-cont button:not(:last-of-type) {
+.bytm-menu-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
 

@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 261 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `210/261` (80.5%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `261` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `210/261` (80.5%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `210/261` (80.5%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `210/261` (80.5%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `210/261` (80.5%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `210/261` (80.5%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `210/261` (80.5%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 263 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `210/263` (79.8%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `263` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `210/263` (79.8%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `210/263` (79.8%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `210/263` (79.8%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `210/263` (79.8%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `210/263` (79.8%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `210/263` (79.8%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,13 +45,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -70,6 +71,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -103,13 +105,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -128,6 +131,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -161,13 +165,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -186,6 +191,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -219,13 +225,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -244,6 +251,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -277,13 +285,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -302,6 +311,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -335,13 +345,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -360,6 +371,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -393,13 +405,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 51 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 53 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
 | `close_tooltip` | `Click to close` |
-| `create_new_entry` | `Create a new entry` |
+| `new_entry` | `New entry` |
+| `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
@@ -418,6 +431,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_disabled_toast` | `Auto-liking disabled` |
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
+| `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |

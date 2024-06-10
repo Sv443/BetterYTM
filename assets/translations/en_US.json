@@ -48,7 +48,8 @@
     "toggled_off": "Off",
     "trigger_btn_action": "Run action",
     "trigger_btn_action_running": "Running...",
-    "create_new_entry": "Create a new entry",
+    "new_entry": "New entry",
+    "new_entry_tooltip": "Click to create a new entry",
     "remove_entry": "Remove this entry",
     "edit_entry": "Edit this entry",
     "remove_from_queue": "Remove this song from the queue",
@@ -148,6 +149,7 @@
     "auto_like_disabled_toast": "Auto-liking disabled",
     "auto_liked_a_channels_song": "Liked song by %1",
     "auto_liked_a_channels_video": "Liked video by %1",
+    "auto_like_export_or_import_tooltip": "Export or import your auto-liked channels",
 
     "vote_label_likes": "%1 likes",
     "vote_label_dislikes": "%1 dislikes",
