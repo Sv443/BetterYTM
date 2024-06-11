@@ -41,40 +41,47 @@ export async function initQueueButtons() {
 
   // generic lists
   const addGenericListQueueBtns = (listElem: HTMLElement) => {
-    if(listElem.classList.contains("bytm-list-has-queue-btns"))
-      return;
-
     const queueItems = listElem.querySelectorAll<HTMLElement>("ytmusic-responsive-list-item-renderer");
     if(queueItems.length === 0)
       return;
 
-    listElem.classList.add("bytm-list-has-queue-btns");
-    queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent"));
+    queueItems.forEach(itm => {
+      if(itm.classList.contains("bytm-has-btns"))
+        return;
+      itm.classList.add("bytm-has-btns");
+      addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
+    });
 
     log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
   };
 
-  const listSelectors = [
-    "ytmusic-playlist-shelf-renderer #contents",
-    "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents",
-    "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents",
-    "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents",
-  ];
+  const listSelector = `\
+ytmusic-playlist-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ALBUM"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_ARTIST"] ytmusic-shelf-renderer #contents,
+ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic-shelf-renderer #contents\
+`;
 
   if(getFeature("listButtonsPlacement") === "everywhere") {
-    for(const selector of listSelectors) {
-      addSelectorListener("body", selector, {
-        all: true,
-        continuous: true,
-        debounce: 50,
-        // TODO: switch to longer `debounce` and edge type "risingIdle" after UserUtils update
-        debounceEdge: "falling",
-        listener: (songLists) => {
-          for(const list of songLists)
-            addGenericListQueueBtns(list);
-        },
-      });
-    }
+    const checkAddGenericBtns = (songLists: NodeListOf<HTMLElement>) => {
+      for(const list of songLists)
+        addGenericListQueueBtns(list);
+    };
+
+    addSelectorListener("body", listSelector, {
+      all: true,
+      continuous: true,
+      debounce: 100,
+      // TODO: switch to longer debounce time and edge type "risingIdle" after UserUtils update
+      debounceEdge: "falling",
+      listener: checkAddGenericBtns,
+    });
+
+    siteEvents.on("pathChanged", () => {
+      const songLists = document.querySelectorAll<HTMLElement>(listSelector);
+      if(songLists.length > 0)
+        checkAddGenericBtns(songLists);
+    });
   }
 }
 
