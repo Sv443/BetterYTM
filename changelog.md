@@ -46,6 +46,9 @@
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)
+  - Added functions:
+    - `getAutoLikeData()` to return the current auto-like data (authenticated function)
+    - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
   - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
   - Added events

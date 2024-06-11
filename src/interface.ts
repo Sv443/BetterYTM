@@ -4,9 +4,9 @@ import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "
 import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
 import { getFeatures, setFeatures } from "./config.js";
-import { featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
+import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject } from "./types.js";
+import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData } from "./types.js";
 import { BytmDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 
 const { getUnsafeWindow, randomId } = UserUtils;
@@ -107,36 +107,44 @@ export const allInterfaceEvents = [
 
 /** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
 const globalFuncs = {
-  // meta
+  // meta:
   registerPlugin,
-  getPluginInfo,
+  /**/getPluginInfo,
 
-  // utils
-  addSelectorListener,
+  // bytm-specific:
   getResourceUrl,
   getSessionId,
+  // dom:
+  addSelectorListener,
+  onInteraction,
   getVideoTime,
-  setLocale: setLocaleInterface,
+  getThumbnailUrl,
+  getBestThumbnailUrl,
+  // translations:
+  /**/setLocale: setLocaleInterface,
   getLocale,
   hasKey,
   hasKeyFor,
   t,
   tp,
-  getFeatures: getFeaturesInterface,
-  saveFeatures: saveFeaturesInterface,
+  // feature config:
+  /**/getFeatures: getFeaturesInterface,
+  /**/saveFeatures: saveFeaturesInterface,
+  // lyrics:
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
   sanitizeArtists,
   sanitizeSong,
-  onInteraction,
-  getThumbnailUrl,
-  getBestThumbnailUrl,
+  // auto-like:
+  /**/getAutoLikeData: getAutoLikeDataInterface,
+  /**/saveAutoLikeData: saveAutoLikeDataInterface,
+  // components:
   createHotkeyInput,
   createToggleInput,
   createCircularBtn,
+  createRipple,
   showToast,
   showIconToast,
-  createRipple,
 };
 
 /** Initializes the BYTM interface */
@@ -216,6 +224,7 @@ export function initPlugins() {
       registeredPlugins.set(key, { def, events });
       queuedPlugins.delete(key);
       emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
+      info(`Initialized plugin '${getPluginKey(def)}'`, LogLevel.Info);
     }
     catch(err) {
       error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
@@ -374,7 +383,10 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
 
 /** Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined */
 export function resolveToken(token: string | undefined): string | undefined {
-  return token ? [...registeredPluginTokens.entries()].find(([, v]) => v === token)?.[0] ?? undefined : undefined;
+  return typeof token === "string" && token.length > 0
+    ? [...registeredPluginTokens.entries()]
+      .find(([, t]) => token === t)?.[0] ?? undefined
+    : undefined;
 }
 
 //#region proxy funcs
@@ -415,4 +427,24 @@ function saveFeaturesInterface(token: string | undefined, features: FeatureConfi
   if(resolveToken(token) === undefined)
     return;
   setFeatures(features);
+}
+
+/**
+ * Returns the auto-like data.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function getAutoLikeDataInterface(token: string | undefined) {
+  if(resolveToken(token) === undefined)
+    return;
+  return autoLikeStore.getData();
+}
+
+/**
+ * Saves new auto-like data, synchronously to the in-memory cache and asynchronously to the persistent storage.  
+ * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
+ */
+function saveAutoLikeDataInterface(token: string | undefined, data: AutoLikeData) {
+  if(resolveToken(token) === undefined)
+    return;
+  return autoLikeStore.setData(data);
 }
