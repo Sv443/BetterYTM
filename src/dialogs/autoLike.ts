@@ -1,11 +1,14 @@
-import { debounce } from "@sv443-network/userutils";
-import { getDomain, log, onInteraction, parseChannelIdFromUrl, t } from "../utils/index.js";
+import { compress, debounce } from "@sv443-network/userutils";
+import { compressionSupported, error, getDomain, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components/index.js";
-import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
+import { autoLikeStore, initAutoLikeStore, type AutoLikeData } from "../features/index.js";
 import { siteEvents } from "../siteEvents.js";
+import { ImportExportDialog } from "../components/ImportExportDialog.js";
+import { compressionFormat } from "../constants.js";
 import "./autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
+let autoLikeImExDialog: ImportExportDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
@@ -27,14 +30,52 @@ export async function getAutoLikeDialog() {
     });
 
     siteEvents.on("autoLikeChannelsUpdated", async () => {
+      if(autoLikeImExDialog?.isOpen())
+        autoLikeImExDialog.unmount();
       if(autoLikeDialog?.isOpen()) {
-        autoLikeDialog.close();
         autoLikeDialog.unmount();
         await autoLikeDialog.open();
         log("Auto-like channels updated, refreshed dialog");
       }
     });
   }
+  
+  if(!autoLikeImExDialog) {
+    autoLikeImExDialog = new ImportExportDialog({
+      id: "auto-like-channels-import-export",
+      width: 600,
+      height: 500,
+      // try to compress the data if possible
+      exportData: async () => await compressionSupported()
+        ? await compress(JSON.stringify(autoLikeStore.getData()), compressionFormat, "string")
+        : JSON.stringify(autoLikeStore.getData()),
+      // copy plain when shift-clicking the copy button
+      exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
+      onImport: async (data) => {
+        try {
+          const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
+
+          if(!parsed)
+            throw new Error("No valid data found in the imported string");
+          if(!parsed || typeof parsed !== "object")
+            return alert(t("import_error_invalid"));
+          if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
+            return alert(t("import_error_no_data"));
+
+          await autoLikeStore.setData(parsed);
+          siteEvents.emit("autoLikeChannelsUpdated");
+        }
+        catch(err) {
+          error("Couldn't import auto-like channels data:", err);
+        }
+      },
+      trKeyTitle: "auto_like_export_import_title",
+      trKeyDescImport: "auto_like_import_desc",
+      trKeyDescExport: "auto_like_export_desc",
+      dataHidden: false,
+    });
+  }
+
   return autoLikeDialog;
 }
 
@@ -191,8 +232,8 @@ function renderFooter() {
   return wrapperEl;
 }
 
-function openImportExportAutoLikeChannelsDialog() {
-  alert("TODO: ImportExportDialog stuff");
+async function openImportExportAutoLikeChannelsDialog() {
+  await autoLikeImExDialog?.open();
 }
 
 //#region add prompt

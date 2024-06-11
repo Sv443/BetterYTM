@@ -150,7 +150,7 @@ export async function initNumKeysSkip() {
 
 let canCompress = false;
 
-type AutoLikeData = {
+export type AutoLikeData = {
   channels: {
     /** 24-character channel ID or user ID including the @ prefix */
     id: string;

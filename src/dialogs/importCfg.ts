@@ -1,10 +1,10 @@
-import { decompress } from "@sv443-network/userutils";
-import { error, t, warn } from "../utils/index.js";
+import { error, tryToDecompressAndParse, t, warn } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
-import { compressionFormat, scriptInfo } from "../constants.js";
+import { scriptInfo } from "../constants.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import { formatVersion, getFeatures, migrations, setFeatures } from "../config.js";
 import { disableBeforeUnload } from "../features/index.js";
+import { FeatureConfig } from "src/types.js";
 
 let importDialog: BytmDialog | null = null;
 
@@ -68,23 +68,8 @@ async function renderFooter() {
     if(!textAreaElem)
       return warn("Couldn't find import menu textarea element");
     try {
-      /** Tries to parse an uncompressed or compressed input string as a JSON object */
-      const decode = async (input: string) => {
-        try {
-          return JSON.parse(input);
-        }
-        catch {
-          try {
-            return JSON.parse(await decompress(input, compressionFormat, "string"));
-          }
-          catch(err) {
-            warn("Couldn't import configuration:", err);
-            return null;
-          }
-        }
-      };
-      const parsed = await decode(textAreaElem.value.trim());
-      if(typeof parsed !== "object")
+      const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(textAreaElem.value.trim());
+      if(!parsed || typeof parsed !== "object")
         return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
         return alert(t("import_error_no_format_version"));

@@ -11,11 +11,11 @@ type ImportExportDialogOpts =
     /** Function that gets called when the user imports data */
     onImport: (data: string) => void;
     /** Translation key for the dialog title */
-    trKeyTitle: TrKey;
+    trKeyTitle: TrKey | (string & {});
     /** Translation key for the dialog description when importing */
-    trKeyDescImport: TrKey;
+    trKeyDescImport: TrKey | (string & {});
     /** Translation key for the dialog description when exporting */
-    trKeyDescExport: TrKey;
+    trKeyDescExport: TrKey | (string & {});
     /** Whether the data should be hidden by default when exporting and importing */
     dataHidden?: boolean;
   };
