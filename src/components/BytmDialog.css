@@ -282,6 +282,7 @@
 }
 
 select.bytm-ftconf-input {
+  min-width: 180px;
   cursor: revert;
 }
 
