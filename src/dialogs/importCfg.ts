@@ -32,7 +32,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("import_menu_title", scriptInfo.name);
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("import_menu_title", scriptInfo.name);
 
   return headerEl;
 }
