@@ -794,8 +794,9 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
   setCurrentDialogId(openDialogs?.[0] ?? null);
 
-  emitInterface("bytm:dialogClosed", this as BytmDialog);
-  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", this as BytmDialog);
+  // since this menu doesn't have a BytmDialog instance, it's undefined here
+  emitInterface("bytm:dialogClosed", undefined as unknown as BytmDialog);
+  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
 
   if(!menuBg)
     return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
@@ -821,8 +822,9 @@ export async function openCfgMenu() {
   setCurrentDialogId("cfg-menu");
   openDialogs.unshift("cfg-menu");
 
-  emitInterface("bytm:dialogOpened", this as BytmDialog);
-  emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", this as BytmDialog);
+  // since this menu doesn't have a BytmDialog instance, it's undefined here
+  emitInterface("bytm:dialogOpened", undefined as unknown as BytmDialog);
+  emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", undefined as unknown as BytmDialog);
 
   checkToggleScrollIndicator();
 
