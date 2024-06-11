@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj, getLocale } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -752,10 +752,10 @@ export async function initShowVotes() {
 
     labelLikes.dataset.watchId = getWatchId() ?? "";
     labelLikes.textContent = formatVoteNumber(voteObj.likes);
-    labelLikes.title = labelLikes.ariaLabel = t("vote_label_likes", voteObj.likes);
+    labelLikes.title = labelLikes.ariaLabel = t("vote_label_likes", formatVoteNumber(voteObj.likes, "full"));
 
     labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-    labelDislikes.title = labelDislikes.ariaLabel = t("vote_label_dislikes", voteObj.dislikes);
+    labelDislikes.title = labelDislikes.ariaLabel = t("vote_label_dislikes", formatVoteNumber(voteObj.dislikes, "full"));
     labelDislikes.dataset.watchId = getWatchId() ?? "";
   });
 }
@@ -771,7 +771,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
     label.textContent = String(formatVoteNumber(amount));
-    label.title = label.ariaLabel = t(`vote_label_${type}`, amount);
+    label.title = label.ariaLabel = t(`vote_label_${type}`, formatVoteNumber(amount, "full"));
     label.dataset.watchId = getWatchId() ?? "";
     label.addEventListener("click", (e) => {
       e.preventDefault();
@@ -790,11 +790,11 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
 }
 
-/** Formats a number with the notation based on the config */
-function formatVoteNumber(num: number) {
+/** Formats a number formatted based on the config or the passed {@linkcode notation} */
+function formatVoteNumber(num: number, notation = getFeature("showVotesFormat")) {
   return num.toLocaleString(
-    undefined,
-    getFeature("showVotesFormat") === "short"
+    getLocale().replace(/_/g, "-"),
+    notation === "short"
       ? {
         notation: "compact",
         compactDisplay: "short",

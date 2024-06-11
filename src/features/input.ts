@@ -60,6 +60,8 @@ export async function initSiteSwitch(domain: Domain) {
   document.addEventListener("keydown", (e) => {
     if(!getFeature("switchBetweenSites"))
       return;
+    if(inputIgnoreTagNames.includes(document.activeElement?.tagName ?? ""))
+      return;
     const hk = getFeature("switchSitesHotkey");
     if(siteSwitchEnabled && e.code === hk.code && e.shiftKey === hk.shift && e.ctrlKey === hk.ctrl && e.altKey === hk.alt)
       switchSite(domain === "yt" ? "ytm" : "yt");
