@@ -27,6 +27,8 @@ type ExImDialogOpts =
 
 type ExImMode = "export" | "import";
 
+//#region class
+
 /** Generic dialog for exporting and importing any string of data */
 export class ExImDialog extends BytmDialog {
   public mode: ExImMode = "export";
@@ -44,6 +46,8 @@ export class ExImDialog extends BytmDialog {
     });
   }
 
+  //#region header
+
   static async renderHeader(opts: ExImDialogOpts): Promise<HTMLElement> {
     const headerEl = document.createElement("h2");
     headerEl.classList.add("bytm-menu-title");
@@ -55,17 +59,9 @@ export class ExImDialog extends BytmDialog {
     return headerEl;
   }
 
-  static async renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
-    // TODO: body
-    // two horizontal panes:
-    // - export:
-    //   - description element with trKeyDescExport
-    //   - textarea with data, if dataHidden is true, show a button to reveal it
-    //   - button to copy the data to clipboard
-    // - import:
-    //   - description element with trKeyDescImport
-    //   - textarea for user to paste data, if dataHidden is true, use password masking
+  //#region body
 
+  static async renderBody(opts: ExImDialogOpts): Promise<HTMLElement> {
     const panesCont = document.createElement("div");
     panesCont.classList.add("bytm-exim-dialog-panes-cont");
 
@@ -139,14 +135,6 @@ export class ExImDialog extends BytmDialog {
     }
 
     panesCont.append(exportPane, importPane);
-
-    // TODO: footer
-    // - when export:
-    //   - copy button
-    //     - on click, copy exportData to clipboard
-    //     - on shift-click, copy exportDataSpecial to clipboard, fall back to exportData
-    // - when import:
-    //   - import button
 
     return panesCont;
   }
