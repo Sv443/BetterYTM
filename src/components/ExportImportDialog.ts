@@ -38,7 +38,7 @@ export class ExImDialog extends BytmDialog {
       closeOnBgClick: true,
       closeOnEscPress: true,
       closeBtnEnabled: true,
-      destroyOnClose: true,
+      unmountOnClose: true,
       small: true,
       ...options,
     });
