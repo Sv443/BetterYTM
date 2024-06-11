@@ -46,6 +46,7 @@
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)
+    - TODO: `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
   - Added functions:
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
