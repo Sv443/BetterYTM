@@ -1,13 +1,13 @@
-import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeature, getFeatures, setFeatures } from "../config.js";
-import { buildNumber, host, mode, scriptInfo } from "../constants.js";
+import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
+import { defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
+import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn } from "../utils/index.js";
-import { siteEvents } from "../siteEvents.js";
+import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse } from "../utils/index.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import "./menu_old.css";
-import { BytmDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
+import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import { emitInterface } from "../interface.js";
 import pkg from "../../package.json" with { type: "json" };
 
@@ -173,6 +173,77 @@ async function mountCfgMenu() {
   reloadFooterEl.appendChild(reloadTxtEl);
   reloadFooterCont.appendChild(reloadFooterEl);
 
+  const exImDlg = new ExImDialog({
+    id: "bytm-config-import-export",
+    width: 800,
+    height: 600,
+    // try to compress the data if possible
+    exportData: async () => await compressionSupported()
+      ? await compress(JSON.stringify(getFeatures()), compressionFormat, "string")
+      : JSON.stringify(getFeatures()),
+    // copy plain when shift-clicking the copy button
+    exportDataSpecial: () => JSON.stringify(getFeatures()),
+    onImport: async (data) => {
+      try {
+        const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
+        if(!parsed || typeof parsed !== "object")
+          return alert(t("import_error_invalid"));
+        if(typeof parsed.formatVersion !== "number")
+          return alert(t("import_error_no_format_version"));
+        if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
+          return alert(t("import_error_no_data"));
+        if(parsed.formatVersion < formatVersion) {
+          let newData = JSON.parse(JSON.stringify(parsed.data));
+          const sortedMigrations = Object.entries(migrations)
+            .sort(([a], [b]) => Number(a) - Number(b));
+  
+          let curFmtVer = Number(parsed.formatVersion);
+  
+          for(const [fmtVer, migrationFunc] of sortedMigrations) {
+            const ver = Number(fmtVer);
+            if(curFmtVer < formatVersion && curFmtVer < ver) {
+              try {
+                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                newData = migRes instanceof Promise ? await migRes : migRes;
+                curFmtVer = ver;
+              }
+              catch(err) {
+                error(`Error while running migration function for format version ${fmtVer}:`, err);
+              }
+            }
+          }
+          parsed.formatVersion = curFmtVer;
+          parsed.data = newData;
+        }
+        else if(parsed.formatVersion !== formatVersion)
+          return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+  
+        await setFeatures({ ...getFeatures(), ...parsed.data });
+  
+        if(confirm(t("import_success_confirm_reload"))) {
+          disableBeforeUnload();
+          return location.reload();
+        }
+
+        emitSiteEvent("rebuildCfgMenu", parsed.data);
+        exImDlg.unmount();
+      }
+      catch(err) {
+        warn("Couldn't import configuration:", err);
+        alert(t("import_error_invalid"));
+      }
+    },
+    trKeyTitle: "bytm_config_export_import_title",
+    trKeyDescImport: "bytm_config_import_desc",
+    trKeyDescExport: "bytm_config_export_desc",
+    dataHidden: false,
+  });
+
+  const exportImportBtn = document.createElement("button");
+  exportImportBtn.classList.add("bytm-btn");
+  exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
+  onInteraction(exportImportBtn, async () => await exImDlg.open());
+
   const exportElem = document.createElement("button");
   exportElem.classList.add("bytm-btn");
   exportElem.ariaLabel = exportElem.title = t("export_tooltip");
@@ -199,6 +270,8 @@ async function mountCfgMenu() {
 
   const buttonsCont = document.createElement("div");
   buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
+
+  buttonsCont.appendChild(exportImportBtn);
   buttonsCont.appendChild(exportElem);
   buttonsCont.appendChild(importElem);
 

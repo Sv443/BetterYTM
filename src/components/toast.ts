@@ -7,6 +7,7 @@ import "./toast.css";
 type ToastPos = "tl" | "tr" | "bl" | "br";
 
 type ToastProps = {
+  /** Duration in seconds */
   duration?: number;
   position?: ToastPos;
 } & (
@@ -73,7 +74,7 @@ export async function showIconToast({
   });
 }
 
-/** Shows a toast message in the bottom left corner of the screen by default */
+/** Shows a toast message in the top right corner of the screen by default */
 export async function showToast({
   duration = getFeature("toastDuration"),
   position = "tr",
@@ -106,7 +107,7 @@ export async function showToast({
 
   toastElem.classList.add("visible", `pos-${position}`);
 
-  timeout = setTimeout(async () => await closeToast(), duration);
+  timeout = setTimeout(async () => await closeToast(), duration * 1000);
 }
 
 /** Closes the currently open toast */

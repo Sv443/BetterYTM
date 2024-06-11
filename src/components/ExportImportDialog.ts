@@ -3,7 +3,7 @@ import { t, type TrKey } from "../utils/translations.js";
 import { scriptInfo } from "../constants.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
-import { createLongBtn, showToast } from "./index.js";
+import { createLongBtn, createRipple, showToast } from "./index.js";
 import "./ExportImportDialog.css";
 
 type ExImDialogOpts =
@@ -93,24 +93,19 @@ export class ExImDialog extends BytmDialog {
       const exportCenterBtnCont = document.createElement("div");
       exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
-      const copyBtn = await createLongBtn({
+      const copyBtn = createRipple(await createLongBtn({
         title: t("copy_hidden_value"),
         text: t("copy"),
         resourceName: "icon-experimental",
         async onClick({ shiftKey }) {
           const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
-          try {
-            copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
-            await showToast({
-              message: t("copied"),
-              title: t("copied"),
-            });
-          }
-          catch {
-            alert(t("copy_to_clipboard_error", typeof copyData === "function" ? await copyData() : copyData));
-          }
+          copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
+          await showToast({
+            position: "bl",
+            message: t("copied_to_clipboard"),
+          });
         },
-      });
+      }));
 
       exportCenterBtnCont.appendChild(copyBtn);
       exportPane.append(descEl, dataEl, exportCenterBtnCont);
@@ -135,12 +130,12 @@ export class ExImDialog extends BytmDialog {
       const importCenterBtnCont = document.createElement("div");
       importCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
-      const importBtn = await createLongBtn({
+      const importBtn = createRipple(await createLongBtn({
         title: t("start_import_tooltip"),
         text: t("import"),
         resourceName: "icon-experimental",
         onClick: () => opts.onImport(dataEl.value),
-      });
+      }));
 
       importCenterBtnCont.appendChild(importBtn);
       importPane.append(descEl, dataEl, importCenterBtnCont);
