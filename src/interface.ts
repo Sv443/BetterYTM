@@ -69,6 +69,10 @@ export type InterfaceEvents = {
   "bytm:dialogOpened": BytmDialog;
   /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - in TS, use `"bytm:dialogOpened:myIdWhatever" as "bytm:dialogOpened:id"` to make the error go away */
   "bytm:dialogOpened:id": BytmDialog;
+  /** Emitted when a dialog was closed - returns the dialog's instance */
+  "bytm:dialogClosed": BytmDialog;
+  /** Emitted when the dialog with the specified ID was closed - returns the dialog's instance - in TS, use `"bytm:dialogClosed:myIdWhatever" as "bytm:dialogClosed:id"` to make the error go away */
+  "bytm:dialogClosed:id": BytmDialog;
 
   /** Emitted whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
