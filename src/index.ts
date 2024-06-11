@@ -162,7 +162,7 @@ async function onDomLoad() {
       if(feats.fixHdrIssues)
         ftInit.push(["fixHdrIssues", fixHdrIssues()]);
 
-      if(feats.showVotes || feats.showVoteRatio !== "disabled")
+      if(feats.showVotes)
         ftInit.push(["showVotes", initShowVotes()]);
 
       //#region (ytm) volume

@@ -381,8 +381,6 @@ export interface FeatureConfig {
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
   showVotesFormat: "short" | "full";
-  /** Whether to show a bar graph of the like/dislike ratio on the currently playing song and which design it should use */
-  showVoteRatio: "disabled" | "greenRed" | "blueGray";
 
   //#region volume
   /** Add a percentage label to the volume slider */

@@ -76,9 +76,9 @@ export const migrations: DataMigrationsDict = {
         "autoLikeChannels", "autoLikeChannelToggleBtn",
         "autoLikeTimeout", "autoLikeShowToast",
         "autoLikeOpenMgmtDialog", "showVotes",
-        "showVotesFormat", "showVoteRatio",
-        "toastDuration", "initTimeout",
-        // forgot to add this to the migration when adding the feature so now will have to do:
+        "showVotesFormat", "toastDuration",
+        "initTimeout",
+        // forgot to add this to the migration when adding the feature way before so now will have to do:
         "volumeSliderLabel",
       ]), [
         { key: "rememberSongTimeSites", oldDefault: "ytm" },

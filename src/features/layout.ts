@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj, dbg } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -729,7 +729,6 @@ export async function initShowVotes() {
           return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
 
         getFeature("showVotes") && addVoteNumbers(voteCont, voteObj);
-        getFeature("showVoteRatio") && addVoteRatio(voteCont, voteObj);
       }
       catch(err) {
         error("Couldn't initialize show votes feature due to an error:", err);
@@ -806,8 +805,4 @@ function formatVoteNumber(num: number) {
         maximumFractionDigits: 0,
       },
   );
-}
-
-function addVoteRatio(voteCont: HTMLElement, voteObj: VideoVotesObj) {
-  dbg("># TODO: addVoteRatio", voteCont, voteObj);
 }

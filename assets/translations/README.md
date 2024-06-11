@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 263 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `210/263` (79.8%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `263` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `210/263` (79.8%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `210/263` (79.8%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `210/263` (79.8%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `210/263` (79.8%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `210/263` (79.8%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `210/263` (79.8%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 262 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `210/262` (80.2%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `262` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `210/262` (80.2%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `210/262` (80.2%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `210/262` (80.2%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `210/262` (80.2%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `210/262` (80.2%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `210/262` (80.2%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -82,7 +82,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -105,7 +104,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -142,7 +141,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -165,7 +163,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -202,7 +200,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -225,7 +222,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -262,7 +259,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -285,7 +281,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -322,7 +318,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -345,7 +340,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -382,7 +377,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
@@ -405,7 +399,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 53 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 52 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -442,7 +436,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
-| `feature_desc_showVoteRatio` | `TODO: Show a colored bar that represents the ratio of likes and dislikes of the currently playing song` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
