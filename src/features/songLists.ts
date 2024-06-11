@@ -49,7 +49,7 @@ export async function initQueueButtons() {
       return;
 
     listElem.classList.add("bytm-list-has-queue-btns");
-    queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", "genericQueue", ["bytm-generic-list-queue-btn-container"]));
+    queueItems.forEach(itm => addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent"));
 
     log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
   };
@@ -58,6 +58,7 @@ export async function initQueueButtons() {
     "ytmusic-playlist-shelf-renderer #contents",
     "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ALBUM\"] ytmusic-shelf-renderer #contents",
     "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_ARTIST\"] ytmusic-shelf-renderer #contents",
+    "ytmusic-section-list-renderer[main-page-type=\"MUSIC_PAGE_TYPE_PLAYLIST\"] ytmusic-shelf-renderer #contents",
   ];
 
   if(getFeature("listButtonsPlacement") === "everywhere") {
@@ -65,6 +66,9 @@ export async function initQueueButtons() {
       addSelectorListener("body", selector, {
         all: true,
         continuous: true,
+        debounce: 50,
+        // TODO: switch to longer `debounce` and edge type "risingIdle" after UserUtils update
+        debounceEdge: "falling",
         listener: (songLists) => {
           for(const list of songLists)
             addGenericListQueueBtns(list);
@@ -79,15 +83,17 @@ export async function initQueueButtons() {
 /**
  * Adds the buttons to each item in the current song queue.  
  * Also observes for changes to add new buttons to new items in the queue.
- * @param queueItem The element with tagname `ytmusic-player-queue-item` to add queue buttons to
+ * @param queueItem The element with tagname `ytmusic-player-queue-item` or `ytmusic-responsive-list-item-renderer` to add queue buttons to
  * @param listType The type of list the queue item is in
  * @param classes Extra CSS classes to apply to the container
+ * @param insertPosition Where to insert the button container in relation to the parent element
  */
 async function addQueueButtons(
   queueItem: HTMLElement,
   containerParentSelector: string = ".song-info",
-  listType: "currentQueue" | "genericQueue" = "currentQueue",
+  listType: "currentQueue" | "genericList" = "currentQueue",
   classes: string[] = [],
+  insertPosition: "child" | "beforeParent" | "afterParent" = "child",
 ) {
   const queueBtnsCont = document.createElement("div");
   queueBtnsCont.classList.add(...["bytm-queue-btn-container", ...classes]);
@@ -124,13 +130,13 @@ async function addQueueButtons(
         song = songEl?.textContent;
         artist = artistEl?.textContent;
       }
-      else if(listType === "genericQueue") {
+      else if(listType === "genericList") {
         const songEl = queueItem.querySelector<HTMLElement>(".title-column yt-formatted-string a");
         let artistEl: HTMLElement | null = null;
 
         if(location.pathname.startsWith("/playlist"))
           artistEl = document.querySelector<HTMLElement>("ytmusic-detail-header-renderer .metadata .subtitle-container yt-formatted-string a");
-        else
+        if(!artistEl || !artistEl.textContent)
           artistEl = queueItem.querySelector<HTMLElement>(".secondary-flex-columns yt-formatted-string:first-child a");
 
         song = songEl?.textContent;
@@ -245,7 +251,7 @@ async function addQueueButtons(
         removeFromQueueBtn?.click();
 
         // queue items aren't removed automatically outside of the current queue
-        if(removeFromQueueBtn && listType === "genericQueue") {
+        if(removeFromQueueBtn && listType === "genericList") {
           await pauseFor(200);
           clearInner(queueItem);
           queueItem.remove();
@@ -273,6 +279,13 @@ async function addQueueButtons(
   lyricsBtnElem && queueBtnsCont.appendChild(createRipple(lyricsBtnElem));
   deleteBtnElem && queueBtnsCont.appendChild(createRipple(deleteBtnElem));
 
-  queueItem.querySelector<HTMLElement>(containerParentSelector)?.appendChild(queueBtnsCont);
+  const parentEl = queueItem.querySelector<HTMLElement>(containerParentSelector);
+  if(insertPosition === "child")
+    parentEl?.appendChild(queueBtnsCont);
+  else if(insertPosition === "beforeParent")
+    parentEl?.before(queueBtnsCont);
+  else if(insertPosition === "afterParent")
+    parentEl?.after(queueBtnsCont);
+
   queueItem.classList.add("bytm-has-queue-btns");
 }
