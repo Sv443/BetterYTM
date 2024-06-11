@@ -8,6 +8,8 @@ import type { getFeatures, setFeatures } from "./config.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap } from "./interface.js";
 
+//#region other
+
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
   "config-mode": "development" | "production";
@@ -49,6 +51,17 @@ export type LyricsCacheEntry = {
   url: string;
   viewed: number;
   added: number;
+};
+
+export type AutoLikeData = {
+  channels: {
+    /** 24-character channel ID or user ID including the @ prefix */
+    id: string;
+    /** Channel name (for display purposes only) */
+    name: string;
+    /** Whether the channel should be auto-liked */
+    enabled: boolean;
+  }[];
 };
 
 //#region global
@@ -222,7 +235,7 @@ export type InterfaceFunctions = {
   saveFeatures: typeof setFeatures;
 };
 
-//#region features
+//#region feature defs
 
 export type FeatureKey = keyof FeatureConfig;
 
@@ -330,6 +343,8 @@ export type FeatureInfo = Record<
   }
   & FeatureTypeProps
 >;
+
+//#region feature config
 
 /** Feature configuration */
 export interface FeatureConfig {

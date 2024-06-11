@@ -1,6 +1,6 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
 import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
-import type { Domain } from "../types.js";
+import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
@@ -149,17 +149,6 @@ export async function initNumKeysSkip() {
 //#region auto-like vids
 
 let canCompress = false;
-
-export type AutoLikeData = {
-  channels: {
-    /** 24-character channel ID or user ID including the @ prefix */
-    id: string;
-    /** Channel name (for display purposes only) */
-    name: string;
-    /** Whether the channel should be auto-liked */
-    enabled: boolean;
-  }[];
-};
 
 /** DataStore instance for all auto-liked channels */
 export const autoLikeStore = new DataStore<AutoLikeData>({

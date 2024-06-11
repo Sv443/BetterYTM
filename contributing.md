@@ -298,10 +298,11 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 ### Global functions and classes:
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
+Functions marked with 🔒 need to be passed a per-session and per-plugin authentication token. It can be acquire by calling [registerPlugin()](#registerplugin)  
   
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
-  - [getPluginInfo()](#getplugininfo) - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
+  - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
 - BYTM-specific:
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
@@ -321,20 +322,23 @@ The usage and example blocks on each are written in TypeScript but can be used i
   - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
   - [createRipple()](#createripple) - Creates a click ripple effect on the given element
 - Translations:
-  - [setLocale()](#setlocale) - Sets the locale for BetterYTM
+  - [setLocale()](#setlocale) 🔒 - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
   - [hasKey()](#haskey) - Checks if the specified translation key exists in the currently set locale
   - [hasKeyFor()](#haskeyfor) - Checks if the specified translation key exists in the specified locale
   - [t()](#t) - Translates the specified translation key using the currently set locale
   - [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
 - Feature config:
-  - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
-  - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
+  - [getFeatures()](#getfeatures) 🔒 - Returns the current BYTM feature configuration object
+  - [saveFeatures()](#savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
 - Lyrics:
   - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
   - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+- Auto-Like:
+  - [getAutoLikeData()](#getautolikedata) 🔒 - Returns the current auto-like data object
+  - [saveAutoLikeData()](#saveautolikedata) 🔒 - Overwrites the current auto-like data object with the provided one
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
 
@@ -1014,6 +1018,74 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > const sanitizedSong = unsafeWindow.BYTM.sanitizeSong(" Thriller (Freddy Mercury Cover) [Tommy Cash Remix]");
 > console.log(sanitizedSong); // "Thriller"
+> ```
+> </details>
+
+<br>
+
+> #### getAutoLikeData()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getAutoLikeData(token: string | undefined): AutoLikeData
+> ```
+>   
+> Description:  
+> Returns the current auto-like data object synchronously from memory.  
+> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const autoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+> 
+> // check if the channel is added to the auto-like list and if it's currently enabled
+> function isEnabledForChannel(channelId: string) {
+>   return autoLikeData && autoLikeData.channels.find((ch) => ch.id === channelId && ch.enabled);
+> }
+> 
+> // channelId can be in the format UC... or @username
+> console.log(isEnabledForChannel("UCXuqSBlHAE6Xw-yeJA0Tunw"));
+> ```
+> </details>
+
+<br>
+
+> #### saveAutoLikeData()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.saveAutoLikeData(token: string | undefined, data: AutoLikeData): Promise<void>
+> ```
+>   
+> Description:  
+> Saves the provided auto-like data object synchronously to memory and asynchronously to GM storage.  
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
+> - `data` - The full auto-like data object to save. No validation is done so if properties are missing, BYTM will break!
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function toggleAutoLikeForChannel(channelId: string, channelName: string) {
+>   const autoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+>   const channelIndex = autoLikeData.channels.findIndex((ch) => ch.id === channelId);
+> 
+>   if(channelIndex > -1)
+>     autoLikeData.channels[channelIndex].enabled = !autoLikeData.channels[channelIndex].enabled;
+>   else
+>     autoLikeData.channels.push({ id: channelId, name: channelName, enabled: true });
+> 
+>   await unsafeWindow.BYTM.saveAutoLikeData(myToken, autoLikeData);
+> }
+> 
+> // channelId can be in the format UC... or @username
+> toggleAutoLikeForChannel("UCXuqSBlHAE6Xw-yeJA0Tunw", "Linus Sex Tips").then(() => {
+>   const newAutoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+>   console.log("Auto-like status for the channel was toggled. New data:", newAutoLikeData);
+> });
 > ```
 > </details>
 
