@@ -138,7 +138,9 @@ async function renderBody() {
     const nameElem = document.createElement("a");
     nameElem.classList.add("bytm-auto-like-channel-name", "bytm-link");
     nameElem.ariaLabel = nameElem.textContent = chanName;
-    nameElem.href = `https://${getDomain() === "ytm" ? "music." : ""}youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
+    nameElem.href = (!chanId.startsWith("@") && getDomain() === "ytm")
+      ? `https://music.youtube.com/channel/${chanId}`
+      : `https://youtube.com/${chanId.startsWith("@") ? chanId : `channel/${chanId}`}`;
     nameElem.target = "_blank";
     nameElem.rel = "noopener noreferrer";
     nameElem.tabIndex = 0;
