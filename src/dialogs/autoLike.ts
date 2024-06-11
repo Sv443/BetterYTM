@@ -3,13 +3,13 @@ import { compressionSupported, error, getDomain, log, onInteraction, parseChanne
 import { BytmDialog, createCircularBtn, createToggleInput } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { siteEvents } from "../siteEvents.js";
-import { ImportExportDialog } from "../components/ImportExportDialog.js";
+import { ExImDialog } from "../components/ExportImportDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
 import "./autoLike.css";
 
 let autoLikeDialog: BytmDialog | null = null;
-let autoLikeImExDialog: ImportExportDialog | null = null;
+let autoLikeImExDialog: ExImDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getAutoLikeDialog() {
@@ -42,10 +42,10 @@ export async function getAutoLikeDialog() {
   }
   
   if(!autoLikeImExDialog) {
-    autoLikeImExDialog = new ImportExportDialog({
+    autoLikeImExDialog = new ExImDialog({
       id: "auto-like-channels-import-export",
-      width: 600,
-      height: 500,
+      width: 800,
+      height: 600,
       // try to compress the data if possible
       exportData: async () => await compressionSupported()
         ? await compress(JSON.stringify(autoLikeStore.getData()), compressionFormat, "string")

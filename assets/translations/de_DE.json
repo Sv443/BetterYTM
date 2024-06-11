@@ -19,7 +19,6 @@
     "import": "Importieren",
     "import_hint": "Füge die Einstellungen, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:",
     "import_tooltip": "Importiere Einstellungen, die du zuvor exportiert hast",
-    "start_import_tooltip": "Klicke um die Einstellungen, die du oben eingefügt hast, zu importieren",
     "import_error_invalid": "Die importierten Daten sind ungültig",
     "import_error_no_format_version": "Die importierten Daten enthalten keine Format-Version",
     "import_error_no_data": "Das importierte Objekt enthält keine Daten",

@@ -630,6 +630,32 @@ body .bytm-ripple.slower {
   }
 }
 
+.bytm-exim-dialog-panes-cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bytm-exim-dialog-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 48%;
+}
+
+.bytm-exim-dialog-center-btn-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.bytm-exim-dialog-pane textarea {
+  height: 200px;
+  resize: none;
+}
+
 .bytm-hotkey-wrapper {
   display: flex;
   flex-direction: row;
