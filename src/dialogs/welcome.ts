@@ -43,6 +43,7 @@ async function renderHeader() {
   titleElem.classList.add("bytm-dialog-title");
   titleElem.role = "heading";
   titleElem.ariaLevel = "1";
+  titleElem.tabIndex = 0;
 
   titleWrapperElem.appendChild(titleLogoElem);
   titleWrapperElem.appendChild(titleElem);
@@ -103,6 +104,7 @@ async function renderBody() {
 
   const line1Elem = document.createElement("span");
   line1Elem.id = "bytm-welcome-text-line1";
+  line1Elem.tabIndex = 0;
   textElems.push(line1Elem);
 
   const br1Elem = document.createElement("br");
@@ -110,6 +112,7 @@ async function renderBody() {
 
   const line2Elem = document.createElement("span");
   line2Elem.id = "bytm-welcome-text-line2";
+  line2Elem.tabIndex = 0;
   textElems.push(line2Elem);
 
   const br2Elem = document.createElement("br");
@@ -119,6 +122,7 @@ async function renderBody() {
 
   const line3Elem = document.createElement("span");
   line3Elem.id = "bytm-welcome-text-line3";
+  line3Elem.tabIndex = 0;
   textElems.push(line3Elem);
 
   const br4Elem = document.createElement("br");
@@ -126,6 +130,7 @@ async function renderBody() {
 
   const line4Elem = document.createElement("span");
   line4Elem.id = "bytm-welcome-text-line4";
+  line4Elem.tabIndex = 0;
   textElems.push(line4Elem);
 
   const br5Elem = document.createElement("br");
@@ -135,6 +140,7 @@ async function renderBody() {
 
   const line5Elem = document.createElement("span");
   line5Elem.id = "bytm-welcome-text-line5";
+  line5Elem.tabIndex = 0;
   textElems.push(line5Elem);
 
   textElems.forEach((elem) => textElem.appendChild(elem));
@@ -151,25 +157,25 @@ function retranslateWelcomeMenu() {
   };
 
   const changes = {
-    "#bytm-welcome-menu-title": (e: HTMLElement) => e.textContent = t("welcome_menu_title", scriptInfo.name),
+    "#bytm-welcome-menu-title": (e: HTMLElement) => e.textContent = e.ariaLabel = t("welcome_menu_title", scriptInfo.name),
     "#bytm-welcome-menu-title-close": (e: HTMLElement) => e.ariaLabel = e.title = t("close_menu_tooltip"),
     "#bytm-welcome-menu-open-cfg": (e: HTMLElement) => {
-      e.textContent = t("config_menu");
+      e.textContent = e.ariaLabel = t("config_menu");
       e.ariaLabel = e.title = t("open_config_menu_tooltip");
     },
     "#bytm-welcome-menu-open-changelog": (e: HTMLElement) => {
-      e.textContent = t("open_changelog");
+      e.textContent = e.ariaLabel = t("open_changelog");
       e.ariaLabel = e.title = t("open_changelog_tooltip");
     },
     "#bytm-welcome-menu-footer-close": (e: HTMLElement) => {
-      e.textContent = t("close");
+      e.textContent = e.ariaLabel = t("close");
       e.ariaLabel = e.title = t("close_menu_tooltip");
     },
-    "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_1"),
-    "#bytm-welcome-text-line2": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_2", scriptInfo.name),
-    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
-    "#bytm-welcome-text-line4": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
-    "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
+    "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_1"),
+    "#bytm-welcome-text-line2": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_2", scriptInfo.name),
+    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
+    "#bytm-welcome-text-line4": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
+    "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
   };
 
   for(const [selector, fn] of Object.entries(changes)) {

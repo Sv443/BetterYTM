@@ -50,7 +50,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-menu-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("export_menu_title", scriptInfo.name);
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("export_menu_title", scriptInfo.name);
 
   return headerEl;
 }

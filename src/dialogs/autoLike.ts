@@ -87,7 +87,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("auto_like_channels_dialog_title");
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("auto_like_channels_dialog_title");
 
   return headerEl;
 }

@@ -41,17 +41,12 @@ export async function getVersionNotifDialog({
 }
 
 async function renderHeader() {
-  const headerEl = document.createElement("div");
-  headerEl.role = "heading";
-  headerEl.ariaLevel = "1";
-
   const logoEl = document.createElement("img");
   logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
   logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   logoEl.alt = "BetterYTM logo";
 
-  headerEl.appendChild(logoEl);
-  return headerEl;
+  return logoEl;
 }
 
 let disableUpdateCheck = false;
