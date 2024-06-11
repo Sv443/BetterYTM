@@ -100,10 +100,7 @@ export class ExImDialog extends BytmDialog {
         async onClick({ shiftKey }) {
           const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
           copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
-          await showToast({
-            position: "bl",
-            message: t("copied_to_clipboard"),
-          });
+          await showToast({ message: t("copied_to_clipboard") });
         },
       }));
 
