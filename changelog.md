@@ -1,6 +1,7 @@
 <!-- I messed up with the changelog parsing so this is just how it will have to be -->
 <div class="split"></div>
 
+<!-- #region 2.1.0 -->
 ## 2.1.0
 - **Features:**
   - Auto-like videos and songs of channels where this feature was enabled
@@ -33,10 +34,9 @@
   - SelectorObserver changes:
     - Added `ytMasthead` instance for the title bar on YT
     - Renamed all YT-specific instances to have the `yt` prefix
-      - From `watchFlexy` to `ytWatchFlexy`
-      - From `watchMetadata` to `ytWatchMetadata`
+      - `watchFlexy` renamed to `ytWatchFlexy`
+      - `watchMetadata` renamed to `ytWatchMetadata`
   - Added Storybook for easier and faster development of components
-  - Improved ripple component design and functionality (refer to the contributing guide for more info)
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
   - Migrated to pnpm for faster compilation and development scripts
 - **Plugin Interface Changes:**
@@ -47,13 +47,15 @@
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
-  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
   - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
   - Added events
     - `bytm:featureInitStarted` - emitted when the feature initialization process starts
     - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
+    - `bytm:dialogClosed` - emitted when a BytmDialog is closed and gets passed the instance
+    - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
     - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
   - Event `bytm:siteEvent:fullscreenToggled` will now only emit once per fullscreen change
+  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
   - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
     In practice this changes nothing, but it benefits from having the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
@@ -66,6 +68,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 2.0.0 -->
 ## 2.0.0
 - **Added features:**
 	- Keep the volume synced between tabs
@@ -111,6 +114,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.1.1 -->
 ## 1.1.1
 - **Features / Changes:**
   - A new version notification dialog is now shown with the latest version's changes
@@ -133,6 +137,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.1.0 -->
 ## 1.1.0
 - **Features / Changes:**
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
@@ -167,6 +172,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.2 -->
 ## 1.0.2
 - **Changes:**
   - Script is now published to OpenUserJS!
@@ -175,6 +181,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.1 -->
 ## 1.0.1
 - **Changes:**
   - Script is now published to GreasyFork!
@@ -183,6 +190,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.0 -->
 ## 1.0.0
 - **Added Features:**
   - Added configuration menu to toggle and configure all features
@@ -214,6 +222,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 0.2.0 -->
 ## 0.2.0
 
 - **Added Features:**
@@ -228,6 +237,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 0.1.0 -->
 ## 0.1.0
 
 - **Features:**

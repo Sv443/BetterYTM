@@ -98,6 +98,8 @@ export enum PluginIntent {
   WriteTranslations = 8,
   /** Plugin can create modal dialogs */
   CreateModalDialogs = 16,
+  /** Plugin can read and write auto-like data */
+  ReadAndWriteAutoLikeData = 32,
 }
 
 /** Result of a plugin registration */
