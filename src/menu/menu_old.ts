@@ -179,13 +179,16 @@ async function mountCfgMenu() {
     height: 600,
     // try to compress the data if possible
     exportData: async () => await compressionSupported()
-      ? await compress(JSON.stringify(getFeatures()), compressionFormat, "string")
-      : JSON.stringify(getFeatures()),
+      ? await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
+      : JSON.stringify({ formatVersion, data: getFeatures() }),
     // copy plain when shift-clicking the copy button
     exportDataSpecial: () => JSON.stringify(getFeatures()),
     onImport: async (data) => {
       try {
         const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
+
+        console.log(">> parsed", parsed);
+
         if(!parsed || typeof parsed !== "object")
           return alert(t("import_error_invalid"));
         if(typeof parsed.formatVersion !== "number")
@@ -225,8 +228,8 @@ async function mountCfgMenu() {
           return location.reload();
         }
 
-        emitSiteEvent("rebuildCfgMenu", parsed.data);
         exImDlg.unmount();
+        emitSiteEvent("rebuildCfgMenu", parsed.data);
       }
       catch(err) {
         warn("Couldn't import configuration:", err);

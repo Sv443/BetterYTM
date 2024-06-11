@@ -65,6 +65,7 @@ export async function getAutoLikeDialog() {
           siteEvents.emit("autoLikeChannelsUpdated");
 
           showToast({ message: t("import_success") });
+          autoLikeImExDialog?.unmount();
         }
         catch(err) {
           error("Couldn't import auto-like channels data:", err);
