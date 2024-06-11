@@ -23,7 +23,6 @@
     "import_error_no_format_version": "Les données importées ne contiennent pas de version de format",
     "import_error_no_data": "L'objet importé ne contient aucune donnée",
     "import_error_wrong_format_version": "Les données importées sont dans une version de format non prise en charge (attendue %1 ou inférieure mais obtenue %2)",
-    "import_success_confirm_reload": "La configuration a été importée avec succès.\nVoulez-vous recharger la page maintenant pour appliquer les modifications?",
     "reset_config_confirm": "Voulez-vous vraiment réinitialiser tous les paramètres à leurs valeurs par défaut?\nLa page sera automatiquement rechargée.",
     "copy_to_clipboard": "Copier dans le presse-papiers",
     "copy_to_clipboard_error": "Impossible de copier le texte dans le presse-papiers. Veuillez le copier manuellement d'ici:\n%1",

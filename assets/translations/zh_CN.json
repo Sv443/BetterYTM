@@ -23,7 +23,6 @@
     "import_error_no_format_version": "导入的数据不包含格式版本",
     "import_error_no_data": "导入的对象不包含任何数据",
     "import_error_wrong_format_version": "导入的数据格式版本不受支持（期望 %1 或更低版本，但得到 %2）",
-    "import_success_confirm_reload": "配置导入成功。\n您是否要重新加载页面以应用更改？",
     "reset_config_confirm": "您是否确实要将所有设置重置为默认值？\n页面将自动重新加载。",
     "copy_to_clipboard": "复制到剪贴板",
     "copy_to_clipboard_error": "无法将文本复制到剪贴板。请手动从这里复制：\n%1",

@@ -1,6 +1,6 @@
 import { compress, debounce } from "@sv443-network/userutils";
 import { compressionSupported, error, getDomain, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
-import { BytmDialog, createCircularBtn, createToggleInput } from "../components/index.js";
+import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { ExImDialog } from "../components/ExportImportDialog.js";
@@ -63,6 +63,8 @@ export async function getAutoLikeDialog() {
 
           await autoLikeStore.setData(parsed);
           siteEvents.emit("autoLikeChannelsUpdated");
+
+          showToast({ message: t("import_success") });
         }
         catch(err) {
           error("Couldn't import auto-like channels data:", err);

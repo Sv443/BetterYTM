@@ -13,7 +13,7 @@
     "feature_requires_reload": "Changing this feature requires a page reload",
     "version_tooltip": "Version %1 (build %2) - click to open the changelog",
 
-    "bytm_config_export_import_title": "Export/Import Configuration",
+    "bytm_config_export_import_title": "Export or Import Configuration",
     "bytm_config_import_desc": "Paste the configuration you want to import into the field below, then click the import button:",
     "bytm_config_export_desc": "Copy the following text to export your configuration. Warning: it may contain sensitive data.",
     "export_import": "Export/Import",
@@ -30,7 +30,8 @@
     "import_error_no_format_version": "The imported data does not contain a format version",
     "import_error_no_data": "The imported object does not contain any data",
     "import_error_wrong_format_version": "The imported data is in an unsupported format version (expected %1 or lower but got %2)",
-    "import_success_confirm_reload": "Successfully imported the configuration.\nDo you want to reload the page now to apply changes?",
+    "import_success": "Successfully imported the data",
+    "import_success_confirm_reload": "Successfully imported the data.\nDo you want to reload the page now to apply changes?",
     "reset_config_confirm": "Do you really want to reset all settings to their default values?\nThe page will be automatically reloaded.",
     "copy": "Copy",
     "copy_to_clipboard": "Copy to clipboard",
@@ -141,7 +142,7 @@
     "thumbnail_overlay_image_fit_full": "Show full image",
     "thumbnail_overlay_image_fit_stretch": "Stretch to fit",
 
-    "auto_like_channels_dialog_title": "Auto-liked channels",
+    "auto_like_channels_dialog_title": "Auto-liked Channels",
     "auto_like_channels_dialog_desc": "Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.",
     "auto_like": "Auto-like",
     "auto_like_button_tooltip_enabled": "Click to disable auto-liking. Shift-click to open the management dialog.",
@@ -157,7 +158,7 @@
     "auto_liked_a_channels_song": "Liked song by %1",
     "auto_liked_a_channels_video": "Liked video by %1",
     "auto_like_export_or_import_tooltip": "Export or import your auto-liked channels",
-    "auto_like_export_import_title": "Export/Import auto-liked channels",
+    "auto_like_export_import_title": "Export or Import Auto-liked Channels",
     "auto_like_export_desc": "Copy the following text to export your auto-liked channels.",
     "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
 
