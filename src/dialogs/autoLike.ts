@@ -56,8 +56,6 @@ export async function getAutoLikeDialog() {
         try {
           const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
 
-          if(!parsed)
-            throw new Error("No valid data found in the imported string");
           if(!parsed || typeof parsed !== "object")
             return alert(t("import_error_invalid"));
           if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)

@@ -12,6 +12,10 @@
     "reload_tooltip": "Reload the page",
     "feature_requires_reload": "Changing this feature requires a page reload",
     "version_tooltip": "Version %1 (build %2) - click to open the changelog",
+
+    "bytm_config_export_import_title": "Export/Import Configuration",
+    "bytm_config_import_desc": "Paste the configuration you want to import into the field below, then click the import button:",
+    "bytm_config_export_desc": "Copy the following text to export your configuration. Warning: it may contain sensitive data.",
     "export_import": "Export/Import",
     "export": "Export",
     "export_hint": "Copy the following text to export your configuration.\nWarning: it may contain sensitive data.",
@@ -33,6 +37,7 @@
     "copy_to_clipboard_error": "Couldn't copy the text to the clipboard. Please copy it from here manually:\n%1",
     "copy_config_tooltip": "Copy the configuration to your clipboard",
     "copied": "Copied!",
+    "copied_to_clipboard": "Copied to clipboard!",
     "copy_hidden_value": "Copy hidden value",
     "copy_hidden_tooltip": "Click to copy the hidden value - this is sensitive data ⚠️",
     "open_github": "Open %1 on GitHub",
@@ -152,7 +157,7 @@
     "auto_liked_a_channels_song": "Liked song by %1",
     "auto_liked_a_channels_video": "Liked video by %1",
     "auto_like_export_or_import_tooltip": "Export or import your auto-liked channels",
-    "auto_like_export_import_title": "Export/import auto-liked channels",
+    "auto_like_export_import_title": "Export/Import auto-liked channels",
     "auto_like_export_desc": "Copy the following text to export your auto-liked channels.",
     "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
 
