@@ -17,7 +17,7 @@ export async function getAutoLikeDialog() {
 
     autoLikeDialog = new BytmDialog({
       id: "auto-like-channels",
-      width: 600,
+      width: 700,
       height: 1000,
       closeBtnEnabled: true,
       closeOnBgClick: true,

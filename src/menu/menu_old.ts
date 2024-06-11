@@ -8,11 +8,12 @@ import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import "./menu_old.css";
 import { BytmDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
+import { emitInterface } from "../interface.js";
 import pkg from "../../package.json" with { type: "json" };
 
 //#region create menu
 
-let isCfgMenuAdded = false;
+let isCfgMenuMounted = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
@@ -29,10 +30,10 @@ let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
-async function addCfgMenu() {
-  if(isCfgMenuAdded)
+async function mountCfgMenu() {
+  if(isCfgMenuMounted)
     return;
-  isCfgMenuAdded = true;
+  isCfgMenuMounted = true;
   initLocale = getFeature("locale");
   initConfig = getFeatures();
 
@@ -50,7 +51,7 @@ async function addCfgMenu() {
       closeCfgMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
-    if(isCfgMenuOpen && e.key === "Escape" && !BytmDialog.getCurrentDialogId())
+    if(isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
       closeCfgMenu(e);
   });
 
@@ -766,8 +767,8 @@ async function addCfgMenu() {
       return;
     closeCfgMenu();
     bgElem.remove();
-    isCfgMenuAdded = false;
-    await addCfgMenu();
+    isCfgMenuMounted = false;
+    await mountCfgMenu();
     await openCfgMenu();
   });
 }
@@ -789,11 +790,12 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
   clearTimeout(hiddenCopiedTxtTimeout);
-
+  
   openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
   setCurrentDialogId(openDialogs?.[0] ?? null);
 
-  siteEvents.emit("cfgMenuClosed");
+  emitInterface("bytm:dialogClosed", this as BytmDialog);
+  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", this as BytmDialog);
 
   if(!menuBg)
     return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
@@ -806,8 +808,8 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
 
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
-  if(!isCfgMenuAdded)
-    await addCfgMenu();
+  if(!isCfgMenuMounted)
+    await mountCfgMenu();
   if(isCfgMenuOpen)
     return;
   isCfgMenuOpen = true;
@@ -816,16 +818,19 @@ export async function openCfgMenu() {
   document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
-  if(!menuBg)
-    return;
-
-  menuBg.style.visibility = "visible";
-  menuBg.style.display = "block";
-
   setCurrentDialogId("cfg-menu");
   openDialogs.unshift("cfg-menu");
 
+  emitInterface("bytm:dialogOpened", this as BytmDialog);
+  emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", this as BytmDialog);
+
   checkToggleScrollIndicator();
+
+  if(!menuBg)
+    return warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
 }
 
 //#region chk scroll indicator

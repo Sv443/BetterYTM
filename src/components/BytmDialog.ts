@@ -151,8 +151,6 @@ export class BytmDialog extends NanoEmitter<{
     if(!this.isMounted())
       await this.mount();
 
-    document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
@@ -164,6 +162,21 @@ export class BytmDialog extends NanoEmitter<{
 
     currentDialogId = this.id;
     openDialogs.unshift(this.id);
+
+    // make sure all other dialogs are inert
+    for(const dialogId of openDialogs) {
+      if(dialogId !== this.id) {
+        // special treatment for the old config menu, as always
+        if(dialogId === "cfg-menu")
+          document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
+        else
+          document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
+      }
+    }
+
+    // make sure body is inert and scroll is locked
+    document.body.classList.add("bytm-disable-scroll");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
 
     this.events.emit("open");
     emitInterface("bytm:dialogOpened", this as BytmDialog);
@@ -190,17 +203,27 @@ export class BytmDialog extends NanoEmitter<{
     dialogBg.style.display = "none";
     dialogBg.inert = true;
 
-    if(BytmDialog.getCurrentDialogId() === this.id)
-      currentDialogId = null;
-
     openDialogs.splice(openDialogs.indexOf(this.id), 1);
+    currentDialogId = openDialogs[0] ?? null;
 
+    // make sure the new top-most dialog is not inert
+    if(currentDialogId) {
+      // special treatment for the old config menu, as always
+      if(currentDialogId === "cfg-menu")
+        document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
+      else
+        document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
+    }
+
+    // remove the scroll lock and inert attribute on the body if no dialogs are open
     if(openDialogs.length === 0) {
       document.body.classList.remove("bytm-disable-scroll");
       document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     }
 
     this.events.emit("close");
+    emitInterface("bytm:dialogClosed", this as BytmDialog);
+    emitInterface(`bytm:dialogClosed:${this.id}` as "bytm:dialogClosed:id", this as BytmDialog);
 
     if(this.options.destroyOnClose)
       this.destroy();
