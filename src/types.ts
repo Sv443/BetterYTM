@@ -19,7 +19,7 @@ export type RollupArgs = Partial<{
   "config-suffix": string;
 }>;
 
-// I know TS enums are impure but it doesn't really matter here, plus they look cooler
+// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 export enum LogLevel {
   Debug,
   Info,
