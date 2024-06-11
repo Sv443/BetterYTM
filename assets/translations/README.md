@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 262 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `210/262` (80.2%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `262` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `210/262` (80.2%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `210/262` (80.2%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `210/262` (80.2%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `210/262` (80.2%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `210/262` (80.2%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `210/262` (80.2%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 267 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `209/267` (78.3%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `267` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `209/267` (78.3%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `209/267` (78.3%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `209/267` (78.3%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `209/267` (78.3%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `209/267` (78.3%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `209/267` (78.3%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,11 +45,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -72,6 +75,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -104,11 +110,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -131,6 +140,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -163,11 +175,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -190,6 +205,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -222,11 +240,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -249,6 +270,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -281,11 +305,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -308,6 +335,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -340,11 +370,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -367,6 +400,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |
@@ -399,11 +435,14 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 52 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 58 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `export_import` | `Export/Import` |
+| `click_to_reveal` | `(click to reveal)` |
+| `start_import_tooltip` | `Click to import the data you pasted above` |
+| `copy` | `Copy` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -426,6 +465,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_liked_a_channels_song` | `Liked song by %1` |
 | `auto_liked_a_channels_video` | `Liked video by %1` |
 | `auto_like_export_or_import_tooltip` | `Export or import your auto-liked channels` |
+| `auto_like_export_import_title` | `Export/import auto-liked channels` |
+| `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
+| `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
 | `vote_label_likes` | `%1 likes` |
 | `vote_label_dislikes` | `%1 dislikes` |
 | `vote_ratio_disabled` | `Disabled` |

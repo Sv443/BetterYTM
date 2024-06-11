@@ -19,7 +19,6 @@
     "import": "Importar",
     "import_hint": "Pegue la configuración que desea importar en el campo a continuación, luego haga clic en el botón de importación:",
     "import_tooltip": "Importe una configuración que haya exportado anteriormente",
-    "start_import_tooltip": "Haga clic para importar la configuración que pegó arriba",
     "import_error_invalid": "Los datos importados no son válidos",
     "import_error_no_format_version": "Los datos importados no contienen una versión de formato",
     "import_error_no_data": "El objeto importado no contiene ningún dato",

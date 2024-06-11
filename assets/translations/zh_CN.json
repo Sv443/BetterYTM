@@ -19,7 +19,6 @@
     "import": "导入",
     "import_hint": "将要导入的配置粘贴到下面的字段中，然后点击导入按钮：",
     "import_tooltip": "导入您先前导出的配置",
-    "start_import_tooltip": "点击导入您刚刚粘贴的配置",
     "import_error_invalid": "导入的数据无效",
     "import_error_no_format_version": "导入的数据不包含格式版本",
     "import_error_no_data": "导入的对象不包含任何数据",

@@ -19,7 +19,6 @@
     "import": "インポート",
     "import_hint": "インポートしたい構成を以下のフィールドに貼り付け、インポートボタンをクリックしてください。",
     "import_tooltip": "以前にエクスポートした構成をインポートする",
-    "start_import_tooltip": "上記に貼り付けた構成をインポートするにはクリックしてください",
     "import_error_invalid": "インポートされたデータが無効です",
     "import_error_no_format_version": "インポートされたデータにフォーマットバージョンが含まれていません",
     "import_error_no_data": "インポートされたオブジェクトにデータが含まれていません",
