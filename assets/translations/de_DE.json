@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "Der Text konnte nicht in die Zwischenablage kopiert werden. Bitte kopiere ihn hier manuell:\n%1",
     "copy_config_tooltip": "Kopiere die Einstellungen in die Zwischenablage",
     "copied": "Kopiert!",
-    "copy_hidden_value": "Versteckten Wert kopieren",
     "copy_hidden_tooltip": "Klicke um den versteckten Wert zu kopieren - Vorsicht, sensible Daten ⚠️",
     "open_github": "Öffne %1 auf GitHub",
     "open_discord": "Komm auf meinen Discord Server",

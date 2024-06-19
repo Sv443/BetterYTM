@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "Não foi possível copiar o texto para a área de transferência. Por favor, copie manualmente daqui:\n%1",
     "copy_config_tooltip": "Copie a configuração para a área de transferência",
     "copied": "Copiado!",
-    "copy_hidden_value": "Copiar valor oculto",
     "copy_hidden_tooltip": "Clique para copiar o valor oculto - estes são dados sensíveis ⚠️",
     "open_github": "Abrir %1 no GitHub",
     "open_discord": "Junte-se ao meu servidor Discord",

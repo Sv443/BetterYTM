@@ -39,7 +39,7 @@
     "copy_config_tooltip": "Copy the configuration to your clipboard",
     "copied": "Copied!",
     "copied_to_clipboard": "Copied to clipboard!",
-    "copy_hidden_value": "Copy hidden value",
+    "copy_hidden": "Copy hidden",
     "copy_hidden_tooltip": "Click to copy the hidden value - this is sensitive data ⚠️",
     "open_github": "Open %1 on GitHub",
     "open_discord": "Join my Discord server",

@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "No se pudo copiar el texto al portapapeles. Cópielo manualmente desde aquí:\n%1",
     "copy_config_tooltip": "Copie la configuración en su portapapeles",
     "copied": "¡Copiado!",
-    "copy_hidden_value": "Copiar valor oculto",
     "copy_hidden_tooltip": "Haga clic para copiar el valor oculto: estos son datos sensibles ⚠️",
     "open_github": "Abrir %1 en GitHub",
     "open_discord": "Únete a mi servidor de Discord",

@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "テキストをクリップボードにコピーできませんでした。ここから手動でコピーしてください：\n%1",
     "copy_config_tooltip": "構成をクリップボードにコピーする",
     "copied": "コピーしました！",
-    "copy_hidden_value": "隠し値をコピー",
     "copy_hidden_tooltip": "クリックして隠し値をコピーします - これは機密データです ⚠️",
     "open_github": "GitHub で %1 を開く",
     "open_discord": "Discord サーバーに参加する",
