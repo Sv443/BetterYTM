@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,49 +33,51 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/clear_list.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/icons/spinner.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/7712b85a/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/5339fe9/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -188,7 +190,7 @@ var PluginIntent;
 })(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "7712b85a";
+const buildNumberRaw = "5339fe9";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -911,9 +913,9 @@ class ExImDialog extends BytmDialog {
                 const exportCenterBtnCont = document.createElement("div");
                 exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
                 const copyBtn = createRipple(yield createLongBtn({
-                    title: t("copy_hidden_value"),
+                    title: t("copy_to_clipboard"),
                     text: t("copy"),
-                    resourceName: "icon-experimental",
+                    resourceName: "icon-copy",
                     onClick(_a) {
                         return __awaiter(this, arguments, void 0, function* ({ shiftKey }) {
                             const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
@@ -942,7 +944,7 @@ class ExImDialog extends BytmDialog {
                 const importBtn = createRipple(yield createLongBtn({
                     title: t("start_import_tooltip"),
                     text: t("import"),
-                    resourceName: "icon-experimental",
+                    resourceName: "icon-upload",
                     onClick: () => opts.onImport(dataEl.value),
                 }));
                 importCenterBtnCont.appendChild(importBtn);
@@ -1418,9 +1420,9 @@ function getAutoLikeDialog() {
                 closeOnEscPress: true,
                 destroyOnClose: true,
                 small: true,
-                renderHeader: renderHeader$6,
-                renderBody: renderBody$6,
-                renderFooter: renderFooter$3,
+                renderHeader: renderHeader$4,
+                renderBody: renderBody$4,
+                renderFooter: renderFooter$1,
             });
             siteEvents.on("autoLikeChannelsUpdated", () => __awaiter(this, void 0, void 0, function* () {
                 if (autoLikeImExDialog === null || autoLikeImExDialog === void 0 ? void 0 : autoLikeImExDialog.isOpen())
@@ -1471,7 +1473,7 @@ function getAutoLikeDialog() {
     });
 }
 //#region header
-function renderHeader$6() {
+function renderHeader$4() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
@@ -1483,7 +1485,7 @@ function renderHeader$6() {
     });
 }
 //#region body
-function renderBody$6() {
+function renderBody$4() {
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
         const descriptionEl = document.createElement("p");
@@ -1580,7 +1582,7 @@ function renderBody$6() {
     });
 }
 //#region footer
-function renderFooter$3() {
+function renderFooter$1() {
     const wrapperEl = document.createElement("div");
     wrapperEl.classList.add("bytm-auto-like-channels-footer-wrapper");
     const addNewBtnElem = document.createElement("button");
@@ -1659,8 +1661,8 @@ function getChangelogDialog() {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$5,
-                renderBody: renderBody$5,
+                renderHeader: renderHeader$3,
+                renderBody: renderBody$3,
             });
             changelogDialog.on("render", () => {
                 const mdContElem = document.querySelector("#bytm-changelog-dialog-text");
@@ -1679,7 +1681,7 @@ function getChangelogDialog() {
         return changelogDialog;
     });
 }
-function renderHeader$5() {
+function renderHeader$3() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("h2");
         headerEl.classList.add("bytm-dialog-title");
@@ -1690,7 +1692,7 @@ function renderHeader$5() {
         return headerEl;
     });
 }
-function renderBody$5() {
+function renderBody$3() {
     return __awaiter(this, void 0, void 0, function* () {
         const contElem = document.createElement("div");
         const mdContElem = document.createElement("div");
@@ -1699,126 +1701,6 @@ function renderBody$5() {
         mdContElem.innerHTML = yield getChangelogHtmlWithDetails();
         contElem.appendChild(mdContElem);
         return contElem;
-    });
-}let exportDialog = null;
-let copiedTxtTimeout = undefined;
-let lastUncompressedCfgString;
-/** Creates and/or returns the export dialog */
-function getExportDialog() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!exportDialog) {
-            exportDialog = new BytmDialog({
-                id: "export",
-                width: 600,
-                height: 500,
-                closeBtnEnabled: true,
-                closeOnBgClick: true,
-                closeOnEscPress: true,
-                small: true,
-                renderHeader: renderHeader$4,
-                renderBody: renderBody$4,
-                renderFooter: renderFooter$2,
-            });
-            exportDialog.on("close", () => {
-                const textAreaElem = document.querySelector("#bytm-export-dialog-bg #bytm-export-menu-textarea");
-                if (textAreaElem) {
-                    textAreaElem.value = t("click_to_reveal_sensitive_info");
-                    textAreaElem.setAttribute("revealed", "false");
-                }
-                const copiedTxtElem = document.querySelector("#bytm-export-menu-copied-txt");
-                if (copiedTxtElem) {
-                    copiedTxtElem.style.display = "none";
-                    if (typeof copiedTxtTimeout === "number") {
-                        clearTimeout(copiedTxtTimeout);
-                        copiedTxtTimeout = undefined;
-                    }
-                }
-            });
-        }
-        return exportDialog;
-    });
-}
-function renderHeader$4() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const headerEl = document.createElement("h2");
-        headerEl.classList.add("bytm-menu-title");
-        headerEl.role = "heading";
-        headerEl.ariaLevel = "1";
-        headerEl.tabIndex = 0;
-        headerEl.textContent = headerEl.ariaLabel = t("export_menu_title", scriptInfo.name);
-        return headerEl;
-    });
-}
-function renderBody$4() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const canCompress = yield compressionSupported();
-        const contElem = document.createElement("div");
-        const textElem = document.createElement("div");
-        textElem.id = "bytm-export-menu-text";
-        textElem.textContent = t("export_hint");
-        const textAreaElem = document.createElement("textarea");
-        textAreaElem.id = "bytm-export-menu-textarea";
-        textAreaElem.readOnly = true;
-        lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-        textAreaElem.value = t("click_to_reveal_sensitive_info");
-        textAreaElem.setAttribute("revealed", "false");
-        const textAreaInteraction = (_a) => __awaiter(this, [_a], void 0, function* ({ shiftKey }) {
-            const cfgString = JSON.stringify({ formatVersion, data: getFeatures() });
-            lastUncompressedCfgString = JSON.stringify({ formatVersion, data: getFeatures() }, undefined, 2);
-            textAreaElem.value = shiftKey
-                ? lastUncompressedCfgString
-                : (canCompress
-                    ? yield UserUtils.compress(cfgString, compressionFormat, "string")
-                    : cfgString);
-            textAreaElem.setAttribute("revealed", "true");
-        });
-        onInteraction(textAreaElem, textAreaInteraction);
-        siteEvents.on("configChanged", (data) => __awaiter(this, void 0, void 0, function* () {
-            const textAreaElem = document.querySelector("#bytm-export-menu-textarea");
-            const cfgString = JSON.stringify({ formatVersion, data });
-            lastUncompressedCfgString = JSON.stringify({ formatVersion, data }, undefined, 2);
-            if (textAreaElem) {
-                if (textAreaElem.getAttribute("revealed") !== "true")
-                    return;
-                textAreaElem.value = canCompress ? yield UserUtils.compress(cfgString, compressionFormat, "string") : cfgString;
-            }
-        }));
-        contElem.appendChild(textElem);
-        contElem.appendChild(textAreaElem);
-        return contElem;
-    });
-}
-function renderFooter$2() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const footerElem = document.createElement("div");
-        footerElem.classList.add("bytm-menu-footer-right");
-        const copyBtnElem = document.createElement("button");
-        copyBtnElem.classList.add("bytm-btn");
-        copyBtnElem.textContent = t("copy_to_clipboard");
-        copyBtnElem.ariaLabel = copyBtnElem.title = t("copy_config_tooltip");
-        const copiedTextElem = document.createElement("span");
-        copiedTextElem.id = "bytm-export-menu-copied-txt";
-        copiedTextElem.role = "status";
-        copiedTextElem.classList.add("bytm-menu-footer-copied");
-        copiedTextElem.textContent = t("copied");
-        copiedTextElem.style.display = "none";
-        onInteraction(copyBtnElem, (evt) => __awaiter(this, void 0, void 0, function* () {
-            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-            copyToClipboard(evt.shiftKey && lastUncompressedCfgString
-                ? lastUncompressedCfgString
-                : yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string"));
-            copiedTextElem.style.display = "inline-block";
-            if (typeof copiedTxtTimeout === "undefined") {
-                copiedTxtTimeout = setTimeout(() => {
-                    copiedTextElem.style.display = "none";
-                    copiedTxtTimeout = undefined;
-                }, 3000);
-            }
-        }));
-        // flex-direction is row-reverse
-        footerElem.appendChild(copyBtnElem);
-        footerElem.appendChild(copiedTextElem);
-        return footerElem;
     });
 }let featHelpDialog = null;
 let curFeatKey = null;
@@ -1835,8 +1717,8 @@ function getFeatHelpDialog(_a) {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 small: true,
-                renderHeader: renderHeader$3,
-                renderBody: renderBody$3,
+                renderHeader: renderHeader$2,
+                renderBody: renderBody$2,
             });
             // make config menu inert while help dialog is open
             featHelpDialog.on("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
@@ -1845,7 +1727,7 @@ function getFeatHelpDialog(_a) {
         return featHelpDialog;
     });
 }
-function renderHeader$3() {
+function renderHeader$2() {
     return __awaiter(this, void 0, void 0, function* () {
         const headerEl = document.createElement("div");
         const helpIconSvg = yield resourceToHTMLString("icon-help");
@@ -1854,7 +1736,7 @@ function renderHeader$3() {
         return headerEl;
     });
 }
-function renderBody$3() {
+function renderBody$2() {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b;
         const contElem = document.createElement("div");
@@ -1872,111 +1754,6 @@ function renderBody$3() {
         contElem.appendChild(featDescElem);
         contElem.appendChild(helpTextElem);
         return contElem;
-    });
-}let importDialog = null;
-/** Creates and/or returns the import dialog */
-function getImportDialog() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!importDialog) {
-            importDialog = new BytmDialog({
-                id: "import",
-                width: 600,
-                height: 500,
-                closeBtnEnabled: true,
-                closeOnBgClick: true,
-                closeOnEscPress: true,
-                small: true,
-                renderHeader: renderHeader$2,
-                renderBody: renderBody$2,
-                renderFooter: renderFooter$1,
-            });
-        }
-        return importDialog;
-    });
-}
-function renderHeader$2() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const headerEl = document.createElement("h2");
-        headerEl.classList.add("bytm-dialog-title");
-        headerEl.role = "heading";
-        headerEl.ariaLevel = "1";
-        headerEl.tabIndex = 0;
-        headerEl.textContent = headerEl.ariaLabel = t("import_menu_title", scriptInfo.name);
-        return headerEl;
-    });
-}
-function renderBody$2() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const contElem = document.createElement("div");
-        const textElem = document.createElement("div");
-        textElem.id = "bytm-import-menu-text";
-        textElem.textContent = t("import_hint");
-        const textAreaElem = document.createElement("textarea");
-        textAreaElem.id = "bytm-import-menu-textarea";
-        contElem.appendChild(textElem);
-        contElem.appendChild(textAreaElem);
-        return contElem;
-    });
-}
-function renderFooter$1() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const footerElem = document.createElement("div");
-        footerElem.classList.add("bytm-menu-footer-right");
-        const importBtnElem = document.createElement("button");
-        importBtnElem.classList.add("bytm-btn");
-        importBtnElem.textContent = t("import");
-        importBtnElem.ariaLabel = importBtnElem.title = t("start_import_tooltip");
-        importBtnElem.addEventListener("click", (evt) => __awaiter(this, void 0, void 0, function* () {
-            (evt === null || evt === void 0 ? void 0 : evt.bubbles) && evt.stopPropagation();
-            const textAreaElem = document.querySelector("#bytm-import-menu-textarea");
-            if (!textAreaElem)
-                return warn("Couldn't find import menu textarea element");
-            try {
-                const parsed = yield tryToDecompressAndParse(textAreaElem.value.trim());
-                if (!parsed || typeof parsed !== "object")
-                    return alert(t("import_error_invalid"));
-                if (typeof parsed.formatVersion !== "number")
-                    return alert(t("import_error_no_format_version"));
-                if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                    return alert(t("import_error_no_data"));
-                if (parsed.formatVersion < formatVersion) {
-                    let newData = JSON.parse(JSON.stringify(parsed.data));
-                    const sortedMigrations = Object.entries(migrations)
-                        .sort(([a], [b]) => Number(a) - Number(b));
-                    let curFmtVer = Number(parsed.formatVersion);
-                    for (const [fmtVer, migrationFunc] of sortedMigrations) {
-                        const ver = Number(fmtVer);
-                        if (curFmtVer < formatVersion && curFmtVer < ver) {
-                            try {
-                                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-                                newData = migRes instanceof Promise ? yield migRes : migRes;
-                                curFmtVer = ver;
-                            }
-                            catch (err) {
-                                error(`Error while running migration function for format version ${fmtVer}:`, err);
-                            }
-                        }
-                    }
-                    parsed.formatVersion = curFmtVer;
-                    parsed.data = newData;
-                }
-                else if (parsed.formatVersion !== formatVersion)
-                    return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
-                yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
-                if (confirm(t("import_success_confirm_reload"))) {
-                    disableBeforeUnload();
-                    return location.reload();
-                }
-                emitSiteEvent("rebuildCfgMenu", parsed.data);
-                importDialog === null || importDialog === void 0 ? void 0 : importDialog.close();
-            }
-            catch (err) {
-                warn("Couldn't import configuration:", err);
-                alert(t("import_error_invalid"));
-            }
-        }));
-        footerElem.appendChild(importBtnElem);
-        return footerElem;
     });
 }var name = "betterytm";
 var userscriptName = "BetterYTM";
@@ -2457,33 +2234,9 @@ function mountCfgMenu() {
         exportImportBtn.classList.add("bytm-btn");
         exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
         onInteraction(exportImportBtn, () => __awaiter(this, void 0, void 0, function* () { return yield exImDlg.open(); }));
-        const exportElem = document.createElement("button");
-        exportElem.classList.add("bytm-btn");
-        exportElem.ariaLabel = exportElem.title = t("export_tooltip");
-        exportElem.textContent = t("export");
-        onInteraction(exportElem, () => __awaiter(this, void 0, void 0, function* () {
-            const dlg = yield getExportDialog();
-            dlg.on("close", openCfgMenu);
-            yield dlg.mount();
-            closeCfgMenu(undefined, false);
-            yield dlg.open();
-        }));
-        const importElem = document.createElement("button");
-        importElem.classList.add("bytm-btn");
-        importElem.ariaLabel = importElem.title = t("import_tooltip");
-        importElem.textContent = t("import");
-        onInteraction(importElem, () => __awaiter(this, void 0, void 0, function* () {
-            const dlg = yield getImportDialog();
-            dlg.on("close", openCfgMenu);
-            yield dlg.mount();
-            closeCfgMenu(undefined, false);
-            yield dlg.open();
-        }));
         const buttonsCont = document.createElement("div");
         buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
         buttonsCont.appendChild(exportImportBtn);
-        buttonsCont.appendChild(exportElem);
-        buttonsCont.appendChild(importElem);
         footerCont.appendChild(reloadFooterCont);
         footerCont.appendChild(buttonsCont);
         //#region feature list
@@ -2669,7 +2422,7 @@ function mountCfgMenu() {
                         const advCopyHiddenBtn = document.createElement("button");
                         advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
                         advCopyHiddenBtn.tabIndex = 0;
-                        advCopyHiddenBtn.textContent = t("copy_hidden_value");
+                        advCopyHiddenBtn.textContent = t("copy_hidden");
                         advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
                         const copyHiddenInteraction = (e) => {
                             e.preventDefault();
@@ -4071,7 +3824,13 @@ function initRememberSongTime() {
         const storedDataRaw = yield GM.getValue("bytm-rem-songs");
         if (!storedDataRaw)
             yield GM.setValue("bytm-rem-songs", "[]");
-        remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        try {
+            remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
+        }
+        catch (_a) {
+            yield GM.setValue("bytm-rem-songs", "[]");
+            remVidsCache = [];
+        }
         log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
         if (location.pathname.startsWith("/watch"))
             yield restVidRestoreTime();
@@ -4099,13 +3858,15 @@ function restVidRestoreTime() {
                 else if (isNaN(Number(entry.songTime)))
                     return;
                 else {
+                    let vidElem;
                     const doRestoreTime = () => __awaiter(this, void 0, void 0, function* () {
                         var _a;
-                        const vidElem = yield waitVideoElementReady();
+                        if (!vidElem)
+                            vidElem = yield waitVideoElementReady();
                         const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
                         vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                         yield restVidDeleteEntry(entry.watchID);
-                        info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                        info(`Restored ${currentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                     });
                     if (!domLoaded)
                         document.addEventListener("DOMContentLoaded", doRestoreTime);
@@ -4850,6 +4611,13 @@ function createLyricsBtn(geniusUrl_1) {
         const imgElem = document.createElement("img");
         imgElem.classList.add("bytm-generic-btn-img");
         imgElem.src = yield getResourceUrl("icon-lyrics");
+        onInteraction(linkElem, (e) => {
+            var _a;
+            const url = (_a = linkElem.href) !== null && _a !== void 0 ? _a : geniusUrl;
+            if (!url || e instanceof MouseEvent)
+                return;
+            openInTab(url);
+        });
         linkElem.appendChild(imgElem);
         onInteraction(linkElem, (e) => __awaiter(this, void 0, void 0, function* () {
             if (e.ctrlKey) {
@@ -7114,12 +6882,12 @@ function init() {
             emitInterface("bytm:registerPlugins");
             if (features.disableBeforeUnloadPopup && domain === "ytm")
                 disableBeforeUnload();
+            if (features.rememberSongTime)
+                initRememberSongTime();
             if (!domLoaded)
                 document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
             else
                 onDomLoad();
-            if (features.rememberSongTime)
-                initRememberSongTime();
         }
         catch (err) {
             error("Fatal error:", err);
