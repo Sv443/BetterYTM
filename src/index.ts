@@ -95,13 +95,13 @@ async function init() {
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
 
+    if(features.rememberSongTime)
+      initRememberSongTime();
+
     if(!domLoaded)
       document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
     else
       onDomLoad();
-
-    if(features.rememberSongTime)
-      initRememberSongTime();
   }
   catch(err) {
     error("Fatal error:", err);
