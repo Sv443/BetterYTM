@@ -4,7 +4,7 @@ import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../const
 import { featInfo, disableBeforeUnload } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs/index.js";
+import { getChangelogDialog, getFeatHelpDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import "./menu_old.css";
 import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
@@ -247,36 +247,10 @@ async function mountCfgMenu() {
   exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
   onInteraction(exportImportBtn, async () => await exImDlg.open());
 
-  const exportElem = document.createElement("button");
-  exportElem.classList.add("bytm-btn");
-  exportElem.ariaLabel = exportElem.title = t("export_tooltip");
-  exportElem.textContent = t("export");
-  onInteraction(exportElem, async () => {
-    const dlg = await getExportDialog();
-    dlg.on("close", openCfgMenu);
-    await dlg.mount();
-    closeCfgMenu(undefined, false);
-    await dlg.open();
-  });
-
-  const importElem = document.createElement("button");
-  importElem.classList.add("bytm-btn");
-  importElem.ariaLabel = importElem.title = t("import_tooltip");
-  importElem.textContent = t("import");
-  onInteraction(importElem, async () => {
-    const dlg = await getImportDialog();
-    dlg.on("close", openCfgMenu);
-    await dlg.mount();
-    closeCfgMenu(undefined, false);
-    await dlg.open();
-  });
-
   const buttonsCont = document.createElement("div");
   buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
 
   buttonsCont.appendChild(exportImportBtn);
-  buttonsCont.appendChild(exportElem);
-  buttonsCont.appendChild(importElem);
 
   footerCont.appendChild(reloadFooterCont);
   footerCont.appendChild(buttonsCont);
@@ -514,7 +488,7 @@ async function mountCfgMenu() {
           const advCopyHiddenBtn = document.createElement("button");
           advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
           advCopyHiddenBtn.tabIndex = 0;
-          advCopyHiddenBtn.textContent = t("copy_hidden_value");
+          advCopyHiddenBtn.textContent = t("copy_hidden");
           advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
 
           const copyHiddenInteraction = (e: MouseEvent | KeyboardEvent) => {
