@@ -1,17 +1,13 @@
-import { tr, Stringifiable, fetchAdvanced, FetchAdvancedOpts } from "@sv443-network/userutils";
+import { tr, Stringifiable, fetchAdvanced } from "@sv443-network/userutils";
 import { error, getResourceUrl, info } from "./index.js";
 import { emitInterface, setGlobalProp } from "../interface.js";
 import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import type tr_enUS from "../../assets/translations/en_US.json";
+import tr_enUS from "../../assets/translations/en_US.json";
 
 export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
 type TFuncKey = TrKey | (string & {});
-
-const fetchOpts: FetchAdvancedOpts = {
-  timeout: 6_000,
-};
 
 /** Contains all translation keys of all initialized and loaded translations */
 const allTrKeys = new Map<TrLocale, Set<TrKey>>();
@@ -26,20 +22,18 @@ export async function initTranslations(locale: TrLocale) {
   initializedLocales.add(locale);
 
   try {
-    const transUrl = await getResourceUrl(`trans-${locale}` as "_");
-    const transFile = await (await fetchAdvanced(transUrl, fetchOpts)).json();
+    const transFile = await fetchLocaleJson(locale);
 
-    let fallbackTrans: Partial<typeof tr_enUS["translations"]> = {};
+    let fallbackTrans: Partial<typeof tr_enUS> = {};
 
     if(getFeature("localeFallback"))
-      fallbackTrans = (await (await fetchAdvanced(await getResourceUrl("trans-en_US"), fetchOpts)).json()).translations;
+      fallbackTrans = await fetchLocaleJson("en_US");
 
     // merge with base translations if specified
-    const baseTransUrl = transFile.base ? await getResourceUrl(`trans-${transFile.base}` as "_") : undefined;
-    const baseTransFile = baseTransUrl ? await (await fetchAdvanced(baseTransUrl, fetchOpts)).json() : undefined;
+    const baseTransFile = transFile.base ? await fetchLocaleJson(transFile.base) : undefined;
 
     const translations: typeof tr_enUS["translations"] = {
-      ...fallbackTrans,
+      ...(fallbackTrans?.translations ?? {}),
       ...(baseTransFile?.translations ?? {}),
       ...transFile.translations,
     };
@@ -54,6 +48,16 @@ export async function initTranslations(locale: TrLocale) {
     error(errStr, err);
     throw new Error(errStr);
   }
+}
+
+/** Fetches the translation JSON file of the passed locale */
+async function fetchLocaleJson(locale: TrLocale) {
+  const url = await getResourceUrl(`trans-${locale}` as "_");
+  const res = await fetchAdvanced(url);
+
+  if(res.status < 200 || res.status >= 300)
+    throw new Error(`Failed to fetch translation file for locale '${locale}'`);
+  return await res.json() as { base?: TrLocale } & typeof tr_enUS;
 }
 
 /** Sets the current language for translations */
