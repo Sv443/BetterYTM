@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "Impossible de copier le texte dans le presse-papiers. Veuillez le copier manuellement d'ici:\n%1",
     "copy_config_tooltip": "Copiez la configuration dans votre presse-papiers",
     "copied": "Copié!",
-    "copy_hidden_value": "Copier la valeur cachée",
     "copy_hidden_tooltip": "Cliquez pour copier la valeur cachée - il s'agit de données sensibles ⚠️",
     "open_github": "Ouvrir %1 sur GitHub",
     "open_discord": "Rejoignez mon serveur Discord",

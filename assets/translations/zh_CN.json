@@ -28,7 +28,6 @@
     "copy_to_clipboard_error": "无法将文本复制到剪贴板。请手动从这里复制：\n%1",
     "copy_config_tooltip": "将配置复制到剪贴板",
     "copied": "已复制！",
-    "copy_hidden_value": "复制隐藏值",
     "copy_hidden_tooltip": "点击复制隐藏值 - 这是敏感数据 ⚠️",
     "open_github": "在 GitHub 上打开 %1",
     "open_discord": "加入我的 Discord 服务器",
