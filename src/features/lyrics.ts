@@ -397,6 +397,13 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   imgElem.classList.add("bytm-generic-btn-img");
   imgElem.src = await getResourceUrl("icon-lyrics");
 
+  onInteraction(linkElem, (e) => {
+    const url = linkElem.href ?? geniusUrl;
+    if(!url || e instanceof MouseEvent)
+      return;
+    openInTab(url);
+  });
+
   linkElem.appendChild(imgElem);
 
   onInteraction(linkElem, async (e) => {
