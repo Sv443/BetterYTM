@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj, getLocale } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, type VideoVotesObj, getLocale, tp } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -752,10 +752,10 @@ export async function initShowVotes() {
 
     labelLikes.dataset.watchId = getWatchId() ?? "";
     labelLikes.textContent = formatVoteNumber(voteObj.likes);
-    labelLikes.title = labelLikes.ariaLabel = t("vote_label_likes", formatVoteNumber(voteObj.likes, "full"));
+    labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
 
     labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-    labelDislikes.title = labelDislikes.ariaLabel = t("vote_label_dislikes", formatVoteNumber(voteObj.dislikes, "full"));
+    labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
     labelDislikes.dataset.watchId = getWatchId() ?? "";
   });
 }
