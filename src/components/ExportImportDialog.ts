@@ -10,9 +10,9 @@ type ExImDialogOpts =
   Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
   & {
     /** The data to export (or a function that returns the data as string, sync or async) */
-    exportData: string | (() => string | Promise<string>);
+    exportData: string | (() => (string | Promise<string>));
     /** Optional variant of the data, used for special cases like when shift-clicking the copy button */
-    exportDataSpecial?: string | (() => string | Promise<string>);
+    exportDataSpecial?: string | (() => (string | Promise<string>));
     /** Function that gets called when the user imports data */
     onImport: (data: string) => void;
     /** Translation key for the dialog title */
@@ -90,9 +90,9 @@ export class ExImDialog extends BytmDialog {
       exportCenterBtnCont.classList.add("bytm-exim-dialog-center-btn-cont");
 
       const copyBtn = createRipple(await createLongBtn({
-        title: t("copy_hidden_value"),
+        title: t("copy_to_clipboard"),
         text: t("copy"),
-        resourceName: "icon-experimental",
+        resourceName: "icon-copy",
         async onClick({ shiftKey }) {
           const copyData = shiftKey && opts.exportDataSpecial ? opts.exportDataSpecial : opts.exportData;
           copyToClipboard(typeof copyData === "function" ? await copyData() : copyData);
@@ -126,7 +126,7 @@ export class ExImDialog extends BytmDialog {
       const importBtn = createRipple(await createLongBtn({
         title: t("start_import_tooltip"),
         text: t("import"),
-        resourceName: "icon-experimental",
+        resourceName: "icon-upload",
         onClick: () => opts.onImport(dataEl.value),
       }));
 

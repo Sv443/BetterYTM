@@ -68,6 +68,8 @@
   vertical-align: middle;
   cursor: pointer;
   margin-left: 0px;
+
+  border: 1px solid #999;
 }
 
 .bytm-generic-btn.long .bytm-generic-btn-img.left {

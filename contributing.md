@@ -138,9 +138,10 @@ To edit an existing translation, please follow these steps:
 
 > [!NOTE]
 > 
-> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and must be preserved.  
-> Any arguments before that will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
-> Here, `--silent` is an argument that makes npm shut up and `"echo hello"` is an argument we wanna pass to the script.
+> When you are using npm (as opposed to `pnpm`), read the following carefully:  
+> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and they must be preserved.  
+> Any arguments before the double hyphens will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
+> Here, `--silent` is an argument we pass to npm to make it shut up and `"echo hello"` is an argument we wanna pass to the script that npm ends up invoking.
 
 <br>
 

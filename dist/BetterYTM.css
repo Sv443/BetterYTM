@@ -652,7 +652,7 @@ body .bytm-ripple.slower {
 }
 
 .bytm-exim-dialog-pane textarea {
-  height: 200px;
+  height: 120px;
   resize: none;
 }
 
@@ -1359,6 +1359,8 @@ hr {
   vertical-align: middle;
   cursor: pointer;
   margin-left: 0px;
+
+  border: 1px solid #999;
 }
 
 .bytm-generic-btn.long .bytm-generic-btn-img.left {
