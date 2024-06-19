@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, clearNode } from "../utils/index.js";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, clearNode, currentMediaType } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -94,7 +94,13 @@ export async function initRememberSongTime() {
   if(!storedDataRaw)
     await GM.setValue("bytm-rem-songs", "[]");
 
-  remVidsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
+  try {
+    remVidsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
+  }
+  catch {
+    await GM.setValue("bytm-rem-songs", "[]");
+    remVidsCache = [];
+  }
 
   log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
 
@@ -126,12 +132,14 @@ async function restVidRestoreTime() {
       else if(isNaN(Number(entry.songTime)))
         return;
       else {
+        let vidElem: HTMLVideoElement;
         const doRestoreTime = async () => {
-          const vidElem = await waitVideoElementReady();
+          if(!vidElem)
+            vidElem = await waitVideoElementReady();
           const vidRestoreTime = entry.songTime - (getFeature("rememberSongTimeReduction") ?? 0);
           vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
           await restVidDeleteEntry(entry.watchID);
-          info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+          info(`Restored ${currentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
         };
 
         if(!domLoaded)
