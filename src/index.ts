@@ -196,7 +196,7 @@ async function onDomLoad() {
         ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
     }
 
-    //#region (ytm+yt) cfg menu option
+    //#region (ytm+yt) cfg menu
     try {
       if(domain === "ytm") {
         addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
