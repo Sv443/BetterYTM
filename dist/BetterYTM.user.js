@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,51 +33,51 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/bb86377/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/c386d66/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
@@ -187,10 +187,11 @@ var PluginIntent;
     PluginIntent[PluginIntent["CreateModalDialogs"] = 16] = "CreateModalDialogs";
     /** Plugin can read and write auto-like data */
     PluginIntent[PluginIntent["ReadAndWriteAutoLikeData"] = 32] = "ReadAndWriteAutoLikeData";
-})(PluginIntent || (PluginIntent = {}));const modeRaw = "development";
+})(PluginIntent || (PluginIntent = {}));// these variables will have their values replaced by the build script:
+const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "bb86377";
+const buildNumberRaw = "c386d66";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -201,15 +202,15 @@ const repo = "Sv443/BetterYTM";
 const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw);
 /** The build number of the userscript */
 const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw); // asserted as generic string instead of literal
-/** URL search parameters at the earliest possible time */
+/** The URL search parameters at the earliest possible time */
 const initialParams = new URL(location.href).searchParams;
 /** Default compression format used throughout BYTM */
 const compressionFormat = "deflate-raw";
 /** Whether sessionStorage is available and working */
-typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) !== "undefined"
+typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionStorage.setItem) === "function"
     && (() => {
         try {
-            const key = `_bytm_test_${UserUtils.randomId(4)}`;
+            const key = `_bytm_test_${UserUtils.randomId(4, 36)}`;
             sessionStorage.setItem(key, "test");
             sessionStorage.removeItem(key);
             return true;
@@ -219,7 +220,7 @@ typeof (sessionStorage === null || sessionStorage === void 0 ? void 0 : sessionS
         }
     })();
 /**
- * How much info should be logged to the devtools console
+ * Fallback and initial value of how much info should be logged to the devtools console
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
 const defaultLogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;
@@ -873,7 +874,7 @@ function onInteraction(elem, listener, listenerOptions) {
 /** Generic dialog for exporting and importing any string of data */
 class ExImDialog extends BytmDialog {
     constructor(options) {
-        super(Object.assign({ renderHeader: () => ExImDialog.renderHeader(options), renderBody: () => ExImDialog.renderBody(options), closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, unmountOnClose: true, small: true }, options));
+        super(Object.assign({ renderHeader: () => ExImDialog.renderHeader(options), renderBody: () => ExImDialog.renderBody(options), renderFooter: undefined, closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, unmountOnClose: true, small: true }, options));
         Object.defineProperty(this, "mode", {
             enumerable: true,
             configurable: true,
@@ -1452,22 +1453,25 @@ function getAutoLikeDialog() {
                 }),
                 // copy plain when shift-clicking the copy button
                 exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
-                onImport: (data) => __awaiter(this, void 0, void 0, function* () {
-                    try {
-                        const parsed = yield tryToDecompressAndParse(data);
-                        if (!parsed || typeof parsed !== "object")
-                            return alert(t("import_error_invalid"));
-                        if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-                            return alert(t("import_error_no_data"));
-                        yield autoLikeStore.setData(parsed);
-                        siteEvents.emit("autoLikeChannelsUpdated");
-                        showToast({ message: t("import_success") });
-                        autoLikeImExDialog === null || autoLikeImExDialog === void 0 ? void 0 : autoLikeImExDialog.unmount();
-                    }
-                    catch (err) {
-                        error("Couldn't import auto-like channels data:", err);
-                    }
-                }),
+                onImport(data) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        try {
+                            const parsed = yield tryToDecompressAndParse(data);
+                            log("Trying to import auto-like data:", parsed);
+                            if (!parsed || typeof parsed !== "object")
+                                return alert(t("import_error_invalid"));
+                            if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
+                                return alert(t("import_error_no_data"));
+                            yield autoLikeStore.setData(parsed);
+                            siteEvents.emit("autoLikeChannelsUpdated");
+                            showToast({ message: t("import_success") });
+                            autoLikeImExDialog === null || autoLikeImExDialog === void 0 ? void 0 : autoLikeImExDialog.unmount();
+                        }
+                        catch (err) {
+                            error("Couldn't import auto-like channels data:", err);
+                        }
+                    });
+                },
                 trKeyTitle: "auto_like_export_import_title",
                 trKeyDescImport: "auto_like_import_desc",
                 trKeyDescExport: "auto_like_export_desc",
@@ -2172,6 +2176,8 @@ function mountCfgMenu() {
         });
         reloadFooterEl.appendChild(reloadTxtEl);
         reloadFooterCont.appendChild(reloadFooterEl);
+        /** For copying plain when shift-clicking the copy button or when compression is not supported */
+        const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
         const exImDlg = new ExImDialog({
             id: "bytm-config-import-export",
             width: 800,
@@ -2180,56 +2186,57 @@ function mountCfgMenu() {
             exportData: () => __awaiter(this, void 0, void 0, function* () {
                 return (yield compressionSupported())
                     ? yield UserUtils.compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
-                    : JSON.stringify({ formatVersion, data: getFeatures() });
+                    : exportDataSpecial();
             }),
-            // copy plain when shift-clicking the copy button
-            exportDataSpecial: () => JSON.stringify(getFeatures()),
-            onImport: (data) => __awaiter(this, void 0, void 0, function* () {
-                try {
-                    const parsed = yield tryToDecompressAndParse(data.trim());
-                    console.log(">> parsed", parsed);
-                    if (!parsed || typeof parsed !== "object")
-                        return alert(t("import_error_invalid"));
-                    if (typeof parsed.formatVersion !== "number")
-                        return alert(t("import_error_no_format_version"));
-                    if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                        return alert(t("import_error_no_data"));
-                    if (parsed.formatVersion < formatVersion) {
-                        let newData = JSON.parse(JSON.stringify(parsed.data));
-                        const sortedMigrations = Object.entries(migrations)
-                            .sort(([a], [b]) => Number(a) - Number(b));
-                        let curFmtVer = Number(parsed.formatVersion);
-                        for (const [fmtVer, migrationFunc] of sortedMigrations) {
-                            const ver = Number(fmtVer);
-                            if (curFmtVer < formatVersion && curFmtVer < ver) {
-                                try {
-                                    const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
-                                    newData = migRes instanceof Promise ? yield migRes : migRes;
-                                    curFmtVer = ver;
-                                }
-                                catch (err) {
-                                    error(`Error while running migration function for format version ${fmtVer}:`, err);
+            exportDataSpecial,
+            onImport(data) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    try {
+                        const parsed = yield tryToDecompressAndParse(data.trim());
+                        log("Trying to import configuration:", parsed);
+                        if (!parsed || typeof parsed !== "object")
+                            return alert(t("import_error_invalid"));
+                        if (typeof parsed.formatVersion !== "number")
+                            return alert(t("import_error_no_format_version"));
+                        if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
+                            return alert(t("import_error_no_data"));
+                        if (parsed.formatVersion < formatVersion) {
+                            let newData = JSON.parse(JSON.stringify(parsed.data));
+                            const sortedMigrations = Object.entries(migrations)
+                                .sort(([a], [b]) => Number(a) - Number(b));
+                            let curFmtVer = Number(parsed.formatVersion);
+                            for (const [fmtVer, migrationFunc] of sortedMigrations) {
+                                const ver = Number(fmtVer);
+                                if (curFmtVer < formatVersion && curFmtVer < ver) {
+                                    try {
+                                        const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                                        newData = migRes instanceof Promise ? yield migRes : migRes;
+                                        curFmtVer = ver;
+                                    }
+                                    catch (err) {
+                                        error(`Error while running migration function for format version ${fmtVer}:`, err);
+                                    }
                                 }
                             }
+                            parsed.formatVersion = curFmtVer;
+                            parsed.data = newData;
                         }
-                        parsed.formatVersion = curFmtVer;
-                        parsed.data = newData;
+                        else if (parsed.formatVersion !== formatVersion)
+                            return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+                        yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
+                        if (confirm(t("import_success_confirm_reload"))) {
+                            disableBeforeUnload();
+                            return location.reload();
+                        }
+                        exImDlg.unmount();
+                        emitSiteEvent("rebuildCfgMenu", parsed.data);
                     }
-                    else if (parsed.formatVersion !== formatVersion)
-                        return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
-                    yield setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
-                    if (confirm(t("import_success_confirm_reload"))) {
-                        disableBeforeUnload();
-                        return location.reload();
+                    catch (err) {
+                        warn("Couldn't import configuration:", err);
+                        alert(t("import_error_invalid"));
                     }
-                    exImDlg.unmount();
-                    emitSiteEvent("rebuildCfgMenu", parsed.data);
-                }
-                catch (err) {
-                    warn("Couldn't import configuration:", err);
-                    alert(t("import_error_invalid"));
-                }
-            }),
+                });
+            },
             trKeyTitle: "bytm_config_export_import_title",
             trKeyDescImport: "bytm_config_import_desc",
             trKeyDescExport: "bytm_config_export_desc",
@@ -3397,7 +3404,7 @@ function initAboveQueueBtns() {
                             return;
                         activeItem.scrollIntoView({
                             behavior: evt.shiftKey ? "instant" : "smooth",
-                            block: evt.ctrlKey ? "end" : "center",
+                            block: evt.ctrlKey || evt.altKey ? "end" : "center",
                             inline: "center",
                         });
                     });
@@ -3687,7 +3694,7 @@ function fixHdrIssues() {
             log("Fixed HDR issues");
     });
 }
-//#region show dis-/likes
+//#region show vote nums
 /** Shows the amount of likes and dislikes on the current song */
 function initShowVotes() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -3832,13 +3839,13 @@ function initRememberSongTime() {
         try {
             remVidsCache = JSON.parse(String(storedDataRaw !== null && storedDataRaw !== void 0 ? storedDataRaw : "[]"));
         }
-        catch (_a) {
+        catch (err) {
+            error("Error parsing stored video time data, defaulting to empty cache:", err);
             yield GM.setValue("bytm-rem-songs", "[]");
             remVidsCache = [];
         }
         log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-        if (location.pathname.startsWith("/watch"))
-            yield restVidRestoreTime();
+        yield restVidRestoreTime();
         if (!domLoaded)
             document.addEventListener("DOMContentLoaded", restVidStartUpdateLoop);
         else
@@ -3907,11 +3914,11 @@ function restVidStartUpdateLoop() {
                 };
                 yield restVidSetEntry(entry);
             }
-            // if the song is rewound to the beginning, delete the entry
+            // if the song is rewound to the beginning, update the entry accordingly
             else {
                 const entry = remVidsCache.find(entry => entry.watchID === watchID);
-                if (entry && songTime <= getFeature("rememberSongTimeMinPlayTime"))
-                    yield restVidDeleteEntry(entry.watchID);
+                if (entry && songTime <= entry.songTime)
+                    yield restVidSetEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
             }
         }
         const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
@@ -4622,10 +4629,13 @@ function createLyricsBtn(geniusUrl_1) {
             if (!url || e instanceof MouseEvent)
                 return;
             openInTab(url);
+        }, {
+            preventDefault: false,
+            stopPropagation: false,
         });
         linkElem.appendChild(imgElem);
         onInteraction(linkElem, (e) => __awaiter(this, void 0, void 0, function* () {
-            if (e.ctrlKey) {
+            if (e.ctrlKey || e.altKey) {
                 e.preventDefault();
                 e.stopPropagation();
                 const search = prompt(t("open_lyrics_search_prompt"));
@@ -5901,7 +5911,10 @@ function clearConfig() {
         info("Deleted config from persistent storage");
     });
 }const { getUnsafeWindow, randomId } = UserUtils__namespace;
-/** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
+/**
+ * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
+ * If prefixed with /**\/, the function is authenticated and requires a token to be passed as the first argument.
+ */
 const globalFuncs = {
     // meta:
     registerPlugin,
@@ -5933,6 +5946,7 @@ const globalFuncs = {
     // auto-like:
     /**/ getAutoLikeData: getAutoLikeDataInterface,
     /**/ saveAutoLikeData: saveAutoLikeDataInterface,
+    fetchVideoVotes,
     // components:
     createHotkeyInput,
     createToggleInput,
@@ -5953,6 +5967,7 @@ function initInterface() {
         // classes
         NanoEmitter,
         BytmDialog,
+        ExImDialog,
         // libraries
         UserUtils: UserUtils__namespace,
         compareVersions: compareVersions__namespace });
@@ -6813,8 +6828,10 @@ function fetchVideoVotes(watchId) {
         try {
             if (voteCache.has(watchId)) {
                 const cached = voteCache.get(watchId);
-                if (Date.now() - cached.timestamp < voteCacheTTL)
+                if (Date.now() - cached.timestamp < voteCacheTTL) {
+                    info(`Returning cached video votes for watch ID '${watchId}':`, cached);
                     return cached;
+                }
                 else
                     voteCache.delete(watchId);
             }
@@ -6834,6 +6851,7 @@ function fetchVideoVotes(watchId) {
                 timestamp: Date.now(),
             };
             voteCache.set(votesObj.id, votesObj);
+            info(`Fetched video votes for watch ID '${watchId}':`, votesObj);
             return votesObj;
         }
         catch (err) {
@@ -6960,7 +6978,7 @@ function onDomLoad() {
                 if (feats.geniusLyrics)
                     ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
             }
-            //#region (ytm+yt) cfg menu option
+            //#region (ytm+yt) cfg menu
             try {
                 if (domain === "ytm") {
                     addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
