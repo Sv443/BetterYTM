@@ -1,4 +1,4 @@
-import { error, tryToDecompressAndParse, t, warn } from "../utils/index.js";
+import { error, tryToDecompressAndParse, t, warn, log } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { scriptInfo } from "../constants.js";
 import { emitSiteEvent } from "../siteEvents.js";
@@ -70,6 +70,8 @@ async function renderFooter() {
       return warn("Couldn't find import menu textarea element");
     try {
       const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(textAreaElem.value.trim());
+      log("Trying to import config object:", parsed);
+
       if(!parsed || typeof parsed !== "object")
         return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
