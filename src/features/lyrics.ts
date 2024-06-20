@@ -407,7 +407,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   linkElem.appendChild(imgElem);
 
   onInteraction(linkElem, async (e) => {
-    if(e.ctrlKey) {
+    if(e.ctrlKey || e.altKey) {
       e.preventDefault();
       e.stopPropagation();
 
