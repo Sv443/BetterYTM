@@ -169,8 +169,6 @@
     "feature_desc_disableDarkReaderSites": "Em quais sites o Dark Reader deve ser desativado para corrigir problemas de layout?",
     "feature_helptext_disableDarkReaderSites": "A extensão Dark Reader pode causar problemas de layout no site.\nEste recurso permite desativar o Dark Reader em determinados ou todos os sites para evitar esses problemas.\nSe a extensão não estiver instalada, este recurso não terá efeito e pode ser deixado ativado.",
 
-    "feature_desc_lyricsQueueButton": "Adicione um botão a cada música na fila para abrir rapidamente sua página de letras",
-    "feature_helptext_listButtonsPlacement": "Existem várias listas de músicas no site, como páginas de álbuns, listas de reprodução e a fila de reprodução atual. Com esta opção, você pode escolher onde os botões da fila devem aparecer.",
     "feature_desc_scrollToActiveSongBtn": "Adicione um botão acima da fila para rolar para a música que está tocando atualmente",
     "feature_desc_clearQueueBtn": "Adicione um botão acima da fila de reprodução ou lista de reprodução atual para limpar rapidamente",
 
