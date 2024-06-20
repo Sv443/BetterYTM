@@ -1,7 +1,7 @@
 import * as UserUtils from "@sv443-network/userutils";
 import * as compareVersions from "compare-versions";
 import { mode, branch, host, buildNumber, compressionFormat, scriptInfo } from "./constants.js";
-import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl } from "./utils/index.js";
+import { getResourceUrl, getSessionId, getVideoTime, log, setLocale, getLocale, hasKey, hasKeyFor, NanoEmitter, t, tp, type TrLocale, info, error, onInteraction, getThumbnailUrl, getBestThumbnailUrl, fetchVideoVotes } from "./utils/index.js";
 import { addSelectorListener } from "./observers.js";
 import { getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
@@ -105,39 +105,49 @@ export const allInterfaceEvents = [
   ...allSiteEvents.map(e => `bytm:siteEvent:${e}`),
 ] as const;
 
-/** All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`) */
+/**
+ * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
+ * If prefixed with /**\/, the function is authenticated and requires a token to be passed as the first argument.
+ */
 const globalFuncs = {
   // meta:
   registerPlugin,
-  /**/getPluginInfo,
+  /**/ getPluginInfo,
 
   // bytm-specific:
   getResourceUrl,
   getSessionId,
+
   // dom:
   addSelectorListener,
   onInteraction,
   getVideoTime,
   getThumbnailUrl,
   getBestThumbnailUrl,
+
   // translations:
-  /**/setLocale: setLocaleInterface,
+  /**/ setLocale: setLocaleInterface,
   getLocale,
   hasKey,
   hasKeyFor,
   t,
   tp,
+
   // feature config:
-  /**/getFeatures: getFeaturesInterface,
-  /**/saveFeatures: saveFeaturesInterface,
+  /**/ getFeatures: getFeaturesInterface,
+  /**/ saveFeatures: saveFeaturesInterface,
+
   // lyrics:
   fetchLyricsUrlTop,
   getLyricsCacheEntry,
   sanitizeArtists,
   sanitizeSong,
+
   // auto-like:
-  /**/getAutoLikeData: getAutoLikeDataInterface,
-  /**/saveAutoLikeData: saveAutoLikeDataInterface,
+  /**/ getAutoLikeData: getAutoLikeDataInterface,
+  /**/ saveAutoLikeData: saveAutoLikeDataInterface,
+  fetchVideoVotes,
+
   // components:
   createHotkeyInput,
   createToggleInput,

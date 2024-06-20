@@ -50,6 +50,7 @@
   - Added functions:
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
+    - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [ReturnYoutubeDislikes](https://returnyoutubedislike.com/)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
   - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
   - Added events

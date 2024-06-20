@@ -340,6 +340,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 - Auto-Like:
   - [getAutoLikeData()](#getautolikedata) 🔒 - Returns the current auto-like data object
   - [saveAutoLikeData()](#saveautolikedata) 🔒 - Overwrites the current auto-like data object with the provided one
+  - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
 
@@ -1087,6 +1088,39 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   const newAutoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
 >   console.log("Auto-like status for the channel was toggled. New data:", newAutoLikeData);
 > });
+> ```
+> </details>
+
+<br>
+
+> #### fetchVideoVotes()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.fetchVideoVotes(videoId: string): Promise<VideoVotesObj | undefined>
+> ```
+>   
+> Description:  
+> Fetches the approximate like and dislike counts for the specified video ID, using the [ReturnYoutubeDislike](https://returnyoutubedislike.com/) API.  
+> RYD will approximate the votes based on historical data and users of the browser extension. The numbers will never be 100% accurate!  
+> The object returned by this function has the structure of the `VideoVotesObj` type in the file [`src/types.ts`](src/types.ts)  
+> If the video ID is not found or the API is down, the function will return `undefined`  
+>   
+> Arguments:  
+> - `videoId` - The video ID to fetch the votes for (e.g. `dQw4w9WgXcQ`)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function getVotes() {
+>   const votes = await unsafeWindow.BYTM.fetchVideoVotes("dQw4w9WgXcQ");
+> 
+>   if(!votes)
+>     return console.error("Couldn't fetch the votes for this video");
+> 
+>   console.log(`The video has ${votes.likes} likes and ${votes.dislikes} dislikes`);
+> }
+> 
+> getVotes();
 > ```
 > </details>
 
