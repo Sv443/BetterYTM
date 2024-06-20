@@ -17,14 +17,14 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 274 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `207/274` (75.5%) | ─ |
+| ‼️ | [`de_DE`](./de_DE.json) | `205/274` (74.8%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `274` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `207/274` (75.5%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `207/274` (75.5%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `207/274` (75.5%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `207/274` (75.5%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `207/274` (75.5%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `207/274` (75.5%) | ─ |
+| ‼️ | [`es_ES`](./es_ES.json) | `205/274` (74.8%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `205/274` (74.8%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `205/274` (74.8%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `205/274` (74.8%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `205/274` (74.8%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `205/274` (74.8%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -72,7 +72,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -97,8 +97,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -119,7 +121,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -146,7 +148,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -171,8 +173,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -193,7 +197,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -220,7 +224,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -245,8 +249,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -267,7 +273,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -294,7 +300,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -319,8 +325,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -341,7 +349,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -368,7 +376,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -393,8 +401,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -415,7 +425,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -442,7 +452,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -467,8 +477,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
@@ -489,7 +501,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 67 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 69 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -516,7 +528,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_enabled` | `Click to disable auto-liking. Shift-click to open the management dialog.` |
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
-| `add_auto_like_channel_invalid_id` | `The entered user ID or URL is invalid.\nPlease make sure you copy only the part *just after* "/channel/" in the URL, excluding any slash before and after.\nIf it starts with @, make sure to include that too.` |
+| `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
 | `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
@@ -541,8 +553,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
+| `feature_desc_lyricsQueueButton` | `Add a button to each song in a list to open its lyrics page` |
 | `feature_desc_deleteFromQueueButton` | `Add a button to each song in a list to quickly remove it` |
 | `feature_desc_listButtonsPlacement` | `Where should the list buttons show up?` |
+| `feature_helptext_listButtonsPlacement` | `There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.` |
 | `feature_desc_autoLikeChannels` | `Automatically like all songs and videos of certain channels` |
 | `feature_helpText_autoLikeChannels` | `Once enabled, you can enable this feature for certain channels by opening their page and clicking the toggle button. Afterwards, any song you play of that channel will be liked automatically.\nUse the option below to open a dialog to manage the channels.` |
 | `feature_desc_autoLikeChannelToggleBtn` | `Add a button to each channel page to enable or disable auto-liking` |
