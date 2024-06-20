@@ -402,6 +402,9 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
     if(!url || e instanceof MouseEvent)
       return;
     openInTab(url);
+  }, {
+    preventDefault: false,
+    stopPropagation: false,
   });
 
   linkElem.appendChild(imgElem);
