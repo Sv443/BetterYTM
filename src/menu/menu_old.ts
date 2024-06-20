@@ -185,7 +185,7 @@ async function mountCfgMenu() {
       ? await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
       : exportDataSpecial(),
     exportDataSpecial,
-    onImport: async (data) => {
+    async onImport(data) {
       try {
         const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
         log("Trying to import configuration:", parsed);
