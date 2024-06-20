@@ -173,6 +173,9 @@ async function mountCfgMenu() {
   reloadFooterEl.appendChild(reloadTxtEl);
   reloadFooterCont.appendChild(reloadFooterEl);
 
+  /** For copying plain when shift-clicking the copy button or when compression is not supported */
+  const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
+
   const exImDlg = new ExImDialog({
     id: "bytm-config-import-export",
     width: 800,
@@ -180,14 +183,12 @@ async function mountCfgMenu() {
     // try to compress the data if possible
     exportData: async () => await compressionSupported()
       ? await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
-      : JSON.stringify({ formatVersion, data: getFeatures() }),
-    // copy plain when shift-clicking the copy button
-    exportDataSpecial: () => JSON.stringify(getFeatures()),
+      : exportDataSpecial(),
+    exportDataSpecial,
     onImport: async (data) => {
       try {
         const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
-
-        console.log(">> parsed", parsed);
+        log("Trying to import configuration:", parsed);
 
         if(!parsed || typeof parsed !== "object")
           return alert(t("import_error_invalid"));

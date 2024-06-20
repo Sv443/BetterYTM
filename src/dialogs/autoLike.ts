@@ -55,6 +55,7 @@ export async function getAutoLikeDialog() {
       onImport: async (data) => {
         try {
           const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
+          log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
             return alert(t("import_error_invalid"));
