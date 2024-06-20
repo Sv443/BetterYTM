@@ -1,6 +1,7 @@
 import { randomId } from "@sv443-network/userutils";
 import { LogLevel } from "./types.js";
 
+// these variables will have their values replaced by the build script:
 const modeRaw = "#{{MODE}}";
 const branchRaw = "#{{BRANCH}}";
 const hostRaw = "#{{HOST}}";
@@ -17,7 +18,7 @@ export const host = (hostRaw.match(/^#{{.+}}$/) ? "github" : hostRaw) as "github
 /** The build number of the userscript */
 export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" : buildNumberRaw) as string; // asserted as generic string instead of literal
 
-/** URL search parameters at the earliest possible time */
+/** The URL search parameters at the earliest possible time */
 export const initialParams = new URL(location.href).searchParams;
 
 /** Names of platforms by value of {@linkcode host} */
@@ -32,10 +33,10 @@ export const compressionFormat: CompressionFormat = "deflate-raw";
 
 /** Whether sessionStorage is available and working */
 export const sessionStorageAllowed =
-  typeof sessionStorage?.setItem !== "undefined"
+  typeof sessionStorage?.setItem === "function"
   && (() => {
     try {
-      const key = `_bytm_test_${randomId(4)}`;
+      const key = `_bytm_test_${randomId(4, 36)}`;
       sessionStorage.setItem(key, "test");
       sessionStorage.removeItem(key);
       return true;
@@ -46,7 +47,7 @@ export const sessionStorageAllowed =
   })();
 
 /**
- * How much info should be logged to the devtools console  
+ * Fallback and initial value of how much info should be logged to the devtools console  
  * 0 = Debug (show everything) or 1 = Info (show only important stuff)
  */
 export const defaultLogLevel: LogLevel = mode === "production" ? LogLevel.Info : LogLevel.Debug;

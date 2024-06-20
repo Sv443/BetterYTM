@@ -27,7 +27,6 @@ All of these can be toggled and configured in the configuration menu.
   - Quickly scroll to the currently active song in the queue by clicking a button
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
-  - Remove the premium tab in the sidebar
 - Input / Interaction:
   - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song

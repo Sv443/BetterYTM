@@ -97,15 +97,15 @@ export async function initRememberSongTime() {
   try {
     remVidsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
   }
-  catch {
+  catch(err) {
+    error("Error parsing stored video time data, defaulting to empty cache:", err);
     await GM.setValue("bytm-rem-songs", "[]");
     remVidsCache = [];
   }
 
   log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
 
-  if(location.pathname.startsWith("/watch"))
-    await restVidRestoreTime();
+  await restVidRestoreTime();
 
   if(!domLoaded)
     document.addEventListener("DOMContentLoaded", restVidStartUpdateLoop);
@@ -179,11 +179,11 @@ async function restVidStartUpdateLoop() {
       };
       await restVidSetEntry(entry);
     }
-    // if the song is rewound to the beginning, delete the entry
+    // if the song is rewound to the beginning, update the entry accordingly
     else {
       const entry = remVidsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= getFeature("rememberSongTimeMinPlayTime"))
-        await restVidDeleteEntry(entry.watchID);
+      if(entry && songTime <= entry.songTime)
+        await restVidSetEntry({ ...entry, songTime, updateTimestamp: Date.now() });
     }
   }
 
