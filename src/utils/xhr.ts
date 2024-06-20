@@ -1,7 +1,7 @@
 import { fetchAdvanced, type Stringifiable } from "@sv443-network/userutils";
-import type { ResourceKey } from "../types.js";
+import type { RYDVotesObj, ResourceKey, VideoVotesObj } from "../types.js";
 import { getResourceUrl } from "./misc.js";
-import { error } from "./logging.js";
+import { error, info } from "./logging.js";
 
 /**
  * Constructs a URL from a base URL and a record of query parameters.  
@@ -57,36 +57,6 @@ export async function fetchCss(key: ResourceKey & `css-${string}`) {
   }
 }
 
-export type ReturnYouTubeDislikeVotes = {
-  /** The watch ID of the video */
-  id: string;
-  /** ISO timestamp of when the video was uploaded */
-  dateCreated: string;
-  /** Amount of likes */
-  likes: number;
-  /** Amount of dislikes */
-  dislikes: number;
-  /** Like to dislike ratio from 0.0 to 5.0 */
-  rating: number;
-  /** Amount of views */
-  viewCount: number;
-  /** Whether the video was deleted */
-  deleted: boolean;
-};
-
-export type VideoVotesObj = {
-  /** The watch ID of the video */
-  id: string;
-  /** Amount of likes */
-  likes: number;
-  /** Amount of dislikes */
-  dislikes: number;
-  /** Like to dislike ratio from 0.0 to 5.0 */
-  rating: number;
-  /** Timestamp of when the data was fetched */
-  timestamp: number;
-};
-
 /** Cache for the vote data of YouTube videos to prevent unnecessary requests */
 const voteCache = new Map<string, VideoVotesObj>();
 /** Time-to-live for the vote cache in milliseconds */
@@ -96,12 +66,14 @@ const voteCacheTTL = 1000 * 60 * 5;
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)
  * @param watchId The watch ID of the video
  */
-export async function fetchVideoVotes(watchId: string) {
+export async function fetchVideoVotes(watchId: string): Promise<VideoVotesObj | undefined> {
   try {
     if(voteCache.has(watchId)) {
       const cached = voteCache.get(watchId)!;
-      if(Date.now() - cached.timestamp < voteCacheTTL)
+      if(Date.now() - cached.timestamp < voteCacheTTL) {
+        info(`Returning cached video votes for watch ID '${watchId}':`, cached);
         return cached;
+      }
       else
         voteCache.delete(watchId);
     }
@@ -111,7 +83,7 @@ export async function fetchVideoVotes(watchId: string) {
         method: "GET",
         url: `https://returnyoutubedislikeapi.com/votes?videoId=${watchId}`,
       })).response
-    ) as ReturnYouTubeDislikeVotes;
+    ) as RYDVotesObj;
 
     if(!("id" in votesRaw) || !("likes" in votesRaw) || !("dislikes" in votesRaw) || !("rating" in votesRaw)) {
       error("Couldn't parse video votes due to an error:", votesRaw);
@@ -126,6 +98,8 @@ export async function fetchVideoVotes(watchId: string) {
       timestamp: Date.now(),
     };
     voteCache.set(votesObj.id, votesObj);
+
+    info(`Fetched video votes for watch ID '${watchId}':`, votesObj);
 
     return votesObj;
   }

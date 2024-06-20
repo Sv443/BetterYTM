@@ -64,6 +64,36 @@ export type AutoLikeData = {
   }[];
 };
 
+export type RYDVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** ISO timestamp of when the video was uploaded */
+  dateCreated: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Amount of views */
+  viewCount: number;
+  /** Whether the video was deleted */
+  deleted: boolean;
+};
+
+export type VideoVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Timestamp of when the data was fetched */
+  timestamp: number;
+};
+
 //#region global
 
 // shim for the BYTM interface properties
