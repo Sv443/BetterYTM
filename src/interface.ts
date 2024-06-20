@@ -7,7 +7,7 @@ import { getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData } from "./types.js";
-import { BytmDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
+import { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 
 const { getUnsafeWindow, randomId } = UserUtils;
 
@@ -172,6 +172,7 @@ export function initInterface() {
     // classes
     NanoEmitter,
     BytmDialog,
+    ExImDialog,
     // libraries
     UserUtils,
     compareVersions,

@@ -37,6 +37,7 @@ export class ExImDialog extends BytmDialog {
     super({
       renderHeader: () => ExImDialog.renderHeader(options),
       renderBody: () => ExImDialog.renderBody(options),
+      renderFooter: undefined,
       closeOnBgClick: true,
       closeOnEscPress: true,
       closeBtnEnabled: true,

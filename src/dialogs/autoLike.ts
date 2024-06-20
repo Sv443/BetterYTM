@@ -52,7 +52,7 @@ export async function getAutoLikeDialog() {
         : JSON.stringify(autoLikeStore.getData()),
       // copy plain when shift-clicking the copy button
       exportDataSpecial: () => JSON.stringify(autoLikeStore.getData()),
-      onImport: async (data) => {
+      async onImport(data) {
         try {
           const parsed = await tryToDecompressAndParse<AutoLikeData>(data);
           log("Trying to import auto-like data:", parsed);
