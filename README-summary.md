@@ -37,7 +37,7 @@ All of these can be toggled and configured in the configuration menu.
 <br>
 
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
-Alternatively or if you disabled the watermark, you can open it through the popover menu opened by clicking your avatar in the top right corner.  
+If you disabled the watermark, you can still click your avatar in the top right corner on YTM or open the left sidebar on YT to open it.  
   
 My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)
 
