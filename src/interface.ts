@@ -6,7 +6,7 @@ import { addSelectorListener } from "./observers.js";
 import { getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData } from "./types.js";
+import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 
 const { getUnsafeWindow, randomId } = UserUtils;
@@ -109,7 +109,7 @@ export const allInterfaceEvents = [
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
  * If prefixed with /**\/, the function is authenticated and requires a token to be passed as the first argument.
  */
-const globalFuncs = {
+const globalFuncs: InterfaceFunctions = {
   // meta:
   registerPlugin,
   /**/ getPluginInfo,
@@ -406,7 +406,7 @@ export function resolveToken(token: string | undefined): string | undefined {
  * Sets the new locale on the BYTM interface  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
-function setLocaleInterface(token: string | undefined, locale: TrLocale) {
+export function setLocaleInterface(token: string | undefined, locale: TrLocale) {
   const pluginId = resolveToken(token);
   if(pluginId === undefined)
     return;
@@ -418,7 +418,7 @@ function setLocaleInterface(token: string | undefined, locale: TrLocale) {
  * Returns the current feature config, with sensitive values replaced by `undefined`  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
-function getFeaturesInterface(token: string | undefined) {
+export function getFeaturesInterface(token: string | undefined) {
   if(resolveToken(token) === undefined)
     return undefined;
   const features = getFeatures();
@@ -434,7 +434,7 @@ function getFeaturesInterface(token: string | undefined) {
  * Saves the passed feature config synchronously to the in-memory cache and asynchronously to the persistent storage.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
-function saveFeaturesInterface(token: string | undefined, features: FeatureConfig) {
+export function saveFeaturesInterface(token: string | undefined, features: FeatureConfig) {
   if(resolveToken(token) === undefined)
     return;
   setFeatures(features);
@@ -444,7 +444,7 @@ function saveFeaturesInterface(token: string | undefined, features: FeatureConfi
  * Returns the auto-like data.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
-function getAutoLikeDataInterface(token: string | undefined) {
+export function getAutoLikeDataInterface(token: string | undefined) {
   if(resolveToken(token) === undefined)
     return;
   return autoLikeStore.getData();
@@ -454,7 +454,7 @@ function getAutoLikeDataInterface(token: string | undefined) {
  * Saves new auto-like data, synchronously to the in-memory cache and asynchronously to the persistent storage.  
  * This is an authenticated function so you must pass the session- and plugin-unique token, retreived at registration.
  */
-function saveAutoLikeDataInterface(token: string | undefined, data: AutoLikeData) {
+export function saveAutoLikeDataInterface(token: string | undefined, data: AutoLikeData) {
   if(resolveToken(token) === undefined)
     return;
   return autoLikeStore.setData(data);
