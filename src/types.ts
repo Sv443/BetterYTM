@@ -3,10 +3,12 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter } from "./utils/index.js";
-import type { getFeatures, setFeatures } from "./config.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
-import type { InterfaceEventsMap } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
+import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
+import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 
 //#region other
 
@@ -96,7 +98,7 @@ export type VideoVotesObj = {
 
 //#region global
 
-// shim for the BYTM interface properties
+/** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
 export type BytmObject =
   {
     [key: string]: unknown;
@@ -111,8 +113,13 @@ export type BytmObject =
   & InterfaceFunctions
   // others
   & {
+    NanoEmitter: typeof NanoEmitter;
+    BytmDialog: typeof BytmDialog;
+    ExImDialog: typeof ExImDialog;
     // the entire UserUtils library
     UserUtils: typeof import("@sv443-network/userutils");
+    // the entire compare-versions library
+    compareVersions: typeof import("compare-versions");
   };
 
 declare global {
@@ -192,10 +199,10 @@ export type PluginDef = {
     };
     /** Homepage URLs for the plugin */
     homepage: {
-      /** Any other homepage URL */
-      other?: string;
       /** URL to the plugin's source code (i.e. Git repo) - closed source plugins are not officially accepted at the moment. */
       source: string;
+      /** Any other homepage URL */
+      other?: string;
       /** URL to the plugin's bug tracker page, like GitHub issues */
       bug?: string;
       /** URL to the plugin's GreasyFork page */
@@ -205,7 +212,7 @@ export type PluginDef = {
     };
   };
   /** Intents (permissions) BYTM has to grant the plugin for it to work */
-  intents?: Array<PluginIntent>;
+  intents?: number;
   /** Info about the plugin contributors */
   contributors?: Array<{
     /** Name of this contributor */
@@ -219,12 +226,12 @@ export type PluginDef = {
 
 /** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} and {@linkcode InterfaceEventsMap} - these don't have a prefix since they can't conflict with other events */
 export type PluginEventMap =
-  // Emitted on each plugin individually:
+  // These are emitted on each plugin individually, with individual data:
   & {
     /** Emitted when the plugin is registered on BYTM's side */
     pluginRegistered: (info: PluginInfo) => void;
   }
-  // Emitted on every plugin simultaneously:
+  // These are emitted on every plugin simultaneously, with the same or similar data:
   & SiteEventsMap
   & InterfaceEventsMap;
 
@@ -237,8 +244,13 @@ export type PluginItem =
 
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
-  /** Adds a listener to one of the already present SelectorObserver instances */
-  addSelectorListener: typeof addSelectorListener;
+  // meta:
+  /** Registers a plugin with BYTM. Needed to receive the token for making authenticated function calls. */
+  registerPlugin: typeof registerPlugin;
+  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
+  getPluginInfo: typeof getPluginInfo;
+
+  // bytm-specific:
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
@@ -249,20 +261,74 @@ export type InterfaceFunctions = {
   getResourceUrl: typeof getResourceUrl;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
+
+  // dom:
+  /** Adds a listener to one of the already present SelectorObserver instances */
+  addSelectorListener: typeof addSelectorListener;
+  /** Registers accessible interaction listeners (click, enter, space) on the provided element */
+  onInteraction: typeof onInteraction;
   /**
    * Returns the current video time (on both YT and YTM)  
    * In case it can't be determined on YT, mouse movement is simulated to bring up the video time  
    * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers
    */
   getVideoTime: typeof getVideoTime;
+  /** Returns the thumbnail URL for the provided video ID and thumbnail quality */
+  getThumbnailUrl: typeof getThumbnailUrl;
+  /** Returns the thumbnail URL with the best quality for the provided video ID */
+  getBestThumbnailUrl: typeof getBestThumbnailUrl;
+
+  // translations:
+  /** 🔒 Sets the locale for all new translations */
+  setLocale: typeof setLocaleInterface;
+  /** Returns the current locale */
+  getLocale: typeof getLocale;
+  /** Returns whether a translation key exists for the set locale */
+  hasKey: typeof hasKey;
+  /** Returns whether a translation key exists for the provided locale */
+  hasKeyFor: typeof hasKeyFor;
   /** Returns the translation for the provided translation key and set locale (check the files in the folder `assets/translations`) */
   t: typeof t;
   /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
   tp: typeof tp;
-  /** Returns the current feature configuration */
-  getFeatures: typeof getFeatures;
-  /** Overwrites the feature configuration with the provided one */
-  saveFeatures: typeof setFeatures;
+
+  // feature config:
+  /** 🔒 Returns the current feature configuration */
+  getFeatures: typeof getFeaturesInterface;
+  /** 🔒 Overwrites the feature configuration with the provided one */
+  saveFeatures: typeof saveFeaturesInterface;
+
+  // lyrics:
+  /** Sanitizes the provided artist string - this needs to be done before calling other lyrics related functions! */
+  sanitizeArtists: typeof sanitizeArtists;
+  /** Sanitizes the provided song title string - this needs to be done before calling other lyrics related functions! */
+  sanitizeSong: typeof sanitizeSong;
+  /** Fetches the lyrics URL of the top search result for the provided song and artist. Before a request is sent, the cache is checked for a match. */
+  fetchLyricsUrlTop: typeof fetchLyricsUrlTop;
+  /** Returns the lyrics cache entry for the provided song and artist, if there is one. Never sends a request on its own. */
+  getLyricsCacheEntry: typeof getLyricsCacheEntry;
+
+  // auto-like:
+  /** 🔒 Returns the current auto-like data */
+  getAutoLikeData: typeof getAutoLikeDataInterface;
+  /** 🔒 Overwrites the auto-like data */
+  saveAutoLikeData: typeof saveAutoLikeDataInterface;
+  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API */
+  fetchVideoVotes: typeof fetchVideoVotes;
+
+  // components:
+  /** Creates a new hotkey input component */
+  createHotkeyInput: typeof createHotkeyInput;
+  /** Creates a new toggle input component */
+  createToggleInput: typeof createToggleInput;
+  /** Creates a new circular button component */
+  createCircularBtn: typeof createCircularBtn;
+  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect */
+  createRipple: typeof createRipple;
+  /** Shows a toast with the provided text */
+  showToast: typeof showToast;
+  /** Shows a toast with the provided text and an icon */
+  showIconToast: typeof showIconToast;
 };
 
 //#region feature defs

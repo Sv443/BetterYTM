@@ -363,7 +363,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A nano-events emitter object that allows you to listen for events that are dispatched by BetterYTM  
+> - `events` - A [NanoEmitter](#nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
@@ -376,26 +376,32 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   plugin: {
 >     name: "My cool plugin",                           // required
 >     namespace: "https://github.com/MyUsername",       // required
->     version: [4, 2, 0],                               // required
+>     version: "4.2.0",                                 // required
 >     description: {                                    // required
 >       en_US: "This plugin does cool stuff",           // required
 >       de_DE: "Dieses Plugin macht coole Sachen",
 >       // see all supported locale codes in "assets/locales.json"
 >     },
 >     iconUrl: "https://picsum.photos/128/128",
->     homepage: {
+>     license: {                                    // (optional)
+>       name: "MIT",                                // required
+>       url: "https://opensource.org/licenses/MIT", // required
+>     },
+>     homepage: {                                                 // required
+>       source: "https://github.com/MyUsername/MyCoolBYTMPlugin", // required
 >       other: "https://example.org/MyCoolBYTMPlugin",
->       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",
+>       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues",
 >       greasyfork: "...",
 >       openuserjs: "...",
 >     },
 >   },
->   // the intents (permissions) the plugin needs to be granted
->   // search for "enum PluginIntent" in "src/types.ts" to see all available intent values
->   intents: [ 2, 16 ],
->   contributors: [
+>   // the intents (permissions) the plugin needs to be granted to be able to use certain functions
+>   // search for "enum PluginIntent" in "src/types.ts" to see all available values,
+>   // then sum all of them together to get the final intents number
+>   intents: 18,
+>   contributors: [           // (optional)
 >     {
->       name: "MyUsername", // required
+>       name: "MyUsername",   // required
 >       homepage: "https://github.com/MyUsername",
 >       email: "somedude420@hotmail.co.bd",
 >     },
@@ -407,7 +413,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   ],
 > };
 > 
-> // private token that should not be stored persistently (in memory like this should be enough)
+> // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every session!)
 > let authToken: string | undefined;
 > 
 > // since some function calls require the token, this function can be called to get it once the plugin is fully registered
@@ -444,19 +450,20 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will always return `undefined`)
-> - `name` - The 'name' property of the plugin
-> - `namespace` - The 'namespace' property of the plugin
-> OR:
-> - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
+> - either:
+>   - `name` - The "name" property of the plugin
+>   - `namespace` - The "namespace" property of the plugin
+> - or:
+>   - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
 >   
-> The function will return `undefined` if the plugin is not registered.  
+> The function will return `undefined` if the plugin is not registered or the token is invalid.  
 > The type of the returned object can be found by searching for `type PluginInfo` in the file [`src/types.ts`](./src/types.ts)
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > unsafeWindow.addEventListener("bytm:pluginsRegistered", () => {
->   const pluginInfo = unsafeWindow.BYTM.getPluginInfo("My cool plugin", "https://github.com/MyUsername");
+>   const pluginInfo = unsafeWindow.BYTM.getPluginInfo(myToken, "My cool plugin", "https://github.com/MyUsername");
 >   if(pluginInfo) {
 >     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
 >   }
