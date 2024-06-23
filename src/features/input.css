@@ -61,7 +61,9 @@
   margin-left: 10px;
 }
 
-.bytm-auto-like-toggle-btn {
+/* more specificity to override the default styles */
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn {
   margin-right: 8px;
   border: 1px solid var(--bytm-auto-like-btn-color);
   box-sizing: border-box;
@@ -70,38 +72,38 @@
   animation: none;
 }
 
-.bytm-auto-like-toggle-btn.left-margin {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
   margin: 0;
   margin-left: 8px;
 }
 
-.bytm-auto-like-toggle-btn:active {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.bytm-auto-like-toggle-btn:active,
-.bytm-auto-like-toggle-btn.toggled {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.bytm-auto-like-toggle-btn svg path {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn svg path {
   fill: var(--bytm-auto-like-btn-color);
   transition: fill 0.2s ease;
 }
 
-.bytm-auto-like-toggle-btn:active svg path,
-.bytm-auto-like-toggle-btn.toggled svg path {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active svg path,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled svg path {
   fill: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
-.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn .bytm-generic-long-btn-txt {
   font-weight: 500;
   color: var(--bytm-auto-like-btn-color);
   transition: color 0.2s ease;
 }
 
-.bytm-auto-like-toggle-btn:active .bytm-generic-long-btn-txt,
-.bytm-auto-like-toggle-btn.toggled .bytm-generic-long-btn-txt
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active .bytm-generic-long-btn-txt,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled .bytm-generic-long-btn-txt
 {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
