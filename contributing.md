@@ -1378,6 +1378,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > 
 > async function exportData() {
 >   // compress the data to save space
+>   // note that this requires the `@grant unsafeWindow` directive in the metadata block!
 >   const exportData = JSON.stringify({ foo: "bar" });
 >   return await unsafeWindow.BYTM.UserUtils.compress(exportData, "deflate");
 > }
