@@ -4,7 +4,7 @@ import { scriptInfo } from "../constants.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
 import { createLongBtn, createRipple, showToast } from "./index.js";
-import "./ExportImportDialog.css";
+import "./ExImDialog.css";
 
 type ExImDialogOpts =
   Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
@@ -21,18 +21,14 @@ type ExImDialogOpts =
     trKeyDescImport: TrKey | (string & {});
     /** Translation key for the dialog description when exporting */
     trKeyDescExport: TrKey | (string & {});
-    /** Whether the data should be hidden by default when exporting and importing */
+    /** Whether the data should be hidden by default when exporting */
     dataHidden?: boolean;
   };
-
-type ExImMode = "export" | "import";
 
 //#region class
 
 /** Generic dialog for exporting and importing any string of data */
 export class ExImDialog extends BytmDialog {
-  public mode: ExImMode = "export";
-
   constructor(options: ExImDialogOpts) {
     super({
       renderHeader: () => ExImDialog.renderHeader(options),
