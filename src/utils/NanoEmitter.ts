@@ -1,6 +1,6 @@
 import { createNanoEvents, type DefaultEvents, type EventsMap, type Unsubscribe } from "nanoevents";
 
-interface NanoEmitterSettings {
+export interface NanoEmitterOptions {
   /** If set to true, allows emitting events through the public method emit() */
   publicEmit: boolean;
 }
@@ -9,12 +9,12 @@ interface NanoEmitterSettings {
 export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
   protected readonly events = createNanoEvents<TEvtMap>();
   protected eventUnsubscribes: Unsubscribe[] = [];
-  protected emitterSettings: NanoEmitterSettings;
+  protected emitterOptions: NanoEmitterOptions;
 
-  constructor(settings: Partial<NanoEmitterSettings> = {}) {
-    this.emitterSettings = {
+  constructor(options: Partial<NanoEmitterOptions> = {}) {
+    this.emitterOptions = {
       publicEmit: false,
-      ...settings,
+      ...options,
     };
   }
 
@@ -54,7 +54,7 @@ export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
 
   /** Emits an event on this instance - Needs `publicEmit` to be set to true in the constructor! */
   public emit<TKey extends keyof TEvtMap>(event: TKey, ...args: Parameters<TEvtMap[TKey]>) {
-    if(this.emitterSettings.publicEmit) {
+    if(this.emitterOptions.publicEmit) {
       this.events.emit(event, ...args);
       return true;
     }
