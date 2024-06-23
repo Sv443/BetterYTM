@@ -190,7 +190,7 @@ export async function initAutoLike() {
     canCompress = await compressionSupported();
     await initAutoLikeStore();
     if(getDomain() === "ytm") {
-      let timeout: NodeJS.Timeout;
+      let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("songTitleChanged", () => {
         timeout && clearTimeout(timeout);
         timeout = setTimeout(() => {
@@ -250,7 +250,7 @@ export async function initAutoLike() {
       });
     }
     else if(getDomain() === "yt") {
-      let timeout: NodeJS.Timeout;
+      let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("watchIdChanged", () => {
         timeout && clearTimeout(timeout);
         if(!location.pathname.startsWith("/watch"))

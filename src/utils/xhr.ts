@@ -57,10 +57,10 @@ export async function fetchCss(key: ResourceKey & `css-${string}`) {
   }
 }
 
-/** Cache for the vote data of YouTube videos to prevent unnecessary requests */
+/** Cache for the vote data of YouTube videos to prevent some unnecessary requests */
 const voteCache = new Map<string, VideoVotesObj>();
 /** Time-to-live for the vote cache in milliseconds */
-const voteCacheTTL = 1000 * 60 * 5;
+const voteCacheTTL = 1000 * 60 * 10;
 
 /**
  * Fetches the votes object for a YouTube video from the [Return YouTube Dislike API.](https://returnyoutubedislike.com/docs)

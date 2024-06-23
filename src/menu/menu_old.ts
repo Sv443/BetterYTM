@@ -6,10 +6,10 @@ import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasK
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getFeatHelpDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
-import "./menu_old.css";
 import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import { emitInterface } from "../interface.js";
 import pkg from "../../package.json" with { type: "json" };
+import "./menu_old.css";
 
 //#region create menu
 
@@ -17,7 +17,7 @@ let isCfgMenuMounted = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
-const scrollIndicatorOffsetThreshold = 30;
+const scrollIndicatorOffsetThreshold = 50;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale: string | undefined;
@@ -237,10 +237,9 @@ async function mountCfgMenu() {
         alert(t("import_error_invalid"));
       }
     },
-    trKeyTitle: "bytm_config_export_import_title",
-    trKeyDescImport: "bytm_config_import_desc",
-    trKeyDescExport: "bytm_config_export_desc",
-    dataHidden: false,
+    title: () => t("bytm_config_export_import_title"),
+    descImport: () => t("bytm_config_import_desc"),
+    descExport: () => t("bytm_config_export_desc"),
   });
 
   const exportImportBtn = document.createElement("button");

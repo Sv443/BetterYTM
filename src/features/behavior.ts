@@ -152,7 +152,7 @@ async function restVidRestoreTime() {
 }
 
 let lastSongTime = -1;
-let remVidCheckTimeout: NodeJS.Timeout | undefined;
+let remVidCheckTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function restVidStartUpdateLoop() {
