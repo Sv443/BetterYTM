@@ -309,6 +309,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -1321,6 +1322,100 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   });
 > 
 >   await dialog.open();
+>   console.log("The dialog is now open");
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### ExImDialog
+> Usage:
+> ```ts
+> new unsafeWindow.BYTM.ExImDialog(options: ExImDialogOptions): ExImDialog
+> ```
+>   
+> A subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a generic export/import dialog.  
+>   
+> Features:
+> - Has all the features of the [BytmDialog](#bytmdialog) class
+> - Can be used to export and import any kind of data that can be serialized to a string
+> - Built-in textareas for the user to paste or copy data to/from
+> - Copy to clipboard button for the export textarea
+> - Ability to copy a second variety of the data when shift-clicking the copy button
+> - Exported data is hidden by default in case it contains sensitive information
+> - Based on BYTM's translation system for all text content
+>   
+> Options properties:  
+> All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderHeader`, `renderBody` and `renderFooter`  
+> | Property | Description |
+> | :-- | :-- |
+> | `title: string \| (() => (string \| Promise<string>))` | Title of the dialog |
+> | `descImport: string \| (() => (string \| Promise<string>))` | Description of the dialog when importing |
+> | `descExport: string \| (() => (string \| Promise<string>))` | Description of the dialog when exporting |
+> | `onImport: (data: string) => void` | Callback function that gets called when the user imports data |
+> | `exportData: string \| (() => (string \| Promise<string>))` | The data to export (or a function that returns the data as string, either sync or async) |
+> | `exportDataSpecial?: string \| (() => (string \| Promise<string>))` | Optional variant of the data, used for special cases like when shift-clicking the copy button |
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const exImDialog = new unsafeWindow.BYTM.ExImDialog({
+>   id: "my-exim-dialog",
+>   width: 500,
+>   height: 400,
+>   exportData,
+>   exportDataSpecial,
+>   onImport,
+>   title: "My ExIm Dialog",
+>   descImport: "Past the data you want to import below and click import!",
+>   descExport: "Copy the data below to save it or share it with others. Warning: may contain sensitive information!",
+> });
+> 
+> type MyDataType = { foo: string };
+> 
+> async function exportData() {
+>   // compress the data to save space
+>   const exportData = JSON.stringify({ foo: "bar" });
+>   return await unsafeWindow.BYTM.UserUtils.compress(exportData, "deflate");
+> }
+> 
+> function exportDataSpecial() {
+>   // return the data uncompressed when shift-clicking the copy button
+>   return JSON.stringify({ foo: "bar" });
+> }
+> 
+> async function onImport(data: string) {
+>   let decompData: string;
+>   try {
+>     // since the data could either be compressed or not, try to decompress it and see if it errors
+>     decompData = await unsafeWindow.BYTM.UserUtils.decompress(data, "deflate");
+>   }
+>   catch {
+>     // the data is not compressed, so just use it as is
+>     decompData = data;
+>   }
+> 
+>   let parsedData: MyDataType;
+>   try {
+>     parsedData = JSON.parse(decompData);
+>   }
+>   catch(err) {
+>     console.error("The user imported invalid data");
+>     return;
+>   }
+> 
+>   console.log("The user successfully imported data:", parsedData);
+> }
+> 
+> async function run() {
+>   exImDialog.on("close", () => {
+>     console.log("The dialog was closed");
+>   });
+> 
+>   await exImDialog.open();
 >   console.log("The dialog is now open");
 > }
 > 

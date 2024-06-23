@@ -1,28 +1,25 @@
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
-import { t, type TrKey } from "../utils/translations.js";
-import { scriptInfo } from "../constants.js";
+import { t } from "../utils/translations.js";
 import { onInteraction } from "../utils/input.js";
 import { copyToClipboard } from "../utils/dom.js";
 import { createLongBtn, createRipple, showToast } from "./index.js";
 import "./ExImDialog.css";
 
 type ExImDialogOpts =
-  Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
+  & Omit<BytmDialogOptions, "renderHeader" | "renderBody" | "renderFooter">
   & {
+    /** Title of the dialog */
+    title: string | (() => (string | Promise<string>));
+    /** Description when importing */
+    descImport: string | (() => (string | Promise<string>));
+    /** Description when exporting */
+    descExport: string | (() => (string | Promise<string>));
+    /** Function that gets called when the user imports data */
+    onImport: (data: string) => void;
     /** The data to export (or a function that returns the data as string, sync or async) */
     exportData: string | (() => (string | Promise<string>));
     /** Optional variant of the data, used for special cases like when shift-clicking the copy button */
     exportDataSpecial?: string | (() => (string | Promise<string>));
-    /** Function that gets called when the user imports data */
-    onImport: (data: string) => void;
-    /** Translation key for the dialog title */
-    trKeyTitle: TrKey | (string & {});
-    /** Translation key for the dialog description when importing */
-    trKeyDescImport: TrKey | (string & {});
-    /** Translation key for the dialog description when exporting */
-    trKeyDescExport: TrKey | (string & {});
-    /** Whether the data should be hidden by default when exporting */
-    dataHidden?: boolean;
   };
 
 //#region class
@@ -51,7 +48,9 @@ export class ExImDialog extends BytmDialog {
     headerEl.role = "heading";
     headerEl.ariaLevel = "1";
     headerEl.tabIndex = 0;
-    headerEl.textContent = headerEl.ariaLabel = t(opts.trKeyTitle as "_", scriptInfo.name);
+    headerEl.textContent = headerEl.ariaLabel = typeof opts.title === "function"
+      ? await opts.title()
+      : opts.title;
 
     return headerEl;
   }
@@ -72,7 +71,9 @@ export class ExImDialog extends BytmDialog {
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = t(opts.trKeyDescExport);
+      descEl.textContent = descEl.ariaLabel = typeof opts.descExport === "function"
+        ? await opts.descExport()
+        : opts.descExport;
 
       const dataEl = document.createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");
@@ -111,7 +112,9 @@ export class ExImDialog extends BytmDialog {
       descEl.classList.add("bytm-exim-dialog-desc");
       descEl.role = "note";
       descEl.tabIndex = 0;
-      descEl.textContent = descEl.ariaLabel = t(opts.trKeyDescImport);
+      descEl.textContent = descEl.ariaLabel = typeof opts.descImport === "function"
+        ? await opts.descImport()
+        : opts.descImport;
 
       const dataEl = document.createElement("textarea");
       dataEl.classList.add("bytm-exim-dialog-data");
