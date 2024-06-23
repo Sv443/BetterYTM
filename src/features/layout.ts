@@ -728,35 +728,37 @@ export async function initShowVotes() {
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
-        getFeature("showVotes") && addVoteNumbers(voteCont, voteObj);
+        if(getFeature("showVotes")) {
+          addVoteNumbers(voteCont, voteObj);
+
+          siteEvents.on("watchIdChanged", async (watchId) => {
+            const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
+            const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
+        
+            if(!labelLikes || !labelDislikes)
+              return error("Couldn't find vote label elements while updating like and dislike counts");
+        
+            if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+              return log("Vote labels already updated for this video");
+        
+            const voteObj = await fetchVideoVotes(watchId);
+            if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+              return error("Couldn't fetch votes from the Return YouTube Dislike API");
+        
+            labelLikes.dataset.watchId = getWatchId() ?? "";
+            labelLikes.textContent = formatVoteNumber(voteObj.likes);
+            labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
+        
+            labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
+            labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
+            labelDislikes.dataset.watchId = getWatchId() ?? "";
+          });
+        }
       }
       catch(err) {
         error("Couldn't initialize show votes feature due to an error:", err);
       }
     },
-  });
-
-  siteEvents.on("watchIdChanged", async (watchId) => {
-    const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
-    const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
-
-    if(!labelLikes || !labelDislikes)
-      return error("Couldn't find vote label elements while updating like and dislike counts");
-
-    if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
-      return log("Vote labels already updated for this video");
-
-    const voteObj = await fetchVideoVotes(watchId);
-    if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-      return error("Couldn't fetch votes from the Return YouTube Dislike API");
-
-    labelLikes.dataset.watchId = getWatchId() ?? "";
-    labelLikes.textContent = formatVoteNumber(voteObj.likes);
-    labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
-
-    labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-    labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
-    labelDislikes.dataset.watchId = getWatchId() ?? "";
   });
 }
 
@@ -771,7 +773,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
     label.textContent = String(formatVoteNumber(amount));
-    label.title = label.ariaLabel = t(`vote_label_${type}`, formatVoteNumber(amount, "full"));
+    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "full"));
     label.dataset.watchId = getWatchId() ?? "";
     label.addEventListener("click", (e) => {
       e.preventDefault();
