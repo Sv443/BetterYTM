@@ -7,7 +7,7 @@ import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
 import { compressionFormat } from "../constants.js";
 import { addSelectorListener } from "../observers.js";
-import { createLongBtn, showIconToast } from "../components/index.js";
+import { createLongBtn, createRipple, showIconToast } from "../components/index.js";
 import { getAutoLikeDialog } from "../dialogs/index.js";
 import "./input.css";
 
@@ -390,5 +390,5 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
   buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses ?? [])]);
   buttonEl.dataset.channelId = channelId;
 
-  siblingEl.insertAdjacentElement("afterend", buttonEl);
+  siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
 }
