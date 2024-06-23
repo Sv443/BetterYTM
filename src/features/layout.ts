@@ -726,7 +726,7 @@ export async function initShowVotes() {
           return error("Couldn't get watch ID while initializing showVotes");
         const voteObj = await fetchVideoVotes(watchId);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-          return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
+          return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
         getFeature("showVotes") && addVoteNumbers(voteCont, voteObj);
       }
@@ -748,7 +748,7 @@ export async function initShowVotes() {
 
     const voteObj = await fetchVideoVotes(watchId);
     if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
-      return error("Couldn't fetch votes from ReturnYouTubeDislikes API");
+      return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
     labelLikes.dataset.watchId = getWatchId() ?? "";
     labelLikes.textContent = formatVoteNumber(voteObj.likes);

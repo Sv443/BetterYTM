@@ -29,7 +29,7 @@ type IconToastProps = ToastProps & (
   }
 );
 
-let timeout: NodeJS.Timeout | undefined;
+let timeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Shows a toast message with an icon */
 export async function showIconToast({

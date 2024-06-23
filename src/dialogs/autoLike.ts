@@ -3,7 +3,7 @@ import { compressionSupported, error, getDomain, log, onInteraction, parseChanne
 import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { siteEvents } from "../siteEvents.js";
-import { ExImDialog } from "../components/ExportImportDialog.js";
+import { ExImDialog } from "../components/ExImDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
 import "./autoLike.css";
@@ -72,10 +72,9 @@ export async function getAutoLikeDialog() {
           error("Couldn't import auto-like channels data:", err);
         }
       },
-      trKeyTitle: "auto_like_export_import_title",
-      trKeyDescImport: "auto_like_import_desc",
-      trKeyDescExport: "auto_like_export_desc",
-      dataHidden: false,
+      title: () => t("auto_like_export_import_title"),
+      descImport: () => t("auto_like_import_desc"),
+      descExport: () => t("auto_like_export_desc"),
     });
   }
 
