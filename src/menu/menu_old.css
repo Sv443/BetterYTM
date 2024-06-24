@@ -42,14 +42,14 @@
 }
 
 .bytm-menu-body {
-  padding: 20px;
+  padding: 15px;
 }
 
 #bytm-menu-opts {
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 20px 0px;
+  padding: 15px 0px;
   overflow-y: auto;
 }
 
@@ -58,7 +58,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  padding: 15px 20px 15px 20px;
+  padding: 15px;
   background-color: var(--bytm-menu-bg);
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: none none solid none !important;
@@ -66,8 +66,18 @@
 }
 
 .bytm-menu-header.small {
-  padding: 10px 15px;
+  padding: 10px;
   border-style: none none solid none !important;
+}
+
+.bytm-menu-title-logo-header-cont {
+  display: flex;
+}
+
+.bytm-cfg-menu-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
 }
 
 .bytm-menu-titlecont {
@@ -205,7 +215,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-top: 6px;
-  padding: 15px 20px;
+  padding: 15px;
   background: var(--bytm-menu-bg);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
   border: 2px solid var(--bytm-menu-separator-color);
@@ -251,7 +261,7 @@
   font-size: 20px;
   margin-top: 32px;
   margin-bottom: 8px;
-  padding: 0px 20px;
+  padding: 0px 15px;
 }
 
 .bytm-ftconf-category-header:first-of-type {
