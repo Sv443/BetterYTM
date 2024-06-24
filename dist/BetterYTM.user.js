@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,54 +33,54 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/057bfa72/assets/translations/zh_CN.json
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/dist/BetterYTM.css
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/anchorImprovements.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/arrow_down.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/auto_like_enabled.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/auto_like.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/beaker_small.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/globe_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/globe.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/help.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/image_filled.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/image.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/external/greasyfork.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/logo/logo_dev_48.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/logo/logo_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/de_DE.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/en_US.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/en_UK.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/0db0aa6f/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
-// @require           https://cdn.jsdelivr.net/npm/marked@12.0.0/lib/marked.umd.js
+// @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
@@ -191,7 +191,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "057bfa72";
+const buildNumberRaw = "0db0aa6f";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1829,45 +1829,45 @@ var dependencies = {
 	"@sv443-network/userutils": "^6.3.0",
 	"compare-versions": "^6.1.0",
 	"fuse.js": "^7.0.0",
-	marked: "^12.0.0",
+	marked: "^12.0.2",
 	nanoevents: "^9.0.0"
 };
 var devDependencies = {
 	"@chromatic-com/storybook": "^1.5.0",
 	"@eslint/eslintrc": "^3.1.0",
-	"@rollup/plugin-json": "^6.0.1",
+	"@rollup/plugin-json": "^6.1.0",
 	"@rollup/plugin-node-resolve": "^15.2.3",
 	"@rollup/plugin-terser": "^0.4.4",
-	"@rollup/plugin-typescript": "^11.1.5",
-	"@storybook/addon-essentials": "^8.1.5",
-	"@storybook/addon-interactions": "^8.1.5",
-	"@storybook/addon-links": "^8.1.5",
-	"@storybook/blocks": "^8.1.5",
-	"@storybook/html": "^8.1.5",
-	"@storybook/html-vite": "^8.1.5",
-	"@storybook/test": "^8.1.5",
-	"@types/express": "^4.17.17",
-	"@types/greasemonkey": "^4.0.4",
-	"@types/node": "^20.12.12",
+	"@rollup/plugin-typescript": "^11.1.6",
+	"@storybook/addon-essentials": "^8.1.10",
+	"@storybook/addon-interactions": "^8.1.10",
+	"@storybook/addon-links": "^8.1.10",
+	"@storybook/blocks": "^8.1.10",
+	"@storybook/html": "^8.1.10",
+	"@storybook/html-vite": "^8.1.10",
+	"@storybook/test": "^8.1.10",
+	"@types/express": "^4.17.21",
+	"@types/greasemonkey": "^4.0.7",
+	"@types/node": "^20.14.8",
 	"@typescript-eslint/eslint-plugin": "^8.0.0-alpha.26",
 	"@typescript-eslint/parser": "^8.0.0-alpha.26",
 	"@typescript-eslint/utils": "^8.0.0-alpha.26",
-	concurrently: "^8.1.0",
-	dotenv: "^16.4.1",
-	eslint: "^9.4.0",
+	concurrently: "^8.2.2",
+	dotenv: "^16.4.5",
+	eslint: "^9.5.0",
 	"eslint-plugin-storybook": "^0.9.0--canary.156.da7873a.0",
-	express: "^4.18.2",
-	knip: "^5.15.1",
-	nodemon: "^3.0.1",
-	pnpm: "^9.2.0",
-	rollup: "^4.6.0",
+	express: "^4.19.2",
+	knip: "^5.22.2",
+	nodemon: "^3.1.4",
+	pnpm: "^9.4.0",
+	rollup: "^4.18.0",
 	"rollup-plugin-execute": "^1.1.1",
-	"rollup-plugin-import-css": "^3.3.5",
-	storybook: "^8.1.5",
-	"storybook-dark-mode": "^4.0.1",
-	"ts-node": "^10.9.1",
-	tslib: "^2.5.2",
-	typescript: "^5.4.5"
+	"rollup-plugin-import-css": "^3.5.0",
+	storybook: "^8.1.10",
+	"storybook-dark-mode": "^4.0.2",
+	"ts-node": "^10.9.2",
+	tslib: "^2.6.3",
+	typescript: "^5.5.2"
 };
 var browserslist = [
 	"last 1 version",
@@ -2262,7 +2262,7 @@ function mountCfgMenu() {
         const featuresCont = document.createElement("div");
         featuresCont.id = "bytm-menu-opts";
         const onCfgChange = (key, initialVal, newVal) => __awaiter(this, void 0, void 0, function* () {
-            var _e, _f;
+            var _a, _b;
             const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
             info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
             const featConf = JSON.parse(JSON.stringify(getFeatures()));
@@ -2274,7 +2274,7 @@ function mountCfgMenu() {
             changedKeys.some((k) => { var _a; return ((_a = featInfo[k]) === null || _a === void 0 ? void 0 : _a.reloadRequired) !== false; });
             yield setFeatures(featConf);
             // @ts-ignore
-            (_f = (_e = featInfo[key]) === null || _e === void 0 ? void 0 : _e.change) === null || _f === void 0 ? void 0 : _f.call(_e, key, initialVal, newVal);
+            (_b = (_a = featInfo[key]) === null || _a === void 0 ? void 0 : _a.change) === null || _b === void 0 ? void 0 : _b.call(_a, key, initialVal, newVal);
             if (requiresReload) {
                 reloadFooterEl.classList.remove("hidden");
                 reloadFooterEl.setAttribute("aria-hidden", "false");
@@ -3714,14 +3714,15 @@ function fixHdrIssues() {
 /** Shows the amount of likes and dislikes on the current song */
 function initShowVotes() {
     return __awaiter(this, void 0, void 0, function* () {
-        const voteContSelector = ".middle-controls-buttons ytmusic-like-button-renderer";
-        addSelectorListener("playerBar", voteContSelector, {
+        addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
             listener(voteCont) {
                 return __awaiter(this, void 0, void 0, function* () {
                     try {
                         const watchId = getWatchId();
-                        if (!watchId)
-                            return error("Couldn't get watch ID while initializing showVotes");
+                        if (!watchId) {
+                            yield siteEvents.once("watchIdChanged");
+                            return initShowVotes();
+                        }
                         const voteObj = yield fetchVideoVotes(watchId);
                         if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
                             return error("Couldn't fetch votes from the Return YouTube Dislike API");
@@ -3751,7 +3752,7 @@ function initShowVotes() {
                         error("Couldn't initialize show votes feature due to an error:", err);
                     }
                 });
-            },
+            }
         });
     });
 }
@@ -5095,7 +5096,7 @@ const combineAdornments = (adornments) => new Promise((resolve) => __awaiter(voi
 const adornments = {
     advanced: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"); }),
     experimental: () => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"); }),
-    globe: () => __awaiter(void 0, void 0, void 0, function* () { var _b; return (_b = yield resourceToHTMLString("icon-globe_small")) !== null && _b !== void 0 ? _b : ""; }),
+    globe: () => __awaiter(void 0, void 0, void 0, function* () { var _a; return (_a = yield resourceToHTMLString("icon-globe_small")) !== null && _a !== void 0 ? _a : ""; }),
     alert: (title) => __awaiter(void 0, void 0, void 0, function* () { return getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""); }),
     reloadRequired: () => __awaiter(void 0, void 0, void 0, function* () { return getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined; }),
 };
