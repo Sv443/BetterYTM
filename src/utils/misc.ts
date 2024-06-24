@@ -1,4 +1,4 @@
-import { compress, decompress, fetchAdvanced, openInNewTab, randomId } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo } from "../constants.js";
 import { type Domain, type ResourceKey } from "../types.js";
@@ -141,18 +141,25 @@ export function openInTab(href: string, background = false) {
 
 /** Tries to parse an uncompressed or compressed input string as a JSON object */
 export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: string): Promise<TData | null> {
+  let parsed: TData | null = null;
+
   try {
-    return JSON.parse(input);
+    parsed = JSON.parse(input);
   }
   catch {
     try {
-      return JSON.parse(await decompress(input, compressionFormat, "string"));
+      parsed = JSON.parse(await decompress(input, compressionFormat, "string"));
     }
     catch(err) {
       error("Couldn't decompress and parse data due to an error:", err);
       return null;
     }
   }
+
+  // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+  await pauseFor(250);
+
+  return parsed;
 }
 
 //#region resources
