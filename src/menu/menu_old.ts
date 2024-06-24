@@ -328,6 +328,13 @@ async function mountCfgMenu() {
     {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
+  /**
+   * Formats the value `v` based on the provided `key` using the `featInfo` object.  
+   * If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
+   * If no custom `renderValue` function is defined, the value will be converted to a string and trimmed.  
+   * If the value is an object, it will be converted to a JSON string representation.  
+   * If an error occurs during formatting (like when passing objects with circular references), the original value will be returned as a string (trimmed).
+   */
   const fmtVal = (v: unknown, key: FeatureKey) => {
     try {
       // @ts-ignore
@@ -336,7 +343,7 @@ async function mountCfgMenu() {
       return renderValue ? renderValue(retVal) : retVal;
     }
     catch {
-      // because stringify throws on circular refs
+      // absolute last resort fallback because stringify throws on circular refs
       return String(v).trim();
     }
   };
@@ -622,17 +629,17 @@ async function mountCfgMenu() {
         }
         else {
           // custom input element:
-          let wrapperElem: HTMLElement | undefined;
+          let customInputEl: HTMLElement | undefined;
 
           switch(type) {
           case "hotkey":
-            wrapperElem = createHotkeyInput({
+            customInputEl = createHotkeyInput({
               initialValue: typeof initialVal === "object" ? initialVal as HotkeyObj : undefined,
               onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
             });
             break;
           case "toggle":
-            wrapperElem = await createToggleInput({
+            customInputEl = await createToggleInput({
               initialValue: Boolean(initialVal),
               onChange: (checked) => confChanged(featKey as keyof FeatureConfig, initialVal, checked),
               id: `ftconf-${featKey}`,
@@ -640,29 +647,29 @@ async function mountCfgMenu() {
             });
             break;
           case "button":
-            wrapperElem = document.createElement("button");
-            wrapperElem.classList.add("bytm-btn");
-            wrapperElem.tabIndex = 0;
-            wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+            customInputEl = document.createElement("button");
+            customInputEl.classList.add("bytm-btn");
+            customInputEl.tabIndex = 0;
+            customInputEl.textContent = customInputEl.ariaLabel = customInputEl.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
 
-            onInteraction(wrapperElem, async () => {
-              if((wrapperElem as HTMLButtonElement).disabled)
+            onInteraction(customInputEl, async () => {
+              if((customInputEl as HTMLButtonElement).disabled)
                 return;
 
               const startTs = Date.now();
               const res = ftInfo.click();
 
-              (wrapperElem as HTMLButtonElement).disabled = true;
-              wrapperElem!.classList.add("bytm-busy");
-              wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+              (customInputEl as HTMLButtonElement).disabled = true;
+              customInputEl!.classList.add("bytm-busy");
+              customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
 
               if(res instanceof Promise)
                 await res;
 
               const finalize = () => {
-                (wrapperElem as HTMLButtonElement).disabled = false;
-                wrapperElem!.classList.remove("bytm-busy");
-                wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                (customInputEl as HTMLButtonElement).disabled = false;
+                customInputEl!.classList.remove("bytm-busy");
+                customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
               };
 
               // artificial timeout ftw
@@ -674,7 +681,7 @@ async function mountCfgMenu() {
             break;
           }
 
-          ctrlElem.appendChild(wrapperElem!);
+          ctrlElem.appendChild(customInputEl!);
         }
 
         ftConfElem.appendChild(ctrlElem);
