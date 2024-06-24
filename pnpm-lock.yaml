@@ -96,6 +96,9 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.19.2
+      globals:
+        specifier: ^15.6.0
+        version: 15.6.0
       knip:
         specifier: ^5.22.2
         version: 5.22.2(@types/node@20.14.8)(typescript@5.5.2)
@@ -2782,6 +2785,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@15.6.0:
+    resolution: {integrity: sha512-UzcJi88Hw//CurUIRa9Jxb0vgOCcuD/MNjwmXp633cyaRKkCWACkoqHCtfZv43b1kqXGg/fpOa8bwgacCeXsVg==}
     engines: {node: '>=18'}
 
   globby@11.1.0:
@@ -7762,6 +7769,8 @@ snapshots:
   globals@11.12.0: {}
 
   globals@14.0.0: {}
+
+  globals@15.6.0: {}
 
   globby@11.1.0:
     dependencies:
