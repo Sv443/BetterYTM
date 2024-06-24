@@ -9,7 +9,7 @@ export async function getChangelogDialog() {
   if(!changelogDialog) {
     changelogDialog = new BytmDialog({
       id: "changelog",
-      width: 900,
+      width: 1000,
       height: 800,
       closeBtnEnabled: true,
       closeOnBgClick: true,
