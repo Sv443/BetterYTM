@@ -65,10 +65,21 @@ async function mountCfgMenu() {
   const headerElem = document.createElement("div");
   headerElem.classList.add("bytm-menu-header");
 
+  const titleLogoHeaderCont = document.createElement("div");
+  titleLogoHeaderCont.classList.add("bytm-menu-title-logo-header-cont");
+
   const titleCont = document.createElement("div");
   titleCont.classList.add("bytm-menu-titlecont");
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
+
+  const titleLogoElem = document.createElement("img");
+  const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
+  titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
+  if(logoSrc)
+    titleLogoElem.src = logoSrc;
+
+  titleLogoHeaderCont.appendChild(titleLogoElem);
 
   const titleElem = document.createElement("h2");
   titleElem.classList.add("bytm-menu-title");
@@ -143,7 +154,9 @@ async function mountCfgMenu() {
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
 
-  headerElem.appendChild(titleCont);
+  titleLogoHeaderCont.appendChild(titleCont);
+
+  headerElem.appendChild(titleLogoHeaderCont);
   headerElem.appendChild(closeElem);
 
   //#region footer
