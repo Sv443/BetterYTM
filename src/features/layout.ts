@@ -719,20 +719,21 @@ export async function fixHdrIssues() {
 
 /** Shows the amount of likes and dislikes on the current song */
 export async function initShowVotes() {
-  const voteContSelector = ".middle-controls-buttons ytmusic-like-button-renderer";
-  addSelectorListener("playerBar", voteContSelector, {
-    async listener(voteCont) {
+  addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
+    async listener(voteCont: HTMLElement): Promise<void> {
       try {
         const watchId = getWatchId();
-        if(!watchId)
-          return error("Couldn't get watch ID while initializing showVotes");
+        if(!watchId) {
+          await siteEvents.once("watchIdChanged");
+          return initShowVotes();
+        }
         const voteObj = await fetchVideoVotes(watchId);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from the Return YouTube Dislike API");
-
+  
         if(getFeature("showVotes")) {
           addVoteNumbers(voteCont, voteObj);
-
+  
           siteEvents.on("watchIdChanged", async (watchId) => {
             const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
             const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
@@ -760,7 +761,7 @@ export async function initShowVotes() {
       catch(err) {
         error("Couldn't initialize show votes feature due to an error:", err);
       }
-    },
+    }
   });
 }
 
