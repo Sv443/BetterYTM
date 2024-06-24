@@ -45,7 +45,7 @@
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
-    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
+    - `createRipple()` to create a click ripple animation effect on any given element or create a new element with the effect
     - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
   - Added functions:
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
