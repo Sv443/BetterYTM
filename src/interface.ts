@@ -368,10 +368,8 @@ function validatePluginDef(pluginDef: Partial<PluginDef>) {
 /** Registers a plugin on the BYTM interface */
 export function registerPlugin(def: PluginDef): PluginRegisterResult {
   const validationErrors = validatePluginDef(def);
-  if(validationErrors) {
-    error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`, LogLevel.Info);
-    throw new Error(`Invalid plugin definition:\n- ${validationErrors.join("\n- ")}`);
-  }
+  if(validationErrors)
+    throw new Error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
   const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
   const token = randomId(32, 36);

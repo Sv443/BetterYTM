@@ -359,8 +359,9 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > Arguments:  
 > - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
 >   
-> The function will either throw an error if the plugin object is invalid or return a registration result object.  
-> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)  
+> The function will either throw an error if the plugin object is invalid, or return a registration result object.  
+> The error message will contain a list of problems with the passed definition.  
+> Search for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts) to see the properties of the returned object.  
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
@@ -371,50 +372,49 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> // all properties are optional unless stated otherwise
-> // search for "type PluginDef" in "src/types.ts" to see the whole type
+> // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
->   plugin: {
->     name: "My cool plugin",                           // required
->     namespace: "https://github.com/MyUsername",       // required
->     version: "4.2.0",                                 // required
+>   plugin: {                                     // required
+>     name: "My cool plugin",                     // required
+>     namespace: "https://github.com/MyUsername", // required
+>     version: "4.2.0",                           // required
 >     description: {                                    // required
 >       en_US: "This plugin does cool stuff",           // required
->       de_DE: "Dieses Plugin macht coole Sachen",
->       // see all supported locale codes in "assets/locales.json"
+>       de_DE: "Dieses Plugin macht coole Sachen",      // (all other locales are optional)
+>       // (see all supported locale codes in "assets/locales.json")
 >     },
->     iconUrl: "https://picsum.photos/128/128",
+>     iconUrl: "https://picsum.photos/128/128", // required
 >     license: {                                    // (optional)
 >       name: "MIT",                                // required
 >       url: "https://opensource.org/licenses/MIT", // required
 >     },
->     homepage: {                                                 // required
->       source: "https://github.com/MyUsername/MyCoolBYTMPlugin", // required
->       other: "https://example.org/MyCoolBYTMPlugin",
->       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues",
->       greasyfork: "...",
->       openuserjs: "...",
+>     homepage: {                                                     // required
+>       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required
+>       other: "https://example.org/MyCoolBYTMPlugin",                // (optional)
+>       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues", // (optional)
+>       greasyfork: "...",                                            // (optional)
+>       openuserjs: "...",                                            // (optional)
 >     },
 >   },
->   // the intents (permissions) the plugin needs to be granted to be able to use certain functions
->   // search for "enum PluginIntent" in "src/types.ts" to see all available values,
->   // then sum all of them together to get the final intents number
->   intents: 18,
+>   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
+>   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
+>   // If you have BYTM as a dependency/submodule, you can import the enum and add the values like so: `PluginIntent.Foo | PluginIntent.Bar`
+>   intents: 18,              // required
 >   contributors: [           // (optional)
->     {
->       name: "MyUsername",   // required
->       homepage: "https://github.com/MyUsername",
->       email: "somedude420@hotmail.co.bd",
+>     {                                            // (optional)
+>       name: "MyUsername",                        // required
+>       homepage: "https://github.com/MyUsername", // (optional)
+>       email: "somedude420@hotmail.co.bd",        // (optional)
 >     },
->     {
->       name: "SomeOtherGuy", // required
->       homepage: "https://github.com/SomeOtherGuy",
->       email: "someotherguy@star-co.net.kp",
+>     {                                              // (optional)
+>       name: "SomeOtherGuy",                        // required
+>       homepage: "https://github.com/SomeOtherGuy", // (optional)
+>       email: "someotherguy@star-co.net.kp",        // (optional)
 >     },
 >   ],
 > };
 > 
-> // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every session!)
+> // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every page load!)
 > let authToken: string | undefined;
 > 
 > // since some function calls require the token, this function can be called to get it once the plugin is fully registered
@@ -423,15 +423,20 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > }
 > 
 > unsafeWindow.addEventListener("bytm:registerPlugins", () => {
->   // register the plugin
->   const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
->   // listen for the pluginRegistered event
->   events.on("pluginRegistered", (info) => {
->     // store the (private!) token for later use in authenticated function calls
->     authToken = token;
->     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
->   });
->   // for other events search for "type PluginEventMap" in "src/types.ts"
+>   try {
+>     // register the plugin
+>     const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>     // listen for the pluginRegistered event
+>     events.on("pluginRegistered", (info) => {
+>       // store the (private!) token for later use in authenticated function calls
+>       authToken = token;
+>       console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
+>     });
+>     // for other events search for "type PluginEventMap" in "src/types.ts"
+>   }
+>   catch(err) {
+>     console.error("Failed to register plugin:", err);
+>   }
 > });
 > ```
 > </details>
