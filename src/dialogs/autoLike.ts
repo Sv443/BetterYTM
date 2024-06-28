@@ -2,7 +2,7 @@ import { compress, debounce } from "@sv443-network/userutils";
 import { compressionSupported, error, getDomain, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
 import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
-import { siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { ExImDialog } from "../components/ExImDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
@@ -64,7 +64,7 @@ export async function getAutoLikeDialog() {
             return alert(t("import_error_no_data"));
 
           await autoLikeStore.setData(parsed);
-          siteEvents.emit("autoLikeChannelsUpdated");
+          emitSiteEvent("autoLikeChannelsUpdated");
 
           showToast({ message: t("import_success") });
           autoLikeImExDialog?.unmount();
@@ -219,7 +219,7 @@ async function renderBody() {
             .map((ch) => ch.id === chanId ? { ...ch, name: newName, id: newId } : ch),
         });
 
-        siteEvents.emit("autoLikeChannelsUpdated");
+        emitSiteEvent("autoLikeChannelsUpdated");
       },
     });
     btnCont.appendChild(editBtn);
@@ -316,7 +316,7 @@ async function addAutoLikeEntryPrompts() {
       }
   );
 
-  siteEvents.emit("autoLikeChannelsUpdated");
+  emitSiteEvent("autoLikeChannelsUpdated");
 
   const unsub = autoLikeDialog?.on("clear", async () => {
     unsub?.();

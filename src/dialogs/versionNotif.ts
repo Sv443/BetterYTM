@@ -3,7 +3,7 @@ import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from 
 import { BytmDialog, createToggleInput } from "../components/index.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
-import { siteEvents } from "../siteEvents.js";
+import { emitSiteEvent } from "../siteEvents.js";
 
 let verNotifDialog: BytmDialog | null = null;
 
@@ -145,7 +145,7 @@ async function renderBody({
     else if(!config.versionCheck && !disableUpdateCheck)
       config.versionCheck = true;
     await setFeatures(config);
-    recreateCfgMenu && siteEvents.emit("recreateCfgMenu");
+    recreateCfgMenu && emitSiteEvent("recreateCfgMenu");
   });
 
   const btnWrapper = document.createElement("div");

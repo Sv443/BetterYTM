@@ -2,7 +2,7 @@ import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils
 import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
-import { siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import { getFeature } from "../config.js";
 import { compressionFormat } from "../constants.js";
@@ -373,7 +373,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
           });
         }
 
-        siteEvents.emit("autoLikeChannelsUpdated");
+        emitSiteEvent("autoLikeChannelsUpdated");
         showIconToast({
           message: toggled ? t("auto_like_enabled_toast") : t("auto_like_disabled_toast"),
           icon: `icon-auto_like${toggled ? "_enabled" : ""}`,

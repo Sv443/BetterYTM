@@ -211,8 +211,8 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 //#region other
 
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
-function checkWatchIdChange(watchId?: string | null) {
-  const newWatchId = watchId ?? new URL(location.href).searchParams.get("v");
+function checkWatchIdChange(newId?: string | null) {
+  const newWatchId = newId ?? new URL(location.href).searchParams.get("v");
   if(newWatchId && newWatchId !== lastWatchId) {
     info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
     emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);

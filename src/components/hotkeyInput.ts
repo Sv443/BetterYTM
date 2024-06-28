@@ -1,4 +1,4 @@
-import { siteEvents } from "../siteEvents.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { onInteraction, t } from "../utils/index.js";
 import type { HotkeyObj } from "../types.js";
 import "./hotkeyInput.css";
@@ -40,7 +40,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   const deactivate = () => {
     if(!otherHotkeyInputActive)
       return;
-    siteEvents.emit("hotkeyInputActive", false);
+    emitSiteEvent("hotkeyInputActive", false);
     otherHotkeyInputActive = false;
     const curHk = currentHotkey ?? initialValue;
     inputElem.value = curHk?.code ?? t("hotkey_input_click_to_change");
@@ -52,7 +52,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   const activate = () => {
     if(otherHotkeyInputActive)
       return;
-    siteEvents.emit("hotkeyInputActive", true);
+    emitSiteEvent("hotkeyInputActive", true);
     otherHotkeyInputActive = true;
     inputElem.value = "< ... >";
     inputElem.dataset.state = "active";
