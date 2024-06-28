@@ -101,7 +101,7 @@ export class BytmDialog extends NanoEmitter<{
 #bytm-${this.id}-dialog-bg {
   --bytm-dialog-width-max: ${this.options.width}px;
   --bytm-dialog-height-max: ${this.options.height}px;
-}`, `dialog-${this.id}`);
+}`, `dialog-${this.id}-vars`);
 
     this.events.emit("render");
     return bgElem;
