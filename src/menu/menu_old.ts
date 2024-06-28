@@ -323,7 +323,7 @@ async function mountCfgMenu() {
     else if(getLocale() !== featConf.locale)
       setLocale(featConf.locale);
 
-    siteEvents.emit("configOptionChanged", key, initialVal, newVal);
+    emitSiteEvent("configOptionChanged", key, initialVal, newVal);
   };
 
   /** Call whenever the feature config is changed */
