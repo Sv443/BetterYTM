@@ -222,6 +222,9 @@ function checkWatchIdChange(watchId?: string | null) {
 
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
 export function runIntervalChecks() {
+  if(!lastWatchId)
+    checkWatchIdChange();
+
   if(location.pathname !== lastPathname) {
     emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
     lastPathname = String(location.pathname);
