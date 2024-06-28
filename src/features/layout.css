@@ -407,10 +407,16 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
 /* Increase specificity to override YTM's default styles without having to use !important */
 :root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] {
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px) brightness(85%);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px) brightness(90%);
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .ytmusic-menu-renderer svg path {
+:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .ytmusic-menu-renderer svg path,
+:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] tp-yt-paper-icon-button svg path
+{
   fill: #fff;
+}
+
+:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .time-info {
+  color: #fff;
 }
