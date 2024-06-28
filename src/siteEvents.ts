@@ -168,6 +168,21 @@ export async function initSiteEvents() {
     window.addEventListener("bytm:ready", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
+
+      addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+        listener(el) {
+          const urlRefObs = new MutationObserver(([ { target } ]) => {
+            if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
+              return;
+            const watchId = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
+            checkWatchIdChange(watchId);
+          });
+
+          urlRefObs.observe(el, {
+            attributeFilter: ["href"],
+          });
+        }
+      });
     }, {
       once: true,
     });
@@ -195,17 +210,18 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 
 //#region other
 
+/** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
+function checkWatchIdChange(watchId?: string | null) {
+  const newWatchId = watchId ?? new URL(location.href).searchParams.get("v");
+  if(newWatchId && newWatchId !== lastWatchId) {
+    info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
+    emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+    lastWatchId = newWatchId;
+  }
+}
+
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
 export function runIntervalChecks() {
-  if(location.pathname.startsWith("/watch")) {
-    const newWatchId = new URL(location.href).searchParams.get("v");
-    if(newWatchId && newWatchId !== lastWatchId) {
-      info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
-      emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-      lastWatchId = newWatchId;
-    }
-  }
-
   if(location.pathname !== lastPathname) {
     emitSiteEvent("pathChanged", String(location.pathname), lastPathname);
     lastPathname = String(location.pathname);
