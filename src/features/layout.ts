@@ -530,6 +530,8 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.href = thumbUrl;
         if(thumbImgElem)
           thumbImgElem.src = thumbUrl;
+
+        log("Applied thumbnail URL to overlay:", thumbUrl);
       }
       else error("Couldn't get thumbnail URL for watch ID", watchId);
     };

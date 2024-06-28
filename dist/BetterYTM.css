@@ -1708,8 +1708,8 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
 /* Increase specificity to override YTM's default styles without having to use !important */
 :root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] {
   width: 100%;
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px) brightness(85%);
 }
 
 :root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .ytmusic-menu-renderer svg path {
