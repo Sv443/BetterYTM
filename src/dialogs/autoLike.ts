@@ -25,6 +25,7 @@ export async function getAutoLikeDialog() {
       closeOnEscPress: true,
       destroyOnClose: true,
       small: true,
+      verticalAlign: "top",
       renderHeader,
       renderBody,
       renderFooter,
@@ -104,6 +105,40 @@ async function renderBody() {
   descriptionEl.textContent = t("auto_like_channels_dialog_desc");
   descriptionEl.tabIndex = 0;
   contElem.appendChild(descriptionEl);
+
+  const searchCont = document.createElement("div");
+  searchCont.classList.add("bytm-auto-like-channels-search-cont");
+  contElem.appendChild(searchCont);
+
+  const searchbarEl = document.createElement("input");
+  searchbarEl.classList.add("bytm-auto-like-channels-searchbar");
+  searchbarEl.placeholder = t("search_placeholder");
+  searchbarEl.type = "search";
+  searchbarEl.tabIndex = 0;
+
+  searchbarEl.addEventListener("input", () => {
+    const searchVal = searchbarEl.value.trim().toLowerCase();
+    const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
+    for(const row of rows) {
+      const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase() ?? "";
+      row.classList.toggle("hidden", !name.includes(searchVal));
+    }
+  });
+
+  searchCont.appendChild(searchbarEl);
+
+  const searchClearEl = document.createElement("button");
+  searchClearEl.classList.add("bytm-auto-like-channels-search-clear");
+  searchClearEl.title = searchClearEl.ariaLabel = t("search_clear");
+  searchClearEl.tabIndex = 0;
+  searchClearEl.innerText = "×";
+
+  onInteraction(searchClearEl, () => {
+    searchbarEl.value = "";
+    searchbarEl.dispatchEvent(new Event("input"));
+  });
+
+  searchCont.appendChild(searchClearEl);
 
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";

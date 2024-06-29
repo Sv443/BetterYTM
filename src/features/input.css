@@ -13,6 +13,26 @@
   max-height: calc(min(100vh - 40px, var(--bytm-dialog-height-max)) - 300px);
 }
 
+.bytm-auto-like-channels-desc {
+  padding: 0px 15px;
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-search-cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 15px;
+  margin-bottom: 10px;
+}
+
+.bytm-auto-like-channels-searchbar {
+  min-width: calc(min(250px, 50%));
+}
+
 .bytm-auto-like-channel-row-left-cont {
   display: flex;
   align-items: center;
@@ -27,11 +47,8 @@
   transition: background-color 0.15s ease-out;
 }
 
-.bytm-auto-like-channels-desc {
-  padding: 0px 15px;
-  white-space: pre-wrap;
-  font-size: 1.6rem;
-  margin-bottom: 15px;
+.bytm-auto-like-channel-row.hidden {
+  display: none;
 }
 
 .bytm-auto-like-channel-row:hover {
