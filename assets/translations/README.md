@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 274 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `205/274` (74.8%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `274` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `205/274` (74.8%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `205/274` (74.8%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `205/274` (74.8%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `205/274` (74.8%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `205/274` (74.8%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `205/274` (74.8%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 276 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `205/276` (74.3%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `276` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `205/276` (74.3%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `205/276` (74.3%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `205/276` (74.3%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `205/276` (74.3%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `205/276` (74.3%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `205/276` (74.3%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -60,6 +60,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -121,7 +123,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -136,6 +138,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -197,7 +201,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -212,6 +216,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -273,7 +279,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -288,6 +294,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -349,7 +357,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -364,6 +372,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -425,7 +435,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -440,6 +450,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
@@ -501,7 +513,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 69 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 71 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -516,6 +528,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy` | `Copy` |
 | `copied_to_clipboard` | `Copied to clipboard!` |
 | `copy_hidden` | `Copy hidden` |
+| `search_placeholder` | `Search...` |
+| `search_clear` | `Clear search` |
 | `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |

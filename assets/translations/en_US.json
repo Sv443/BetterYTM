@@ -46,6 +46,8 @@
     "open_greasyfork": "Open %1 on GreasyFork",
     "open_openuserjs": "Open %1 on OpenUserJS",
     "lang_changed_prompt_reload": "The language was changed.\nDo you want to reload the page now to apply changes?",
+    "search_placeholder": "Search...",
+    "search_clear": "Clear search",
 
     "reset": "Reset",
     "close": "Close",
