@@ -1229,13 +1229,14 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > | Property | Description |
 > | :-- | :-- |
 > | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
-> | `width: number` | Maximum and default width of the dialog in pixels |
-> | `height: number` | Maximum height of the dialog in pixels |
+> | `width: number` | Maximum and target width of the dialog in pixels |
+> | `height: number` | Maximum and target height of the dialog in pixels |
 > | `closeOnBgClick?: boolean` | Whether the dialog should close when the background is clicked - defaults to true |
 > | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
 > | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
 > | `destroyOnClose?: boolean` | Whether the dialog should be destroyed when it's closed - defaults to false |
-> | `small?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
+> | `small?: boolean` | Whether the dialog should have a smaller overall appearance - defaults to false |
+> | `verticalAlign?: string` | Where the dialog should be anchored vertically ("top", "center" or "bottom") - defaults to "center" |
 > | `renderBody: () => HTMLElement │ Promise<HTMLElement>` | Called to render the body of the dialog |
 > | `renderHeader?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the header of the dialog - leave undefined for a blank header |
 > | `renderFooter?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the footer of the dialog - leave undefined for no footer |
@@ -1292,13 +1293,14 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```ts
 > const dialog = new unsafeWindow.BYTM.BytmDialog({
 >   id: "my-dialog",
->   maxWidth: 500,
->   maxHeight: 300,
+>   width: 500,
+>   height: 300,
 >   closeOnBgClick: true,
 >   closeOnEscPress: true,
 >   closeBtnEnabled: true,
 >   destroyOnClose: false,
 >   small: true,
+>   verticalAlign: "top", // if the content's height changes, it's better to anchor it to the top or bottom
 >   // add elements to the header, body and footer here, in one of these ways:
 >   // - foo.appendChild(document.createElement("..."));
 >   // - foo.innerHTML = "..."

@@ -24,6 +24,8 @@ export interface BytmDialogOptions {
   unmountOnClose?: boolean;
   /** Whether the dialog should have a smaller overall appearance - defaults to false */
   small?: boolean;
+  /** Where to align or anchor the dialog vertically - defaults to "center" */
+  verticalAlign?: "top" | "center" | "bottom";
   /** Called to render the body of the dialog */
   renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
@@ -69,6 +71,7 @@ export class BytmDialog extends NanoEmitter<{
       destroyOnClose: false,
       unmountOnClose: true,
       smallHeader: false,
+      verticalAlign: "center",
       ...options,
     };
     this.id = options.id;
@@ -294,6 +297,9 @@ export class BytmDialog extends NanoEmitter<{
     dialogWrapperEl.role = "dialog";
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
     dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
+
+    if(this.options.verticalAlign !== "center")
+      dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
 
     //#region header
 

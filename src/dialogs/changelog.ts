@@ -15,6 +15,7 @@ export async function getChangelogDialog() {
       closeOnBgClick: true,
       closeOnEscPress: true,
       small: true,
+      verticalAlign: "top",
       renderHeader,
       renderBody,
     });
