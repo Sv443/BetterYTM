@@ -1,4 +1,4 @@
-import { onInteraction, resourceToHTMLString } from "../utils/index.js";
+import { onInteraction, resourceAsString } from "../utils/index.js";
 import { createRipple } from "./ripple.js";
 import type { ResourceKey } from "../types.js";
 
@@ -13,10 +13,11 @@ type LongBtnOptions = {
   ripple?: boolean;
 } & (
   | {
-    /** Resource key for the button icon */
+    /** Resource key for the button icon, added as inline SVG */
     resourceName: (ResourceKey & `icon-${string}`) | "_";
   }
   | {
+    /** URL to the button icon - SVG will not be added inline this way, but as an <img>! */
     src: string;
   }
 ) & (
@@ -26,7 +27,7 @@ type LongBtnOptions = {
   }
   | {
     /** Callback function to execute when the button is clicked */
-    onClick: (event: MouseEvent | KeyboardEvent) => void;
+    onClick: (evt: MouseEvent | KeyboardEvent) => void;
   }
   | {
     /** Whether the button can be toggled on and off */
@@ -34,9 +35,9 @@ type LongBtnOptions = {
     /** Initial state of the button if `toggle` is `true` - defaults to `false` */
     toggleInitialState?: boolean;
     /** Callback function to execute when the button is toggled */
-    onToggle: (enabled: boolean, event: MouseEvent | KeyboardEvent) => void;
+    onToggle: (enabled: boolean, evt: MouseEvent | KeyboardEvent) => void;
     /** Predicate function to determine if the button should be toggled on click */
-    togglePredicate?: (event: MouseEvent | KeyboardEvent) => boolean;
+    togglePredicate?: (evt: MouseEvent | KeyboardEvent) => boolean;
   }
 );
 
@@ -75,12 +76,10 @@ export async function createLongBtn({
   }
 
   onInteraction(btnElem, (evt) => {
-    if("onClick" in rest && rest.onClick)
+    if("onClick" in rest)
       rest.onClick(evt);
-    if("toggle" in rest && rest.toggle && "onToggle" in rest && rest.onToggle) {
-      if((rest.togglePredicate ?? (() => true))(evt))
-        rest.onToggle(btnElem.classList.toggle("toggled"), evt);
-    }
+    if("toggle" in rest && rest.toggle && (rest.togglePredicate ?? (() => true))(evt))
+      rest.onToggle(btnElem.classList.toggle("toggled"), evt);
   });
 
   btnElem.classList.add("bytm-generic-btn", "long");
@@ -93,7 +92,7 @@ export async function createLongBtn({
   if("src" in rest)
     (imgElem as HTMLImageElement).src = rest.src;
   else
-    imgElem.innerHTML = await resourceToHTMLString(rest.resourceName as "_") ?? "";
+    imgElem.innerHTML = await resourceAsString(rest.resourceName as "_") ?? "";
 
   const txtElem = document.createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");

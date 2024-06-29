@@ -215,8 +215,8 @@ export function getPreferredLocale(): TrLocale {
   return "en_US";
 }
 
-/** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
-export async function resourceToHTMLString(resource: ResourceKey | "_") {
+/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+export async function resourceAsString(resource: ResourceKey | "_") {
   try {
     const resourceUrl = await getResourceUrl(resource);
     if(!resourceUrl)

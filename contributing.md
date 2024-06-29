@@ -1554,7 +1554,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >     In addition, there are these props:
 >     - `onToggle: (state: boolean, evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is interacted with
 >     - `toggleInitialState?: boolean` - The initial value of the toggle button (optional, defaults to false)
->     - `togglePredicate?: (event: MouseEvent | KeyboardEvent) => boolean` - Gets called every toggle attempt to determine if the state should swap and `onToggle` should be called
+>     - `togglePredicate?: (evt: MouseEvent | KeyboardEvent) => boolean` - Gets called every toggle attempt to determine if the state should swap and `onToggle` should be called
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 

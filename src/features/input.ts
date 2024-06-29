@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceToHTMLString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { siteEvents } from "../siteEvents.js";
@@ -354,7 +354,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
         const chanId = buttonEl.dataset.channelId ?? channelId;
 
         const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
-        const imgHtml = await resourceToHTMLString(`icon-auto_like${toggled ? "_enabled" : ""}`);
+        const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
         if(imgEl && imgHtml)
           imgEl.innerHTML = imgHtml;
 
