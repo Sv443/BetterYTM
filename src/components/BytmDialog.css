@@ -34,6 +34,16 @@
   background-color: var(--bytm-dialog-bg);
 }
 
+.bytm-dialog.align-top {
+  top: 0;
+  transform: translate(-50%, 40px);
+}
+
+.bytm-dialog.align-bottom {
+  top: 100%;
+  transform: translate(-50%, -100%);
+}
+
 .bytm-dialog-body {
   font-size: 1.5rem;
   padding: 20px;
