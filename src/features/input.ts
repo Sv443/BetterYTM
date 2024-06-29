@@ -341,15 +341,13 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
     title: t(`auto_like_button_tooltip${chan?.enabled ? "_enabled" : "_disabled"}`),
     toggle: true,
     toggleInitialState: chan?.enabled ?? false,
-    async onToggle(toggled, evt) {
+    togglePredicate(e) {
+      e.shiftKey && getAutoLikeDialog().then((dlg) => dlg.open());
+      return !e.shiftKey;
+    },
+    async onToggle(toggled) {
       try {
         await autoLikeStore.loadData();
-
-        if(evt.shiftKey) {
-          buttonEl.classList.toggle("toggled");
-          getAutoLikeDialog().then((dlg) => dlg.open());
-          return;
-        }
 
         buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
 

@@ -1383,6 +1383,10 @@ hr {
   border: 1px solid #999;
 }
 
+.bytm-generic-btn.long:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .bytm-generic-btn.long .bytm-generic-btn-img.left {
   margin-right: 8px;
 }
@@ -1812,7 +1816,7 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
   margin-left: 10px;
 }
 
-/* more specificity to override the default styles */
+/* add more specificity to override the default styles */
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn {
   margin-right: 8px;
@@ -1828,8 +1832,12 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
   margin-left: 8px;
 }
 
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:active,
