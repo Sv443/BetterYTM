@@ -1,5 +1,5 @@
 import { pauseFor } from "@sv443-network/userutils";
-import { info, resourceToHTMLString } from "../utils/index.js";
+import { info, resourceAsString } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import type { ResourceKey } from "../types.js";
 import "./toast.css";
@@ -51,7 +51,7 @@ export async function showIconToast({
   else {
     const toastIcon = document.createElement("div");
     toastIcon.classList.add("bytm-toast-icon");
-    const iconHtml = await resourceToHTMLString(rest.icon);
+    const iconHtml = await resourceAsString(rest.icon);
     if(iconHtml)
       toastIcon.innerHTML = iconHtml;
     toastWrapper.appendChild(toastIcon);

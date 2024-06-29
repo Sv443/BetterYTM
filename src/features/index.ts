@@ -1,4 +1,4 @@
-import { getPreferredLocale, getResourceUrl, resourceToHTMLString, t, tp } from "../utils/index.js";
+import { getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
@@ -27,7 +27,7 @@ interface SelectOption<TValue = number | string> {
 
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
-  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceToHTMLString(resource) ?? ""}</span>`;
+  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (
@@ -49,7 +49,7 @@ const combineAdornments = (
 const adornments = {
   advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  globe: async () => await resourceToHTMLString("icon-globe_small") ?? "",
+  globe: async () => await resourceAsString("icon-globe_small") ?? "",
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;

@@ -1,4 +1,4 @@
-import { resourceToHTMLString, t } from "../utils/index.js";
+import { resourceAsString, t } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { featInfo } from "../features/index.js";
 import type { FeatureKey } from "../types.js";
@@ -37,7 +37,7 @@ export async function getFeatHelpDialog({
 
 async function renderHeader() {
   const headerEl = document.createElement("div");
-  const helpIconSvg = await resourceToHTMLString("icon-help");
+  const helpIconSvg = await resourceAsString("icon-help");
   if(helpIconSvg)
     headerEl.innerHTML = helpIconSvg;
 
