@@ -72,6 +72,10 @@
   border: 1px solid #999;
 }
 
+.bytm-generic-btn.long:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .bytm-generic-btn.long .bytm-generic-btn-img.left {
   margin-right: 8px;
 }

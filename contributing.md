@@ -1552,8 +1552,9 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   - `onClick: (evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is clicked or interacted with
 >   - `toggle: true` - Set to true to make the button act as a toggle button  
 >     In addition, there are these props:
->     - `onInteraction: (state: boolean, evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is interacted with
+>     - `onToggle: (state: boolean, evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is interacted with
 >     - `toggleInitialState?: boolean` - The initial value of the toggle button (optional, defaults to false)
+>     - `togglePredicate?: (event: MouseEvent | KeyboardEvent) => boolean` - Gets called every toggle attempt to determine if the state should swap and `onToggle` should be called
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1567,12 +1568,28 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   iconPosition: "right",
 > });
 > 
+> // button:
+> const longBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-upload",
+>   onClick(evt: MouseEvent | KeyboardEvent) {
+>     console.log("The button was clicked");
+>   },
+>   text: "Upload",
+>   title: "Click to upload a file",
+> });
+> 
 > // toggle:
 > const toggleBtn = unsafeWindow.BYTM.createLongBtn({
 >   resourceName: "icon-globe",
 >   toggle: true,
->   onInteraction(state: boolean, event: MouseEvent | KeyboardEvent) {
->     console.log(`The button was toggled to ${state}`);
+>   toggleInitialState: true,
+>   togglePredicate: (evt) => {
+>     // don't toggle if shift is pressed and instead do something special
+>     evt.shiftKey && doSomething(evt);
+>     return !evt.shiftKey;
+>   },
+>   onToggle(state: boolean, evt: MouseEvent | KeyboardEvent) {
+>     console.log(`The button was toggled ${state ? "on" : "off"}`);
 >   },
 >   text: "Toggle",
 >   title: "Click to toggle something",

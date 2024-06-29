@@ -35,6 +35,8 @@ type LongBtnOptions = {
     toggleInitialState?: boolean;
     /** Callback function to execute when the button is toggled */
     onToggle: (enabled: boolean, event: MouseEvent | KeyboardEvent) => void;
+    /** Predicate function to determine if the button should be toggled on click */
+    togglePredicate?: (event: MouseEvent | KeyboardEvent) => boolean;
   }
 );
 
@@ -75,8 +77,10 @@ export async function createLongBtn({
   onInteraction(btnElem, (evt) => {
     if("onClick" in rest && rest.onClick)
       rest.onClick(evt);
-    if("toggle" in rest && rest.toggle && "onToggle" in rest && rest.onToggle)
-      rest.onToggle(btnElem.classList.toggle("toggled"), evt);
+    if("toggle" in rest && rest.toggle && "onToggle" in rest && rest.onToggle) {
+      if((rest.togglePredicate ?? (() => true))(evt))
+        rest.onToggle(btnElem.classList.toggle("toggled"), evt);
+    }
   });
 
   btnElem.classList.add("bytm-generic-btn", "long");
