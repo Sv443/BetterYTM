@@ -1372,7 +1372,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > - Copy to clipboard button for the export textarea
 > - Ability to copy a second variety of the data when shift-clicking the copy button
 > - Exported data is hidden by default in case it contains sensitive information
-> - Based on BYTM's translation system for all text content
+> - Text can be given as a constant string or "lazy-loaded" via sync or async function
 >   
 > Options properties:  
 > All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderHeader`, `renderBody` and `renderFooter`  
