@@ -1,9 +1,9 @@
-import { host, scriptInfo } from "../constants";
-import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils";
-import { BytmDialog, createToggleInput } from "../components";
-import { getFeatures, setFeatures } from "../config";
+import { host, mode, scriptInfo } from "../constants.js";
+import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils/index.js";
+import { BytmDialog, createToggleInput } from "../components/index.js";
+import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
-import { siteEvents } from "src/siteEvents";
+import { emitSiteEvent } from "../siteEvents.js";
 
 let verNotifDialog: BytmDialog | null = null;
 
@@ -41,17 +41,12 @@ export async function getVersionNotifDialog({
 }
 
 async function renderHeader() {
-  const headerEl = document.createElement("div");
-  headerEl.role = "heading";
-  headerEl.ariaLevel = "1";
-
   const logoEl = document.createElement("img");
   logoEl.classList.add("bytm-dialog-header-img", "bytm-no-select");
-  logoEl.src = await getResourceUrl("img-logo");
+  logoEl.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
   logoEl.alt = "BetterYTM logo";
 
-  headerEl.appendChild(logoEl);
-  return headerEl;
+  return logoEl;
 }
 
 let disableUpdateCheck = false;
@@ -107,7 +102,7 @@ async function renderBody({
   const disableUpdCheckEl = document.createElement("div");
   disableUpdCheckEl.id = "bytm-disable-update-check-wrapper";
 
-  if(getFeatures().versionCheck === false)
+  if(!getFeature("versionCheck"))
     disableUpdateCheck = true;
 
   const disableToggleEl = await createToggleInput({
@@ -150,7 +145,7 @@ async function renderBody({
     else if(!config.versionCheck && !disableUpdateCheck)
       config.versionCheck = true;
     await setFeatures(config);
-    recreateCfgMenu && siteEvents.emit("recreateCfgMenu");
+    recreateCfgMenu && emitSiteEvent("recreateCfgMenu");
   });
 
   const btnWrapper = document.createElement("div");

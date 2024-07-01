@@ -35,6 +35,10 @@
   opacity: 1;
 }
 
+:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] #bytm-vol-slider-label {
+  color: #fff;
+}
+
 #bytm-vol-slider-shared {
   display: flex;
   flex-direction: row;

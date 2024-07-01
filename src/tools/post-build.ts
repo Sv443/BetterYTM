@@ -7,7 +7,7 @@ import "dotenv/config";
 import { outputDir as rollupCfgOutputDir, outputFile as rollupCfgOutputFile } from "../../rollup.config.mjs";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pkg from "../../package.json" with { type: "json" };
-import type { RollupArgs } from "../types";
+import type { RollupArgs } from "../types.js";
 
 /** Any type that is either a string or can be implicitly converted to one by having a .toString() method */
 type Stringifiable = string | { toString(): string; };
@@ -52,17 +52,17 @@ const repo = "Sv443/BetterYTM";
 const userscriptDistFile = `BetterYTM${suffix}.user.js`;
 const distFolderPath = `./${rollupCfgOutputDir}/`;
 const assetFolderPath = "./assets/";
-const scriptUrl = (() => {
-  switch(host) {
-  case "greasyfork":
-    return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
-  case "openuserjs":
-    return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
-  case "github":
-  default:
-    return `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
-  }
-})();
+// const hostScriptUrl = (() => {
+//   switch(host) {
+//   case "greasyfork":
+//     return "https://update.greasyfork.org/scripts/475682/BetterYTM.user.js";
+//   case "openuserjs":
+//     return "https://openuserjs.org/install/Sv443/BetterYTM.user.js";
+//   case "github":
+//   default:
+//     return `https://raw.githubusercontent.com/${repo}/main/dist/${userscriptDistFile}`;
+//   }
+// })();
 
 /** Whether to trigger the bell sound in some terminals when the code has finished compiling */
 const ringBell = Boolean(env.RING_BELL && (env.RING_BELL.length > 0 && env.RING_BELL.trim().toLowerCase() === "true"));
@@ -92,12 +92,10 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @license           ${pkg.license}
 // @author            ${pkg.author.name}
 // @copyright         ${pkg.author.name} (${pkg.author.url})
-// @icon              ${getResourceUrl("images/logo/logo_48.png", buildNbr)}
+// @icon              ${getResourceUrl(`images/logo/logo${mode === "development" ? "_dev" : ""}_48.png`, buildNbr)}
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
-// @downloadURL       ${scriptUrl}
-// @updateURL         ${scriptUrl}
 // @connect           api.sv443.net
 // @connect           github.com
 // @connect           raw.githubusercontent.com
@@ -234,7 +232,7 @@ async function exists(path: string) {
     await access(path, fsconst.R_OK | fsconst.W_OK);
     return true;
   }
-  catch(err) {
+  catch {
     return false;
   }
 }

@@ -1,6 +1,6 @@
-import { getChangelogHtmlWithDetails, t } from "../utils";
-import { BytmDialog } from "../components";
-import { scriptInfo } from "../constants";
+import { getChangelogHtmlWithDetails, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { scriptInfo } from "../constants.js";
 
 let changelogDialog: BytmDialog | null = null;
 
@@ -9,12 +9,13 @@ export async function getChangelogDialog() {
   if(!changelogDialog) {
     changelogDialog = new BytmDialog({
       id: "changelog",
-      width: 900,
+      width: 1000,
       height: 800,
       closeBtnEnabled: true,
       closeOnBgClick: true,
       closeOnEscPress: true,
       small: true,
+      verticalAlign: "top",
       renderHeader,
       renderBody,
     });
@@ -43,7 +44,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("changelog_menu_title", scriptInfo.name);
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("changelog_menu_title", scriptInfo.name);
 
   return headerEl;
 }

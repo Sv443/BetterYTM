@@ -1,20 +1,20 @@
 import { createNanoEvents, type DefaultEvents, type EventsMap, type Unsubscribe } from "nanoevents";
 
-interface NanoEmitterSettings {
+export interface NanoEmitterOptions {
   /** If set to true, allows emitting events through the public method emit() */
   publicEmit: boolean;
 }
 
-/** Abstract class that can be extended to create an event emitter with helper methods and a strongly typed event map */
-export abstract class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
+/** Class that can be extended or instantiated by itself to create an event emitter with helper methods and a strongly typed event map */
+export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
   protected readonly events = createNanoEvents<TEvtMap>();
   protected eventUnsubscribes: Unsubscribe[] = [];
-  protected emitterSettings: NanoEmitterSettings;
+  protected emitterOptions: NanoEmitterOptions;
 
-  constructor(settings: Partial<NanoEmitterSettings> = {}) {
-    this.emitterSettings = {
+  constructor(options: Partial<NanoEmitterOptions> = {}) {
+    this.emitterOptions = {
       publicEmit: false,
-      ...settings,
+      ...options,
     };
   }
 
@@ -43,19 +43,18 @@ export abstract class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
       let unsub: Unsubscribe | undefined;
 
       const onceProxy = ((...args: Parameters<TEvtMap[TKey]>) => {
-        unsub?.();
+        unsub!();
         cb?.(...args);
         resolve(args);
       }) as TEvtMap[TKey];
 
-      // eslint-disable-next-line prefer-const
       unsub = this.on(event, onceProxy);
     });
   }
 
   /** Emits an event on this instance - Needs `publicEmit` to be set to true in the constructor! */
   public emit<TKey extends keyof TEvtMap>(event: TKey, ...args: Parameters<TEvtMap[TKey]>) {
-    if(this.emitterSettings.publicEmit) {
+    if(this.emitterOptions.publicEmit) {
       this.events.emit(event, ...args);
       return true;
     }

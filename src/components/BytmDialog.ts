@@ -1,8 +1,8 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "../utils/NanoEmitter";
-import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils";
-import { t } from "../utils/translations";
-import { emitInterface } from "../interface";
+import { NanoEmitter } from "../utils/NanoEmitter.js";
+import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { t } from "../utils/translations.js";
+import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
 
 export interface BytmDialogOptions {
@@ -24,6 +24,8 @@ export interface BytmDialogOptions {
   unmountOnClose?: boolean;
   /** Whether the dialog should have a smaller overall appearance - defaults to false */
   small?: boolean;
+  /** Where to align or anchor the dialog vertically - defaults to "center" */
+  verticalAlign?: "top" | "center" | "bottom";
   /** Called to render the body of the dialog */
   renderBody: () => HTMLElement | Promise<HTMLElement>;
   /** Called to render the header of the dialog - leave undefined for a blank header */
@@ -69,6 +71,7 @@ export class BytmDialog extends NanoEmitter<{
       destroyOnClose: false,
       unmountOnClose: true,
       smallHeader: false,
+      verticalAlign: "center",
       ...options,
     };
     this.id = options.id;
@@ -84,7 +87,7 @@ export class BytmDialog extends NanoEmitter<{
 
     const bgElem = document.createElement("div");
     bgElem.id = `bytm-${this.id}-dialog-bg`;
-    bgElem.classList.add("bytm-dialog-bg", `bytm-dom-${getDomain()}`);
+    bgElem.classList.add("bytm-dialog-bg");
     if(this.options.closeOnBgClick)
       bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
@@ -101,14 +104,16 @@ export class BytmDialog extends NanoEmitter<{
 #bytm-${this.id}-dialog-bg {
   --bytm-dialog-width-max: ${this.options.width}px;
   --bytm-dialog-height-max: ${this.options.height}px;
-}`, `dialog-${this.id}`);
+}`, `dialog-${this.id}-vars`);
 
     this.events.emit("render");
     return bgElem;
   }
 
-  /** Clears all dialog contents (unmounts them from the DOM) in preparation for a new rendering call */
+  /** Closes the dialog and clears all its contents (unmounts elements from the DOM) in preparation for a new rendering call */
   public unmount() {
+    this.close();
+
     this.dialogMounted = false;
 
     const clearSelectors = [
@@ -149,8 +154,6 @@ export class BytmDialog extends NanoEmitter<{
     if(!this.isMounted())
       await this.mount();
 
-    document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
     if(!dialogBg)
@@ -162,6 +165,21 @@ export class BytmDialog extends NanoEmitter<{
 
     currentDialogId = this.id;
     openDialogs.unshift(this.id);
+
+    // make sure all other dialogs are inert
+    for(const dialogId of openDialogs) {
+      if(dialogId !== this.id) {
+        // special treatment for the old config menu, as always
+        if(dialogId === "cfg-menu")
+          document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
+        else
+          document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
+      }
+    }
+
+    // make sure body is inert and scroll is locked
+    document.body.classList.add("bytm-disable-scroll");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
 
     this.events.emit("open");
     emitInterface("bytm:dialogOpened", this as BytmDialog);
@@ -188,17 +206,27 @@ export class BytmDialog extends NanoEmitter<{
     dialogBg.style.display = "none";
     dialogBg.inert = true;
 
-    if(BytmDialog.getCurrentDialogId() === this.id)
-      currentDialogId = null;
-
     openDialogs.splice(openDialogs.indexOf(this.id), 1);
+    currentDialogId = openDialogs[0] ?? null;
 
+    // make sure the new top-most dialog is not inert
+    if(currentDialogId) {
+      // special treatment for the old config menu, as always
+      if(currentDialogId === "cfg-menu")
+        document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
+      else
+        document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
+    }
+
+    // remove the scroll lock and inert attribute on the body if no dialogs are open
     if(openDialogs.length === 0) {
       document.body.classList.remove("bytm-disable-scroll");
       document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
     }
 
     this.events.emit("close");
+    emitInterface("bytm:dialogClosed", this as BytmDialog);
+    emitInterface(`bytm:dialogClosed:${this.id}` as "bytm:dialogClosed:id", this as BytmDialog);
 
     if(this.options.destroyOnClose)
       this.destroy();
@@ -264,11 +292,14 @@ export class BytmDialog extends NanoEmitter<{
 
     const dialogWrapperEl = document.createElement("div");
     dialogWrapperEl.id = `bytm-${this.id}-dialog`;
-    dialogWrapperEl.classList.add("bytm-dialog", `bytm-dom-${getDomain()}`);
+    dialogWrapperEl.classList.add("bytm-dialog");
     dialogWrapperEl.ariaLabel = dialogWrapperEl.title = "";
     dialogWrapperEl.role = "dialog";
     dialogWrapperEl.setAttribute("aria-labelledby", `bytm-${this.id}-dialog-title`);
     dialogWrapperEl.setAttribute("aria-describedby", `bytm-${this.id}-dialog-body`);
+
+    if(this.options.verticalAlign !== "center")
+      dialogWrapperEl.classList.add(`align-${this.options.verticalAlign}`);
 
     //#region header
 

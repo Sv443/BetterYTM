@@ -1,7 +1,7 @@
-import { resourceToHTMLString, t } from "../utils";
-import { BytmDialog } from "../components";
-import { featInfo } from "../features";
-import type { FeatureKey } from "../types";
+import { resourceAsString, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { featInfo } from "../features/index.js";
+import type { FeatureKey } from "../types.js";
 
 let featHelpDialog: BytmDialog | null = null;
 let curFeatKey: FeatureKey | null = null;
@@ -37,9 +37,7 @@ export async function getFeatHelpDialog({
 
 async function renderHeader() {
   const headerEl = document.createElement("div");
-  headerEl.role = "heading";
-  headerEl.ariaLevel = "1";
-  const helpIconSvg = await resourceToHTMLString("icon-help");
+  const helpIconSvg = await resourceAsString("icon-help");
   if(helpIconSvg)
     headerEl.innerHTML = helpIconSvg;
 

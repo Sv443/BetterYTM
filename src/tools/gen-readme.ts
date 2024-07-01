@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { PluginDef } from "../types";
+import type { PluginDef } from "../types.js";
 import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
 import pkgJson from "../../package.json" with { type: "json" };

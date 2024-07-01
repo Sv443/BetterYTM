@@ -1,4 +1,4 @@
-## Menu
-This directory contains the code of all the different menus of the userscript.  
-All of them are jankily built with JS directly (with `document.createElement()`) and there's lots of repeated code.  
-In the long term all of these will be built with the BytmDialog class and put in the `dialogs` directory.
+## src/menu/
+This directory contains the code of the now somewhat legacy config menu.  
+Its dense and interwoven code has been jankily adapted to just barely work in conjunction with the new BytmDialog instances.  
+To be fully compatible and reduce developer overhead in the long run, sooner or later it will need to be migrated and reworked to be easier to maintain and expand, probably as part of a bigger config menu overhaul.

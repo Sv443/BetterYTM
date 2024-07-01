@@ -1,5 +1,5 @@
 import { randomId } from "@sv443-network/userutils";
-import { t } from "../utils";
+import { t } from "../utils/index.js";
 import "./toggleInput.css";
 
 export interface ToggleInputProps {

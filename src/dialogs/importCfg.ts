@@ -1,10 +1,10 @@
-import { decompress } from "@sv443-network/userutils";
-import { error, t, warn } from "../utils";
-import { BytmDialog } from "../components";
-import { compressionFormat, scriptInfo } from "../constants";
-import { emitSiteEvent } from "../siteEvents";
-import { formatVersion, getFeatures, migrations, setFeatures } from "../config";
-import { disableBeforeUnload } from "../features";
+import { error, tryToDecompressAndParse, t, warn, log } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { scriptInfo } from "../constants.js";
+import { emitSiteEvent } from "../siteEvents.js";
+import { formatVersion, getFeatures, migrations, setFeatures } from "../config.js";
+import { disableBeforeUnload } from "../features/index.js";
+import { FeatureConfig } from "src/types.js";
 
 let importDialog: BytmDialog | null = null;
 
@@ -32,7 +32,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-dialog-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("import_menu_title", scriptInfo.name);
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("import_menu_title", scriptInfo.name);
 
   return headerEl;
 }
@@ -68,23 +69,10 @@ async function renderFooter() {
     if(!textAreaElem)
       return warn("Couldn't find import menu textarea element");
     try {
-      /** Tries to parse an uncompressed or compressed input string as a JSON object */
-      const decode = async (input: string) => {
-        try {
-          return JSON.parse(input);
-        }
-        catch {
-          try {
-            return JSON.parse(await decompress(input, compressionFormat, "string"));
-          }
-          catch(err) {
-            warn("Couldn't import configuration:", err);
-            return null;
-          }
-        }
-      };
-      const parsed = await decode(textAreaElem.value.trim());
-      if(typeof parsed !== "object")
+      const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(textAreaElem.value.trim());
+      log("Trying to import config object:", parsed);
+
+      if(!parsed || typeof parsed !== "object")
         return alert(t("import_error_invalid"));
       if(typeof parsed.formatVersion !== "number")
         return alert(t("import_error_no_format_version"));

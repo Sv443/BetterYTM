@@ -1,0 +1,20 @@
+<script>
+  // shim for GM functions
+  var GM = GM || {
+    getResourceUrl: (path) => new Promise((res) => {
+      if(typeof path === "string")
+        return res(`https://raw.githubusercontent.com/Sv443/BetterYTM/develop/assets/${path}`);
+      return res(`https://picsum.photos/200`);
+    }),
+    copyToClipboard: function() {
+      console.log("GM.copyToClipboard shim called (discarded)");
+    },
+    info: {
+      script: {
+        name: "BYTM-STORYBOOK",
+        version: "0.0.1",
+        namespace: "https://github.com/Sv443/BetterYTM",
+      },
+    },
+  };
+</script>

@@ -1,9 +1,9 @@
 import { compress } from "@sv443-network/userutils";
-import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils";
-import { BytmDialog } from "../components";
-import { compressionFormat, scriptInfo } from "../constants";
-import { formatVersion, getFeatures } from "../config";
-import { siteEvents } from "src/siteEvents";
+import { compressionSupported, copyToClipboard, onInteraction, t } from "../utils/index.js";
+import { BytmDialog } from "../components/index.js";
+import { compressionFormat, scriptInfo } from "../constants.js";
+import { formatVersion, getFeatures } from "../config.js";
+import { siteEvents } from "../siteEvents.js";
 
 let exportDialog: BytmDialog | null = null;
 let copiedTxtTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
@@ -50,7 +50,8 @@ async function renderHeader() {
   headerEl.classList.add("bytm-menu-title");
   headerEl.role = "heading";
   headerEl.ariaLevel = "1";
-  headerEl.textContent = t("export_menu_title", scriptInfo.name);
+  headerEl.tabIndex = 0;
+  headerEl.textContent = headerEl.ariaLabel = t("export_menu_title", scriptInfo.name);
 
   return headerEl;
 }

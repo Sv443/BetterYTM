@@ -1,15 +1,15 @@
 import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443-network/userutils";
-import { getFeatures } from "../config";
-import { siteEvents } from "../siteEvents";
-import { addSelectorListener } from "../observers";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource } from "../utils";
-import { scriptInfo } from "../constants";
-import { openCfgMenu } from "../menu/menu_old";
-import { createCircularBtn } from "../components";
-import type { ResourceKey } from "../types";
+import { getFeature, getFeatures } from "../config.js";
+import { siteEvents } from "../siteEvents.js";
+import { addSelectorListener } from "../observers.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, dbg, tp } from "../utils/index.js";
+import { mode, scriptInfo } from "../constants.js";
+import { openCfgMenu } from "../menu/menu_old.js";
+import { createCircularBtn, createRipple } from "../components/index.js";
+import type { ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
-//#region cfg menu buttons
+//#region cfg menu btns
 
 let logoExchanged = false, improveLogoCalled = false;
 
@@ -83,7 +83,7 @@ function exchangeLogo() {
       logoExchanged = true;
       logoElem.classList.add("bytm-logo-exchanged");
 
-      const iconUrl = await getResourceUrl("img-logo");
+      const iconUrl = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
       const newLogo = document.createElement("img");
       newLogo.classList.add("bytm-mod-logo-img");
@@ -127,7 +127,7 @@ export async function addConfigMenuOptionYTM(container: HTMLElement) {
 
   const cfgOptIconElem = document.createElement("img");
   cfgOptIconElem.classList.add("bytm-cfg-menu-option-icon");
-  cfgOptIconElem.src = await getResourceUrl("img-logo");
+  cfgOptIconElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
   const cfgOptTextElem = document.createElement("div");
   cfgOptTextElem.classList.add("bytm-cfg-menu-option-text");
@@ -158,7 +158,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 
   const cfgOptImgElem = document.createElement("img");
   cfgOptImgElem.classList.add("bytm-yt-cfg-menu-option-icon");
-  cfgOptImgElem.src = await getResourceUrl("img-logo");
+  cfgOptImgElem.src = await getResourceUrl(mode === "development" ? "img-logo_dev" : "img-logo");
 
   const cfgOptItemElem = document.createElement("div");
   cfgOptItemElem.classList.add("bytm-yt-cfg-menu-option-item");
@@ -179,25 +179,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
     return error("Couldn't add config menu option to YT titlebar - couldn't find container element");
 }
 
-//#region rem upgrade tab
-
-/** Removes the "Upgrade" / YT Music Premium tab from the sidebar */
-export async function removeUpgradeTab() {
-  addSelectorListener("sideBar", "#contentContainer #guide-content #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-    listener: (tabElemLarge) => {
-      tabElemLarge.remove();
-      log("Removed large upgrade tab");
-    },
-  });
-  addSelectorListener("sideBarMini", "ytmusic-guide-renderer #sections ytmusic-guide-section-renderer[is-primary] #items ytmusic-guide-entry-renderer:nth-of-type(4)", {
-    listener: (tabElemSmall) => {
-      tabElemSmall.remove();
-      log("Removed small upgrade tab");
-    },
-  });
-}
-
-//#region anchor improvements
+//#region anchor impr.
 
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
@@ -330,7 +312,7 @@ function improveSidebarAnchors(sidebarItems: NodeListOf<HTMLElement>) {
   });
 }
 
-//#region rem tracking param
+//#region share track par.
 
 /** Removes the ?si tracking parameter from share URLs */
 export async function initRemShareTrackParam() {
@@ -360,6 +342,7 @@ export async function initRemShareTrackParam() {
   addSelectorListener("body", sharePanelSel, {
     listener: (sharePanelEl) => {
       const obs = new MutationObserver(() => {
+        dbg("># TODO:#DBG share panel changed");
         const inputElem = sharePanelEl.querySelector<HTMLInputElement>(inputSel);
         inputElem && removeSiParam(inputElem);
       });
@@ -367,6 +350,7 @@ export async function initRemShareTrackParam() {
       obs.observe(sharePanelEl, {
         childList: true,
         subtree: true,
+        characterData: true,
         attributeFilter: ["aria-hidden", "aria-checked", "checked"],
       });
     },
@@ -381,7 +365,7 @@ export async function fixSpacing() {
     error("Couldn't fix spacing");
 }
 
-//#region above queue btns
+//#region ab.queue btns
 
 export async function initAboveQueueBtns() {
   const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
@@ -392,14 +376,14 @@ export async function initAboveQueueBtns() {
       id: "scroll-to-active",
       resourceName: "icon-skip_to",
       titleKey: "scroll_to_playing",
-      async interaction() {
+      async interaction(evt: KeyboardEvent | MouseEvent) {
         const activeItem = document.querySelector<HTMLElement>("#side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"loading\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"playing\"], #side-panel .ytmusic-player-queue ytmusic-player-queue-item[play-button-state=\"paused\"]");
         if(!activeItem)
           return;
 
         activeItem.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
+          behavior: evt.shiftKey ? "instant" : "smooth",
+          block: evt.ctrlKey || evt.altKey ? "end" : "center",
           inline: "center",
         });
       },
@@ -409,15 +393,15 @@ export async function initAboveQueueBtns() {
       id: "clear-queue",
       resourceName: "icon-clear_list",
       titleKey: "clear_list",
-      async interaction() {
+      async interaction(evt: KeyboardEvent | MouseEvent) {
         try {
           // TODO: better confirmation dialog?
-          if(!confirm(t("clear_list_confirm")))
-            return;
-          const url = new URL(location.href);
-          url.searchParams.delete("list");
-          url.searchParams.set("t", String(await getVideoTime(0)));
-          location.assign(url);
+          if(evt.shiftKey || confirm(t("clear_list_confirm"))) {
+            const url = new URL(location.href);
+            url.searchParams.delete("list");
+            url.searchParams.set("time_continue", String(await getVideoTime(0)));
+            location.assign(url);
+          }
         }
         catch(err) {
           error("Couldn't clear queue due to an error:", err);
@@ -456,7 +440,7 @@ export async function initAboveQueueBtns() {
             continue;
 
           const btnElem = await createCircularBtn({
-            resourceName: item.resourceName as ResourceKey,
+            resourceName: item.resourceName as ResourceKey & `icon-${string}`,
             onClick: item.interaction,
             title: t(item.titleKey),
           });
@@ -475,17 +459,17 @@ export async function initAboveQueueBtns() {
   });
 }
 
-//#region thumbnail overlay
+//#region thumb.overlay
 
 /** To be changed when the toggle button is pressed - used to invert the state of "showOverlay" */
 let invertOverlay = false;
 
 export async function initThumbnailOverlay() {
-  const toggleBtnShown = getFeatures().thumbnailOverlayToggleBtnShown;
-  if(getFeatures().thumbnailOverlayBehavior === "never" && !toggleBtnShown)
+  const toggleBtnShown = getFeature("thumbnailOverlayToggleBtnShown");
+  if(getFeature("thumbnailOverlayBehavior") === "never" && !toggleBtnShown)
     return;
 
-  // so the script doesn't wait until a /watch page is loaded
+  // so the script init doesn't keep waiting until a /watch page is loaded
   waitVideoElementReady().then(() => {
     const playerSelector = "ytmusic-player#player";
     const playerEl = document.querySelector<HTMLElement>(playerSelector);
@@ -498,7 +482,7 @@ export async function initThumbnailOverlay() {
       if(!domLoaded)
         return;
 
-      const behavior = getFeatures().thumbnailOverlayBehavior;
+      const behavior = getFeature("thumbnailOverlayBehavior");
 
       let showOverlay = behavior === "always";
       const isVideo = currentMediaType() === "video";
@@ -523,7 +507,7 @@ export async function initThumbnailOverlay() {
         indicatorElem.ariaHidden = String(!showOverlay);
       }
 
-      if(getFeatures().thumbnailOverlayToggleBtnShown) {
+      if(getFeature("thumbnailOverlayToggleBtnShown")) {
         addSelectorListener("playerBarMiddleButtons", "#bytm-thumbnail-overlay-toggle", {
           async listener(toggleBtnElem) {
             const toggleBtnImgElem = toggleBtnElem.querySelector<HTMLImageElement>("img");
@@ -546,6 +530,8 @@ export async function initThumbnailOverlay() {
           toggleBtnElem.href = thumbUrl;
         if(thumbImgElem)
           thumbImgElem.src = thumbUrl;
+
+        log("Applied thumbnail URL to overlay:", thumbUrl);
       }
       else error("Couldn't get thumbnail URL for watch ID", watchId);
     };
@@ -569,7 +555,7 @@ export async function initThumbnailOverlay() {
       overlayElem.style.display = "none";
 
       let indicatorElem: HTMLImageElement | undefined;
-      if(getFeatures().thumbnailOverlayShowIndicator) {
+      if(getFeature("thumbnailOverlayShowIndicator")) {
         indicatorElem = document.createElement("img");
         indicatorElem.id = "bytm-thumbnail-overlay-indicator";
         indicatorElem.src = await getResourceUrl("icon-image");
@@ -577,14 +563,14 @@ export async function initThumbnailOverlay() {
         indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
         indicatorElem.ariaHidden = "true";
         indicatorElem.style.display = "none";
-        indicatorElem.style.opacity = String(getFeatures().thumbnailOverlayIndicatorOpacity / 100);
+        indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
       }
     
       const thumbImgElem = document.createElement("img");
       thumbImgElem.id = "bytm-thumbnail-overlay-img";
       thumbImgElem.role = "presentation";
       thumbImgElem.ariaHidden = "true";
-      thumbImgElem.style.objectFit = getFeatures().thumbnailOverlayImageFit;
+      thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
     
       overlayElem.appendChild(thumbImgElem);
       playerEl.appendChild(overlayElem);
@@ -605,7 +591,7 @@ export async function initThumbnailOverlay() {
     
       // toggle button
       if(toggleBtnShown) {
-        const toggleBtnElem = document.createElement("a");
+        const toggleBtnElem = createRipple(document.createElement("a"));
         toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
         toggleBtnElem.role = "button";
         toggleBtnElem.tabIndex = 0;
@@ -653,7 +639,7 @@ export async function initThumbnailOverlay() {
   });
 }
 
-//#region hide cursor on idle
+//#region idle hide cursor
 
 export async function initHideCursorOnIdle() {
   addSelectorListener("mainPanel", "ytmusic-player#player", {
@@ -671,7 +657,7 @@ export async function initHideCursorOnIdle() {
       let hideTransTimer: ReturnType<typeof setTimeout> | undefined;
 
       const hide = () => {
-        if(!getFeatures().hideCursorOnIdle)
+        if(!getFeature("hideCursorOnIdle"))
           return;
         if(vidContainer.classList.contains("bytm-cursor-hidden"))
           return;
@@ -695,7 +681,7 @@ export async function initHideCursorOnIdle() {
       };
 
       const cursorHideTimerCb = () =>
-        cursorHideTimer = setTimeout(hide, getFeatures().hideCursorOnIdleDelay * 1000);
+        cursorHideTimer = setTimeout(hide, getFeature("hideCursorOnIdleDelay") * 1000);
 
       const onMove = () => {
         cursorHideTimer && clearTimeout(cursorHideTimer);
@@ -729,4 +715,101 @@ export async function fixHdrIssues() {
     error("Couldn't load stylesheet to fix HDR issues");
   else
     log("Fixed HDR issues");
+}
+
+//#region show vote nums
+
+/** Shows the amount of likes and dislikes on the current song */
+export async function initShowVotes() {
+  addSelectorListener("playerBar", ".middle-controls-buttons ytmusic-like-button-renderer", {
+    async listener(voteCont: HTMLElement): Promise<void> {
+      try {
+        const watchId = getWatchId();
+        if(!watchId) {
+          await siteEvents.once("watchIdChanged");
+          return initShowVotes();
+        }
+        const voteObj = await fetchVideoVotes(watchId);
+        if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+          return error("Couldn't fetch votes from the Return YouTube Dislike API");
+  
+        if(getFeature("showVotes")) {
+          addVoteNumbers(voteCont, voteObj);
+  
+          siteEvents.on("watchIdChanged", async (watchId) => {
+            const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
+            const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
+        
+            if(!labelLikes || !labelDislikes)
+              return error("Couldn't find vote label elements while updating like and dislike counts");
+        
+            if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
+              return log("Vote labels already updated for this video");
+        
+            const voteObj = await fetchVideoVotes(watchId);
+            if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
+              return error("Couldn't fetch votes from the Return YouTube Dislike API");
+        
+            labelLikes.dataset.watchId = getWatchId() ?? "";
+            labelLikes.textContent = formatVoteNumber(voteObj.likes);
+            labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
+        
+            labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
+            labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
+            labelDislikes.dataset.watchId = getWatchId() ?? "";
+          });
+        }
+      }
+      catch(err) {
+        error("Couldn't initialize show votes feature due to an error:", err);
+      }
+    }
+  });
+}
+
+function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
+  const likeBtn = voteCont.querySelector<HTMLElement>("#button-shape-like");
+  const dislikeBtn = voteCont.querySelector<HTMLElement>("#button-shape-dislike");
+
+  if(!likeBtn || !dislikeBtn)
+    return error("Couldn't find like or dislike button while adding vote numbers");
+
+  const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
+    const label = document.createElement("span");
+    label.classList.add("bytm-vote-label", "bytm-no-select", type);
+    label.textContent = String(formatVoteNumber(amount));
+    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "full"));
+    label.dataset.watchId = getWatchId() ?? "";
+    label.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      (type === "likes" ? likeBtn : dislikeBtn).querySelector("button")?.click();
+    });
+    return label;
+  };
+
+  addStyleFromResource("css-show_votes").catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
+
+  const likeLblEl = createLabel(voteObj.likes, "likes");
+  likeBtn.insertAdjacentElement("afterend", likeLblEl);
+
+  const dislikeLblEl = createLabel(voteObj.dislikes, "dislikes");
+  dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
+}
+
+/** Formats a number formatted based on the config or the passed {@linkcode notation} */
+function formatVoteNumber(num: number, notation = getFeature("showVotesFormat")) {
+  return num.toLocaleString(
+    getLocale().replace(/_/g, "-"),
+    notation === "short"
+      ? {
+        notation: "compact",
+        compactDisplay: "short",
+        maximumFractionDigits: 1,
+      }
+      : {
+        style: "decimal",
+        maximumFractionDigits: 0,
+      },
+  );
 }

@@ -1,7 +1,8 @@
 import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain, t } from ".";
-import { addSelectorListener } from "../observers";
-import type { ResourceKey } from "../types";
+import { error, fetchCss, getDomain, t } from "./index.js";
+import { addSelectorListener } from "../observers.js";
+import type { ResourceKey } from "../types.js";
+import { siteEvents } from "../siteEvents.js";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;
@@ -20,12 +21,10 @@ export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player vi
  */
 export function getVideoTime(precision = 2) {
   return new Promise<number | null>(async (res) => {
-    const domain = getDomain();
-
     await waitVideoElementReady();
 
     try {
-      if(domain === "ytm") {
+      if(getDomain() === "ytm") {
         const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -35,7 +34,7 @@ export function getVideoTime(precision = 2) {
             res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
       }
-      else if(domain === "yt") {
+      else if(getDomain() === "yt") {
         const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
@@ -111,13 +110,16 @@ function ytForceShowVideoTime() {
   return true;
 }
 
-/** Waits for the video element to be in its readyState 4 / canplay state and returns it - resolves immediately if the video is already ready */
+/**
+ * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
+ * Resolves immediately if the video element is already ready.
+ */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
-  return new Promise((res) => {
-    addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
+  return new Promise(async (res) => {
+    const waitForEl = () => addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
       listener: async (vidElem) => {
         if(vidElem) {
-          // this is just after YT has finished doing their own shenanigans with the video time and volume
+        // this is just after YT has finished doing their own shenanigans with the video time and volume
           if(vidElem.readyState === 4)
             res(vidElem);
           else
@@ -125,6 +127,10 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
         }
       },
     });
+
+    if(!location.pathname.startsWith("/watch"))
+      await siteEvents.once("watchIdChanged");
+    waitForEl();
   });
 }
 
@@ -136,40 +142,11 @@ export function clearInner(element: Element) {
     clearNode(element!.firstChild as Element);
 }
 
-function clearNode(element: Element) {
+/** Removes all child nodes of an element recursively and also removes the element itself */
+export function clearNode(element: Element) {
   while(element.hasChildNodes())
     clearNode(element!.firstChild as Element);
   element.parentNode!.removeChild(element);
-}
-
-const interactionKeys = ["Enter", " ", "Space"];
-
-/**
- * Adds generic, accessible interaction listeners to the passed element.  
- * All listeners have the default behavior prevented and stop immediate propagation (for keyboard events only as long as the captured key is valid).
- * @param listenerOptions Provide a {@linkcode listenerOptions} object to configure the listeners
- */
-export function onInteraction<TElem extends HTMLElement>(elem: TElem, listener: (evt: MouseEvent | KeyboardEvent) => void, listenerOptions?: AddEventListenerOptions) {
-  const proxListener = (e: MouseEvent | KeyboardEvent) => {
-    if(e instanceof KeyboardEvent) {
-      if(interactionKeys.includes(e.key)) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-      }
-      else return;
-    }
-    else if(e instanceof MouseEvent) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    }
-
-    // clean up the other listener that isn't automatically removed if `once` is set
-    listenerOptions?.once && e.type === "keydown" && elem.removeEventListener("click", proxListener, listenerOptions);
-    listenerOptions?.once && e.type === "click" && elem.removeEventListener("keydown", proxListener, listenerOptions);
-    listener(e);
-  };
-  elem.addEventListener("click", proxListener, listenerOptions);
-  elem.addEventListener("keydown", proxListener, listenerOptions);
 }
 
 /**
@@ -188,7 +165,7 @@ export function addStyle(css: string, ref?: string, transform: (css: string) => 
 
 /**
  * Checks if the currently playing media is a song or a video.  
- * This function should only be called after awaiting `waitVideoElementReady()`!
+ * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
  */
 export function currentMediaType(): "video" | "song" {
   const songImgElem = document.querySelector("ytmusic-player #song-image");
@@ -197,7 +174,10 @@ export function currentMediaType(): "video" | "song" {
   return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 
-/** Adds a global style element with the contents of the specified CSS resource */
+/**
+ * Adds a global style element with the contents fetched from the specified CSS resource.  
+ * The CSS can be transformed using the provided function before being added to the DOM.
+ */
 export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
@@ -212,7 +192,7 @@ export function copyToClipboard(text: Stringifiable) {
   try {
     GM.setClipboard(String(text));
   }
-  catch(err) {
+  catch {
     alert(t("copy_to_clipboard_error", String(text)));
   }
 }

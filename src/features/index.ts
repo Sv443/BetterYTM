@@ -1,19 +1,22 @@
-import { getPreferredLocale, resourceToHTMLString, t, tp } from "../utils";
-import { clearLyricsCache, getLyricsCache } from "./lyricsCache";
-import { doVersionCheck } from "./versionCheck";
-import { getFeatures } from "../config";
-import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types";
-import { emitSiteEvent } from "../siteEvents";
+import { getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
+import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
+import { doVersionCheck } from "./versionCheck.js";
+import { getFeature, promptResetConfig } from "../config.js";
+import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
+import { getAutoLikeDialog } from "../dialogs/index.js";
+import { showIconToast } from "../components/index.js";
+import { mode } from "../constants.js";
 
-export * from "./layout";
-export * from "./behavior";
-export * from "./input";
-export * from "./lyrics";
-export * from "./lyricsCache";
-export * from "./songLists";
-export * from "./versionCheck";
-export * from "./volume";
+export * from "./layout.js";
+export * from "./behavior.js";
+export * from "./input.js";
+export * from "./lyrics.js";
+export * from "./lyricsCache.js";
+export * from "./songLists.js";
+export * from "./versionCheck.js";
+export * from "./volume.js";
 
 interface SelectOption<TValue = number | string> {
   value: TValue;
@@ -24,7 +27,7 @@ interface SelectOption<TValue = number | string> {
 
 /** Creates an HTML string for the given adornment properties */
 const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
-  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceToHTMLString(resource) ?? ""}</span>`;
+  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (
@@ -46,9 +49,9 @@ const combineAdornments = (
 const adornments = {
   advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
   experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
-  globe: async () => await resourceToHTMLString("icon-globe_small") ?? "",
+  globe: async () => await resourceAsString("icon-globe_small") ?? "",
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
-  reloadRequired: async () => getFeatures().advancedMode ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
+  reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
 } satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;
 
 /** Common options for config items of type "select" */
@@ -80,14 +83,17 @@ const options = {
  * Contains all possible features with their default values and other configuration.  
  *   
  * **Required props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property             | Description                                                                                                                      |
  * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
  * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
  * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
  * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
  * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
- *   
+ * 
+ * 
  * **Optional props:**
+ * <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  * | Property                                                       | Description                                                                                                                                              |
  * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
  * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
@@ -105,6 +111,7 @@ const options = {
  * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
+ * | `renderValue: (val: any) => string`                            | If provided, is called before rendering the value's label in the config menu                                                                             |
  * 
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -127,19 +134,15 @@ export const featInfo = {
     category: "layout",
     options: options.siteSelection,
     default: "all",
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   fixSpacing: {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
-  },
-  removeUpgradeTab: {
-    type: "toggle",
-    category: "layout",
-    default: true,
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   thumbnailOverlayBehavior: {
     type: "select",
@@ -213,15 +216,46 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   disableDarkReaderSites: {
     type: "select",
     category: "layout",
     options: options.siteSelectionOrNone,
     default: "all",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
+  showVotes: {
+    type: "toggle",
+    category: "layout",
+    default: true,
     textAdornment: adornments.reloadRequired,
   },
+  showVotesFormat: {
+    type: "select",
+    category: "layout",
+    options: () => [
+      { value: "full", label: t("votes_format_full") },
+      { value: "short", label: t("votes_format_short") },
+    ],
+    default: "short",
+    reloadRequired: false,
+    enable: noop,
+  },
+  // archived idea for future version:
+  // showVoteRatio: {
+  //   type: "select",
+  //   category: "layout",
+  //   options: () => [
+  //     { value: "disabled", label: t("vote_ratio_disabled") },
+  //     { value: "greenRed", label: t("vote_ratio_green_red") },
+  //     { value: "blueGray", label: t("vote_ratio_blue_gray") },
+  //   ],
+  //   default: "disabled",
+  //   textAdornment: adornments.reloadRequired,
+  // },
 
   //#region volume
   volumeSliderLabel: {
@@ -254,7 +288,7 @@ export const featInfo = {
     category: "volume",
     min: 1,
     max: 25,
-    default: 10,
+    default: 4,
     unit: "%",
     textAdornment: adornments.reloadRequired,
   },
@@ -268,7 +302,7 @@ export const featInfo = {
     type: "toggle",
     category: "volume",
     default: false,
-    textAdornment: () => getFeatures().volumeSharedBetweenTabs
+    textAdornment: () => getFeature("volumeSharedBetweenTabs")
       ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
   },
@@ -280,7 +314,7 @@ export const featInfo = {
     step: 1,
     default: 100,
     unit: "%",
-    textAdornment: () => getFeatures().volumeSharedBetweenTabs
+    textAdornment: () => getFeature("volumeSharedBetweenTabs")
       ? combineAdornments([adornments.alert(t("feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible").replace(/"/g, "'")), adornments.reloadRequired])
       : adornments.reloadRequired(),
     reloadRequired: false,
@@ -308,7 +342,8 @@ export const featInfo = {
       { value: "everywhere", label: t("list_button_placement_everywhere") },
     ],
     default: "everywhere",
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   scrollToActiveSongBtn: {
     type: "toggle",
@@ -345,14 +380,14 @@ export const featInfo = {
     type: "toggle",
     category: "behavior",
     default: true,
-    helpText: () => tp("feature_helptext_rememberSongTime", getFeatures().rememberSongTimeMinPlayTime, getFeatures().rememberSongTimeMinPlayTime),
+    helpText: () => tp("feature_helptext_rememberSongTime", getFeature("rememberSongTimeMinPlayTime"), getFeature("rememberSongTimeMinPlayTime")),
     textAdornment: adornments.reloadRequired,
   },
   rememberSongTimeSites: {
     type: "select",
     category: "behavior",
     options: options.siteSelection,
-    default: "ytm",
+    default: "all",
     textAdornment: adornments.reloadRequired,
   },
   rememberSongTimeDuration: {
@@ -444,6 +479,53 @@ export const featInfo = {
     default: true,
     reloadRequired: false,
     enable: noop,
+  },
+  autoLikeChannels: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
+  autoLikeChannelToggleBtn: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  // TODO(v2.2):
+  // autoLikePlayerBarToggleBtn: {
+  //   type: "toggle",
+  //   category: "input",
+  //   default: false,
+  //   textAdornment: adornments.reloadRequired,
+  // },
+  autoLikeTimeout: {
+    type: "slider",
+    category: "input",
+    min: 3,
+    max: 30,
+    step: 0.5,
+    default: 5,
+    unit: "s",
+    advanced: true,
+    reloadRequired: false,
+    enable: noop,
+    textAdornment: adornments.advanced,
+  },
+  autoLikeShowToast: {
+    type: "toggle",
+    category: "input",
+    default: true,
+    reloadRequired: false,
+    advanced: true,
+    enable: noop,
+    textAdornment: adornments.advanced,
+  },
+  autoLikeOpenMgmtDialog: {
+    type: "button",
+    category: "input",
+    click: () => getAutoLikeDialog().then(d => d.open()),
   },
 
   //#region lyrics
@@ -559,11 +641,46 @@ export const featInfo = {
     default: 1,
     textAdornment: adornments.reloadRequired,
   },
+  initTimeout: {
+    type: "number",
+    category: "general",
+    min: 3,
+    max: 30,
+    default: 8,
+    step: 0.1,
+    unit: "s",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
+  toastDuration: {
+    type: "slider",
+    category: "general",
+    min: 0,
+    max: 15,
+    default: 3,
+    step: 0.5,
+    unit: "s",
+    reloadRequired: false,
+    advanced: true,
+    textAdornment: adornments.advanced,
+    enable: noop,
+    change: () => showIconToast({
+      duration: getFeature("toastDuration") * 1000,
+      message: "Example",
+      iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
+    }),
+  },
+  resetConfig: {
+    type: "button",
+    category: "general",
+    click: promptResetConfig,
+    textAdornment: adornments.reloadRequired,
+  },
   advancedMode: {
     type: "toggle",
     category: "general",
     default: false,
-    textAdornment: () => getFeatures().advancedMode ? adornments.advanced() : undefined,
+    textAdornment: () => getFeature("advancedMode") ? adornments.advanced() : undefined,
     change: (_key, prevValue, newValue) =>
       prevValue !== newValue &&
         emitSiteEvent("recreateCfgMenu"),

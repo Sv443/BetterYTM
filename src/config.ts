@@ -1,16 +1,27 @@
 import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
-import { featInfo } from "./features/index";
-import { compressionSupported, error, info, log } from "./utils";
-import { emitSiteEvent } from "./siteEvents";
-import { compressionFormat } from "./constants";
-import { emitInterface } from "./interface";
-import type { FeatureConfig, FeatureKey } from "./types";
+import { disableBeforeUnload, featInfo } from "./features/index.js";
+import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
+import { emitSiteEvent } from "./siteEvents.js";
+import { compressionFormat, mode } from "./constants.js";
+import { emitInterface } from "./interface.js";
+import { closeCfgMenu } from "./menu/menu_old.js";
+import type { FeatureConfig, FeatureKey } from "./types.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 5;
+export const formatVersion = 6;
+
+export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
+  // @ts-ignore
+  .filter((ftKey) => featInfo?.[ftKey]?.default !== undefined)
+  .reduce<Partial<FeatureConfig>>((acc, key) => {
+    // @ts-ignore
+    acc[key] = featInfo?.[key]?.default as unknown as undefined;
+    return acc;
+  }, {}) as FeatureConfig;
+
 /** Config data format migration dictionary */
 export const migrations: DataMigrationsDict = {
-  // 1 -> 2 (v1.0)
+  // 1 -> 2 (<=v1.0)
   2: (oldData: Record<string, unknown>) => {
     const queueBtnsEnabled = Boolean(oldData.queueButtons);
     delete oldData.queueButtons;
@@ -58,17 +69,31 @@ export const migrations: DataMigrationsDict = {
     "fixHdrIssues", "clearQueueBtn",
     "closeToastsTimeout", "disableDarkReaderSites",
   ]),
-  // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-  // 5 -> 6 (v2.x)
-  // 6: (oldData: FeatureConfig) => 
-} as const satisfies DataMigrationsDict;
+  // 5 -> 6 (v2.1)
+  6: (oldData: FeatureConfig) => {
+    const newData = useNewDefaultIfUnchanged(
+      useDefaultConfig(oldData, [
+        "autoLikeChannels", "autoLikeChannelToggleBtn",
+        "autoLikeTimeout", "autoLikeShowToast",
+        "autoLikeOpenMgmtDialog", "showVotes",
+        "showVotesFormat", "toastDuration",
+        "initTimeout",
+        // forgot to add this to the migration when adding the feature way before so now will have to do:
+        "volumeSliderLabel",
+      ]), [
+        { key: "rememberSongTimeSites", oldDefault: "ytm" },
+        { key: "volumeSliderScrollStep", oldDefault: 10 },
+      ],
+    );
+    "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
+    return newData;
+  },
+  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
 
-export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
-  .reduce<Partial<FeatureConfig>>((acc, key) => {
-    // @ts-ignore
-    acc[key] = featInfo?.[key]?.default as unknown as undefined;
-    return acc;
-  }, {}) as FeatureConfig;
+  // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
+  // 6 -> 7 (vX.X)
+  // 7: (oldData: FeatureConfig) => 
+} as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: (keyof typeof featInfo)[]): FeatureConfig {
@@ -76,6 +101,25 @@ function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKey
   for(const key of resetKeys) // @ts-ignore
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments
   return newData;
+}
+
+/**
+ * Uses {@linkcode oldData} as the base, then sets all keys provided in {@linkcode defaults} to their old default values, as long as their current value is equal to the provided old default.  
+ * This essentially means if someone has changed a feature's value from its old default value, that decision will be respected. Only if it has been left on its old default value, it will be reset to the new default value.  
+ * Returns a copy of the object.
+ */
+function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
+  oldData: TConfig,
+  defaults: Array<{ key: FeatureKey, oldDefault: unknown }>,
+) {
+  const newData = { ...oldData };
+  for(const { key, oldDefault } of defaults) {
+    // @ts-ignore
+    const defaultVal = featInfo?.[key]?.default as TConfig[typeof key];
+    if(newData[key] === oldDefault)
+      newData[key] = defaultVal as never; // we love TS
+  }
+  return newData as TConfig;
 }
 
 let canCompress = true;
@@ -94,12 +138,19 @@ export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgDataStore.id}`, NaN));
   let data = await cfgDataStore.loadData();
+
+  // since the config changes so much in development keys need to be fixed in this special way
+  if(mode === "development") {
+    await cfgDataStore.setData(fixCfgKeys(data));
+    data = cfgDataStore.getData();
+  }
+
   log(`Initialized feature config DataStore (formatVersion = ${cfgDataStore.formatVersion})`);
   if(isNaN(oldFmtVer))
     info("  !- Config data was initialized with default values");
   else if(oldFmtVer !== cfgDataStore.formatVersion) {
     try {
-      await cfgDataStore.setData(data = fixMissingCfgKeys(data));
+      await cfgDataStore.setData(data = fixCfgKeys(data));
       info(`  !- Config data was migrated from version ${oldFmtVer} to ${cfgDataStore.formatVersion}`);
     }
     catch(err) {
@@ -114,20 +165,24 @@ export async function initConfig() {
 }
 
 /**
- * Fixes missing keys in the passed config object with their default values and returns a copy of the fixed object.  
+ * Fixes missing keys in the passed config object with their default values or removes extraneous keys and returns a copy of the fixed object.  
  * Returns a copy of the originally passed object if nothing needs to be fixed.
  */
-export function fixMissingCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
-  cfg = { ...cfg };
+export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
+  const newCfg = { ...cfg };
   const passedKeys = Object.keys(cfg);
   const defaultKeys = Object.keys(defaultData);
   const missingKeys = defaultKeys.filter(k => !passedKeys.includes(k));
   if(missingKeys.length > 0) {
-    info("Fixed missing feature config keys:", missingKeys);
     for(const key of missingKeys)
-      cfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
+      newCfg[key as keyof FeatureConfig] = defaultData[key as keyof FeatureConfig] as never;
   }
-  return cfg as FeatureConfig;
+  const extraKeys = passedKeys.filter(k => !defaultKeys.includes(k));
+  if(extraKeys.length > 0) {
+    for(const key of extraKeys)
+      delete newCfg[key as keyof FeatureConfig];
+  }
+  return newCfg as FeatureConfig;
 }
 
 /** Returns the current feature config from the in-memory cache as a copy */
@@ -154,6 +209,24 @@ export function setDefaultFeatures() {
   emitSiteEvent("configChanged", cfgDataStore.getData());
   info("Reset feature config to its default values");
   return res;
+}
+
+export async function promptResetConfig() {
+  if(confirm(t("reset_config_confirm"))) {
+    closeCfgMenu();
+    disableBeforeUnload();
+    await setDefaultFeatures();
+    if(location.pathname.startsWith("/watch")) {
+      const videoTime = await getVideoTime(0);
+      const url = new URL(location.href);
+      url.searchParams.delete("t");
+      if(videoTime)
+        url.searchParams.set("time_continue", String(videoTime));
+      location.replace(url.href);
+    }
+    else
+      location.reload();
+  }
 }
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */

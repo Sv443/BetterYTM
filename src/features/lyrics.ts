@@ -1,12 +1,12 @@
 import { autoPlural, fetchAdvanced } from "@sv443-network/userutils";
 import Fuse from "fuse.js";
-import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl } from "../utils";
-import { emitInterface } from "../interface";
-import { mode, scriptInfo } from "../constants";
-import { getFeature } from "../config";
-import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache";
-import type { LyricsCacheEntry } from "../types";
-import { addSelectorListener } from "src/observers";
+import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl, onInteraction, openInTab } from "../utils/index.js";
+import { emitInterface } from "../interface.js";
+import { mode, scriptInfo } from "../constants.js";
+import { getFeature } from "../config.js";
+import { addLyricsCacheEntryBest, addLyricsCacheEntryPenalized, getLyricsCacheEntry } from "./lyricsCache.js";
+import type { LyricsCacheEntry } from "../types.js";
+import { addSelectorListener } from "../observers.js";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -15,34 +15,17 @@ const geniUrlRatelimitTimeframe = 30;
 
 let currentSongTitle = "";
 
-/** Adds a lyrics button to the media controls bar */
-export async function addMediaCtrlLyricsBtn() {
-  addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualMediaCtrlLyricsBtn });
+/** Adds a lyrics button to the player bar */
+export async function addPlayerBarLyricsBtn() {
+  addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", { listener: addActualLyricsBtn });
 }
 
 /** Actually adds the lyrics button after the like button renderer has been verified to exist */
-async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
+async function addActualLyricsBtn(likeContainer: HTMLElement) {
   const songTitleElem = document.querySelector<HTMLDivElement>(".content-info-wrapper > yt-formatted-string");
 
   if(!songTitleElem)
     return warn("Couldn't find song title element");
-
-  // run parallel without awaiting so the MutationObserver below can observe the title element in time
-  (async () => {
-    const gUrl = await getCurrentLyricsUrl();
-
-    const lyricsBtnElem = await createLyricsBtn(gUrl ?? undefined);
-    lyricsBtnElem.id = "betterytm-lyrics-button";
-
-    log("Inserted lyrics button into media controls bar");
-
-    const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
-
-    if(thumbToggleElem)
-      thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem);
-    else
-      likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
-  })();
 
   currentSongTitle = songTitleElem.title;
 
@@ -55,7 +38,7 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
       const newTitle = (mut.target as HTMLElement).title;
 
       if(newTitle !== currentSongTitle && newTitle.length > 0) {
-        const lyricsBtn = document.querySelector<HTMLAnchorElement>("#betterytm-lyrics-button");
+        const lyricsBtn = document.querySelector<HTMLAnchorElement>("#bytm-player-bar-lyrics-btn");
 
         if(!lyricsBtn)
           continue;
@@ -108,6 +91,23 @@ async function addActualMediaCtrlLyricsBtn(likeContainer: HTMLElement) {
   const obs = new MutationObserver(onMutation);
 
   obs.observe(songTitleElem, { attributes: true, attributeFilter: [ "title" ] });
+
+  const lyricsBtnElem = await createLyricsBtn(undefined);
+  lyricsBtnElem.id = "bytm-player-bar-lyrics-btn";
+
+  // run parallel so the element is inserted as soon as possible
+  getCurrentLyricsUrl().then(url => {
+    url && addGeniusUrlToLyricsBtn(lyricsBtnElem, url);
+  });
+
+  log("Inserted lyrics button into media controls bar");
+
+  const thumbToggleElem = document.querySelector<HTMLElement>("#bytm-thumbnail-overlay-toggle");
+
+  if(thumbToggleElem)
+    thumbToggleElem.insertAdjacentElement("afterend", lyricsBtnElem);
+  else
+    likeContainer.insertAdjacentElement("afterend", lyricsBtnElem);
 }
 
 //#region lyrics utils
@@ -223,10 +223,8 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     const startTs = Date.now();
     const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
       disableFuzzy: null,
-      utm_source: scriptInfo.name,
-      utm_content: `v${scriptInfo.version}${mode === "development" ? "-dev" : ""}`,
-      artist,
-      song,
+      utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
+      q: `${artist} ${song}`,
     });
 
     log("Requesting lyrics from geniURL:", fetchUrl);
@@ -374,6 +372,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
   }
 }
 
+/** Adds the genius URL to the passed lyrics button element if it was previously instantiated with an undefined URL */
+export async function addGeniusUrlToLyricsBtn(btnElem: HTMLAnchorElement, geniusUrl: string) {
+  btnElem.href = geniusUrl;
+  btnElem.ariaLabel = btnElem.title = t("open_lyrics");
+  btnElem.style.visibility = "visible";
+  btnElem.style.display = "inline-flex";
+}
+
 /** Creates the base lyrics button element */
 export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) {
   const linkElem = document.createElement("a");
@@ -391,7 +397,31 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
   imgElem.classList.add("bytm-generic-btn-img");
   imgElem.src = await getResourceUrl("icon-lyrics");
 
+  onInteraction(linkElem, (e) => {
+    const url = linkElem.href ?? geniusUrl;
+    if(!url || e instanceof MouseEvent)
+      return;
+    openInTab(url);
+  }, {
+    preventDefault: false,
+    stopPropagation: false,
+  });
+
   linkElem.appendChild(imgElem);
+
+  onInteraction(linkElem, async (e) => {
+    if(e.ctrlKey || e.altKey) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const search = prompt(t("open_lyrics_search_prompt"));
+      if(search)
+        openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
+    }
+  }, {
+    preventDefault: false,
+    stopPropagation: false,
+  });
 
   return linkElem;
 }

@@ -1,8 +1,9 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady } from "../utils";
-import { getFeatures } from "../config";
-import { addSelectorListener } from "../observers";
-import { LogLevel } from "../types";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, getVideoSelector, waitVideoElementReady, clearNode, currentMediaType } from "../utils/index.js";
+import { getFeature } from "../config.js";
+import { addSelectorListener } from "../observers.js";
+import { initialParams } from "../constants.js";
+import { LogLevel } from "../types.js";
 
 //#region beforeunload popup
 
@@ -29,103 +30,118 @@ export async function initBeforeUnloadHook() {
 
 /** Closes toasts after a set amount of time */
 export async function initAutoCloseToasts() {
-  try {
-    const animTimeout = 300;
+  const animTimeout = 300;
 
-    addSelectorListener("popupContainer", "tp-yt-paper-toast#toast", {
-      all: true,
-      continuous: true,
-      listener: async (toastElems) => {
-        for(const toastElem of toastElems) {
-          if(!toastElem.hasAttribute("allow-click-through"))
+  addSelectorListener("popupContainer", "ytmusic-notification-action-renderer", {
+    all: true,
+    continuous: true,
+    listener: async (toastContElems) => {
+      try {
+        for(const toastContElem of toastContElems) {
+          const toastElem = toastContElem.querySelector<HTMLElement>("tp-yt-paper-toast#toast");
+          if(!toastElem || !toastElem.hasAttribute("allow-click-through"))
             continue;
 
           if(toastElem.classList.contains("bytm-closing"))
             continue;
           toastElem.classList.add("bytm-closing");
 
-          const closeTimeout = Math.max(getFeatures().closeToastsTimeout * 1000 + animTimeout, animTimeout);
+          const closeTimeout = Math.max(getFeature("closeToastsTimeout") * 1000 + animTimeout, animTimeout);
           await pauseFor(closeTimeout);
 
           toastElem.classList.remove("paper-toast-open");
-          log(`Automatically closed toast '${toastElem.querySelector<HTMLDivElement>("#text-container yt-formatted-string")?.textContent}' after ${getFeatures().closeToastsTimeout * 1000}ms`);
 
-          // wait for the transition to finish
-          await pauseFor(animTimeout);
+          toastElem.addEventListener("transitionend", () => {
+            toastElem.classList.remove("bytm-closing");
+            toastElem.style.display = "none";
 
-          toastElem.style.display = "none";
+            clearNode(toastElem);
+            log(`Automatically closed toast after ${getFeature("closeToastsTimeout") * 1000}ms`);
+          }, { once: true });
         }
-      },
-    });
+      }
+      catch(err) {
+        error("Error in automatic toast closing:", err);
+      }
+    },
+  });
 
-    log("Initialized automatic toast closing");
-  }
-  catch(err) {
-    error("Error in automatic toast closing:", err);
-  }
+  log("Initialized automatic toast closing");
 }
 
 //#region remember song time
 
-interface RemSongObj {
+interface RemVidObj {
   /** Watch ID */
   watchID: string;
-  /** Time of the song in seconds */
+  /** Time of the song/video in seconds */
   songTime: number;
   /** Timestamp this entry was last updated */
   updateTimestamp: number;
 }
 
-let remSongsCache: RemSongObj[] = [];
+let remVidsCache: RemVidObj[] = [];
 
 /**
- * Remembers the time of the last played song and resumes playback from that time  
- * CALLED BEFORE DOM IS READY!
+ * Remembers the time of the last played video and resumes playback from that time.  
+ * **Needs to be called *before* DOM is ready!**
  */
 export async function initRememberSongTime() {
-  if(getFeatures().rememberSongTimeSites !== "all" && getFeatures().rememberSongTimeSites !== getDomain())
+  if(getFeature("rememberSongTimeSites") !== "all" && getFeature("rememberSongTimeSites") !== getDomain())
     return;
 
   const storedDataRaw = await GM.getValue("bytm-rem-songs");
   if(!storedDataRaw)
     await GM.setValue("bytm-rem-songs", "[]");
 
-  remSongsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemSongObj[];
+  try {
+    remVidsCache = JSON.parse(String(storedDataRaw ?? "[]")) as RemVidObj[];
+  }
+  catch(err) {
+    error("Error parsing stored video time data, defaulting to empty cache:", err);
+    await GM.setValue("bytm-rem-songs", "[]");
+    remVidsCache = [];
+  }
 
-  log(`Initialized song time remembering with ${remSongsCache.length} initial entries`);
+  log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
 
-  if(location.pathname.startsWith("/watch"))
-    await restoreSongTime();
+  await restVidRestoreTime();
 
   if(!domLoaded)
-    document.addEventListener("DOMContentLoaded", remSongUpdateEntry);
+    document.addEventListener("DOMContentLoaded", restVidStartUpdateLoop);
   else
-    remSongUpdateEntry();
+    restVidStartUpdateLoop();
 }
 
-/** Tries to restore the time of the currently playing song */
-async function restoreSongTime() {
+/** Tries to restore the time of the currently playing video */
+async function restVidRestoreTime() {
   if(location.pathname.startsWith("/watch")) {
     const watchID = new URL(location.href).searchParams.get("v");
     if(!watchID)
       return;
 
-    const entry = remSongsCache.find(entry => entry.watchID === watchID);
+    if(initialParams.has("t"))
+      return info("Not restoring song time because the URL has the '&t' parameter", LogLevel.Info);
+
+    const entry = remVidsCache.find(entry => entry.watchID === watchID);
     if(entry) {
-      if(Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000) {
-        await delRemSongData(entry.watchID);
+      if(Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
+        await restVidDeleteEntry(entry.watchID);
         return;
       }
+      else if(isNaN(Number(entry.songTime)))
+        return;
       else {
-        if(isNaN(entry.songTime))
-          return;
+        let vidElem: HTMLVideoElement;
         const doRestoreTime = async () => {
-          const vidElem = await waitVideoElementReady();
-          const vidRestoreTime = entry.songTime - (getFeatures().rememberSongTimeReduction ?? 0);
+          if(!vidElem)
+            vidElem = await waitVideoElementReady();
+          const vidRestoreTime = entry.songTime - (getFeature("rememberSongTimeReduction") ?? 0);
           vidElem.currentTime = clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-          await delRemSongData(entry.watchID);
-          info(`Restored song time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+          await restVidDeleteEntry(entry.watchID);
+          info(`Restored ${currentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
         };
+
         if(!domLoaded)
           document.addEventListener("DOMContentLoaded", doRestoreTime);
         else
@@ -135,65 +151,74 @@ async function restoreSongTime() {
   }
 }
 
-/** Only call once as this calls itself after a timeout! - Updates the currently playing song's entry in GM storage */
-async function remSongUpdateEntry() {
+let lastSongTime = -1;
+let remVidCheckTimeout: ReturnType<typeof setTimeout> | undefined;
+
+/** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
+async function restVidStartUpdateLoop() {
   if(location.pathname.startsWith("/watch")) {
+    const songTime = await getVideoTime() ?? 0;
+
+    if(songTime === lastSongTime)
+      return;
+    lastSongTime = songTime;
+
     const watchID = getWatchId();
     if(!watchID)
       return;
-
-    const songTime = await getVideoTime() ?? 0;
 
     const paused = document.querySelector<HTMLVideoElement>(getVideoSelector())?.paused ?? false;
 
     // don't immediately update to reduce race conditions and only update if the video is playing
     // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > getFeatures().rememberSongTimeMinPlayTime && !paused) {
+    if(songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
       const entry = {
         watchID,
         songTime,
         updateTimestamp: Date.now(),
       };
-      await setRemSongData(entry);
+      await restVidSetEntry(entry);
     }
-    // if the song is rewound to the beginning, delete the entry
+    // if the song is rewound to the beginning, update the entry accordingly
     else {
-      const entry = remSongsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= getFeatures().rememberSongTimeMinPlayTime)
-        await delRemSongData(entry.watchID);
+      const entry = remVidsCache.find(entry => entry.watchID === watchID);
+      if(entry && songTime <= entry.songTime)
+        await restVidSetEntry({ ...entry, songTime, updateTimestamp: Date.now() });
     }
   }
 
-  const expiredEntries = remSongsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeatures().rememberSongTimeDuration * 1000);
+  const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
   for(const entry of expiredEntries)
-    await delRemSongData(entry.watchID);
+    await restVidDeleteEntry(entry.watchID);
 
-  // for no overlapping calls and better error handling
-  setTimeout(remSongUpdateEntry, 1000);
+  // for no overlapping calls and better error handling:
+  if(remVidCheckTimeout)
+    clearTimeout(remVidCheckTimeout);
+  remVidCheckTimeout = setTimeout(restVidStartUpdateLoop, 1000);
 }
 
-/** Adds an entry or updates it if it already exists */
-async function setRemSongData(data: RemSongObj) {
-  const foundIdx = remSongsCache.findIndex(entry => entry.watchID === data.watchID);
+/** Updates an existing or creates a new entry */
+async function restVidSetEntry(data: RemVidObj) {
+  const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
   if(foundIdx >= 0)
-    remSongsCache[foundIdx] = data;
+    remVidsCache[foundIdx] = data;
   else
-    remSongsCache.push(data);
+    remVidsCache.push(data);
 
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }
 
 /** Deletes an entry */
-async function delRemSongData(watchID: string) {
-  remSongsCache = [...remSongsCache.filter(entry => entry.watchID !== watchID)];
-  await GM.setValue("bytm-rem-songs", JSON.stringify(remSongsCache));
+async function restVidDeleteEntry(watchID: string) {
+  remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
+  await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }
 
 //#region disable darkreader
 
 /** Disables Dark Reader if it is present */
 export function disableDarkReader() {
-  if(getFeatures().disableDarkReaderSites !== getDomain() && getFeatures().disableDarkReaderSites !== "all")
+  if(getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
     return;
 
   const metaElem = document.createElement("meta");

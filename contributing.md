@@ -22,12 +22,15 @@ If you have any questions or need help, feel free to contact me, [see my homepag
 
 ### Submitting translations:
 Thank you so much for your interest in translating BetterYTM!  
-Before submitting a translation, please check on [this document](./assets/translations/README.md) if the language you want to translate to has already been translated and how many strings are still missing.
+Before submitting a translation, please check on [this document](https://github.com/Sv443/BetterYTM/tree/develop/assets/translations) if the language you want to translate to has already been translated and how many strings are still missing.
 
 <br>
 
 #### Adding translations for a new language:
-To submit a translation, please follow these steps:  
+> [!NOTE]
+> 
+> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
@@ -45,6 +48,9 @@ To submit a translation, please follow these steps:
 <br>
 
 #### Editing an existing translation:
+> [!NOTE]
+> 
+> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
 To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
@@ -67,8 +73,10 @@ To edit an existing translation, please follow these steps:
 ### Setting up the project for local development:
 #### Requirements:
 1. Have Node.js, npm and Git installed
-2. Clone this repository (if you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead)
-3. Switch to the `develop` branch by running `git checkout develop` in the project root.  
+2. Clone this repository  
+  If you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.  
+  Make sure to clone or fork from the `develop` branch since the `main` branch is only used for releases!
+3. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
   Skip this step if you are using your own forked repository.
 4. Open a terminal in the project root and run `npm i`
 5. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
@@ -102,33 +110,38 @@ To edit an existing translation, please follow these steps:
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
   - `npm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
+  - `npm run preview` - Same as `npm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
 - **`npm run lint`**  
-  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify *all* of the functionality of the script, only syntax and TypeScript errors!
+  Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
+- **`npm run storybook`**  
+  Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
 - **`npm run gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
 - **`npm run tr-progress`**  
-  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`
+  Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
+  Will also be run automatically after every script build.
 - **`npm run tr-format -- <arguments>`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
-  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a comma separated list (e.g. `-o="fr_FR,de_DE"`)
+  - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr_FR,de_DE"` or `-o="pt_BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
 - **`npm run tr-prep`**  
-  Shorthand for `npm run tr-format -- -p` (see above)
+  Shorthand for `npm run tr-format -- --prep` (see above)
 - **`npm run --silent invisible -- "<command>"`**  
-  Runs the passed command as a detached child process without giving any console output. (`--` and double quotes are required!)  
+  Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see npm's info and error messages.
 - **`npm run node-ts -- <path>`**  
-  Runs the TypeScript file at the given path using the regular node binary and the node-ts loader.  
+  Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
 
 > [!NOTE]
 > 
-> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and must be preserved.  
-> Any arguments before that will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
-> Here, `--silent` is an argument that makes npm shut up and `"echo hello"` is an argument we wanna pass to the script.
+> When you are using npm (as opposed to `pnpm`), read the following carefully:  
+> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and they must be preserved.  
+> Any arguments before the double hyphens will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
+> Here, `--silent` is an argument we pass to npm to make it shut up and `"echo hello"` is an argument we wanna pass to the script that npm ends up invoking.
 
 <br>
 
@@ -145,6 +158,24 @@ Note: the tab needs to stay open on Firefox or the script will not update itself
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
+<br>
+
+**Strongly recommended knowledge:**
+- Intermediate JavaScript knowledge (DOM, events, async functions, fetch, localStorage, etc.)
+  - Understanding JS types and reading TypeScript definitions
+  - Semantic versioning (for versioning your plugin in the correct format)
+- Basic knowledge of userscripts (start on the [GreaseSpot wiki](https://wiki.greasespot.net/Greasemonkey_Manual))
+- Reading the file [`license-for-plugins.txt`](./license-for-plugins.txt) to understand the licensing conditions for plugins
+  
+**Helpful knowledge:**
+- TypeScript (for type safety and better autocomplete)
+- The source code of BetterYTM  
+  This is especially regarding the files `src/interface.ts`, `src/types.ts`, `src/siteEvents.ts` and `src/observers.ts`
+- Being on the lookout for pull requests, since they will list new features and changes to the interface
+- This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find it
+  
+<br>
+
 These are the ways to interact with BetterYTM; constants, events and global functions:  
 - Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `window` object.  
   These read-only properties tell you more about how BetterYTM is currently being run.  
@@ -161,7 +192,12 @@ These are the ways to interact with BetterYTM; constants, events and global func
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
   There is also a summary with examples [below.](#global-functions)  
-  Additionally to those functions, the namespace `BYTM.UserUtils` is also exposed, which contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)
+
+- Additionally, the following namespaces expose entire libraries for you that BetterYTM has already loaded in:
+  - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
+    This library can register listeners for when CSS selectors exist, intercept events, manage persistent user configurations, allow you to modify the DOM more easily and more.
+  - `unsafeWindow.BYTM.compareVersions` has all functions from the [compare-versions library.](https://npmjs.com/package/compare-versions)  
+    Use it to compare semver-compliant version strings.
 
 All of these interactions require the use of `unsafeWindow`, as the regular window object is pretty sandboxed in userscript managers.  
   
@@ -263,42 +299,51 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 ### Global functions and classes:
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
+Functions marked with 🔒 need to be passed a per-session and per-plugin authentication token. It can be acquire by calling [registerPlugin()](#registerplugin)  
   
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
-  - [getPluginInfo()](#getplugininfo) - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
+  - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
 - BYTM-specific:
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
+- Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
-  - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element
+  - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element with just an icon
+  - [createLongBtn()](#createlongbtn) - Creates a generic, long and circular button element with an icon and text
+  - [showToast()](#showtoast) - Shows a toast notification and a message string or element
+  - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
+  - [createRipple()](#createripple) - Creates a click ripple effect on the given element
 - Translations:
-  - [setLocale()](#setlocale) - Sets the locale for BetterYTM
+  - [setLocale()](#setlocale) 🔒 - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
   - [hasKey()](#haskey) - Checks if the specified translation key exists in the currently set locale
   - [hasKeyFor()](#haskeyfor) - Checks if the specified translation key exists in the specified locale
   - [t()](#t) - Translates the specified translation key using the currently set locale
   - [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
 - Feature config:
-  - [getFeatures()](#getfeatures) - Returns the current BYTM feature configuration object
-  - [saveFeatures()](#savefeatures) - Overwrites the current BYTM feature configuration object with the provided one
+  - [getFeatures()](#getfeatures) 🔒 - Returns the current BYTM feature configuration object
+  - [saveFeatures()](#savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
 - Lyrics:
   - [fetchLyricsUrlTop()](#fetchlyricsurltop) - Fetches the URL to the lyrics page for the specified song
   - [getLyricsCacheEntry()](#getlyricscacheentry) - Tries to find a URL entry in the in-memory cache for the specified song
   - [sanitizeArtists()](#sanitizeartists) - Sanitizes the specified artist string to be used in fetching a lyrics URL
   - [sanitizeSong()](#sanitizesong) - Sanitizes the specified song title string to be used in fetching a lyrics URL
+- Auto-Like:
+  - [getAutoLikeData()](#getautolikedata) 🔒 - Returns the current auto-like data object
+  - [saveAutoLikeData()](#saveautolikedata) 🔒 - Overwrites the current auto-like data object with the provided one
+  - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
-  - [compareVersions()](#compareversions) - Crudely compares two semver version strings and returns which one is newer
-  - [compareVersionArrays()](#compareversionarrays) - Crudely compares two semver version number arrays and returns which one is newer
 
 <br><br>
 
@@ -314,74 +359,104 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > Arguments:  
 > - `pluginDef` - The properties of this plugin definition object can be found by searching for `type PluginDef` in the file [`src/types.ts`](./src/types.ts)  
 >   
-> The function will either throw an error if the plugin object is invalid or return a registration result object.  
-> Its type can be found by searching for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts)  
+> The function will either throw an error if the plugin object is invalid, or return a registration result object.  
+> The error message will contain a list of problems with the passed definition.  
+> Search for `type PluginRegisterResult` in the file [`src/types.ts`](./src/types.ts) to see the properties of the returned object.  
 >   
 > The returned properties include:  
 > - `token` - A private token that is used for authenticated function calls and that **should not be persistently stored** beyond the current session
-> - `events` - A nano-events emitter object that allows you to listen for events that are dispatched by BetterYTM  
+> - `events` - A [NanoEmitter](#nanoemitter) instance that allows you to listen for plugin-specific events that are dispatched by BetterYTM.  
 >   To find a list of all events, search for `PluginEventMap` in the file [`src/types.ts`](./src/types.ts)
 > - `info` - The info object that contains all data other plugins will be able to see about your plugin
 > 
 > <details><summary><b>Complete example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> // all properties are optional unless stated otherwise
-> // search for "type PluginDef" in "src/types.ts" to see the whole type
+> // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
->   plugin: {
->     name: "My cool plugin",                           // required
->     namespace: "https://github.com/MyUsername",       // required
->     version: [4, 2, 0],                               // required
->     description: {                                    // required
->       en_US: "This plugin does cool stuff",           // required
->       de_DE: "Dieses Plugin macht coole Sachen",
->       // see all supported locale codes in "assets/locales.json"
+>   plugin: {                                         // required
+>     // The name and namespace should combine to be unique across all plugins
+>     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
+>     name: "My cool plugin",                         // required
+>     namespace: "https://www.github.com/MyUsername", // required
+>     version: "4.2.0",                               // required
+>     description: {                               // required
+>       en_US: "This plugin does cool stuff",      // required
+>       de_DE: "Dieses Plugin macht coole Sachen", // (all other locales are optional)
+>       // (see all supported locale codes in "assets/locales.json")
 >     },
->     iconUrl: "https://picsum.photos/128/128",
->     homepage: {
->       other: "https://example.org/MyCoolBYTMPlugin",
->       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",
->       greasyfork: "...",
->       openuserjs: "...",
+>     iconUrl: "https://picsum.photos/128/128", // required
+>     license: {                                    // (optional)
+>       name: "MIT",                                // required
+>       url: "https://opensource.org/licenses/MIT", // required
+>     },
+>     homepage: {                                                     // required
+>       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required
+>       other: "https://example.org/MyCoolBYTMPlugin",                // (optional)
+>       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues", // (optional)
+>       greasyfork: "...",                                            // (optional)
+>       openuserjs: "...",                                            // (optional)
 >     },
 >   },
->   // the intents (permissions) the plugin needs to be granted
->   // search for "enum PluginIntent" in "src/types.ts" to see all available intent values
->   intents: [ 2, 16 ],
->   contributors: [
->     {
->       name: "MyUsername", // required
->       homepage: "https://github.com/MyUsername",
->       email: "somedude420@hotmail.co.bd",
+>   // The intents (permissions) the plugin needs to be granted to be able to use certain functions.
+>   // Search for "enum PluginIntent" in "src/types.ts" to see all available values, then sum all of them together to get the final intents number.
+>   // If you have BYTM as a dependency/submodule, you can import the enum and add the values like so: `PluginIntent.Foo | PluginIntent.Bar`
+>   intents: 18,              // required
+>   contributors: [           // (optional)
+>     {                                            // (optional)
+>       name: "MyUsername",                        // required
+>       homepage: "https://github.com/MyUsername", // (optional)
+>       email: "somedude420@hotmail.co.bd",        // (optional)
 >     },
->     {
->       name: "SomeOtherGuy", // required
->       homepage: "https://github.com/SomeOtherGuy",
->       email: "someotherguy@star-co.net.kp",
+>     {                                              // (optional)
+>       name: "SomeOtherGuy",                        // required
+>       homepage: "https://github.com/SomeOtherGuy", // (optional)
+>       email: "someotherguy@star-co.net.kp",        // (optional)
 >     },
 >   ],
 > };
 > 
-> // private token that should not be stored persistently (in memory like this should be enough)
+> // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every page load!)
 > let authToken: string | undefined;
 > 
-> // since some function calls require the token, this function can be called to get it once the plugin is fully registered
+> // since some function calls require the token, this function can be called to return it once the plugin is fully registered
 > export function getToken() {
 >   return authToken;
 > }
 > 
-> unsafeWindow.addEventListener("bytm:initPlugins", () => {
->   // register the plugin
->   const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
->   // listen for the pluginRegistered event
->   events.on("pluginRegistered", (info) => {
->     // store the (private!) token for later use in authenticated function calls
->     authToken = token;
->     console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
->   });
->   // for other events search for "type PluginEventMap" in "src/types.ts"
+> unsafeWindow.addEventListener("bytm:registerPlugins", () => {
+>   try {
+>     // register the plugin
+>     const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>     // listen for the pluginRegistered event
+>     events.on("pluginRegistered", (info) => {
+>       // store the private token for later use in authenticated function calls
+>       authToken = token;
+>       console.log(`${info.name} (version ${info.version}) is registered`);
+> 
+>       onRegistered();
+>     });
+>     // for other events search for "type PluginEventMap" in "src/types.ts"
+>   }
+>   catch(err) {
+>     console.error("Failed to register plugin:", err);
+>   }
 > });
+> 
+> // put your plugin's logic that depends on authentication in here so it only runs after registration
+> function onRegistered() {
+>   try {
+>     // example authenticated function call:
+>     const bytmFeatureConfig = unsafeWindow.BYTM.getFeatures(getToken());
+>     if(!bytmFeatureConfig)
+>       console.error("Failed to get feature config object, the token is probably somehow invalid");
+>     else
+>       console.log("Feature config object:", bytmFeatureConfig);
+>   }
+>   catch(err) {
+>     console.error("Failed to run authenticated function call due to an underlying error:", err);
+>   }
+> }
 > ```
 > </details>
 
@@ -400,22 +475,22 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   
 > Arguments:
 > - `token` - The private token that was returned when the plugin was registered (if not provided, the function will always return `undefined`)
-> - `name` - The 'name' property of the plugin
-> - `namespace` - The 'namespace' property of the plugin
-> OR:
-> - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
+> - either:
+>   - `name` - The "name" property of the plugin
+>   - `namespace` - The "namespace" property of the plugin
+> - or:
+>   - `pluginDef` - A plugin definition object containing at least the `plugin.name` and `plugin.namespace` properties
 >   
-> The function will return `undefined` if the plugin is not registered.  
+> The function will return `undefined` if the plugin is not registered or the token is invalid.  
 > The type of the returned object can be found by searching for `type PluginInfo` in the file [`src/types.ts`](./src/types.ts)
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > unsafeWindow.addEventListener("bytm:pluginsRegistered", () => {
->   const pluginInfo = unsafeWindow.BYTM.getPluginInfo("My cool plugin", "https://github.com/MyUsername");
->   if(pluginInfo) {
->     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
->   }
+>   const pluginInfo = unsafeWindow.BYTM.getPluginInfo(myToken, "My cool plugin", "https://github.com/MyUsername");
+>   if(pluginInfo)
+>     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version}' is loaded`);
 >   else
 >     console.error("The plugin 'My cool plugin' is not registered");
 > });
@@ -488,12 +563,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```
 >   
 > Description:  
-> Adds a listener to the specified SelectorObserver instance that gets called when the element(s) behind the passed selector change.  
-> These instances are created by BetterYTM to observe the DOM for changes.  
-> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info.  
+> Adds a listener to the specified SelectorObserver instance that gets called when the element/s behind the passed selector is/are found.  
+> They are immediately checked for and then checked again whenever the part of the DOM tree changes (elements get added or removed) that is observed by that specific SelectorObserver.  
+>   
+> The instances are chained together in a way that the least specific observer is the parent of the more specific ones.  
+> This is done to limit the amount of checks that need to be run, especially on pages with a lot of dynamic content and if `continuous` listeners are used.  
+> See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver) for more info and example code.  
+>   
+> ⚠️ Due to this chained architecture, the selector you pass can only start with an element that is a child of the observer's base element.  
+> If you provide a selector that starts higher up or directly on the base element, the listener will never be called.  
+> You can check which observer has which base element in the file [`src/observers.ts`](src/observers.ts)  
 >   
 > Arguments:  
-> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which parent element they observe in the file [`src/observers.ts`](src/observers.ts).
+> - `observerName` - The name of the SelectorObserver instance to add the listener to. You can find all available instances and which base element they observe in the file [`src/observers.ts`](src/observers.ts)
 > - `selector` - The CSS selector to observe for changes.
 > - `options` - The options for the listener. See the [UserUtils SelectorObserver documentation](https://github.com/Sv443-Network/UserUtils#selectorobserver)
 >   
@@ -502,11 +584,11 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > // wait for the observers to exist
 > unsafeWindow.addEventListener("bytm:observersReady", () => {
->   // use the "lowest" possible SelectorObserver (playerBar)
->   // and check if the lyrics button gets added or removed
->   unsafeWindow.BYTM.addSelectorListener("playerBar", "#betterytm-lyrics-button", {
->     listener: (elem) => {
->       console.log("The BYTM lyrics button changed");
+>   // use the "lowest" possible SelectorObserver (playerBar) to prevent unnecessary checks
+>   // and call the listener as soon as the passed selector is found in the DOM
+>   unsafeWindow.BYTM.addSelectorListener<HTMLAnchorElement>("playerBar", "#bytm-player-bar-lyrics-btn", {
+>     listener: (lyricsBtnElem) => {
+>       console.log("The player bar lyrics button was added or removed:", lyricsBtnElem);
 >     },
 >   });
 > });
@@ -527,7 +609,7 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >
 > Description:  
 > Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions.  
-> All events passed to the callback function automatically have the default behavior prevented and stop immediate propagation, meaning no other listener of the same type will be called.  
+> All events passed to the callback function automatically have the default behavior prevented and stop propagation, meaning no other listener of the same type will be called.  
 > For keyboard events this only happens as long as the captured key is a valid interaction key (Space, Enter).  
 >   
 > Arguments:
@@ -798,18 +880,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### getFeatures()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getFeatures(): FeatureConfig
+> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig
 > ```
 >   
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 > If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
+> In the future, an intent could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const features = unsafeWindow.BYTM.getFeatures();
+> const features = unsafeWindow.BYTM.getFeatures(myToken);
 > console.log(`The volume slider step is currently set to ${features.volumeSliderStep}`);
 > ```
 > </details>
@@ -974,6 +1057,107 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
+> #### getAutoLikeData()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getAutoLikeData(token: string | undefined): AutoLikeData
+> ```
+>   
+> Description:  
+> Returns the current auto-like data object synchronously from memory.  
+> To see the structure of the object, check out the type `AutoLikeData` in the file [`src/types.ts`](src/types.ts)
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const autoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+> 
+> // check if the channel is added to the auto-like list and if it's currently enabled
+> function isEnabledForChannel(channelId: string) {
+>   return autoLikeData && autoLikeData.channels.find((ch) => ch.id === channelId && ch.enabled);
+> }
+> 
+> // channelId can be in the format UC... or @username
+> console.log(isEnabledForChannel("UCXuqSBlHAE6Xw-yeJA0Tunw"));
+> ```
+> </details>
+
+<br>
+
+> #### saveAutoLikeData()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.saveAutoLikeData(token: string | undefined, data: AutoLikeData): Promise<void>
+> ```
+>   
+> Description:  
+> Saves the provided auto-like data object synchronously to memory and asynchronously to GM storage.  
+>   
+> Arguments:
+> - `token` - The private token that was returned when the plugin was registered (if not provided, the function will return an empty object).
+> - `data` - The full auto-like data object to save. No validation is done so if properties are missing, BYTM will break!
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function toggleAutoLikeForChannel(channelId: string, channelName: string) {
+>   const autoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+>   const channelIndex = autoLikeData.channels.findIndex((ch) => ch.id === channelId);
+> 
+>   if(channelIndex > -1)
+>     autoLikeData.channels[channelIndex].enabled = !autoLikeData.channels[channelIndex].enabled;
+>   else
+>     autoLikeData.channels.push({ id: channelId, name: channelName, enabled: true });
+> 
+>   await unsafeWindow.BYTM.saveAutoLikeData(myToken, autoLikeData);
+> }
+> 
+> // channelId can be in the format UC... or @username
+> toggleAutoLikeForChannel("UCXuqSBlHAE6Xw-yeJA0Tunw", "Linus Sex Tips").then(() => {
+>   const newAutoLikeData = unsafeWindow.BYTM.getAutoLikeData(myToken);
+>   console.log("Auto-like status for the channel was toggled. New data:", newAutoLikeData);
+> });
+> ```
+> </details>
+
+<br>
+
+> #### fetchVideoVotes()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.fetchVideoVotes(videoId: string): Promise<VideoVotesObj | undefined>
+> ```
+>   
+> Description:  
+> Fetches the approximate like and dislike counts for the specified video ID, using the [ReturnYoutubeDislike](https://returnyoutubedislike.com/) API.  
+> RYD will approximate the votes based on historical data and users of the browser extension. The numbers will never be 100% accurate!  
+> The object returned by this function has the structure of the `VideoVotesObj` type in the file [`src/types.ts`](src/types.ts)  
+> If the video ID is not found or the API is down, the function will return `undefined`  
+>   
+> Arguments:  
+> - `videoId` - The video ID to fetch the votes for (e.g. `dQw4w9WgXcQ`)
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function getVotes() {
+>   const votes = await unsafeWindow.BYTM.fetchVideoVotes("dQw4w9WgXcQ");
+> 
+>   if(!votes)
+>     return console.error("Couldn't fetch the votes for this video");
+> 
+>   console.log(`The video has ${votes.likes} likes and ${votes.dislikes} dislikes`);
+> }
+> 
+> getVotes();
+> ```
+> </details>
+
+<br>
+
 > #### NanoEmitter
 > Usage:  
 > ```ts
@@ -1064,13 +1248,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > | Property | Description |
 > | :-- | :-- |
 > | `id: string` | ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! |
-> | `maxWidth: number` | Maximum width of the dialog in pixels |
-> | `maxHeight: number` | Maximum height of the dialog in pixels |
+> | `width: number` | Maximum and target width of the dialog in pixels |
+> | `height: number` | Maximum and target height of the dialog in pixels |
 > | `closeOnBgClick?: boolean` | Whether the dialog should close when the background is clicked - defaults to true |
 > | `closeOnEscPress?: boolean` | Whether the dialog should close when the escape key is pressed - defaults to true |
 > | `closeBtnEnabled?: boolean` | Whether the close button should be enabled - defaults to true |
 > | `destroyOnClose?: boolean` | Whether the dialog should be destroyed when it's closed - defaults to false |
-> | `small?: boolean` | Whether the menu should have a smaller overall appearance - defaults to false |
+> | `small?: boolean` | Whether the dialog should have a smaller overall appearance - defaults to false |
+> | `verticalAlign?: string` | Where the dialog should be anchored vertically ("top", "center" or "bottom") - defaults to "center" |
 > | `renderBody: () => HTMLElement │ Promise<HTMLElement>` | Called to render the body of the dialog |
 > | `renderHeader?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the header of the dialog - leave undefined for a blank header |
 > | `renderFooter?: () => HTMLElement │ Promise<HTMLElement>` | Called to render the footer of the dialog - leave undefined for no footer |
@@ -1127,13 +1312,14 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > ```ts
 > const dialog = new unsafeWindow.BYTM.BytmDialog({
 >   id: "my-dialog",
->   maxWidth: 500,
->   maxHeight: 300,
+>   width: 500,
+>   height: 300,
 >   closeOnBgClick: true,
 >   closeOnEscPress: true,
 >   closeBtnEnabled: true,
 >   destroyOnClose: false,
 >   small: true,
+>   verticalAlign: "top", // if the content's height changes, it's better to anchor it to the top or bottom
 >   // add elements to the header, body and footer here, in one of these ways:
 >   // - foo.appendChild(document.createElement("..."));
 >   // - foo.innerHTML = "..."
@@ -1162,6 +1348,101 @@ The usage and example blocks on each are written in TypeScript but can be used i
 >   });
 > 
 >   await dialog.open();
+>   console.log("The dialog is now open");
+> }
+> 
+> run();
+> ```
+> </details>
+
+<br>
+
+> #### ExImDialog
+> Usage:
+> ```ts
+> new unsafeWindow.BYTM.ExImDialog(options: ExImDialogOptions): ExImDialog
+> ```
+>   
+> A subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a generic export/import dialog.  
+>   
+> Features:
+> - Has all the features of the [BytmDialog](#bytmdialog) class
+> - Can be used to export and import any kind of data that can be serialized to a string
+> - Built-in textareas for the user to paste or copy data to/from
+> - Copy to clipboard button for the export textarea
+> - Ability to copy a second variety of the data when shift-clicking the copy button
+> - Exported data is hidden by default in case it contains sensitive information
+> - Text can be given as a constant string or "lazy-loaded" via sync or async function
+>   
+> Options properties:  
+> All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderHeader`, `renderBody` and `renderFooter`  
+> | Property | Description |
+> | :-- | :-- |
+> | `title: string \| (() => (string \| Promise<string>))` | Title of the dialog |
+> | `descImport: string \| (() => (string \| Promise<string>))` | Description of the dialog when importing |
+> | `descExport: string \| (() => (string \| Promise<string>))` | Description of the dialog when exporting |
+> | `onImport: (data: string) => void` | Callback function that gets called when the user imports data |
+> | `exportData: string \| (() => (string \| Promise<string>))` | The data to export (or a function that returns the data as string, either sync or async) |
+> | `exportDataSpecial?: string \| (() => (string \| Promise<string>))` | Optional variant of the data, used for special cases like when shift-clicking the copy button |
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const exImDialog = new unsafeWindow.BYTM.ExImDialog({
+>   id: "my-exim-dialog",
+>   width: 500,
+>   height: 400,
+>   exportData,
+>   exportDataSpecial,
+>   onImport,
+>   title: "My ExIm Dialog",
+>   descImport: "Past the data you want to import below and click import!",
+>   descExport: "Copy the data below to save it or share it with others. Warning: may contain sensitive information!",
+> });
+> 
+> type MyDataType = { foo: string };
+> 
+> async function exportData() {
+>   // compress the data to save space
+>   // note that this requires the `@grant unsafeWindow` directive in the metadata block!
+>   const exportData = JSON.stringify({ foo: "bar" });
+>   return await unsafeWindow.BYTM.UserUtils.compress(exportData, "deflate");
+> }
+> 
+> function exportDataSpecial() {
+>   // return the data uncompressed when shift-clicking the copy button
+>   return JSON.stringify({ foo: "bar" });
+> }
+> 
+> async function onImport(data: string) {
+>   let decompData: string;
+>   try {
+>     // since the data could either be compressed or not, try to decompress it and see if it errors
+>     decompData = await unsafeWindow.BYTM.UserUtils.decompress(data, "deflate");
+>   }
+>   catch {
+>     // the data is not compressed, so just use it as is
+>     decompData = data;
+>   }
+> 
+>   let parsedData: MyDataType;
+>   try {
+>     parsedData = JSON.parse(decompData);
+>   }
+>   catch(err) {
+>     console.error("The user imported invalid data");
+>     return;
+>   }
+> 
+>   console.log("The user successfully imported data:", parsedData);
+> }
+> 
+> async function run() {
+>   exImDialog.on("close", () => {
+>     console.log("The dialog was closed");
+>   });
+> 
+>   await exImDialog.open();
 >   console.log("The dialog is now open");
 > }
 > 
@@ -1238,23 +1519,19 @@ The usage and example blocks on each are written in TypeScript but can be used i
 > #### createCircularBtn()
 > Usage:
 > ```ts
-> unsafeWindow.BYTM.createCircularBtn(btnProps: {
->   title: string,
->   // either resourceName or src has to be specified:
->   resourceName: string | undefined,
->   src: string | undefined,
->   // either href or onClick has to be specified:
->   href: string | undefined,
->   onClick: (event: MouseEvent | KeyboardEvent) => void | undefined,
-> }): HTMLElement
+> unsafeWindow.BYTM.createCircularBtn(props: CircularBtnProps): Promise<HTMLElement>
 > ```
->
-> Creates a circular button element that can be used to trigger an action or navigate to a different page.  
-> - `title` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility.
-> - `resourceName` - The name of the resource to use as the button icon (`src` can't be specified).
-> - `src` - The URL of the image to use as the button icon (`resourceName` can't be specified).
-> - `href` - The URL to navigate to when the button is interacted with (`onClick` can't be specified).
-> - `onClick` - The function that is called when the button is clicked or interacted with (`href` can't be specified).
+> 
+> Creates a circular button element containing an icon that can be used to trigger an action or navigate to a different page.  
+> 
+> Properties:
+> - `title: string` - The title that is displayed when hovering over the button. Also used as a description for accessibility.
+> - either of:
+>   - `resourceName: string` - Name of the resource starting with `icon-` to use as the button icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `src: string | Promise<string>` - URL of the image to use as the button icon
+> - either of:
+>   - `href: string` - URL to navigate to when the button is clicked or interacted with.
+>   - `onClick: (evt: MouseEvent | KeyboardEvent) => void` - Function that's called when the button is clicked or interacted with
 >
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 >
@@ -1273,57 +1550,160 @@ The usage and example blocks on each are written in TypeScript but can be used i
 
 <br>
 
-> ### compareVersions()
-> Usage:
+> #### createLongBtn()
+> Usage:  
 > ```ts
-> unsafeWindow.BYTM.compareVersions(verA: string, verB: string): -1 | 0 | 1
+> unsafeWindow.BYTM.createLongBtn(props: LongBtnProps): Promise<HTMLElement>
 > ```
 >   
-> Description:
-> Crudely compares two semver version strings.  
-> The format is assumed to *always* be `MAJOR.MINOR.PATCH`, where each part is a positive integer number without leading zeroes.  
-> The function returns:
-> - `-1`, when `verA < verB`
-> - `0`, when `verA == verB`
-> - `1`, when `verA > verB`
+> Creates a long button element that can be used to trigger an action or navigate to a different page.  
+> It can also be set up to act as a toggle button with rich CSS classes for customization.  
+>   
+> Properties:
+> - `text: string` - The text to display on the button
+> - `title: string` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility
+> - `iconPosition?: "left" | "right"` - The position of the icon relative to the text. Can be "left" or "right" (defaults to "left")
+> - either of:
+>   - `resourceName: string` - Name of the resource to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `src: string` - URL of the image to use as the icon
+> - either of:
+>   - `href: string` - URL to navigate to when the button is clicked or interacted with.
+>   - `onClick: (evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is clicked or interacted with
+>   - `toggle: true` - Set to true to make the button act as a toggle button  
+>     In addition, there are these props:
+>     - `onToggle: (state: boolean, evt: MouseEvent | KeyboardEvent) => void` - Function to call when the button is interacted with
+>     - `toggleInitialState?: boolean` - The initial value of the toggle button (optional, defaults to false)
+>     - `togglePredicate?: (evt: MouseEvent | KeyboardEvent) => boolean` - Gets called every toggle attempt to determine if the state should swap and `onToggle` should be called
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.4");   // -1
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.3");   // 0
-> unsafeWindow.BYTM.compareVersions("1.2.3", "1.2.2");   // 1
-> unsafeWindow.BYTM.compareVersions("1.2.3", "invalid"); // throws a TypeError
+> // link:
+> const longBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-help",
+>   href: "https://example.com/help?topic=foo",
+>   text: "Help",
+>   title: "Click to open the help page",
+>   iconPosition: "right",
+> });
+> 
+> // button:
+> const longBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-upload",
+>   onClick(evt: MouseEvent | KeyboardEvent) {
+>     console.log("The button was clicked");
+>   },
+>   text: "Upload",
+>   title: "Click to upload a file",
+> });
+> 
+> // toggle:
+> const toggleBtn = unsafeWindow.BYTM.createLongBtn({
+>   resourceName: "icon-globe",
+>   toggle: true,
+>   toggleInitialState: true,
+>   togglePredicate: (evt) => {
+>     // don't toggle if shift is pressed and instead do something special
+>     evt.shiftKey && doSomething(evt);
+>     return !evt.shiftKey;
+>   },
+>   onToggle(state: boolean, evt: MouseEvent | KeyboardEvent) {
+>     console.log(`The button was toggled ${state ? "on" : "off"}`);
+>   },
+>   text: "Toggle",
+>   title: "Click to toggle something",
+> });
 > ```
 > </details>
 
 <br>
 
-> ### compareVersionArrays()
-> Usage:
+> #### showToast()
+> Usage:  
 > ```ts
-> unsafeWindow.BYTM.compareVersionArrays(verA: [number, number, number], verB: [number, number, number]): -1 | 0 | 1
+> unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>
 > ```
 >   
-> Description:  
-> Crudely compares two semver version arrays.  
-> The format is assumed to *always* be `[MAJOR, MINOR, PATCH]`, where each part is a positive integer number.  
-> The function returns:
-> - `-1`, when `verA < verB`
-> - `0`, when `verA == verB`
-> - `1`, when `verA > verB`
+> Shows a toast notification with the specified message or element for the given duration and anchored in the specified corner of the viewport.  
+> If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
 >   
+> Properties:
+> - either of:
+>   - `message: string` - The message to show in the toast
+>   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
+> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
+> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+> 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 4]);   // -1
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 3]);   // 0
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2, 2]);   // 1
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1, 2]);      // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [-1, 2, 3]);  // throws a TypeError
-> unsafeWindow.BYTM.compareVersionArrays([1, 2, 3], [1.1, 2, 3]); // throws a TypeError
+> unsafeWindow.BYTM.showToast({
+>   message: "This is a normal toast",
+>   duration: 2_524_140,
+>   position: "bl",
+> });
 > ```
-> 
 > </details>
+
+<br>
+
+> #### showIconToast()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.showIconToast(props: IconToastProps): Promise<void>
+> ```
+>   
+> Shows a toast notification with the specified icon, message and duration anchored in the specified corner of the viewport.  
+> If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
+>   
+> Properties:
+> - either of:
+>   - `message: string` - The message to show in the toast
+>   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
+> - either of:
+>   - `icon: string` - A resource name starting with `icon-` to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `iconSrc: string | Promise<string>` - URL of the image to use as the icon
+> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
+> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.BYTM.showIconToast({
+>   message: "This is an icon toast",
+>   icon: "icon-help",
+>   duration: 3_000,
+>   position: "bl",
+> });
+> ```
+> </details>
+
+<br>
+
+> #### createRipple()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.createRipple(rippleElement?: HTMLElement, props?: RippleProps): HTMLElement
+> ```
+>   
+> Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
+> Returns either the new element or the initially passed one.  
+> External CSS overrides can be used to change the color, size, speed values and opacity.  
+> The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
+>   
+> Properties:  
+> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const myBoringButton = document.querySelector("#my-boring-button");
+> if(myBoringButton)
+>   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
+> ```
+> </details>
+
+<br>
+
 
 <br><br><br><br><br><br>

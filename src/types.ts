@@ -1,13 +1,16 @@
-import type { Emitter } from "nanoevents";
-import type * as consts from "./constants";
-import type { scriptInfo } from "./constants";
-import type { addSelectorListener } from "./observers";
+import type * as consts from "./constants.js";
+import type { scriptInfo } from "./constants.js";
+import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp } from "./utils";
-import type { getFeatures, setFeatures } from "./config";
-import type { SiteEventsMap } from "./siteEvents";
-import type { InterfaceEventsMap } from "./interface";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, NanoEmitter, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor } from "./utils/index.js";
+import type { SiteEventsMap } from "./siteEvents.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
+import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
+import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
+
+//#region other
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
@@ -18,7 +21,7 @@ export type RollupArgs = Partial<{
   "config-suffix": string;
 }>;
 
-// I know TS enums are impure but it doesn't really matter here, plus they look cooler
+// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 export enum LogLevel {
   Debug,
   Info,
@@ -52,9 +55,50 @@ export type LyricsCacheEntry = {
   added: number;
 };
 
+export type AutoLikeData = {
+  channels: {
+    /** 24-character channel ID or user ID including the @ prefix */
+    id: string;
+    /** Channel name (for display purposes only) */
+    name: string;
+    /** Whether the channel should be auto-liked */
+    enabled: boolean;
+  }[];
+};
+
+export type RYDVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** ISO timestamp of when the video was uploaded */
+  dateCreated: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Amount of views */
+  viewCount: number;
+  /** Whether the video was deleted */
+  deleted: boolean;
+};
+
+export type VideoVotesObj = {
+  /** The watch ID of the video */
+  id: string;
+  /** Amount of likes */
+  likes: number;
+  /** Amount of dislikes */
+  dislikes: number;
+  /** Like to dislike ratio from 0.0 to 5.0 */
+  rating: number;
+  /** Timestamp of when the data was fetched */
+  timestamp: number;
+};
+
 //#region global
 
-// shim for the BYTM interface properties
+/** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
 export type BytmObject =
   {
     [key: string]: unknown;
@@ -69,8 +113,13 @@ export type BytmObject =
   & InterfaceFunctions
   // others
   & {
+    NanoEmitter: typeof NanoEmitter;
+    BytmDialog: typeof BytmDialog;
+    ExImDialog: typeof ExImDialog;
     // the entire UserUtils library
     UserUtils: typeof import("@sv443-network/userutils");
+    // the entire compare-versions library
+    compareVersions: typeof import("compare-versions");
   };
 
 declare global {
@@ -85,7 +134,8 @@ declare global {
 
 /**
  * Intents (permissions) BYTM has to grant your plugin for it to be able to access certain features.  
- * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.
+ * TODO: this feature is unfinished, but you should still specify the intents your plugin needs.  
+ * Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
  */
 export enum PluginIntent {
   /** Plugin has access to hidden config values */
@@ -98,14 +148,16 @@ export enum PluginIntent {
   WriteTranslations = 8,
   /** Plugin can create modal dialogs */
   CreateModalDialogs = 16,
+  /** Plugin can read and write auto-like data */
+  ReadAndWriteAutoLikeData = 32,
 }
 
 /** Result of a plugin registration */
 export type PluginRegisterResult = {
   /** Public info about the registered plugin */
   info: PluginInfo;
-  /** Emitter for plugin events - see {@linkcode PluginEventMap} for a list of events */
-  events: Emitter<PluginEventMap>;
+  /** NanoEmitter instance for plugin events - see {@linkcode PluginEventMap} for a list of events */
+  events: NanoEmitter<PluginEventMap>;
   /** Authentication token for the plugin to use in certain restricted function calls */
   token: string;
 }
@@ -120,8 +172,8 @@ export type PluginInfo = {
    * I recommend to set this value to a URL pointing to your homepage, or the author's username.
    */
   namespace: string;
-  /** Version of the plugin as an array containing three whole numbers: `[major_version, minor_version, patch_version]` */
-  version: [major: number, minor: number, patch: number];
+  /** Version of the plugin as a semver-compliant string */
+  version: string;
 };
 
 /** Minimum part of the PluginDef object needed to make up the resolvable plugin identifier */
@@ -139,12 +191,20 @@ export type PluginDef = {
     };
     /** URL to the plugin's icon - recommended size: 48x48 to 128x128 */
     iconUrl?: string;
+    license?: {
+      /** License name */
+      name: string;
+      /** URL to the license text */
+      url: string;
+    };
     /** Homepage URLs for the plugin */
-    homepage?: {
+    homepage: {
+      /** URL to the plugin's source code (i.e. Git repo) - closed source plugins are not officially accepted at the moment. */
+      source: string;
       /** Any other homepage URL */
       other?: string;
-      /** URL to the plugin's source code (i.e. Git repo) */
-      source?: string;
+      /** URL to the plugin's bug tracker page, like GitHub issues */
+      bug?: string;
       /** URL to the plugin's GreasyFork page */
       greasyfork?: string;
       /** URL to the plugin's OpenUserJS page */
@@ -152,7 +212,7 @@ export type PluginDef = {
     };
   };
   /** Intents (permissions) BYTM has to grant the plugin for it to work */
-  intents?: Array<PluginIntent>;
+  intents?: number;
   /** Info about the plugin contributors */
   contributors?: Array<{
     /** Name of this contributor */
@@ -166,12 +226,12 @@ export type PluginDef = {
 
 /** All events that are dispatched to plugins individually, including everything in {@linkcode SiteEventsMap} and {@linkcode InterfaceEventsMap} - these don't have a prefix since they can't conflict with other events */
 export type PluginEventMap =
-  // Emitted on each plugin individually:
+  // These are emitted on each plugin individually, with individual data:
   & {
-    /** Emitted when the plugin is registered on BYTM's side */
+    /** Emitted when the plugin is fully registered on BYTM's side and can use authenticated API calls */
     pluginRegistered: (info: PluginInfo) => void;
   }
-  // Emitted on every plugin simultaneously:
+  // These are emitted on every plugin simultaneously, with the same or similar data:
   & SiteEventsMap
   & InterfaceEventsMap;
 
@@ -184,8 +244,13 @@ export type PluginItem =
 
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
-  /** Adds a listener to one of the already present SelectorObserver instances */
-  addSelectorListener: typeof addSelectorListener;
+  // meta:
+  /** Registers a plugin with BYTM. Needed to receive the token for making authenticated function calls. */
+  registerPlugin: typeof registerPlugin;
+  /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
+  getPluginInfo: typeof getPluginInfo;
+
+  // bytm-specific:
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
@@ -196,23 +261,77 @@ export type InterfaceFunctions = {
   getResourceUrl: typeof getResourceUrl;
   /** Returns the unique session ID for the current tab */
   getSessionId: typeof getSessionId;
+
+  // dom:
+  /** Adds a listener to one of the already present SelectorObserver instances */
+  addSelectorListener: typeof addSelectorListener;
+  /** Registers accessible interaction listeners (click, enter, space) on the provided element */
+  onInteraction: typeof onInteraction;
   /**
    * Returns the current video time (on both YT and YTM)  
    * In case it can't be determined on YT, mouse movement is simulated to bring up the video time  
    * In order for that edge case not to error out, the function would need to be called in response to a user interaction event (e.g. click) due to the strict autoplay policy in browsers
    */
   getVideoTime: typeof getVideoTime;
+  /** Returns the thumbnail URL for the provided video ID and thumbnail quality */
+  getThumbnailUrl: typeof getThumbnailUrl;
+  /** Returns the thumbnail URL with the best quality for the provided video ID */
+  getBestThumbnailUrl: typeof getBestThumbnailUrl;
+
+  // translations:
+  /** 🔒 Sets the locale for all new translations */
+  setLocale: typeof setLocaleInterface;
+  /** Returns the current locale */
+  getLocale: typeof getLocale;
+  /** Returns whether a translation key exists for the set locale */
+  hasKey: typeof hasKey;
+  /** Returns whether a translation key exists for the provided locale */
+  hasKeyFor: typeof hasKeyFor;
   /** Returns the translation for the provided translation key and set locale (check the files in the folder `assets/translations`) */
   t: typeof t;
   /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
   tp: typeof tp;
-  /** Returns the current feature configuration */
-  getFeatures: typeof getFeatures;
-  /** Overwrites the feature configuration with the provided one */
-  saveFeatures: typeof setFeatures;
+
+  // feature config:
+  /** 🔒 Returns the current feature configuration */
+  getFeatures: typeof getFeaturesInterface;
+  /** 🔒 Overwrites the feature configuration with the provided one */
+  saveFeatures: typeof saveFeaturesInterface;
+
+  // lyrics:
+  /** Sanitizes the provided artist string - this needs to be done before calling other lyrics related functions! */
+  sanitizeArtists: typeof sanitizeArtists;
+  /** Sanitizes the provided song title string - this needs to be done before calling other lyrics related functions! */
+  sanitizeSong: typeof sanitizeSong;
+  /** Fetches the lyrics URL of the top search result for the provided song and artist. Before a request is sent, the cache is checked for a match. */
+  fetchLyricsUrlTop: typeof fetchLyricsUrlTop;
+  /** Returns the lyrics cache entry for the provided song and artist, if there is one. Never sends a request on its own. */
+  getLyricsCacheEntry: typeof getLyricsCacheEntry;
+
+  // auto-like:
+  /** 🔒 Returns the current auto-like data */
+  getAutoLikeData: typeof getAutoLikeDataInterface;
+  /** 🔒 Overwrites the auto-like data */
+  saveAutoLikeData: typeof saveAutoLikeDataInterface;
+  /** Returns the votes for the provided video ID from the ReturnYoutubeDislike API */
+  fetchVideoVotes: typeof fetchVideoVotes;
+
+  // components:
+  /** Creates a new hotkey input component */
+  createHotkeyInput: typeof createHotkeyInput;
+  /** Creates a new toggle input component */
+  createToggleInput: typeof createToggleInput;
+  /** Creates a new circular button component */
+  createCircularBtn: typeof createCircularBtn;
+  /** Creates a new ripple effect on the provided element or creates an empty element that has the effect */
+  createRipple: typeof createRipple;
+  /** Shows a toast with the provided text */
+  showToast: typeof showToast;
+  /** Shows a toast with the provided text and an icon */
+  showIconToast: typeof showIconToast;
 };
 
-//#region features
+//#region feature defs
 
 export type FeatureKey = keyof FeatureConfig;
 
@@ -267,7 +386,7 @@ type FeatureTypeProps = ({
   | {
     type: "button";
     default?: undefined;
-    click: () => Promise<void> | void;
+    click: () => Promise<void | unknown> | void | unknown;
   }
 
 type FeatureFuncProps = (
@@ -321,6 +440,8 @@ export type FeatureInfo = Record<
   & FeatureTypeProps
 >;
 
+//#region feature config
+
 /** Feature configuration */
 export interface FeatureConfig {
   //#region layout
@@ -334,8 +455,6 @@ export interface FeatureConfig {
   numKeysSkipToTime: boolean;
   /** Fix spacing issues in the layout */
   fixSpacing: boolean;
-  /** Remove the \"Upgrade\" / YT Music Premium tab */
-  removeUpgradeTab: boolean;
   /** Where to show a thumbnail overlay over the video element and whether to show it at all */
   thumbnailOverlayBehavior: "never" | "videosOnly" | "songsOnly" | "always";
   /** Whether to show a button to toggle the thumbnail overlay in the media controls */
@@ -354,6 +473,10 @@ export interface FeatureConfig {
   fixHdrIssues: boolean;
   /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
   disableDarkReaderSites: SiteSelectionOrNone;
+  /** Whether to show the like/dislike ratio on the currently playing song */
+  showVotes: boolean;
+  /** Which format to use for the like/dislike ratio on the currently playing song */
+  showVotesFormat: "short" | "full";
 
   //#region volume
   /** Add a percentage label to the volume slider */
@@ -410,6 +533,19 @@ export interface FeatureConfig {
   switchSitesHotkey: HotkeyObj;
   /** Make it so middle clicking a song to open it in a new tab (through thumbnail and song title) is easier */
   anchorImprovements: boolean;
+  /** Whether to auto-like all played videos of configured channels */
+  autoLikeChannels: boolean;
+  /** Whether to show toggle buttons on the channel page to enable/disable auto-liking for that channel */
+  autoLikeChannelToggleBtn: boolean;
+  // TODO(v2.2):
+  // /** Whether to show a toggle button in the media controls to enable/disable auto-liking for those channel(s) */
+  // autoLikePlayerBarToggleBtn: boolean;
+  /** How long to wait after a video has started playing to auto-like it */
+  autoLikeTimeout: number;
+  /** Whether to show a toast when a video is auto-liked */
+  autoLikeShowToast: boolean;
+  /** Opens the auto-like channels management dialog */
+  autoLikeOpenMgmtDialog: undefined;
 
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
@@ -438,6 +574,12 @@ export interface FeatureConfig {
   checkVersionNow: undefined;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
+  /** Amount of seconds to show BYTM's toasts for */
+  toastDuration: number;
+  /** Button that resets the config to the default state */
+  resetConfig: undefined;
   /** Whether to show advanced settings in the config menu */
   advancedMode: boolean;
 }

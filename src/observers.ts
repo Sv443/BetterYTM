@@ -1,46 +1,86 @@
 import { SelectorListenerOptions, SelectorObserver, SelectorObserverOptions } from "@sv443-network/userutils";
-import { emitInterface } from "./interface";
-import { error, getDomain } from "./utils";
-import type { Domain } from "./types";
+import { emitInterface } from "./interface.js";
+import { error, getDomain } from "./utils/index.js";
+import type { Domain } from "./types.js";
+
+// !> If you came here looking for which observer to use, start out by looking at the types `YTMObserverName` and `YTObserverName`
+// !> Once you found a fitting observer, go to the `initObservers()` function and search for `observerName = new SelectorObserver`
+// !> Just above that line, you'll find the selector to that observer's base element. Make sure all your selectors start **below** that element!
+
+
+//#region types
 
 /** Names of all available Observer instances across all sites */
 export type ObserverName = SharedObserverName | YTMObserverName | YTObserverName;
 
-/** Observer names available to each site */
+/** Observer names available to the site passed in the `TDomain` generic */
 export type ObserverNameByDomain<TDomain extends Domain> = SharedObserverName | (TDomain extends "ytm" ? YTMObserverName : YTObserverName);
 
-// both YTM and YT
+// Shared between YTM and YT
 export type SharedObserverName =
-  | "body";
+  | "body"; // the entire <body> element
 
 // YTM only
 export type YTMObserverName =
-  | "navBar"
-  | "mainPanel"
-  | "sideBar"
-  | "sideBarMini"
-  | "sidePanel"
-  | "playerBar"
-  | "playerBarInfo"
-  | "playerBarMiddleButtons"
-  | "playerBarRightControls"
-  | "popupContainer";
+  | "browseResponse"         // the /channel/UC... page
+  | "navBar"                 // the navigation / title bar at the top of the page
+  | "mainPanel"              // the main content panel - includes things like the video element
+  | "sideBar"                // the sidebar on the left side of the page
+  | "sideBarMini"            // the minimized sidebar on the left side of the page
+  | "sidePanel"              // the side panel on the right side of the /watch page
+  | "playerBar"              // media controls bar at the bottom of the page
+  | "playerBarInfo"          // song title, artist, album, etc. inside the player bar
+  | "playerBarMiddleButtons" // the buttons inside the player bar (like, dislike, lyrics, etc.)
+  | "playerBarRightControls" // the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+  | "popupContainer";        // the container for popups (e.g. the queue popup)
 
 // YT only
 export type YTObserverName =
-  // | "ytMasthead" // the title bar
-  | "ytGuide"; // the left sidebar menu
+  | "ytMasthead"       // the masthead (title bar) at the top of the page
+  | "ytGuide"          // the left sidebar menu
+  | "ytdBrowse"        // channel pages for example
+  | "ytChannelHeader"  // header of a channel page
+  | "ytWatchFlexy"     // the main content of the /watch page
+  | "ytWatchMetadata"; // the metadata section of the /watch page
+
+//#region globals
 
 /** Options that are applied to every SelectorObserver instance */
 const defaultObserverOptions: SelectorObserverOptions = {
   disableOnNoListeners: false,
   enableOnAddListener: false,
-  defaultDebounce: 100,
+  defaultDebounce: 150,
   defaultDebounceEdge: "rising",
 };
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 export const globservers = {} as Record<ObserverName, SelectorObserver>;
+
+//#region add listener func
+
+/**
+ * Interface function for adding listeners to the {@linkcode globservers}  
+ * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
+ * @param options Options for the listener
+ * @template TElem The type of the element that the listener will be attached to. If set to `0`, the default type `HTMLElement` will be used.
+ * @template TDomain This restricts which observers are available with the current domain
+ */
+export function addSelectorListener<
+  TElem extends HTMLElement | 0 = HTMLElement,
+  TDomain extends Domain = "ytm"
+> (
+  observerName: ObserverNameByDomain<TDomain>,
+  selector: string,
+  options: SelectorListenerOptions<
+    TElem extends 0
+      ? HTMLElement
+      : TElem
+  >,
+) {
+  globservers[observerName].addListener(selector, options);
+}
+
+//#region init
 
 /** Call after DOM load to initialize all SelectorObserver instances */
 export function initObservers() {
@@ -49,8 +89,10 @@ export function initObservers() {
 
     //#region body
     // -> the entire <body> element - use sparingly due to performance impacts!
+    //    enabled immediately
     globservers.body = new SelectorObserver(document.body, {
       ...defaultObserverOptions,
+      defaultDebounceEdge: "falling",
       defaultDebounce: 150,
       subtree: false,
     });
@@ -61,8 +103,22 @@ export function initObservers() {
     case "ytm": {
       //#region YTM
 
+      //#region browseResponse
+      // -> for example the /channel/UC... page#
+      //    enabled by "body"
+      const browseResponseSelector = "ytmusic-browse-response";
+      globservers.browseResponse = new SelectorObserver(browseResponseSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(browseResponseSelector, {
+        listener: () => globservers.browseResponse.enable(),
+      });
+
       //#region navBar
       // -> the navigation / title bar at the top of the page
+      //    enabled by "body"
       const navBarSelector = "ytmusic-nav-bar";
       globservers.navBar = new SelectorObserver(navBarSelector, {
         ...defaultObserverOptions,
@@ -75,6 +131,7 @@ export function initObservers() {
 
       //#region mainPanel
       // -> the main content panel - includes things like the video element
+      //    enabled by "body"
       const mainPanelSelector = "ytmusic-player-page #main-panel";
       globservers.mainPanel = new SelectorObserver(mainPanelSelector, {
         ...defaultObserverOptions,
@@ -87,6 +144,7 @@ export function initObservers() {
 
       //#region sideBar
       // -> the sidebar on the left side of the page
+      //    enabled by "body"
       const sidebarSelector = "ytmusic-app-layout tp-yt-app-drawer";
       globservers.sideBar = new SelectorObserver(sidebarSelector, {
         ...defaultObserverOptions,
@@ -99,6 +157,7 @@ export function initObservers() {
 
       //#region sideBarMini
       // -> the minimized sidebar on the left side of the page
+      //    enabled by "body"
       const sideBarMiniSelector = "ytmusic-app-layout #mini-guide";
       globservers.sideBarMini = new SelectorObserver(sideBarMiniSelector, {
         ...defaultObserverOptions,
@@ -111,6 +170,7 @@ export function initObservers() {
 
       //#region sidePanel
       // -> the side panel on the right side of the /watch page
+      //    enabled by "body"
       const sidePanelSelector = "#side-panel";
       globservers.sidePanel = new SelectorObserver(sidePanelSelector, {
         ...defaultObserverOptions,
@@ -123,6 +183,7 @@ export function initObservers() {
 
       //#region playerBar
       // -> media controls bar at the bottom of the page
+      //    enabled by "body"
       const playerBarSelector = "ytmusic-app-layout ytmusic-player-bar.ytmusic-app";
       globservers.playerBar = new SelectorObserver(playerBarSelector, {
         ...defaultObserverOptions,
@@ -137,6 +198,7 @@ export function initObservers() {
 
       //#region playerBarInfo
       // -> song title, artist, album, etc. inside the player bar
+      //    enabled by "playerBar"
       const playerBarInfoSelector = `${playerBarSelector} .middle-controls .content-info-wrapper`;
       globservers.playerBarInfo = new SelectorObserver(playerBarInfoSelector, {
         ...defaultObserverOptions,
@@ -144,12 +206,13 @@ export function initObservers() {
         attributeFilter: ["title"],
       });
 
-      globservers.playerBarInfo.addListener(playerBarInfoSelector, {
+      globservers.playerBar.addListener(playerBarInfoSelector, {
         listener: () => globservers.playerBarInfo.enable(),
       });
 
       //#region playerBarMiddleButtons
       // -> the buttons inside the player bar (like, dislike, lyrics, etc.)
+      //    enabled by "playerBar"
       const playerBarMiddleButtonsSelector = ".middle-controls .middle-controls-buttons";
       globservers.playerBarMiddleButtons = new SelectorObserver(playerBarMiddleButtonsSelector, {
         ...defaultObserverOptions,
@@ -162,6 +225,7 @@ export function initObservers() {
 
       //#region playerBarRightControls
       // -> the controls on the right side of the player bar (volume, repeat, shuffle, etc.)
+      //    enabled by "playerBar"
       const playerBarRightControls = "#right-controls";
       globservers.playerBarRightControls = new SelectorObserver(playerBarRightControls, {
         ...defaultObserverOptions,
@@ -174,6 +238,7 @@ export function initObservers() {
 
       //#region popupContainer
       // -> the container for popups (e.g. the queue popup)
+      //    enabled by "body"
       const popupContainerSelector = "ytmusic-app ytmusic-popup-container";
       globservers.popupContainer = new SelectorObserver(popupContainerSelector, {
         ...defaultObserverOptions,
@@ -191,6 +256,7 @@ export function initObservers() {
 
       //#region ytGuide
       // -> the left sidebar menu
+      //    enabled by "body"
       const ytGuideSelector = "#content tp-yt-app-drawer#guide #guide-inner-content";
       globservers.ytGuide = new SelectorObserver(ytGuideSelector, {
         ...defaultObserverOptions,
@@ -201,17 +267,70 @@ export function initObservers() {
         listener: () => globservers.ytGuide.enable(),
       });
 
-      // //#region ytMasthead
-      // -> the masthead (title bar) at the top of the page
-      // const mastheadSelector = "#content ytd-masthead#masthead";
-      // globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
-      //   ...defaultObserverOptions,
-      //   subtree: true,
-      // });
+      //#region ytdBrowse
+      // -> channel pages for example
+      //    enabled by "body"
+      const ytdBrowseSelector = "ytd-app ytd-page-manager ytd-browse";
+      globservers.ytdBrowse = new SelectorObserver(ytdBrowseSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
 
-      // globservers.body.addListener(mastheadSelector, {
-      //   listener: () => globservers.ytMasthead.enable(),
-      // });
+      globservers.body.addListener(ytdBrowseSelector, {
+        listener: () => globservers.ytdBrowse.enable(),
+      });
+
+      //#region ytChannelHeader
+      // -> header of a channel page
+      //    enabled by "ytdBrowse"
+      const ytChannelHeaderSelector = "#header tp-yt-app-header #channel-header";
+      globservers.ytChannelHeader = new SelectorObserver(ytChannelHeaderSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.ytdBrowse.addListener(ytChannelHeaderSelector, {
+        listener: () => globservers.ytChannelHeader.enable(),
+      });
+
+      //#region ytWatchFlexy
+      // -> the main content of the /watch page
+      //    enabled by "body"
+      const ytWatchFlexySelector = "ytd-app ytd-watch-flexy";
+      globservers.ytWatchFlexy = new SelectorObserver(ytWatchFlexySelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(ytWatchFlexySelector, {
+        listener: () => globservers.ytWatchFlexy.enable(),
+      });
+
+      //#region ytWatchMetadata
+      // -> the metadata section of the /watch page (title, channel, views, description, buttons, etc. but not comments)
+      //    enabled by "ytWatchFlexy"
+      const ytWatchMetadataSelector = "#columns #primary-inner ytd-watch-metadata";
+      globservers.ytWatchMetadata = new SelectorObserver(ytWatchMetadataSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.ytWatchFlexy.addListener(ytWatchMetadataSelector, {
+        listener: () => globservers.ytWatchMetadata.enable(),
+      });
+
+      //#region ytMasthead
+      // -> the masthead (title bar) at the top of the page
+      //    enabled by "body"
+      const mastheadSelector = "#content ytd-masthead#masthead";
+      globservers.ytMasthead = new SelectorObserver(mastheadSelector, {
+        ...defaultObserverOptions,
+        subtree: true,
+      });
+
+      globservers.body.addListener(mastheadSelector, {
+        listener: () => globservers.ytMasthead.enable(),
+      });
     }
     }
 
@@ -222,26 +341,4 @@ export function initObservers() {
   catch(err) {
     error("Failed to initialize observers:", err);
   }
-}
-
-/**
- * Interface function for adding listeners to the {@linkcode globservers}  
- * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
- * @param options Options for the listener
- * @template TElem The type of the element that the listener will be attached to. If set to `0`, the type HTMLElement will be used.
- * @template TDomain This restricts which observers are available with the current domain
- */
-export function addSelectorListener<
-  TElem extends HTMLElement | 0 = HTMLElement,
-  TDomain extends Domain = "ytm"
->(
-  observerName: ObserverNameByDomain<TDomain>,
-  selector: string,
-  options: SelectorListenerOptions<
-    TElem extends 0
-      ? HTMLElement
-      : TElem
-  >
-){
-  globservers[observerName].addListener(selector, options);
 }

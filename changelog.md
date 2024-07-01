@@ -1,6 +1,79 @@
 <!-- I messed up with the changelog parsing so this is just how it will have to be -->
 <div class="split"></div>
 
+<!-- #region 2.1.0 -->
+## 2.1.0
+- **Features:**
+  - Auto-like videos and songs of channels where this feature was enabled
+    - Added an auto-like toggle button to the channel pages on YT and YTM
+  - Show the amount of likes and dislikes on the currently playing song
+  - Show the like and dislike ratio as a colored bar on the currently playing song
+- **Changes / Fixes:**
+  - Now the welcome menu is shown on YT too
+  - Changed default settings for these features:
+    - Remember song time sites: from `YTM only` to `both sites`
+    - Volume slider scroll sensitivity: from `10%` to `4%`
+  - Made some settings require advanced mode that didn't before:
+    - Fix spacing/layout issues
+    - Fix HDR issues
+    - Disable Dark Reader sites
+    - Remove share tracking parameter sites
+    - Placement of list/queue buttons
+  - Added Ctrl modifier key to every lyrics button to open a lyrics search prompt
+  - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
+  - Arrow key and number key skipping works more reliably and now also in the config menu
+  - Removed broken feature "remove upgrade tab"
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
+- **Internal Changes:**
+  - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
+  - Added advanced feature to change the startup timeout
+  - A blue logo is shown instead of the red BetterYTM logo when the script was compiled in development / preview mode
+  - In dev/preview mode, missing configuration keys will now be set to their default value instead of potentially breaking the script
+  - SelectorObserver changes:
+    - Added `ytMasthead` instance for the title bar on YT
+    - Renamed all YT-specific instances to have the `yt` prefix
+      - `watchFlexy` renamed to `ytWatchFlexy`
+      - `watchMetadata` renamed to `ytWatchMetadata`
+  - Added Storybook for easier and faster development of components
+  - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
+  - Migrated to pnpm for faster compilation and development scripts
+- **Plugin Interface Changes:**
+  - Added new components:
+    -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
+      The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+    - `showToast()` to show a custom toast notification with a message string or element and duration
+    - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
+    - `createRipple()` to create a click ripple animation effect on any given element or create a new element with the effect
+    - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
+  - Added functions:
+    - `getAutoLikeData()` to return the current auto-like data (authenticated function)
+    - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
+    - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [Return Youtube Dislike](https://returnyoutubedislike.com/)
+  - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
+  - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
+  - Added events
+    - `bytm:featureInitStarted` - emitted when the feature initialization process starts
+    - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
+    - `bytm:dialogClosed` - emitted when a BytmDialog is closed and gets passed the instance
+    - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
+    - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
+  - Event `bytm:siteEvent:fullscreenToggled` will now only emit once per fullscreen change
+  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+  - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
+    In practice this changes nothing, but it benefits from having the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
+
+</details>
+
+<div class="pr-link-cont">
+  <a href="https://github.com/Sv443/BetterYTM/pull/76" rel="noopener noreferrer">See pull request for more info</a>
+</div>
+
+<div class="split"></div>
+<br>
+
+<!-- #region 2.0.0 -->
 ## 2.0.0
 - **Added features:**
 	- Keep the volume synced between tabs
@@ -21,19 +94,24 @@
   - Fixed tooltip that is set on the wrong element
   - Fixed queue buttons not being shown when navigating with tab key
   - Tons of accessibility improvements for screenreader users (feedback regarding this is strongly welcome!)
+
+<details><summary>Click to expand internal and plugin changes</summary>
+
 - **Internal Changes:**
   - Improved script performance
     - Implemented new [SelectorObserver](https://github.com/Sv443-Network/UserUtils#selectorobserver) instances to improve overall performance by quite a lot
       - Implemented rising-edge debounce for SelectorObserver instances to massively improve responsiveness
     - Added a cache to save lyrics in. Up to 1000 of the most listened to songs are saved throughout sessions for 30 days to save time and reduce server load.
   - Implemented new class BytmDialog for less duplicate code, better maintainability, the ability to make more menus easier and for them to have better accessibility
+- **Plugin Interface Changes:**
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))  
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
     - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
-  - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs could change
+  - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs potentially change
 
+</details>
 <div class="pr-link-cont">
   <a href="https://github.com/Sv443/BetterYTM/pull/52" rel="noopener noreferrer">See pull request for more info</a>
 </div>
@@ -41,6 +119,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.1.1 -->
 ## 1.1.1
 - **Features / Changes:**
   - A new version notification dialog is now shown with the latest version's changes
@@ -63,6 +142,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.1.0 -->
 ## 1.1.0
 - **Features / Changes:**
   - The userscript is now available in 9 languages! To submit or edit translations, please [view this guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#submitting-translations)
@@ -97,6 +177,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.2 -->
 ## 1.0.2
 - **Changes:**
   - Script is now published to OpenUserJS!
@@ -105,6 +186,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.1 -->
 ## 1.0.1
 - **Changes:**
   - Script is now published to GreasyFork!
@@ -113,6 +195,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 1.0.0 -->
 ## 1.0.0
 - **Added Features:**
   - Added configuration menu to toggle and configure all features
@@ -144,6 +227,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 0.2.0 -->
 ## 0.2.0
 
 - **Added Features:**
@@ -158,6 +242,7 @@
 <div class="split"></div>
 <br>
 
+<!-- #region 0.1.0 -->
 ## 0.1.0
 
 - **Features:**

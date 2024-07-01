@@ -1,42 +1,48 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyleFromResource, domLoaded, warn } from "./utils";
-import { clearConfig, fixMissingCfgKeys, getFeatures, initConfig, setFeatures } from "./config";
-import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants";
-import { error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils";
-import { initSiteEvents } from "./siteEvents";
-import { emitInterface, initInterface, initPlugins } from "./interface";
-import { initObservers, addSelectorListener, globservers } from "./observers";
-import { getWelcomeDialog } from "./dialogs";
-import type { FeatureConfig } from "./types";
+import { addStyleFromResource, domLoaded, warn } from "./utils/index.js";
+import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
+import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
+import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
+import { initSiteEvents } from "./siteEvents.js";
+import { emitInterface, initInterface, initPlugins } from "./interface.js";
+import { initObservers, addSelectorListener, globservers } from "./observers.js";
+import { getWelcomeDialog } from "./dialogs/index.js";
+import type { FeatureConfig } from "./types.js";
 import {
   // layout
-  addWatermark, removeUpgradeTab, initRemShareTrackParam, fixSpacing, initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
+  addWatermark, initRemShareTrackParam, fixSpacing,
+  initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
+  initShowVotes,
   // volume
   initVolumeFeatures,
   // song lists
   initQueueButtons, initAboveQueueBtns,
   // behavior
-  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts, initRememberSongTime, disableDarkReader,
+  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts,
+  initRememberSongTime, disableDarkReader,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements, initNumKeysSkip,
+  initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
+  initNumKeysSkip, initAutoLike,
   // lyrics
-  addMediaCtrlLyricsBtn, initLyricsCache,
+  addPlayerBarLyricsBtn, initLyricsCache,
   // menu
   addConfigMenuOptionYT, addConfigMenuOptionYTM,
   // general
   initVersionCheck,
-} from "./features";
+} from "./features/index.js";
+
+//#region console watermark
 
 {
   // console watermark with sexy gradient
   const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
-  const styleCommon = "color: #fff; font-size: 1.5em; padding-left: 6px; padding-right: 6px;";
+  const styleCommon = "color: #fff; font-size: 1.3rem;";
 
-  console.log();
   console.log(
-    `%c${scriptInfo.name}%cv${scriptInfo.version}%c\n\nBuild #${buildNumber} ─ ${scriptInfo.namespace}`,
-    `font-weight: bold; ${styleCommon} ${styleGradient}`,
-    `background-color: #333; ${styleCommon}`,
+    `%c${scriptInfo.name}%c${scriptInfo.version}%c • ${scriptInfo.namespace}%c\n\nBuild #${buildNumber}`,
+    `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`,
+    `${styleCommon} background-color: #333; padding-left: 8px; padding-right: 8px;`,
+    "color: #fff; font-size: 1.2rem;",
     "padding: initial;",
   );
   console.log([
@@ -44,22 +50,23 @@ import {
     "─ Lots of ambition and dedication",
     "─ My song metadata API: https://api.sv443.net/geniurl",
     "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
+    "─ This library for semver comparison: https://github.com/omichelsen/compare-versions",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
     "─ This markdown parser library: https://github.com/markedjs/marked",
     "─ This fuzzy search library: https://github.com/krisk/Fuse",
   ].join("\n"));
-  console.log();
 }
+
+//#region preInit
 
 /** Stuff that needs to be called ASAP, before anything async happens */
 function preInit() {
   try {
-    const domain = getDomain();
     log("Session ID:", getSessionId());
     initInterface();
     setLogLevel(defaultLogLevel);
 
-    if(domain === "ytm")
+    if(getDomain() === "ytm")
       initBeforeUnloadHook();
 
     init();
@@ -68,6 +75,8 @@ function preInit() {
     return error("Fatal pre-init error:", err);
   }
 }
+
+//#region init
 
 async function init() {
   try {
@@ -81,29 +90,34 @@ async function init() {
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
 
-    emitInterface("bytm:initPlugins");
+    emitInterface("bytm:registerPlugins");
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
+
+    if(features.rememberSongTime)
+      initRememberSongTime();
 
     if(!domLoaded)
       document.addEventListener("DOMContentLoaded", onDomLoad, { once: true });
     else
       onDomLoad();
-
-    if(features.rememberSongTime)
-      initRememberSongTime();
   }
   catch(err) {
     error("Fatal error:", err);
   }
 }
 
+//#region onDomLoad
+
 /** Called when the DOM has finished loading and can be queried and altered by the userscript */
 async function onDomLoad() {
   const domain = getDomain();
-  const features = getFeatures();
+  const feats = getFeatures();
   const ftInit = [] as [string, Promise<void>][];
+
+  // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
+  document.body.classList.add(`bytm-dom-${domain}`);
 
   try {
     initObservers();
@@ -121,73 +135,68 @@ async function onDomLoad() {
   log(`DOM loaded and feature pre-init finished, now initializing all features for domain "${domain}"...`);
 
   try {
+    //#region welcome dlg
+
+    if(typeof await GM.getValue("bytm-installed") !== "string") {
+      // open welcome menu with language selector
+      const dlg = await getWelcomeDialog();
+      dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
+      info("Showing welcome menu");
+      await dlg.open();
+    }
+
     if(domain === "ytm") {
-      //#region (ytm) misc
-
-      ftInit.push(["initSiteEvents", initSiteEvents()]);
-
-      //#region (ytm) welcome dlg
-
-      if(typeof await GM.getValue("bytm-installed") !== "string") {
-        // open welcome menu with language selector
-        const dlg = await getWelcomeDialog();
-        dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
-        await dlg.mount();
-        info("Showing welcome menu");
-        await dlg.open();
-      }
-
       //#region (ytm) layout
 
-      if(features.watermarkEnabled)
+      if(feats.watermarkEnabled)
         ftInit.push(["addWatermark", addWatermark()]);
 
-      if(features.fixSpacing)
+      if(feats.fixSpacing)
         ftInit.push(["fixSpacing", fixSpacing()]);
 
-      if(features.removeUpgradeTab)
-        ftInit.push(["removeUpgradeTab", removeUpgradeTab()]);
+      ftInit.push(["thumbnailOverlay", initThumbnailOverlay()]);
 
-      ftInit.push(["initThumbnailOverlay", initThumbnailOverlay()]);
+      if(feats.hideCursorOnIdle)
+        ftInit.push(["hideCursorOnIdle", initHideCursorOnIdle()]);
 
-      if(features.hideCursorOnIdle)
-        ftInit.push(["initHideCursorOnIdle", initHideCursorOnIdle()]);
-
-      if(features.fixHdrIssues)
+      if(feats.fixHdrIssues)
         ftInit.push(["fixHdrIssues", fixHdrIssues()]);
+
+      if(feats.showVotes)
+        ftInit.push(["showVotes", initShowVotes()]);
 
       //#region (ytm) volume
 
-      ftInit.push(["initVolumeFeatures", initVolumeFeatures()]);
+      ftInit.push(["volumeFeatures", initVolumeFeatures()]);
 
       //#region (ytm) song lists
 
-      if(features.lyricsQueueButton || features.deleteFromQueueButton)
-        ftInit.push(["initQueueButtons", initQueueButtons()]);
+      if(feats.lyricsQueueButton || feats.deleteFromQueueButton)
+        ftInit.push(["queueButtons", initQueueButtons()]);
 
-      ftInit.push(["initAboveQueueBtns", initAboveQueueBtns()]);
+      ftInit.push(["aboveQueueBtns", initAboveQueueBtns()]);
 
       //#region (ytm) behavior
 
-      if(features.closeToastsTimeout > 0)
-        ftInit.push(["initAutoCloseToasts", initAutoCloseToasts()]);
+      if(feats.closeToastsTimeout > 0)
+        ftInit.push(["autoCloseToasts", initAutoCloseToasts()]);
 
       //#region (ytm) input
 
-      ftInit.push(["initArrowKeySkip", initArrowKeySkip()]);
+      ftInit.push(["arrowKeySkip", initArrowKeySkip()]);
 
-      if(features.anchorImprovements)
-        ftInit.push(["addAnchorImprovements", addAnchorImprovements()]);
+      if(feats.anchorImprovements)
+        ftInit.push(["anchorImprovements", addAnchorImprovements()]);
 
-      ftInit.push(["initNumKeysSkip", initNumKeysSkip()]);
+      ftInit.push(["numKeysSkip", initNumKeysSkip()]);
 
       //#region (ytm) lyrics
 
-      if(features.geniusLyrics)
-        ftInit.push(["addMediaCtrlLyricsBtn", addMediaCtrlLyricsBtn()]);
+      if(feats.geniusLyrics)
+        ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
     }
 
-    //#region (ytm+yt) cfg menu option
+    //#region (ytm+yt) cfg menu
     try {
       if(domain === "ytm") {
         addSelectorListener("body", "tp-yt-iron-dropdown #contentWrapper ytd-multi-page-menu-renderer #container.menu-container", {
@@ -205,29 +214,27 @@ async function onDomLoad() {
     }
 
     if(["ytm", "yt"].includes(domain)) {
+      //#region general
+
+      ftInit.push(["initSiteEvents", initSiteEvents()]);
+
       //#region (ytm+yt) layout
 
-      if(features.disableDarkReaderSites !== "none")
+      if(feats.disableDarkReaderSites !== "none")
         disableDarkReader();
 
-      if(features.removeShareTrackingParamSites && (features.removeShareTrackingParamSites === domain || features.removeShareTrackingParamSites === "all"))
+      if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
       //#region (ytm+yt) input
 
-      ftInit.push(["initSiteSwitch", initSiteSwitch(domain)]);
+      ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
+
+      if(feats.autoLikeChannels)
+        ftInit.push(["autoLikeChannels", initAutoLike()]);
     }
 
-    const initStartTs = Date.now();
-
-    // wait for feature init or timeout (in case an init function is hung up on a promise)
-    await Promise.race([
-      pauseFor(10_000),
-      Promise.allSettled(ftInit.map(([, p]) => p)),
-    ]);
-
-    emitInterface("bytm:ready");
-    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    emitInterface("bytm:featureInitStarted");
 
     try {
       initPlugins();
@@ -236,6 +243,25 @@ async function onDomLoad() {
       error("Plugin loading error:", err);
       emitInterface("bytm:fatalError", "Error while loading plugins");
     }
+
+    const initStartTs = Date.now();
+
+    // wait for feature init or timeout (in case an init function is hung up on a promise)
+    await Promise.race([
+      pauseFor(feats.initTimeout > 0 ? feats.initTimeout * 1000 : 8_000),
+      Promise.allSettled(
+        ftInit.map(([name, prom]) =>
+          new Promise(async (res) => {
+            const v = await prom;
+            emitInterface("bytm:featureInitialized", name);
+            res(v);
+          })
+        )
+      ),
+    ]);
+
+    emitInterface("bytm:ready");
+    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
       registerDevMenuCommands();
@@ -250,11 +276,15 @@ async function onDomLoad() {
   }
 }
 
+//#region insert css bundle
+
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function insertGlobalStyle() {
   if(!await addStyleFromResource("css-bundle"))
     error("Couldn't add global CSS bundle due to an error");
 }
+
+//#region dev menu cmds
 
 /** Registers dev commands using `GM.registerMenuCommand` */
 function registerDevMenuCommands() {
@@ -269,19 +299,19 @@ function registerDevMenuCommands() {
     }
   }, "r");
 
-  GM.registerMenuCommand("Fix missing config values", async () => {
+  GM.registerMenuCommand("Fix config values", async () => {
     const oldFeats = JSON.parse(JSON.stringify(getFeatures())) as FeatureConfig;
-    await setFeatures(fixMissingCfgKeys(oldFeats));
-    console.log("Fixed missing config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
-    if(confirm("All missing or invalid config values were set to their default values.\nReload the page now?"))
+    await setFeatures(fixCfgKeys(oldFeats));
+    dbg("Fixed missing or extraneous config values.\nFrom:", oldFeats, "\n\nTo:", getFeatures());
+    if(confirm("All missing or config values were set to their default values and extraneous ones were removed.\nDo you want to reload the page now?"))
       location.reload();
   });
 
   GM.registerMenuCommand("List GM values in console with decompression", async () => {
     const keys = await GM.listValues();
-    console.log(`GM values (${keys.length}):`);
+    dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      console.log("  No values found.");
+      dbg("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -295,15 +325,15 @@ function registerDevMenuCommands() {
     for(const [key, finalVal] of Object.entries(values)) {
       const isEncoded = key.startsWith("_uucfg-") ? await GM.getValue(`_uucfgenc-${key.substring(7)}`, false) : false;
       const lengthStr = String(finalVal).length > 50 ? `(${String(finalVal).length} chars) ` : "";
-      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
+      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -${isEncoded ? "-[decoded]-" : ""}> ${lengthStr}${finalVal}`);
     }
   }, "l");
 
   GM.registerMenuCommand("List GM values in console, without decompression", async () => {
     const keys = await GM.listValues();
-    console.log(`GM values (${keys.length}):`);
+    dbg(`GM values (${keys.length}):`);
     if(keys.length === 0)
-      console.log("  No values found.");
+      dbg("  No values found.");
 
     const values = {} as Record<string, Stringifiable | undefined>;
     let longestKey = 0;
@@ -315,19 +345,19 @@ function registerDevMenuCommands() {
     }
     for(const [key, val] of Object.entries(values)) {
       const lengthStr = String(val).length >= 16 ? `(${String(val).length} chars) ` : "";
-      console.log(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
+      dbg(`  "${key}"${" ".repeat(longestKey - key.length)} -> ${lengthStr}${val}`);
     }
   });
 
   GM.registerMenuCommand("Delete all GM values", async () => {
     const keys = await GM.listValues();
     if(confirm(`Clear all ${keys.length} GM values?\nSee console for details.`)) {
-      console.log(`Clearing ${keys.length} GM values:`);
+      dbg(`Clearing ${keys.length} GM values:`);
       if(keys.length === 0)
-        console.log("  No values found.");
+        dbg("  No values found.");
       for(const key of keys) {
         await GM.deleteValue(key);
-        console.log(`  Deleted ${key}`);
+        dbg(`  Deleted ${key}`);
       }
     }
   }, "d");
@@ -341,19 +371,19 @@ function registerDevMenuCommands() {
         const truncLength = 400;
         const oldVal = await GM.getValue(key);
         await GM.deleteValue(key);
-        console.log(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
+        dbg(`Deleted GM value '${key}' with previous value '${oldVal && String(oldVal).length > truncLength ? String(oldVal).substring(0, truncLength) + `… (${String(oldVal).length} / ${truncLength} chars.)` : oldVal}'`);
       }
     }
   }, "n");
 
   GM.registerMenuCommand("Reset install timestamp", async () => {
     await GM.deleteValue("bytm-installed");
-    console.log("Reset install time.");
+    dbg("Reset install time.");
   }, "t");
 
   GM.registerMenuCommand("Reset version check timestamp", async () => {
     await GM.deleteValue("bytm-version-check");
-    console.log("Reset version check time.");
+    dbg("Reset version check time.");
   }, "v");
 
   GM.registerMenuCommand("List active selector listeners in console", async () => {
@@ -366,18 +396,18 @@ function registerDevMenuCommands() {
         listenersAmt += v.length;
         lines.push(`    [${v.length}] ${k}`);
         v.forEach(({ all, continuous }, i) => {
-          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}, ${all ? "select multiple" : "select single"}`);
+          lines.push(`        ${v.length > 1 && i !== v.length - 1 ? "├" : "└"}> ${continuous ? "continuous" : "single-shot"}${all ? ", multiple" : ""}`);
         });
       });
     }
-    console.log(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
+    dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
   }, "s");
 
   GM.registerMenuCommand("Compress value", async () => {
     const input = prompt("Enter the value to compress.\nSee console for output.");
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
-      console.log(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
+      dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
     }
   });
 
@@ -385,7 +415,7 @@ function registerDevMenuCommands() {
     const input = prompt("Enter the value to decompress.\nSee console for output.");
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
-      console.log(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+      dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
     }
   });
 

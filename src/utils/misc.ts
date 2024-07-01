@@ -1,8 +1,8 @@
-import { compress, fetchAdvanced, openInNewTab, randomId } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, compressionFormat, repo } from "../constants";
-import { type Domain, type ResourceKey } from "../types";
-import { error, type TrLocale, warn, sendRequest } from ".";
+import { branch, compressionFormat, repo } from "../constants.js";
+import { type Domain, type ResourceKey } from "../types.js";
+import { error, type TrLocale, warn, sendRequest } from "./index.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc
@@ -50,7 +50,7 @@ export async function compressionSupported() {
     await compress(".", compressionFormat, "string");
     return isCompressionSupported = true;
   }
-  catch(e) {
+  catch {
     return isCompressionSupported = false;
   }
 }
@@ -73,6 +73,30 @@ export function arrayWithSeparators<TArray>(array: TArray[], separator = ", ", l
 export function getWatchId() {
   const { searchParams, pathname } = new URL(location.href);
   return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`  
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+export function getCurrentChannelId() {
+  return parseChannelIdFromUrl(location.href);
+}
+
+/** Returns the channel ID from a URL or null if the URL is invalid */
+export function parseChannelIdFromUrl(url: string | URL) {
+  try {
+    const { pathname } = url instanceof URL ? url : new URL(url);
+    if(pathname.includes("/channel/"))
+      return pathname.split("/channel/")[1].split("/")[0];
+    else if(pathname.includes("/@"))
+      return pathname.split("/@")[1].split("/")[0];
+    else
+      return null;
+  }
+  catch {
+    return null;
+  }
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
@@ -110,9 +134,32 @@ export function openInTab(href: string, background = false) {
   try {
     openInNewTab(href, background);
   }
-  catch(err) {
+  catch {
     window.open(href, "_blank", "noopener noreferrer");
   }
+}
+
+/** Tries to parse an uncompressed or compressed input string as a JSON object */
+export async function tryToDecompressAndParse<TData = Record<string, unknown>>(input: string): Promise<TData | null> {
+  let parsed: TData | null = null;
+
+  try {
+    parsed = JSON.parse(input);
+  }
+  catch {
+    try {
+      parsed = JSON.parse(await decompress(input, compressionFormat, "string"));
+    }
+    catch(err) {
+      error("Couldn't decompress and parse data due to an error:", err);
+      return null;
+    }
+  }
+
+  // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+  await pauseFor(250);
+
+  return parsed;
 }
 
 //#region resources
@@ -168,8 +215,8 @@ export function getPreferredLocale(): TrLocale {
   return "en_US";
 }
 
-/** Returns the content behind the passed resource identifier to be assigned to an element's innerHTML property */
-export async function resourceToHTMLString(resource: ResourceKey) {
+/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+export async function resourceAsString(resource: ResourceKey | "_") {
   try {
     const resourceUrl = await getResourceUrl(resource);
     if(!resourceUrl)

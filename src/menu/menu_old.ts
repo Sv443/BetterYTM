@@ -1,22 +1,23 @@
-import { debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, getFeatures, setFeatures, setDefaultFeatures } from "../config";
-import { buildNumber, host, mode, scriptInfo } from "../constants";
-import { featInfo, disableBeforeUnload } from "../features/index";
-import { error, getResourceUrl, info, log, resourceToHTMLString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard } from "../utils";
-import { siteEvents } from "../siteEvents";
-import { getChangelogDialog, getExportDialog, getFeatHelpDialog, getImportDialog } from "../dialogs";
-import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types";
-import "./menu_old.css";
-import { createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components";
+import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
+import { defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
+import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
+import { featInfo, disableBeforeUnload } from "../features/index.js";
+import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse } from "../utils/index.js";
+import { emitSiteEvent, siteEvents } from "../siteEvents.js";
+import { getChangelogDialog, getFeatHelpDialog } from "../dialogs/index.js";
+import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
+import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
+import { emitInterface } from "../interface.js";
 import pkg from "../../package.json" with { type: "json" };
+import "./menu_old.css";
 
 //#region create menu
 
-let isCfgMenuAdded = false;
+let isCfgMenuMounted = false;
 export let isCfgMenuOpen = false;
 
 /** Threshold in pixels from the top of the options container that dictates for how long the scroll indicator is shown */
-const scrollIndicatorOffsetThreshold = 30;
+const scrollIndicatorOffsetThreshold = 50;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
 let initLocale: string | undefined;
@@ -29,11 +30,11 @@ let hiddenCopiedTxtTimeout: ReturnType<typeof setTimeout> | undefined;
  * Adds an element to open the BetterYTM menu
  * @deprecated to be replaced with new menu - see https://github.com/Sv443/BetterYTM/issues/23
  */
-async function addCfgMenu() {
-  if(isCfgMenuAdded)
+async function mountCfgMenu() {
+  if(isCfgMenuMounted)
     return;
-  isCfgMenuAdded = true;
-  initLocale = getFeatures().locale;
+  isCfgMenuMounted = true;
+  initLocale = getFeature("locale");
   initConfig = getFeatures();
 
   const initLangReloadText = t("lang_changed_prompt_reload");
@@ -41,7 +42,7 @@ async function addCfgMenu() {
   //#region bg & container
   const backgroundElem = document.createElement("div");
   backgroundElem.id = "bytm-cfg-menu-bg";
-  backgroundElem.classList.add("bytm-menu-bg", `bytm-dom-${getDomain()}`);
+  backgroundElem.classList.add("bytm-menu-bg");
   backgroundElem.ariaLabel = backgroundElem.title = t("close_menu_tooltip");
   backgroundElem.style.visibility = "hidden";
   backgroundElem.style.display = "none";
@@ -50,13 +51,13 @@ async function addCfgMenu() {
       closeCfgMenu(e);
   });
   document.body.addEventListener("keydown", (e) => {
-    if(isCfgMenuOpen && e.key === "Escape")
+    if(isCfgMenuOpen && e.key === "Escape" && BytmDialog.getCurrentDialogId() === "cfg-menu")
       closeCfgMenu(e);
   });
 
   const menuContainer = document.createElement("div");
   menuContainer.ariaLabel = menuContainer.title = ""; // prevent bg title from propagating downwards
-  menuContainer.classList.add("bytm-menu", `bytm-dom-${getDomain()}`);
+  menuContainer.classList.add("bytm-menu");
   menuContainer.id = "bytm-cfg-menu";
 
 
@@ -64,10 +65,21 @@ async function addCfgMenu() {
   const headerElem = document.createElement("div");
   headerElem.classList.add("bytm-menu-header");
 
+  const titleLogoHeaderCont = document.createElement("div");
+  titleLogoHeaderCont.classList.add("bytm-menu-title-logo-header-cont");
+
   const titleCont = document.createElement("div");
   titleCont.classList.add("bytm-menu-titlecont");
   titleCont.role = "heading";
   titleCont.ariaLevel = "1";
+
+  const titleLogoElem = document.createElement("img");
+  const logoSrc = await getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`);
+  titleLogoElem.classList.add("bytm-cfg-menu-logo", "bytm-no-select");
+  if(logoSrc)
+    titleLogoElem.src = logoSrc;
+
+  titleLogoHeaderCont.appendChild(titleLogoElem);
 
   const titleElem = document.createElement("h2");
   titleElem.classList.add("bytm-menu-title");
@@ -142,7 +154,9 @@ async function addCfgMenu() {
   titleCont.appendChild(titleElem);
   titleCont.appendChild(linksCont);
 
-  headerElem.appendChild(titleCont);
+  titleLogoHeaderCont.appendChild(titleCont);
+
+  headerElem.appendChild(titleLogoHeaderCont);
   headerElem.appendChild(closeElem);
 
   //#region footer
@@ -156,6 +170,7 @@ async function addCfgMenu() {
   reloadFooterEl.setAttribute("aria-hidden", "true");
   reloadFooterEl.textContent = t("reload_hint");
   reloadFooterEl.role = "alert";
+  reloadFooterEl.ariaLive = "polite";
 
   const reloadTxtEl = document.createElement("button");
   reloadTxtEl.classList.add("bytm-btn");
@@ -171,46 +186,84 @@ async function addCfgMenu() {
   reloadFooterEl.appendChild(reloadTxtEl);
   reloadFooterCont.appendChild(reloadFooterEl);
 
-  const resetElem = document.createElement("button");
-  resetElem.classList.add("bytm-btn");
-  resetElem.ariaLabel = resetElem.title = t("reset_tooltip");
-  resetElem.textContent = t("reset");
-  resetElem.addEventListener("click", async () => {
-    if(confirm(t("reset_confirm"))) {
-      await setDefaultFeatures();
-      closeCfgMenu();
-      disableBeforeUnload();
-      location.reload();
-    }
-  });
-  const exportElem = document.createElement("button");
-  exportElem.classList.add("bytm-btn");
-  exportElem.ariaLabel = exportElem.title = t("export_tooltip");
-  exportElem.textContent = t("export");
-  exportElem.addEventListener("click", async () => {
-    const dlg = await getExportDialog();
-    dlg.on("close", openCfgMenu);
-    await dlg.mount();
-    closeCfgMenu(undefined, false);
-    await dlg.open();
-  });
-  const importElem = document.createElement("button");
-  importElem.classList.add("bytm-btn");
-  importElem.ariaLabel = importElem.title = t("import_tooltip");
-  importElem.textContent = t("import");
-  importElem.addEventListener("click", async () => {
-    const dlg = await getImportDialog();
-    dlg.on("close", openCfgMenu);
-    await dlg.mount();
-    closeCfgMenu(undefined, false);
-    await dlg.open();
+  /** For copying plain when shift-clicking the copy button or when compression is not supported */
+  const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
+
+  const exImDlg = new ExImDialog({
+    id: "bytm-config-import-export",
+    width: 800,
+    height: 600,
+    // try to compress the data if possible
+    exportData: async () => await compressionSupported()
+      ? await compress(JSON.stringify({ formatVersion, data: getFeatures() }), compressionFormat, "string")
+      : exportDataSpecial(),
+    exportDataSpecial,
+    async onImport(data) {
+      try {
+        const parsed = await tryToDecompressAndParse<{ data: FeatureConfig, formatVersion: number }>(data.trim());
+        log("Trying to import configuration:", parsed);
+
+        if(!parsed || typeof parsed !== "object")
+          return alert(t("import_error_invalid"));
+        if(typeof parsed.formatVersion !== "number")
+          return alert(t("import_error_no_format_version"));
+        if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
+          return alert(t("import_error_no_data"));
+        if(parsed.formatVersion < formatVersion) {
+          let newData = JSON.parse(JSON.stringify(parsed.data));
+          const sortedMigrations = Object.entries(migrations)
+            .sort(([a], [b]) => Number(a) - Number(b));
+  
+          let curFmtVer = Number(parsed.formatVersion);
+  
+          for(const [fmtVer, migrationFunc] of sortedMigrations) {
+            const ver = Number(fmtVer);
+            if(curFmtVer < formatVersion && curFmtVer < ver) {
+              try {
+                const migRes = JSON.parse(JSON.stringify(migrationFunc(newData)));
+                newData = migRes instanceof Promise ? await migRes : migRes;
+                curFmtVer = ver;
+              }
+              catch(err) {
+                error(`Error while running migration function for format version ${fmtVer}:`, err);
+              }
+            }
+          }
+          parsed.formatVersion = curFmtVer;
+          parsed.data = newData;
+        }
+        else if(parsed.formatVersion !== formatVersion)
+          return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+  
+        await setFeatures({ ...getFeatures(), ...parsed.data });
+  
+        if(confirm(t("import_success_confirm_reload"))) {
+          disableBeforeUnload();
+          return location.reload();
+        }
+
+        exImDlg.unmount();
+        emitSiteEvent("rebuildCfgMenu", parsed.data);
+      }
+      catch(err) {
+        warn("Couldn't import configuration:", err);
+        alert(t("import_error_invalid"));
+      }
+    },
+    title: () => t("bytm_config_export_import_title"),
+    descImport: () => t("bytm_config_import_desc"),
+    descExport: () => t("bytm_config_export_desc"),
   });
 
+  const exportImportBtn = document.createElement("button");
+  exportImportBtn.classList.add("bytm-btn");
+  exportImportBtn.textContent = exportImportBtn.ariaLabel = exportImportBtn.title = t("export_import");
+  onInteraction(exportImportBtn, async () => await exImDlg.open());
+
   const buttonsCont = document.createElement("div");
-  buttonsCont.id = "bytm-menu-footer-buttons-cont";
-  buttonsCont.appendChild(exportElem);
-  buttonsCont.appendChild(importElem);
-  buttonsCont.appendChild(resetElem);
+  buttonsCont.classList.add("bytm-menu-footer-buttons-cont");
+
+  buttonsCont.appendChild(exportImportBtn);
 
   footerCont.appendChild(reloadFooterCont);
   footerCont.appendChild(buttonsCont);
@@ -220,7 +273,11 @@ async function addCfgMenu() {
   const featuresCont = document.createElement("div");
   featuresCont.id = "bytm-menu-opts";
 
-  const onCfgChange = async (key: keyof typeof defaultData, initialVal: string | number | boolean | HotkeyObj, newVal: string | number | boolean | HotkeyObj) => {
+  const onCfgChange = async (
+    key: keyof typeof defaultData,
+    initialVal: string | number | boolean | HotkeyObj,
+    newVal: string | number | boolean | HotkeyObj,
+  ) => {
     const fmt = (val: unknown) => typeof val === "object" ? JSON.stringify(val) : String(val);
     info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
 
@@ -266,11 +323,11 @@ async function addCfgMenu() {
     else if(getLocale() !== featConf.locale)
       setLocale(featConf.locale);
 
-    siteEvents.emit("configOptionChanged", key, initialVal, newVal);
+    emitSiteEvent("configOptionChanged", key, initialVal, newVal);
   };
 
   /** Call whenever the feature config is changed */
-  const confChanged = debounce(onCfgChange, 200, "falling");
+  const confChanged = debounce(onCfgChange, 333, "falling");
 
   const featureCfg = getFeatures();
   const featureCfgWithCategories = Object.entries(featInfo)
@@ -284,6 +341,13 @@ async function addCfgMenu() {
     {} as Record<FeatureCategory, Record<FeatureKey, unknown>>,
     );
 
+  /**
+   * Formats the value `v` based on the provided `key` using the `featInfo` object.  
+   * If a custom `renderValue` function is defined for the `key`, it will be used to format the value.  
+   * If no custom `renderValue` function is defined, the value will be converted to a string and trimmed.  
+   * If the value is an object, it will be converted to a JSON string representation.  
+   * If an error occurs during formatting (like when passing objects with circular references), the original value will be returned as a string (trimmed).
+   */
   const fmtVal = (v: unknown, key: FeatureKey) => {
     try {
       // @ts-ignore
@@ -291,8 +355,8 @@ async function addCfgMenu() {
       const retVal = (typeof v === "object" ? JSON.stringify(v) : String(v)).trim();
       return renderValue ? renderValue(retVal) : retVal;
     }
-    catch(_e) {
-      // because stringify throws on circular refs
+    catch {
+      // absolute last resort fallback because stringify throws on circular refs
       return String(v).trim();
     }
   };
@@ -330,7 +394,7 @@ async function addCfgMenu() {
       {
         const featLeftSideElem = document.createElement("div");
         featLeftSideElem.classList.add("bytm-ftitem-leftside");
-        if(getFeatures().advancedMode) {
+        if(getFeature("advancedMode")) {
           const defVal = fmtVal(ftDefault, featKey as FeatureKey);
           const extraTxts = [
             `default: ${defVal.length === 0 ? "(undefined)" : defVal}`,
@@ -368,7 +432,7 @@ async function addCfgMenu() {
         const helpTextVal: string | undefined = hasHelpTextFunc && featInfo[featKey as keyof typeof featInfo]!.helpText();
 
         if(hasKey(`feature_helptext_${featKey}`) || (helpTextVal && hasKey(helpTextVal))) {
-          const helpElemImgHtml = await resourceToHTMLString("icon-help");
+          const helpElemImgHtml = await resourceAsString("icon-help");
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
@@ -434,7 +498,7 @@ async function addCfgMenu() {
 
         let advCopyHiddenCont: HTMLElement | undefined;
 
-        if((getFeatures().advancedMode || mode === "development") && ftInfo.valueHidden) {
+        if((getFeature("advancedMode") || mode === "development") && ftInfo.valueHidden) {
           const advCopyHintElem = document.createElement("span");
           advCopyHintElem.classList.add("bytm-ftconf-adv-copy-hint");
           advCopyHintElem.textContent = t("copied");
@@ -444,7 +508,7 @@ async function addCfgMenu() {
           const advCopyHiddenBtn = document.createElement("button");
           advCopyHiddenBtn.classList.add("bytm-ftconf-adv-copy-btn", "bytm-btn");
           advCopyHiddenBtn.tabIndex = 0;
-          advCopyHiddenBtn.textContent = t("copy_hidden_value");
+          advCopyHiddenBtn.textContent = t("copy_hidden");
           advCopyHiddenBtn.ariaLabel = advCopyHiddenBtn.title = t("copy_hidden_tooltip");
 
           const copyHiddenInteraction = (e: MouseEvent | KeyboardEvent) => {
@@ -578,17 +642,17 @@ async function addCfgMenu() {
         }
         else {
           // custom input element:
-          let wrapperElem: HTMLElement | undefined;
+          let customInputEl: HTMLElement | undefined;
 
           switch(type) {
           case "hotkey":
-            wrapperElem = createHotkeyInput({
+            customInputEl = createHotkeyInput({
               initialValue: typeof initialVal === "object" ? initialVal as HotkeyObj : undefined,
               onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
             });
             break;
           case "toggle":
-            wrapperElem = await createToggleInput({
+            customInputEl = await createToggleInput({
               initialValue: Boolean(initialVal),
               onChange: (checked) => confChanged(featKey as keyof FeatureConfig, initialVal, checked),
               id: `ftconf-${featKey}`,
@@ -596,29 +660,29 @@ async function addCfgMenu() {
             });
             break;
           case "button":
-            wrapperElem = document.createElement("button");
-            wrapperElem.classList.add("bytm-btn");
-            wrapperElem.tabIndex = 0;
-            wrapperElem.textContent = wrapperElem.ariaLabel = wrapperElem.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+            customInputEl = document.createElement("button");
+            customInputEl.classList.add("bytm-btn");
+            customInputEl.tabIndex = 0;
+            customInputEl.textContent = customInputEl.ariaLabel = customInputEl.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
 
-            onInteraction(wrapperElem, async () => {
-              if((wrapperElem as HTMLButtonElement).disabled)
+            onInteraction(customInputEl, async () => {
+              if((customInputEl as HTMLButtonElement).disabled)
                 return;
 
               const startTs = Date.now();
               const res = ftInfo.click();
 
-              (wrapperElem as HTMLButtonElement).disabled = true;
-              wrapperElem!.classList.add("bytm-busy");
-              wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+              (customInputEl as HTMLButtonElement).disabled = true;
+              customInputEl!.classList.add("bytm-busy");
+              customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
 
               if(res instanceof Promise)
                 await res;
 
               const finalize = () => {
-                (wrapperElem as HTMLButtonElement).disabled = false;
-                wrapperElem!.classList.remove("bytm-busy");
-                wrapperElem!.textContent = wrapperElem!.ariaLabel = wrapperElem!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                (customInputEl as HTMLButtonElement).disabled = false;
+                customInputEl!.classList.remove("bytm-busy");
+                customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
               };
 
               // artificial timeout ftw
@@ -630,7 +694,7 @@ async function addCfgMenu() {
             break;
           }
 
-          ctrlElem.appendChild(wrapperElem!);
+          ctrlElem.appendChild(customInputEl!);
         }
 
         ftConfElem.appendChild(ctrlElem);
@@ -740,7 +804,7 @@ async function addCfgMenu() {
 
   const modeItems = [] as TrKey[];
   mode === "development" && modeItems.push("dev_mode");
-  getFeatures().advancedMode && modeItems.push("advanced_mode");
+  getFeature("advancedMode") && modeItems.push("advanced_mode");
 
   if(modeItems.length > 0) {
     const modeDisplayEl = document.createElement("span");
@@ -773,8 +837,8 @@ async function addCfgMenu() {
       return;
     closeCfgMenu();
     bgElem.remove();
-    isCfgMenuAdded = false;
-    await addCfgMenu();
+    isCfgMenuMounted = false;
+    await mountCfgMenu();
     await openCfgMenu();
   });
 }
@@ -786,6 +850,7 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   if(!isCfgMenuOpen)
     return;
   isCfgMenuOpen = false;
+
   evt?.bubbles && evt.stopPropagation();
 
   if(enableScroll) {
@@ -794,25 +859,28 @@ export function closeCfgMenu(evt?: MouseEvent | KeyboardEvent, enableScroll = tr
   }
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
-  siteEvents.emit("cfgMenuClosed");
+  clearTimeout(hiddenCopiedTxtTimeout);
+  
+  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
+  setCurrentDialogId(openDialogs?.[0] ?? null);
+
+  // since this menu doesn't have a BytmDialog instance, it's undefined here
+  emitInterface("bytm:dialogClosed", undefined as unknown as BytmDialog);
+  emitInterface("bytm:dialogClosed:cfg-menu" as "bytm:dialogClosed:id", undefined as unknown as BytmDialog);
 
   if(!menuBg)
-    return;
+    return warn("Couldn't close config menu because background element couldn't be found. The config menu is considered closed but might still be open. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
 
   menuBg.querySelectorAll<HTMLElement>(".bytm-ftconf-adv-copy-hint")?.forEach((el) => el.style.display = "none");
-  clearTimeout(hiddenCopiedTxtTimeout);
 
   menuBg.style.visibility = "hidden";
   menuBg.style.display = "none";
-
-  openDialogs.splice(openDialogs.indexOf("cfg-menu"), 1);
-  setCurrentDialogId(openDialogs?.[0] ?? null);
 }
 
 /** Opens the config menu if it is closed */
 export async function openCfgMenu() {
-  if(!isCfgMenuAdded)
-    await addCfgMenu();
+  if(!isCfgMenuMounted)
+    await mountCfgMenu();
   if(isCfgMenuOpen)
     return;
   isCfgMenuOpen = true;
@@ -821,16 +889,20 @@ export async function openCfgMenu() {
   document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
   const menuBg = document.querySelector<HTMLElement>("#bytm-cfg-menu-bg");
 
-  if(!menuBg)
-    return;
-
-  menuBg.style.visibility = "visible";
-  menuBg.style.display = "block";
-
   setCurrentDialogId("cfg-menu");
   openDialogs.unshift("cfg-menu");
 
+  // since this menu doesn't have a BytmDialog instance, it's undefined here
+  emitInterface("bytm:dialogOpened", undefined as unknown as BytmDialog);
+  emitInterface("bytm:dialogOpened:cfg-menu" as "bytm:dialogOpened:id", undefined as unknown as BytmDialog);
+
   checkToggleScrollIndicator();
+
+  if(!menuBg)
+    return warn("Couldn't open config menu because background element couldn't be found. The config menu is considered open but might still be closed. In this case please reload the page. If the issue persists, please create an issue on GitHub.");
+
+  menuBg.style.visibility = "visible";
+  menuBg.style.display = "block";
 }
 
 //#region chk scroll indicator

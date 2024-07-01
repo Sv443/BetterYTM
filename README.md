@@ -27,7 +27,6 @@ All of these can be toggled and configured in the configuration menu.
   - Quickly scroll to the currently active song in the queue by clicking a button
   - Remove the tracking parameter from URLs in the share menu
   - Automatically close permanent notifications
-  - Remove the premium tab in the sidebar
 - Input / Interaction:
   - Use arrow keys to skip forward or backward by a configurable amount of time
   - Press number keys to skip to a percentage of the currently playing song
@@ -39,7 +38,7 @@ All of these can be toggled and configured in the configuration menu.
 <br><br>
 
 To toggle and configure features, after installing the userscript, click the "BetterYTM" text under the logo to open the configuration menu.  
-Alternatively or if you disabled the watermark, you can open it through the popover menu opened by clicking your avatar in the top right corner.  
+If you disabled the watermark, you can still click your avatar in the top right corner on YTM or open the left sidebar on YT to open it.  
   
 > [!NOTE]  
 > My work relies on donations, so if you like this userscript please consider [supporting development ❤️](https://github.com/sponsors/Sv443)

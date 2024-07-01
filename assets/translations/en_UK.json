@@ -1,6 +1,7 @@
 {
   "base": "en_US",
   "translations": {
-    "feature_category_behavior": "Behaviour"
+    "feature_category_behavior": "Behaviour",
+    "vote_ratio_blue_gray": "Blue and grey"
   }
 }

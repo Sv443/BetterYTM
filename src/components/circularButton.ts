@@ -1,17 +1,19 @@
-import { getResourceUrl, onInteraction } from "../utils";
-import type { ResourceKey } from "../types";
+import { getResourceUrl, onInteraction } from "../utils/index.js";
+import { createRipple } from "./ripple.js";
+import type { ResourceKey } from "../types.js";
 
-type CircularBtnOptions = (
+type CircularBtnOptions = {
+  /** Tooltip and aria-label of the button */
+  title: string;
+  /** Whether the button should have a ripple effect - defaults to true */
+  ripple?: boolean;
+} & (
   | {
     /** Resource key for the button icon */
-    resourceName: ResourceKey | "_";
-    /** Tooltip and aria-label of the button */
-    title: string;
+    resourceName: (ResourceKey & `icon-${string}`) | "_";
   }
   | {
-    src: string;
-    /** Tooltip and aria-label of the button */
-    title: string;
+    src: string | Promise<string>;
   }
 ) & (
   | {
@@ -32,6 +34,7 @@ type CircularBtnOptions = (
  */
 export async function createCircularBtn({
   title,
+  ripple = true,
   ...rest
 }: CircularBtnOptions) {
   let btnElem: HTMLElement;
@@ -56,9 +59,13 @@ export async function createCircularBtn({
 
   const imgElem = document.createElement("img");
   imgElem.classList.add("bytm-generic-btn-img");
-  imgElem.src = "src" in rest ? rest.src : await getResourceUrl(rest.resourceName);
+  imgElem.src = "src" in rest
+    ? rest.src instanceof Promise
+      ? await rest.src
+      : rest.src
+    : await getResourceUrl(rest.resourceName);
 
   btnElem.appendChild(imgElem);
 
-  return btnElem;
+  return ripple ? createRipple(btnElem) : btnElem;
 }
