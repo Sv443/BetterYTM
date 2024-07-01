@@ -374,13 +374,15 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```ts
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
->   plugin: {                                     // required
->     name: "My cool plugin",                     // required
->     namespace: "https://github.com/MyUsername", // required
->     version: "4.2.0",                           // required
->     description: {                                    // required
->       en_US: "This plugin does cool stuff",           // required
->       de_DE: "Dieses Plugin macht coole Sachen",      // (all other locales are optional)
+>   plugin: {                                         // required
+>     // The name and namespace should combine to be unique across all plugins
+>     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
+>     name: "My cool plugin",                         // required
+>     namespace: "https://www.github.com/MyUsername", // required
+>     version: "4.2.0",                               // required
+>     description: {                               // required
+>       en_US: "This plugin does cool stuff",      // required
+>       de_DE: "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
 >     iconUrl: "https://picsum.photos/128/128", // required
@@ -417,7 +419,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > // private token for authenticated function calls (don't store this persistently, as your plugin gets a new one every page load!)
 > let authToken: string | undefined;
 > 
-> // since some function calls require the token, this function can be called to get it once the plugin is fully registered
+> // since some function calls require the token, this function can be called to return it once the plugin is fully registered
 > export function getToken() {
 >   return authToken;
 > }
@@ -428,9 +430,11 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >     const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
 >     // listen for the pluginRegistered event
 >     events.on("pluginRegistered", (info) => {
->       // store the (private!) token for later use in authenticated function calls
+>       // store the private token for later use in authenticated function calls
 >       authToken = token;
 >       console.log(`${info.name} (version ${info.version}) is registered`);
+> 
+>       onRegistered();
 >     });
 >     // for other events search for "type PluginEventMap" in "src/types.ts"
 >   }
@@ -438,6 +442,21 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >     console.error("Failed to register plugin:", err);
 >   }
 > });
+> 
+> // put your plugin's logic that depends on authentication in here so it only runs after registration
+> function onRegistered() {
+>   try {
+>     // example authenticated function call:
+>     const bytmFeatureConfig = unsafeWindow.BYTM.getFeatures(getToken());
+>     if(!bytmFeatureConfig)
+>       console.error("Failed to get feature config object, the token is probably somehow invalid");
+>     else
+>       console.log("Feature config object:", bytmFeatureConfig);
+>   }
+>   catch(err) {
+>     console.error("Failed to run authenticated function call due to an underlying error:", err);
+>   }
+> }
 > ```
 > </details>
 
@@ -861,18 +880,19 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > #### getFeatures()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.getFeatures(): FeatureConfig
+> unsafeWindow.BYTM.getFeatures(token: string | undefined): FeatureConfig
 > ```
 >   
 > Description:  
 > Returns the current feature configuration object synchronously from memory.  
 > To see the structure of the object, check out the type `FeatureConfig` in the file [`src/types.ts`](src/types.ts)  
 > If features are set to be hidden using `valueHidden: true`, their value will always be `undefined` in the returned object.  
+> In the future, an intent could grant access to the hidden values, but for now, they are only accessible to BetterYTM itself.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const features = unsafeWindow.BYTM.getFeatures();
+> const features = unsafeWindow.BYTM.getFeatures(myToken);
 > console.log(`The volume slider step is currently set to ${features.volumeSliderStep}`);
 > ```
 > </details>

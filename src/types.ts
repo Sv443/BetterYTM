@@ -228,7 +228,7 @@ export type PluginDef = {
 export type PluginEventMap =
   // These are emitted on each plugin individually, with individual data:
   & {
-    /** Emitted when the plugin is registered on BYTM's side */
+    /** Emitted when the plugin is fully registered on BYTM's side and can use authenticated API calls */
     pluginRegistered: (info: PluginInfo) => void;
   }
   // These are emitted on every plugin simultaneously, with the same or similar data:
