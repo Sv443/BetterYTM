@@ -430,7 +430,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >     events.on("pluginRegistered", (info) => {
 >       // store the (private!) token for later use in authenticated function calls
 >       authToken = token;
->       console.log(`${info.name} (version ${info.version.join(".")}) is registered`);
+>       console.log(`${info.name} (version ${info.version}) is registered`);
 >     });
 >     // for other events search for "type PluginEventMap" in "src/types.ts"
 >   }
@@ -470,9 +470,8 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```ts
 > unsafeWindow.addEventListener("bytm:pluginsRegistered", () => {
 >   const pluginInfo = unsafeWindow.BYTM.getPluginInfo(myToken, "My cool plugin", "https://github.com/MyUsername");
->   if(pluginInfo) {
->     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version.join(".")}' is loaded`);
->   }
+>   if(pluginInfo)
+>     console.log(`The plugin '${pluginInfo.name}' with version '${pluginInfo.version}' is loaded`);
 >   else
 >     console.error("The plugin 'My cool plugin' is not registered");
 > });
