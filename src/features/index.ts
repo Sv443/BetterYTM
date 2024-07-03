@@ -237,7 +237,7 @@ export const featInfo = {
     type: "select",
     category: "layout",
     options: () => [
-      { value: "full", label: t("votes_format_full") },
+      { value: "long", label: t("votes_format_full") },
       { value: "short", label: t("votes_format_short") },
     ],
     default: "short",

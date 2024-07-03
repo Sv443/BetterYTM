@@ -96,6 +96,8 @@ export type VideoVotesObj = {
   timestamp: number;
 };
 
+export type NumberNotation = "short" | "long";
+
 //#region global
 
 /** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
@@ -476,7 +478,7 @@ export interface FeatureConfig {
   /** Whether to show the like/dislike ratio on the currently playing song */
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
-  showVotesFormat: "short" | "full";
+  showVotesFormat: NumberNotation;
 
   //#region volume
   /** Add a percentage label to the volume slider */
