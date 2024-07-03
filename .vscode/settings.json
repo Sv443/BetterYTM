@@ -3,7 +3,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
 
   "search.exclude": {
-    "**/BetterYTM.user.js": true,
+    "**/*.user.js": true,
+    "**/BetterYTM.css": true,
   },
   "files.associations": {
     "*.env": "dotenv",

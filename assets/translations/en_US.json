@@ -174,7 +174,7 @@
     "vote_ratio_blue_gray": "Blue and gray",
 
     "votes_format_short": "Shortened",
-    "votes_format_full": "Full number",
+    "votes_format_long": "Full number",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",

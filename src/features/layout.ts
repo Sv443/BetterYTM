@@ -6,7 +6,7 @@ import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestT
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
-import type { ResourceKey, VideoVotesObj } from "../types.js";
+import type { NumberNotation, ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 
 //#region cfg menu btns
@@ -729,33 +729,34 @@ export async function initShowVotes() {
           await siteEvents.once("watchIdChanged");
           return initShowVotes();
         }
+
         const voteObj = await fetchVideoVotes(watchId);
         if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
           return error("Couldn't fetch votes from the Return YouTube Dislike API");
-  
+
         if(getFeature("showVotes")) {
           addVoteNumbers(voteCont, voteObj);
-  
+
           siteEvents.on("watchIdChanged", async (watchId) => {
             const labelLikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.likes");
             const labelDislikes = document.querySelector<HTMLElement>("ytmusic-like-button-renderer .bytm-vote-label.dislikes");
-        
+
             if(!labelLikes || !labelDislikes)
               return error("Couldn't find vote label elements while updating like and dislike counts");
-        
+
             if(labelLikes.dataset.watchId === watchId && labelDislikes.dataset.watchId === watchId)
               return log("Vote labels already updated for this video");
-        
+
             const voteObj = await fetchVideoVotes(watchId);
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
               return error("Couldn't fetch votes from the Return YouTube Dislike API");
-        
+
             labelLikes.dataset.watchId = getWatchId() ?? "";
             labelLikes.textContent = formatVoteNumber(voteObj.likes);
-            labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
-        
+            labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
+
             labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-            labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
+            labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
             labelDislikes.dataset.watchId = getWatchId() ?? "";
           });
         }
@@ -778,7 +779,7 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
     label.textContent = String(formatVoteNumber(amount));
-    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "full"));
+    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "long"));
     label.dataset.watchId = getWatchId() ?? "";
     label.addEventListener("click", (e) => {
       e.preventDefault();
@@ -798,10 +799,10 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
 }
 
 /** Formats a number formatted based on the config or the passed {@linkcode notation} */
-function formatVoteNumber(num: number, notation = getFeature("showVotesFormat")) {
+function formatVoteNumber(num: number, notation?: NumberNotation) {
   return num.toLocaleString(
     getLocale().replace(/_/g, "-"),
-    notation === "short"
+    (notation ?? getFeature("showVotesFormat")) === "short"
       ? {
         notation: "compact",
         compactDisplay: "short",
