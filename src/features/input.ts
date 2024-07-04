@@ -282,14 +282,14 @@ export async function initAutoLike() {
       });
 
       siteEvents.on("pathChanged", (path) => {
-        if(path.match(/(\/?@|\/channel\/).+/)) {
+        if(path.match(/(\/?@|\/?channel\/)\S+/)) {
           const chanId = getCurrentChannelId();
           if(!chanId)
             return error("Couldn't extract channel ID from URL");
 
           document.querySelectorAll<HTMLElement>(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
 
-          addSelectorListener<0, "yt">("ytChannelHeader", "#channel-header-container", {
+          addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container, #page-header", {
             listener(headerCont) {
               const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container");
               if(!titleCont)
@@ -299,10 +299,9 @@ export async function initAutoLike() {
 
               const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons");
               if(buttonsCont) {
-                addSelectorListener<0, "yt">("ytChannelHeader", "#channel-header-container #other-buttons", {
-                  listener(otherBtns) {
-                    addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]);
-                  }
+                addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-subscribe-button-view-model", {
+                  listener: (otherBtns) =>
+                    addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
                 });
               }
               else if(titleCont)

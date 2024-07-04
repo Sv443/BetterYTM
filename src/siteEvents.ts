@@ -1,7 +1,7 @@
 import { NanoEmitter, error, getDomain, info } from "./utils/index.js";
 import { FeatureConfig } from "./types.js";
 import { emitInterface } from "./interface.js";
-import { addSelectorListener } from "./observers.js";
+import { addSelectorListener, globserversReady } from "./observers.js";
 
 export interface SiteEventsMap {
   //#region misc:
@@ -156,33 +156,46 @@ export async function initSiteEvents() {
         }
       });
 
-      addSelectorListener("mainPanel", "ytmusic-player#player", {
-        listener: (el) => {
-          playerFullscreenObs.observe(el, {
-            attributeFilter: ["player-ui-state"],
-          });
-        },
-      });
+      if(getDomain() === "ytm") {
+        const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+          listener: (el) => {
+            playerFullscreenObs.observe(el, {
+              attributeFilter: ["player-ui-state"],
+            });
+          },
+        });
+
+        if(globserversReady)
+          registerFullScreenObs();
+        else
+          window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
+      }
     }
 
     window.addEventListener("bytm:ready", () => {
       runIntervalChecks();
       setInterval(runIntervalChecks, 100);
 
-      addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-        listener(el) {
-          const urlRefObs = new MutationObserver(([ { target } ]) => {
-            if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
-              return;
-            const watchId = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
-            checkWatchIdChange(watchId);
-          });
+      if(getDomain() === "ytm") {
+        addSelectorListener<HTMLAnchorElement>("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+          listener(el) {
+            const urlRefObs = new MutationObserver(([ { target } ]) => {
+              if(!target || !(target as HTMLAnchorElement)?.href?.includes("/watch"))
+                return;
+              const watchId = new URL((target as HTMLAnchorElement).href).searchParams.get("v");
+              checkWatchIdChange(watchId);
+            });
 
-          urlRefObs.observe(el, {
-            attributeFilter: ["href"],
-          });
-        }
-      });
+            urlRefObs.observe(el, {
+              attributeFilter: ["href"],
+            });
+          }
+        });
+      }
+      if(getDomain() === "ytm") {
+        setInterval(checkWatchIdChange, 250);
+        checkWatchIdChange();
+      }
     }, {
       once: true,
     });
@@ -214,9 +227,9 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 function checkWatchIdChange(newId?: string | null) {
   const newWatchId = newId ?? new URL(location.href).searchParams.get("v");
   if(newWatchId && newWatchId !== lastWatchId) {
+    lastWatchId = newWatchId;
     info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
     emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-    lastWatchId = newWatchId;
   }
 }
 
