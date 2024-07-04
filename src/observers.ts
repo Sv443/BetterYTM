@@ -39,7 +39,7 @@ export type YTObserverName =
   | "ytMasthead"       // the masthead (title bar) at the top of the page
   | "ytGuide"          // the left sidebar menu
   | "ytdBrowse"        // channel pages for example
-  | "ytChannelHeader"  // header of a channel page
+  | "ytAppHeader"      // header of the page
   | "ytWatchFlexy"     // the main content of the /watch page
   | "ytWatchMetadata"; // the metadata section of the /watch page
 
@@ -55,11 +55,14 @@ const defaultObserverOptions: SelectorObserverOptions = {
 
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 export const globservers = {} as Record<ObserverName, SelectorObserver>;
+/** Whether all observers have been initialized */
+export let globserversReady = false;
 
 //#region add listener func
 
 /**
  * Interface function for adding listeners to the {@linkcode globservers}  
+ * If the observers haven't been initialized yet, the function will queue calls until the `bytm:observersReady` event is emitted
  * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
  * @param options Options for the listener
  * @template TElem The type of the element that the listener will be attached to. If set to `0`, the default type `HTMLElement` will be used.
@@ -77,7 +80,16 @@ export function addSelectorListener<
       : TElem
   >,
 ) {
-  globservers[observerName].addListener(selector, options);
+  try {
+    if(!globserversReady) {
+      window.addEventListener("bytm:observersReady", () => addSelectorListener(observerName, selector, options), { once: true });
+      return;
+    }
+    globservers[observerName].addListener(selector, options);
+  }
+  catch(err) {
+    error(`Couldn't add listener to globserver '${observerName}':`, err);
+  }
 }
 
 //#region init
@@ -280,17 +292,17 @@ export function initObservers() {
         listener: () => globservers.ytdBrowse.enable(),
       });
 
-      //#region ytChannelHeader
-      // -> header of a channel page
+      //#region ytAppHeader
+      // -> header of the page
       //    enabled by "ytdBrowse"
-      const ytChannelHeaderSelector = "#header tp-yt-app-header #channel-header";
-      globservers.ytChannelHeader = new SelectorObserver(ytChannelHeaderSelector, {
+      const ytAppHeaderSelector = "#header tp-yt-app-header";
+      globservers.ytAppHeader = new SelectorObserver(ytAppHeaderSelector, {
         ...defaultObserverOptions,
         subtree: true,
       });
 
-      globservers.ytdBrowse.addListener(ytChannelHeaderSelector, {
-        listener: () => globservers.ytChannelHeader.enable(),
+      globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
+        listener: () => globservers.ytAppHeader.enable(),
       });
 
       //#region ytWatchFlexy
@@ -336,6 +348,7 @@ export function initObservers() {
 
     //#region finalize
 
+    globserversReady = true;
     emitInterface("bytm:observersReady");
   }
   catch(err) {
