@@ -12,6 +12,8 @@ If you have any questions or need help, feel free to contact me, [see my homepag
   - [Requirements](#requirements)
   - [CLI commands](#these-are-the-cli-commands-available-after-setting-up-the-project)
   - [Extras](#extras)
+  - [Getting started](#getting-started-working-on-the-project)
+  - [Procedure for specific tasks](#procedure-for-specific-tasks)
 - [Developing a plugin that interfaces with BetterYTM](#developing-a-plugin-that-interfaces-with-betterytm)
   - [Shimming for TypeScript without errors & with autocomplete](#shimming-for-typescript-without-errors--with-autocomplete)
   - [Global functions and classes on the plugin interface](#global-functions-and-classes)
@@ -33,7 +35,8 @@ Before submitting a translation, please check on [this document](https://github.
 To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
-3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
+3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `npm run tr-format -- -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
 4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
   Please duplicate the file `README-summary.md` and call it `README-summary-languageCode_localeCode.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 5. If you want to submit a pull request with the translated file:
@@ -149,6 +152,53 @@ To edit an existing translation, please follow these steps:
 When using ViolentMonkey, after letting the command `npm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
 This makes it so the userscript automatically updates when the code changes.  
 Note: the tab needs to stay open on Firefox or the script will not update itself.
+
+<br>
+
+#### Getting started working on the project:
+After setting the project up for local development ([see above](#setting-up-the-project-for-local-development)), you can start working on the project.  
+The main files you will be working with are:  
+- [`src/index.ts`](./src/index.ts) - The main entry point for the userscript and where all features are initialized
+- [`src/interface.ts`](./src/interface.ts) - The file that contains all events and functions that are exposed to plugins
+- [`src/types.ts`](./src/types.ts) - The file that contains all types and interfaces that are used throughout the project
+- [`src/observers.ts`](./src/observers.ts) - The file that contains all mutation observers that are used to detect changes on the page
+- [`src/siteEvents.ts`](./src/siteEvents.ts) - The file that contains all site- and script-specific events that are dispatched by BetterYTM
+- [`src/tools`](./src/tools) - The folder that contains all CLI tools and utilities that are used throughout the project
+- [`src/components`](./src/components) - The folder that contains all HTML component functions for reusable UI elements
+
+<br>
+
+#### Procedure for specific tasks:
+- Adding a new feature:
+  1. Add your feature to the `FeatureConfig` type in [`src/types.ts`](./src/types.ts) (after choosing a fitting category for it)
+  2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category
+  3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
+  4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
+- Adding a new site event:
+  1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
+  2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *unconditionally* (with the exception of domain-specific events of course).  
+    Always use the function `emitSiteEvent` to dispatch the event, so it will automatically be logged and emitted to the plugin interface as well.
+- Adding something to the plugin interface:
+  - If you want to make a function globally available, simply add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the correct category.  
+    If the function should require a token, create a proxy function at the bottom of the file that checks for the token and then calls the actual function (also see the bottom of the file for examples).
+  - If you want to add something else like a class, constant or entire library (as long as its license allows it), add it to the `props` variable inside the function `initInterface` in [`src/interface.ts`](./src/interface.ts)
+- Creating a new reusable component:  
+  1. Create a new file in the `src/components` folder with a descriptive name
+  2. Add a function that takes a single object of properties as an argument (like a React component), and returns an element that extends the `HTMLElement` interface (the return value of `document.createElement()`)
+  3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
+  4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
+  5. Write some documentation for the component inside this file (`contributing.md`), under the [global functions and classes section](#global-functions-and-classes) by following the format of the other documented components.
+- Adding an asset (image, icon, stylesheet, translation file and misc. other files):
+  1. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
+  2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
+    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
+  3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
+- Adding a locale:
+  1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
+    Please make sure the alphabetical order is kept.
+  2. Add a translation file for the locale by following the instructions in the [translations section](#adding-translations-for-a-new-language)
+  3. Your locale will be immediately available in the userscript after the next build.
+
 
 <br><br><br>
 
