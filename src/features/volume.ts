@@ -158,10 +158,8 @@ function setVolSliderSize() {
   if(typeof size !== "number" || isNaN(Number(size)))
     return error("Invalid volume slider size:", size);
 
-  addStyleFromResource(
-    "css-vol_slider_size",
-    (css) => css.replace(/\/\*\s*\{WIDTH\}\s*\*\//gm, `${size}px`),
-  );
+  document.documentElement.style.setProperty("--bytm-vol-slider-size", `${size}px`);
+  addStyleFromResource("css-vol_slider_size");
 }
 
 //#region volume slider step
