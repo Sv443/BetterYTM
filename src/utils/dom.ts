@@ -134,6 +134,46 @@ export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   });
 }
 
+//#region css utils
+
+/**
+ * Adds a style element to the DOM at runtime.
+ * @param css The CSS stylesheet to add
+ * @param ref A reference string to identify the style element - defaults to a random 5-character string
+ * @param transform A function to transform the CSS before adding it to the DOM
+ */
+export async function addStyle(css: string, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
+  if(!domLoaded)
+    throw new Error("DOM has not finished loading yet");
+  const elem = addGlobalStyle(await transform(css));
+  elem.id = `bytm-style-${ref ?? randomId(5, 36)}`;
+  return elem;
+}
+
+/**
+ * Adds a global style element with the contents fetched from the specified CSS resource.  
+ * The CSS can be transformed using the provided function before being added to the DOM.
+ */
+export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
+  const css = await fetchCss(key);
+  if(css) {
+    addStyle(transform(css), key.slice(4));
+    return true;
+  }
+  return false;
+}
+
+/** Sets a global CSS variable on the &lt;document&gt; element */
+export function setGlobalCssVar(name: string, value: Stringifiable) {
+  document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
+}
+
+/** Sets multiple global CSS variables on the &lt;document&gt; element */
+export function setGlobalCssVars(vars: Record<string, Stringifiable>) {
+  for(const [name, value] of Object.entries(vars))
+    setGlobalCssVar(name, value);
+}
+
 //#region other
 
 /** Removes all child nodes of an element without invoking the slow-ish HTML parser */
@@ -150,31 +190,6 @@ export function clearNode(element: Element) {
 }
 
 /**
- * Adds a style element to the DOM at runtime.
- * @param css The CSS stylesheet to add
- * @param ref A reference string to identify the style element - defaults to a random 5-character string
- * @param transform A function to transform the CSS before adding it to the DOM
- */
-export async function addStyle(css: string, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
-  if(!domLoaded)
-    throw new Error("DOM has not finished loading yet");
-  const elem = addGlobalStyle(await transform(css));
-  elem.id = `bytm-style-${ref ?? randomId(5, 36)}`;
-  return elem;
-}
-
-/** Sets a global CSS variable on the &lt;document&gt; element */
-export function setGlobalCssVar(name: string, value: Stringifiable) {
-  document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
-}
-
-/** Sets multiple global CSS variables on the &lt;document&gt; element */
-export function setGlobalCssVars(vars: Record<string, Stringifiable>) {
-  for(const [name, value] of Object.entries(vars))
-    setGlobalCssVar(name, value);
-}
-
-/**
  * Checks if the currently playing media is a song or a video.  
  * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
  */
@@ -183,19 +198,6 @@ export function currentMediaType(): "video" | "song" {
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
   return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
-}
-
-/**
- * Adds a global style element with the contents fetched from the specified CSS resource.  
- * The CSS can be transformed using the provided function before being added to the DOM.
- */
-export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
-  const css = await fetchCss(key);
-  if(css) {
-    addStyle(transform(css), key.slice(4));
-    return true;
-  }
-  return false;
 }
 
 /** Copies the provided text to the clipboard and shows an error message for manual copying if the grant `GM.setClipboard` is not given. */
