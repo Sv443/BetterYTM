@@ -193,6 +193,8 @@ The main files you will be working with are:
   2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
     If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
   3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
+  4. When committing, make sure to ***commit the assets first, then rebuild the userscript and commit it.***  
+    This needs to be done because the build script at `src/tools/post-build.ts` will use the last commit hash to create version-independent URLs for the assets that will continue to work in the future, instead of pointing to an ever-changing branch.
 - Adding a locale:
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.
