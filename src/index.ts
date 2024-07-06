@@ -120,6 +120,7 @@ async function onDomLoad() {
   document.body.classList.add(`bytm-dom-${domain}`);
 
   try {
+    initGlobalCssVars();
     initObservers();
 
     await Promise.allSettled([
@@ -276,12 +277,22 @@ async function onDomLoad() {
   }
 }
 
-//#region insert css bundle
+//#region css
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
 async function insertGlobalStyle() {
   if(!await addStyleFromResource("css-bundle"))
     error("Couldn't add global CSS bundle due to an error");
+}
+
+/** Initializes global CSS variables */
+function initGlobalCssVars() {
+  const applyVars = () => {
+    document.documentElement.style.setProperty("--bytm-viewport-height", `${window.innerHeight}px`);
+    document.documentElement.style.setProperty("--bytm-viewport-width", `${window.innerWidth}px`);
+  };
+  applyVars();
+  window.addEventListener("resize", applyVars);
 }
 
 //#region dev menu cmds
