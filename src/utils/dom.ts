@@ -155,11 +155,11 @@ export function clearNode(element: Element) {
  * @param ref A reference string to identify the style element - defaults to a random 5-character string
  * @param transform A function to transform the CSS before adding it to the DOM
  */
-export function addStyle(css: string, ref?: string, transform: (css: string) => string = (c) => c) {
+export async function addStyle(css: string, ref?: string, transform: (css: string) => string | Promise<string> = (c) => c) {
   if(!domLoaded)
     throw new Error("DOM has not finished loading yet");
-  const elem = addGlobalStyle(transform(css));
-  elem.id = `bytm-global-style-${ref ?? randomId(5, 36)}`;
+  const elem = addGlobalStyle(await transform(css));
+  elem.id = `bytm-style-${ref ?? randomId(5, 36)}`;
   return elem;
 }
 
