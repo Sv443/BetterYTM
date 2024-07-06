@@ -14,3 +14,10 @@ ytmusic-responsive-list-item-renderer div.left-items:not(a.bytm-anchor > div.lef
 ytmusic-tab-renderer #automix-contents .bytm-queue-btn-container {
   padding-right: 13px;
 }
+
+/* Fix toast container rendering over the player bar buttons */
+:root body ytmusic-app yt-notification-action-renderer tp-yt-paper-toast#toast,
+:root body ytmusic-app yt-notification-text-renderer tp-yt-paper-toast#toast
+{
+  top: calc(var(--bytm-viewport-height, 1200px) + 150px);
+}
