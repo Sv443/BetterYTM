@@ -163,6 +163,17 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
   return elem;
 }
 
+/** Sets a global CSS variable on the &lt;document&gt; element */
+export function setGlobalCssVar(name: string, value: Stringifiable) {
+  document.documentElement.style.setProperty(name, String(value));
+}
+
+/** Sets multiple global CSS variables on the &lt;document&gt; element */
+export function setGlobalCssVars(vars: Record<string, Stringifiable>) {
+  for(const [name, value] of Object.entries(vars))
+    setGlobalCssVar(name, value);
+}
+
 /**
  * Checks if the currently playing media is a song or a video.  
  * This function should only be called after awaiting {@linkcode waitVideoElementReady}!

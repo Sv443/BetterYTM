@@ -1,6 +1,6 @@
 import { addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
-import { addStyleFromResource, error, log, resourceAsString, t, waitVideoElementReady } from "../utils/index.js";
+import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, t, waitVideoElementReady } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import "./volume.css";
@@ -158,7 +158,7 @@ function setVolSliderSize() {
   if(typeof size !== "number" || isNaN(Number(size)))
     return error("Invalid volume slider size:", size);
 
-  document.documentElement.style.setProperty("--bytm-vol-slider-size", `${size}px`);
+  setGlobalCssVar("--bytm-vol-slider-size", `${size}px`);
   addStyleFromResource("css-vol_slider_size");
 }
 

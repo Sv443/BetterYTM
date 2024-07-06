@@ -1,5 +1,5 @@
 import { compress, decompress, pauseFor, type Stringifiable } from "@sv443-network/userutils";
-import { addStyleFromResource, domLoaded, warn } from "./utils/index.js";
+import { addStyleFromResource, domLoaded, setGlobalCssVars, warn } from "./utils/index.js";
 import { clearConfig, fixCfgKeys, getFeatures, initConfig, setFeatures } from "./config.js";
 import { buildNumber, compressionFormat, defaultLogLevel, mode, scriptInfo } from "./constants.js";
 import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTranslations, setLocale } from "./utils/index.js";
@@ -288,8 +288,12 @@ async function insertGlobalStyle() {
 /** Initializes global CSS variables */
 function initGlobalCssVars() {
   const applyVars = () => {
-    document.documentElement.style.setProperty("--bytm-viewport-height", `${window.innerHeight}px`);
-    document.documentElement.style.setProperty("--bytm-viewport-width", `${window.innerWidth}px`);
+    setGlobalCssVars({
+      "--bytm-inner-height": `${window.innerHeight}px`,
+      "--bytm-outer-height": `${window.outerHeight}px`,
+      "--bytm-inner-width": `${window.innerWidth}px`,
+      "--bytm-outer-width": `${window.outerWidth}px`,
+    });
   };
   applyVars();
   window.addEventListener("resize", applyVars);
