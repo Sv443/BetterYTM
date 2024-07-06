@@ -158,7 +158,7 @@ function setVolSliderSize() {
   if(typeof size !== "number" || isNaN(Number(size)))
     return error("Invalid volume slider size:", size);
 
-  setGlobalCssVar("--bytm-vol-slider-size", `${size}px`);
+  setGlobalCssVar("vol-slider-size", `${size}px`);
   addStyleFromResource("css-vol_slider_size");
 }
 

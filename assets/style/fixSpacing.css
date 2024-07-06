@@ -19,5 +19,5 @@ ytmusic-tab-renderer #automix-contents .bytm-queue-btn-container {
 :root body ytmusic-app yt-notification-action-renderer tp-yt-paper-toast#toast,
 :root body ytmusic-app yt-notification-text-renderer tp-yt-paper-toast#toast
 {
-  top: calc(var(--bytm-inner-height, 1200px) + 150px);
+  top: calc(var(--bytm-global-inner-height, 1200px) + 150px);
 }

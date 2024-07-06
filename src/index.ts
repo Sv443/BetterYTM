@@ -31,7 +31,7 @@ import {
   initVersionCheck,
 } from "./features/index.js";
 
-//#region console watermark
+//#region cns. watermark
 
 {
   // console watermark with sexy gradient
@@ -43,7 +43,7 @@ import {
     `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`,
     `${styleCommon} background-color: #333; padding-left: 8px; padding-right: 8px;`,
     "color: #fff; font-size: 1.2rem;",
-    "padding: initial;",
+    "padding: initial; font-size: 0.9rem;"
   );
   console.log([
     "Powered by:",
@@ -287,16 +287,15 @@ async function insertGlobalStyle() {
 
 /** Initializes global CSS variables */
 function initGlobalCssVars() {
-  const applyVars = () => {
-    setGlobalCssVars({
-      "--bytm-inner-height": `${window.innerHeight}px`,
-      "--bytm-outer-height": `${window.outerHeight}px`,
-      "--bytm-inner-width": `${window.innerWidth}px`,
-      "--bytm-outer-width": `${window.outerWidth}px`,
-    });
-  };
-  applyVars();
+  const applyVars = () => setGlobalCssVars({
+    "inner-height": `${window.innerHeight}px`,
+    "outer-height": `${window.outerHeight}px`,
+    "inner-width": `${window.innerWidth}px`,
+    "outer-width": `${window.outerWidth}px`,
+  });
+
   window.addEventListener("resize", applyVars);
+  applyVars();
 }
 
 //#region dev menu cmds
