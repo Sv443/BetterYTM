@@ -165,7 +165,7 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
 
 /** Sets a global CSS variable on the &lt;document&gt; element */
 export function setGlobalCssVar(name: string, value: Stringifiable) {
-  document.documentElement.style.setProperty(name, String(value));
+  document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
 }
 
 /** Sets multiple global CSS variables on the &lt;document&gt; element */
