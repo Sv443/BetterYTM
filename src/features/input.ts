@@ -192,8 +192,9 @@ export async function initAutoLike() {
     if(getDomain() === "ytm") {
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("songTitleChanged", () => {
+        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
         timeout && clearTimeout(timeout);
-        timeout = setTimeout(() => {
+        const ytmTryAutoLike = () => {
           const artistEls = document.querySelectorAll<HTMLAnchorElement>("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
           const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string") as string[];
 
@@ -219,7 +220,9 @@ export async function initAutoLike() {
             });
             log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
           }
-        }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
+        };
+        timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
+        siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
       });
 
       siteEvents.on("pathChanged", (path) => {
@@ -252,10 +255,11 @@ export async function initAutoLike() {
     else if(getDomain() === "yt") {
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("watchIdChanged", () => {
+        const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
         timeout && clearTimeout(timeout);
         if(!location.pathname.startsWith("/watch"))
           return;
-        timeout = setTimeout(() => {
+        const ytTryAutoLike = () => {
           addSelectorListener<HTMLAnchorElement, "yt">("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
             listener(chanElem) {
               const chanElemId = chanElem.href.split("/").pop()?.split("/")[0] ?? null;
@@ -278,7 +282,9 @@ export async function initAutoLike() {
               });
             }
           });
-        }, (getFeature("autoLikeTimeout") ?? 5) * 1000);
+        };
+        siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
+        timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
       });
 
       siteEvents.on("pathChanged", (path) => {
