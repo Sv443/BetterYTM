@@ -27,7 +27,7 @@ export type InterfaceEvents = {
   "bytm:configReady": undefined;
   /** Emitted when the lyrics cache has been loaded */
   "bytm:lyricsCacheReady": undefined;
-  /** Emitted whenever the locale is changed */
+  /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
   /**
    * When this is emitted, this is your call to register your plugin using `unsafeWindow.BYTM.registerPlugin()`  
@@ -394,7 +394,7 @@ export function registerPlugin(def: PluginDef): PluginRegisterResult {
 export function resolveToken(token: string | undefined): string | undefined {
   return typeof token === "string" && token.length > 0
     ? [...registeredPluginTokens.entries()]
-      .find(([, t]) => token === t)?.[0] ?? undefined
+      .find(([k, t]) => registeredPlugins.has(k) && token === t)?.[0] ?? undefined
     : undefined;
 }
 
