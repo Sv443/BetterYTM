@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 276 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `205/276` (74.3%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `276` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `205/276` (74.3%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `205/276` (74.3%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `205/276` (74.3%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `205/276` (74.3%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `205/276` (74.3%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `205/276` (74.3%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 278 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `203/278` (73%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `278` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `203/278` (73%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `203/278` (73%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `203/278` (73%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `203/278` (73%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `203/278` (73%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `203/278` (73%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -68,6 +68,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -123,7 +127,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -146,6 +150,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -201,7 +209,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -224,6 +232,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -279,7 +291,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -302,6 +314,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -357,7 +373,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -380,6 +396,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -435,7 +455,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -458,6 +478,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |
@@ -513,7 +537,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 71 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 75 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -536,6 +560,10 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `remove_entry` | `Remove this entry` |
 | `edit_entry` | `Edit this entry` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
+| `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
+| `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
+| `hotkey_key_none` | `No hotkey selected` |
+| `feature_help_button_tooltip` | `Click to get more information about the following feature: "%1"` |
 | `auto_like_channels_dialog_title` | `Auto-liked Channels` |
 | `auto_like_channels_dialog_desc` | `Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.` |
 | `auto_like` | `Auto-like` |

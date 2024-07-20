@@ -6,6 +6,8 @@ import "./hotkeyInput.css";
 interface HotkeyInputProps {
   initialValue?: HotkeyObj;
   onChange: (hotkey: HotkeyObj) => void;
+  /** Function that returns the title and aria-label for the input element, given the hotkey value */
+  createTitle?: (value: string) => string;
 }
 
 let otherHotkeyInputActive = false;
@@ -13,9 +15,12 @@ let otherHotkeyInputActive = false;
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
 
 /** Creates a hotkey input element */
-export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps): HTMLElement {
+export function createHotkeyInput({ initialValue, onChange, createTitle }: HotkeyInputProps): HTMLElement {
   const initialHotkey: HotkeyObj | undefined = initialValue;
   let currentHotkey: HotkeyObj | undefined;
+
+  if(!createTitle)
+    createTitle = (value) => value;
 
   const wrapperElem = document.createElement("div");
   wrapperElem.classList.add("bytm-hotkey-wrapper");
@@ -23,19 +28,19 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   const infoElem = document.createElement("span");
   infoElem.classList.add("bytm-hotkey-info");
 
-  const inputElem = document.createElement("input");
-  inputElem.type = "button";
+  const inputElem = document.createElement("button");
+  inputElem.role = "button";
   inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
   inputElem.dataset.state = "inactive";
-  inputElem.value = initialValue?.code ?? t("hotkey_input_click_to_change");
-  inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
+  inputElem.innerText = initialValue?.code ?? t("hotkey_input_click_to_change");
+  inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
 
   const resetElem = document.createElement("span");
   resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
   resetElem.role = "button";
   resetElem.tabIndex = 0;
   resetElem.textContent = `(${t("reset")})`;
-  resetElem.ariaLabel = resetElem.title = t("reset");
+  resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
 
   const deactivate = () => {
     if(!otherHotkeyInputActive)
@@ -43,9 +48,9 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     emitSiteEvent("hotkeyInputActive", false);
     otherHotkeyInputActive = false;
     const curHk = currentHotkey ?? initialValue;
-    inputElem.value = curHk?.code ?? t("hotkey_input_click_to_change");
+    inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
-    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
     infoElem.innerHTML = curHk ? getHotkeyInfoHtml(curHk) : "";
   };
 
@@ -54,7 +59,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
       return;
     emitSiteEvent("hotkeyInputActive", true);
     otherHotkeyInputActive = true;
-    inputElem.value = "< ... >";
+    inputElem.innerText = "< ... >";
     inputElem.dataset.state = "active";
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
   };
@@ -66,7 +71,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     onChange(initialValue!);
     currentHotkey = initialValue!;
     deactivate();
-    inputElem.value = initialValue!.code;
+    inputElem.innerText = initialValue!.code;
     infoElem.innerHTML = getHotkeyInfoHtml(initialValue!);
     resetElem.classList.add("bytm-hidden");
   };
@@ -93,7 +98,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
       alt: e.altKey,
     } satisfies HotkeyObj;
 
-    inputElem.value = hotkey.code;
+    inputElem.innerText = hotkey.code;
     inputElem.dataset.state = "inactive";
     infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
@@ -137,7 +142,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
     else
       resetElem.classList.add("bytm-hidden");
 
-    inputElem.value = hotkey.code;
+    inputElem.innerText = hotkey.code;
     inputElem.dataset.state = "inactive";
     infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
   });
@@ -164,6 +169,7 @@ export function createHotkeyInput({ initialValue, onChange }: HotkeyInputProps):
   return wrapperElem;
 }
 
+/** Returns HTML for the hotkey modifier keys info element */
 function getHotkeyInfoHtml(hotkey: HotkeyObj) {
   const modifiers = [] as string[];
   hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
@@ -185,4 +191,19 @@ function getOS() {
   if(navigator.userAgent.match(/mac(\s?os|intel)/i))
     return "mac";
   return "other";
+}
+
+/** Converts a hotkey object to a string */
+function hotkeyToString(hotkey: HotkeyObj | undefined) {
+  if(!hotkey)
+    return t("hotkey_key_none");
+  let str = "";
+  if(hotkey.ctrl)
+    str += `${t("hotkey_key_ctrl")}+`;
+  if(hotkey.shift)
+    str += `${t("hotkey_key_shift")}+`;
+  if(hotkey.alt)
+    str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+  str += hotkey.code;
+  return str;
 }

@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "Du hast Einstellungen geändert, die die Daten im Songtext-Cache beeinflussen, was Songtext-Suchen kaputt macht.\nMöchtest du den Cache jetzt löschen?",
 
     "hotkey_input_click_to_change": "Zum Ändern klicken",
-    "hotkey_input_click_to_change_tooltip": "Klicke, dann drücke die gewünschte Tastenkombination",
     "hotkey_input_click_to_cancel_tooltip": "Klicke, um abzubrechen",
     "hotkey_key_ctrl": "Strg",
     "hotkey_key_shift": "Shift",
@@ -88,7 +87,6 @@
     "open_config_menu_tooltip": "Klicke, um das Einstellungsmenü zu öffnen",
     "open_changelog": "Änderungsprotokoll",
     "open_changelog_tooltip": "Klicke, um das Änderungsprotokoll zu öffnen",
-    "feature_help_button_tooltip": "Klicke, um mehr Informationen über diese Funktion zu erhalten",
     "welcome_text_line_1": "Vielen Dank für die Installation!",
     "welcome_text_line_2": "Ich hoffe, du hast genauso viel Spaß mit %1 wie ich beim Erstellen hatte 😃",
     "welcome_text_line_3": "Wenn dir %1 gefällt, hinterlasse bitte eine Bewertung auf %2GreasyFork%3 oder %4OpenUserJS%5",

@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "Vous avez modifié des paramètres qui affectent les données dans le cache des paroles, ce qui casse les recherches d'URL de paroles.\nVoulez-vous vider le cache maintenant?",
 
     "hotkey_input_click_to_change": "Cliquez pour changer",
-    "hotkey_input_click_to_change_tooltip": "Cliquez, puis appuyez sur la combinaison de touches souhaitée",
     "hotkey_input_click_to_cancel_tooltip": "Cliquez pour annuler",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Maj",
@@ -88,7 +87,6 @@
     "open_config_menu_tooltip": "Cliquez pour ouvrir le menu de configuration",
     "open_changelog": "Historique des modifications",
     "open_changelog_tooltip": "Cliquez pour ouvrir l'historique des modifications",
-    "feature_help_button_tooltip": "Cliquez pour obtenir plus d'informations sur cette fonctionnalité",
     "welcome_text_line_1": "Merci d'avoir installé!",
     "welcome_text_line_2": "J'espère que vous apprécierez d'utiliser %1 autant que j'ai apprécié de le faire 😃",
     "welcome_text_line_3": "Si vous aimez %1, laissez une note sur %2GreasyFork%3 ou %4OpenUserJS%5",

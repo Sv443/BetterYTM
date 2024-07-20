@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "您已更改了影响歌词缓存中数据的设置，这会破坏歌词 URL 查找。\n您是否要现在清除缓存？",
 
     "hotkey_input_click_to_change": "点击更改",
-    "hotkey_input_click_to_change_tooltip": "点击，然后按下所需的键组合",
     "hotkey_input_click_to_cancel_tooltip": "点击取消",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
@@ -88,7 +87,6 @@
     "open_config_menu_tooltip": "点击打开配置菜单",
     "open_changelog": "更新日志",
     "open_changelog_tooltip": "点击打开更新日志",
-    "feature_help_button_tooltip": "点击获取有关此功能的更多信息",
     "welcome_text_line_1": "感谢您安装！",
     "welcome_text_line_2": "我希望您使用 %1 的过程中能够愉快 😃",
     "welcome_text_line_3": "如果您喜欢 %1，请在 %2GreasyFork%3 或 %4OpenUserJS%5 上留下评分",
