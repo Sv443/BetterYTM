@@ -7,11 +7,11 @@
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"nodemon --exec pnpm run build-dev\" \"pnpm run serve\"",
+    "dev": "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
     "serve": "pnpm run node-ts ./src/tools/serve.ts",
     "lint": "tsc --noEmit && eslint .",
     "build": "rollup -c",
-    "build-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
+    "build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
     "build-preview": "rollup -c --config-mode development --config-host github --config-branch develop",
     "preview": "pnpm run build-preview && pnpm run serve --auto-exit=3",
     "build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
