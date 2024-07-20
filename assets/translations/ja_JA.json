@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "歌詞キャッシュに影響を与える設定を変更しました。これにより歌詞 URL の検索が壊れます。\nキャッシュをクリアしますか？",
 
     "hotkey_input_click_to_change": "クリックして変更",
-    "hotkey_input_click_to_change_tooltip": "クリックしてホットキーを変更する",
     "hotkey_input_click_to_cancel_tooltip": "クリックしてキャンセル",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
@@ -88,7 +87,6 @@
     "open_config_menu_tooltip": "クリックして構成メニューを開く",
     "open_changelog": "更新履歴",
     "open_changelog_tooltip": "クリックして更新履歴を開く",
-    "feature_help_button_tooltip": "クリックしてこの機能についての詳細情報を取得する",
     "welcome_text_line_1": "ようこそ！",
     "welcome_text_line_2": "%1 を使っていただきありがとうございます 😃",
     "welcome_text_line_3": "もし %1 を気に入っていただけたら、%2GreasyFork%3 か %4OpenUserJS%5 で評価をお願いします",

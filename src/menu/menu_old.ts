@@ -410,7 +410,6 @@ async function mountCfgMenu() {
         }
 
         const textElem = document.createElement("span");
-        textElem.tabIndex = 0;
         textElem.textContent = t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;
@@ -436,7 +435,7 @@ async function mountCfgMenu() {
           if(helpElemImgHtml) {
             helpElem = document.createElement("div");
             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip");
+            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
             helpElem.role = "button";
             helpElem.tabIndex = 0;
             helpElem.innerHTML = helpElemImgHtml;
@@ -542,6 +541,7 @@ async function mountCfgMenu() {
           const inputElem = document.createElement(inputTag) as HTMLInputElement;
           inputElem.classList.add("bytm-ftconf-input");
           inputElem.id = inputElemId;
+          inputElem.ariaLabel = t(`feature_desc_${featKey}`);
           if(inputType)
             inputElem.type = inputType;
 
@@ -649,6 +649,7 @@ async function mountCfgMenu() {
             customInputEl = createHotkeyInput({
               initialValue: typeof initialVal === "object" ? initialVal as HotkeyObj : undefined,
               onChange: (hotkey) => confChanged(featKey as keyof FeatureConfig, initialVal, hotkey),
+              createTitle: (value: string) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc_${featKey}`), value),
             });
             break;
           case "toggle":
@@ -663,7 +664,8 @@ async function mountCfgMenu() {
             customInputEl = document.createElement("button");
             customInputEl.classList.add("bytm-btn");
             customInputEl.tabIndex = 0;
-            customInputEl.textContent = customInputEl.ariaLabel = customInputEl.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+            customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+            customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
 
             onInteraction(customInputEl, async () => {
               if((customInputEl as HTMLButtonElement).disabled)
@@ -693,6 +695,9 @@ async function mountCfgMenu() {
             });
             break;
           }
+
+          if(customInputEl && !customInputEl.hasAttribute("aria-label"))
+            customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
 
           ctrlElem.appendChild(customInputEl!);
         }

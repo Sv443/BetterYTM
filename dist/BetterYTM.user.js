@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/logo/logo_dev_48.png
+// @icon              http://localhost:8710/assets/images/logo/logo_dev_48.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,51 +33,51 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/d8edad1a/assets/translations/zh_CN.json
+// @resource          css-bundle              http://localhost:8710/dist/BetterYTM.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-above_queue_btns    http://localhost:8710/assets/style/aboveQueueBtns.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-fix_hdr             http://localhost:8710/assets/style/fixHDR.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-show_votes          http://localhost:8710/assets/style/showVotes.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          css-vol_slider_size     http://localhost:8710/assets/style/volSliderSize.css?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          doc-changelog           http://localhost:8710/changelog.md?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-auto_like_enabled  http://localhost:8710/assets/icons/auto_like_enabled.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-auto_like          http://localhost:8710/assets/icons/auto_like.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-clear_list         http://localhost:8710/assets/icons/clear_list.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-copy               http://localhost:8710/assets/icons/copy.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-edit               http://localhost:8710/assets/icons/edit.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-globe_small        http://localhost:8710/assets/icons/globe_small.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-image_filled       http://localhost:8710/assets/icons/image_filled.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-image              http://localhost:8710/assets/icons/image.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-link               http://localhost:8710/assets/icons/link.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-reload             http://localhost:8710/assets/icons/refresh.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          icon-upload             http://localhost:8710/assets/icons/upload.svg?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-close               http://localhost:8710/assets/images/close.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-logo_dev            http://localhost:8710/assets/images/logo/logo_dev_48.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
+// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=679ce956-1cfe-4651-827c-93e8c765dbaf
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
@@ -191,7 +191,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d8edad1a";
+const buildNumberRaw = "77eb58e8";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1033,31 +1033,43 @@ function initSiteEvents() {
                         lastFullscreen = isFullscreen;
                     }
                 });
-                addSelectorListener("mainPanel", "ytmusic-player#player", {
-                    listener: (el) => {
-                        playerFullscreenObs.observe(el, {
-                            attributeFilter: ["player-ui-state"],
-                        });
-                    },
-                });
+                if (getDomain() === "ytm") {
+                    const registerFullScreenObs = () => addSelectorListener("mainPanel", "ytmusic-player#player", {
+                        listener: (el) => {
+                            playerFullscreenObs.observe(el, {
+                                attributeFilter: ["player-ui-state"],
+                            });
+                        },
+                    });
+                    if (globserversReady)
+                        registerFullScreenObs();
+                    else
+                        window.addEventListener("bytm:observersReady", registerFullScreenObs, { once: true });
+                }
             }
             window.addEventListener("bytm:ready", () => {
                 runIntervalChecks();
                 setInterval(runIntervalChecks, 100);
-                addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
-                    listener(el) {
-                        const urlRefObs = new MutationObserver(([{ target }]) => {
-                            var _a;
-                            if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
-                                return;
-                            const watchId = new URL(target.href).searchParams.get("v");
-                            checkWatchIdChange(watchId);
-                        });
-                        urlRefObs.observe(el, {
-                            attributeFilter: ["href"],
-                        });
-                    }
-                });
+                if (getDomain() === "ytm") {
+                    addSelectorListener("mainPanel", "ytmusic-player #song-video #movie_player .ytp-title-text > a", {
+                        listener(el) {
+                            const urlRefObs = new MutationObserver(([{ target }]) => {
+                                var _a;
+                                if (!target || !((_a = target === null || target === void 0 ? void 0 : target.href) === null || _a === void 0 ? void 0 : _a.includes("/watch")))
+                                    return;
+                                const watchId = new URL(target.href).searchParams.get("v");
+                                checkWatchIdChange(watchId);
+                            });
+                            urlRefObs.observe(el, {
+                                attributeFilter: ["href"],
+                            });
+                        }
+                    });
+                }
+                if (getDomain() === "ytm") {
+                    setInterval(checkWatchIdChange, 250);
+                    checkWatchIdChange();
+                }
             }, {
                 once: true,
             });
@@ -1086,9 +1098,9 @@ function emitSiteEvent(key, ...args) {
 function checkWatchIdChange(newId) {
     const newWatchId = newId !== null && newId !== void 0 ? newId : new URL(location.href).searchParams.get("v");
     if (newWatchId && newWatchId !== lastWatchId) {
+        lastWatchId = newWatchId;
         info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
         emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
-        lastWatchId = newWatchId;
     }
 }
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
@@ -1102,26 +1114,28 @@ function runIntervalChecks() {
 }let otherHotkeyInputActive = false;
 const reservedKeys = ["ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight", "AltLeft", "AltRight", "Meta", "Tab", "Space", " "];
 /** Creates a hotkey input element */
-function createHotkeyInput({ initialValue, onChange }) {
+function createHotkeyInput({ initialValue, onChange, createTitle }) {
     var _a;
     const initialHotkey = initialValue;
     let currentHotkey;
+    if (!createTitle)
+        createTitle = (value) => value;
     const wrapperElem = document.createElement("div");
     wrapperElem.classList.add("bytm-hotkey-wrapper");
     const infoElem = document.createElement("span");
     infoElem.classList.add("bytm-hotkey-info");
-    const inputElem = document.createElement("input");
-    inputElem.type = "button";
+    const inputElem = document.createElement("button");
+    inputElem.role = "button";
     inputElem.classList.add("bytm-ftconf-input", "bytm-hotkey-input", "bytm-btn");
     inputElem.dataset.state = "inactive";
-    inputElem.value = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
-    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
+    inputElem.innerText = (_a = initialValue === null || initialValue === void 0 ? void 0 : initialValue.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+    inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
     const resetElem = document.createElement("span");
     resetElem.classList.add("bytm-hotkey-reset", "bytm-link", "bytm-hidden");
     resetElem.role = "button";
     resetElem.tabIndex = 0;
     resetElem.textContent = `(${t("reset")})`;
-    resetElem.ariaLabel = resetElem.title = t("reset");
+    resetElem.ariaLabel = resetElem.title = t("hotkey_input_click_to_reset_tooltip");
     const deactivate = () => {
         var _a;
         if (!otherHotkeyInputActive)
@@ -1129,9 +1143,9 @@ function createHotkeyInput({ initialValue, onChange }) {
         emitSiteEvent("hotkeyInputActive", false);
         otherHotkeyInputActive = false;
         const curHk = currentHotkey !== null && currentHotkey !== void 0 ? currentHotkey : initialValue;
-        inputElem.value = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
+        inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
         inputElem.dataset.state = "inactive";
-        inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_change_tooltip");
+        inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
         infoElem.innerHTML = curHk ? getHotkeyInfoHtml(curHk) : "";
     };
     const activate = () => {
@@ -1139,7 +1153,7 @@ function createHotkeyInput({ initialValue, onChange }) {
             return;
         emitSiteEvent("hotkeyInputActive", true);
         otherHotkeyInputActive = true;
-        inputElem.value = "< ... >";
+        inputElem.innerText = "< ... >";
         inputElem.dataset.state = "active";
         inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
     };
@@ -1149,7 +1163,7 @@ function createHotkeyInput({ initialValue, onChange }) {
         onChange(initialValue);
         currentHotkey = initialValue;
         deactivate();
-        inputElem.value = initialValue.code;
+        inputElem.innerText = initialValue.code;
         infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
         resetElem.classList.add("bytm-hidden");
     };
@@ -1170,7 +1184,7 @@ function createHotkeyInput({ initialValue, onChange }) {
             ctrl: e.ctrlKey,
             alt: e.altKey,
         };
-        inputElem.value = hotkey.code;
+        inputElem.innerText = hotkey.code;
         inputElem.dataset.state = "inactive";
         infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
         inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
@@ -1206,7 +1220,7 @@ function createHotkeyInput({ initialValue, onChange }) {
         }
         else
             resetElem.classList.add("bytm-hidden");
-        inputElem.value = hotkey.code;
+        inputElem.innerText = hotkey.code;
         inputElem.dataset.state = "inactive";
         infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
     });
@@ -1228,6 +1242,7 @@ function createHotkeyInput({ initialValue, onChange }) {
     wrapperElem.appendChild(inputElem);
     return wrapperElem;
 }
+/** Returns HTML for the hotkey modifier keys info element */
 function getHotkeyInfoHtml(hotkey) {
     const modifiers = [];
     hotkey.ctrl && modifiers.push(`<kbd class="bytm-kbd">${t("hotkey_key_ctrl")}</kbd>`);
@@ -1248,6 +1263,20 @@ function getOS() {
     if (navigator.userAgent.match(/mac(\s?os|intel)/i))
         return "mac";
     return "other";
+}
+/** Converts a hotkey object to a string */
+function hotkeyToString(hotkey) {
+    if (!hotkey)
+        return t("hotkey_key_none");
+    let str = "";
+    if (hotkey.ctrl)
+        str += `${t("hotkey_key_ctrl")}+`;
+    if (hotkey.shift)
+        str += `${t("hotkey_key_shift")}+`;
+    if (hotkey.alt)
+        str += `${getOS() === "mac" ? t("hotkey_key_mac_option") : t("hotkey_key_alt")}+`;
+    str += hotkey.code;
+    return str;
 }/**
  * Creates a generic, circular, long button element with an icon and text.
  * Has classes for the enabled and disabled states for easier styling.
@@ -2416,7 +2445,6 @@ function mountCfgMenu() {
                         featLeftSideElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
                     }
                     const textElem = document.createElement("span");
-                    textElem.tabIndex = 0;
                     textElem.textContent = t(`feature_desc_${featKey}`);
                     let adornmentElem;
                     const adornContent = (_b = ftInfo.textAdornment) === null || _b === void 0 ? void 0 : _b.call(ftInfo);
@@ -2437,7 +2465,7 @@ function mountCfgMenu() {
                         if (helpElemImgHtml) {
                             helpElem = document.createElement("div");
                             helpElem.classList.add("bytm-ftitem-help-btn", "bytm-generic-btn");
-                            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip");
+                            helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
                             helpElem.role = "button";
                             helpElem.tabIndex = 0;
                             helpElem.innerHTML = helpElemImgHtml;
@@ -2524,6 +2552,7 @@ function mountCfgMenu() {
                         const inputElem = document.createElement(inputTag);
                         inputElem.classList.add("bytm-ftconf-input");
                         inputElem.id = inputElemId;
+                        inputElem.ariaLabel = t(`feature_desc_${featKey}`);
                         if (inputType)
                             inputElem.type = inputType;
                         if ("min" in ftInfo && typeof ftInfo.min !== "undefined")
@@ -2616,6 +2645,7 @@ function mountCfgMenu() {
                                 customInputEl = createHotkeyInput({
                                     initialValue: typeof initialVal === "object" ? initialVal : undefined,
                                     onChange: (hotkey) => confChanged(featKey, initialVal, hotkey),
+                                    createTitle: (value) => t("hotkey_input_click_to_change_tooltip", t(`feature_desc_${featKey}`), value),
                                 });
                                 break;
                             case "toggle":
@@ -2630,7 +2660,8 @@ function mountCfgMenu() {
                                 customInputEl = document.createElement("button");
                                 customInputEl.classList.add("bytm-btn");
                                 customInputEl.tabIndex = 0;
-                                customInputEl.textContent = customInputEl.ariaLabel = customInputEl.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                customInputEl.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                                customInputEl.ariaLabel = customInputEl.title = t(`feature_desc_${featKey}`);
                                 onInteraction(customInputEl, () => __awaiter(this, void 0, void 0, function* () {
                                     if (customInputEl.disabled)
                                         return;
@@ -2654,6 +2685,8 @@ function mountCfgMenu() {
                                 }));
                                 break;
                         }
+                        if (customInputEl && !customInputEl.hasAttribute("aria-label"))
+                            customInputEl.ariaLabel = t(`feature_desc_${featKey}`);
                         ctrlElem.appendChild(customInputEl);
                     }
                     ftConfElem.appendChild(ctrlElem);
@@ -3793,9 +3826,9 @@ function initShowVotes() {
                                     return error("Couldn't fetch votes from the Return YouTube Dislike API");
                                 labelLikes.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
                                 labelLikes.textContent = formatVoteNumber(voteObj.likes);
-                                labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "full"));
+                                labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
                                 labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-                                labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "full"));
+                                labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
                                 labelDislikes.dataset.watchId = (_b = getWatchId()) !== null && _b !== void 0 ? _b : "";
                             }));
                         }
@@ -3818,7 +3851,7 @@ function addVoteNumbers(voteCont, voteObj) {
         const label = document.createElement("span");
         label.classList.add("bytm-vote-label", "bytm-no-select", type);
         label.textContent = String(formatVoteNumber(amount));
-        label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "full"));
+        label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "long"));
         label.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
         label.addEventListener("click", (e) => {
             var _a;
@@ -3835,8 +3868,8 @@ function addVoteNumbers(voteCont, voteObj) {
     dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
 }
 /** Formats a number formatted based on the config or the passed {@linkcode notation} */
-function formatVoteNumber(num, notation = getFeature("showVotesFormat")) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), notation === "short"
+function formatVoteNumber(num, notation) {
+    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("showVotesFormat")) === "short"
         ? {
             notation: "compact",
             compactDisplay: "short",
@@ -4264,12 +4297,12 @@ function initAutoLike() {
                     }, ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000);
                 });
                 siteEvents.on("pathChanged", (path) => {
-                    if (path.match(/(\/?@|\/channel\/).+/)) {
+                    if (path.match(/(\/?@|\/?channel\/)\S+/)) {
                         const chanId = getCurrentChannelId();
                         if (!chanId)
                             return error("Couldn't extract channel ID from URL");
                         document.querySelectorAll(".bytm-auto-like-toggle-btn").forEach((btn) => clearNode(btn));
-                        addSelectorListener("ytChannelHeader", "#channel-header-container", {
+                        addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
                             listener(headerCont) {
                                 var _a, _b;
                                 const titleCont = headerCont.querySelector("ytd-channel-name #container");
@@ -4278,10 +4311,8 @@ function initAutoLike() {
                                 const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
                                 const buttonsCont = headerCont.querySelector("#inner-header-container #buttons");
                                 if (buttonsCont) {
-                                    addSelectorListener("ytChannelHeader", "#channel-header-container #other-buttons", {
-                                        listener(otherBtns) {
-                                            addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]);
-                                        }
+                                    addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-subscribe-button-view-model", {
+                                        listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
                                     });
                                 }
                                 else if (titleCont)
@@ -5333,7 +5364,7 @@ const featInfo = {
         type: "select",
         category: "layout",
         options: () => [
-            { value: "full", label: t("votes_format_full") },
+            { value: "long", label: t("votes_format_full") },
             { value: "short", label: t("votes_format_short") },
         ],
         default: "short",
@@ -6166,7 +6197,7 @@ function resolveToken(token) {
     var _a, _b;
     return typeof token === "string" && token.length > 0
         ? (_b = (_a = [...registeredPluginTokens.entries()]
-            .find(([, t]) => token === t)) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : undefined
+            .find(([k, t]) => registeredPlugins.has(k) && token === t)) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : undefined
         : undefined;
 }
 //#region proxy funcs
@@ -6232,16 +6263,28 @@ const defaultObserverOptions = {
 };
 /** Global SelectorObserver instances usable throughout the script for improved performance */
 const globservers = {};
+/** Whether all observers have been initialized */
+let globserversReady = false;
 //#region add listener func
 /**
  * Interface function for adding listeners to the {@linkcode globservers}
+ * If the observers haven't been initialized yet, the function will queue calls until the `bytm:observersReady` event is emitted
  * @param selector Relative to the observer's root element, so the selector can only start at of the root element's children at the earliest!
  * @param options Options for the listener
  * @template TElem The type of the element that the listener will be attached to. If set to `0`, the default type `HTMLElement` will be used.
  * @template TDomain This restricts which observers are available with the current domain
  */
 function addSelectorListener(observerName, selector, options) {
-    globservers[observerName].addListener(selector, options);
+    try {
+        if (!globserversReady) {
+            window.addEventListener("bytm:observersReady", () => addSelectorListener(observerName, selector, options), { once: true });
+            return;
+        }
+        globservers[observerName].addListener(selector, options);
+    }
+    catch (err) {
+        error(`Couldn't add listener to globserver '${observerName}':`, err);
+    }
 }
 //#region init
 /** Call after DOM load to initialize all SelectorObserver instances */
@@ -6366,13 +6409,13 @@ function initObservers() {
                 globservers.body.addListener(ytdBrowseSelector, {
                     listener: () => globservers.ytdBrowse.enable(),
                 });
-                //#region ytChannelHeader
-                // -> header of a channel page
+                //#region ytAppHeader
+                // -> header of the page
                 //    enabled by "ytdBrowse"
-                const ytChannelHeaderSelector = "#header tp-yt-app-header #channel-header";
-                globservers.ytChannelHeader = new UserUtils.SelectorObserver(ytChannelHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
-                globservers.ytdBrowse.addListener(ytChannelHeaderSelector, {
-                    listener: () => globservers.ytChannelHeader.enable(),
+                const ytAppHeaderSelector = "#header tp-yt-app-header";
+                globservers.ytAppHeader = new UserUtils.SelectorObserver(ytAppHeaderSelector, Object.assign(Object.assign({}, defaultObserverOptions), { subtree: true }));
+                globservers.ytdBrowse.addListener(ytAppHeaderSelector, {
+                    listener: () => globservers.ytAppHeader.enable(),
                 });
                 //#region ytWatchFlexy
                 // -> the main content of the /watch page
@@ -6401,6 +6444,7 @@ function initObservers() {
             }
         }
         //#region finalize
+        globserversReady = true;
         emitInterface("bytm:observersReady");
     }
     catch (err) {
@@ -6510,18 +6554,7 @@ function waitVideoElementReady() {
         waitForEl();
     }));
 }
-//#region other
-/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
-function clearInner(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-}
-/** Removes all child nodes of an element recursively and also removes the element itself */
-function clearNode(element) {
-    while (element.hasChildNodes())
-        clearNode(element.firstChild);
-    element.parentNode.removeChild(element);
-}
+//#region css utils
 /**
  * Adds a style element to the DOM at runtime.
  * @param css The CSS stylesheet to add
@@ -6537,25 +6570,6 @@ function addStyle(css_1, ref_1) {
         return elem;
     });
 }
-/** Sets a global CSS variable on the &lt;document&gt; element */
-function setGlobalCssVar(name, value) {
-    document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
-}
-/** Sets multiple global CSS variables on the &lt;document&gt; element */
-function setGlobalCssVars(vars) {
-    for (const [name, value] of Object.entries(vars))
-        setGlobalCssVar(name, value);
-}
-/**
- * Checks if the currently playing media is a song or a video.
- * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
- */
-function currentMediaType() {
-    const songImgElem = document.querySelector("ytmusic-player #song-image");
-    if (!songImgElem)
-        throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
-    return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
-}
 /**
  * Adds a global style element with the contents fetched from the specified CSS resource.
  * The CSS can be transformed using the provided function before being added to the DOM.
@@ -6569,6 +6583,37 @@ function addStyleFromResource(key_1) {
         }
         return false;
     });
+}
+/** Sets a global CSS variable on the &lt;document&gt; element */
+function setGlobalCssVar(name, value) {
+    document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
+}
+/** Sets multiple global CSS variables on the &lt;document&gt; element */
+function setGlobalCssVars(vars) {
+    for (const [name, value] of Object.entries(vars))
+        setGlobalCssVar(name, value);
+}
+//#region other
+/** Removes all child nodes of an element without invoking the slow-ish HTML parser */
+function clearInner(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+}
+/** Removes all child nodes of an element recursively and also removes the element itself */
+function clearNode(element) {
+    while (element.hasChildNodes())
+        clearNode(element.firstChild);
+    element.parentNode.removeChild(element);
+}
+/**
+ * Checks if the currently playing media is a song or a video.
+ * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
+ */
+function currentMediaType() {
+    const songImgElem = document.querySelector("ytmusic-player #song-image");
+    if (!songImgElem)
+        throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
+    return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 /** Copies the provided text to the clipboard and shows an error message for manual copying if the grant `GM.setClipboard` is not given. */
 function copyToClipboard(text) {
@@ -6840,7 +6885,7 @@ function getChangelogHtmlWithDetails() {
             const changelogMd = yield getChangelogMd();
             let changelogHtml = yield parseMarkdown(changelogMd);
             const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-            changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\">");
+            changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
             const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
             for (const match of h2Matches) {
                 const [fullMatch, , verStr] = match;
@@ -6849,7 +6894,7 @@ function getChangelogHtmlWithDetails() {
                 const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
                 changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
             }
-            changelogHtml = `<details class="bytm-changelog-version-details">${changelogHtml}</details>`;
+            changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
             return changelogHtml;
         }
         catch (err) {

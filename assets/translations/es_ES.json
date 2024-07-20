@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "Ha cambiado la configuración que afecta los datos en la caché de letras, lo que rompe las búsquedas de URL de letras.\n¿Quieres borrar la caché ahora?",
 
     "hotkey_input_click_to_change": "Haga clic para cambiar",
-    "hotkey_input_click_to_change_tooltip": "Haga clic, luego presione la tecla de acceso rápido deseada",
     "hotkey_input_click_to_cancel_tooltip": "Haga clic para cancelar",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Mayús",
@@ -88,7 +87,6 @@
     "open_config_menu_tooltip": "Haga clic para abrir el menú de configuración",
     "open_changelog": "Registro de cambios",
     "open_changelog_tooltip": "Haga clic para abrir el registro de cambios",
-    "feature_help_button_tooltip": "Haga clic para obtener más información sobre esta función",
     "welcome_text_line_1": "Gracias por instalar!",
     "welcome_text_line_2": "Espero que disfrutes usando %1 tanto como yo disfruté haciéndolo 😃",
     "welcome_text_line_3": "Si te gusta %1, por favor deja una calificación en %2GreasyFork%3 o %4OpenUserJS%5",
