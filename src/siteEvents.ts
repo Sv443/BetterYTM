@@ -201,7 +201,7 @@ export async function initSiteEvents() {
     });
   }
   catch(err) {
-    error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+    error("Couldn't initialize site event observers due to an error:\n", err);
   }
 }
 
@@ -210,15 +210,20 @@ window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
 
 /** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...args: Parameters<SiteEventsMap[TKey]>) {
-  if(!bytmReady) {
-    window.addEventListener("bytm:ready", () => {
-      bytmReady = true;
-      emitSiteEvent(key, ...args);
-    }, { once: true });
-    return;
+  try {
+    if(!bytmReady) {
+      window.addEventListener("bytm:ready", () => {
+        bytmReady = true;
+        emitSiteEvent(key, ...args);
+      }, { once: true });
+      return;
+    }
+    siteEvents.emit(key, ...args);
+    emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
   }
-  siteEvents.emit(key, ...args);
-  emitInterface(`bytm:siteEvent:${key}`, args as unknown as undefined);
+  catch(err) {
+    error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+  }
 }
 
 //#region other

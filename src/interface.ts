@@ -209,10 +209,15 @@ export function emitInterface<
   type: TEvt | `bytm:siteEvent:${keyof SiteEventsMap}`,
   ...detail: (TDetail extends undefined ? [undefined?] : [TDetail])
 ) {
-  getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
-  //@ts-ignore
-  emitOnPlugins(type, undefined, ...detail);
-  log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
+  try {
+    getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: detail?.[0] ?? undefined }));
+    //@ts-ignore
+    emitOnPlugins(type, undefined, ...detail);
+    log(`Emitted interface event '${type}'${detail.length > 0 && detail?.[0] ? " with data:" : ""}`, ...detail);
+  }
+  catch(err) {
+    error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+  }
 }
 
 //#region register plugins
