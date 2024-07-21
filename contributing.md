@@ -174,27 +174,27 @@ The main files you will be working with are:
   2. Add your feature and its properties to the `featInfo` object in [`src/features/index.ts`](./src/features/index.ts), under the correct category
   3. Create an async initialization function for your feature in the respective category's file inside the `src/features` folder
   4. Add the init function to the `onDomLoad` function in [`src/index.ts`](./src/index.ts), under the correct "domain guard condition" and category by following the format of the other features
+- Adding an asset (image, icon, stylesheet, translation file and misc. other files):
+  1. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
+  2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
+    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
+  3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
+  4. **When committing, make sure to commit the assets first, then rebuild the userscript and make a second commit.**  
+    This needs to be done because the build script at `src/tools/post-build.ts` will use the *previous* commit hash to create version-independent URLs for the assets. These will continue to work in the future, instead of pointing to an ever-changing branch where files could be moved, renamed or deleted at any time.
 - Adding a new site event:
   1. Add your event to the `SiteEventsMap` type in [`src/siteEvents.ts`](./src/siteEvents.ts)
-  2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *unconditionally* (with the exception of domain-specific events of course).  
-    Always use the function `emitSiteEvent` to dispatch the event, so it will automatically be logged and emitted to the plugin interface as well.
+  2. Dispatch the event inside `initSiteEvents` in [`src/siteEvents.ts`](./src/siteEvents.ts) or at another point where it is run *independent of the feature configuration* (the only exception being domain-specific events).  
+    **Always use the function `emitSiteEvent`** to dispatch the event, so it will automatically be logged and emitted to the plugin interface as well.
 - Adding something to the plugin interface:
   - If you want to make a function globally available, simply add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the correct category.  
     If the function should require a token, create a proxy function at the bottom of the file that checks for the token and then calls the actual function (also see the bottom of the file for examples).
   - If you want to add something else like a class, constant or entire library (as long as its license allows it), add it to the `props` variable inside the function `initInterface` in [`src/interface.ts`](./src/interface.ts)
 - Creating a new reusable component:  
   1. Create a new file in the `src/components` folder with a descriptive name
-  2. Add a function that takes a single object of properties as an argument (like a React component), and returns an element that extends the `HTMLElement` interface (the return value of `document.createElement()`)
+  2. Add a function that takes a single object of properties as an argument (kind of like a React component), and returns an element that extends the `HTMLElement` interface (like what the return value of `document.createElement()` is)
   3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some documentation for the component inside this file (`contributing.md`), under the [global functions and classes section](#global-functions-and-classes) by following the format of the other documented components.
-- Adding an asset (image, icon, stylesheet, translation file and misc. other files):
-  1. Add the asset to the `assets` folder in the root of the project, under the correct subfolder
-  2. Add the asset to the [`assets/resources.json`](./assets/resources.json) file by following the format of the other entries.  
-    If the path begins with a slash, it will start at the project root (where package.json is), otherwise it will start at the `assets` folder.
-  3. The asset will be immediately available in the userscript after the next build and the `@resource` directive will automatically point at the locally served asset or the GitHub CDN, depending on the build mode.
-  4. When committing, make sure to ***commit the assets first, then rebuild the userscript and commit it.***  
-    This needs to be done because the build script at `src/tools/post-build.ts` will use the last commit hash to create version-independent URLs for the assets that will continue to work in the future, instead of pointing to an ever-changing branch.
 - Adding a locale:
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
     Please make sure the alphabetical order is kept.
@@ -223,8 +223,8 @@ If you want your plugin to be displayed in the readme and possibly inside the us
 - TypeScript (for type safety and better autocomplete)
 - The source code of BetterYTM  
   This is especially regarding the files `src/interface.ts`, `src/types.ts`, `src/siteEvents.ts` and `src/observers.ts`
-- Being on the lookout for pull requests, since they will list new features and changes to the interface
-- This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find it
+- Being on the lookout for pull requests, since they will list new features and changes to the interface that you probably want to prepare for
+- This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find the actual information
   
 <br>
 
