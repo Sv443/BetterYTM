@@ -149,9 +149,12 @@ To edit an existing translation, please follow these steps:
 <br>
 
 #### Extras:
-When using ViolentMonkey, after letting the command `npm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
-This makes it so the userscript automatically updates when the code changes.  
-Note: the tab needs to stay open on Firefox or the script will not update itself.
+- When using ViolentMonkey, after letting the command `npm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+  This makes it so the userscript automatically updates when the code changes.  
+  Note: the tab needs to stay open on Firefox or the script will not update itself.
+- To link any bundled JS library with global variable exports in the userscript, add a `"link": "/path/to/script.global.js"` property to the respective library in [`assets/require.json`](./assets/require.json)  
+  The file will be automatically injected into the userscript and its global variables will be available in the userscript's scope.  
+  In order to make TypeScript shut up, you will still need to link it manually with `pnpm link -g /path/to/library_root`
 
 <br>
 
