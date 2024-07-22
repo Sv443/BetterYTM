@@ -35,7 +35,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
 
   const { mode, suffix } = passCliArgs;
 
-  const linkedPkgs = requireJson.filter((pkg) => pkg.link === true);
+  const linkedPkgs = requireJson.filter((pkg) => typeof pkg.link === "string");
 
   /** @type {import("rollup").RollupOptions} */
   const config = {
@@ -62,9 +62,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
       format: "iife",
       sourcemap: mode === "development",
       compact: mode === "development",
-      globals: linkedPkgs.length > 0 ? Object.fromEntries(
-        Object.entries(globalPkgs).filter(([key]) => !linkedPkgs.some((pkg) => pkg.pkgName === key))
-      ) : globalPkgs,
+      globals: linkedPkgs.length > 0 ? Object.fromEntries(Object.entries(globalPkgs)) : globalPkgs,
     },
     onwarn(warning) {
       // ignore circular dependency warnings
@@ -73,7 +71,7 @@ export default (/**@type {import("./src/types").RollupArgs}*/ args) => (async ()
         console.error(`\x1b[33m(!)\x1b[0m ${message}\n`, rest);
       }
     },
-    external: linkedPkgs.length > 0 ? externalPkgs.filter(p => !linkedPkgs.map(lp => lp.pkgName).includes(p)) : externalPkgs,
+    external: externalPkgs,
   };
 
   return config;
