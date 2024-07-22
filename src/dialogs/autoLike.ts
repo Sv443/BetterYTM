@@ -44,7 +44,7 @@ export async function getAutoLikeDialog() {
   
   if(!autoLikeImExDialog) {
     autoLikeImExDialog = new ExImDialog({
-      id: "auto-like-channels-import-export",
+      id: "auto-like-channels-export-import",
       width: 800,
       height: 600,
       // try to compress the data if possible
