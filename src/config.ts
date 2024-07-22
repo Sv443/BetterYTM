@@ -124,7 +124,7 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 
 let canCompress = true;
 
-const cfgDataStore = new DataStore({
+export const cfgDataStore = new DataStore({
   id: "bytm-config",
   formatVersion,
   defaultData,

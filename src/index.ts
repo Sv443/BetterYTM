@@ -30,6 +30,7 @@ import {
   // general
   initVersionCheck,
 } from "./features/index.js";
+import { storeSerializer } from "./storeSerializer.js";
 
 //#region cns. watermark
 
@@ -430,6 +431,20 @@ function registerDevMenuCommands() {
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
       dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+    }
+  });
+
+  GM.registerMenuCommand("Export data using DataStoreSerializer", async () => {
+    const ser = await storeSerializer.serialize();
+    dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
+    alert("See console.");
+  });
+
+  GM.registerMenuCommand("Import data using DataStoreSerializer", async () => {
+    const input = prompt("Enter the serialized data to import:");
+    if(input && input.length > 0) {
+      await storeSerializer.deserialize(input);
+      alert("Imported data. Reload the page to apply changes.");
     }
   });
 
