@@ -252,7 +252,9 @@ async function getResourceDirectives(buildNbr: string) {
     for(const name of Object.keys(resources))
       longestName = Math.max(longestName, name.length);
 
-    for(const [name, path] of Object.entries(resources)) {
+    const sortedResourceEntries = Object.entries(resources).sort(([a], [b]) => a.localeCompare(b));
+
+    for(const [name, path] of sortedResourceEntries) {
       const bufferSpace = " ".repeat(longestName - name.length);
       directives.push(`// @resource          ${name}${bufferSpace} ${
         path.match(/^https?:\/\//)
