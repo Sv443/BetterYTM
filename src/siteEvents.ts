@@ -232,9 +232,9 @@ export function emitSiteEvent<TKey extends keyof SiteEventsMap>(key: TKey, ...ar
 function checkWatchIdChange(newId?: string | null) {
   const newWatchId = newId ?? new URL(location.href).searchParams.get("v");
   if(newWatchId && newWatchId !== lastWatchId) {
-    lastWatchId = newWatchId;
     info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
     emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+    lastWatchId = newWatchId;
   }
 }
 
