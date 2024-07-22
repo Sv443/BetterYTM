@@ -124,7 +124,7 @@ async function onDomLoad() {
     initObservers();
 
     await Promise.allSettled([
-      insertGlobalStyle(),
+      injectCssBundle(),
       initVersionCheck(),
     ]);
   }
@@ -280,9 +280,9 @@ async function onDomLoad() {
 //#region css
 
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
-async function insertGlobalStyle() {
+async function injectCssBundle() {
   if(!await addStyleFromResource("css-bundle"))
-    error("Couldn't add global CSS bundle due to an error");
+    error("Couldn't inject CSS bundle due to an error");
 }
 
 /** Initializes global CSS variables */

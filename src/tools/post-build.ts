@@ -107,8 +107,7 @@ ${localizedDescriptions ? "\n" + localizedDescriptions : ""}\
 // @grant             GM.xmlHttpRequest
 // @grant             GM.openInTab
 // @grant             unsafeWindow
-// @noframes
-// @resource          css-bundle              ${getResourceUrl("/dist/BetterYTM.css", buildNbr)}\
+// @noframes\
 ${resourcesDirectives ? "\n" + resourcesDirectives : ""}\
 ${requireDirectives ? "\n" + requireDirectives : ""}\
 ${devDirectives ? "\n" + devDirectives : ""}
@@ -208,7 +207,7 @@ function insertValues(userscript: string, replacements: Record<string, Stringifi
 /** Removes sourcemapping comments */
 function remSourcemapComments(input: string) {
   return input
-    .replace(/\/\/#\s?sourceMappingURL\s?=\s?.+$/gm, "");
+    .replace(/\/\/\s?#\s?sourceMappingURL\s?=\s?.+$/gm, "");
 }
 
 /**
@@ -243,6 +242,8 @@ async function getResourceDirectives(buildNbr: string) {
     const directives: string[] = [];
     const resourcesFile = String(await readFile(join(assetFolderPath, "resources.json")));
     const resources = JSON.parse(resourcesFile) as Record<string, string>;
+
+    resources["css-bundle"] = getResourceUrl("/dist/BetterYTM.css", buildNbr);
 
     for(const [locale] of Object.entries(locales))
       resources[`trans-${locale}`] = `translations/${locale}.json`;
