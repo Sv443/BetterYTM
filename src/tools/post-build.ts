@@ -1,5 +1,5 @@
 import { access, readFile, writeFile, constants as fsconst } from "node:fs/promises";
-import { dirname, join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
@@ -149,7 +149,7 @@ I welcome every contribution on GitHub!
       userscript = userscript.replace(/sourceMappingURL=/gm, `sourceMappingURL=http://localhost:${devServerPort}/`);
 
     // insert userscript header and final newline
-    const finalUserscript = `${header}\n${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
+    const finalUserscript = `${header}\n${await getLinkedPkgs()}${userscript}${userscript.endsWith("\n") ? "" : "\n"}`;
 
     await writeFile(scriptPath, finalUserscript);
 
@@ -276,7 +276,7 @@ async function getRequireDirectives() {
   const require = JSON.parse(requireFile) as RequireObj[];
 
   for(const entry of require) {
-    if("link" in entry && entry.link === true)
+    if("link" in entry && typeof entry.link === "string")
       continue;
     "pkgName" in entry && directives.push(getRequireEntry(entry));
     "url" in entry && directives.push(`// @require           ${entry.url}`);
@@ -342,4 +342,23 @@ function getCliArg<TReturn extends string = string>(name: string, defaultVal?: T
   const arg = process.argv.find((v) => v.trim().match(new RegExp(`^(--)?${name}=.+$`, "i")));
   const val = arg?.split("=")?.[1];
   return (val && val.length > 0 ? val : defaultVal)?.trim() as TReturn | undefined;
+}
+
+async function getLinkedPkgs() {
+  const requireFile = String(await readFile(join(assetFolderPath, "require.json")));
+  const require = (JSON.parse(requireFile) as RequireObj[]);
+
+  let retStr = "";
+
+  for(const entry of require) {
+    if(!("link" in entry) || typeof entry.link !== "string")
+      continue;
+
+    const scriptCont = String(await readFile(resolve(entry.link)));
+    const trimmedScript = scriptCont
+      .replace(/\/\/ ==.*==[\s\S]*?\/\/ ==\/.*==/gm, "");
+    retStr += `\n// >> Linked package: ${entry.link}\n${trimmedScript}\n// << End of linked package: ${entry.link}\n`;
+  }
+
+  return retStr;
 }
