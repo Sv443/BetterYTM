@@ -105,9 +105,10 @@ export async function showToast({
 
   await pauseFor(100);
 
-  toastElem.classList.add("visible", `pos-${position}`);
+  toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
 
-  timeout = setTimeout(async () => await closeToast(), duration * 1000);
+  if(duration < Number.POSITIVE_INFINITY)
+    timeout = setTimeout(async () => await closeToast(), duration * 1000);
 }
 
 /** Closes the currently open toast */
