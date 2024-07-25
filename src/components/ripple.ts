@@ -42,8 +42,8 @@ export function createRipple<TElem extends HTMLElement>(rippleElement?: TElem, p
 
     const rippleAreaEl = document.createElement("span");
     rippleAreaEl.classList.add("bytm-ripple-area");
-    rippleAreaEl.style.left = `${x}px`;
-    rippleAreaEl.style.top = `${y}px`;
+    rippleAreaEl.style.left = `${Math.round(x)}px`;
+    rippleAreaEl.style.top = `${Math.round(y)}px`;
 
     if(rippleEl.firstChild)
       rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
