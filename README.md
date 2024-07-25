@@ -4,7 +4,7 @@
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>BetterYTM</h1>
 
 ### Lots of configurable layout and user experience improvements for YouTube Music™ and YouTube™
-Supported Languages: 🇩🇪&nbsp;German, 🇺🇸&nbsp;English (US), 🇬🇧&nbsp;English (UK), 🇪🇸&nbsp;Spanish, 🇫🇷&nbsp;French, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇵🇹&nbsp;Portuguese, 🇨🇳&nbsp;Chinese (simpl.)
+🇨🇳&nbsp;Chinese (simpl.), 🇬🇧&nbsp;English (UK), 🇺🇸&nbsp;English (US), 🇫🇷&nbsp;French, 🇩🇪&nbsp;German, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇵🇹&nbsp;Portuguese, 🇪🇸&nbsp;Spanish
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
 [**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)

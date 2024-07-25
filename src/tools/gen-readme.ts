@@ -78,14 +78,16 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
 }
 
 async function genHeader() {
-  const langStr = Object.values(locales).reduce((acc, { nameEnglish, emoji }, i) => {
-    return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
-  }, "");
+  const langStr = [ ...Object.values(locales) ]
+    .sort((a, b) => a.nameEnglish.localeCompare(b.nameEnglish))
+    .reduce((acc, { nameEnglish, emoji }, i) => {
+      return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
+    }, "");
   return `\
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkgJson.userscriptName}</h1>
 
 ### ${pkgJson.description}
-Supported Languages: ${langStr}\
+${langStr}\
 `;
 }
 
