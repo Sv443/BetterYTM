@@ -36,7 +36,7 @@ To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
 2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `npm run tr-format -- -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -- -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
 4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
   Please duplicate the file `README-summary.md` and call it `README-summary-languageCode_localeCode.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 5. If you want to submit a pull request with the translated file:
@@ -58,12 +58,12 @@ To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `npm run tr-format -- -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
+3. Run the command `pnpm run tr-format -- -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en_US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
 5. Make sure there are no duplicate keys in the file
-6. Run the command `npm run tr-format -- -o=language_LOCALE` to make sure the file is formatted correctly
-7. Test for syntax errors and update translation progress with the command `npm run tr-progress`
+6. Run the command `pnpm run tr-format -- -o=language_LOCALE` to make sure the file is formatted correctly
+7. Test for syntax errors and update translation progress with the command `pnpm run tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
 10. Submit your pull request by [clicking here](https://github.com/Sv443/BetterYTM/compare/) and setting the `compare:` dropdown to your fork
@@ -75,31 +75,32 @@ To edit an existing translation, please follow these steps:
 
 ### Setting up the project for local development:
 #### Requirements:
-1. Have Node.js, npm and Git installed
-2. Clone this repository  
+1. Have current versions of Node.js, npm and Git installed
+2. Install pnpm by running `npm i -g pnpm`
+3. Clone this repository  
   If you plan on contributing to the project, please [click here to fork it](https://github.com/Sv443/BetterYTM/fork) and clone your fork instead.  
   Make sure to clone or fork from the `develop` branch since the `main` branch is only used for releases!
-3. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
+4. Switch to the `develop` branch by running `git checkout -b develop` in the project root.  
   Skip this step if you are using your own forked repository.
-4. Open a terminal in the project root and run `npm i`
-5. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
-6. Now you can run `npm run dev` to build the userscript and host it on a development server or check out the other commands below
+5. Open a terminal in the project root and run `pnpm i`
+6. Copy the file `.env.template` to `.env` and modify the variables inside to your needs.
+7. Now you can run `pnpm run dev` to build the userscript and host it on a development server or check out the other commands below
 
 <br>
 
 #### These are the CLI commands available after setting up the project:
-- **`npm i`**  
+- **`pnpm i`**  
   Run once to install dependencies
-- **`npm run dev`**  
+- **`pnpm run dev`**  
   This is the command you want to use to locally develop and test BetterYTM.  
   It watches for any changes, then rebuilds and serves the userscript on port 8710, so it can be updated live if set up correctly in the userscript manager (see [extras](#extras)).  
   Once it has finished building, a link will be printed to the console. Open it to install the userscript.  
   You can also configure request logging and more in `.env` and `src/tools/serve.ts`, just make sure to restart the dev server after changing anything.  
-- **`npm run build-prod`**  
+- **`pnpm run build-prod`**  
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`npm run build -- <arguments>`**  
+- **`pnpm run build -- <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
@@ -109,33 +110,33 @@ To edit an existing translation, please follow these steps:
   - `--config-suffix=<value>` - Suffix to add just before the `.user.js` extension. Defaults to an empty string
     
   Shorthand commands:
-  - `npm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
+  - `pnpm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
-  - `npm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+  - `pnpm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
-  - `npm run preview` - Same as `npm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
-- **`npm run lint`**  
+  - `pnpm run preview` - Same as `pnpm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
+- **`pnpm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
-- **`npm run storybook`**  
+- **`pnpm run storybook`**  
   Starts Storybook for developing and testing components. After launching, it will automatically open in your default browser.
-- **`npm run gen-readme`**  
+- **`pnpm run gen-readme`**  
   Updates the README files by inserting different parts of generated sections into them.
-- **`npm run tr-progress`**  
+- **`pnpm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
-- **`npm run tr-format -- <arguments>`**  
+- **`pnpm run tr-format -- <arguments>`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
   - `--prep` or `-p` - Prepares the files for translation via GitHub Copilot by providing the missing key once in English and once without any value
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr_FR,de_DE"` or `-o="pt_BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
-- **`npm run tr-prep`**  
-  Shorthand for `npm run tr-format -- --prep` (see above)
-- **`npm run --silent invisible -- "<command>"`**  
+- **`pnpm run tr-prep`**  
+  Shorthand for `pnpm run tr-format -- --prep` (see above)
+- **`pnpm run --silent invisible -- "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
-  Remove `--silent` to see npm's info and error messages.
-- **`npm run node-ts -- <path>`**  
+  Remove `--silent` to see pnpm's info and error messages.
+- **`pnpm run node-ts -- <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
 
@@ -149,7 +150,7 @@ To edit an existing translation, please follow these steps:
 <br>
 
 #### Extras:
-- When using ViolentMonkey, after letting the command `npm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
+- When using ViolentMonkey, after letting the command `pnpm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
 - To link any bundled JS library with global variable exports in the userscript, add a `"link": "/path/to/script.global.js"` property to the respective library in [`assets/require.json`](./assets/require.json)  
@@ -1634,17 +1635,17 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > 
 > ```ts
 > // link:
-> const longBtn = unsafeWindow.BYTM.createLongBtn({
+> const linkBtn = unsafeWindow.BYTM.createLongBtn({
 >   resourceName: "icon-help",
 >   href: "https://example.com/help?topic=foo",
 >   text: "Help",
->   title: "Click to open the help page",
+>   title: "Click to open the help page for this topic",
 >   iconPosition: "right",
 > });
 > 
 > // button:
-> const longBtn = unsafeWindow.BYTM.createLongBtn({
->   resourceName: "icon-upload",
+> const btn = unsafeWindow.BYTM.createLongBtn({
+>   src: "https://example.com/icon.png",
 >   onClick(evt: MouseEvent | KeyboardEvent) {
 >     console.log("The button was clicked");
 >   },
@@ -1686,15 +1687,15 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > - either of:
 >   - `message: string` - The message to show in the toast
 >   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
-> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
-> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config) - use `Infinity` for a persistent toast and `0` to not show it at all
+> - `position?: "tl" | "tr" | "bl" | "br"` - Which corner of the screen the toast should show up in (defaults to "tr")
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > unsafeWindow.BYTM.showToast({
->   message: "This is a normal toast",
->   duration: 2_524_140,
+>   message: "Nothing suspicious here",
+>   duration: 2524140,
 >   position: "bl",
 > });
 > ```
@@ -1738,7 +1739,8 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > #### createRipple()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.createRipple(rippleElement?: HTMLElement, props?: RippleProps): HTMLElement
+> unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
+> unsafeWindow.BYTM.createRipple(rippleElement: undefined, props?: RippleProps): HTMLDivElement
 > ```
 >   
 > Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
