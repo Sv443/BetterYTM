@@ -78,7 +78,6 @@
 // @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/ja_JA.json
 // @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/pt_BR.json
 // @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/zh_CN.json
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
