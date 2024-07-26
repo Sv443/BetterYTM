@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,51 +33,51 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/dist/BetterYTM.css
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/anchorImprovements.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/arrow_down.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/auto_like_enabled.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/auto_like.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/beaker_small.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/globe_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/globe.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/help.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/image_filled.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/image.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/external/greasyfork.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/logo/logo_dev_48.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/logo/logo_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/de_DE.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/en_US.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/en_UK.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/d2f9f124/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/anchorImprovements.css
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/dist/BetterYTM.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/arrow_down.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/help.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/image.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/image_filled.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/greasyfork.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_48.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/de_DE.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/en_UK.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/en_US.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@6.3.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
@@ -98,6 +98,847 @@ I welcome every contribution on GitHub!
 
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
+
+var UserUtils = (function (exports) {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __objRest = (source, exclude) => {
+    var target = {};
+    for (var prop in source)
+      if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+        target[prop] = source[prop];
+    if (source != null && __getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(source)) {
+        if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+          target[prop] = source[prop];
+      }
+    return target;
+  };
+  var __publicField = (obj, key, value) => {
+    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+    return value;
+  };
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = (value) => {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var rejected = (value) => {
+        try {
+          step(generator.throw(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
+
+  // lib/math.ts
+  function clamp(value, min, max) {
+    return Math.max(Math.min(value, max), min);
+  }
+  function mapRange(value, range1min, range1max, range2min, range2max) {
+    if (Number(range1min) === 0 && Number(range2min) === 0)
+      return value * (range2max / range1max);
+    return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
+  }
+  function randRange(...args) {
+    let min, max;
+    if (typeof args[0] === "number" && typeof args[1] === "number")
+      [min, max] = args;
+    else if (typeof args[0] === "number" && typeof args[1] !== "number") {
+      min = 0;
+      [max] = args;
+    } else
+      throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
+    min = Number(min);
+    max = Number(max);
+    if (isNaN(min) || isNaN(max))
+      return NaN;
+    if (min > max)
+      throw new TypeError(`Parameter "min" can't be bigger than "max"`);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  // lib/array.ts
+  function randomItem(array) {
+    return randomItemIndex(array)[0];
+  }
+  function randomItemIndex(array) {
+    if (array.length === 0)
+      return [void 0, void 0];
+    const idx = randRange(array.length - 1);
+    return [array[idx], idx];
+  }
+  function takeRandomItem(arr) {
+    const [itm, idx] = randomItemIndex(arr);
+    if (idx === void 0)
+      return void 0;
+    arr.splice(idx, 1);
+    return itm;
+  }
+  function randomizeArray(array) {
+    const retArray = [...array];
+    if (array.length === 0)
+      return retArray;
+    for (let i = retArray.length - 1; i > 0; i--) {
+      const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
+      [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
+    }
+    return retArray;
+  }
+
+  // lib/DataStore.ts
+  var DataStore = class {
+    /**
+     * Creates an instance of DataStore to manage a sync & async database that is cached in memory and persistently saved across sessions.  
+     * Supports migrating data from older versions to newer ones and populating the cache with default data if no persistent data is found.  
+     *   
+     * ⚠️ Requires the directives `@grant GM.getValue` and `@grant GM.setValue`  
+     * ⚠️ Make sure to call {@linkcode loadData()} at least once after creating an instance, or the returned data will be the same as `options.defaultData`
+     * 
+     * @template TData The type of the data that is saved in persistent storage (will be automatically inferred from `options.defaultData`) - this should also be the type of the data format associated with the current `options.formatVersion`
+     * @param options The options for this DataStore instance
+     */
+    constructor(options) {
+      __publicField(this, "id");
+      __publicField(this, "formatVersion");
+      __publicField(this, "defaultData");
+      __publicField(this, "encodeData");
+      __publicField(this, "decodeData");
+      __publicField(this, "cachedData");
+      __publicField(this, "migrations");
+      this.id = options.id;
+      this.formatVersion = options.formatVersion;
+      this.defaultData = options.defaultData;
+      this.cachedData = options.defaultData;
+      this.migrations = options.migrations;
+      this.encodeData = options.encodeData;
+      this.decodeData = options.decodeData;
+    }
+    /**
+     * Loads the data saved in persistent storage into the in-memory cache and also returns it.  
+     * Automatically populates persistent storage with default data if it doesn't contain any data yet.  
+     * Also runs all necessary migration functions if the data format has changed since the last time the data was saved.
+     */
+    loadData() {
+      return __async(this, null, function* () {
+        try {
+          const gmData = yield this.getValue(`_uucfg-${this.id}`, this.defaultData);
+          let gmFmtVer = Number(yield this.getValue(`_uucfgver-${this.id}`, NaN));
+          if (typeof gmData !== "string") {
+            yield this.saveDefaultData();
+            return __spreadValues({}, this.defaultData);
+          }
+          const isEncoded = yield this.getValue(`_uucfgenc-${this.id}`, false);
+          let saveData = false;
+          if (isNaN(gmFmtVer)) {
+            yield this.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
+            saveData = true;
+          }
+          let parsed = yield this.deserializeData(gmData, isEncoded);
+          if (gmFmtVer < this.formatVersion && this.migrations)
+            parsed = yield this.runMigrations(parsed, gmFmtVer);
+          if (saveData)
+            yield this.setData(parsed);
+          this.cachedData = __spreadValues({}, parsed);
+          return this.cachedData;
+        } catch (err) {
+          console.warn("Error while parsing JSON data, resetting it to the default value.", err);
+          yield this.saveDefaultData();
+          return this.defaultData;
+        }
+      });
+    }
+    /**
+     * Returns a copy of the data from the in-memory cache.  
+     * Use {@linkcode loadData()} to get fresh data from persistent storage (usually not necessary since the cache should always exactly reflect persistent storage).
+     * @param deepCopy Whether to return a deep copy of the data (default: `false`) - only necessary if your data object is nested and may have a bigger performance impact if enabled
+     */
+    getData(deepCopy = false) {
+      return deepCopy ? this.deepCopy(this.cachedData) : __spreadValues({}, this.cachedData);
+    }
+    /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
+    setData(data) {
+      this.cachedData = data;
+      const useEncoding = this.encodingEnabled();
+      return new Promise((resolve) => __async(this, null, function* () {
+        yield Promise.all([
+          this.setValue(`_uucfg-${this.id}`, yield this.serializeData(data, useEncoding)),
+          this.setValue(`_uucfgver-${this.id}`, this.formatVersion),
+          this.setValue(`_uucfgenc-${this.id}`, useEncoding)
+        ]);
+        resolve();
+      }));
+    }
+    /** Saves the default data passed in the constructor synchronously to the in-memory cache and asynchronously to persistent storage */
+    saveDefaultData() {
+      return __async(this, null, function* () {
+        this.cachedData = this.defaultData;
+        const useEncoding = this.encodingEnabled();
+        return new Promise((resolve) => __async(this, null, function* () {
+          yield Promise.all([
+            this.setValue(`_uucfg-${this.id}`, yield this.serializeData(this.defaultData, useEncoding)),
+            this.setValue(`_uucfgver-${this.id}`, this.formatVersion),
+            this.setValue(`_uucfgenc-${this.id}`, useEncoding)
+          ]);
+          resolve();
+        }));
+      });
+    }
+    /**
+     * Call this method to clear all persistently stored data associated with this DataStore instance.  
+     * The in-memory cache will be left untouched, so you may still access the data with {@linkcode getData()}  
+     * Calling {@linkcode loadData()} or {@linkcode setData()} after this method was called will recreate persistent storage with the cached or default data.  
+     *   
+     * ⚠️ This requires the additional directive `@grant GM.deleteValue`
+     */
+    deleteData() {
+      return __async(this, null, function* () {
+        yield Promise.all([
+          this.deleteValue(`_uucfg-${this.id}`),
+          this.deleteValue(`_uucfgver-${this.id}`),
+          this.deleteValue(`_uucfgenc-${this.id}`)
+        ]);
+      });
+    }
+    /**
+     * Runs all necessary migration functions consecutively and saves the result to the in-memory cache and persistent storage and also returns it.  
+     * This method is automatically called by {@linkcode loadData()} if the data format has changed since the last time the data was saved.  
+     * Though calling this method manually is not necessary, it can be useful if you want to run migrations for special occasions like a user importing potentially outdated data that has been previously exported.  
+     *   
+     * If one of the migrations fails, the data will be reset to the default value if `resetOnError` is set to `true` (default). Otherwise, an error will be thrown and no data will be saved.
+     */
+    runMigrations(oldData, oldFmtVer, resetOnError = true) {
+      return __async(this, null, function* () {
+        if (!this.migrations)
+          return oldData;
+        let newData = oldData;
+        const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
+        let lastFmtVer = oldFmtVer;
+        for (const [fmtVer, migrationFunc] of sortedMigrations) {
+          const ver = Number(fmtVer);
+          if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
+            try {
+              const migRes = migrationFunc(newData);
+              newData = migRes instanceof Promise ? yield migRes : migRes;
+              lastFmtVer = oldFmtVer = ver;
+            } catch (err) {
+              if (!resetOnError)
+                throw new Error(`Error while running migration function for format version '${fmtVer}'`);
+              console.error(`Error while running migration function for format version '${fmtVer}' - resetting to the default value.`, err);
+              yield this.saveDefaultData();
+              return this.getData();
+            }
+          }
+        }
+        yield Promise.all([
+          this.setValue(`_uucfg-${this.id}`, yield this.serializeData(newData)),
+          this.setValue(`_uucfgver-${this.id}`, lastFmtVer),
+          this.setValue(`_uucfgenc-${this.id}`, this.encodingEnabled())
+        ]);
+        return this.cachedData = __spreadValues({}, newData);
+      });
+    }
+    /** Returns whether encoding and decoding are enabled for this DataStore instance */
+    encodingEnabled() {
+      return Boolean(this.encodeData && this.decodeData);
+    }
+    /** Serializes the data using the optional this.encodeData() and returns it as a string */
+    serializeData(data, useEncoding = true) {
+      return __async(this, null, function* () {
+        const stringData = JSON.stringify(data);
+        if (!this.encodingEnabled() || !useEncoding)
+          return stringData;
+        const encRes = this.encodeData(stringData);
+        if (encRes instanceof Promise)
+          return yield encRes;
+        return encRes;
+      });
+    }
+    /** Deserializes the data using the optional this.decodeData() and returns it as a JSON object */
+    deserializeData(data, useEncoding = true) {
+      return __async(this, null, function* () {
+        let decRes = this.encodingEnabled() && useEncoding ? this.decodeData(data) : void 0;
+        if (decRes instanceof Promise)
+          decRes = yield decRes;
+        return JSON.parse(decRes != null ? decRes : data);
+      });
+    }
+    /** Copies a JSON-compatible object and loses all its internal references in the process */
+    deepCopy(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+    /** Gets a value from persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
+    getValue(name, defaultValue) {
+      return __async(this, null, function* () {
+        return GM.getValue(name, defaultValue);
+      });
+    }
+    /** Sets a value in persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
+    setValue(name, value) {
+      return __async(this, null, function* () {
+        return GM.setValue(name, value);
+      });
+    }
+    /** Deletes a value from persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
+    deleteValue(name) {
+      return __async(this, null, function* () {
+        return GM.deleteValue(name);
+      });
+    }
+  };
+
+  // lib/DataStoreSerializer.ts
+  var DataStoreSerializer = class {
+    constructor(stores, options = {}) {
+      __publicField(this, "stores");
+      __publicField(this, "options");
+      if (!getUnsafeWindow().crypto || !getUnsafeWindow().crypto.subtle)
+        throw new Error("DataStoreSerializer has to run in a secure context (HTTPS)!");
+      this.stores = stores;
+      this.options = __spreadValues({
+        addChecksum: true,
+        ensureIntegrity: true
+      }, options);
+    }
+    /** Calculates the checksum of a string */
+    calcChecksum(input) {
+      return __async(this, null, function* () {
+        return computeHash(input, "SHA-256");
+      });
+    }
+    /** Serializes a DataStore instance */
+    serializeStore(storeInst) {
+      return __async(this, null, function* () {
+        const data = storeInst.encodingEnabled() ? yield storeInst.encodeData(JSON.stringify(storeInst.getData())) : JSON.stringify(storeInst.getData());
+        const checksum = this.options.addChecksum ? yield this.calcChecksum(data) : void 0;
+        return {
+          id: storeInst.id,
+          data,
+          formatVersion: storeInst.formatVersion,
+          encoded: storeInst.encodingEnabled(),
+          checksum
+        };
+      });
+    }
+    /** Serializes the data stores into a string */
+    serialize() {
+      return __async(this, null, function* () {
+        const serData = [];
+        for (const store of this.stores)
+          serData.push(yield this.serializeStore(store));
+        return JSON.stringify(serData);
+      });
+    }
+    /**
+     * Deserializes the data exported via {@linkcode serialize()} and imports it into the DataStore instances.  
+     * Also triggers the migration process if the data format has changed.
+     */
+    deserialize(serializedData) {
+      return __async(this, null, function* () {
+        const deserStores = JSON.parse(serializedData);
+        for (const storeData of deserStores) {
+          const storeInst = this.stores.find((s) => s.id === storeData.id);
+          if (!storeInst)
+            throw new Error(`DataStore instance with ID "${storeData.id}" not found! Make sure to provide it in the DataStoreSerializer constructor.`);
+          if (this.options.ensureIntegrity && typeof storeData.checksum === "string") {
+            const checksum = yield this.calcChecksum(storeData.data);
+            if (checksum !== storeData.checksum)
+              throw new Error(`Checksum mismatch for DataStore with ID "${storeData.id}"!
+Expected: ${storeData.checksum}
+Has: ${checksum}`);
+          }
+          const decodedData = storeData.encoded && storeInst.encodingEnabled() ? yield storeInst.decodeData(storeData.data) : storeData.data;
+          if (storeData.formatVersion && !isNaN(Number(storeData.formatVersion)) && Number(storeData.formatVersion) < storeInst.formatVersion)
+            yield storeInst.runMigrations(JSON.parse(decodedData), Number(storeData.formatVersion), false);
+          else
+            yield storeInst.setData(JSON.parse(decodedData));
+        }
+      });
+    }
+  };
+
+  // lib/dom.ts
+  function getUnsafeWindow() {
+    try {
+      return unsafeWindow;
+    } catch (e) {
+      return window;
+    }
+  }
+  function addParent(element, newParent) {
+    const oldParent = element.parentNode;
+    if (!oldParent)
+      throw new Error("Element doesn't have a parent node");
+    oldParent.replaceChild(newParent, element);
+    newParent.appendChild(element);
+    return newParent;
+  }
+  function addGlobalStyle(style) {
+    const styleElem = document.createElement("style");
+    styleElem.innerHTML = style;
+    document.head.appendChild(styleElem);
+    return styleElem;
+  }
+  function preloadImages(srcUrls, rejects = false) {
+    const promises = srcUrls.map((src) => new Promise((res, rej) => {
+      const image = new Image();
+      image.src = src;
+      image.addEventListener("load", () => res(image));
+      image.addEventListener("error", (evt) => rejects && rej(evt));
+    }));
+    return Promise.allSettled(promises);
+  }
+  function openInNewTab(href, background) {
+    try {
+      GM.openInTab(href, background);
+    } catch (e) {
+      const openElem = document.createElement("a");
+      Object.assign(openElem, {
+        className: "userutils-open-in-new-tab",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        href
+      });
+      openElem.style.display = "none";
+      document.body.appendChild(openElem);
+      openElem.click();
+      setTimeout(openElem.remove, 50);
+    }
+  }
+  function interceptEvent(eventObject, eventName, predicate = () => true) {
+    Error.stackTraceLimit = Math.max(Error.stackTraceLimit, 100);
+    if (isNaN(Error.stackTraceLimit))
+      Error.stackTraceLimit = 100;
+    (function(original) {
+      eventObject.__proto__.addEventListener = function(...args) {
+        var _a, _b;
+        const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
+        args[1] = function(...a) {
+          if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
+            return;
+          else
+            return origListener.apply(this, a);
+        };
+        original.apply(this, args);
+      };
+    })(eventObject.__proto__.addEventListener);
+  }
+  function interceptWindowEvent(eventName, predicate = () => true) {
+    return interceptEvent(getUnsafeWindow(), eventName, predicate);
+  }
+  function isScrollable(element) {
+    const { overflowX, overflowY } = getComputedStyle(element);
+    return {
+      vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
+      horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
+    };
+  }
+  function observeElementProp(element, property, callback) {
+    const elementPrototype = Object.getPrototypeOf(element);
+    if (elementPrototype.hasOwnProperty(property)) {
+      const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
+      Object.defineProperty(element, property, {
+        get: function() {
+          var _a;
+          return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
+        },
+        set: function() {
+          var _a;
+          const oldValue = this[property];
+          (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
+          const newValue = this[property];
+          if (typeof callback === "function") {
+            callback.bind(this, oldValue, newValue);
+          }
+          return newValue;
+        }
+      });
+    }
+  }
+  function getSiblingsFrame(refElement, siblingAmount, refElementAlignment = "center-top", includeRef = true) {
+    var _a, _b;
+    const siblings = [...(_b = (_a = refElement.parentNode) == null ? void 0 : _a.childNodes) != null ? _b : []];
+    const elemSiblIdx = siblings.indexOf(refElement);
+    if (elemSiblIdx === -1)
+      throw new Error("Element doesn't have a parent node");
+    if (refElementAlignment === "top")
+      return [...siblings.slice(elemSiblIdx + Number(!includeRef), elemSiblIdx + siblingAmount + Number(!includeRef))];
+    else if (refElementAlignment.startsWith("center-")) {
+      const halfAmount = (refElementAlignment === "center-bottom" ? Math.ceil : Math.floor)(siblingAmount / 2);
+      const startIdx = Math.max(0, elemSiblIdx - halfAmount);
+      const topOffset = Number(refElementAlignment === "center-top" && siblingAmount % 2 === 0 && includeRef);
+      const btmOffset = Number(refElementAlignment === "center-bottom" && siblingAmount % 2 !== 0 && includeRef);
+      const startIdxWithOffset = startIdx + topOffset + btmOffset;
+      return [
+        ...siblings.filter((_, idx) => includeRef || idx !== elemSiblIdx).slice(startIdxWithOffset, startIdxWithOffset + siblingAmount)
+      ];
+    } else if (refElementAlignment === "bottom")
+      return [...siblings.slice(elemSiblIdx - siblingAmount + Number(includeRef), elemSiblIdx + Number(includeRef))];
+    return [];
+  }
+
+  // lib/misc.ts
+  function autoPlural(word, num) {
+    if (Array.isArray(num) || num instanceof NodeList)
+      num = num.length;
+    return `${word}${num === 1 ? "" : "s"}`;
+  }
+  function pauseFor(time) {
+    return new Promise((res) => {
+      setTimeout(() => res(), time);
+    });
+  }
+  function debounce(func, timeout = 300, edge = "falling") {
+    let timer;
+    return function(...args) {
+      if (edge === "rising") {
+        if (!timer) {
+          func.apply(this, args);
+          timer = setTimeout(() => timer = void 0, timeout);
+        }
+      } else {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), timeout);
+      }
+    };
+  }
+  function fetchAdvanced(_0) {
+    return __async(this, arguments, function* (input, options = {}) {
+      const { timeout = 1e4 } = options;
+      let signalOpts = {}, id = void 0;
+      if (timeout >= 0) {
+        const controller = new AbortController();
+        id = setTimeout(() => controller.abort(), timeout);
+        signalOpts = { signal: controller.signal };
+      }
+      const res = yield fetch(input, __spreadValues(__spreadValues({}, options), signalOpts));
+      clearTimeout(id);
+      return res;
+    });
+  }
+  function insertValues(input, ...values) {
+    return input.replace(/%\d/gm, (match) => {
+      var _a, _b;
+      const argIndex = Number(match.substring(1)) - 1;
+      return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
+    });
+  }
+  function compress(input, compressionFormat, outputType = "string") {
+    return __async(this, null, function* () {
+      const byteArray = typeof input === "string" ? new TextEncoder().encode(input) : input;
+      const comp = new CompressionStream(compressionFormat);
+      const writer = comp.writable.getWriter();
+      writer.write(byteArray);
+      writer.close();
+      const buf = yield new Response(comp.readable).arrayBuffer();
+      return outputType === "arrayBuffer" ? buf : ab2str(buf);
+    });
+  }
+  function decompress(input, compressionFormat, outputType = "string") {
+    return __async(this, null, function* () {
+      const byteArray = typeof input === "string" ? str2ab(input) : input;
+      const decomp = new DecompressionStream(compressionFormat);
+      const writer = decomp.writable.getWriter();
+      writer.write(byteArray);
+      writer.close();
+      const buf = yield new Response(decomp.readable).arrayBuffer();
+      return outputType === "arrayBuffer" ? buf : new TextDecoder().decode(buf);
+    });
+  }
+  function ab2str(buf) {
+    return getUnsafeWindow().btoa(
+      new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
+    );
+  }
+  function str2ab(str) {
+    return Uint8Array.from(getUnsafeWindow().atob(str), (c) => c.charCodeAt(0));
+  }
+  function computeHash(input, algorithm = "SHA-256") {
+    return __async(this, null, function* () {
+      let data;
+      if (typeof input === "string") {
+        const encoder = new TextEncoder();
+        data = encoder.encode(input);
+      } else
+        data = input;
+      const hashBuffer = yield crypto.subtle.digest(algorithm, data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+      return hashHex;
+    });
+  }
+  function randomId(length = 16, radix = 16, enhancedEntropy = false) {
+    if (enhancedEntropy) {
+      const arr = new Uint8Array(length);
+      crypto.getRandomValues(arr);
+      return Array.from(
+        arr,
+        (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
+      ).join("");
+    }
+    return Array.from(
+      { length },
+      () => Math.floor(Math.random() * radix).toString(radix)
+    ).join("");
+  }
+
+  // lib/SelectorObserver.ts
+  var domLoaded = false;
+  document.addEventListener("DOMContentLoaded", () => domLoaded = true);
+  var SelectorObserver = class {
+    constructor(baseElement, options = {}) {
+      __publicField(this, "enabled", false);
+      __publicField(this, "baseElement");
+      __publicField(this, "observer");
+      __publicField(this, "observerOptions");
+      __publicField(this, "customOptions");
+      __publicField(this, "listenerMap");
+      this.baseElement = baseElement;
+      this.listenerMap = /* @__PURE__ */ new Map();
+      const _a = options, {
+        defaultDebounce,
+        defaultDebounceEdge,
+        disableOnNoListeners,
+        enableOnAddListener
+      } = _a, observerOptions = __objRest(_a, [
+        "defaultDebounce",
+        "defaultDebounceEdge",
+        "disableOnNoListeners",
+        "enableOnAddListener"
+      ]);
+      this.observerOptions = __spreadValues({
+        childList: true,
+        subtree: true
+      }, observerOptions);
+      this.customOptions = {
+        defaultDebounce: defaultDebounce != null ? defaultDebounce : 0,
+        defaultDebounceEdge: defaultDebounceEdge != null ? defaultDebounceEdge : "rising",
+        disableOnNoListeners: disableOnNoListeners != null ? disableOnNoListeners : false,
+        enableOnAddListener: enableOnAddListener != null ? enableOnAddListener : true
+      };
+      if (typeof this.customOptions.checkInterval !== "number") {
+        this.observer = new MutationObserver(() => this.checkAllSelectors());
+      } else {
+        this.checkAllSelectors();
+        setInterval(() => this.checkAllSelectors(), this.customOptions.checkInterval);
+      }
+    }
+    /** Call to check all selectors in the {@linkcode listenerMap} using {@linkcode checkSelector()} */
+    checkAllSelectors() {
+      if (!this.enabled || !domLoaded)
+        return;
+      for (const [selector, listeners] of this.listenerMap.entries())
+        this.checkSelector(selector, listeners);
+    }
+    /** Checks if the element(s) with the given {@linkcode selector} exist in the DOM and calls the respective {@linkcode listeners} accordingly */
+    checkSelector(selector, listeners) {
+      var _a;
+      if (!this.enabled)
+        return;
+      const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
+      if (!baseElement)
+        return;
+      const all = listeners.some((listener) => listener.all);
+      const one = listeners.some((listener) => !listener.all);
+      const allElements = all ? baseElement.querySelectorAll(selector) : null;
+      const oneElement = one ? baseElement.querySelector(selector) : null;
+      for (const options of listeners) {
+        if (options.all) {
+          if (allElements && allElements.length > 0) {
+            options.listener(allElements);
+            if (!options.continuous)
+              this.removeListener(selector, options);
+          }
+        } else {
+          if (oneElement) {
+            options.listener(oneElement);
+            if (!options.continuous)
+              this.removeListener(selector, options);
+          }
+        }
+        if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
+          this.listenerMap.delete(selector);
+        if (this.listenerMap.size === 0 && this.customOptions.disableOnNoListeners)
+          this.disable();
+      }
+    }
+    /**
+     * Starts observing the children of the base element for changes to the given {@linkcode selector} according to the set {@linkcode options}
+     * @param selector The selector to observe
+     * @param options Options for the selector observation
+     * @param options.listener Gets called whenever the selector was found in the DOM
+     * @param [options.all] Whether to use `querySelectorAll()` instead - default is false
+     * @param [options.continuous] Whether to call the listener continuously instead of just once - default is false
+     * @param [options.debounce] Whether to debounce the listener to reduce calls to `querySelector` or `querySelectorAll` - set undefined or <=0 to disable (default)
+     * @returns Returns a function that can be called to remove this listener more easily
+     */
+    addListener(selector, options) {
+      options = __spreadValues({
+        all: false,
+        continuous: false,
+        debounce: 0
+      }, options);
+      if (options.debounce && options.debounce > 0 || this.customOptions.defaultDebounce && this.customOptions.defaultDebounce > 0) {
+        options.listener = debounce(
+          options.listener,
+          options.debounce || this.customOptions.defaultDebounce,
+          options.debounceEdge || this.customOptions.defaultDebounceEdge
+        );
+      }
+      if (this.listenerMap.has(selector))
+        this.listenerMap.get(selector).push(options);
+      else
+        this.listenerMap.set(selector, [options]);
+      if (this.enabled === false && this.customOptions.enableOnAddListener)
+        this.enable();
+      this.checkSelector(selector, [options]);
+      return () => this.removeListener(selector, options);
+    }
+    /** Disables the observation of the child elements */
+    disable() {
+      var _a;
+      if (!this.enabled)
+        return;
+      this.enabled = false;
+      (_a = this.observer) == null ? void 0 : _a.disconnect();
+    }
+    /**
+     * Enables or reenables the observation of the child elements.
+     * @param immediatelyCheckSelectors Whether to immediately check if all previously registered selectors exist (default is true)
+     * @returns Returns true when the observation was enabled, false otherwise (e.g. when the base element wasn't found)
+     */
+    enable(immediatelyCheckSelectors = true) {
+      var _a;
+      const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
+      if (this.enabled || !baseElement)
+        return false;
+      this.enabled = true;
+      (_a = this.observer) == null ? void 0 : _a.observe(baseElement, this.observerOptions);
+      if (immediatelyCheckSelectors)
+        this.checkAllSelectors();
+      return true;
+    }
+    /** Returns whether the observation of the child elements is currently enabled */
+    isEnabled() {
+      return this.enabled;
+    }
+    /** Removes all listeners that have been registered with {@linkcode addListener()} */
+    clearListeners() {
+      this.listenerMap.clear();
+    }
+    /**
+     * Removes all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()}
+     * @returns Returns true when all listeners for the associated selector were found and removed, false otherwise
+     */
+    removeAllListeners(selector) {
+      return this.listenerMap.delete(selector);
+    }
+    /**
+     * Removes a single listener for the given {@linkcode selector} and {@linkcode options} that has been registered with {@linkcode addListener()}
+     * @returns Returns true when the listener was found and removed, false otherwise
+     */
+    removeListener(selector, options) {
+      const listeners = this.listenerMap.get(selector);
+      if (!listeners)
+        return false;
+      const index = listeners.indexOf(options);
+      if (index > -1) {
+        listeners.splice(index, 1);
+        return true;
+      }
+      return false;
+    }
+    /** Returns all listeners that have been registered with {@linkcode addListener()} */
+    getAllListeners() {
+      return this.listenerMap;
+    }
+    /** Returns all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()} */
+    getListeners(selector) {
+      return this.listenerMap.get(selector);
+    }
+  };
+
+  // lib/translation.ts
+  var trans = {};
+  var curLang;
+  function tr(key, ...args) {
+    var _a;
+    if (!curLang)
+      return key;
+    const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
+    if (!trText)
+      return key;
+    if (args.length > 0 && trText.match(/%\d/)) {
+      return insertValues(trText, ...args);
+    }
+    return trText;
+  }
+  tr.addLanguage = (language, translations) => {
+    trans[language] = translations;
+  };
+  tr.setLanguage = (language) => {
+    curLang = language;
+  };
+  tr.getLanguage = () => {
+    return curLang;
+  };
+
+  exports.DataStore = DataStore;
+  exports.DataStoreSerializer = DataStoreSerializer;
+  exports.SelectorObserver = SelectorObserver;
+  exports.addGlobalStyle = addGlobalStyle;
+  exports.addParent = addParent;
+  exports.autoPlural = autoPlural;
+  exports.clamp = clamp;
+  exports.compress = compress;
+  exports.computeHash = computeHash;
+  exports.debounce = debounce;
+  exports.decompress = decompress;
+  exports.fetchAdvanced = fetchAdvanced;
+  exports.getSiblingsFrame = getSiblingsFrame;
+  exports.getUnsafeWindow = getUnsafeWindow;
+  exports.insertValues = insertValues;
+  exports.interceptEvent = interceptEvent;
+  exports.interceptWindowEvent = interceptWindowEvent;
+  exports.isScrollable = isScrollable;
+  exports.mapRange = mapRange;
+  exports.observeElementProp = observeElementProp;
+  exports.openInNewTab = openInNewTab;
+  exports.pauseFor = pauseFor;
+  exports.preloadImages = preloadImages;
+  exports.randRange = randRange;
+  exports.randomId = randomId;
+  exports.randomItem = randomItem;
+  exports.randomItemIndex = randomItemIndex;
+  exports.randomizeArray = randomizeArray;
+  exports.takeRandomItem = takeRandomItem;
+  exports.tr = tr;
+
+  return exports;
+
+})({});
 
 (function(UserUtils,compareVersions,marked,Fuse){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);/******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -191,7 +1032,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "d2f9f124";
+const buildNumberRaw = "49e6b2fd";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -797,8 +1638,8 @@ function createRipple(rippleElement, properties) {
         const y = e.clientY - rippleEl.getBoundingClientRect().top;
         const rippleAreaEl = document.createElement("span");
         rippleAreaEl.classList.add("bytm-ripple-area");
-        rippleAreaEl.style.left = `${x}px`;
-        rippleAreaEl.style.top = `${y}px`;
+        rippleAreaEl.style.left = `${Math.round(x)}px`;
+        rippleAreaEl.style.top = `${Math.round(y)}px`;
         if (rippleEl.firstChild)
             rippleEl.insertBefore(rippleAreaEl, rippleEl.firstChild);
         else
@@ -1075,7 +1916,7 @@ function initSiteEvents() {
             });
         }
         catch (err) {
-            error("Couldn't initialize SiteEvents observers due to an error:\n", err);
+            error("Couldn't initialize site event observers due to an error:\n", err);
         }
     });
 }
@@ -1083,24 +1924,29 @@ let bytmReady = false;
 window.addEventListener("bytm:ready", () => bytmReady = true, { once: true });
 /** Emits a site event with the given key and arguments - if `bytm:ready` has not been emitted yet, all events will be queued until it is */
 function emitSiteEvent(key, ...args) {
-    if (!bytmReady) {
-        window.addEventListener("bytm:ready", () => {
-            bytmReady = true;
-            emitSiteEvent(key, ...args);
-        }, { once: true });
-        return;
+    try {
+        if (!bytmReady) {
+            window.addEventListener("bytm:ready", () => {
+                bytmReady = true;
+                emitSiteEvent(key, ...args);
+            }, { once: true });
+            return;
+        }
+        siteEvents.emit(key, ...args);
+        emitInterface(`bytm:siteEvent:${key}`, args);
     }
-    siteEvents.emit(key, ...args);
-    emitInterface(`bytm:siteEvent:${key}`, args);
+    catch (err) {
+        error(`Couldn't emit site event "${key}" due to an error:\n`, err);
+    }
 }
 //#region other
 /** Checks if the watch ID has changed and emits a `watchIdChanged` siteEvent if it has */
 function checkWatchIdChange(newId) {
     const newWatchId = newId !== null && newId !== void 0 ? newId : new URL(location.href).searchParams.get("v");
     if (newWatchId && newWatchId !== lastWatchId) {
-        lastWatchId = newWatchId;
         info(`Detected watch ID change - old ID: "${lastWatchId}" - new ID: "${newWatchId}"`);
         emitSiteEvent("watchIdChanged", newWatchId, lastWatchId);
+        lastWatchId = newWatchId;
     }
 }
 /** Periodically called to check for changes in the URL and emit associated siteEvents */
@@ -1391,8 +2237,9 @@ function showToast(_a) {
         }
         document.body.appendChild(toastElem);
         yield UserUtils.pauseFor(100);
-        toastElem.classList.add("visible", `pos-${position}`);
-        timeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () { return yield closeToast(); }), duration * 1000);
+        toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
+        if (duration < Number.POSITIVE_INFINITY)
+            timeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () { return yield closeToast(); }), duration * 1000);
     });
 }
 /** Closes the currently open toast */
@@ -1492,7 +2339,7 @@ function getAutoLikeDialog() {
         }
         if (!autoLikeImExDialog) {
             autoLikeImExDialog = new ExImDialog({
-                id: "auto-like-channels-import-export",
+                id: "auto-like-channels-export-import",
                 width: 800,
                 height: 600,
                 // try to compress the data if possible
@@ -1850,11 +2697,11 @@ var homepage = "https://github.com/Sv443/BetterYTM";
 var main = "./src/index.ts";
 var type = "module";
 var scripts = {
-	dev: "concurrently \"nodemon --exec pnpm run build-dev\" \"pnpm run serve\"",
+	dev: "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
 	serve: "pnpm run node-ts ./src/tools/serve.ts",
 	lint: "tsc --noEmit && eslint .",
 	build: "rollup -c",
-	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
+	"build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
 	"build-preview": "rollup -c --config-mode development --config-host github --config-branch develop",
 	preview: "pnpm run build-preview && pnpm run serve --auto-exit=3",
 	"build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
@@ -1928,13 +2775,13 @@ var devDependencies = {
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
 	"@types/node": "^20.14.8",
-	"@typescript-eslint/eslint-plugin": "^8.0.0-alpha.26",
-	"@typescript-eslint/parser": "^8.0.0-alpha.26",
-	"@typescript-eslint/utils": "^8.0.0-alpha.26",
+	"@typescript-eslint/eslint-plugin": "8.0.0-alpha.49",
+	"@typescript-eslint/parser": "8.0.0-alpha.49",
+	"@typescript-eslint/utils": "8.0.0-alpha.49",
 	concurrently: "^8.2.2",
 	dotenv: "^16.4.5",
 	eslint: "^9.5.0",
-	"eslint-plugin-storybook": "^0.9.0--canary.156.da7873a.0",
+	"eslint-plugin-storybook": "0.9.0--canary.156.ed236ca.0",
 	express: "^4.19.2",
 	globals: "^15.6.0",
 	knip: "^5.22.2",
@@ -2267,7 +3114,7 @@ function mountCfgMenu() {
         /** For copying plain when shift-clicking the copy button or when compression is not supported */
         const exportDataSpecial = () => JSON.stringify({ formatVersion, data: getFeatures() });
         const exImDlg = new ExImDialog({
-            id: "bytm-config-import-export",
+            id: "bytm-config-export-import",
             width: 800,
             height: 600,
             // try to compress the data if possible
@@ -4216,8 +5063,9 @@ function initAutoLike() {
                 let timeout;
                 siteEvents.on("songTitleChanged", () => {
                     var _a;
+                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
                     timeout && clearTimeout(timeout);
-                    timeout = setTimeout(() => {
+                    const ytmTryAutoLike = () => {
                         const artistEls = document.querySelectorAll("ytmusic-player-bar .content-info-wrapper .subtitle a.yt-formatted-string[href]");
                         const channelIds = [...artistEls].map(a => a.href.split("/").pop()).filter(a => typeof a === "string");
                         const likeChan = autoLikeStore.getData().channels.find((ch) => channelIds.includes(ch.id));
@@ -4237,7 +5085,9 @@ function initAutoLike() {
                             });
                             log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
                         }
-                    }, ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000);
+                    };
+                    timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
+                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytmTryAutoLike, autoLikeTimeoutMs));
                 });
                 siteEvents.on("pathChanged", (path) => {
                     if (getFeature("autoLikeChannelToggleBtn") && path.match(/\/channel\/.+/)) {
@@ -4269,10 +5119,11 @@ function initAutoLike() {
                 let timeout;
                 siteEvents.on("watchIdChanged", () => {
                     var _a;
+                    const autoLikeTimeoutMs = ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000;
                     timeout && clearTimeout(timeout);
                     if (!location.pathname.startsWith("/watch"))
                         return;
-                    timeout = setTimeout(() => {
+                    const ytTryAutoLike = () => {
                         addSelectorListener("ytWatchMetadata", "#owner ytd-channel-name yt-formatted-string a", {
                             listener(chanElem) {
                                 var _a, _b;
@@ -4294,7 +5145,9 @@ function initAutoLike() {
                                 });
                             }
                         });
-                    }, ((_a = getFeature("autoLikeTimeout")) !== null && _a !== void 0 ? _a : 5) * 1000);
+                    };
+                    siteEvents.on("autoLikeChannelsUpdated", () => setTimeout(ytTryAutoLike, autoLikeTimeoutMs));
+                    timeout = setTimeout(ytTryAutoLike, autoLikeTimeoutMs);
                 });
                 siteEvents.on("pathChanged", (path) => {
                     if (path.match(/(\/?@|\/?channel\/)\S+/)) {
@@ -6088,10 +6941,15 @@ function setGlobalProp(key, value) {
 /** Emits an event on the BYTM interface */
 function emitInterface(type, ...detail) {
     var _a;
-    getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = detail === null || detail === void 0 ? void 0 : detail[0]) !== null && _a !== void 0 ? _a : undefined }));
-    //@ts-ignore
-    emitOnPlugins(type, undefined, ...detail);
-    log(`Emitted interface event '${type}'${detail.length > 0 && (detail === null || detail === void 0 ? void 0 : detail[0]) ? " with data:" : ""}`, ...detail);
+    try {
+        getUnsafeWindow().dispatchEvent(new CustomEvent(type, { detail: (_a = detail === null || detail === void 0 ? void 0 : detail[0]) !== null && _a !== void 0 ? _a : undefined }));
+        //@ts-ignore
+        emitOnPlugins(type, undefined, ...detail);
+        log(`Emitted interface event '${type}'${detail.length > 0 && (detail === null || detail === void 0 ? void 0 : detail[0]) ? " with data:" : ""}`, ...detail);
+    }
+    catch (err) {
+        error(`Couldn't emit interface event '${type}' due to an error:\n`, err);
+    }
 }
 //#region register plugins
 /** Map of plugin ID and plugins that are queued up for registration */
@@ -6988,7 +7846,14 @@ function fetchVideoVotes(watchId) {
             return undefined;
         }
     });
-}//#region cns. watermark
+}/** Central serializer for all data stores */
+const storeSerializer = new UserUtils.DataStoreSerializer([
+    cfgDataStore,
+    autoLikeStore,
+], {
+    addChecksum: true,
+    ensureIntegrity: true,
+});//#region cns. watermark
 {
     // console watermark with sexy gradient
     const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
@@ -7059,7 +7924,7 @@ function onDomLoad() {
             initGlobalCssVars();
             initObservers();
             yield Promise.allSettled([
-                insertGlobalStyle(),
+                injectCssBundle(),
                 initVersionCheck(),
             ]);
         }
@@ -7172,10 +8037,10 @@ function onDomLoad() {
 }
 //#region css
 /** Inserts the bundled CSS files imported throughout the script into a <style> element in the <head> */
-function insertGlobalStyle() {
+function injectCssBundle() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!(yield addStyleFromResource("css-bundle")))
-            error("Couldn't add global CSS bundle due to an error");
+            error("Couldn't inject CSS bundle due to an error");
     });
 }
 /** Initializes global CSS variables */
@@ -7306,6 +8171,18 @@ function registerDevMenuCommands() {
         if (input && input.length > 0) {
             const decompressed = yield UserUtils.decompress(input, compressionFormat);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
+        }
+    }));
+    GM.registerMenuCommand("Export data using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
+        const ser = yield storeSerializer.serialize();
+        dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
+        alert("See console.");
+    }));
+    GM.registerMenuCommand("Import data using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
+        const input = prompt("Enter the serialized data to import:");
+        if (input && input.length > 0) {
+            yield storeSerializer.deserialize(input);
+            alert("Imported data. Reload the page to apply changes.");
         }
     }));
     log("Registered dev menu commands");
