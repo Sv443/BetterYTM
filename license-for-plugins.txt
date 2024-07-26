@@ -4,23 +4,29 @@ the root directory and `src/` and `assets/` folders, *excluding* the subfolders
 in `src/` and also *excluding* all files in `assets/images/external/`.
 All other files are licensed under the AGPL-3.0-only (see `LICENSE.txt`).
 
-Furthermore, you may include the source code of this project in the source of
-yours, as long as only the above mentioned files are included in the *runtime*
-code that will be distributed to the end user. (For development purposes, you
-may include and use the entire source code of this project.)
+You may include the source code of this project in the source of yours, as long
+as only the above mentioned files are included in the *runtime* code that will be
+distributed to the end user. (For development purposes *only* you may include and
+use the entire source code of this project.)
 
-Lastly, you are to make the source code of your plugin available to anyone who
-requests it, and you are to provide a link to said source code in the plugin
-definition object needed for registering the plugin at runtime.
-The exact license of the plugin is up to you, but it must be open-source.
+Additionally, you are to make the source code of your plugin available to anyone,
+and you are to provide a link to said source code in the plugin definition object
+needed for registering the plugin at runtime.
+The exact license of the plugin is up to you, but it must be open-source, so that
+anyone can verify its legitimacy and security.
+
+Lastly, your plugin is to follow the local laws and regulations of the country
+you are in, and you are to take full responsibility for any legal issues that may
+arise from the use of your plugin.
 
 Use is granted under the condition that the original author and the BetterYTM
 project is credited in the plugin, in a place that is easily accessible to the
 end user. This can be done by including a link to the BetterYTM project in a
 dialog in the plugin's runtime code or by putting it in its readme or similar.
 
-Failure to comply with these terms will result in your plugin never being
-endorsed by the BetterYTM project and might even result in legal action.
+Failure to comply with these terms will mean your plugin won't be endorsed by the
+BetterYTM project and could, in severe cases, even result in legal action being
+taken against you and your plugin.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
