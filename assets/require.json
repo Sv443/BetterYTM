@@ -5,11 +5,6 @@
     "global": "UserUtils"
   },
   {
-    "pkgName": "fuse.js",
-    "path": "dist/fuse.basic.js",
-    "global": "Fuse"
-  },
-  {
     "pkgName": "marked",
     "path": "lib/marked.umd.js",
     "global": "marked"
