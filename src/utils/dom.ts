@@ -191,9 +191,12 @@ export function clearNode(element: Element) {
 
 /**
  * Checks if the currently playing media is a song or a video.  
+ * Only works on YTM and will throw on YT!  
  * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
  */
 export function currentMediaType(): "video" | "song" {
+  if(getDomain() === "yt")
+    throw new Error("currentMediaType() is only available on YTM!");
   const songImgElem = document.querySelector("ytmusic-player #song-image");
   if(!songImgElem)
     throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");

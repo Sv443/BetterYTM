@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
@@ -166,7 +166,7 @@ export const autoLikeStore = new DataStore<AutoLikeData>({
     2: (oldData: AutoLikeData) => ({
       channels: oldData.channels.map((ch) => ({
         ...ch,
-        id: ch.id.trim().match(/^(UC|@).+$/)
+        id: isValidChannelId(ch.id.trim())
           ? ch.id.trim()
           : `@${ch.id.trim()}`,
       })),
@@ -189,6 +189,8 @@ export async function initAutoLike() {
   try {
     canCompress = await compressionSupported();
     await initAutoLikeStore();
+
+    //#SECTION ytm
     if(getDomain() === "ytm") {
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("songTitleChanged", () => {
@@ -252,7 +254,10 @@ export async function initAutoLike() {
         }
       });
     }
+    //#SECTION yt
     else if(getDomain() === "yt") {
+      addStyleFromResource("css-auto_like");
+
       let timeout: ReturnType<typeof setTimeout>;
       siteEvents.on("watchIdChanged", () => {
         const autoLikeTimeoutMs = (getFeature("autoLikeTimeout") ?? 5) * 1000;
@@ -273,10 +278,10 @@ export async function initAutoLike() {
                   if(likeBtn.getAttribute("aria-pressed") !== "true") {
                     likeBtn.click();
                     getFeature("autoLikeShowToast") && showIconToast({
-                      message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
+                      message: t("auto_liked_a_channels_video", likeChan.name),
                       icon: "icon-auto_like",
                     });
-                    log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                    log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
                 }
               });
@@ -297,15 +302,15 @@ export async function initAutoLike() {
 
           addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container, #page-header", {
             listener(headerCont) {
-              const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container");
+              const titleCont = headerCont.querySelector<HTMLElement>("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
               if(!titleCont)
                 return;
 
-              const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string")?.textContent ?? null;
+              const chanName = titleCont.querySelector<HTMLElement>("yt-formatted-string, span.yt-core-attributed-string")?.textContent ?? null;
 
-              const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons");
+              const buttonsCont = headerCont.querySelector<HTMLElement>("#inner-header-container #buttons, yt-flexible-actions-view-model");
               if(buttonsCont) {
-                addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-subscribe-button-view-model", {
+                addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
                   listener: (otherBtns) =>
                     addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
                 });
@@ -325,6 +330,9 @@ export async function initAutoLike() {
   }
 }
 
+//#SECTION toggle btn
+
+/** Adds a toggle button to enable or disable auto-liking videos from a channel */
 async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, channelName: string | null, extraClasses?: string[]) {
   const chan = autoLikeStore.getData().channels.find((ch) => ch.id === channelId);
 
