@@ -22,6 +22,8 @@ export interface BytmDialogOptions {
   destroyOnClose?: boolean;
   /** Whether the dialog should be unmounted when it's closed - defaults to true - superseded by destroyOnClose */
   unmountOnClose?: boolean;
+  /** Whether all listeners should be removed when the dialog is destroyed - defaults to true */
+  removeListenersOnDestroy?: boolean;
   /** Whether the dialog should have a smaller overall appearance - defaults to false */
   small?: boolean;
   /** Where to align or anchor the dialog vertically - defaults to "center" */
@@ -58,8 +60,8 @@ export class BytmDialog extends NanoEmitter<{
   public readonly options;
   public readonly id;
 
-  private dialogOpen = false;
-  private dialogMounted = false;
+  protected dialogOpen = false;
+  protected dialogMounted = false;
 
   constructor(options: BytmDialogOptions) {
     super();
@@ -70,6 +72,7 @@ export class BytmDialog extends NanoEmitter<{
       closeBtnEnabled: true,
       destroyOnClose: false,
       unmountOnClose: true,
+      removeListenersOnDestroy: true,
       smallHeader: false,
       verticalAlign: "center",
       ...options,
@@ -249,7 +252,7 @@ export class BytmDialog extends NanoEmitter<{
   public destroy() {
     this.unmount();
     this.events.emit("destroy");
-    this.unsubscribeAll();
+    this.options.removeListenersOnDestroy && this.unsubscribeAll();
   }
 
   //#region static
@@ -286,7 +289,7 @@ export class BytmDialog extends NanoEmitter<{
   //#region private
 
   /** Returns the dialog content element and all its children */
-  private async getDialogContent() {
+  protected async getDialogContent() {
     const header = this.options.renderHeader?.();
     const footer = this.options.renderFooter?.();
 
