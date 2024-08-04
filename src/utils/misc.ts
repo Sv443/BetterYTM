@@ -7,19 +7,19 @@ import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc
 
-let cachedDomain: Domain; 
+let domain: Domain; 
 
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
  */
 export function getDomain(): Domain {
-  if(cachedDomain)
-    return cachedDomain;
+  if(domain)
+    return domain;
   if(location.hostname.match(/^music\.youtube/))
-    return cachedDomain = "ytm";
+    return domain = "ytm";
   else if(location.hostname.match(/youtube\./))
-    return cachedDomain = "yt";
+    return domain = "yt";
   else
     throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
@@ -88,15 +88,28 @@ export function parseChannelIdFromUrl(url: string | URL) {
   try {
     const { pathname } = url instanceof URL ? url : new URL(url);
     if(pathname.includes("/channel/"))
-      return pathname.split("/channel/")[1].split("/")[0];
+      return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
     else if(pathname.includes("/@"))
-      return pathname.split("/@")[1].split("/")[0];
+      return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
     else
       return null;
   }
   catch {
     return null;
   }
+}
+
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+export function sanitizeChannelId(channelId: string) {
+  channelId = String(channelId).trim();
+  return isValidChannelId(channelId)
+    ? channelId
+    : `@${channelId}`;
+}
+
+/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+export function isValidChannelId(channelId: string) {
+  return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
 }
 
 /** Quality identifier for a thumbnail - from highest to lowest res: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default` */
@@ -160,12 +173,6 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   await pauseFor(250);
 
   return parsed;
-}
-
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-export function sanitizeChannelId(channelId: string) {
-  channelId = String(channelId);
-  return (channelId.startsWith("UC") ? channelId : `@${channelId}`).trim();
 }
 
 //#region resources

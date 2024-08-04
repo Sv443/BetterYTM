@@ -52,7 +52,7 @@ export async function initQueueButtons() {
       addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
     });
 
-    log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)}`);
+    log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)} in list`, listElem);
   };
 
   const listSelector = `\
