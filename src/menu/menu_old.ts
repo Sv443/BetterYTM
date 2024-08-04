@@ -1,5 +1,5 @@
 import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-network/userutils";
-import { defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
+import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse } from "../utils/index.js";
