@@ -1,4 +1,3 @@
-import { autoPlural, mapRange } from "@sv443-network/userutils";
 import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -128,5 +127,28 @@ ${lines.join("\n")}\n
 
   setImmediate(() => exit(0));
 }
+
+/**
+ * Automatically appends an `s` to the passed {@linkcode word}, if {@linkcode num} is not equal to 1
+ * @param word A word in singular form, to auto-convert to plural
+ * @param num If this is an array or NodeList, the amount of items is used
+ */
+function autoPlural(word: string | { toString(): string }, num: number | unknown[] | NodeList): string {
+  if(Array.isArray(num) || num instanceof NodeList)
+    num = num.length;
+  return `${word}${num === 1 ? "" : "s"}`;
+}
+
+/**
+ * Transforms the value parameter from the numerical range `range1min─range1max` to the numerical range `range2min─range2max`  
+ * For example, you can map the value 2 in the range of 0-5 to the range of 0-10 and you'd get a 4 as a result.
+ */
+function mapRange(value: number, range1min: number, range1max: number, range2min: number, range2max: number): number {
+  if(Number(range1min) === 0.0 && Number(range2min) === 0.0)
+    return value * (range2max / range1max);
+
+  return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
+}
+
 
 run();
