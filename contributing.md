@@ -112,9 +112,9 @@ To edit an existing translation, please follow these steps:
   Shorthand commands:
   - `pnpm run build-prod-base` - Used for building for production, targets the main branch and the public asset source.  
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
-  - `pnpm run build-preview` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
+  - `pnpm run build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
-  - `pnpm run preview` - Same as `pnpm run build-preview`, but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script
+  - `pnpm run preview` - Same as `pnpm run build-dev but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
 - **`pnpm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
 - **`pnpm run storybook`**  
@@ -139,6 +139,10 @@ To edit an existing translation, please follow these steps:
 - **`pnpm run node-ts -- <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
+- **`pnpm run dep-cruise`**  
+  Runs dependency-cruiser to show problems with the dependency tree like circular, missing or orphaned dependencies.
+- **`pnpm run dep-graph`**  
+  Generates a dependency graph of the project, visually showing the dependencies between files and problems with the dependency tree.
 
 > [!NOTE]
 > 
@@ -153,9 +157,9 @@ To edit an existing translation, please follow these steps:
 - When using ViolentMonkey, after letting the command `pnpm run dev` run in the background, open [`http://localhost:8710/BetterYTM.user.js`](http://localhost:8710/BetterYTM.user.js) and select the `Track local file` option.  
   This makes it so the userscript automatically updates when the code changes.  
   Note: the tab needs to stay open on Firefox or the script will not update itself.
-- To link any bundled JS library with global variable exports in the userscript, add a `"link": "/path/to/script.global.js"` property to the respective library in [`assets/require.json`](./assets/require.json)  
-  The file will be automatically injected into the userscript and its global variables will be available in the userscript's scope.  
-  In order to make TypeScript shut up, you will still need to link it manually with `pnpm link -g /path/to/library_root`
+- To link any local JS file (like a work-in-progress library) in the userscript, add a `"link": "/path/to/script.umd.js"` property to the respective library in [`assets/require.json`](./assets/require.json) (relative or absolute path)  
+  As this file will just be injected as-is at build time, make sure you are targeting a UMD or IIFE bundle that exports a variable with the name set by `"global"`.  
+  In order to make TypeScript shut up, you will still need to link the library manually with `pnpm link -g /path/to/library_root`
 
 <br>
 
