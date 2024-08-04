@@ -24,6 +24,7 @@ export async function getAutoLikeDialog() {
       closeOnBgClick: true,
       closeOnEscPress: true,
       destroyOnClose: true,
+      removeListenersOnDestroy: false,
       small: true,
       verticalAlign: "top",
       renderHeader,
@@ -40,6 +41,8 @@ export async function getAutoLikeDialog() {
         log("Auto-like channels updated, refreshed dialog");
       }
     });
+
+    autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
   }
   
   if(!autoLikeImExDialog) {
@@ -143,15 +146,13 @@ async function renderBody() {
   const channelListCont = document.createElement("div");
   channelListCont.id = "bytm-auto-like-channels-list";
 
-  const removeChannel = (id: string) => autoLikeStore.setData({
-    channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== id),
-  });
-
-  const setChannelEnabled = (id: string, enabled: boolean) => debounce(
-    () => autoLikeStore.setData({
-      channels: autoLikeStore.getData().channels
-        .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
-    }),
+  const setChannelEnabled = debounce(
+    (id: string, enabled: boolean) => {
+      autoLikeStore.setData({
+        channels: autoLikeStore.getData().channels
+          .map((ch) => ch.id === id ? { ...ch, enabled } : ch),
+      });
+    },
     250,
     "rising"
   );
@@ -190,7 +191,7 @@ async function renderBody() {
     nameLabelEl.appendChild(idElem);
 
     const toggleElem = await createToggleInput({
-      id: `bytm-auto-like-channel-list-toggle-${chanId}`,
+      id: `auto-like-channel-list-${chanId}`,
       labelPos: "off",
       initialValue: enabled,
       onChange: (en) => setChannelEnabled(chanId, en),
@@ -228,7 +229,10 @@ async function renderBody() {
       resourceName: "icon-delete",
       title: t("remove_entry"),
       async onClick() {
-        await removeChannel(chanId);
+        autoLikeStore.setData({
+          channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
+        });
+        emitSiteEvent("autoLikeChannelsUpdated");
         rowElem.remove();
       },
     });

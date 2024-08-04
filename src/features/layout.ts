@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, dbg, tp } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -342,7 +342,6 @@ export async function initRemShareTrackParam() {
   addSelectorListener("body", sharePanelSel, {
     listener: (sharePanelEl) => {
       const obs = new MutationObserver(() => {
-        dbg("># TODO:#DBG share panel changed");
         const inputElem = sharePanelEl.querySelector<HTMLInputElement>(inputSel);
         inputElem && removeSiParam(inputElem);
       });
