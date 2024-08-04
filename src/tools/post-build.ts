@@ -33,7 +33,7 @@ const buildTs = Date.now();
 /** Used to force the browser and userscript extension to refresh resources */
 const buildUuid = randomUUID();
 
-const { env, exit } = process;
+const { env } = process;
 
 type CliArg<TName extends keyof Required<RollupArgs>> = Required<RollupArgs>[TName];
 
@@ -185,15 +185,13 @@ I welcome every contribution on GitHub!
     };
     await writeFile(".build.json", JSON.stringify(buildStatsNew));
 
-    // schedule exit after I/O finishes
-    setImmediate(() => exit(0));
+    exit(0);
   }
   catch(err) {
     console.error("\x1b[31mError while adding userscript header:\x1b[0m");
     console.error(err);
 
-    // schedule exit after I/O finishes
-    setImmediate(() => exit(1));
+    exit(1);
   }
 })();
 
@@ -354,11 +352,22 @@ async function getLinkedPkgs() {
     if(!("link" in entry) || typeof entry.link !== "string")
       continue;
 
-    const scriptCont = String(await readFile(resolve(entry.link)));
-    const trimmedScript = scriptCont
-      .replace(/\/\/ ==.*==[\s\S]*?\/\/ ==\/.*==/gm, "");
-    retStr += `\n// >> Linked package: ${entry.link}\n${trimmedScript}\n// << End of linked package: ${entry.link}\n`;
+    try {
+      const scriptCont = String(await readFile(resolve(entry.link)));
+      const trimmedScript = scriptCont
+        .replace(/\/\/ ==.*==[\s\S]*?\/\/ ==\/.*==/gm, "");
+      retStr += `\n// >> Linked package: ${entry.link}\n${trimmedScript}\n// << End of linked package: ${entry.link}\n`;
+    }
+    catch(err) {
+      console.error(`Couldn't read linked package at '${entry.link}':`, err);
+      exit(1);
+    }
   }
 
   return retStr;
+}
+
+/** Schedules an exit after I/O events finish */
+function exit(code: number) {
+  setImmediate(() => process.exit(code));
 }
