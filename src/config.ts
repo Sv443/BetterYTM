@@ -1,4 +1,4 @@
-import { DataStore, compress, type DataMigrationsDict, decompress } from "@sv443-network/userutils";
+import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion } from "@sv443-network/userutils";
 import { disableBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
@@ -86,6 +86,7 @@ export const migrations: DataMigrationsDict = {
       ],
     );
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
+    "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
     return newData;
   },
 
@@ -98,7 +99,7 @@ export const migrations: DataMigrationsDict = {
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
-function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: (keyof typeof featInfo)[]): FeatureConfig {
+function useDefaultConfig(baseData: Partial<FeatureConfig> | undefined, resetKeys: LooseUnion<keyof typeof featInfo>[]): FeatureConfig {
   const newData = { ...defaultData, ...(baseData ?? {}) };
   for(const key of resetKeys) // @ts-ignore
     newData[key] = featInfo?.[key]?.default as never; // typescript funny moments

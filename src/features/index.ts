@@ -598,16 +598,16 @@ export const featInfo = {
     advanced: true,
     textAdornment: adornments.advanced,
   },
-  advancedLyricsFilter: {
-    type: "toggle",
-    category: "lyrics",
-    default: false,
-    change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
-    advanced: true,
-    textAdornment: adornments.experimental,
-    reloadRequired: false,
-    enable: noop,
-  },
+  // advancedLyricsFilter: {
+  //   type: "toggle",
+  //   category: "lyrics",
+  //   default: false,
+  //   change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
+  //   advanced: true,
+  //   textAdornment: adornments.experimental,
+  //   reloadRequired: false,
+  //   enable: noop,
+  // },
 
   //#region general
   locale: {
