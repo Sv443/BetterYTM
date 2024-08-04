@@ -244,7 +244,8 @@ export const featInfo = {
     reloadRequired: false,
     enable: noop,
   },
-  // archived idea for future version:
+  // archived idea for future version
+  // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
   // showVoteRatio: {
   //   type: "select",
   //   category: "layout",
@@ -483,8 +484,9 @@ export const featInfo = {
   autoLikeChannels: {
     type: "toggle",
     category: "input",
-    default: true,
-    textAdornment: adornments.reloadRequired,
+    default: false,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   autoLikeChannelToggleBtn: {
     type: "toggle",
@@ -492,6 +494,8 @@ export const featInfo = {
     default: true,
     reloadRequired: false,
     enable: noop,
+    advanced: true,
+    textAdornment: adornments.advanced,
   },
   // TODO(v2.2):
   // autoLikePlayerBarToggleBtn: {

@@ -88,11 +88,13 @@ export const migrations: DataMigrationsDict = {
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
     return newData;
   },
-  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
 
-  // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-  // 6 -> 7 (vX.X)
-  // 7: (oldData: FeatureConfig) => 
+  // TODO: once advanced lyrics filtering is fully implemented, clear cache on migration
+  // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
+  // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
+
+  // 6 -> 7 (v2.2)
+  // 7: (oldData: FeatureConfig) =>
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
