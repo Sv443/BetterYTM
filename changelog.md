@@ -1,4 +1,4 @@
-<!-- I messed up with the changelog parsing so this is just how it will have to be -->
+<!-- I messed up with the changelog parsing so this first split marker will just have to be here forever now -->
 <div class="split"></div>
 
 <!-- #region 2.1.0 -->
@@ -47,6 +47,9 @@
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
     - `createRipple()` to create a click ripple animation effect on any given element or create a new element with the effect
     - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
+  - Changed components:
+    - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed
+    - BytmDialog's private members and methods have been changed to protected for easier extension (when using TypeScript)
   - Added functions:
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
