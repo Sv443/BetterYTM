@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,52 +33,53 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/anchorImprovements.css
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/dist/BetterYTM.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/arrow_down.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/beaker_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/globe.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/globe_small.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/help.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/image.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/image_filled.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/greasyfork.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_48.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/de_DE.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/en_UK.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/en_US.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/49e6b2fd/assets/translations/zh_CN.json
-// @require           https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.js
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/anchorImprovements.css
+// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/autoLike.css
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/dist/BetterYTM.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/arrow_down.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/help.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/image.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/image_filled.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/external/greasyfork.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/logo/logo_48.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/de_DE.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/en_UK.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/en_US.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/54361dfb/assets/translations/zh_CN.json
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @grant             GM.registerMenuCommand
@@ -98,848 +99,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-var UserUtils = (function (exports) {
-  var __defProp = Object.defineProperty;
-  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-  var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __propIsEnum = Object.prototype.propertyIsEnumerable;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __spreadValues = (a, b) => {
-    for (var prop in b || (b = {}))
-      if (__hasOwnProp.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    if (__getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(b)) {
-        if (__propIsEnum.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      }
-    return a;
-  };
-  var __objRest = (source, exclude) => {
-    var target = {};
-    for (var prop in source)
-      if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
-        target[prop] = source[prop];
-    if (source != null && __getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(source)) {
-        if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
-          target[prop] = source[prop];
-      }
-    return target;
-  };
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
-  };
-  var __async = (__this, __arguments, generator) => {
-    return new Promise((resolve, reject) => {
-      var fulfilled = (value) => {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var rejected = (value) => {
-        try {
-          step(generator.throw(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-      step((generator = generator.apply(__this, __arguments)).next());
-    });
-  };
-
-  // lib/math.ts
-  function clamp(value, min, max) {
-    return Math.max(Math.min(value, max), min);
-  }
-  function mapRange(value, range1min, range1max, range2min, range2max) {
-    if (Number(range1min) === 0 && Number(range2min) === 0)
-      return value * (range2max / range1max);
-    return (value - range1min) * ((range2max - range2min) / (range1max - range1min)) + range2min;
-  }
-  function randRange(...args) {
-    let min, max;
-    if (typeof args[0] === "number" && typeof args[1] === "number")
-      [min, max] = args;
-    else if (typeof args[0] === "number" && typeof args[1] !== "number") {
-      min = 0;
-      [max] = args;
-    } else
-      throw new TypeError(`Wrong parameter(s) provided - expected: "number" and "number|undefined", got: "${typeof args[0]}" and "${typeof args[1]}"`);
-    min = Number(min);
-    max = Number(max);
-    if (isNaN(min) || isNaN(max))
-      return NaN;
-    if (min > max)
-      throw new TypeError(`Parameter "min" can't be bigger than "max"`);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  // lib/array.ts
-  function randomItem(array) {
-    return randomItemIndex(array)[0];
-  }
-  function randomItemIndex(array) {
-    if (array.length === 0)
-      return [void 0, void 0];
-    const idx = randRange(array.length - 1);
-    return [array[idx], idx];
-  }
-  function takeRandomItem(arr) {
-    const [itm, idx] = randomItemIndex(arr);
-    if (idx === void 0)
-      return void 0;
-    arr.splice(idx, 1);
-    return itm;
-  }
-  function randomizeArray(array) {
-    const retArray = [...array];
-    if (array.length === 0)
-      return retArray;
-    for (let i = retArray.length - 1; i > 0; i--) {
-      const j = Math.floor(randRange(0, 1e4) / 1e4 * (i + 1));
-      [retArray[i], retArray[j]] = [retArray[j], retArray[i]];
-    }
-    return retArray;
-  }
-
-  // lib/DataStore.ts
-  var DataStore = class {
-    /**
-     * Creates an instance of DataStore to manage a sync & async database that is cached in memory and persistently saved across sessions.  
-     * Supports migrating data from older versions to newer ones and populating the cache with default data if no persistent data is found.  
-     *   
-     * ⚠️ Requires the directives `@grant GM.getValue` and `@grant GM.setValue`  
-     * ⚠️ Make sure to call {@linkcode loadData()} at least once after creating an instance, or the returned data will be the same as `options.defaultData`
-     * 
-     * @template TData The type of the data that is saved in persistent storage (will be automatically inferred from `options.defaultData`) - this should also be the type of the data format associated with the current `options.formatVersion`
-     * @param options The options for this DataStore instance
-     */
-    constructor(options) {
-      __publicField(this, "id");
-      __publicField(this, "formatVersion");
-      __publicField(this, "defaultData");
-      __publicField(this, "encodeData");
-      __publicField(this, "decodeData");
-      __publicField(this, "cachedData");
-      __publicField(this, "migrations");
-      this.id = options.id;
-      this.formatVersion = options.formatVersion;
-      this.defaultData = options.defaultData;
-      this.cachedData = options.defaultData;
-      this.migrations = options.migrations;
-      this.encodeData = options.encodeData;
-      this.decodeData = options.decodeData;
-    }
-    /**
-     * Loads the data saved in persistent storage into the in-memory cache and also returns it.  
-     * Automatically populates persistent storage with default data if it doesn't contain any data yet.  
-     * Also runs all necessary migration functions if the data format has changed since the last time the data was saved.
-     */
-    loadData() {
-      return __async(this, null, function* () {
-        try {
-          const gmData = yield this.getValue(`_uucfg-${this.id}`, this.defaultData);
-          let gmFmtVer = Number(yield this.getValue(`_uucfgver-${this.id}`, NaN));
-          if (typeof gmData !== "string") {
-            yield this.saveDefaultData();
-            return __spreadValues({}, this.defaultData);
-          }
-          const isEncoded = yield this.getValue(`_uucfgenc-${this.id}`, false);
-          let saveData = false;
-          if (isNaN(gmFmtVer)) {
-            yield this.setValue(`_uucfgver-${this.id}`, gmFmtVer = this.formatVersion);
-            saveData = true;
-          }
-          let parsed = yield this.deserializeData(gmData, isEncoded);
-          if (gmFmtVer < this.formatVersion && this.migrations)
-            parsed = yield this.runMigrations(parsed, gmFmtVer);
-          if (saveData)
-            yield this.setData(parsed);
-          this.cachedData = __spreadValues({}, parsed);
-          return this.cachedData;
-        } catch (err) {
-          console.warn("Error while parsing JSON data, resetting it to the default value.", err);
-          yield this.saveDefaultData();
-          return this.defaultData;
-        }
-      });
-    }
-    /**
-     * Returns a copy of the data from the in-memory cache.  
-     * Use {@linkcode loadData()} to get fresh data from persistent storage (usually not necessary since the cache should always exactly reflect persistent storage).
-     * @param deepCopy Whether to return a deep copy of the data (default: `false`) - only necessary if your data object is nested and may have a bigger performance impact if enabled
-     */
-    getData(deepCopy = false) {
-      return deepCopy ? this.deepCopy(this.cachedData) : __spreadValues({}, this.cachedData);
-    }
-    /** Saves the data synchronously to the in-memory cache and asynchronously to the persistent storage */
-    setData(data) {
-      this.cachedData = data;
-      const useEncoding = this.encodingEnabled();
-      return new Promise((resolve) => __async(this, null, function* () {
-        yield Promise.all([
-          this.setValue(`_uucfg-${this.id}`, yield this.serializeData(data, useEncoding)),
-          this.setValue(`_uucfgver-${this.id}`, this.formatVersion),
-          this.setValue(`_uucfgenc-${this.id}`, useEncoding)
-        ]);
-        resolve();
-      }));
-    }
-    /** Saves the default data passed in the constructor synchronously to the in-memory cache and asynchronously to persistent storage */
-    saveDefaultData() {
-      return __async(this, null, function* () {
-        this.cachedData = this.defaultData;
-        const useEncoding = this.encodingEnabled();
-        return new Promise((resolve) => __async(this, null, function* () {
-          yield Promise.all([
-            this.setValue(`_uucfg-${this.id}`, yield this.serializeData(this.defaultData, useEncoding)),
-            this.setValue(`_uucfgver-${this.id}`, this.formatVersion),
-            this.setValue(`_uucfgenc-${this.id}`, useEncoding)
-          ]);
-          resolve();
-        }));
-      });
-    }
-    /**
-     * Call this method to clear all persistently stored data associated with this DataStore instance.  
-     * The in-memory cache will be left untouched, so you may still access the data with {@linkcode getData()}  
-     * Calling {@linkcode loadData()} or {@linkcode setData()} after this method was called will recreate persistent storage with the cached or default data.  
-     *   
-     * ⚠️ This requires the additional directive `@grant GM.deleteValue`
-     */
-    deleteData() {
-      return __async(this, null, function* () {
-        yield Promise.all([
-          this.deleteValue(`_uucfg-${this.id}`),
-          this.deleteValue(`_uucfgver-${this.id}`),
-          this.deleteValue(`_uucfgenc-${this.id}`)
-        ]);
-      });
-    }
-    /**
-     * Runs all necessary migration functions consecutively and saves the result to the in-memory cache and persistent storage and also returns it.  
-     * This method is automatically called by {@linkcode loadData()} if the data format has changed since the last time the data was saved.  
-     * Though calling this method manually is not necessary, it can be useful if you want to run migrations for special occasions like a user importing potentially outdated data that has been previously exported.  
-     *   
-     * If one of the migrations fails, the data will be reset to the default value if `resetOnError` is set to `true` (default). Otherwise, an error will be thrown and no data will be saved.
-     */
-    runMigrations(oldData, oldFmtVer, resetOnError = true) {
-      return __async(this, null, function* () {
-        if (!this.migrations)
-          return oldData;
-        let newData = oldData;
-        const sortedMigrations = Object.entries(this.migrations).sort(([a], [b]) => Number(a) - Number(b));
-        let lastFmtVer = oldFmtVer;
-        for (const [fmtVer, migrationFunc] of sortedMigrations) {
-          const ver = Number(fmtVer);
-          if (oldFmtVer < this.formatVersion && oldFmtVer < ver) {
-            try {
-              const migRes = migrationFunc(newData);
-              newData = migRes instanceof Promise ? yield migRes : migRes;
-              lastFmtVer = oldFmtVer = ver;
-            } catch (err) {
-              if (!resetOnError)
-                throw new Error(`Error while running migration function for format version '${fmtVer}'`);
-              console.error(`Error while running migration function for format version '${fmtVer}' - resetting to the default value.`, err);
-              yield this.saveDefaultData();
-              return this.getData();
-            }
-          }
-        }
-        yield Promise.all([
-          this.setValue(`_uucfg-${this.id}`, yield this.serializeData(newData)),
-          this.setValue(`_uucfgver-${this.id}`, lastFmtVer),
-          this.setValue(`_uucfgenc-${this.id}`, this.encodingEnabled())
-        ]);
-        return this.cachedData = __spreadValues({}, newData);
-      });
-    }
-    /** Returns whether encoding and decoding are enabled for this DataStore instance */
-    encodingEnabled() {
-      return Boolean(this.encodeData && this.decodeData);
-    }
-    /** Serializes the data using the optional this.encodeData() and returns it as a string */
-    serializeData(data, useEncoding = true) {
-      return __async(this, null, function* () {
-        const stringData = JSON.stringify(data);
-        if (!this.encodingEnabled() || !useEncoding)
-          return stringData;
-        const encRes = this.encodeData(stringData);
-        if (encRes instanceof Promise)
-          return yield encRes;
-        return encRes;
-      });
-    }
-    /** Deserializes the data using the optional this.decodeData() and returns it as a JSON object */
-    deserializeData(data, useEncoding = true) {
-      return __async(this, null, function* () {
-        let decRes = this.encodingEnabled() && useEncoding ? this.decodeData(data) : void 0;
-        if (decRes instanceof Promise)
-          decRes = yield decRes;
-        return JSON.parse(decRes != null ? decRes : data);
-      });
-    }
-    /** Copies a JSON-compatible object and loses all its internal references in the process */
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
-    /** Gets a value from persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
-    getValue(name, defaultValue) {
-      return __async(this, null, function* () {
-        return GM.getValue(name, defaultValue);
-      });
-    }
-    /** Sets a value in persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
-    setValue(name, value) {
-      return __async(this, null, function* () {
-        return GM.setValue(name, value);
-      });
-    }
-    /** Deletes a value from persistent storage - can be overwritten in a subclass if you want to use something other than GM storage */
-    deleteValue(name) {
-      return __async(this, null, function* () {
-        return GM.deleteValue(name);
-      });
-    }
-  };
-
-  // lib/DataStoreSerializer.ts
-  var DataStoreSerializer = class {
-    constructor(stores, options = {}) {
-      __publicField(this, "stores");
-      __publicField(this, "options");
-      if (!getUnsafeWindow().crypto || !getUnsafeWindow().crypto.subtle)
-        throw new Error("DataStoreSerializer has to run in a secure context (HTTPS)!");
-      this.stores = stores;
-      this.options = __spreadValues({
-        addChecksum: true,
-        ensureIntegrity: true
-      }, options);
-    }
-    /** Calculates the checksum of a string */
-    calcChecksum(input) {
-      return __async(this, null, function* () {
-        return computeHash(input, "SHA-256");
-      });
-    }
-    /** Serializes a DataStore instance */
-    serializeStore(storeInst) {
-      return __async(this, null, function* () {
-        const data = storeInst.encodingEnabled() ? yield storeInst.encodeData(JSON.stringify(storeInst.getData())) : JSON.stringify(storeInst.getData());
-        const checksum = this.options.addChecksum ? yield this.calcChecksum(data) : void 0;
-        return {
-          id: storeInst.id,
-          data,
-          formatVersion: storeInst.formatVersion,
-          encoded: storeInst.encodingEnabled(),
-          checksum
-        };
-      });
-    }
-    /** Serializes the data stores into a string */
-    serialize() {
-      return __async(this, null, function* () {
-        const serData = [];
-        for (const store of this.stores)
-          serData.push(yield this.serializeStore(store));
-        return JSON.stringify(serData);
-      });
-    }
-    /**
-     * Deserializes the data exported via {@linkcode serialize()} and imports it into the DataStore instances.  
-     * Also triggers the migration process if the data format has changed.
-     */
-    deserialize(serializedData) {
-      return __async(this, null, function* () {
-        const deserStores = JSON.parse(serializedData);
-        for (const storeData of deserStores) {
-          const storeInst = this.stores.find((s) => s.id === storeData.id);
-          if (!storeInst)
-            throw new Error(`DataStore instance with ID "${storeData.id}" not found! Make sure to provide it in the DataStoreSerializer constructor.`);
-          if (this.options.ensureIntegrity && typeof storeData.checksum === "string") {
-            const checksum = yield this.calcChecksum(storeData.data);
-            if (checksum !== storeData.checksum)
-              throw new Error(`Checksum mismatch for DataStore with ID "${storeData.id}"!
-Expected: ${storeData.checksum}
-Has: ${checksum}`);
-          }
-          const decodedData = storeData.encoded && storeInst.encodingEnabled() ? yield storeInst.decodeData(storeData.data) : storeData.data;
-          if (storeData.formatVersion && !isNaN(Number(storeData.formatVersion)) && Number(storeData.formatVersion) < storeInst.formatVersion)
-            yield storeInst.runMigrations(JSON.parse(decodedData), Number(storeData.formatVersion), false);
-          else
-            yield storeInst.setData(JSON.parse(decodedData));
-        }
-      });
-    }
-  };
-
-  // lib/dom.ts
-  function getUnsafeWindow() {
-    try {
-      return unsafeWindow;
-    } catch (e) {
-      return window;
-    }
-  }
-  function addParent(element, newParent) {
-    const oldParent = element.parentNode;
-    if (!oldParent)
-      throw new Error("Element doesn't have a parent node");
-    oldParent.replaceChild(newParent, element);
-    newParent.appendChild(element);
-    return newParent;
-  }
-  function addGlobalStyle(style) {
-    const styleElem = document.createElement("style");
-    styleElem.innerHTML = style;
-    document.head.appendChild(styleElem);
-    return styleElem;
-  }
-  function preloadImages(srcUrls, rejects = false) {
-    const promises = srcUrls.map((src) => new Promise((res, rej) => {
-      const image = new Image();
-      image.src = src;
-      image.addEventListener("load", () => res(image));
-      image.addEventListener("error", (evt) => rejects && rej(evt));
-    }));
-    return Promise.allSettled(promises);
-  }
-  function openInNewTab(href, background) {
-    try {
-      GM.openInTab(href, background);
-    } catch (e) {
-      const openElem = document.createElement("a");
-      Object.assign(openElem, {
-        className: "userutils-open-in-new-tab",
-        target: "_blank",
-        rel: "noopener noreferrer",
-        href
-      });
-      openElem.style.display = "none";
-      document.body.appendChild(openElem);
-      openElem.click();
-      setTimeout(openElem.remove, 50);
-    }
-  }
-  function interceptEvent(eventObject, eventName, predicate = () => true) {
-    Error.stackTraceLimit = Math.max(Error.stackTraceLimit, 100);
-    if (isNaN(Error.stackTraceLimit))
-      Error.stackTraceLimit = 100;
-    (function(original) {
-      eventObject.__proto__.addEventListener = function(...args) {
-        var _a, _b;
-        const origListener = typeof args[1] === "function" ? args[1] : (_b = (_a = args[1]) == null ? void 0 : _a.handleEvent) != null ? _b : () => void 0;
-        args[1] = function(...a) {
-          if (args[0] === eventName && predicate(Array.isArray(a) ? a[0] : a))
-            return;
-          else
-            return origListener.apply(this, a);
-        };
-        original.apply(this, args);
-      };
-    })(eventObject.__proto__.addEventListener);
-  }
-  function interceptWindowEvent(eventName, predicate = () => true) {
-    return interceptEvent(getUnsafeWindow(), eventName, predicate);
-  }
-  function isScrollable(element) {
-    const { overflowX, overflowY } = getComputedStyle(element);
-    return {
-      vertical: (overflowY === "scroll" || overflowY === "auto") && element.scrollHeight > element.clientHeight,
-      horizontal: (overflowX === "scroll" || overflowX === "auto") && element.scrollWidth > element.clientWidth
-    };
-  }
-  function observeElementProp(element, property, callback) {
-    const elementPrototype = Object.getPrototypeOf(element);
-    if (elementPrototype.hasOwnProperty(property)) {
-      const descriptor = Object.getOwnPropertyDescriptor(elementPrototype, property);
-      Object.defineProperty(element, property, {
-        get: function() {
-          var _a;
-          return (_a = descriptor == null ? void 0 : descriptor.get) == null ? void 0 : _a.apply(this, arguments);
-        },
-        set: function() {
-          var _a;
-          const oldValue = this[property];
-          (_a = descriptor == null ? void 0 : descriptor.set) == null ? void 0 : _a.apply(this, arguments);
-          const newValue = this[property];
-          if (typeof callback === "function") {
-            callback.bind(this, oldValue, newValue);
-          }
-          return newValue;
-        }
-      });
-    }
-  }
-  function getSiblingsFrame(refElement, siblingAmount, refElementAlignment = "center-top", includeRef = true) {
-    var _a, _b;
-    const siblings = [...(_b = (_a = refElement.parentNode) == null ? void 0 : _a.childNodes) != null ? _b : []];
-    const elemSiblIdx = siblings.indexOf(refElement);
-    if (elemSiblIdx === -1)
-      throw new Error("Element doesn't have a parent node");
-    if (refElementAlignment === "top")
-      return [...siblings.slice(elemSiblIdx + Number(!includeRef), elemSiblIdx + siblingAmount + Number(!includeRef))];
-    else if (refElementAlignment.startsWith("center-")) {
-      const halfAmount = (refElementAlignment === "center-bottom" ? Math.ceil : Math.floor)(siblingAmount / 2);
-      const startIdx = Math.max(0, elemSiblIdx - halfAmount);
-      const topOffset = Number(refElementAlignment === "center-top" && siblingAmount % 2 === 0 && includeRef);
-      const btmOffset = Number(refElementAlignment === "center-bottom" && siblingAmount % 2 !== 0 && includeRef);
-      const startIdxWithOffset = startIdx + topOffset + btmOffset;
-      return [
-        ...siblings.filter((_, idx) => includeRef || idx !== elemSiblIdx).slice(startIdxWithOffset, startIdxWithOffset + siblingAmount)
-      ];
-    } else if (refElementAlignment === "bottom")
-      return [...siblings.slice(elemSiblIdx - siblingAmount + Number(includeRef), elemSiblIdx + Number(includeRef))];
-    return [];
-  }
-
-  // lib/misc.ts
-  function autoPlural(word, num) {
-    if (Array.isArray(num) || num instanceof NodeList)
-      num = num.length;
-    return `${word}${num === 1 ? "" : "s"}`;
-  }
-  function pauseFor(time) {
-    return new Promise((res) => {
-      setTimeout(() => res(), time);
-    });
-  }
-  function debounce(func, timeout = 300, edge = "falling") {
-    let timer;
-    return function(...args) {
-      if (edge === "rising") {
-        if (!timer) {
-          func.apply(this, args);
-          timer = setTimeout(() => timer = void 0, timeout);
-        }
-      } else {
-        clearTimeout(timer);
-        timer = setTimeout(() => func.apply(this, args), timeout);
-      }
-    };
-  }
-  function fetchAdvanced(_0) {
-    return __async(this, arguments, function* (input, options = {}) {
-      const { timeout = 1e4 } = options;
-      let signalOpts = {}, id = void 0;
-      if (timeout >= 0) {
-        const controller = new AbortController();
-        id = setTimeout(() => controller.abort(), timeout);
-        signalOpts = { signal: controller.signal };
-      }
-      const res = yield fetch(input, __spreadValues(__spreadValues({}, options), signalOpts));
-      clearTimeout(id);
-      return res;
-    });
-  }
-  function insertValues(input, ...values) {
-    return input.replace(/%\d/gm, (match) => {
-      var _a, _b;
-      const argIndex = Number(match.substring(1)) - 1;
-      return (_b = (_a = values[argIndex]) != null ? _a : match) == null ? void 0 : _b.toString();
-    });
-  }
-  function compress(input, compressionFormat, outputType = "string") {
-    return __async(this, null, function* () {
-      const byteArray = typeof input === "string" ? new TextEncoder().encode(input) : input;
-      const comp = new CompressionStream(compressionFormat);
-      const writer = comp.writable.getWriter();
-      writer.write(byteArray);
-      writer.close();
-      const buf = yield new Response(comp.readable).arrayBuffer();
-      return outputType === "arrayBuffer" ? buf : ab2str(buf);
-    });
-  }
-  function decompress(input, compressionFormat, outputType = "string") {
-    return __async(this, null, function* () {
-      const byteArray = typeof input === "string" ? str2ab(input) : input;
-      const decomp = new DecompressionStream(compressionFormat);
-      const writer = decomp.writable.getWriter();
-      writer.write(byteArray);
-      writer.close();
-      const buf = yield new Response(decomp.readable).arrayBuffer();
-      return outputType === "arrayBuffer" ? buf : new TextDecoder().decode(buf);
-    });
-  }
-  function ab2str(buf) {
-    return getUnsafeWindow().btoa(
-      new Uint8Array(buf).reduce((data, byte) => data + String.fromCharCode(byte), "")
-    );
-  }
-  function str2ab(str) {
-    return Uint8Array.from(getUnsafeWindow().atob(str), (c) => c.charCodeAt(0));
-  }
-  function computeHash(input, algorithm = "SHA-256") {
-    return __async(this, null, function* () {
-      let data;
-      if (typeof input === "string") {
-        const encoder = new TextEncoder();
-        data = encoder.encode(input);
-      } else
-        data = input;
-      const hashBuffer = yield crypto.subtle.digest(algorithm, data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
-      return hashHex;
-    });
-  }
-  function randomId(length = 16, radix = 16, enhancedEntropy = false) {
-    if (enhancedEntropy) {
-      const arr = new Uint8Array(length);
-      crypto.getRandomValues(arr);
-      return Array.from(
-        arr,
-        (v) => mapRange(v, 0, 255, 0, radix).toString(radix).substring(0, 1)
-      ).join("");
-    }
-    return Array.from(
-      { length },
-      () => Math.floor(Math.random() * radix).toString(radix)
-    ).join("");
-  }
-
-  // lib/SelectorObserver.ts
-  var domLoaded = false;
-  document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-  var SelectorObserver = class {
-    constructor(baseElement, options = {}) {
-      __publicField(this, "enabled", false);
-      __publicField(this, "baseElement");
-      __publicField(this, "observer");
-      __publicField(this, "observerOptions");
-      __publicField(this, "customOptions");
-      __publicField(this, "listenerMap");
-      this.baseElement = baseElement;
-      this.listenerMap = /* @__PURE__ */ new Map();
-      const _a = options, {
-        defaultDebounce,
-        defaultDebounceEdge,
-        disableOnNoListeners,
-        enableOnAddListener
-      } = _a, observerOptions = __objRest(_a, [
-        "defaultDebounce",
-        "defaultDebounceEdge",
-        "disableOnNoListeners",
-        "enableOnAddListener"
-      ]);
-      this.observerOptions = __spreadValues({
-        childList: true,
-        subtree: true
-      }, observerOptions);
-      this.customOptions = {
-        defaultDebounce: defaultDebounce != null ? defaultDebounce : 0,
-        defaultDebounceEdge: defaultDebounceEdge != null ? defaultDebounceEdge : "rising",
-        disableOnNoListeners: disableOnNoListeners != null ? disableOnNoListeners : false,
-        enableOnAddListener: enableOnAddListener != null ? enableOnAddListener : true
-      };
-      if (typeof this.customOptions.checkInterval !== "number") {
-        this.observer = new MutationObserver(() => this.checkAllSelectors());
-      } else {
-        this.checkAllSelectors();
-        setInterval(() => this.checkAllSelectors(), this.customOptions.checkInterval);
-      }
-    }
-    /** Call to check all selectors in the {@linkcode listenerMap} using {@linkcode checkSelector()} */
-    checkAllSelectors() {
-      if (!this.enabled || !domLoaded)
-        return;
-      for (const [selector, listeners] of this.listenerMap.entries())
-        this.checkSelector(selector, listeners);
-    }
-    /** Checks if the element(s) with the given {@linkcode selector} exist in the DOM and calls the respective {@linkcode listeners} accordingly */
-    checkSelector(selector, listeners) {
-      var _a;
-      if (!this.enabled)
-        return;
-      const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-      if (!baseElement)
-        return;
-      const all = listeners.some((listener) => listener.all);
-      const one = listeners.some((listener) => !listener.all);
-      const allElements = all ? baseElement.querySelectorAll(selector) : null;
-      const oneElement = one ? baseElement.querySelector(selector) : null;
-      for (const options of listeners) {
-        if (options.all) {
-          if (allElements && allElements.length > 0) {
-            options.listener(allElements);
-            if (!options.continuous)
-              this.removeListener(selector, options);
-          }
-        } else {
-          if (oneElement) {
-            options.listener(oneElement);
-            if (!options.continuous)
-              this.removeListener(selector, options);
-          }
-        }
-        if (((_a = this.listenerMap.get(selector)) == null ? void 0 : _a.length) === 0)
-          this.listenerMap.delete(selector);
-        if (this.listenerMap.size === 0 && this.customOptions.disableOnNoListeners)
-          this.disable();
-      }
-    }
-    /**
-     * Starts observing the children of the base element for changes to the given {@linkcode selector} according to the set {@linkcode options}
-     * @param selector The selector to observe
-     * @param options Options for the selector observation
-     * @param options.listener Gets called whenever the selector was found in the DOM
-     * @param [options.all] Whether to use `querySelectorAll()` instead - default is false
-     * @param [options.continuous] Whether to call the listener continuously instead of just once - default is false
-     * @param [options.debounce] Whether to debounce the listener to reduce calls to `querySelector` or `querySelectorAll` - set undefined or <=0 to disable (default)
-     * @returns Returns a function that can be called to remove this listener more easily
-     */
-    addListener(selector, options) {
-      options = __spreadValues({
-        all: false,
-        continuous: false,
-        debounce: 0
-      }, options);
-      if (options.debounce && options.debounce > 0 || this.customOptions.defaultDebounce && this.customOptions.defaultDebounce > 0) {
-        options.listener = debounce(
-          options.listener,
-          options.debounce || this.customOptions.defaultDebounce,
-          options.debounceEdge || this.customOptions.defaultDebounceEdge
-        );
-      }
-      if (this.listenerMap.has(selector))
-        this.listenerMap.get(selector).push(options);
-      else
-        this.listenerMap.set(selector, [options]);
-      if (this.enabled === false && this.customOptions.enableOnAddListener)
-        this.enable();
-      this.checkSelector(selector, [options]);
-      return () => this.removeListener(selector, options);
-    }
-    /** Disables the observation of the child elements */
-    disable() {
-      var _a;
-      if (!this.enabled)
-        return;
-      this.enabled = false;
-      (_a = this.observer) == null ? void 0 : _a.disconnect();
-    }
-    /**
-     * Enables or reenables the observation of the child elements.
-     * @param immediatelyCheckSelectors Whether to immediately check if all previously registered selectors exist (default is true)
-     * @returns Returns true when the observation was enabled, false otherwise (e.g. when the base element wasn't found)
-     */
-    enable(immediatelyCheckSelectors = true) {
-      var _a;
-      const baseElement = typeof this.baseElement === "string" ? document.querySelector(this.baseElement) : this.baseElement;
-      if (this.enabled || !baseElement)
-        return false;
-      this.enabled = true;
-      (_a = this.observer) == null ? void 0 : _a.observe(baseElement, this.observerOptions);
-      if (immediatelyCheckSelectors)
-        this.checkAllSelectors();
-      return true;
-    }
-    /** Returns whether the observation of the child elements is currently enabled */
-    isEnabled() {
-      return this.enabled;
-    }
-    /** Removes all listeners that have been registered with {@linkcode addListener()} */
-    clearListeners() {
-      this.listenerMap.clear();
-    }
-    /**
-     * Removes all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()}
-     * @returns Returns true when all listeners for the associated selector were found and removed, false otherwise
-     */
-    removeAllListeners(selector) {
-      return this.listenerMap.delete(selector);
-    }
-    /**
-     * Removes a single listener for the given {@linkcode selector} and {@linkcode options} that has been registered with {@linkcode addListener()}
-     * @returns Returns true when the listener was found and removed, false otherwise
-     */
-    removeListener(selector, options) {
-      const listeners = this.listenerMap.get(selector);
-      if (!listeners)
-        return false;
-      const index = listeners.indexOf(options);
-      if (index > -1) {
-        listeners.splice(index, 1);
-        return true;
-      }
-      return false;
-    }
-    /** Returns all listeners that have been registered with {@linkcode addListener()} */
-    getAllListeners() {
-      return this.listenerMap;
-    }
-    /** Returns all listeners for the given {@linkcode selector} that have been registered with {@linkcode addListener()} */
-    getListeners(selector) {
-      return this.listenerMap.get(selector);
-    }
-  };
-
-  // lib/translation.ts
-  var trans = {};
-  var curLang;
-  function tr(key, ...args) {
-    var _a;
-    if (!curLang)
-      return key;
-    const trText = (_a = trans[curLang]) == null ? void 0 : _a[key];
-    if (!trText)
-      return key;
-    if (args.length > 0 && trText.match(/%\d/)) {
-      return insertValues(trText, ...args);
-    }
-    return trText;
-  }
-  tr.addLanguage = (language, translations) => {
-    trans[language] = translations;
-  };
-  tr.setLanguage = (language) => {
-    curLang = language;
-  };
-  tr.getLanguage = () => {
-    return curLang;
-  };
-
-  exports.DataStore = DataStore;
-  exports.DataStoreSerializer = DataStoreSerializer;
-  exports.SelectorObserver = SelectorObserver;
-  exports.addGlobalStyle = addGlobalStyle;
-  exports.addParent = addParent;
-  exports.autoPlural = autoPlural;
-  exports.clamp = clamp;
-  exports.compress = compress;
-  exports.computeHash = computeHash;
-  exports.debounce = debounce;
-  exports.decompress = decompress;
-  exports.fetchAdvanced = fetchAdvanced;
-  exports.getSiblingsFrame = getSiblingsFrame;
-  exports.getUnsafeWindow = getUnsafeWindow;
-  exports.insertValues = insertValues;
-  exports.interceptEvent = interceptEvent;
-  exports.interceptWindowEvent = interceptWindowEvent;
-  exports.isScrollable = isScrollable;
-  exports.mapRange = mapRange;
-  exports.observeElementProp = observeElementProp;
-  exports.openInNewTab = openInNewTab;
-  exports.pauseFor = pauseFor;
-  exports.preloadImages = preloadImages;
-  exports.randRange = randRange;
-  exports.randomId = randomId;
-  exports.randomItem = randomItem;
-  exports.randomItemIndex = randomItemIndex;
-  exports.randomizeArray = randomizeArray;
-  exports.takeRandomItem = takeRandomItem;
-  exports.tr = tr;
-
-  return exports;
-
-})({});
-
-(function(UserUtils,compareVersions,marked,Fuse){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);/******************************************************************************
+(function(UserUtils,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);/******************************************************************************
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -1031,7 +191,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "49e6b2fd";
+const buildNumberRaw = "54361dfb";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1069,11 +229,7 @@ const scriptInfo = {
     name: GM.info.script.name,
     version: GM.info.script.version,
     namespace: GM.info.script.namespace,
-};/** A fraction of this max value will be removed from the "last viewed" timestamp when adding penalized cache entries */
-const maxViewedPenalty = 1000 * 60 * 60 * 24 * 5; // 5 days
-/** A fraction of this max value will be removed from the "added" timestamp when adding penalized cache entries */
-const maxAddedPenalty = 1000 * 60 * 60 * 24 * 15; // 15 days
-let canCompress$2 = true;
+};let canCompress$2 = true;
 const lyricsCacheMgr = new UserUtils.DataStore({
     id: "bytm-lyrics-cache",
     defaultData: {
@@ -1157,37 +313,6 @@ function addLyricsCacheEntryBest(artist, song, url) {
     cache.splice(getFeature("lyricsCacheMaxSize"));
     log("Added cache entry for best result", artist, "-", song, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
-    return lyricsCacheMgr.setData({ cache });
-}
-/**
- * Adds the provided entry into the lyrics URL cache, synchronously to RAM and asynchronously to GM storage
- * Also adds a penalty to the viewed timestamp and added timestamp to decrease entry's lifespan in cache
- *
- * ⚠️ `artist` and `song` need to be sanitized first!
- * @param penaltyFr Fraction of the max bounds {@linkcode maxViewedPenalty} and {@linkcode maxAddedPenalty} to remove from the timestamp values - has to be between 0 and 1 - default is 0 (no penalty) - (0.25 = only penalized by a quarter of the max penalty)
- */
-function addLyricsCacheEntryPenalized(artist, song, url, penaltyFr = 0) {
-    // refresh entry if it exists and don't overwrite / duplicate it
-    const cachedEntry = getLyricsCacheEntry(artist, song, true);
-    if (cachedEntry)
-        return;
-    const { cache } = lyricsCacheMgr.getData();
-    penaltyFr = UserUtils.clamp(penaltyFr, 0, 1);
-    const viewedPenalty = maxViewedPenalty * penaltyFr;
-    const addedPenalty = maxAddedPenalty * penaltyFr;
-    const entry = {
-        artist,
-        song,
-        url,
-        viewed: Date.now() - viewedPenalty,
-        added: Date.now() - addedPenalty,
-    };
-    cache.push(entry);
-    cache.sort((a, b) => b.viewed - a.viewed);
-    // always keep the cache <= max size
-    cache.splice(getFeature("lyricsCacheMaxSize"));
-    log("Added penalized cache entry for", artist, "-", song, "with penalty fraction", penaltyFr, "\n", entry);
-    emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "penalized" });
     return lyricsCacheMgr.setData({ cache });
 }let createNanoEvents = () => ({
   emit(event, ...args) {
@@ -1382,7 +507,7 @@ class BytmDialog extends NanoEmitter {
             writable: true,
             value: false
         });
-        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, smallHeader: false, verticalAlign: "center" }, options);
+        this.options = Object.assign({ closeOnBgClick: true, closeOnEscPress: true, closeBtnEnabled: true, destroyOnClose: false, unmountOnClose: true, removeListenersOnDestroy: true, smallHeader: false, verticalAlign: "center" }, options);
         this.id = options.id;
     }
     //#region public
@@ -1528,7 +653,7 @@ class BytmDialog extends NanoEmitter {
     destroy() {
         this.unmount();
         this.events.emit("destroy");
-        this.unsubscribeAll();
+        this.options.removeListenersOnDestroy && this.unsubscribeAll();
     }
     //#region static
     /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
@@ -2320,6 +1445,7 @@ function getAutoLikeDialog() {
                 closeOnBgClick: true,
                 closeOnEscPress: true,
                 destroyOnClose: true,
+                removeListenersOnDestroy: false,
                 small: true,
                 verticalAlign: "top",
                 renderHeader: renderHeader$4,
@@ -2335,6 +1461,7 @@ function getAutoLikeDialog() {
                     log("Auto-like channels updated, refreshed dialog");
                 }
             }));
+            autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
         }
         if (!autoLikeImExDialog) {
             autoLikeImExDialog = new ExImDialog({
@@ -2427,13 +1554,12 @@ function renderBody$4() {
         searchCont.appendChild(searchClearEl);
         const channelListCont = document.createElement("div");
         channelListCont.id = "bytm-auto-like-channels-list";
-        const removeChannel = (id) => autoLikeStore.setData({
-            channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== id),
-        });
-        const setChannelEnabled = (id, enabled) => UserUtils.debounce(() => autoLikeStore.setData({
-            channels: autoLikeStore.getData().channels
-                .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { enabled }) : ch),
-        }), 250, "rising");
+        const setChannelEnabled = UserUtils.debounce((id, enabled) => {
+            autoLikeStore.setData({
+                channels: autoLikeStore.getData().channels
+                    .map((ch) => ch.id === id ? Object.assign(Object.assign({}, ch), { enabled }) : ch),
+            });
+        }, 250, "rising");
         const sortedChannels = autoLikeStore
             .getData().channels
             .sort((a, b) => a.name.localeCompare(b.name));
@@ -2461,7 +1587,7 @@ function renderBody$4() {
             nameLabelEl.appendChild(nameElem);
             nameLabelEl.appendChild(idElem);
             const toggleElem = yield createToggleInput({
-                id: `bytm-auto-like-channel-list-toggle-${chanId}`,
+                id: `auto-like-channel-list-${chanId}`,
                 labelPos: "off",
                 initialValue: enabled,
                 onChange: (en) => setChannelEnabled(chanId, en),
@@ -2497,7 +1623,10 @@ function renderBody$4() {
                 title: t("remove_entry"),
                 onClick() {
                     return __awaiter(this, void 0, void 0, function* () {
-                        yield removeChannel(chanId);
+                        autoLikeStore.setData({
+                            channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
+                        });
+                        emitSiteEvent("autoLikeChannelsUpdated");
                         rowElem.remove();
                     });
                 },
@@ -2701,8 +1830,8 @@ var scripts = {
 	lint: "tsc --noEmit && eslint .",
 	build: "rollup -c",
 	"build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
-	"build-preview": "rollup -c --config-mode development --config-host github --config-branch develop",
-	preview: "pnpm run build-preview && pnpm run serve --auto-exit=3",
+	"build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
+	preview: "pnpm run build-dev && pnpm run serve --auto-exit=3",
 	"build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
 	"build-prod-base": "rollup -c --config-mode production --config-branch main",
 	"build-prod-gh": "pnpm run build-prod-base --config-host github",
@@ -2718,7 +1847,9 @@ var scripts = {
 	test: "pnpm run node-ts ./test.ts",
 	knip: "knip",
 	storybook: "storybook dev -p 6006",
-	"build-storybook": "storybook build"
+	"build-storybook": "storybook build",
+	"dep-cruise": "npx depcruise src",
+	"dep-graph": "npx depcruise src --include-only \"^src\" --output-type dot | dot -T svg > dependency-graph.svg && open dependency-graph.svg -R"
 };
 var engines = {
 	node: ">=19",
@@ -2751,9 +1882,8 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^6.3.0",
+	"@sv443-network/userutils": "^7.0.1",
 	"compare-versions": "^6.1.0",
-	"fuse.js": "^7.0.0",
 	marked: "^12.0.2",
 	nanoevents: "^9.0.0"
 };
@@ -2774,17 +1904,19 @@ var devDependencies = {
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
 	"@types/node": "^20.14.8",
-	"@typescript-eslint/eslint-plugin": "8.0.0-alpha.49",
-	"@typescript-eslint/parser": "8.0.0-alpha.49",
-	"@typescript-eslint/utils": "8.0.0-alpha.49",
+	"@typescript-eslint/eslint-plugin": "^8.0.0",
+	"@typescript-eslint/parser": "^8.0.0",
+	"@typescript-eslint/utils": "^8.0.0",
 	concurrently: "^8.2.2",
+	"dependency-cruiser": "^16.3.10",
 	dotenv: "^16.4.5",
 	eslint: "^9.5.0",
-	"eslint-plugin-storybook": "0.9.0--canary.156.ed236ca.0",
+	"eslint-plugin-storybook": "^0.9.0--canary.156.ed236ca.0",
 	express: "^4.19.2",
 	globals: "^15.6.0",
 	knip: "^5.22.2",
 	nodemon: "^3.1.4",
+	open: "^10.1.0",
 	pnpm: "^9.4.0",
 	rollup: "^4.18.0",
 	"rollup-plugin-execute": "^1.1.1",
@@ -4311,7 +3443,6 @@ function initRemShareTrackParam() {
         addSelectorListener("body", sharePanelSel, {
             listener: (sharePanelEl) => {
                 const obs = new MutationObserver(() => {
-                    dbg("># TODO:#DBG share panel changed");
                     const inputElem = sharePanelEl.querySelector(inputSel);
                     inputElem && removeSiParam(inputElem);
                 });
@@ -4670,12 +3801,17 @@ function initShowVotes() {
                                 const voteObj = yield fetchVideoVotes(watchId);
                                 if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
                                     return error("Couldn't fetch votes from the Return YouTube Dislike API");
+                                const likesLabelText = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
+                                const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
                                 labelLikes.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
                                 labelLikes.textContent = formatVoteNumber(voteObj.likes);
-                                labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
+                                labelLikes.title = labelLikes.ariaLabel = likesLabelText;
                                 labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-                                labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
+                                labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
                                 labelDislikes.dataset.watchId = (_b = getWatchId()) !== null && _b !== void 0 ? _b : "";
+                                addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", {
+                                    listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText),
+                                });
                             }));
                         }
                     }
@@ -4707,11 +3843,14 @@ function addVoteNumbers(voteCont, voteObj) {
         });
         return label;
     };
-    addStyleFromResource("css-show_votes").catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
+    addStyleFromResource("css-show_votes")
+        .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
     const likeLblEl = createLabel(voteObj.likes, "likes");
     likeBtn.insertAdjacentElement("afterend", likeLblEl);
     const dislikeLblEl = createLabel(voteObj.dislikes, "dislikes");
     dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
+    upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
+    log("Added vote number labels to like and dislike buttons");
 }
 /** Formats a number formatted based on the config or the passed {@linkcode notation} */
 function formatVoteNumber(num, notation) {
@@ -4725,6 +3864,15 @@ function formatVoteNumber(num, notation) {
             style: "decimal",
             maximumFractionDigits: 0,
         });
+}
+/** Updates or inserts the labels on the native like and dislike buttons */
+function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
+    const likeBtn = parentEl.querySelector("#button-shape-like button");
+    const dislikeBtn = parentEl.querySelector("#button-shape-dislike button");
+    if (likeBtn)
+        likeBtn.title = likeBtn.ariaLabel = likesLabelText;
+    if (dislikeBtn)
+        dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
 }//#region beforeunload popup
 let beforeUnloadEnabled = true;
 /** Disables the popup before leaving the site */
@@ -5038,7 +4186,7 @@ const autoLikeStore = new UserUtils.DataStore({
     migrations: {
         // 1 -> 2 (v2.1-pre) - add @ prefix to channel IDs if missing
         2: (oldData) => ({
-            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: ch.id.trim().match(/^(UC|@).+$/)
+            channels: oldData.channels.map((ch) => (Object.assign(Object.assign({}, ch), { id: isValidChannelId(ch.id.trim())
                     ? ch.id.trim()
                     : `@${ch.id.trim()}` }))),
         }),
@@ -5058,6 +4206,7 @@ function initAutoLike() {
         try {
             canCompress$1 = yield compressionSupported();
             yield initAutoLikeStore();
+            //#SECTION ytm
             if (getDomain() === "ytm") {
                 let timeout;
                 siteEvents.on("songTitleChanged", () => {
@@ -5114,7 +4263,9 @@ function initAutoLike() {
                     }
                 });
             }
+            //#SECTION yt
             else if (getDomain() === "yt") {
+                addStyleFromResource("css-auto_like");
                 let timeout;
                 siteEvents.on("watchIdChanged", () => {
                     var _a;
@@ -5135,10 +4286,10 @@ function initAutoLike() {
                                         if (likeBtn.getAttribute("aria-pressed") !== "true") {
                                             likeBtn.click();
                                             getFeature("autoLikeShowToast") && showIconToast({
-                                                message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
+                                                message: t("auto_liked_a_channels_video", likeChan.name),
                                                 icon: "icon-auto_like",
                                             });
-                                            log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                                            log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                                         }
                                     }
                                 });
@@ -5157,13 +4308,13 @@ function initAutoLike() {
                         addSelectorListener("ytAppHeader", "#channel-header-container, #page-header", {
                             listener(headerCont) {
                                 var _a, _b;
-                                const titleCont = headerCont.querySelector("ytd-channel-name #container");
+                                const titleCont = headerCont.querySelector("ytd-channel-name #container, yt-dynamic-text-view-model.page-header-view-model-wiz__page-header-title");
                                 if (!titleCont)
                                     return;
-                                const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
-                                const buttonsCont = headerCont.querySelector("#inner-header-container #buttons");
+                                const chanName = (_b = (_a = titleCont.querySelector("yt-formatted-string, span.yt-core-attributed-string")) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : null;
+                                const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
                                 if (buttonsCont) {
-                                    addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-subscribe-button-view-model", {
+                                    addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
                                         listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
                                     });
                                 }
@@ -5181,6 +4332,8 @@ function initAutoLike() {
         }
     });
 }
+//#SECTION toggle btn
+/** Adds a toggle button to enable or disable auto-liking videos from a channel */
 function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
@@ -5212,7 +4365,7 @@ function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
                     try {
                         yield autoLikeStore.loadData();
                         buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
-                        const chanId = (_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId;
+                        const chanId = sanitizeChannelId((_a = buttonEl.dataset.channelId) !== null && _a !== void 0 ? _a : channelId);
                         const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
                         const imgHtml = yield resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
                         if (imgEl && imgHtml)
@@ -5247,6 +4400,21 @@ function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClasses) {
         buttonEl.classList.add(...["bytm-auto-like-toggle-btn", ...(extraClasses !== null && extraClasses !== void 0 ? extraClasses : [])]);
         buttonEl.dataset.channelId = channelId;
         siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
+        siteEvents.on("autoLikeChannelsUpdated", () => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            const buttonEl = document.querySelector(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+            if (!buttonEl)
+                return;
+            const enabled = (_b = (_a = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)) === null || _a === void 0 ? void 0 : _a.enabled) !== null && _b !== void 0 ? _b : false;
+            if (enabled)
+                buttonEl.classList.add("toggled");
+            else
+                buttonEl.classList.remove("toggled");
+            const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
+            const imgHtml = yield resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
+            if (imgEl && imgHtml)
+                imgEl.innerHTML = imgHtml;
+        }));
     });
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -5435,7 +4603,6 @@ function fetchLyricsUrls(artist, song) {
                 info(`Found lyrics URL in cache: ${cacheEntry.url}`);
                 return [cacheEntry];
             }
-            const startTs = Date.now();
             const fetchUrl = constructUrl(`${getFeature("geniUrlBase")}/search`, {
                 disableFuzzy: null,
                 utm_source: `${scriptInfo.name} v${scriptInfo.version}${mode === "development" ? "-pre" : ""}`,
@@ -5476,70 +4643,9 @@ function fetchLyricsUrls(artist, song) {
                     url,
                 });
             });
-            if (!getFeature("advancedLyricsFilter")) {
-                const topRes = allResultsSan[0];
-                topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
-                return allResultsSan.map(r => ({
-                    artist: r.meta.primaryArtist.name,
-                    song: r.meta.title,
-                    url: r.url,
-                }));
-            }
-            const exactish = (input) => input.toLowerCase()
-                .replace(/[\s\-_&,.()[\]]+/gm, "");
-            // exact-ish matches, best matching one first
-            const exactishResults = [...allResultsSan].sort((a, b) => {
-                const aTitleScore = exactish(a.meta.title).localeCompare(exactish(song));
-                const bTitleScore = exactish(b.meta.title).localeCompare(exactish(song));
-                const aArtistScore = exactish(a.meta.primaryArtist.name).localeCompare(exactish(artist));
-                const bArtistScore = exactish(b.meta.primaryArtist.name).localeCompare(exactish(artist));
-                return aTitleScore + aArtistScore - bTitleScore - bArtistScore;
-            });
-            // use fuse.js for fuzzy match
-            // search song title and artist separately, then combine the scores
-            const titleFuse = new Fuse([...allResultsSan], {
-                keys: ["title"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            const artistFuse = new Fuse([...allResultsSan], {
-                keys: ["primaryArtist.name"],
-                includeScore: true,
-                threshold: 0.4,
-            });
-            let fuzzyResults = allResultsSan.map(r => {
-                var _a, _b, _c, _d;
-                const titleRes = titleFuse.search(r.meta.title);
-                const artistRes = artistFuse.search(r.meta.primaryArtist.name);
-                const titleScore = (_b = (_a = titleRes[0]) === null || _a === void 0 ? void 0 : _a.score) !== null && _b !== void 0 ? _b : 0;
-                const artistScore = (_d = (_c = artistRes[0]) === null || _c === void 0 ? void 0 : _c.score) !== null && _d !== void 0 ? _d : 0;
-                return Object.assign(Object.assign({}, r), { score: titleScore + artistScore });
-            });
-            // I love TS
-            fuzzyResults = fuzzyResults
-                .map((_a) => {
-                var { score } = _a, rest = __rest(_a, ["score"]);
-                return rest;
-            });
-            const hasExactMatch = exactishResults.slice(0, 3).find(r => exactish(r.meta.title) === exactish(fuzzyResults[0].meta.title) && exactish(r.meta.primaryArtist.name) === exactish(fuzzyResults[0].meta.primaryArtist.name));
-            const finalResults = [
-                ...(hasExactMatch
-                    ? [fuzzyResults[0], ...allResultsSan.filter(r => r.url !== fuzzyResults[0].url)]
-                    : [...allResultsSan]),
-            ].slice(0, 5);
-            // add top 3 results to the cache with a penalty to their time to live
-            // so every entry is deleted faster if it's not considered as relevant
-            finalResults.slice(0, 3).forEach(({ meta: { artists, title }, url }, i) => {
-                const penaltyFraction = hasExactMatch
-                    // if there's an exact match, give it 0 penalty and penalize all other results with the full value
-                    ? i === 0 ? 0 : 1
-                    // if there's no exact match, penalize all results with a fraction of the full penalty since they're more likely to be unrelated
-                    : 0.6;
-                addLyricsCacheEntryPenalized(sanitizeArtists(artists), sanitizeSong(title), url, penaltyFraction);
-            });
-            finalResults.length > 0 && log("Found", finalResults.length, "lyrics", UserUtils.autoPlural("URL", finalResults), "in", Date.now() - startTs, "ms:", finalResults);
-            // returns search results sorted by relevance
-            return finalResults.map(r => ({
+            const topRes = allResultsSan[0];
+            topRes && addLyricsCacheEntryBest(topRes.meta.artists, topRes.meta.title, topRes.url);
+            return allResultsSan.map(r => ({
                 artist: r.meta.primaryArtist.name,
                 song: r.meta.title,
                 url: r.url,
@@ -5640,7 +4746,7 @@ function initQueueButtons() {
                 itm.classList.add("bytm-has-btns");
                 addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
             });
-            log(`Added buttons to ${queueItems.length} new "generic song list" ${UserUtils.autoPlural("item", queueItems)}`);
+            log(`Added buttons to ${queueItems.length} new "generic song list" ${UserUtils.autoPlural("item", queueItems)} in list`, listElem);
         };
         const listSelector = `\
 ytmusic-playlist-shelf-renderer #contents,
@@ -6223,7 +5329,8 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
-    // archived idea for future version:
+    // archived idea for future version
+    // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
     // showVoteRatio: {
     //   type: "select",
     //   category: "layout",
@@ -6458,8 +5565,9 @@ const featInfo = {
     autoLikeChannels: {
         type: "toggle",
         category: "input",
-        default: true,
-        textAdornment: adornments.reloadRequired,
+        default: false,
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
     autoLikeChannelToggleBtn: {
         type: "toggle",
@@ -6467,6 +5575,8 @@ const featInfo = {
         default: true,
         reloadRequired: false,
         enable: noop,
+        advanced: true,
+        textAdornment: adornments.advanced,
     },
     // TODO(v2.2):
     // autoLikePlayerBarToggleBtn: {
@@ -6570,16 +5680,16 @@ const featInfo = {
         advanced: true,
         textAdornment: adornments.advanced,
     },
-    advancedLyricsFilter: {
-        type: "toggle",
-        category: "lyrics",
-        default: false,
-        change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
-        advanced: true,
-        textAdornment: adornments.experimental,
-        reloadRequired: false,
-        enable: noop,
-    },
+    // advancedLyricsFilter: {
+    //   type: "toggle",
+    //   category: "lyrics",
+    //   default: false,
+    //   change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
+    //   advanced: true,
+    //   textAdornment: adornments.experimental,
+    //   reloadRequired: false,
+    //   enable: noop,
+    // },
     //#region general
     locale: {
         type: "select",
@@ -6729,12 +5839,14 @@ const migrations = {
             { key: "volumeSliderScrollStep", oldDefault: 10 },
         ]);
         "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
+        "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
         return newData;
     },
+    // TODO: once advanced lyrics filtering is fully implemented, clear cache on migration
     // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
-    // TODO: once advanced filtering is fully implemented, clear cache on migration to fv6
-    // 6 -> 7 (vX.X)
-    // 7: (oldData: FeatureConfig) => 
+    // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
+    // 6 -> 7 (v2.2)
+    // 7: (oldData: FeatureConfig) =>
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
 function useDefaultConfig(baseData, resetKeys) {
@@ -7464,9 +6576,12 @@ function clearNode(element) {
 }
 /**
  * Checks if the currently playing media is a song or a video.
+ * Only works on YTM and will throw on YT!
  * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
  */
 function currentMediaType() {
+    if (getDomain() === "yt")
+        throw new Error("currentMediaType() is only available on YTM!");
     const songImgElem = document.querySelector("ytmusic-player #song-image");
     if (!songImgElem)
         throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
@@ -7526,18 +6641,18 @@ function error(...args) {
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
 }//#region misc
-let cachedDomain;
+let domain;
 /**
  * Returns the current domain as a constant string representation
  * @throws Throws if script runs on an unexpected website
  */
 function getDomain() {
-    if (cachedDomain)
-        return cachedDomain;
+    if (domain)
+        return domain;
     if (location.hostname.match(/^music\.youtube/))
-        return cachedDomain = "ytm";
+        return domain = "ytm";
     else if (location.hostname.match(/youtube\./))
-        return cachedDomain = "yt";
+        return domain = "yt";
     else
         throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
 }
@@ -7596,15 +6711,26 @@ function parseChannelIdFromUrl(url) {
     try {
         const { pathname } = url instanceof URL ? url : new URL(url);
         if (pathname.includes("/channel/"))
-            return pathname.split("/channel/")[1].split("/")[0];
+            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
         else if (pathname.includes("/@"))
-            return pathname.split("/@")[1].split("/")[0];
+            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
         else
             return null;
     }
     catch (_a) {
         return null;
     }
+}
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId)
+        ? channelId
+        : `@${channelId}`;
+}
+/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+function isValidChannelId(channelId) {
+    return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
 }
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
 function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
@@ -8186,4 +7312,4 @@ function registerDevMenuCommands() {
     }));
     log("Registered dev menu commands");
 }
-preInit();})(UserUtils,compareVersions,marked,Fuse);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
