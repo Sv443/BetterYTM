@@ -31,5 +31,6 @@
   "exclude": [
     "**/*.js",
     "dist/**",
+    "src/dev/**",
   ],
 }
