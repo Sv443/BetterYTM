@@ -751,13 +751,20 @@ export async function initShowVotes() {
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
               return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
+            const likesLabelText = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
+            const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
+
             labelLikes.dataset.watchId = getWatchId() ?? "";
             labelLikes.textContent = formatVoteNumber(voteObj.likes);
-            labelLikes.title = labelLikes.ariaLabel = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
+            labelLikes.title = labelLikes.ariaLabel = likesLabelText;
 
             labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
-            labelDislikes.title = labelDislikes.ariaLabel = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
+            labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
             labelDislikes.dataset.watchId = getWatchId() ?? "";
+
+            addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", {
+              listener: (bar) => upsertVoteBtnLabels(bar, likesLabelText, dislikesLabelText),
+            });
           });
         }
       }
@@ -789,13 +796,18 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
     return label;
   };
 
-  addStyleFromResource("css-show_votes").catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
+  addStyleFromResource("css-show_votes")
+    .catch((e) => error("Couldn't add CSS for show votes feature due to an error:", e));
 
   const likeLblEl = createLabel(voteObj.likes, "likes");
   likeBtn.insertAdjacentElement("afterend", likeLblEl);
 
   const dislikeLblEl = createLabel(voteObj.dislikes, "dislikes");
   dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
+
+  upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
+
+  log("Added vote number labels to like and dislike buttons");
 }
 
 /** Formats a number formatted based on the config or the passed {@linkcode notation} */
@@ -814,3 +826,14 @@ function formatVoteNumber(num: number, notation?: NumberNotation) {
       },
   );
 }
+
+/** Updates or inserts the labels on the native like and dislike buttons */
+function upsertVoteBtnLabels(parentEl: HTMLElement, likesLabelText: string, dislikesLabelText: string) {
+  const likeBtn = parentEl.querySelector<HTMLElement>("#button-shape-like button");
+  const dislikeBtn = parentEl.querySelector<HTMLElement>("#button-shape-dislike button");
+
+  if(likeBtn)
+    likeBtn.title = likeBtn.ariaLabel = likesLabelText;
+  if(dislikeBtn)
+    dislikeBtn.title = dislikeBtn.ariaLabel = dislikesLabelText;
+};
