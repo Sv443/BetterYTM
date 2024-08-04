@@ -54,7 +54,6 @@ import { storeSerializer } from "./storeSerializer.js";
     "─ This library for semver comparison: https://github.com/omichelsen/compare-versions",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
     "─ This markdown parser library: https://github.com/markedjs/marked",
-    "─ This fuzzy search library: https://github.com/krisk/Fuse",
   ].join("\n"));
 }
 
