@@ -4,10 +4,10 @@
 <!-- #region 2.1.0 -->
 ## 2.1.0
 - **Added features:**
-  - Added preview auto-like feature to like songs and videos of certain channels automatically  
-    This feature is still in beta. To enable it, first enable advanced mode in the settings.  
-    The toggle button will only show up on channel pages until the next update. Please report any issues you encounter.
-  - Show the amount of likes and dislikes on the currently playing song
+  - Added an experimental feature to like songs and videos of certain channels (on both sites) automatically.  
+    Since this feature is still experimental, to be able to turn it on, you first need to enable advanced mode in the settings.  
+    The button to toggle auto-liking will only show up on channel pages until the next update. Please report any issues you encounter.
+- Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [ReturnYoutubeDislike](https://returnyoutubedislike.com/))
 - **Changes:**
   - Made song/video time remembering enabled by default on YT too
   - Made reset button in config menu a feature of type `button`
