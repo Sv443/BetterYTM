@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
@@ -356,7 +356,7 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
 
         buttonEl.title = buttonEl.ariaLabel = t(`auto_like_button_tooltip${toggled ? "_enabled" : "_disabled"}`);
 
-        const chanId = buttonEl.dataset.channelId ?? channelId;
+        const chanId = sanitizeChannelId(buttonEl.dataset.channelId ?? channelId);
 
         const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
         const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
@@ -394,4 +394,21 @@ async function addAutoLikeToggleBtn(siblingEl: HTMLElement, channelId: string, c
   buttonEl.dataset.channelId = channelId;
 
   siblingEl.insertAdjacentElement("afterend", createRipple(buttonEl));
+
+  siteEvents.on("autoLikeChannelsUpdated", async () => {
+    const buttonEl = document.querySelector<HTMLElement>(`.bytm-auto-like-toggle-btn[data-channel-id="${channelId}"]`);
+    if(!buttonEl)
+      return;
+
+    const enabled = autoLikeStore.getData().channels.find((ch) => ch.id === channelId)?.enabled ?? false;
+    if(enabled)
+      buttonEl.classList.add("toggled");
+    else
+      buttonEl.classList.remove("toggled");
+
+    const imgEl = buttonEl.querySelector<HTMLElement>(".bytm-generic-btn-img");
+    const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
+    if(imgEl && imgHtml)
+      imgEl.innerHTML = imgHtml;
+  });
 }

@@ -162,6 +162,12 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   return parsed;
 }
 
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+export function sanitizeChannelId(channelId: string) {
+  channelId = String(channelId);
+  return (channelId.startsWith("UC") ? channelId : `@${channelId}`).trim();
+}
+
 //#region resources
 
 /**

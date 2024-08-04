@@ -19,7 +19,7 @@ export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
   }
 
   /** Subscribes to an event - returns a function that unsubscribes the event listener */
-  public on<TKey extends keyof TEvtMap>(event: TKey, cb: TEvtMap[TKey]) {
+  public on<TKey extends keyof TEvtMap>(event: TKey | "_", cb: TEvtMap[TKey]) {
     // eslint-disable-next-line prefer-const
     let unsub: Unsubscribe | undefined;
 
@@ -37,7 +37,7 @@ export class NanoEmitter<TEvtMap extends EventsMap = DefaultEvents> {
   }
 
   /** Subscribes to an event and calls the callback or resolves the Promise only once */
-  public once<TKey extends keyof TEvtMap>(event: TKey, cb?: TEvtMap[TKey]): Promise<Parameters<TEvtMap[TKey]>> {
+  public once<TKey extends keyof TEvtMap>(event: TKey | "_", cb?: TEvtMap[TKey]): Promise<Parameters<TEvtMap[TKey]>> {
     return new Promise((resolve) => {
       // eslint-disable-next-line prefer-const
       let unsub: Unsubscribe | undefined;
