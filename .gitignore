@@ -11,4 +11,5 @@ dist/*.css.map
 .build.json
 *.ignore.*
 
+dependency-graph.svg
 *storybook.log

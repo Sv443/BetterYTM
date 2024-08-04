@@ -349,14 +349,14 @@ async function getLinkedPkgs() {
   let retStr = "";
 
   for(const entry of require) {
-    if(!("link" in entry) || typeof entry.link !== "string")
+    if(!("link" in entry) || typeof entry.link !== "string" || !("pkgName" in entry))
       continue;
 
     try {
       const scriptCont = String(await readFile(resolve(entry.link)));
       const trimmedScript = scriptCont
-        .replace(/\/\/ ==.*==[\s\S]*?\/\/ ==\/.*==/gm, "");
-      retStr += `\n// >> Linked package: ${entry.link}\n${trimmedScript}\n// << End of linked package: ${entry.link}\n`;
+        .replace(/\n?\/\/\s*==.+==[\s\S]+\/\/\s*==\/.+==/gm, "");
+      retStr += `\n// <link ${entry.pkgName}>\n${trimmedScript}\n// </link ${entry.pkgName}>\n\n`;
     }
     catch(err) {
       console.error(`Couldn't read linked package at '${entry.link}':`, err);
