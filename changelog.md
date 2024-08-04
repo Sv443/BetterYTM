@@ -3,71 +3,82 @@
 
 <!-- #region 2.1.0 -->
 ## 2.1.0
-- **Features:**
-  - Show the amount of likes and dislikes on the currently playing song
-  - Show the like and dislike ratio as a colored bar on the currently playing song
-  - Added preview auto-like feature to like songs and videos of certain channels automatically  
-    This feature is still in beta. To enable it, first enable advanced mode in the settings.  
-    The toggle button will only show up on channel pages until the next update. Please report any issues you encounter.
-- **Changes / Fixes:**
-  - Now the welcome menu is shown on YT too
-  - Changed default settings for these features:
-    - Remember song time sites: from `YTM only` to `both sites`
-    - Volume slider scroll sensitivity: from `10%` to `4%`
+- **Added features:**
+  - Auto-like songs/videos of certain channels (YTM and YT)
+  - Show amount of likes and dislikes for the currently playing song
+- **Changes:**
+  - Made song/video time remembering enabled by default on YT too
+  - Made reset button in config menu a feature of type `button`
+  - Welcome menu is now shown on YT too
+  - Added Ctrl modifier key to every lyrics button to open a lyrics search prompt
+  - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
+  - Arrow key and number key skipping works more reliably and now also in the config menu
+  - Changed default settings for some features.  
+    After updating, if the values were unchanged from their previous default, they will automatically have the new default value:
+    - Remember Song Time Sites: if set to `YTM only`, it changes to `both sites`
+    - Volume Slider Scroll Sensitivity: if set to `10%`, it changes to `4%`
   - Made some settings require advanced mode that didn't before:
     - Fix spacing/layout issues
     - Fix HDR issues
     - Disable Dark Reader sites
     - Remove share tracking parameter sites
     - Placement of list/queue buttons
-  - Added Ctrl modifier key to every lyrics button to open a lyrics search prompt
-  - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
-  - Arrow key and number key skipping works more reliably and now also in the config menu
   - Removed broken feature "remove upgrade tab"
   - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
+- **Fixes:**
+  - Adjusted script to UI redesign of playlists
+  - Fixed song list buttons disappearing when dragging the row around
+  - Fixed song list buttons not always appearing immediately
+  - Fixed escape closing all open dialogs instead of one at a time
+  - Fixed "added to liked songs" toast not being consistently closed
+  - Fixed messed up time restoration feature on YT because of the `&t` param
+  - Fixed broken autoplay queue delete button after a redesign
+  - Fixed transparent player bar background in fullscreen being barely readable with thumbnail overlay active
+  - Fixed thumbnail overlay not updating in fullscreen mode
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Internal Changes:**
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
-  - Added advanced feature to change the startup timeout
-  - A blue logo is shown instead of the red BetterYTM logo when the script was compiled in development / preview mode
-  - In dev/preview mode, missing configuration keys will now be set to their default value instead of potentially breaking the script
+  - Now using a single query parameter for lyrics lookup
+  - Added license for plugin-related source code, see [license-for-plugins.txt](https://github.com/Sv443/BetterYTM/blob/develop/license-for-plugins.txt)
+  - Added advanced feature to change the startup timeout (only impacts plugin initialization for now)
+  - Now using a blue logo is instead of the red BetterYTM logo when the script was compiled in development (preview) mode
   - SelectorObserver changes:
     - Added `ytMasthead` instance for the title bar on YT
     - Renamed all YT-specific instances to have the `yt` prefix
       - `watchFlexy` renamed to `ytWatchFlexy`
       - `watchMetadata` renamed to `ytWatchMetadata`
+  - Fixed missing configuration keys in development/preview mode instead of potentially breaking the script
   - Added Storybook for easier and faster development of components
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
-  - Migrated to pnpm for faster compilation and development scripts
-- **Plugin Interface Changes:**
+  - Migrated to pnpm for faster compilation times
+- **Plugin Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
-    - `createRipple()` to create a click ripple animation effect on any given element or create a new element with the effect
+    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
     - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
   - Changed components:
     - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed
     - BytmDialog's private members and methods have been changed to protected for easier extension (when using TypeScript)
-  - Added functions:
+  - Added interface functions:
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
     - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [Return Youtube Dislike](https://returnyoutubedislike.com/)
   - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
-  - Added library `compare-versions` to the plugin interface at `unsafeWindow.BYTM.compareVersions` for easier plugin version comparison
+  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
   - Added events
     - `bytm:featureInitStarted` - emitted when the feature initialization process starts
     - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
     - `bytm:dialogClosed` - emitted when a BytmDialog is closed and gets passed the instance
     - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
     - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
-  - Event `bytm:siteEvent:fullscreenToggled` will now only emit once per fullscreen change
-  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+  - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
   - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
-    In practice this changes nothing, but it benefits from having the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
+    In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
 </details>
 
