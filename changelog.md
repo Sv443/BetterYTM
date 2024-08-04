@@ -24,6 +24,7 @@
   - Added Shift and Ctrl modifier keys to the above-queue buttons that can skip prompts or customize the behavior
   - Arrow key and number key skipping works more reliably and now also in the config menu
   - Removed broken feature "remove upgrade tab"
+  - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
