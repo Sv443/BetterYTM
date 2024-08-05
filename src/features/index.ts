@@ -1,4 +1,4 @@
-import { getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
+import { getLocale, getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
@@ -77,6 +77,17 @@ const options = {
     .sort((a, b) => a.label.localeCompare(b.label)),
 };
 
+/** Renders a long number with a thousands separator */
+function renderLongNumberValue(val: string, maximumFractionDigits = 0) {
+  return Number(val).toLocaleString(
+    getLocale().replace(/_/g, "-"),
+    {
+      style: "decimal",
+      maximumFractionDigits,
+    }
+  );
+}
+
 //#region features
 
 /**
@@ -101,7 +112,7 @@ const options = {
  * | `click: () => void`                                            | for type `button` only - function that will be called when the button is clicked                                                                         |
  * | `helpText: string / () => string`                              | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment: () => string / Promise<string>`                | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
- * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
+ * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too!     |
  * | `min: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
  * | `max: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
  * | `step: number`                                                 | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
@@ -111,7 +122,7 @@ const options = {
  * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
- * | `renderValue: (val: any) => string`                            | If provided, is called before rendering the value's label in the config menu                                                                             |
+ * | `renderValue: (val: string) => string`                         | If provided, is used to render the value's label in the config menu                                                                                      |
  * 
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -562,11 +573,12 @@ export const featInfo = {
   lyricsCacheMaxSize: {
     type: "slider",
     category: "lyrics",
-    default: 1000,
+    default: 2000,
     min: 100,
-    max: 5000,
+    max: 10000,
     step: 100,
-    unit: (val: number) => " " + tp("unit_entries", val),
+    unit: (val: number) => ` ${tp("unit_entries", val)}`,
+    renderValue: renderLongNumberValue,
     advanced: true,
     textAdornment: adornments.advanced,
     reloadRequired: false,
