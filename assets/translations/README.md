@@ -79,7 +79,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -161,7 +161,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -243,7 +243,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -325,7 +325,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -407,7 +407,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -489,7 +489,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
@@ -571,7 +571,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_button_tooltip_disabled` | `Click to enable auto-liking. Shift-click to open the management dialog.` |
 | `add_auto_like_channel_id_prompt` | `Enter the user ID (@Name / UC...) or full URL of the channel you want to auto-like.\nPress "cancel" to exit.` |
 | `add_auto_like_channel_invalid_id` | `The entered user ID is invalid.\nPlease make sure you copy the entire channel URL! It should contain a part like "channel/UC..." or "/@..."` |
-| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you instead want to change its name?` |
+| `add_auto_like_channel_already_exists_prompt_new_name` | `A channel with that ID is already in the list.\nDo you want to change the name?` |
 | `add_auto_like_channel_name_prompt` | `Enter the name of the channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_name_prompt` | `Enter the new name for this channel.\nPress "cancel" to exit.` |
 | `auto_like_channel_edit_id_prompt` | `Enter the new user ID (@Name / UC...) or full URL for this channel.\nPress "cancel" to exit.` |
