@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,52 +33,52 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/anchorImprovements.css
-// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/autoLike.css
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/dist/BetterYTM.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/arrow_down.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/beaker_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/globe.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/globe_small.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/help.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/image.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/image_filled.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/external/greasyfork.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/logo/logo_48.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/de_DE.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/en_UK.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/en_US.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/cc87ce8f/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/anchorImprovements.css
+// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/autoLike.css
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/dist/BetterYTM.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/arrow_down.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/help.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/image.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/image_filled.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/external/greasyfork.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/logo/logo_48.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/de_DE.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/en_UK.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/en_US.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/e20d56e8/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.0.1/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -191,7 +191,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "cc87ce8f";
+const buildNumberRaw = "e20d56e8";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1673,16 +1673,17 @@ function addAutoLikeEntryPrompts() {
         const idPrompt = (_a = prompt(t("add_auto_like_channel_id_prompt"))) === null || _a === void 0 ? void 0 : _a.trim();
         if (!idPrompt)
             return;
-        const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
+        const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (isValidChannelId(idPrompt) ? idPrompt : null);
         if (!id || id.length <= 0)
             return alert(t("add_auto_like_channel_invalid_id"));
         let overwriteName = false;
-        if (autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
+        const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
+        if (hasChannelEntry) {
             if (!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
                 return;
             overwriteName = true;
         }
-        const name = (_c = prompt(t("add_auto_like_channel_name_prompt"))) === null || _c === void 0 ? void 0 : _c.trim();
+        const name = (_c = prompt(t("add_auto_like_channel_name_prompt"), hasChannelEntry === null || hasChannelEntry === void 0 ? void 0 : hasChannelEntry.name)) === null || _c === void 0 ? void 0 : _c.trim();
         if (!name || name.length === 0)
             return;
         yield autoLikeStore.setData(overwriteName
@@ -5163,6 +5164,13 @@ const options = {
     }, [])
         .sort((a, b) => a.label.localeCompare(b.label)),
 };
+/** Renders a long number with a thousands separator */
+function renderLongNumberValue(val, maximumFractionDigits = 0) {
+    return Number(val).toLocaleString(getLocale().replace(/_/g, "-"), {
+        style: "decimal",
+        maximumFractionDigits,
+    });
+}
 //#region features
 /**
  * Contains all possible features with their default values and other configuration.
@@ -5186,7 +5194,7 @@ const options = {
  * | `click: () => void`                                            | for type `button` only - function that will be called when the button is clicked                                                                         |
  * | `helpText: string / () => string`                              | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
  * | `textAdornment: () => string / Promise<string>`                | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
- * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added by hand! |
+ * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too!     |
  * | `min: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
  * | `max: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
  * | `step: number`                                                 | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
@@ -5196,7 +5204,7 @@ const options = {
  * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
  * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
  * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
- * | `renderValue: (val: any) => string`                            | If provided, is called before rendering the value's label in the config menu                                                                             |
+ * | `renderValue: (val: string) => string`                         | If provided, is used to render the value's label in the config menu                                                                                      |
  *
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -5642,11 +5650,12 @@ const featInfo = {
     lyricsCacheMaxSize: {
         type: "slider",
         category: "lyrics",
-        default: 1000,
+        default: 2000,
         min: 100,
-        max: 5000,
+        max: 10000,
         step: 100,
-        unit: (val) => " " + tp("unit_entries", val),
+        unit: (val) => ` ${tp("unit_entries", val)}`,
+        renderValue: renderLongNumberValue,
         advanced: true,
         textAdornment: adornments.advanced,
         reloadRequired: false,
