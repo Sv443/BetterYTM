@@ -296,13 +296,15 @@ async function addAutoLikeEntryPrompts() {
 
   let overwriteName = false;
 
-  if(autoLikeStore.getData().channels.some((ch) => ch.id === id)) {
+  const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
+
+  if(hasChannelEntry) {
     if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
       return;
     overwriteName = true;
   }
 
-  const name = prompt(t("add_auto_like_channel_name_prompt"))?.trim();
+  const name = prompt(t("add_auto_like_channel_name_prompt"), hasChannelEntry?.name)?.trim();
   if(!name || name.length === 0)
     return;
 
