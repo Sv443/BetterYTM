@@ -1,5 +1,5 @@
 import { compress, debounce } from "@sv443-network/userutils";
-import { compressionSupported, error, getDomain, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
+import { compressionSupported, error, getDomain, isValidChannelId, log, onInteraction, parseChannelIdFromUrl, t, tryToDecompressAndParse } from "../utils/index.js";
 import { BytmDialog, createCircularBtn, createToggleInput, showToast } from "../components/index.js";
 import { autoLikeStore, initAutoLikeStore } from "../features/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
@@ -289,7 +289,7 @@ async function addAutoLikeEntryPrompts() {
   if(!idPrompt)
     return;
 
-  const id = parseChannelIdFromUrl(idPrompt) ?? (idPrompt.trim().startsWith("@") ? idPrompt.trim() : null);
+  const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
 
   if(!id || id.length <= 0)
     return alert(t("add_auto_like_channel_invalid_id"));
