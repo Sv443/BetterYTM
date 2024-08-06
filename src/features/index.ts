@@ -23,27 +23,11 @@ interface SelectOption<TValue = number | string> {
   label: string;
 }
 
+type AdornmentFunc =
+  | ((...args: any[]) => Promise<string | undefined>)
+  | Promise<string | undefined>;
+
 //#region dependencies
-
-/** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
-  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceAsString(resource) ?? ""}</span>`;
-
-/** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
-const combineAdornments = (
-  adornments: Array<(
-    | (() => Promise<string | undefined>)
-    | Promise<string | undefined>
-  )>
-) =>
-  new Promise<string>(async (resolve) => {
-    const html = [] as string[];
-    for(const adornment of adornments) {
-      const val = typeof adornment === "function" ? await adornment() : await adornment;
-      val && html.push(val);
-    }
-    resolve(html.join(""));
-  });
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
@@ -52,7 +36,42 @@ const adornments = {
   globe: async () => await resourceAsString("icon-globe_small") ?? "",
   alert: async (title: string) => getAdornHtml("bytm-warning-icon", title, "icon-error", "role=\"alert\""),
   reloadRequired: async () => getFeature("advancedMode") ? getAdornHtml("bytm-reload-icon", t("feature_requires_reload"), "icon-reload") : undefined,
-} satisfies Record<string, (...args: any[]) => Promise<string | undefined>>;
+} satisfies Record<string, AdornmentFunc>;
+
+/** Order of adornment elements in the {@linkcode combineAdornments()} function */
+const adornmentOrder = new Map<AdornmentFunc, number>();
+adornmentOrder.set(adornments.alert, 0);
+adornmentOrder.set(adornments.experimental, 1);
+adornmentOrder.set(adornments.globe, 2);
+adornmentOrder.set(adornments.reloadRequired, 3);
+adornmentOrder.set(adornments.advanced, 4);
+
+/** Creates an HTML string for the given adornment properties */
+const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
+  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceAsString(resource) ?? ""}</span>`;
+
+/** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
+const combineAdornments = (
+  adornments: Array<AdornmentFunc>
+) => new Promise<string>(
+  async (resolve) => {
+    const sortedAdornments = adornments.sort((a, b) => {
+      const aIndex = adornmentOrder.get(a) ? adornmentOrder.get(a)! : -1;
+      const bIndex = adornmentOrder.has(b) ? adornmentOrder.get(b)! : -1;
+      return aIndex - bIndex;
+    });
+    const html = [] as string[];
+
+    for(const adornment of sortedAdornments) {
+      const val = typeof adornment === "function"
+        ? await adornment()
+        : await adornment;
+      val && html.push(val);
+    }
+
+    resolve(html.join(""));
+  }
+);
 
 /** Common options for config items of type "select" */
 const options = {
@@ -685,6 +704,13 @@ export const featInfo = {
       message: "Example",
       iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
     }),
+  },
+  showToastOnGenericError: {
+    type: "toggle",
+    category: "general",
+    default: true,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   resetConfig: {
     type: "button",
