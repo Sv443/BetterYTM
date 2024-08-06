@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, addStyle, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, fetchCss, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, currentMediaType, domLoaded, waitVideoElementReady, getVideoTime, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -184,9 +184,7 @@ export async function addConfigMenuOptionYT(container: HTMLElement) {
 /** Adds anchors around elements and tweaks existing ones so songs are easier to open in a new tab */
 export async function addAnchorImprovements() {
   try {
-    const css = await fetchCss("css-anchor_improvements");
-    if(css)
-      addStyle(css, "anchor-improvements");
+    await addStyleFromResource("css-anchor_improvements");
   }
   catch(err) {
     error("Couldn't add anchor improvements CSS due to an error:", err);

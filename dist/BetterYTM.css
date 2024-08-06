@@ -3,7 +3,8 @@
   --bytm-locale-color: #5ea2ec;
   --bytm-advanced-mode-color: #ceb663;
   --bytm-experimental-col: #cc83e5;
-  --bytm-warning-col: #e07664;
+  --bytm-warning-col: #e5a63b;
+  --bytm-error-col: #fa5b5b;
   --bytm-reload-col: #77e064;
 }
 
@@ -751,9 +752,15 @@ body .bytm-ripple.slower {
   gap: 10px;
 }
 
-.bytm-toast-icon.img {
+.bytm-toast-icon.img,
+.bytm-toast-icon svg
+{
   width: 24px;
   height: 24px;
+}
+
+.bytm-toast-icon path {
+  fill: var(--toast-icon-fill, #fff);
 }
 
 .bytm-toggle-input-wrapper {
