@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "../utils/NanoEmitter.js";
-import { addStyle, clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -94,6 +94,9 @@ export class BytmDialog extends NanoEmitter<{
     if(this.options.closeOnBgClick)
       bgElem.ariaLabel = bgElem.title = t("close_menu_tooltip");
 
+    bgElem.style.setProperty("--bytm-dialog-width-max", `${this.options.width}px`);
+    bgElem.style.setProperty("--bytm-dialog-height-max", `${this.options.height}px`);
+
     bgElem.style.visibility = "hidden";
     bgElem.style.display = "none";
     bgElem.inert = true;
@@ -102,12 +105,6 @@ export class BytmDialog extends NanoEmitter<{
     document.body.appendChild(bgElem);
 
     this.attachListeners(bgElem);
-
-    addStyle(`\
-#bytm-${this.id}-dialog-bg {
-  --bytm-dialog-width-max: ${this.options.width}px;
-  --bytm-dialog-height-max: ${this.options.height}px;
-}`, `dialog-${this.id}-vars`);
 
     this.events.emit("render");
     return bgElem;
