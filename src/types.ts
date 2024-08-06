@@ -580,6 +580,8 @@ export interface FeatureConfig {
   initTimeout: number;
   /** Amount of seconds to show BYTM's toasts for */
   toastDuration: number;
+  /** Whether to show a toast on generic errors */
+  showToastOnGenericError: boolean;
   /** Button that resets the config to the default state */
   resetConfig: undefined;
   /** Whether to show advanced settings in the config menu */

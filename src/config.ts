@@ -8,7 +8,7 @@ import { closeCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey } from "./types.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 6;
+export const formatVersion = 7;
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   // @ts-ignore
@@ -95,7 +95,9 @@ export const migrations: DataMigrationsDict = {
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
   // 6 -> 7 (v2.2)
-  // 7: (oldData: FeatureConfig) =>
+  7: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "showToastOnGenericError",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
