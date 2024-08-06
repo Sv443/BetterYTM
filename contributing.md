@@ -523,7 +523,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 <br>
 
 > #### getPluginInfo()
-> Usage:  
+> Usages:  
 > ```ts
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, name: string, namespace: string): PluginInfo | undefined
 > unsafeWindow.BYTM.getPluginInfo(token: string | undefined, pluginDef: { plugin: { name: string, namespace: string } }): PluginInfo | undefined
@@ -1679,15 +1679,17 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 <br>
 
 > #### showToast()
-> Usage:  
+> Usages:  
 > ```ts
-> unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>
+> unsafeWindow.BYTM.showToast(props: ToastProps): Promise<void>;
+> unsafeWindow.BYTM.showToast(message: string): Promise<void>;
 > ```
 >   
 > Shows a toast notification with the specified message or element for the given duration and anchored in the specified corner of the viewport.  
 > If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
+> If the second overload is used, the duration will default to the value of the `toastDuration` option in the feature config.  
 >   
-> Properties:
+> Properties for first overload:
 > - either of:
 >   - `message: string` - The message to show in the toast
 >   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
@@ -1741,10 +1743,10 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 <br>
 
 > #### createRipple()
-> Usage:  
+> Usages:  
 > ```ts
 > unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
-> unsafeWindow.BYTM.createRipple(rippleElement: undefined, props?: RippleProps): HTMLDivElement
+> unsafeWindow.BYTM.createRipple(rippleElement?: undefined, props?: RippleProps): HTMLDivElement
 > ```
 >   
 > Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  

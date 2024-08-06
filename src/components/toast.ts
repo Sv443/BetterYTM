@@ -74,12 +74,22 @@ export async function showIconToast({
   });
 }
 
-/** Shows a toast message in the top right corner of the screen by default */
-export async function showToast({
-  duration = getFeature("toastDuration"),
-  position = "tr",
-  ...rest
-}: ToastProps) {
+/** Shows a toast message in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration` */
+export async function showToast(message: string): Promise<void>;
+/** Shows a toast message or element in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration` */
+export async function showToast(props: ToastProps): Promise<void>;
+/** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
+export async function showToast(arg: string | ToastProps): Promise<void> {
+  const props: ToastProps = typeof arg === "string"
+    ? { message: arg, duration: getFeature("toastDuration") }
+    : arg;
+
+  const {
+    duration = getFeature("toastDuration"),
+    position = "tr",
+    ...rest
+  } = props;
+
   if(duration <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
   const toastEl = document.querySelector("#bytm-toast");
