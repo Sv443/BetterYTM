@@ -2,6 +2,9 @@ import { clamp } from "@sv443-network/userutils";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
 import { LogLevel } from "../types.js";
+import { showIconToast } from "src/components/toast.js";
+import { t } from "./translations.js";
+import { getFeature } from "src/config.js";
 
 let curLogLevel = LogLevel.Info;
 
@@ -55,7 +58,17 @@ export function warn(...args: unknown[]): void {
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
+
+  getFeature("showToastOnGenericError")
+    && showIconToast({
+      icon: "icon-error",
+      message: t("generic_error_toast", args.find(e => e instanceof Error)?.name ?? t("error")),
+    }).then((el) => {
+      el?.style.setProperty("--toast-icon-fill", "var(--bytm-error-col)");
+    });
 }
+
+document.addEventListener("DOMContentLoaded", () => error("Ayo chungus", new TypeError("chungus moment encountered")));
 
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {

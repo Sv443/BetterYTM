@@ -66,7 +66,7 @@ export async function showIconToast({
 
   toastWrapper.appendChild(toastMessage);
 
-  await showToast({
+  return await showToast({
     duration,
     position,
     element: toastWrapper,
@@ -75,11 +75,11 @@ export async function showIconToast({
 }
 
 /** Shows a toast message in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration` */
-export async function showToast(message: string): Promise<void>;
+export async function showToast(message: string): Promise<HTMLDivElement | void>;
 /** Shows a toast message or element in the top right corner of the screen by default and uses the default timeout from the config option `toastDuration` */
-export async function showToast(props: ToastProps): Promise<void>;
+export async function showToast(props: ToastProps): Promise<HTMLDivElement | void>;
 /** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
-export async function showToast(arg: string | ToastProps): Promise<void> {
+export async function showToast(arg: string | ToastProps): Promise<HTMLDivElement | void> {
   const props: ToastProps = typeof arg === "string"
     ? { message: arg, duration: getFeature("toastDuration") }
     : arg;
@@ -110,15 +110,17 @@ export async function showToast(arg: string | ToastProps): Promise<void> {
     toastElem.appendChild(rest.element);
     toastElem.title = toastElem.ariaLabel = rest.title;
   }
-  
+
   document.body.appendChild(toastElem);
 
-  await pauseFor(100);
+  pauseFor(100).then(async () => {
+    toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
 
-  toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
+    if(duration < Number.POSITIVE_INFINITY)
+      timeout = setTimeout(async () => await closeToast(), duration * 1000);
+  });
 
-  if(duration < Number.POSITIVE_INFINITY)
-    timeout = setTimeout(async () => await closeToast(), duration * 1000);
+  return toastElem;
 }
 
 /** Closes the currently open toast */
