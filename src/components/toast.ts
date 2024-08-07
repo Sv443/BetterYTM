@@ -12,19 +12,26 @@ type ToastProps = {
   position?: ToastPos;
 } & (
   | {
+    /** Message (plus title) for the toast */
     message: string;
   }
   | {
+    /** Element to be shown in the toast */
     element: HTMLElement;
+    /** Title property of the toast (for a11y) */
     title: string;
   }
 );
 
 type IconToastProps = ToastProps & (
   | {
+    /** An SVG icon identifier from the assets */
     icon: ResourceKey & `icon-${string}`;
+    /** CSS `fill` value for all SVG path elements in the icon */
+    iconFill?: string;
   }
   | {
+    /** Link to an image */
     iconSrc: string | Promise<string>;
   }
 );
@@ -55,6 +62,9 @@ export async function showIconToast({
     if(iconHtml)
       toastIcon.innerHTML = iconHtml;
     toastWrapper.appendChild(toastIcon);
+
+    if("iconFill" in rest && rest.iconFill)
+      toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
   }
 
   const toastMessage = document.createElement("div");

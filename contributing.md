@@ -1587,7 +1587,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > Properties:
 > - `title: string` - The title that is displayed when hovering over the button. Also used as a description for accessibility.
 > - either of:
->   - `resourceName: string` - Name of the resource starting with `icon-` to use as the button icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `resourceName: string` - Name of the resource starting with `icon-` to use as the button icon (see [`assets/resources.json`](assets/resources.json))
 >   - `src: string | Promise<string>` - URL of the image to use as the button icon
 > - either of:
 >   - `href: string` - URL to navigate to when the button is clicked or interacted with.
@@ -1624,7 +1624,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > - `title: string` - The title of the button that is displayed when hovering over it. Also used as a description for accessibility
 > - `iconPosition?: "left" | "right"` - The position of the icon relative to the text. Can be "left" or "right" (defaults to "left")
 > - either of:
->   - `resourceName: string` - Name of the resource to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
+>   - `resourceName: string` - Name of the resource to use as the icon (see [`assets/resources.json`](assets/resources.json))
 >   - `src: string` - URL of the image to use as the icon
 > - either of:
 >   - `href: string` - URL to navigate to when the button is clicked or interacted with.
@@ -1723,10 +1723,13 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   - `message: string` - The message to show in the toast
 >   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
 > - either of:
->   - `icon: string` - A resource name starting with `icon-` to use as the icon (see [`src/assets/resources.json`](src/assets/resources.json))
 >   - `iconSrc: string | Promise<string>` - URL of the image to use as the icon
-> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
-> - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+>   - or:
+>     - `icon: string` - An SVG resource name starting with `icon-` to use as the icon (see [`assets/resources.json`](assets/resources.json))
+>     - `iconFill?: string` - CSS color value to set the icon's &lt;path&gt; elements' `fill` property to
+> - any or none of:
+>   - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
+>   - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1734,6 +1737,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > unsafeWindow.BYTM.showIconToast({
 >   message: "This is an icon toast",
 >   icon: "icon-help",
+>   iconFill: "var(--bytm-warning-col)", // find all values in src/dialogs.css
 >   duration: 3_000,
 >   position: "bl",
 > });

@@ -62,9 +62,9 @@ export function error(...args: unknown[]): void {
   getFeature("showToastOnGenericError")
     && showIconToast({
       icon: "icon-error",
+      iconFill: "var(--bytm-error-col)",
       message: t("generic_error_toast", args.find(e => e instanceof Error)?.name ?? t("error")),
-    }).then((el) => {
-      el?.style.setProperty("--toast-icon-fill", "var(--bytm-error-col)");
+      duration: Math.max(getFeature("toastDuration"), 6) * 1000,
     });
 }
 
