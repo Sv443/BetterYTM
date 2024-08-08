@@ -41,6 +41,7 @@
 <details><summary>Click to expand internal and plugin changes</summary>
 
 - **Internal Changes:**
+  - Updated the [UserUtils library](https://github.com/Sv443-Network/UserUtils) to v7.1.0 (TODO:)
   - Removed `compareVersions()` and `compareVersionArrays()` in favor of including the [`compare-versions`](https://npmjs.com/package/compare-versions) library
   - Now using a single query parameter for lyrics lookup
   - Added license for plugin-related source code, see [license-for-plugins.txt](https://github.com/Sv443/BetterYTM/blob/develop/license-for-plugins.txt)
@@ -55,6 +56,7 @@
   - Added Storybook for easier and faster development of components
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
   - Migrated to pnpm for faster compilation times
+  - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils#nanoemitter) (it is still re-exported by the plugin interface as always)
 - **Plugin Changes:**
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
@@ -79,7 +81,7 @@
     - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
     - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
   - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
-  - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [`src/utils/NanoEmitter.ts`](https://github.com/Sv443/BetterYTM/blob/develop/src/utils/NanoEmitter.ts))  
+  - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils#nanoemitter))  
     In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
 </details>
@@ -125,7 +127,7 @@
   - Expanded plugin interface
     - Added function to register plugins (see [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#registerplugin))  
       All plugins that are not registered will have restricted access to the BetterYTM API (subject to change in the future).
-    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
+    - Plugins are now given access to the classes [`BytmDialog`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#bytmdialog) and [`NanoEmitter`](https://github.com/Sv443-Network/UserUtils#nanoemitter), and the functions [`onInteraction()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#oninteraction), [`getThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getthumbnailurl), [`getBestThumbnailUrl()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#getbestthumbnailurl) [`createHotkeyInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createhotkeyinput), [`createToggleInput()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createtoggleinput) and [`createCircularBtn()`](https://github.com/Sv443/BetterYTM/blob/main/contributing.md#createcircularbtn)
   - Added an experimental fuzzy filtering algorithm when fetching lyrics to eventually yield more accurate results (hidden behind advanced mode because it's far from perfect)
   - Resource URL versioning was improved, so all versions from now on will still work in the future when the URLs potentially change
 
