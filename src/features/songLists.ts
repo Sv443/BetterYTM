@@ -45,14 +45,17 @@ export async function initQueueButtons() {
     if(queueItems.length === 0)
       return;
 
+    let addedBtnsCount = 0;
     queueItems.forEach(itm => {
       if(itm.classList.contains("bytm-has-btns"))
         return;
       itm.classList.add("bytm-has-btns");
       addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
+      addedBtnsCount++;
     });
 
-    log(`Added buttons to ${queueItems.length} new "generic song list" ${autoPlural("item", queueItems)} in list`, listElem);
+    addedBtnsCount > 0 &&
+      log(`Added buttons to ${addedBtnsCount} new "generic song list" ${autoPlural("item", addedBtnsCount)} in list`, listElem);
   };
 
   const listSelector = `\
@@ -71,7 +74,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
     addSelectorListener("body", listSelector, {
       all: true,
       continuous: true,
-      debounce: 100,
+      debounce: 150,
       // TODO: switch to longer debounce time and edge type "risingIdle" after UserUtils update
       debounceEdge: "falling",
       listener: checkAddGenericBtns,
@@ -148,6 +151,12 @@ async function addQueueButtons(
 
         song = songEl?.textContent;
         artist = artistEl?.textContent;
+
+        if(!artist) {
+          // new playlist design
+          artistEl = document.querySelector<HTMLElement>("ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]");
+          artist = artistEl?.textContent;
+        }
       }
       else return;
 
