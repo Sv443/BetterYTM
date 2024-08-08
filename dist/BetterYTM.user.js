@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,53 +33,53 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/anchorImprovements.css
-// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/autoLike.css
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/dist/BetterYTM.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/fixSpacing.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/arrow_down.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/beaker_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/globe.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/globe_small.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/help.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/image.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/image_filled.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/external/greasyfork.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/logo/logo_48.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/de_DE.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/en_UK.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/en_US.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/c7dfa5e1/assets/translations/zh_CN.json
-// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.0.1/dist/index.global.js
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/anchorImprovements.css
+// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/autoLike.css
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/dist/BetterYTM.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/fixSpacing.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/arrow_down.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/help.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/image.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/image_filled.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/external/greasyfork.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/logo/logo_48.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/de_DE.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/en_UK.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/en_US.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/5bbbed8a/assets/translations/zh_CN.json
+// @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
 // @grant             GM.registerMenuCommand
@@ -191,7 +191,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "c7dfa5e1";
+const buildNumberRaw = "5bbbed8a";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -314,89 +314,6 @@ function addLyricsCacheEntryBest(artist, song, url) {
     log("Added cache entry for best result", artist, "-", song, "\n", entry);
     emitInterface("bytm:lyricsCacheEntryAdded", { entry, type: "best" });
     return lyricsCacheMgr.setData({ cache });
-}let createNanoEvents = () => ({
-  emit(event, ...args) {
-    for (
-      let i = 0,
-        callbacks = this.events[event] || [],
-        length = callbacks.length;
-      i < length;
-      i++
-    ) {
-      callbacks[i](...args);
-    }
-  },
-  events: {},
-  on(event, cb) {
-(this.events[event] ||= []).push(cb);
-    return () => {
-      this.events[event] = this.events[event]?.filter(i => cb !== i);
-    }
-  }
-});/** Class that can be extended or instantiated by itself to create an event emitter with helper methods and a strongly typed event map */
-class NanoEmitter {
-    constructor(options = {}) {
-        Object.defineProperty(this, "events", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: createNanoEvents()
-        });
-        Object.defineProperty(this, "eventUnsubscribes", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: []
-        });
-        Object.defineProperty(this, "emitterOptions", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.emitterOptions = Object.assign({ publicEmit: false }, options);
-    }
-    /** Subscribes to an event - returns a function that unsubscribes the event listener */
-    on(event, cb) {
-        // eslint-disable-next-line prefer-const
-        let unsub;
-        const unsubProxy = () => {
-            if (!unsub)
-                return;
-            unsub();
-            this.eventUnsubscribes = this.eventUnsubscribes.filter(u => u !== unsub);
-        };
-        unsub = this.events.on(event, cb);
-        this.eventUnsubscribes.push(unsub);
-        return unsubProxy;
-    }
-    /** Subscribes to an event and calls the callback or resolves the Promise only once */
-    once(event, cb) {
-        return new Promise((resolve) => {
-            // eslint-disable-next-line prefer-const
-            let unsub;
-            const onceProxy = ((...args) => {
-                unsub();
-                cb === null || cb === void 0 ? void 0 : cb(...args);
-                resolve(args);
-            });
-            unsub = this.on(event, onceProxy);
-        });
-    }
-    /** Emits an event on this instance - Needs `publicEmit` to be set to true in the constructor! */
-    emit(event, ...args) {
-        if (this.emitterOptions.publicEmit) {
-            this.events.emit(event, ...args);
-            return true;
-        }
-        return false;
-    }
-    /** Unsubscribes all event listeners */
-    unsubscribeAll() {
-        for (const unsub of this.eventUnsubscribes)
-            unsub();
-        this.eventUnsubscribes = [];
-    }
 }/** Contains all translation keys of all initialized and loaded translations */
 const allTrKeys = new Map();
 /** Contains the identifiers of all initialized and loaded translation locales */
@@ -480,7 +397,7 @@ const openDialogs = [];
 /** TODO: remove as soon as config menu is migrated to use BytmDialog */
 const setCurrentDialogId = (id) => currentDialogId = id;
 /** Creates and manages a modal dialog element */
-class BytmDialog extends NanoEmitter {
+class BytmDialog extends UserUtils.NanoEmitter {
     constructor(options) {
         super();
         Object.defineProperty(this, "options", {
@@ -925,7 +842,7 @@ class ExImDialog extends BytmDialog {
         });
     }
 }/** EventEmitter instance that is used to detect various changes to the site and userscript */
-const siteEvents = new NanoEmitter({
+const siteEvents = new UserUtils.NanoEmitter({
     publicEmit: true,
 });
 let observers = [];
@@ -1301,7 +1218,9 @@ function createLongBtn(_a) {
 /** Shows a toast message with an icon */
 function showIconToast(_a) {
     return __awaiter(this, void 0, void 0, function* () {
-        var { duration = getFeature("toastDuration"), position = "tr" } = _a, rest = __rest(_a, ["duration", "position"]);
+        var { duration, position = "tr" } = _a, rest = __rest(_a, ["duration", "position"]);
+        if (typeof duration !== "number" || isNaN(duration))
+            duration = getFeature("toastDuration") * 1000;
         if (duration <= 0)
             return info("Toast duration is <= 0, so it won't be shown");
         const toastWrapper = document.createElement("div");
@@ -1343,8 +1262,8 @@ function showToast(arg) {
         const props = typeof arg === "string"
             ? { message: arg, duration: getFeature("toastDuration") }
             : arg;
-        const { duration = getFeature("toastDuration"), position = "tr" } = props, rest = __rest(props, ["duration", "position"]);
-        if (duration <= 0)
+        const { duration: durationMs = getFeature("toastDuration") * 1000, position = "tr" } = props, rest = __rest(props, ["duration", "position"]);
+        if (durationMs <= 0)
             return info("Toast duration is <= 0, so it won't be shown");
         const toastEl = document.querySelector("#bytm-toast");
         if (toastEl)
@@ -1364,8 +1283,8 @@ function showToast(arg) {
         document.body.appendChild(toastElem);
         UserUtils.pauseFor(100).then(() => __awaiter(this, void 0, void 0, function* () {
             toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
-            if (duration < Number.POSITIVE_INFINITY)
-                timeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () { return yield closeToast(); }), duration * 1000);
+            if (durationMs < Number.POSITIVE_INFINITY)
+                timeout = setTimeout(() => __awaiter(this, void 0, void 0, function* () { return yield closeToast(); }), durationMs);
         }));
         return toastElem;
     });
@@ -1887,7 +1806,7 @@ var updates = {
 	openuserjs: "https://openuserjs.org/scripts/Sv443/BetterYTM"
 };
 var dependencies = {
-	"@sv443-network/userutils": "^7.0.1",
+	"@sv443-network/userutils": "^7.1.0",
 	"compare-versions": "^6.1.0",
 	marked: "^12.0.2",
 	nanoevents: "^9.0.0"
@@ -4743,13 +4662,16 @@ function initQueueButtons() {
             const queueItems = listElem.querySelectorAll("ytmusic-responsive-list-item-renderer");
             if (queueItems.length === 0)
                 return;
+            let addedBtnsCount = 0;
             queueItems.forEach(itm => {
                 if (itm.classList.contains("bytm-has-btns"))
                     return;
                 itm.classList.add("bytm-has-btns");
                 addQueueButtons(itm, ".flex-columns", "genericList", ["bytm-generic-list-queue-btn-container"], "afterParent");
+                addedBtnsCount++;
             });
-            log(`Added buttons to ${queueItems.length} new "generic song list" ${UserUtils.autoPlural("item", queueItems)} in list`, listElem);
+            addedBtnsCount > 0 &&
+                log(`Added buttons to ${addedBtnsCount} new "generic song list" ${UserUtils.autoPlural("item", addedBtnsCount)} in list`, listElem);
         };
         const listSelector = `\
 ytmusic-playlist-shelf-renderer #contents,
@@ -4765,7 +4687,7 @@ ytmusic-section-list-renderer[main-page-type="MUSIC_PAGE_TYPE_PLAYLIST"] ytmusic
             addSelectorListener("body", listSelector, {
                 all: true,
                 continuous: true,
-                debounce: 100,
+                debounce: 150,
                 // TODO: switch to longer debounce time and edge type "risingIdle" after UserUtils update
                 debounceEdge: "falling",
                 listener: checkAddGenericBtns,
@@ -4825,6 +4747,11 @@ function addQueueButtons(queueItem_1) {
                         artistEl = queueItem.querySelector(".secondary-flex-columns yt-formatted-string:first-child a");
                     song = songEl === null || songEl === void 0 ? void 0 : songEl.textContent;
                     artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
+                    if (!artist) {
+                        // new playlist design
+                        artistEl = document.querySelector("ytmusic-responsive-header-renderer .strapline a.yt-formatted-string[href]");
+                        artist = artistEl === null || artistEl === void 0 ? void 0 : artistEl.textContent;
+                    }
                 }
                 else
                     return;
@@ -5775,7 +5702,6 @@ const featInfo = {
         textAdornment: adornments.advanced,
         enable: noop,
         change: () => showIconToast({
-            duration: getFeature("toastDuration") * 1000,
             message: "Example",
             iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
         }),
@@ -6010,7 +5936,7 @@ function clearConfig() {
         yield cfgDataStore.deleteData();
         info("Deleted config from persistent storage");
     });
-}const { getUnsafeWindow, randomId } = UserUtils__namespace;
+}const { getUnsafeWindow, randomId, NanoEmitter } = UserUtils__namespace;
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)
  * If prefixed with /**\/, the function is authenticated and requires a token to be passed as the first argument.
@@ -6673,13 +6599,11 @@ function error(...args) {
     console.error(consPrefix, ...args);
     getFeature("showToastOnGenericError")
         && showIconToast({
+            message: t("generic_error_toast", (_b = (_a = args.find(e => e instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error")),
             icon: "icon-error",
             iconFill: "var(--bytm-error-col)",
-            message: t("generic_error_toast", (_b = (_a = args.find(e => e instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error")),
-            duration: Math.max(getFeature("toastDuration"), 6) * 1000,
         });
 }
-document.addEventListener("DOMContentLoaded", () => error("Ayo chungus", new TypeError("chungus moment encountered")));
 /** Logs all passed values to the console with a debug-specific prefix */
 function dbg(...args) {
     console.log(consPrefixDbg, ...args);
@@ -7190,7 +7114,7 @@ function onDomLoad() {
             emitInterface("bytm:ready");
             info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
             try {
-                registerDevMenuCommands();
+                registerDevCommands();
             }
             catch (e) {
                 warn("Couldn't register dev menu commands:", e);
@@ -7223,7 +7147,7 @@ function initGlobalCssVars() {
 }
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
-function registerDevMenuCommands() {
+function registerDevCommands() {
     if (mode !== "development")
         return;
     GM.registerMenuCommand("Reset config", () => __awaiter(this, void 0, void 0, function* () {
@@ -7340,18 +7264,19 @@ function registerDevMenuCommands() {
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
         }
     }));
-    GM.registerMenuCommand("Export data using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
+    GM.registerMenuCommand("Export using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
         const ser = yield storeSerializer.serialize();
         dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
         alert("See console.");
     }));
-    GM.registerMenuCommand("Import data using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
+    GM.registerMenuCommand("Import using DataStoreSerializer", () => __awaiter(this, void 0, void 0, function* () {
         const input = prompt("Enter the serialized data to import:");
         if (input && input.length > 0) {
             yield storeSerializer.deserialize(input);
             alert("Imported data. Reload the page to apply changes.");
         }
     }));
+    GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
     log("Registered dev menu commands");
 }
 preInit();})(UserUtils,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
