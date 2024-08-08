@@ -68,8 +68,6 @@ export function error(...args: unknown[]): void {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => error("Ayo chungus", new TypeError("chungus moment encountered")));
-
 /** Logs all passed values to the console with a debug-specific prefix */
 export function dbg(...args: unknown[]): void {
   console.log(consPrefixDbg, ...args);

@@ -265,7 +265,7 @@ async function onDomLoad() {
     info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
-      registerDevMenuCommands();
+      registerDevCommands();
     }
     catch(e) {
       warn("Couldn't register dev menu commands:", e);
@@ -301,7 +301,7 @@ function initGlobalCssVars() {
 //#region dev menu cmds
 
 /** Registers dev commands using `GM.registerMenuCommand` */
-function registerDevMenuCommands() {
+function registerDevCommands() {
   if(mode !== "development")
     return;
 
@@ -433,19 +433,21 @@ function registerDevMenuCommands() {
     }
   });
 
-  GM.registerMenuCommand("Export data using DataStoreSerializer", async () => {
+  GM.registerMenuCommand("Export using DataStoreSerializer", async () => {
     const ser = await storeSerializer.serialize();
     dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
     alert("See console.");
   });
 
-  GM.registerMenuCommand("Import data using DataStoreSerializer", async () => {
+  GM.registerMenuCommand("Import using DataStoreSerializer", async () => {
     const input = prompt("Enter the serialized data to import:");
     if(input && input.length > 0) {
       await storeSerializer.deserialize(input);
       alert("Imported data. Reload the page to apply changes.");
     }
   });
+
+  GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new Error("Test error")));
 
   log("Registered dev menu commands");
 }

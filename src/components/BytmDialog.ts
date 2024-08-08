@@ -1,5 +1,5 @@
 // hoist the class declaration because either rollup or babel is being a hoe
-import { NanoEmitter } from "../utils/NanoEmitter.js";
+import { NanoEmitter } from "@sv443-network/userutils";
 import { clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
