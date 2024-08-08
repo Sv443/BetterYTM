@@ -700,7 +700,6 @@ export const featInfo = {
     textAdornment: adornments.advanced,
     enable: noop,
     change: () => showIconToast({
-      duration: getFeature("toastDuration") * 1000,
       message: "Example",
       iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
     }),

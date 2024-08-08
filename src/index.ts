@@ -447,7 +447,7 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new Error("Test error")));
+  GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
 
   log("Registered dev menu commands");
 }

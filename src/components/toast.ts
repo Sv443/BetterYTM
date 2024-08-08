@@ -7,7 +7,7 @@ import "./toast.css";
 type ToastPos = "tl" | "tr" | "bl" | "br";
 
 type ToastProps = {
-  /** Duration in seconds */
+  /** Duration in milliseconds */
   duration?: number;
   position?: ToastPos;
 } & (
@@ -40,10 +40,12 @@ let timeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Shows a toast message with an icon */
 export async function showIconToast({
-  duration = getFeature("toastDuration"),
+  duration,
   position = "tr",
   ...rest
 }: IconToastProps) {
+  if(typeof duration !== "number" || isNaN(duration))
+    duration = getFeature("toastDuration") * 1000;
   if(duration <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
   const toastWrapper = document.createElement("div");
@@ -95,12 +97,12 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
     : arg;
 
   const {
-    duration = getFeature("toastDuration"),
+    duration: durationMs = getFeature("toastDuration") * 1000,
     position = "tr",
     ...rest
   } = props;
 
-  if(duration <= 0)
+  if(durationMs <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
   const toastEl = document.querySelector("#bytm-toast");
   if(toastEl)
@@ -122,12 +124,12 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   }
 
   document.body.appendChild(toastElem);
-
+  
   pauseFor(100).then(async () => {
     toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
 
-    if(duration < Number.POSITIVE_INFINITY)
-      timeout = setTimeout(async () => await closeToast(), duration * 1000);
+    if(durationMs < Number.POSITIVE_INFINITY)
+      timeout = setTimeout(async () => await closeToast(), durationMs);
   });
 
   return toastElem;
