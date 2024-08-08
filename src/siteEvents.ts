@@ -1,4 +1,5 @@
-import { NanoEmitter, error, getDomain, info } from "./utils/index.js";
+import { NanoEmitter } from "@sv443-network/userutils";
+import { error, getDomain, info } from "./utils/index.js";
 import { FeatureConfig } from "./types.js";
 import { emitInterface } from "./interface.js";
 import { addSelectorListener, globserversReady } from "./observers.js";
