@@ -4,9 +4,9 @@ import { getFeature } from "../config.js";
 import type { ResourceKey } from "../types.js";
 import "./toast.css";
 
-type ToastPos = "tl" | "tr" | "bl" | "br";
+export type ToastPos = "tl" | "tr" | "bl" | "br";
 
-type ToastProps = {
+export type ToastProps = {
   /** Duration in milliseconds */
   duration?: number;
   position?: ToastPos;
@@ -23,7 +23,10 @@ type ToastProps = {
   }
 );
 
-type IconToastProps = ToastProps & (
+export type IconToastProps = ToastProps & {
+  /** Position of the icon relative to the message */
+  iconPos?: "left" | "right";
+} & (
   | {
     /** An SVG icon identifier from the assets */
     icon: ResourceKey & `icon-${string}`;
@@ -36,12 +39,16 @@ type IconToastProps = ToastProps & (
   }
 );
 
+/** Max amount of seconds a toast can be shown for */
+const maxToastDuration = 30;
+
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
 /** Shows a toast message with an icon */
 export async function showIconToast({
   duration,
   position = "tr",
+  iconPos = "left",
   ...rest
 }: IconToastProps) {
   if(typeof duration !== "number" || isNaN(duration))
@@ -51,19 +58,20 @@ export async function showIconToast({
   const toastWrapper = document.createElement("div");
   toastWrapper.classList.add("bytm-toast-flex-wrapper");
 
+  let toastIcon: HTMLImageElement | HTMLDivElement;
   if("iconSrc" in rest) {
-    const toastIcon = document.createElement("img");
+    toastIcon = document.createElement("img");
     toastIcon.classList.add("bytm-toast-icon", "img");
-    toastIcon.src = rest.iconSrc instanceof Promise ? await rest.iconSrc : rest.iconSrc;
-    toastWrapper.appendChild(toastIcon);
+    (toastIcon as HTMLImageElement).src = rest.iconSrc instanceof Promise
+      ? await rest.iconSrc
+      : rest.iconSrc;
   }
   else {
-    const toastIcon = document.createElement("div");
+    toastIcon = document.createElement("div");
     toastIcon.classList.add("bytm-toast-icon");
     const iconHtml = await resourceAsString(rest.icon);
     if(iconHtml)
       toastIcon.innerHTML = iconHtml;
-    toastWrapper.appendChild(toastIcon);
 
     if("iconFill" in rest && rest.iconFill)
       toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
@@ -76,7 +84,9 @@ export async function showIconToast({
   else
     toastMessage.appendChild(rest.element);
 
+  iconPos === "left" && toastWrapper.appendChild(toastIcon);
   toastWrapper.appendChild(toastMessage);
+  iconPos === "right" && toastWrapper.appendChild(toastIcon);
 
   return await showToast({
     duration,
@@ -93,7 +103,10 @@ export async function showToast(props: ToastProps): Promise<HTMLDivElement | voi
 /** Shows a toast message or element in the specified position (top right corner by default) and uses the default timeout from the config option `toastDuration` */
 export async function showToast(arg: string | ToastProps): Promise<HTMLDivElement | void> {
   const props: ToastProps = typeof arg === "string"
-    ? { message: arg, duration: getFeature("toastDuration") }
+    ? {
+      message: arg,
+      duration: getFeature("toastDuration") * 1000,
+    }
     : arg;
 
   const {
@@ -128,8 +141,10 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   pauseFor(100).then(async () => {
     toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
 
-    if(durationMs < Number.POSITIVE_INFINITY)
-      timeout = setTimeout(async () => await closeToast(), durationMs);
+    if(durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
+      timeout && clearTimeout(timeout);
+      timeout = setTimeout(closeToast, Math.max(durationMs, maxToastDuration) * 1000);
+    }
   });
 
   return toastElem;
@@ -137,7 +152,10 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
 
 /** Closes the currently open toast */
 export async function closeToast() {
-  timeout && clearTimeout(timeout);
+  if(timeout) {
+    clearTimeout(timeout);
+    timeout = undefined;
+  }
 
   const toastEls = document.querySelectorAll("#bytm-toast");
   if(toastEls.length === 0)

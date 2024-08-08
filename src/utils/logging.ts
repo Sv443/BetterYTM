@@ -61,7 +61,7 @@ export function error(...args: unknown[]): void {
 
   getFeature("showToastOnGenericError")
     && showIconToast({
-      message: t("generic_error_toast", args.find(e => e instanceof Error)?.name ?? t("error")),
+      message: t("generic_error_toast", args.find(a => a instanceof Error)?.name ?? t("error")),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
     });
