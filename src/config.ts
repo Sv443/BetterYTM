@@ -129,7 +129,7 @@ function useNewDefaultIfUnchanged<TConfig extends Partial<FeatureConfig>>(
 
 let canCompress = true;
 
-export const cfgDataStore = new DataStore({
+export const configStore = new DataStore({
   id: "bytm-config",
   formatVersion,
   defaultData,
@@ -141,26 +141,26 @@ export const cfgDataStore = new DataStore({
 /** Initializes the DataStore instance and loads persistent data into memory. Returns a copy of the config object. */
 export async function initConfig() {
   canCompress = await compressionSupported();
-  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${cfgDataStore.id}`, NaN));
-  let data = await cfgDataStore.loadData();
+  const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
+  let data = await configStore.loadData();
 
   // since the config changes so much in development keys need to be fixed in this special way
   if(mode === "development") {
-    await cfgDataStore.setData(fixCfgKeys(data));
-    data = cfgDataStore.getData();
+    await configStore.setData(fixCfgKeys(data));
+    data = configStore.getData();
   }
 
-  log(`Initialized feature config DataStore (formatVersion = ${cfgDataStore.formatVersion})`);
+  log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
     info("  !- Config data was initialized with default values");
-  else if(oldFmtVer !== cfgDataStore.formatVersion) {
+  else if(oldFmtVer !== configStore.formatVersion) {
     try {
-      await cfgDataStore.setData(data = fixCfgKeys(data));
-      info(`  !- Config data was migrated from version ${oldFmtVer} to ${cfgDataStore.formatVersion}`);
+      await configStore.setData(data = fixCfgKeys(data));
+      info(`  !- Config data was migrated from version ${oldFmtVer} to ${configStore.formatVersion}`);
     }
     catch(err) {
       error("  !- Config data migration failed, falling back to default data:", err);
-      await cfgDataStore.setData(data = cfgDataStore.defaultData);
+      await configStore.setData(data = configStore.defaultData);
     }
   }
 
@@ -192,26 +192,26 @@ export function fixCfgKeys(cfg: Partial<FeatureConfig>): FeatureConfig {
 
 /** Returns the current feature config from the in-memory cache as a copy */
 export function getFeatures(): FeatureConfig {
-  return cfgDataStore.getData();
+  return configStore.getData();
 }
 
 /** Returns the value of the feature with the given key from the in-memory cache, as a copy */
 export function getFeature<TKey extends FeatureKey>(key: TKey): FeatureConfig[TKey] {
-  return cfgDataStore.getData()[key];
+  return configStore.getData()[key];
 }
 
 /** Saves the feature config synchronously to the in-memory cache and asynchronously to the persistent storage */
 export function setFeatures(featureConf: FeatureConfig) {
-  const res = cfgDataStore.setData(featureConf);
-  emitSiteEvent("configChanged", cfgDataStore.getData());
+  const res = configStore.setData(featureConf);
+  emitSiteEvent("configChanged", configStore.getData());
   info("Saved new feature config:", featureConf);
   return res;
 }
 
 /** Saves the default feature config synchronously to the in-memory cache and asynchronously to persistent storage */
 export function setDefaultFeatures() {
-  const res = cfgDataStore.saveDefaultData();
-  emitSiteEvent("configChanged", cfgDataStore.getData());
+  const res = configStore.saveDefaultData();
+  emitSiteEvent("configChanged", configStore.getData());
   info("Reset feature config to its default values");
   return res;
 }
@@ -236,6 +236,6 @@ export async function promptResetConfig() {
 
 /** Clears the feature config from the persistent storage - since the cache will be out of whack, this should only be run before a site re-/unload */
 export async function clearConfig() {
-  await cfgDataStore.deleteData();
+  await configStore.deleteData();
   info("Deleted config from persistent storage");
 }
