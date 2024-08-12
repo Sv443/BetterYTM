@@ -106,7 +106,6 @@
     "storybook": "^8.1.10",
     "storybook-dark-mode": "^4.0.2",
     "ts-node": "^10.9.2",
-    "tslib": "^2.6.3",
     "typescript": "^5.5.2"
   },
   "browserslist": [

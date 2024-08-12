@@ -32,7 +32,7 @@ export const platformNames: Record<typeof host, string> = {
 export const compressionFormat: CompressionFormat = "deflate-raw";
 
 /** Whether sessionStorage is available and working */
-export const sessionStorageAllowed =
+export const sessionStorageAvailable =
   typeof sessionStorage?.setItem === "function"
   && (() => {
     try {
