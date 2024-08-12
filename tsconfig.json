@@ -15,6 +15,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
     "rootDir": ".",
