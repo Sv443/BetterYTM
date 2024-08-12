@@ -20,6 +20,9 @@ importers:
       nanoevents:
         specifier: ^9.0.0
         version: 9.0.0
+      tslib:
+        specifier: ^2.6.3
+        version: 2.6.3
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^1.5.0
