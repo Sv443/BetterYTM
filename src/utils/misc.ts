@@ -1,6 +1,6 @@
 import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
-import { branch, compressionFormat, repo } from "../constants.js";
+import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type ResourceKey } from "../types.js";
 import { error, type TrLocale, warn, sendRequest } from "./index.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
@@ -27,6 +27,9 @@ export function getDomain(): Domain {
 /** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
 export function getSessionId(): string | null {
   try {
+    if(!sessionStorageAvailable)
+      throw new Error("Session storage unavailable");
+
     let sesId = window.sessionStorage.getItem("_bytm-session-id");
 
     if(!sesId)

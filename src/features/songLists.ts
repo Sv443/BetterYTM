@@ -1,5 +1,5 @@
 import { autoPlural, pauseFor } from "@sv443-network/userutils";
-import { clearInner, error, getResourceUrl, log, onInteraction, openInTab, t, warn } from "../utils/index.js";
+import { clearInner, error, getResourceUrl, info, log, onInteraction, openInTab, t } from "../utils/index.js";
 import { SiteEventsMap, siteEvents } from "../siteEvents.js";
 import { emitInterface } from "../interface.js";
 import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, splitVideoTitle } from "./lyrics.js";
@@ -254,7 +254,7 @@ async function addQueueButtons(
           dotsBtnElem.click();
         }
         else {
-          warn("Couldn't find three dots button in queue item, trying to open the context menu manually");
+          info("Couldn't find three dots button in queue item, trying to open the context menu manually");
           queueItem.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: false }));
         }
 
