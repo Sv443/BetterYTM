@@ -370,6 +370,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 - DOM:
   - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
+  - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -1464,7 +1465,6 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > 
 > async function exportData() {
 >   // compress the data to save space
->   // note that this requires the `@grant unsafeWindow` directive in the metadata block!
 >   const exportData = JSON.stringify({ foo: "bar" });
 >   return await unsafeWindow.BYTM.UserUtils.compress(exportData, "deflate");
 > }
@@ -1507,6 +1507,59 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > }
 > 
 > run();
+> ```
+> </details>
+
+<br>
+
+> #### MarkdownDialog
+> Usage:
+> ```ts
+> new unsafeWindow.BYTM.MarkdownDialog(options: MarkdownDialogOptions): MarkdownDialog
+> ```
+>
+> A subclass of [BytmDialog](#bytmdialog) that can be used to create and manage a dialog that renders its entire body using GitHub-flavored Markdown (and HTML mixins).  
+> Note: the provided `id` will be prefixed with `md-` to avoid conflicts with other dialogs.  
+>   
+> Features:
+> - Has all the features of the [BytmDialog](#bytmdialog) class
+> - Can be used to display any kind of information in a dialog that can be written in Markdown
+> - Supports GitHub-flavored Markdown and HTML mixins like `<details>` and `<summary>`
+>   
+> Options properties:  
+> All properties from the [BytmDialog](#bytmdialog) class are available here as well, except for `renderBody` (which was replaced by `body`)  
+> | Property | Description |
+> | :-- | :-- |
+> | `body: string \| (() => string \| Promise<string>)` | Markdown content to render in the dialog. Can be a string or a sync or async function that returns a string. |
+>   
+> Methods:  
+> The methods from the [`NanoEmitter`](#nanoemitter) and [`BytmDialog`](#bytmdialog) classes are also available here.  
+> - `static parseMd(md: string): Promise<string>`  
+>   Parses the provided Markdown string (with GitHub flavor and HTML mixins) and returns the HTML representation as a string.
+> - `protected renderBody(): Promise<void>`  
+>   Renders the Markdown content to the dialog's body element. You can only override this method if you create a subclass of `MarkdownDialog`  
+>   If you do, you can use `parseMd()` to render a custom mixture of Markdown HTML and JavaScript-created elements to the body.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const markdownDialog = new unsafeWindow.BYTM.MarkdownDialog({
+>   id: "my-markdown-dialog",
+>   width: 400,
+>   height: 600,
+>   body: `\
+> # Look at this table:
+> | Column 1 | Column 2 |
+> | --: | :-- |
+> | Hello | World |
+> 
+> <br /><br /><br /><br />
+> 
+> <details>
+>   <summary>Click me!</summary>
+>   I'm a hidden text block!
+> </details>`,
+> });
 > ```
 > </details>
 
