@@ -1,4 +1,4 @@
-import { pauseFor } from "@sv443-network/userutils";
+import { clamp, pauseFor } from "@sv443-network/userutils";
 import { info, resourceAsString } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import type { ResourceKey } from "../types.js";
@@ -40,7 +40,7 @@ export type IconToastProps = ToastProps & {
 );
 
 /** Max amount of seconds a toast can be shown for */
-const maxToastDuration = 30;
+const maxToastDuration = 30_000;
 
 let timeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -143,7 +143,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
 
     if(durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
       timeout && clearTimeout(timeout);
-      timeout = setTimeout(closeToast, Math.max(durationMs, maxToastDuration) * 1000);
+      timeout = setTimeout(closeToast, clamp(durationMs, 250, maxToastDuration));
     }
   });
 
