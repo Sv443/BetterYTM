@@ -708,6 +708,10 @@ body .bytm-ripple.slower {
   transition: opacity var(--bytm-toast-transition-time) ease, transform var(--bytm-toast-transition-time) ease;
 }
 
+#bytm-toast.clickable {
+  cursor: pointer;
+}
+
 #bytm-toast.visible {
   pointer-events: auto;
   opacity: 1;

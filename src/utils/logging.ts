@@ -2,9 +2,9 @@ import { clamp } from "@sv443-network/userutils";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
 import { LogLevel } from "../types.js";
-import { showIconToast } from "src/components/toast.js";
+import { MarkdownDialog, showIconToast } from "../components/index.js";
 import { t } from "./translations.js";
-import { getFeature } from "src/config.js";
+import { getFeature } from "../config.js";
 
 let curLogLevel = LogLevel.Info;
 
@@ -55,16 +55,43 @@ export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
 }
 
+let errorDialog: MarkdownDialog;
+
+function getErrorDialog(errName: string, args: unknown[]) {
+  if(errorDialog)
+    return errorDialog;
+
+  return errorDialog = new MarkdownDialog({
+    id: "generic-error",
+    height: 400,
+    width: 500,
+    small: true,
+    renderHeader() {
+      const header = document.createElement("h2");
+      header.classList.add("bytm-dialog-title");
+      header.role = "heading";
+      header.ariaLevel = "1";
+      header.tabIndex = 0;
+      header.textContent = header.ariaLabel = errName;
+      return header;
+    },
+    body: args.join(" "),
+  });
+}
+
 /** Logs all passed values to the console as an error, no matter the log level. */
 export function error(...args: unknown[]): void {
   console.error(consPrefix, ...args);
 
-  getFeature("showToastOnGenericError")
-    && showIconToast({
-      message: t("generic_error_toast", args.find(a => a instanceof Error)?.name ?? t("error")),
+  if(getFeature("showToastOnGenericError")) {
+    const errName = args.find(a => a instanceof Error)?.name ?? t("error");
+    showIconToast({
+      message: t("generic_error_toast", errName),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
+      onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
     });
+  }
 }
 
 /** Logs all passed values to the console with a debug-specific prefix */

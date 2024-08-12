@@ -30,12 +30,8 @@ export class MarkdownDialog extends BytmDialog {
 
   /** Renders the dialog body elements from a markdown string using what's set in `this.opts.body` */
   protected async renderBody(): Promise<HTMLElement> {
-    const panesCont = document.createElement("div");
-    panesCont.classList.add("bytm-exim-dialog-panes-cont");
-
-    const markdownPane = document.createElement("div");
-    markdownPane.classList.add("bytm-exim-dialog-pane");
-    markdownPane.classList.add("bytm-exim-dialog-markdown-pane");
+    const bodyEl = document.createElement("div");
+    bodyEl.classList.add("bytm-md-dialog-body");
 
     const mdCont = typeof this.opts.body === "string"
       ? this.opts.body
@@ -45,9 +41,8 @@ export class MarkdownDialog extends BytmDialog {
     markdownEl.classList.add("bytm-exim-dialog-markdown");
     markdownEl.innerHTML = await MarkdownDialog.parseMd(mdCont);
 
-    markdownPane.appendChild(markdownEl);
-    panesCont.appendChild(markdownPane);
+    bodyEl.appendChild(markdownEl);
 
-    return panesCont;
+    return bodyEl;
   }
 }
