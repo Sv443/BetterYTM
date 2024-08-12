@@ -31,6 +31,7 @@ import {
   initVersionCheck,
 } from "./features/index.js";
 import { storeSerializer } from "./storeSerializer.js";
+import { MarkdownDialog } from "./components/index.js";
 
 //#region cns. watermark
 
@@ -54,6 +55,7 @@ import { storeSerializer } from "./storeSerializer.js";
     "─ This library for semver comparison: https://github.com/omichelsen/compare-versions",
     "─ This tiny event listener library: https://github.com/ai/nanoevents",
     "─ This markdown parser library: https://github.com/markedjs/marked",
+    "─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript",
   ].join("\n"));
 }
 
@@ -448,6 +450,22 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+
+  GM.registerMenuCommand("Example MarkdownDialog", async () => {
+    const mdDlg = new MarkdownDialog({
+      id: "example",
+      width: 500,
+      height: 400,
+      renderHeader() {
+        const header = document.createElement("h1");
+        header.textContent = "Example Markdown Dialog";
+        return header;
+      },
+      body: "## This is a test dialog\n```ts\nconsole.log(\"Hello, world!\");\n```\n\n- List item 1\n- List item 2\n- List item 3",
+    });
+
+    await mdDlg.open();
+  });
 
   log("Registered dev menu commands");
 }
