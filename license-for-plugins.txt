@@ -1,19 +1,18 @@
 For the purpose of creating plugins, anyone is hereby allowed to freely copy,
 modify, embed, redistribute, sublicense and sell copies of the source code of
-the root directory and `src/` and `assets/` folders, *excluding* the subfolders
-in `src/` and also *excluding* all files in `assets/images/external/`.
-All other files are licensed under the AGPL-3.0-only (see `LICENSE.txt`).
+the root directory (licensed under the AGPL-3.0-only - see `LICENSE.txt`) and
+`src/` and `assets/` folders, *excluding* the subfolders in `src/` and also
+*excluding* all files in `assets/images/external/`.
 
-You may include the source code of this project in the source of yours, as long
-as only the above mentioned files are included in the *runtime* code that will be
-distributed to the end user. (For development purposes *only* you may include and
-use the entire source code of this project.)
+You may include the source code of the BetterYTM project in the source of yours,
+as long as only the above mentioned files are included in the *runtime* code that
+will be distributed to the end user. (For development purposes *only*, you may
+include and use the entire source code of this project.)
 
-Additionally, you are to make the source code of your plugin available to anyone,
-and you are to provide a link to said source code in the plugin definition object
-needed for registering the plugin at runtime.
-The exact license of the plugin is up to you, but it must be open-source, so that
-anyone can verify its legitimacy and security.
+Additionally, you are to make the source code of your plugin available to anyone
+so they may check it for security and legitimacy. And you are also obligated to
+provide a link to said source code in the plugin definition object used in the
+registration of the plugin at runtime (see contributing.md).
 
 Lastly, your plugin is to follow the local laws and regulations of the country
 you are in, and you are to take full responsibility for any legal issues that may
