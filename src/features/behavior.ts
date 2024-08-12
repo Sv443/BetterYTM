@@ -223,7 +223,7 @@ export function disableDarkReader() {
 
   const metaElem = document.createElement("meta");
   metaElem.name = "darkreader-lock";
-  metaElem.classList.add("bytm-disable-darkreader");
+  metaElem.id = "bytm-disable-dark-reader";
   document.head.appendChild(metaElem);
 
   info("Disabled Dark Reader");

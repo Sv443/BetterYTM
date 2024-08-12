@@ -9,7 +9,10 @@ export type ToastPos = "tl" | "tr" | "bl" | "br";
 export type ToastProps = {
   /** Duration in milliseconds */
   duration?: number;
+  /** Position of the toast on the screen */
   position?: ToastPos;
+  /** Function to be called when the toast is clicked */
+  onClick?: (evt?: MouseEvent) => void;
 } & (
   | {
     /** Message (plus title) for the toast */
@@ -93,6 +96,7 @@ export async function showIconToast({
     position,
     element: toastWrapper,
     title: "message" in rest ? rest.message : rest.title,
+    onClick: rest.onClick,
   });
 }
 
@@ -111,6 +115,7 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
 
   const {
     duration: durationMs = getFeature("toastDuration") * 1000,
+    onClick,
     position = "tr",
     ...rest
   } = props;
@@ -122,12 +127,16 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
     await closeToast();
 
   const toastElem = document.createElement("div");
+  onClick && toastElem.classList.add("clickable");
   toastElem.id = "bytm-toast";
   toastElem.role = "alert";
   toastElem.ariaLive = "polite";
   toastElem.ariaAtomic = "true";
 
-  toastElem.addEventListener("click", async () => await closeToast(), { once: true });
+  toastElem.addEventListener("click", async (e) => {
+    onClick?.(e);
+    await closeToast();
+  }, { once: true });
 
   if("message" in rest)
     toastElem.title = toastElem.ariaLabel = toastElem.textContent = rest.message;
