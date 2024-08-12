@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "@sv443-network/userutils";
-import { clearInner, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -101,8 +101,13 @@ export class BytmDialog extends NanoEmitter<{
     bgElem.style.display = "none";
     bgElem.inert = true;
 
-    bgElem.appendChild(await this.getDialogContent());
-    document.body.appendChild(bgElem);
+    try {
+      bgElem.appendChild(await this.getDialogContent());
+      document.body.appendChild(bgElem);
+    }
+    catch(e) {
+      return error("Failed to render dialog content:", e);
+    }
 
     this.attachListeners(bgElem);
 
@@ -320,7 +325,8 @@ export class BytmDialog extends NanoEmitter<{
     else {
       // insert element to pad the header height
       const padEl = document.createElement("div");
-      padEl.classList.add("bytm-dialog-header-pad", this.options.small ? "small" : "");
+      padEl.classList.add("bytm-dialog-header-pad");
+      this.options.small && padEl.classList.add("small");
       headerWrapperEl.appendChild(padEl);
     }
 
