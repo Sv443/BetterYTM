@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getVideoSelector, getVideoElement, getDomain, waitVideoElementReady } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
@@ -254,6 +254,8 @@ export type InterfaceFunctions = {
   getPluginInfo: typeof getPluginInfo;
 
   // bytm-specific:
+  /** Returns the current domain as a constant string representation */
+  getDomain: typeof getDomain;
   /**
    * Returns the URL of a resource as defined in `assets/resources.json`  
    * There are also some resources like translation files that get added by `tools/post-build.ts`  
@@ -280,6 +282,12 @@ export type InterfaceFunctions = {
   getThumbnailUrl: typeof getThumbnailUrl;
   /** Returns the thumbnail URL with the best quality for the provided video ID */
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
+  /** Resolves the returned promise when the video element is queryable in the DOM */
+  waitVideoElementReady: typeof waitVideoElementReady;
+  /** Returns the video element's CSS selector for the current domain */
+  getVideoSelector: typeof getVideoSelector;
+  /** Returns the video element for the current domain or null if none could be found */
+  getVideoElement: typeof getVideoElement;
 
   // translations:
   /** 🔒 Sets the locale for all new translations */

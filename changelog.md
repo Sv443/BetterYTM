@@ -47,17 +47,13 @@
   - Added license for plugin-related source code, see [license-for-plugins.txt](https://github.com/Sv443/BetterYTM/blob/develop/license-for-plugins.txt)
   - Added advanced feature to change the startup timeout (only impacts plugin initialization for now)
   - Now using a blue logo is instead of the red BetterYTM logo when the script was compiled in development (preview) mode
-  - SelectorObserver changes:
-    - Added `ytMasthead` instance for the title bar on YT
-    - Renamed all YT-specific instances to have the `yt` prefix
-      - `watchFlexy` renamed to `ytWatchFlexy`
-      - `watchMetadata` renamed to `ytWatchMetadata`
   - Fixed missing configuration keys in development/preview mode instead of potentially breaking the script
   - Added Storybook for easier and faster development of components
   - Removed the `@updateURL` and `@downloadURL` directives because their use is controversial and the script has a built-in update check now
   - Migrated to pnpm for faster compilation times
-  - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils#nanoemitter) (it is still re-exported by the plugin interface as always)
-- **Plugin Changes:**
+  - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils#nanoemitter) (it is still re-exported by the plugin interface as before)
+- **Plugin Changes:**  
+  <sup>See the [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for the latest documentation of the plugin interface</sup>
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
@@ -72,17 +68,27 @@
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
     - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [Return Youtube Dislike](https://returnyoutubedislike.com/)
-  - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
-  - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
-  - Added events
-    - `bytm:featureInitStarted` - emitted when the feature initialization process starts
-    - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
-    - `bytm:dialogClosed` - emitted when a BytmDialog is closed and gets passed the instance
-    - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
-    - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
-  - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
-  - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils#nanoemitter))  
-    In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
+    - `getDomain()` returns the current domain ("yt" or "ytm")
+    - `waitVideoElementReady()` returns a promise that resolves when the video element is ready
+    - `getVideoSelector()` returns the video element selector for the current domain
+    - `getVideoElement()` returns the video element for the current domain
+  - SelectorObserver / `addSelectorListener()` changes:
+    - Added `ytMasthead` instance for the title bar on YT
+    - Renamed all YT-specific instances to have the `yt` prefix
+      - `watchFlexy` renamed to `ytWatchFlexy`
+      - `watchMetadata` renamed to `ytWatchMetadata`
+    - Added new SelectorObserver instance `browseResponse` for pages like `/channel/{id}`
+  - Event changes:
+    - Added events
+      - `bytm:featureInitStarted` - emitted when the feature initialization process starts
+      - `bytm:featureInitialized` - emitted every time a feature has been initialized and is passed the feature's identifier string
+      - `bytm:dialogClosed` - emitted when a BytmDialog is closed and gets passed the instance
+      - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
+      - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
+    - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
+    - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+    - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils#nanoemitter))  
+      In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 
 </details>
 
