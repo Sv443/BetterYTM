@@ -365,6 +365,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
   - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
 - BYTM-specific:
+  - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
@@ -376,6 +377,9 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
+  - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
+  - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element of the current domain
+  - [getVideoElement()](#getvideoelement) - Returns the video element of the current domain
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -555,6 +559,36 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   else
 >     console.error("The plugin 'My cool plugin' is not registered");
 > });
+> ```
+> </details>
+
+<br>
+
+> #### getDomain()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.getDomain(): "yt" | "ytm"
+> ```
+>   
+> Description:  
+> Returns the current domain of the page as a constant string.  
+> It will return `"yt"` for YouTube and `"ytm"` for YouTube Music.  
+> Throws an error if the domain is not supported by BetterYTM.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> try {
+>   const domain = unsafeWindow.BYTM.getDomain();
+> 
+>   if(domain === "yt")
+>     console.log("Running on YouTube");
+>   else
+>     console.log("Running on YouTube Music");^
+> }
+> catch(err) {
+>   console.error("Running on an unsupported domain:", err);
+> }
 > ```
 > </details>
 
@@ -778,6 +812,77 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```ts
 > const thumbnailUrl = await unsafeWindow.BYTM.getBestThumbnailUrl("dQw4w9WgXcQ");
 > console.log(thumbnailUrl); // "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+> ```
+> </details>
+
+<br>
+
+> #### waitVideoElementReady()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.waitVideoElementReady(): Promise<HTMLVideoElement>
+> ```
+>   
+> Description:  
+> Waits for the video element to be queryable in the DOM.  
+> If it already exists, the Promise will resolve immediately.  
+> This function has to be called after the `bytm:observersReady` event has been dispatched.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> unsafeWindow.addEventListener("bytm:observersReady", async () => {
+>   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
+>   console.log("The video element:", videoElement);
+> });
+> ```
+> </details>
+
+<br>
+
+> #### getVideoSelector()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getVideoSelector(): string
+> ```
+>   
+> Description:  
+> Returns the CSS selector for the video element of the current [domain.](#getdomain)  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const domain = unsafeWindow.BYTM.getDomain();
+> const videoSelector = unsafeWindow.BYTM.getVideoSelector();
+> 
+> console.log(domain, videoSelector); // "ytm", "ytmusic-player video"
+> ```
+> </details>
+
+<br>
+
+> #### getVideoElement()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getVideoElement(): HTMLVideoElement | null
+> ```
+>   
+> Description:  
+> Returns the video element of the current domain (YT or YTM).  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> async function pauseVideo() {
+>   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
+>   videoElement?.pause();
+> }
+> 
+> window.addEventListener("bytm:observersReady", () => {
+>   document.querySelector("#my-button").addEventListener("click", () => {
+>     pauseVideo();
+>   });
+> });
 > ```
 > </details>
 
