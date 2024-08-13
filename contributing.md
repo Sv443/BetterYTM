@@ -378,8 +378,6 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
   - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
-  - [getVideoSelector()](#getvideoselector) - Returns the CSS selector for the video element of the current domain
-  - [getVideoElement()](#getvideoelement) - Returns the video element of the current domain
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -834,54 +832,6 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > unsafeWindow.addEventListener("bytm:observersReady", async () => {
 >   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
 >   console.log("The video element:", videoElement);
-> });
-> ```
-> </details>
-
-<br>
-
-> #### getVideoSelector()
-> Usage:  
-> ```ts
-> unsafeWindow.BYTM.getVideoSelector(): string
-> ```
->   
-> Description:  
-> Returns the CSS selector for the video element of the current [domain.](#getdomain)  
->   
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> const domain = unsafeWindow.BYTM.getDomain();
-> const videoSelector = unsafeWindow.BYTM.getVideoSelector();
-> 
-> console.log(domain, videoSelector); // "ytm", "ytmusic-player video"
-> ```
-> </details>
-
-<br>
-
-> #### getVideoElement()
-> Usage:  
-> ```ts
-> unsafeWindow.BYTM.getVideoElement(): HTMLVideoElement | null
-> ```
->   
-> Description:  
-> Returns the video element of the current domain (YT or YTM).  
->   
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> async function pauseVideo() {
->   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
->   videoElement?.pause();
-> }
-> 
-> window.addEventListener("bytm:observersReady", () => {
->   document.querySelector("#my-button").addEventListener("click", () => {
->     pauseVideo();
->   });
 > });
 > ```
 > </details>

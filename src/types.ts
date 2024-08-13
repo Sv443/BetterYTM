@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getVideoSelector, getVideoElement, getDomain, waitVideoElementReady } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
@@ -284,10 +284,6 @@ export type InterfaceFunctions = {
   getBestThumbnailUrl: typeof getBestThumbnailUrl;
   /** Resolves the returned promise when the video element is queryable in the DOM */
   waitVideoElementReady: typeof waitVideoElementReady;
-  /** Returns the video element's CSS selector for the current domain */
-  getVideoSelector: typeof getVideoSelector;
-  /** Returns the video element for the current domain or null if none could be found */
-  getVideoElement: typeof getVideoElement;
 
   // translations:
   /** 🔒 Sets the locale for all new translations */

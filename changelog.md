@@ -70,8 +70,6 @@
     - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [Return Youtube Dislike](https://returnyoutubedislike.com/)
     - `getDomain()` returns the current domain ("yt" or "ytm")
     - `waitVideoElementReady()` returns a promise that resolves when the video element is ready
-    - `getVideoSelector()` returns the video element selector for the current domain
-    - `getVideoElement()` returns the video element for the current domain
   - SelectorObserver / `addSelectorListener()` changes:
     - Added `ytMasthead` instance for the title bar on YT
     - Renamed all YT-specific instances to have the `yt` prefix
