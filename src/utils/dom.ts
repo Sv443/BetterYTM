@@ -13,6 +13,11 @@ document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 /** Returns the video element selector string based on the current domain */
 export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 
+/** Returns the video element based on the current domain */
+export function getVideoElement() {
+  return document.querySelector<HTMLVideoElement>(getVideoSelector());
+}
+
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
@@ -25,7 +30,7 @@ export function getVideoTime(precision = 2) {
 
     try {
       if(getDomain() === "ytm") {
-        const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
+        const vidElem = getVideoElement();
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
@@ -35,7 +40,7 @@ export function getVideoTime(precision = 2) {
         });
       }
       else if(getDomain() === "yt") {
-        const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
+        const vidElem = getVideoElement();
         if(vidElem)
           return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
 
@@ -116,6 +121,9 @@ function ytForceShowVideoTime() {
  */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
   return new Promise(async (res) => {
+    if(getVideoElement()?.readyState === 4)
+      return res(getVideoElement()!);
+
     const waitForEl = () => addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
       listener: async (vidElem) => {
         if(vidElem) {

@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getVideoSelector, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
@@ -41,7 +41,7 @@ export async function initArrowKeySkip() {
 
     log(`Captured arrow key '${evt.code}' - skipping by ${skipBy} seconds`);
     
-    const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
+    const vidElem = getVideoElement();
     
     if(vidElem)
       vidElem.currentTime = clamp(vidElem.currentTime + skipBy, 0, vidElem.duration);
@@ -135,7 +135,7 @@ export async function initNumKeysSkip() {
     if((document.activeElement !== document.body && ignoreElement) || ignoreElement)
       return info("Captured valid key to skip video to, but ignored it since this element is currently active:", document.activeElement);
 
-    const vidElem = document.querySelector<HTMLVideoElement>(getVideoSelector());
+    const vidElem = getVideoElement();
     if(!vidElem)
       return warn("Could not find video element, so the keypress is ignored");
 
