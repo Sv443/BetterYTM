@@ -90,8 +90,11 @@
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
-  margin: 0;
-  margin-left: 8px;
+  margin: 0 0 0 8px;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
+  margin: 0 8px 0 0;
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {

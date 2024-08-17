@@ -312,7 +312,7 @@ export async function initAutoLike() {
               if(buttonsCont) {
                 addSelectorListener<0, "yt">("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
                   listener: (otherBtns) =>
-                    addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
+                    addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
                 });
               }
               else if(titleCont)
