@@ -11,7 +11,7 @@ import { createLongBtn, createRipple, showIconToast } from "../components/index.
 import { getAutoLikeDialog } from "../dialogs/index.js";
 import "./input.css";
 
-export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A", "TP-YT-PAPER-SLIDER"];
+export const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 
 //#region arrow key skip
 
