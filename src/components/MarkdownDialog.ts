@@ -18,7 +18,7 @@ export class MarkdownDialog extends BytmDialog {
     this.opts = options;
   }
 
-  /** Parses the passed markdown string and returns it as an HTML string */
+  /** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
   public static async parseMd(md: string): Promise<string> {
     return await marked.parse(md, {
       async: true,
@@ -38,7 +38,7 @@ export class MarkdownDialog extends BytmDialog {
       : await this.opts.body();
 
     const markdownEl = document.createElement("div");
-    markdownEl.classList.add("bytm-exim-dialog-markdown");
+    markdownEl.classList.add("bytm-markdown-dialog-content");
     markdownEl.innerHTML = await MarkdownDialog.parseMd(mdCont);
 
     bodyEl.appendChild(markdownEl);
