@@ -31,12 +31,15 @@ Before submitting a translation, please check on [this document](https://github.
 #### Adding translations for a new language:
 > [!NOTE]
 > 
-> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
+> **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
+  
 To submit a translation, please follow these steps:
 1. Copy the contents of the default translation file [`assets/translations/en_US.json`](./assets/translations/en_US.json)
-2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to
+2. Replace the `en_US` part of the file name with the language code and locale code of the language you want to translate to  
+  You can find lists of [ISO 639-1 alpha-2 language codes here](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes#Table) and [ISO 3166-1 alpha-2 country codes here.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)  
+  The final locale code should be in the format `languageCode_localeCode` (e.g. `en_US`, `en_UK`, ...)
 3. Translate the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).  
-  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -- -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
+  If you don't want to finish it in one go, please remove the extra keys before submitting the file. They can always be added back by running the command `pnpm run tr-format -p -o=language_LOCALE` (see [this section](#editing-an-existing-translation) for more info).
 4. If you like, you may also create a translation for the [`README-summary.md`](./README-summary.md) file for display on the userscript distribution sites  
   Please duplicate the file `README-summary.md` and call it `README-summary-languageCode_localeCode.md` and place it in the [`assets/translations/`](./assets/translations/) folder.
 5. If you want to submit a pull request with the translated file:
@@ -58,11 +61,11 @@ To edit an existing translation, please follow these steps:
 1. Set up the project for local development by following [this section](#setting-up-the-project-for-local-development)  
   Make sure you have forked the repository and cloned your fork instead of cloning the original repository.  
 2. Find the file for the language you want to edit in the folder [`assets/translations/`](./assets/translations/)
-3. Run the command `pnpm run tr-format -- -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
+3. Run the command `pnpm run tr-format -p -o=language_LOCALE`, where `language_LOCALE` is the part of the file name before the `.json` extension  
   This will prepare the file for translation by providing the missing keys once in English and once without any value and also formatting the file to have the same structure as the base file `en_US.json`
 4. Edit the strings inside the file, while making sure not to change the keys on the left side of the colon and to preserve the placeholders with the format %n (where n is any number starting at 1).
 5. Make sure there are no duplicate keys in the file
-6. Run the command `pnpm run tr-format -- -o=language_LOCALE` to make sure the file is formatted correctly
+6. Run the command `pnpm run tr-format -o=language_LOCALE` to make sure the file is formatted correctly
 7. Test for syntax errors and update translation progress with the command `pnpm run tr-progress`
 8. Open the file [`assets/translations/README.md`](./assets/translations/README.md) to see if you're still missing any untranslated keys (you don't have to translate them all, but it would of course be nice)
 9. I highly encourage you to test your changes to see if the wording fits into the respective context by following [this section](#setting-up-the-project-for-local-development)
@@ -100,7 +103,7 @@ To edit an existing translation, please follow these steps:
   Builds the userscript for production for all hosts with their respective options already set.  
   Outputs the files using a suffix predefined in the `package.json` file.  
   Use this to build the userscript for distribution on all host/CDN platforms.
-- **`pnpm run build -- <arguments>`**  
+- **`pnpm run build <arguments>`**  
   Builds the userscript with custom options  
   Arguments:  
   - `--config-mode=<value>` - The mode to build in. Can be either `production` or `development` (default)
@@ -124,7 +127,7 @@ To edit an existing translation, please follow these steps:
 - **`pnpm run tr-progress`**  
   Checks all translation files for missing strings and updates the progress table in `assets/translations/README.md`  
   Will also be run automatically after every script build.
-- **`pnpm run tr-format -- <arguments>`**  
+- **`pnpm run tr-format <arguments>`**  
   Reformats all translation files so they match that of the base file `en_US.json`  
   This includes sorting keys and adding the same empty lines and indentation.
   Arguments:  
@@ -132,11 +135,11 @@ To edit an existing translation, please follow these steps:
   - `--only="<value>"` or `-o="<value>"` - Only applies formatting to the files of the specified locales. Has to be a quoted, case-sensitive, comma separated list! (e.g. `-o="fr_FR,de_DE"` or `-o="pt_BR"`)
   - `--include-based` or `-b` - Also includes files which have a base locale specified
 - **`pnpm run tr-prep`**  
-  Shorthand for `pnpm run tr-format -- --prep` (see above)
-- **`pnpm run --silent invisible -- "<command>"`**  
+  Shorthand for `pnpm run tr-format --prep` (see above)
+- **`pnpm run --silent invisible "<command>"`**  
   Runs the passed command as a child process without giving any console output. (`--` and double quotes are required!)  
   Remove `--silent` to see pnpm's info and error messages.
-- **`pnpm run node-ts -- <path>`**  
+- **`pnpm run node-ts <path>`**  
   Runs the TypeScript file at the given path using the regular node binary and the [ts-node ESM loader.](https://www.npmjs.com/package/ts-node#node-flags-and-other-tools)  
   Also enables source map support and disables experimental warnings.
 - **`pnpm run dep-cruise`**  
@@ -147,9 +150,8 @@ To edit an existing translation, please follow these steps:
 > [!NOTE]
 > 
 > When you are using npm (as opposed to `pnpm`), read the following carefully:  
-> If there are a set of lone `--`, these denote the start of the arguments actually passed to the *script* process and they must be preserved.  
-> Any arguments before the double hyphens will be interpreted by *npm*; see the difference in `npm run --silent invisible -- "echo hello"`  
-> Here, `--silent` is an argument we pass to npm to make it shut up and `"echo hello"` is an argument we wanna pass to the script that npm ends up invoking.
+> You will need to use a lone ` -- ` between the command name and the arguments, for example: `npm run --silent invisible -- "<command>"`  
+> This is so npm can tell the difference between arguments passed to it versus arguments passed to the script it is running.
 
 <br>
 
@@ -197,15 +199,17 @@ The main files you will be working with are:
   - If you want to make a function globally available, simply add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the correct category.  
     If the function should require a token, create a proxy function at the bottom of the file that checks for the token and then calls the actual function (also see the bottom of the file for examples).
   - If you want to add something else like a class, constant or entire library (as long as its license allows it), add it to the `props` variable inside the function `initInterface` in [`src/interface.ts`](./src/interface.ts)
-- Creating a new reusable component:  
+- Creating a new reusable UI component:  
   1. Create a new file in the `src/components` folder with a descriptive name
   2. Add a function that takes a single object of properties as an argument (kind of like a React component), and returns an element that extends the `HTMLElement` interface (like what the return value of `document.createElement()` is)
   3. Add a re-export inside the file [`src/components/index.ts`](./src/components/index.ts)
   4. If you want to expose the component to plugins, add it to the `globalFuncs` variable in [`src/interface.ts`](./src/interface.ts) under the category `Components`
   5. Write some documentation for the component inside this file (`contributing.md`), under the [global functions and classes section](#global-functions-and-classes) by following the format of the other documented components.
-- Adding a locale:
+- Adding a locale (language & regional dialect):
   1. Add the locale code and info about the locale to the file [`assets/locales.json`](./assets/locales.json) by following the format of the other entries.  
-    Please make sure the alphabetical order is kept.
+    Please make sure the alphabetical order is kept.  
+    You can find lists of [ISO 639-1 alpha-2 language codes here](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes#Table) and [ISO 3166-1 alpha-2 country codes here.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)  
+    The final locale code should be in the format `languageCode_localeCode` (e.g. `en_US`, `en_UK`, ...)
   2. Add a translation file for the locale by following the instructions in the [translations section](#adding-translations-for-a-new-language)
   3. Your locale will be immediately available in the userscript after the next build.
 
@@ -215,7 +219,7 @@ The main files you will be working with are:
 <!-- #region plugin interface -->
 
 ### Developing a plugin that interfaces with BetterYTM:
-BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other userscripts to benefit from its features.  
+BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other "plugin" userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
 <br>
@@ -236,12 +240,12 @@ If you want your plugin to be displayed in the readme and possibly inside the us
   
 <br>
 
-These are the ways to interact with BetterYTM; constants, events and global functions:  
-- Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `window` object.  
+These are the ways to interact with BetterYTM; through constants, events and global functions:  
+- Static interaction is done through constants that are exposed through the global `BYTM` object, which is available on the `unsafeWindow` object.  
   These read-only properties tell you more about how BetterYTM is currently being run.  
   You can find all properties that are available and their types in the `declare global` block of [`src/types.ts`](src/types.ts)
 
-- Dynamic interaction is done through events that are dispatched on the `window` object.  
+- Dynamic interaction is done through events that are dispatched on the `unsafeWindow` object.  
   They all have the prefix `bytm:eventName` and are all dispatched with the `CustomEvent` interface, meaning their data can be read using the `detail` property.  
   You can find all events that are available and their types in [`src/interface.ts`](src/interface.ts)  
     
@@ -284,7 +288,7 @@ console.log(`BetterYTM's version is '${BYTM.version} #${BYTM.buildNumber}'`);
 
 #### Basic format:
 ```ts
-window.addEventListener("bytm:eventName", (event) => {
+unsafeWindow.addEventListener("bytm:eventName", (event) => {
   // can have any type, but usually it's an object or undefined
   const { detail } = event as CustomEvent<{ foo: string }>;
 
@@ -292,7 +296,7 @@ window.addEventListener("bytm:eventName", (event) => {
 });
 
 // for listening to SiteEvents:
-window.addEventListener("bytm:siteEvent:eventName", (event) => {
+unsafeWindow.addEventListener("bytm:siteEvent:eventName", (event) => {
   // always typed as array / tuple
   const { detail } = event as CustomEvent<[ foo: HTMLElement ]>;
 
@@ -303,11 +307,11 @@ window.addEventListener("bytm:siteEvent:eventName", (event) => {
 #### Practical Example:
 ```ts
 // listening to generic events:
-window.addEventListener("bytm:ready", () => {
+unsafeWindow.addEventListener("bytm:ready", () => {
   console.log("The DOM is loaded and all BetterYTM features have been initialized");
 });
 
-window.addEventListener("bytm:lyricsLoaded", (event) => {
+unsafeWindow.addEventListener("bytm:lyricsLoaded", (event) => {
   const { detail } = event as CustomEvent<{ type: "current" | "queue", artists: string, title: string, url: string }>;
 
   console.log(`Lyrics URL for "${detail.artists} - ${detail.title}" has been loaded: ${detail.url}`);
@@ -319,7 +323,7 @@ window.addEventListener("bytm:lyricsLoaded", (event) => {
 });
 
 // listening to a SiteEvent:
-window.addEventListener("bytm:siteEvent:queueChanged", (event) => {
+unsafeWindow.addEventListener("bytm:siteEvent:queueChanged", (event) => {
   const { detail } = event as CustomEvent<[ queueItem: HTMLElement ]>;
 
   console.log(`The queue has been changed. It now contains ${detail[0].childNodes.length} items`);
@@ -369,7 +373,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
   - [getSessionId()](#getsessionid) - Returns the unique session ID that is generated on every started session
 - DOM:
-  - [BytmDialog](#bytmdialog) - A class for creating and managing dialogs
+  - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
@@ -1349,7 +1353,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > new unsafeWindow.BYTM.BytmDialog(options: BytmDialogOptions): BytmDialog
 > ```
 >   
-> A class that can be used to create and manage a dialog with a fully customizable header, body and footer.  
+> A class that can be used to create and manage a modal dialog with a fully customizable header, body and footer.  
 >   
 > Features:
 > - Can be opened, closed, mounted, unmounted and destroyed at any time for full control.
@@ -1358,7 +1362,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > - The dialog can be closed by clicking the background, pressing the escape key or clicking the close button (freely configurable).
 > - Features many helper methods and events to make it more flexible and easier to work with.
 > - Has an optional small mode for a more compact appearance.
-> - If needed, the relatively uniform CSS naming conventions make it easy for the appearance to be overridden by a BetterYTM plugin or userstyle.
+> - If needed, the relatively uniform CSS naming conventions make it easy for the appearance to be overridden by a [BetterYTM plugin](#developing-a-plugin-that-interfaces-with-betterytm) or userstyle.
 >   
 > Options properties:
 > | Property | Description |
