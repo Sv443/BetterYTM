@@ -90,7 +90,6 @@ export const migrations: DataMigrationsDict = {
     return newData;
   },
 
-  // TODO: once advanced lyrics filtering is fully implemented, clear cache on migration
   // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
