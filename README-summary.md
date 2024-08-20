@@ -31,7 +31,7 @@ All of these can be toggled and configured in the configuration menu.
   - Press a hotkey on a video/song to switch between YouTube and YouTube Music, while keeping the video time
   - Prevent the "unsaved data" popup that sometimes appears before leaving the site
   
-... and these are just the notable features, there are many more smaller improvements and bugfixes!
+... and these are just the notable features, there are many more smaller features, improvements and fixes!
 
 <br>
 
