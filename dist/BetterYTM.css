@@ -1513,13 +1513,6 @@ button[disabled].bytm-busy {
   cursor: progress;
 }
 
-/* #region random fixes */
-
-.sponsorSkipNoticeContainer,
-.sponsorSkipObject {
-  z-index: 4;
-}
-
 /* #region menu */
 
 .bytm-cfg-menu-option {
@@ -1839,8 +1832,11 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.left-margin {
-  margin: 0;
-  margin-left: 8px;
+  margin: 0 0 0 8px;
+}
+
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.right-margin {
+  margin: 0 8px 0 0;
 }
 
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn:hover {
