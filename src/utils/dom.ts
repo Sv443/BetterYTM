@@ -165,7 +165,7 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
 export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
   const css = await fetchCss(key);
   if(css) {
-    addStyle(transform(css), key.slice(4));
+    await addStyle(transform(css), key.slice(4));
     return true;
   }
   return false;
