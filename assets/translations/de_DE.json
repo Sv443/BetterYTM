@@ -133,6 +133,7 @@
     "feature_category_behavior": "Verhalten",
     "feature_category_input": "Eingabe",
     "feature_category_lyrics": "Songtexte",
+    "feature_category_integrations": "Integrationen",
     "feature_category_general": "Allgemein",
 
     "feature_desc_watermarkEnabled": "Zeige ein Wasserzeichen unter dem Seitenlogo, das dieses Einstellungsmenü öffnet",

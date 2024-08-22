@@ -133,6 +133,7 @@
     "feature_category_behavior": "व्यवहार",
     "feature_category_input": "इनपुट",
     "feature_category_lyrics": "बोल",
+    "feature_category_integrations": "एकीकरण",
     "feature_category_general": "सामान्य",
 
     "feature_desc_watermarkEnabled": "एक वॉटरमार्क दिखाएं जो इस कॉन्फ़िग मेनू को खोलता है",

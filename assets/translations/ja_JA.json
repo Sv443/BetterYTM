@@ -133,6 +133,7 @@
     "feature_category_behavior": "動作",
     "feature_category_input": "入力",
     "feature_category_lyrics": "歌詞",
+    "feature_category_integrations": "統合",
     "feature_category_general": "一般的な",
 
     "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",

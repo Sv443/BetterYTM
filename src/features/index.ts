@@ -12,6 +12,7 @@ import { mode } from "../constants.js";
 export * from "./layout.js";
 export * from "./behavior.js";
 export * from "./input.js";
+export * from "./integrations.js";
 export * from "./lyrics.js";
 export * from "./lyricsCache.js";
 export * from "./songLists.js";
@@ -246,14 +247,6 @@ export const featInfo = {
     type: "toggle",
     category: "layout",
     default: true,
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
-  },
-  disableDarkReaderSites: {
-    type: "select",
-    category: "layout",
-    options: options.siteSelectionOrNone,
-    default: "all",
     advanced: true,
     textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
@@ -639,6 +632,26 @@ export const featInfo = {
   //   reloadRequired: false,
   //   enable: noop,
   // },
+
+  //#region integrations
+  disableDarkReaderSites: {
+    type: "select",
+    category: "integrations",
+    options: options.siteSelectionOrNone,
+    default: "all",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+  },
+  sponsorBlockIntegration: {
+    type: "toggle",
+    category: "integrations",
+    default: true,
+  },
+  themeSongIntegration: {
+    type: "toggle",
+    category: "integrations",
+    default: false,
+  },
 
   //#region general
   locale: {

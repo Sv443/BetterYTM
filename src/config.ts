@@ -95,7 +95,8 @@ export const migrations: DataMigrationsDict = {
 
   // 6 -> 7 (v2.2)
   7: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "showToastOnGenericError",
+    "showToastOnGenericError", "themeSongIntegration",
+    "sponsorBlockIntegration",
   ]),
 } as const satisfies DataMigrationsDict;
 

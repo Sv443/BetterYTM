@@ -222,18 +222,3 @@ async function remTimeDeleteEntry(watchID: string) {
   remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
   await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }
-
-//#region disable darkreader
-
-/** Disables Dark Reader if it is present */
-export function disableDarkReader() {
-  if(getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
-    return;
-
-  const metaElem = document.createElement("meta");
-  metaElem.name = "darkreader-lock";
-  metaElem.id = "bytm-disable-dark-reader";
-  document.head.appendChild(metaElem);
-
-  info("Disabled Dark Reader");
-}
