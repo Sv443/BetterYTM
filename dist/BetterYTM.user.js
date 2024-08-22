@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              http://localhost:8710/assets/images/logo/logo_dev_48.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,52 +33,54 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns    http://localhost:8710/assets/style/aboveQueueBtns.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-anchor_improvements http://localhost:8710/assets/style/anchorImprovements.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-auto_like           http://localhost:8710/assets/style/autoLike.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-bundle              http://localhost:8710/dist/BetterYTM.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-fix_hdr             http://localhost:8710/assets/style/fixHDR.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-fix_spacing         http://localhost:8710/assets/style/fixSpacing.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-show_votes          http://localhost:8710/assets/style/showVotes.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          css-vol_slider_size     http://localhost:8710/assets/style/volSliderSize.css?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          doc-changelog           http://localhost:8710/changelog.md?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-advanced_mode      http://localhost:8710/assets/icons/plus_circle_small.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-arrow_down         http://localhost:8710/assets/icons/arrow_down.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-auto_like          http://localhost:8710/assets/icons/auto_like.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-auto_like_enabled  http://localhost:8710/assets/icons/auto_like_enabled.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-clear_list         http://localhost:8710/assets/icons/clear_list.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-copy               http://localhost:8710/assets/icons/copy.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-delete             http://localhost:8710/assets/icons/delete.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-edit               http://localhost:8710/assets/icons/edit.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-error              http://localhost:8710/assets/icons/error.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-experimental       http://localhost:8710/assets/icons/beaker_small.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-globe              http://localhost:8710/assets/icons/globe.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-globe_small        http://localhost:8710/assets/icons/globe_small.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-help               http://localhost:8710/assets/icons/help.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-image              http://localhost:8710/assets/icons/image.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-image_filled       http://localhost:8710/assets/icons/image_filled.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-link               http://localhost:8710/assets/icons/link.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-lyrics             http://localhost:8710/assets/icons/lyrics.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-reload             http://localhost:8710/assets/icons/refresh.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-skip_to            http://localhost:8710/assets/icons/skip_to.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-spinner            http://localhost:8710/assets/icons/spinner.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          icon-upload             http://localhost:8710/assets/icons/upload.svg?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-close               http://localhost:8710/assets/images/close.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-discord             http://localhost:8710/assets/images/external/discord.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-github              http://localhost:8710/assets/images/external/github.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-greasyfork          http://localhost:8710/assets/images/external/greasyfork.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-logo                http://localhost:8710/assets/images/logo/logo_48.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-logo_dev            http://localhost:8710/assets/images/logo/logo_dev_48.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          img-openuserjs          http://localhost:8710/assets/images/external/openuserjs.png?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-de_DE             http://localhost:8710/assets/translations/de_DE.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-en_UK             http://localhost:8710/assets/translations/en_UK.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-en_US             http://localhost:8710/assets/translations/en_US.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-es_ES             http://localhost:8710/assets/translations/es_ES.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-fr_FR             http://localhost:8710/assets/translations/fr_FR.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-hi_IN             http://localhost:8710/assets/translations/hi_IN.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-ja_JA             http://localhost:8710/assets/translations/ja_JA.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-pt_BR             http://localhost:8710/assets/translations/pt_BR.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
-// @resource          trans-zh_CN             http://localhost:8710/assets/translations/zh_CN.json?b=d30bf402-9e02-4ef1-b318-84add1de5d91
+// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/anchorImprovements.css
+// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/autoLike.css
+// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/dist/BetterYTM.css
+// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixHDR.css
+// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock    https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixSponsorBlock.css
+// @resource          css-fix_themesong       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixThemeSong.css
+// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/showVotes.css
+// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/volSliderSize.css
+// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/changelog.md
+// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/arrow_down.svg
+// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/clear_list.svg
+// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/copy.svg
+// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/delete.svg
+// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/edit.svg
+// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/error.svg
+// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/beaker_small.svg
+// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/globe.svg
+// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/globe_small.svg
+// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/help.svg
+// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/image.svg
+// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/image_filled.svg
+// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/link.svg
+// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/lyrics.svg
+// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/refresh.svg
+// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/skip_to.svg
+// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/spinner.svg
+// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/upload.svg
+// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/close.png
+// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/discord.png
+// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/github.png
+// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/greasyfork.png
+// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_48.png
+// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/openuserjs.png
+// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/de_DE.json
+// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/en_UK.json
+// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/en_US.json
+// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/es_ES.json
+// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/fr_FR.json
+// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/hi_IN.json
+// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/ja_JA.json
+// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/pt_BR.json
+// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -129,7 +131,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "5659067a";
+const buildNumberRaw = "ed6c2a9c";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1196,7 +1198,7 @@ async function createLongBtn(_a) {
         });
         this.opts = options;
     }
-    /** Parses the passed markdown string and returns it as an HTML string */
+    /** Parses the passed markdown string (supports GitHub flavor and HTML mixins) and returns it as an HTML string */
     static async parseMd(md) {
         return await marked.marked.parse(md, {
             async: true,
@@ -1212,7 +1214,7 @@ async function createLongBtn(_a) {
             ? this.opts.body
             : await this.opts.body();
         const markdownEl = document.createElement("div");
-        markdownEl.classList.add("bytm-exim-dialog-markdown");
+        markdownEl.classList.add("bytm-markdown-dialog-content");
         markdownEl.innerHTML = await MarkdownDialog.parseMd(mdCont);
         bodyEl.appendChild(markdownEl);
         return bodyEl;
@@ -3783,14 +3785,19 @@ async function initRememberSongTime() {
         remVidsCache = [];
     }
     log(`Initialized video time restoring with ${remVidsCache.length} initial entr${remVidsCache.length === 1 ? "y" : "ies"}`);
-    await restVidRestoreTime();
-    if (!domLoaded)
-        document.addEventListener("DOMContentLoaded", restVidStartUpdateLoop);
-    else
-        restVidStartUpdateLoop();
+    await remTimeRestoreTime();
+    try {
+        if (!domLoaded)
+            document.addEventListener("DOMContentLoaded", remTimeStartUpdateLoop);
+        else
+            remTimeStartUpdateLoop();
+    }
+    catch (err) {
+        error("Error in video time remembering update loop:", err);
+    }
 }
 /** Tries to restore the time of the currently playing video */
-async function restVidRestoreTime() {
+async function remTimeRestoreTime() {
     if (location.pathname.startsWith("/watch")) {
         const watchID = new URL(location.href).searchParams.get("v");
         if (!watchID)
@@ -3800,7 +3807,7 @@ async function restVidRestoreTime() {
         const entry = remVidsCache.find(entry => entry.watchID === watchID);
         if (entry) {
             if (Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000) {
-                await restVidDeleteEntry(entry.watchID);
+                await remTimeDeleteEntry(entry.watchID);
                 return;
             }
             else if (isNaN(Number(entry.songTime)))
@@ -3814,7 +3821,7 @@ async function restVidRestoreTime() {
                         vidElem = await waitVideoElementReady();
                     const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
                     vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
-                    await restVidDeleteEntry(entry.watchID);
+                    await remTimeDeleteEntry(entry.watchID);
                     info(`Restored ${currentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                 };
                 if (!domLoaded)
@@ -3828,7 +3835,7 @@ async function restVidRestoreTime() {
 let lastSongTime = -1;
 let remVidCheckTimeout;
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
-async function restVidStartUpdateLoop() {
+async function remTimeStartUpdateLoop() {
     var _a, _b, _c;
     if (location.pathname.startsWith("/watch")) {
         const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
@@ -3848,25 +3855,25 @@ async function restVidStartUpdateLoop() {
                 songTime,
                 updateTimestamp: Date.now(),
             };
-            await restVidSetEntry(entry);
+            await remTimeUpsertEntry(entry);
         }
         // if the song is rewound to the beginning, update the entry accordingly
         else if (!paused) {
             const entry = remVidsCache.find(entry => entry.watchID === watchID);
             if (entry && songTime <= entry.songTime)
-                await restVidSetEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+                await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
         }
     }
     const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
     for (const entry of expiredEntries)
-        await restVidDeleteEntry(entry.watchID);
+        await remTimeDeleteEntry(entry.watchID);
     // for no overlapping calls and better error handling:
     if (remVidCheckTimeout)
         clearTimeout(remVidCheckTimeout);
-    remVidCheckTimeout = setTimeout(restVidStartUpdateLoop, 1000);
+    remVidCheckTimeout = setTimeout(remTimeStartUpdateLoop, 1000);
 }
-/** Updates an existing or creates a new entry */
-async function restVidSetEntry(data) {
+/** Updates an existing or inserts a new entry to be remembered */
+async function remTimeUpsertEntry(data) {
     const foundIdx = remVidsCache.findIndex(entry => entry.watchID === data.watchID);
     if (foundIdx >= 0)
         remVidsCache[foundIdx] = data;
@@ -3874,22 +3881,11 @@ async function restVidSetEntry(data) {
         remVidsCache.push(data);
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }
-/** Deletes an entry */
-async function restVidDeleteEntry(watchID) {
+/** Deletes an entry in the "remember cache" */
+async function remTimeDeleteEntry(watchID) {
     dbg("Deleting entry with watchID", watchID);
     remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
-}
-//#region disable darkreader
-/** Disables Dark Reader if it is present */
-function disableDarkReader() {
-    if (getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
-        return;
-    const metaElem = document.createElement("meta");
-    metaElem.name = "darkreader-lock";
-    metaElem.id = "bytm-disable-dark-reader";
-    document.head.appendChild(metaElem);
-    info("Disabled Dark Reader");
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
 //#region arrow key skip
 async function initArrowKeySkip() {
@@ -4140,7 +4136,7 @@ async function initAutoLike() {
                             const buttonsCont = headerCont.querySelector("#inner-header-container #buttons, yt-flexible-actions-view-model");
                             if (buttonsCont) {
                                 addSelectorListener("ytAppHeader", "#channel-header-container #other-buttons, yt-flexible-actions-view-model .yt-flexible-actions-view-model-wiz__action", {
-                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin"]),
+                                    listener: (otherBtns) => addAutoLikeToggleBtn(otherBtns, chanId, chanName, ["left-margin", "right-margin"]),
                                 });
                             }
                             else if (titleCont)
@@ -4236,6 +4232,344 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         if (imgEl && imgHtml)
             imgEl.innerHTML = imgHtml;
     });
+}//#region misc
+let domain;
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    if (domain)
+        return domain;
+    if (location.hostname.match(/^music\.youtube/))
+        return domain = "ytm";
+    else if (location.hostname.match(/youtube\./))
+        return domain = "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+function getSessionId() {
+    try {
+        if (!sessionStorageAvailable)
+            throw new Error("Session storage unavailable");
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(8, 36));
+        return sesId;
+    }
+    catch (err) {
+        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+        return null;
+    }
+}
+let isCompressionSupported;
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
+async function compressionSupported() {
+    if (typeof isCompressionSupported === "boolean")
+        return isCompressionSupported;
+    try {
+        await UserUtils.compress(".", compressionFormat, "string");
+        return isCompressionSupported = true;
+    }
+    catch (_a) {
+        return isCompressionSupported = false;
+    }
+}
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+function arrayWithSeparators(array, separator = ", ", lastSeparator) {
+    const arr = [...array];
+    if (arr.length === 0)
+        return "";
+    else if (arr.length <= 2)
+        return arr.join(lastSeparator);
+    else
+        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
+}
+/** Returns the watch ID of the current video or null if not on a video page */
+function getWatchId() {
+    const { searchParams, pathname } = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+}
+/** Returns the channel ID from a URL or null if the URL is invalid */
+function parseChannelIdFromUrl(url) {
+    try {
+        const { pathname } = url instanceof URL ? url : new URL(url);
+        if (pathname.includes("/channel/"))
+            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
+        else if (pathname.includes("/@"))
+            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
+        else
+            return null;
+    }
+    catch (_a) {
+        return null;
+    }
+}
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId)
+        ? channelId
+        : `@${channelId}`;
+}
+/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+function isValidChannelId(channelId) {
+    return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
+}
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
+    return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+}
+/** Returns the best available thumbnail URL for a video with the given watch ID */
+async function getBestThumbnailUrl(watchId) {
+    const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+    for (const quality of priorityList) {
+        let response;
+        const url = getThumbnailUrl(watchId, quality);
+        try {
+            response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+        }
+        catch (e) {
+        }
+        if (response && response.status < 300 && response.status >= 200)
+            return url;
+    }
+}
+/** Opens the given URL in a new tab, using GM.openInTab if available */
+function openInTab(href, background = false) {
+    try {
+        UserUtils.openInNewTab(href, background);
+    }
+    catch (_a) {
+        window.open(href, "_blank", "noopener noreferrer");
+    }
+}
+/** Tries to parse an uncompressed or compressed input string as a JSON object */
+async function tryToDecompressAndParse(input) {
+    let parsed = null;
+    try {
+        parsed = JSON.parse(input);
+    }
+    catch (_a) {
+        try {
+            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
+        }
+        catch (err) {
+            error("Couldn't decompress and parse data due to an error:", err);
+            return null;
+        }
+    }
+    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+    await UserUtils.pauseFor(250);
+    return parsed;
+}
+//#region resources
+/**
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ */
+async function getResourceUrl(name) {
+    var _a;
+    let url = await GM.getResourceUrl(name);
+    if (!url || url.length === 0) {
+        const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
+        if (typeof resource === "string") {
+            const resourceUrl = new URL(resource);
+            const resourcePath = resourceUrl.pathname;
+            if (resourcePath)
+                return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
+        }
+        warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
+        // @ts-ignore
+        url = await GM.getResourceUrl(name, false);
+    }
+    return url;
+}
+/**
+ * Returns the preferred locale of the user, provided it is supported by the userscript.
+ * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+ */
+function getPreferredLocale() {
+    var _a;
+    const navLang = navigator.language.replace(/-/g, "_");
+    const navLangs = navigator.languages
+        .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
+        .map(lang => lang.replace(/-/g, "_"));
+    if (Object.entries(langMapping).find(([key]) => key === navLang))
+        return navLang;
+    for (const loc of navLangs) {
+        if (Object.entries(langMapping).find(([key]) => key === loc))
+            return loc;
+    }
+    // if navigator.languages has entries that aren't locale codes in the format xx_XX
+    if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
+        for (const lang of navLangs) {
+            const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+            if (foundLoc)
+                return foundLoc;
+        }
+    }
+    return "en_US";
+}
+/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+async function resourceAsString(resource) {
+    try {
+        const resourceUrl = await getResourceUrl(resource);
+        if (!resourceUrl)
+            throw new Error(`Couldn't find URL for resource '${resource}'`);
+        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
+    }
+    catch (err) {
+        error("Couldn't get SVG element from resource:", err);
+        return null;
+    }
+}
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+function parseMarkdown(mdString) {
+    return marked.marked.parse(mdString, {
+        async: true,
+        gfm: true,
+    });
+}
+/** Returns the content of the changelog markdown file */
+async function getChangelogMd() {
+    return await (await UserUtils.fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+}
+/** Returns the changelog as HTML with a details element for each version */
+async function getChangelogHtmlWithDetails() {
+    try {
+        const changelogMd = await getChangelogMd();
+        let changelogHtml = await parseMarkdown(changelogMd);
+        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
+        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
+        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+        for (const match of h2Matches) {
+            const [fullMatch, , verStr] = match;
+            const verId = getVerId(verStr);
+            const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
+            const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
+            changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
+        }
+        changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
+        return changelogHtml;
+    }
+    catch (err) {
+        return `Error while preparing changelog: ${err}`;
+    }
+}let curLogLevel = LogLevel.Info;
+/** Common prefix to be able to tell logged messages apart and filter them in devtools */
+const consPrefix = `[${scriptInfo.name}]`;
+const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
+/** Sets the current log level. 0 = Debug, 1 = Info */
+function setLogLevel(level) {
+    curLogLevel = level;
+    setGlobalProp("logLevel", level);
+    if (curLogLevel !== level)
+        log("Set the log level to", LogLevel[level]);
+}
+/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
+function getLogLevel(args) {
+    const minLogLvl = 0, maxLogLvl = 1;
+    if (typeof args.at(-1) === "number")
+        return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
+    return LogLevel.Debug;
+}
+/**
+ * Logs all passed values to the console, as long as the log level is sufficient.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ */
+function log(...args) {
+    if (curLogLevel <= getLogLevel(args))
+        console.log(consPrefix, ...args);
+}
+/**
+ * Logs all passed values to the console as info, as long as the log level is sufficient.
+ * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
+ */
+function info(...args) {
+    if (curLogLevel <= getLogLevel(args))
+        console.info(consPrefix, ...args);
+}
+/** Logs all passed values to the console as a warning, no matter the log level. */
+function warn(...args) {
+    console.warn(consPrefix, ...args);
+}
+let errorDialog;
+function getErrorDialog(errName, args) {
+    if (errorDialog)
+        return errorDialog;
+    return errorDialog = new MarkdownDialog({
+        id: "generic-error",
+        height: 400,
+        width: 500,
+        small: true,
+        renderHeader() {
+            const header = document.createElement("h2");
+            header.classList.add("bytm-dialog-title");
+            header.role = "heading";
+            header.ariaLevel = "1";
+            header.tabIndex = 0;
+            header.textContent = header.ariaLabel = errName;
+            return header;
+        },
+        body: args.join(" "),
+    });
+}
+/** Logs all passed values to the console as an error, no matter the log level. */
+function error(...args) {
+    var _a, _b;
+    console.error(consPrefix, ...args);
+    if (getFeature("showToastOnGenericError")) {
+        const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
+        showIconToast({
+            message: t("generic_error_toast", errName),
+            icon: "icon-error",
+            iconFill: "var(--bytm-error-col)",
+            onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
+        });
+    }
+}
+/** Logs all passed values to the console with a debug-specific prefix */
+function dbg(...args) {
+    console.log(consPrefixDbg, ...args);
+}//#region Dark Reader
+/** Disables Dark Reader if it is present */
+async function disableDarkReader() {
+    if (getFeature("disableDarkReaderSites") !== getDomain() && getFeature("disableDarkReaderSites") !== "all")
+        return;
+    const metaElem = document.createElement("meta");
+    metaElem.name = "darkreader-lock";
+    metaElem.id = "bytm-disable-dark-reader";
+    document.head.appendChild(metaElem);
+    info("Disabled Dark Reader");
+}
+//#region SponsorBlock
+/** Fixes the z-index of the SponsorBlock panel */
+async function fixSponsorBlock() {
+    try {
+        return addStyleFromResource("css-fix_sponsorblock");
+    }
+    catch (err) {
+        error("Failed to fix SponsorBlock styling:", err);
+    }
+}
+//#region ThemeSong
+/** Adjust the BetterYTM styles to respect the theme from ThemeSong */
+async function fixThemeSong() {
+    try {
+        return addStyleFromResource("css-fix_themesong");
+    }
+    catch (err) {
+        error("Failed to fix ThemeSong styling:", err);
+    }
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
 //#region media control bar
@@ -5122,14 +5456,6 @@ const featInfo = {
         advanced: true,
         textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
     },
-    disableDarkReaderSites: {
-        type: "select",
-        category: "layout",
-        options: options.siteSelectionOrNone,
-        default: "all",
-        advanced: true,
-        textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
-    },
     showVotes: {
         type: "toggle",
         category: "layout",
@@ -5507,6 +5833,25 @@ const featInfo = {
     //   reloadRequired: false,
     //   enable: noop,
     // },
+    //#region integrations
+    disableDarkReaderSites: {
+        type: "select",
+        category: "integrations",
+        options: options.siteSelectionOrNone,
+        default: "all",
+        advanced: true,
+        textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    },
+    sponsorBlockIntegration: {
+        type: "toggle",
+        category: "integrations",
+        default: true,
+    },
+    themeSongIntegration: {
+        type: "toggle",
+        category: "integrations",
+        default: false,
+    },
     //#region general
     locale: {
         type: "select",
@@ -5665,12 +6010,12 @@ const migrations = {
         "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
         return newData;
     },
-    // TODO: once advanced lyrics filtering is fully implemented, clear cache on migration
     // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
     // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
     // 6 -> 7 (v2.2)
     7: (oldData) => useDefaultConfig(oldData, [
-        "showToastOnGenericError",
+        "showToastOnGenericError", "themeSongIntegration",
+        "sponsorBlockIntegration",
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -6373,7 +6718,7 @@ async function addStyle(css, ref, transform = (c) => c) {
 async function addStyleFromResource(key, transform = (c) => c) {
     const css = await fetchCss(key);
     if (css) {
-        addStyle(transform(css), key.slice(4));
+        await addStyle(transform(css), key.slice(4));
         return true;
     }
     return false;
@@ -6419,314 +6764,6 @@ function copyToClipboard(text) {
     }
     catch (_a) {
         alert(t("copy_to_clipboard_error", String(text)));
-    }
-}let curLogLevel = LogLevel.Info;
-/** Common prefix to be able to tell logged messages apart and filter them in devtools */
-const consPrefix = `[${scriptInfo.name}]`;
-const consPrefixDbg = `[${scriptInfo.name}/#DEBUG]`;
-/** Sets the current log level. 0 = Debug, 1 = Info */
-function setLogLevel(level) {
-    curLogLevel = level;
-    setGlobalProp("logLevel", level);
-    if (curLogLevel !== level)
-        log("Set the log level to", LogLevel[level]);
-}
-/** Extracts the log level from the last item from spread arguments - returns 0 if the last item is not a number or too low or high */
-function getLogLevel(args) {
-    const minLogLvl = 0, maxLogLvl = 1;
-    if (typeof args.at(-1) === "number")
-        return UserUtils.clamp(args.splice(args.length - 1)[0], minLogLvl, maxLogLvl);
-    return LogLevel.Debug;
-}
-/**
- * Logs all passed values to the console, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
- */
-function log(...args) {
-    if (curLogLevel <= getLogLevel(args))
-        console.log(consPrefix, ...args);
-}
-/**
- * Logs all passed values to the console as info, as long as the log level is sufficient.
- * @param args Last parameter is log level (0 = Debug, 1/undefined = Info) - any number as the last parameter will be stripped out! Convert to string if it shouldn't be.
- */
-function info(...args) {
-    if (curLogLevel <= getLogLevel(args))
-        console.info(consPrefix, ...args);
-}
-/** Logs all passed values to the console as a warning, no matter the log level. */
-function warn(...args) {
-    console.warn(consPrefix, ...args);
-}
-let errorDialog;
-function getErrorDialog(errName, args) {
-    if (errorDialog)
-        return errorDialog;
-    return errorDialog = new MarkdownDialog({
-        id: "generic-error",
-        height: 400,
-        width: 500,
-        small: true,
-        renderHeader() {
-            const header = document.createElement("h2");
-            header.classList.add("bytm-dialog-title");
-            header.role = "heading";
-            header.ariaLevel = "1";
-            header.tabIndex = 0;
-            header.textContent = header.ariaLabel = errName;
-            return header;
-        },
-        body: args.join(" "),
-    });
-}
-/** Logs all passed values to the console as an error, no matter the log level. */
-function error(...args) {
-    var _a, _b;
-    console.error(consPrefix, ...args);
-    if (getFeature("showToastOnGenericError")) {
-        const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
-        showIconToast({
-            message: t("generic_error_toast", errName),
-            icon: "icon-error",
-            iconFill: "var(--bytm-error-col)",
-            onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-        });
-    }
-}
-/** Logs all passed values to the console with a debug-specific prefix */
-function dbg(...args) {
-    console.log(consPrefixDbg, ...args);
-}//#region misc
-let domain;
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-function getDomain() {
-    if (domain)
-        return domain;
-    if (location.hostname.match(/^music\.youtube/))
-        return domain = "ytm";
-    else if (location.hostname.match(/youtube\./))
-        return domain = "yt";
-    else
-        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
-function getSessionId() {
-    try {
-        if (!sessionStorageAvailable)
-            throw new Error("Session storage unavailable");
-        let sesId = window.sessionStorage.getItem("_bytm-session-id");
-        if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(8, 36));
-        return sesId;
-    }
-    catch (err) {
-        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
-        return null;
-    }
-}
-let isCompressionSupported;
-/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
-async function compressionSupported() {
-    if (typeof isCompressionSupported === "boolean")
-        return isCompressionSupported;
-    try {
-        await UserUtils.compress(".", compressionFormat, "string");
-        return isCompressionSupported = true;
-    }
-    catch (_a) {
-        return isCompressionSupported = false;
-    }
-}
-/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
-function arrayWithSeparators(array, separator = ", ", lastSeparator) {
-    const arr = [...array];
-    if (arr.length === 0)
-        return "";
-    else if (arr.length <= 2)
-        return arr.join(lastSeparator);
-    else
-        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
-}
-/** Returns the watch ID of the current video or null if not on a video page */
-function getWatchId() {
-    const { searchParams, pathname } = new URL(location.href);
-    return pathname.includes("/watch") ? searchParams.get("v") : null;
-}
-/**
- * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
- * Returns null if the current page is not a channel page or there was an error parsing the URL
- */
-function getCurrentChannelId() {
-    return parseChannelIdFromUrl(location.href);
-}
-/** Returns the channel ID from a URL or null if the URL is invalid */
-function parseChannelIdFromUrl(url) {
-    try {
-        const { pathname } = url instanceof URL ? url : new URL(url);
-        if (pathname.includes("/channel/"))
-            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
-        else if (pathname.includes("/@"))
-            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
-        else
-            return null;
-    }
-    catch (_a) {
-        return null;
-    }
-}
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-function sanitizeChannelId(channelId) {
-    channelId = String(channelId).trim();
-    return isValidChannelId(channelId)
-        ? channelId
-        : `@${channelId}`;
-}
-/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
-function isValidChannelId(channelId) {
-    return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
-}
-/** Returns the thumbnail URL for a video with either a given quality identifier or index */
-function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
-    return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
-}
-/** Returns the best available thumbnail URL for a video with the given watch ID */
-async function getBestThumbnailUrl(watchId) {
-    const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
-    for (const quality of priorityList) {
-        let response;
-        const url = getThumbnailUrl(watchId, quality);
-        try {
-            response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
-        }
-        catch (e) {
-        }
-        if (response && response.status < 300 && response.status >= 200)
-            return url;
-    }
-}
-/** Opens the given URL in a new tab, using GM.openInTab if available */
-function openInTab(href, background = false) {
-    try {
-        UserUtils.openInNewTab(href, background);
-    }
-    catch (_a) {
-        window.open(href, "_blank", "noopener noreferrer");
-    }
-}
-/** Tries to parse an uncompressed or compressed input string as a JSON object */
-async function tryToDecompressAndParse(input) {
-    let parsed = null;
-    try {
-        parsed = JSON.parse(input);
-    }
-    catch (_a) {
-        try {
-            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
-        }
-        catch (err) {
-            error("Couldn't decompress and parse data due to an error:", err);
-            return null;
-        }
-    }
-    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-    await UserUtils.pauseFor(250);
-    return parsed;
-}
-//#region resources
-/**
- * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
- */
-async function getResourceUrl(name) {
-    var _a;
-    let url = await GM.getResourceUrl(name);
-    if (!url || url.length === 0) {
-        const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
-        if (typeof resource === "string") {
-            const resourceUrl = new URL(resource);
-            const resourcePath = resourceUrl.pathname;
-            if (resourcePath)
-                return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
-        }
-        warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
-        // @ts-ignore
-        url = await GM.getResourceUrl(name, false);
-    }
-    return url;
-}
-/**
- * Returns the preferred locale of the user, provided it is supported by the userscript.
- * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
- */
-function getPreferredLocale() {
-    var _a;
-    const navLang = navigator.language.replace(/-/g, "_");
-    const navLangs = navigator.languages
-        .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
-        .map(lang => lang.replace(/-/g, "_"));
-    if (Object.entries(langMapping).find(([key]) => key === navLang))
-        return navLang;
-    for (const loc of navLangs) {
-        if (Object.entries(langMapping).find(([key]) => key === loc))
-            return loc;
-    }
-    // if navigator.languages has entries that aren't locale codes in the format xx_XX
-    if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-        for (const lang of navLangs) {
-            const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
-            if (foundLoc)
-                return foundLoc;
-        }
-    }
-    return "en_US";
-}
-/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
-async function resourceAsString(resource) {
-    try {
-        const resourceUrl = await getResourceUrl(resource);
-        if (!resourceUrl)
-            throw new Error(`Couldn't find URL for resource '${resource}'`);
-        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
-    }
-    catch (err) {
-        error("Couldn't get SVG element from resource:", err);
-        return null;
-    }
-}
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-function parseMarkdown(mdString) {
-    return marked.marked.parse(mdString, {
-        async: true,
-        gfm: true,
-    });
-}
-/** Returns the content of the changelog markdown file */
-async function getChangelogMd() {
-    return await (await UserUtils.fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
-}
-/** Returns the changelog as HTML with a details element for each version */
-async function getChangelogHtmlWithDetails() {
-    try {
-        const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
-        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
-        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-        for (const match of h2Matches) {
-            const [fullMatch, , verStr] = match;
-            const verId = getVerId(verStr);
-            const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
-            const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
-            changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
-        }
-        changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
-        return changelogHtml;
-    }
-    catch (err) {
-        return `Error while preparing changelog: ${err}`;
     }
 }/**
  * Constructs a URL from a base URL and a record of query parameters.
@@ -6934,6 +6971,11 @@ async function onDomLoad() {
             //#region (ytm) lyrics
             if (feats.geniusLyrics)
                 ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
+            // #region (ytm) integrations
+            if (feats.sponsorBlockIntegration)
+                ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
+            if (feats.themeSongIntegration)
+                ftInit.push(["themeSongIntegration", fixThemeSong()]);
         }
         //#region (ytm+yt) cfg menu
         try {
@@ -6955,14 +6997,15 @@ async function onDomLoad() {
             //#region general
             ftInit.push(["initSiteEvents", initSiteEvents()]);
             //#region (ytm+yt) layout
-            if (feats.disableDarkReaderSites !== "none")
-                disableDarkReader();
             if (feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
                 ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
             //#region (ytm+yt) input
             ftInit.push(["siteSwitch", initSiteSwitch(domain)]);
             if (feats.autoLikeChannels)
                 ftInit.push(["autoLikeChannels", initAutoLike()]);
+            //#region (ytm+yt) integrations
+            if (feats.disableDarkReaderSites !== "none")
+                ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
         }
         emitInterface("bytm:featureInitStarted");
         try {
@@ -6983,7 +7026,7 @@ async function onDomLoad() {
             }))),
         ]);
         emitInterface("bytm:ready");
-        info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+        info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
         try {
             registerDevCommands();
         }
