@@ -133,6 +133,7 @@
     "feature_category_behavior": "Comportement",
     "feature_category_input": "Entrée",
     "feature_category_lyrics": "Paroles",
+    "feature_category_integrations": "Intégrations",
     "feature_category_general": "Général",
 
     "feature_desc_watermarkEnabled": "Afficher un filigrane sous le logo du site qui ouvre ce menu de configuration",

@@ -191,13 +191,6 @@ button[disabled].bytm-busy {
   cursor: progress;
 }
 
-/* #region random fixes */
-
-.sponsorSkipNoticeContainer,
-.sponsorSkipObject {
-  z-index: 4;
-}
-
 /* #region menu */
 
 .bytm-cfg-menu-option {

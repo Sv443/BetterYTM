@@ -133,6 +133,7 @@
     "feature_category_behavior": "Comportamento",
     "feature_category_input": "Entrada",
     "feature_category_lyrics": "Letras",
+    "feature_category_integrations": "Integrações",
     "feature_category_general": "Geral",
 
     "feature_desc_watermarkEnabled": "Mostrar uma marca d'água sob o logotipo do site que abre este menu de configuração",

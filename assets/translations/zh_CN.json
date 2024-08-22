@@ -133,6 +133,7 @@
     "feature_category_behavior": "行为",
     "feature_category_input": "输入",
     "feature_category_lyrics": "歌词",
+    "feature_category_integrations": "集成",
     "feature_category_general": "一般的",
 
     "feature_desc_watermarkEnabled": "在网站标志下方显示一个水印，以打开此配置菜单",
