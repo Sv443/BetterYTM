@@ -47,6 +47,7 @@
     "lang_changed_prompt_reload": "The language was changed.\nDo you want to reload the page now to apply changes?",
     "search_placeholder": "Search...",
     "search_clear": "Clear search",
+
     "reset": "Reset",
     "close": "Close",
     "close_tooltip": "Click to close",
@@ -81,6 +82,7 @@
     "advanced_mode": "Advanced mode",
     "advanced_mode_short": "Advanced",
     "experimental_feature": "Experimental feature",
+
     "open_current_lyrics": "Open the current song's lyrics in a new tab",
     "open_lyrics": "Open this song's lyrics in a new tab",
     "open_lyrics_search_prompt": "Enter the song title and artist to search for the lyrics:",
@@ -93,6 +95,7 @@
     "lyrics_clear_cache_confirm_prompt-n": "The lyrics cache currently has %1 entries.\nDo you really want to delete them?",
     "lyrics_clear_cache_success": "Lyrics cache was cleared successfully.",
     "lyrics_cache_changed_clear_confirm": "You have changed settings that affect the data in the lyrics cache, which breaks lyrics URL lookups.\nDo you want to clear the cache now?",
+
     "hotkey_input_click_to_change": "Click to change",
     "hotkey_input_click_to_change_tooltip": "%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.",
     "hotkey_input_click_to_cancel_tooltip": "Click to cancel",
@@ -102,6 +105,7 @@
     "hotkey_key_mac_option": "Option",
     "hotkey_key_alt": "Alt",
     "hotkey_key_none": "No hotkey selected",
+
     "welcome_menu_title": "Welcome to %1!",
     "config_menu": "Config Menu",
     "open_config_menu_tooltip": "Click to open the configuration menu",
@@ -113,12 +117,15 @@
     "welcome_text_line_3": "If you like %1, please leave a rating on %2GreasyFork%3 or %4OpenUserJS%5",
     "welcome_text_line_4": "My work relies on donations so please consider %1donating ❤️%2",
     "welcome_text_line_5": "Found a bug or want to suggest a feature? Please %1open an issue on GitHub%2",
+
     "list_button_placement_queue_only": "Currently playing queue only",
     "list_button_placement_everywhere": "In every song list",
+
     "site_selection_both_sites": "Both sites",
     "site_selection_only_yt": "Only YouTube",
     "site_selection_only_ytm": "Only YouTube Music",
     "site_selection_none": "None (disabled)",
+
     "new_version_available": "A new version of %1 is available!\nYou currently have version %2 installed and you can update to version %3",
     "open_update_page_install_manually": "Install on %1",
     "disable_update_check": "Disable automatic update checks",
@@ -128,6 +135,7 @@
     "expand_release_notes": "Click to expand the latest release notes",
     "collapse_release_notes": "Click to collapse the latest release notes",
     "no_updates_found": "No updates found.",
+
     "thumbnail_overlay_behavior_never": "Never",
     "thumbnail_overlay_behavior_videos_only": "Only for videos",
     "thumbnail_overlay_behavior_songs_only": "Only for songs",
@@ -138,6 +146,7 @@
     "thumbnail_overlay_image_fit_crop": "Crop if necessary",
     "thumbnail_overlay_image_fit_full": "Show full image",
     "thumbnail_overlay_image_fit_stretch": "Stretch to fit",
+
     "auto_like_channels_dialog_title": "Auto-liked Channels",
     "auto_like_channels_dialog_desc": "Here you can see what channels you have set to auto-like and you can edit, enable, disable and remove them.\nYou can also manually create entries, though it's easier to just visit the channel page and click the button there.",
     "auto_like": "Auto-like",
@@ -157,26 +166,37 @@
     "auto_like_export_import_title": "Export or Import Auto-liked Channels",
     "auto_like_export_desc": "Copy the following text to export your auto-liked channels.",
     "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
+
     "vote_label_likes-1": "%1 like",
     "vote_label_likes-n": "%1 likes",
     "vote_label_dislikes-1": "%1 dislike",
     "vote_label_dislikes-n": "%1 dislikes",
+
     "vote_ratio_disabled": "Disabled",
     "vote_ratio_green_red": "Green and red",
     "vote_ratio_blue_gray": "Blue and gray",
+
     "votes_format_short": "Shortened",
     "votes_format_long": "Full number",
+
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
     "unit_days-1": "day",
     "unit_days-n": "days",
+
+    "plugin_validation_error_no_property": "No property '%1' with type '%2'",
+    "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
+    "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3",
+
     "feature_category_layout": "Layout",
     "feature_category_volume": "Volume",
     "feature_category_songLists": "Song Lists",
     "feature_category_behavior": "Behavior",
     "feature_category_input": "Input",
     "feature_category_lyrics": "Lyrics",
+    "feature_category_integrations": "Integrations",
     "feature_category_general": "General",
+
     "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
     "feature_helptext_watermarkEnabled": "If this is disabled, you can still open the config menu by clicking the option in the menu that opens when you click your profile picture in the top right corner.\nHowever it will be harder to find the easter egg ;)",
     "feature_desc_removeShareTrackingParam": "Remove the tracking parameter \"?si\" from the URL in share menus",
@@ -185,16 +205,6 @@
     "feature_desc_numKeysSkipToTime": "Enable skipping to a specific time in the video by pressing a number key (0-9)",
     "feature_desc_fixSpacing": "Fix spacing issues in the layout",
     "feature_helptext_fixSpacing": "There are various locations in the user interface where the spacing between elements is inconsistent. This feature fixes those issues.",
-    "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
-    "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",
-    "feature_desc_volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
-    "feature_desc_volumeSliderScrollStep": "Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above",
-    "feature_helptext_volumeSliderScrollStep": "By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.",
-    "feature_desc_volumeSharedBetweenTabs": "Should the set volume be shared between tabs and remembered between sessions?",
-    "feature_helptext_volumeSharedBetweenTabs": "If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.",
-    "feature_desc_setInitialTabVolume": "Sets the volume level to a specific value once when opening the site",
-    "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "This feature is incompatible with the \"Volume level shared between tabs\" feature and will be ignored while using the shared volume feature!",
-    "feature_desc_initialTabVolumeLevel": "The value to set the volume level to when opening the site",
     "feature_desc_thumbnailOverlayBehavior": "When to automatically replace the video element with its thumbnail in the highest resolution",
     "feature_helptext_thumbnailOverlayBehavior": "The thumbnail will be shown over top of the currently playing video or song as an overlay.\nThis means you will not save any bandwidth as the video will still be loaded and played in the background!",
     "feature_desc_thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail",
@@ -205,17 +215,28 @@
     "feature_desc_hideCursorOnIdle": "Hide the cursor after a few seconds of inactivity over the video",
     "feature_desc_hideCursorOnIdleDelay": "How many seconds of inactivity before the cursor should be hidden?",
     "feature_desc_fixHdrIssues": "Prevent some rendering issues when using an HDR-compatible GPU and monitor",
-    "feature_desc_disableDarkReaderSites": "On which sites should the Dark Reader extension be disabled to fix layout issues?",
-    "feature_helptext_disableDarkReaderSites": "The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\nIf the extension is not installed, this feature will have no effect and can be left activated.",
     "feature_desc_showVotes": "Show the amount of likes and dislikes on the currently playing song",
     "feature_helptext_showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",
     "feature_desc_showVotesFormat": "How should the likes and dislikes be formatted?",
+
+    "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
+    "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",
+    "feature_desc_volumeSliderStep": "Volume slider sensitivity (by how little percent the volume can be changed at a time)",
+    "feature_desc_volumeSliderScrollStep": "Volume slider scroll wheel sensitivity in percent - snaps to the nearest sensitivity value from above",
+    "feature_helptext_volumeSliderScrollStep": "By how much percent the volume should be changed when scrolling the volume slider with the mouse wheel.\nThis should be a multiple of the volume slider sensitivity, otherwise there will be small irregular jumps in the volume when scrolling.",
+    "feature_desc_volumeSharedBetweenTabs": "Should the set volume be shared between tabs and remembered between sessions?",
+    "feature_helptext_volumeSharedBetweenTabs": "If you change the volume in one tab, the volume level will be set to the same value in all other tabs that have this feature enabled.\nThis value will be remembered and restored across sessions, until disabled.",
+    "feature_desc_setInitialTabVolume": "Sets the volume level to a specific value once when opening the site",
+    "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "This feature is incompatible with the \"Volume level shared between tabs\" feature and will be ignored while using the shared volume feature!",
+    "feature_desc_initialTabVolumeLevel": "The value to set the volume level to when opening the site",
+  
     "feature_desc_lyricsQueueButton": "Add a button to each song in a list to open its lyrics page",
     "feature_desc_deleteFromQueueButton": "Add a button to each song in a list to quickly remove it",
     "feature_desc_listButtonsPlacement": "Where should the list buttons show up?",
     "feature_helptext_listButtonsPlacement": "There are various song lists on the site like album pages, playlists and the currently playing queue.\nWith this option you can choose where the list buttons should show up.",
     "feature_desc_scrollToActiveSongBtn": "Add a button above the queue to scroll to the currently playing song",
     "feature_desc_clearQueueBtn": "Add a button above the currently playing queue or playlist to quickly clear it",
+
     "feature_desc_disableBeforeUnloadPopup": "Prevent the confirmation popup that appears when trying to leave the site while a song is playing",
     "feature_helptext_disableBeforeUnloadPopup": "When trying to leave the site while a few seconds into a song that is actively playing, a popup will appear asking you to confirm that you want to leave the site. It might say something along the lines of \"you have unsaved data\" or \"this site is asking if you want to close it\".\nThis feature disables that popup entirely.",
     "feature_desc_closeToastsTimeout": "After how many seconds to close permanent notifications - 0 to only close them manually (default behavior)",
@@ -228,6 +249,7 @@
     "feature_desc_rememberSongTimeReduction": "How many seconds to subtract when restoring the time of a remembered song",
     "feature_helptext_rememberSongTimeReduction": "When restoring the time of a song that was remembered, this amount of seconds will be subtracted from the remembered time so you have more context when listening to the part that was interrupted again.",
     "feature_desc_rememberSongTimeMinPlayTime": "Minimum amount of seconds a song needs to be played for its time to be remembered",
+
     "feature_desc_arrowKeySupport": "Use arrow keys to skip forwards and backwards in the currently playing song",
     "feature_helptext_arrowKeySupport": "Normally you can only skip forwards and backwards by a fixed 10 second interval with the keys \"H\" and \"L\". This feature allows you to use the arrow keys too.\nTo change the amount of seconds to skip, use the option below.",
     "feature_desc_arrowKeySkipBy": "By how many seconds to skip when using the arrow keys",
@@ -245,6 +267,7 @@
     "feature_desc_autoLikeOpenMgmtDialog": "Open the dialog to manage auto-liked channels",
     "feature_btn_autoLikeOpenMgmtDialog": "Open dialog",
     "feature_btn_autoLikeOpenMgmtDialog_running": "Opening...",
+
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
     "feature_desc_geniUrlBase": "Base URL of your geniURL instance, see https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.",
@@ -260,6 +283,14 @@
     "feature_btn_clearLyricsCache_running": "Clearing...",
     "feature_desc_advancedLyricsFilter": "Experimental: Enable advanced filtering for the lyrics search",
     "feature_helptext_advancedLyricsFilter": "Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that appears if you changed this setting.",
+
+    "feature_desc_disableDarkReaderSites": "On which sites should the Dark Reader extension be disabled to fix layout issues?",
+    "feature_helptext_disableDarkReaderSites": "The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\nIf the extension is not installed, this feature will have no effect and can be left activated.",
+    "feature_desc_sponsorBlockIntegration": "Make some fixes to the layout in case SponsorBlock is installed",
+    "feature_helptext_sponsorBlockIntegration": "If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
+    "feature_desc_themeSongIntegration": "Make the styling of the page match the theme set by the ThemeSong extension",
+    "feature_helptext_themeSongIntegration": "If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.",
+
     "feature_desc_locale": "Language",
     "feature_desc_localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",
     "feature_desc_versionCheck": "Check for updates every 24 hours",
@@ -278,9 +309,6 @@
     "feature_btn_resetConfig": "Reset settings",
     "feature_btn_resetConfig_running": "Confirming...",
     "feature_desc_advancedMode": "Show advanced settings (reloads the menu)",
-    "feature_helptext_advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu.",
-    "plugin_validation_error_no_property": "No property '%1' with type '%2'",
-    "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
-    "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3"
+    "feature_helptext_advancedMode": "After enabling this, the menu will reload and show advanced settings that are hidden by default.\nThis is useful if you want to more deeply customize the script's behavior and don't care about an overcrowded menu."
   }
 }

@@ -10,25 +10,30 @@ import { getWelcomeDialog } from "./dialogs/index.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
-  addWatermark, initRemShareTrackParam, fixSpacing,
-  initThumbnailOverlay, initHideCursorOnIdle, fixHdrIssues,
+  addWatermark, initRemShareTrackParam,
+  fixSpacing, initThumbnailOverlay,
+  initHideCursorOnIdle, fixHdrIssues,
   initShowVotes,
   // volume
   initVolumeFeatures,
   // song lists
   initQueueButtons, initAboveQueueBtns,
   // behavior
-  initBeforeUnloadHook, disableBeforeUnload, initAutoCloseToasts,
-  initRememberSongTime, disableDarkReader,
+  initBeforeUnloadHook, disableBeforeUnload,
+  initAutoCloseToasts, initRememberSongTime,
   // input
-  initArrowKeySkip, initSiteSwitch, addAnchorImprovements,
-  initNumKeysSkip, initAutoLike,
+  initArrowKeySkip, initSiteSwitch,
+  addAnchorImprovements, initNumKeysSkip,
+  initAutoLike,
   // lyrics
   addPlayerBarLyricsBtn, initLyricsCache,
-  // menu
-  addConfigMenuOptionYT, addConfigMenuOptionYTM,
+  // integrations
+  disableDarkReader, fixSponsorBlock,
+  fixThemeSong,
   // general
   initVersionCheck,
+  // menu
+  addConfigMenuOptionYT, addConfigMenuOptionYTM,
 } from "./features/index.js";
 import { storeSerializer } from "./storeSerializer.js";
 import { MarkdownDialog } from "./components/index.js";
@@ -116,7 +121,7 @@ async function init() {
 async function onDomLoad() {
   const domain = getDomain();
   const feats = getFeatures();
-  const ftInit = [] as [string, Promise<void>][];
+  const ftInit = [] as [string, Promise<void | unknown>][];
 
   // for being able to apply domain-specific styles (prefix any CSS selector with "body.bytm-dom-yt" or "body.bytm-dom-ytm")
   document.body.classList.add(`bytm-dom-${domain}`);
@@ -197,6 +202,14 @@ async function onDomLoad() {
 
       if(feats.geniusLyrics)
         ftInit.push(["playerBarLyricsBtn", addPlayerBarLyricsBtn()]);
+
+      // #region (ytm) integrations
+
+      if(feats.sponsorBlockIntegration)
+        ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
+
+      if(feats.themeSongIntegration)
+        ftInit.push(["themeSongIntegration", fixThemeSong()]);
     }
 
     //#region (ytm+yt) cfg menu
@@ -223,9 +236,6 @@ async function onDomLoad() {
 
       //#region (ytm+yt) layout
 
-      if(feats.disableDarkReaderSites !== "none")
-        disableDarkReader();
-
       if(feats.removeShareTrackingParamSites && (feats.removeShareTrackingParamSites === domain || feats.removeShareTrackingParamSites === "all"))
         ftInit.push(["initRemShareTrackParam", initRemShareTrackParam()]);
 
@@ -235,6 +245,11 @@ async function onDomLoad() {
 
       if(feats.autoLikeChannels)
         ftInit.push(["autoLikeChannels", initAutoLike()]);
+
+      //#region (ytm+yt) integrations
+
+      if(feats.disableDarkReaderSites !== "none")
+        ftInit.push(["disableDarkReaderSites", disableDarkReader()]);
     }
 
     emitInterface("bytm:featureInitStarted");
@@ -264,7 +279,7 @@ async function onDomLoad() {
     ]);
 
     emitInterface("bytm:ready");
-    info(`Done initializing all ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
+    info(`Done initializing ${ftInit.length} features after ${Math.floor(Date.now() - initStartTs)}ms`);
 
     try {
       registerDevCommands();

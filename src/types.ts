@@ -349,6 +349,7 @@ export type FeatureCategory =
   | "behavior"
   | "input"
   | "lyrics"
+  | "integrations"
   | "general";
 
 type SelectOption = {
@@ -478,8 +479,6 @@ export interface FeatureConfig {
   hideCursorOnIdleDelay: number;
   /** Whether to fix various issues in the layout when HDR is supported and active */
   fixHdrIssues: boolean;
-  /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
-  disableDarkReaderSites: SiteSelectionOrNone;
   /** Whether to show the like/dislike ratio on the currently playing song */
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
@@ -569,6 +568,14 @@ export interface FeatureConfig {
   clearLyricsCache: undefined;
   // /** Whether to use advanced filtering when searching for lyrics (exact, exact-ish) */
   // advancedLyricsFilter: boolean;
+
+  //#region integrations
+  /** On which sites to disable Dark Reader - does nothing if the extension is not installed */
+  disableDarkReaderSites: SiteSelectionOrNone;
+  /** Whether to fix the styling of some elements from the SponsorBlock extension - does nothing if the extension is not installed */
+  sponsorBlockIntegration: boolean;
+  /** Whether to adjust styles so they look better when using the ThemeSong extension */
+  themeSongIntegration: boolean;
 
   //#region misc
   /** The locale to use for translations */
