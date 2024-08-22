@@ -100,9 +100,11 @@ This project is based on my extensive template for making a userscript with Type
 
 ### Attributions:
 This userscript depends on these runtime libraries:
+- [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
+- [compare-versions](https://npmjs.org/package/compare-versions)
 - [marked](https://npmjs.org/package/marked)
 - [nanoevents](https://npmjs.org/package/nanoevents)
-- [@sv443-network/userutils](https://github.com/Sv443-Network/UserUtils)
+- [tslib](https://npmjs.org/package/tslib)
   
 For development dependencies, please refer to `devDependencies` in [`package.json`](./package.json)
   
