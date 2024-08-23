@@ -7,7 +7,8 @@
   - Added an experimental feature to like songs and videos of certain channels (on both sites) automatically.  
     Since this feature is still experimental, to be able to turn it on, you first need to enable advanced mode in the settings.  
     The button to toggle auto-liking will only show up on channel pages until the next update. Please report any issues you encounter.
-- Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [ReturnYoutubeDislike](https://returnyoutubedislike.com/))
+  - Added the ability to show the approximate amount of likes and dislikes on the currently playing song (powered by [ReturnYoutubeDislike](https://returnyoutubedislike.com/))
+  - Added support for themes set by the [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong) extension
 - **Changes:**
   - Made song/video time remembering enabled by default on YT too
   - Made reset button in config menu a feature of type `button`
@@ -27,6 +28,7 @@
     - Placement of list/queue buttons
   - Removed broken feature "remove upgrade tab"
   - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
+  - Made all integration features configurable and gave them their own config category
 - **Fixes:**
   - Adjusted script to UI redesign of playlists
   - Fixed song list buttons disappearing when dragging the row around

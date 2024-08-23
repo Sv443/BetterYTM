@@ -184,6 +184,10 @@
     "unit_days-1": "day",
     "unit_days-n": "days",
 
+    "color_lightness_darker": "Darker",
+    "color_lightness_normal": "Normal",
+    "color_lightness_lighter": "Lighter",
+
     "plugin_validation_error_no_property": "No property '%1' with type '%2'",
     "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
     "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3",
@@ -290,6 +294,8 @@
     "feature_helptext_sponsorBlockIntegration": "If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
     "feature_desc_themeSongIntegration": "Fix some styling issues if the ThemeSong extension is installed",
     "feature_helptext_themeSongIntegration": "If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!",
+    "feature_desc_themeSongLightness": "How light the theme colors should be that are derived from the current ThemeSong theme",
+    "feature_helptext_themeSongLightness": "Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.",
 
     "feature_desc_locale": "Language",
     "feature_desc_localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",

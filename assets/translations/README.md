@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 287 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `203/287` (70.7%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `287` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `203/287` (70.7%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `203/287` (70.7%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `203/287` (70.7%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `203/287` (70.7%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `203/287` (70.7%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `203/287` (70.7%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 292 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `203/292` (69.5%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `292` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `203/292` (69.5%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -102,6 +102,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -125,6 +128,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -136,7 +141,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -193,6 +198,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -216,6 +224,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -227,7 +237,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -284,6 +294,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -307,6 +320,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -318,7 +333,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -375,6 +390,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -398,6 +416,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -409,7 +429,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -466,6 +486,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -489,6 +512,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -500,7 +525,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -557,6 +582,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -580,6 +608,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -591,7 +621,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 84 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 89 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -648,6 +678,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `vote_ratio_blue_gray` | `Blue and gray` |
 | `votes_format_short` | `Shortened` |
 | `votes_format_long` | `Full number` |
+| `color_lightness_darker` | `Darker` |
+| `color_lightness_normal` | `Normal` |
+| `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
@@ -671,6 +704,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
 | `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
 | `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
+| `feature_desc_themeSongLightness` | `How light the theme colors should be that are derived from the current ThemeSong theme` |
+| `feature_helptext_themeSongLightness` | `Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |

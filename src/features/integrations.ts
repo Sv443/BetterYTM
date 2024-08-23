@@ -41,3 +41,20 @@ export async function fixPlayerPageTheming() {
     error("Failed to fix BetterYTM player page theming:", err);
   }
 }
+
+/** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
+export async function setThemeSongLightness() {
+  try {
+    const cssVarName = (() => {
+      switch(getFeature("themeSongLightness")) {
+      case "darker": return "--ts-palette-darkmuted-hex";
+      case "normal": return "--ts-palette-muted-hex";
+      case "lighter": return "--ts-palette-lightmuted-hex";
+      };
+    })();
+    document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
+  }
+  catch(err) {
+    error("Failed to set ThemeSong integration color lightness:", err);
+  }
+}
