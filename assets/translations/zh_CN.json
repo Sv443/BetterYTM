@@ -124,8 +124,11 @@
 
     "unit_entries-1": "条记录",
     "unit_entries-n": "条记录",
+
     "unit_days-1": "天",
     "unit_days-n": "天",
+
+    "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'",
 
     "feature_category_layout": "布局",
     "feature_category_volume": "音量",
@@ -144,6 +147,15 @@
     "feature_desc_numKeysSkipToTime": "启用按数字键（0-9）跳转到视频中的特定时间",
     "feature_desc_fixSpacing": "修复布局中的间距问题",
     "feature_helptext_fixSpacing": "在用户界面中有各种位置的元素之间的间距不一致。此功能修复了这些问题。",
+    "feature_desc_thumbnailOverlayBehavior": "何时自动用最高分辨率的缩略图替换视频元素",
+    "feature_helptext_thumbnailOverlayBehavior": "此功能允许您在播放视频或歌曲时自动显示缩略图。\n这将不会节省任何带宽，因为视频仍将在后台加载和播放！",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "在媒体控件中添加一个按钮，以手动切换缩略图",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "这个按钮允许你手动开关缩略图。一旦开始播放新的视频或歌曲，就会恢复默认状态。点击时按住 shift 或按下鼠标中键，可在新标签页中打开最高质量的缩略图。",
+    "feature_desc_thumbnailOverlayShowIndicator": "在缩略图上显示一个指示器，表示它是活动的吗？",
+    "feature_desc_thumbnailOverlayImageFit": "如何将缩略图图像适配到视频元素上",
+    "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
+    "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
+    "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",
 
     "feature_desc_volumeSliderLabel": "在音量滑块旁边添加百分比标签",
     "feature_desc_volumeSliderSize": "音量滑块的宽度（像素）",
@@ -155,17 +167,6 @@
     "feature_desc_setInitialTabVolume": "打开网站时将音量级别设置为特定值",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "此功能与 \"音量级别在标签页之间共享\" 功能不兼容，将在使用共享音量功能时被忽略！",
     "feature_desc_initialTabVolumeLevel": "打开网站时将音量级别设置为的值",
-    "feature_desc_thumbnailOverlayBehavior": "何时自动用最高分辨率的缩略图替换视频元素",
-    "feature_helptext_thumbnailOverlayBehavior": "此功能允许您在播放视频或歌曲时自动显示缩略图。\n这将不会节省任何带宽，因为视频仍将在后台加载和播放！",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "在媒体控件中添加一个按钮，以手动切换缩略图",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "这个按钮允许你手动开关缩略图。一旦开始播放新的视频或歌曲，就会恢复默认状态。点击时按住 shift 或按下鼠标中键，可在新标签页中打开最高质量的缩略图。",
-    "feature_desc_thumbnailOverlayShowIndicator": "在缩略图上显示一个指示器，表示它是活动的吗？",
-    "feature_desc_thumbnailOverlayImageFit": "如何将缩略图图像适配到视频元素上",
-    "feature_desc_hideCursorOnIdle": "在视频上几秒钟不活动后隐藏光标",
-    "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
-    "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",
-    "feature_desc_disableDarkReaderSites": "在哪些网站上应该禁用 Dark Reader 扩展以修复布局问题？",
-
     "feature_desc_scrollToActiveSongBtn": "在队列中添加一个按钮，以滚动到当前播放的歌曲",
     "feature_desc_clearQueueBtn": "在当前播放的队列或播放列表上方添加一个按钮，以快速清除它",
 
@@ -207,6 +208,8 @@
     "feature_desc_advancedLyricsFilter": "实验性：启用歌词搜索的高级过滤",
     "feature_helptext_advancedLyricsFilter": "高级过滤包括多层过滤器，旨在使歌词查找更可靠。\n这些过滤器可能不适用于您的语言的歌曲，以及标题不太独特的歌曲和艺术家。\n警告：此功能仍处于实验阶段，可能实际上并不比默认歌词查找更好。确保确认更改此设置时出现的提示。",
 
+    "feature_desc_disableDarkReaderSites": "在哪些网站上应该禁用 Dark Reader 扩展以修复布局问题？",
+
     "feature_desc_locale": "语言",
     "feature_desc_localeFallback": "如果找不到翻译，请使用英语（如果您提供翻译，请禁用）。",
     "feature_desc_versionCheck": "检查更新",
@@ -217,8 +220,6 @@
     "feature_desc_logLevel": "更改扩展程序的日志级别",
     "feature_helptext_logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
     "feature_desc_advancedMode": "显示高级设置（重新加载菜单）",
-    "feature_helptext_advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。",
-
-    "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'"
+    "feature_helptext_advancedMode": "启用此功能后，菜单将重新加载并显示默认情况下隐藏的高级设置。\n如果您想更深入地定制脚本的行为并不在意过于拥挤的菜单，这将很有用。"
   }
 }

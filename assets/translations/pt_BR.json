@@ -124,8 +124,11 @@
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
+
     "unit_days-1": "dia",
     "unit_days-n": "dias",
+
+    "plugin_validation_error_no_property": "Nenhuma propriedade '%1' com o tipo '%2'",
 
     "feature_category_layout": "Layout",
     "feature_category_volume": "Volume",
@@ -144,6 +147,15 @@
     "feature_desc_numKeysSkipToTime": "Ative a capacidade de pular para um horário específico no vídeo pressionando uma tecla numérica (0-9)",
     "feature_desc_fixSpacing": "Corrigir problemas de espaçamento no layout",
     "feature_helptext_fixSpacing": "Há vários locais na interface do usuário onde o espaçamento entre os elementos é inconsistente. Este recurso corrige esses problemas.",
+    "feature_desc_thumbnailOverlayBehavior": "Quando substituir automaticamente o elemento de vídeo pela miniatura na maior resolução",
+    "feature_helptext_thumbnailOverlayBehavior": "Se você optar por substituir o vídeo pelo thumbnail, você pode escolher quando isso deve acontecer.\nSe você escolher \"sempre\", o vídeo será substituído pelo thumbnail assim que ele for carregado.\nSe você escolher \"apenas para vídeos\", o vídeo será substituído pelo thumbnail apenas se o elemento de vídeo for um vídeo e não uma música.\nSe você escolher \"apenas para músicas\", o vídeo será substituído pelo thumbnail apenas se o elemento de vídeo for uma música e não um vídeo.",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "Adicione um botão aos controles de mídia para alternar manualmente a miniatura",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botão permitirá que você alterne manualmente a miniatura ligada e desligada. Isso não é afetado se a sobreposição estiver definida como \"nunca mostrada\".\nAssim que um novo vídeo ou música começar a ser reproduzido, o estado padrão será restaurado.\nMantenha pressionada a tecla shift enquanto clica ou pressione o botão do meio do mouse para abrir a miniatura da mais alta qualidade em uma nova guia.",
+    "feature_desc_thumbnailOverlayShowIndicator": "Mostrar um indicador na miniatura enquanto ela estiver ativa?",
+    "feature_desc_thumbnailOverlayImageFit": "Como ajustar a miniatura sobre o elemento de vídeo",
+    "feature_desc_hideCursorOnIdle": "Ocultar o cursor após alguns segundos de inatividade sobre o vídeo",
+    "feature_desc_hideCursorOnIdleDelay": "Quantos segundos de inatividade antes de ocultar o cursor?",
+    "feature_desc_fixHdrIssues": "Corrigir problemas de renderização ao usar um GPU e monitor compatíveis com HDR",
 
     "feature_desc_volumeSliderLabel": "Adicionar um rótulo de porcentagem ao lado do controle de volume",
     "feature_desc_volumeSliderSize": "A largura do controle deslizante de volume em pixels",
@@ -155,17 +167,6 @@
     "feature_desc_setInitialTabVolume": "Definir o nível de volume para um valor específico ao abrir o site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Este recurso é incompatível com o recurso \"Volume compartilhado entre guias\" e será ignorado ao usar o recurso de volume compartilhado!",
     "feature_desc_initialTabVolumeLevel": "O valor para definir o nível de volume ao abrir o site",
-    "feature_desc_thumbnailOverlayBehavior": "Quando substituir automaticamente o elemento de vídeo pela miniatura na maior resolução",
-    "feature_helptext_thumbnailOverlayBehavior": "Se você optar por substituir o vídeo pelo thumbnail, você pode escolher quando isso deve acontecer.\nSe você escolher \"sempre\", o vídeo será substituído pelo thumbnail assim que ele for carregado.\nSe você escolher \"apenas para vídeos\", o vídeo será substituído pelo thumbnail apenas se o elemento de vídeo for um vídeo e não uma música.\nSe você escolher \"apenas para músicas\", o vídeo será substituído pelo thumbnail apenas se o elemento de vídeo for uma música e não um vídeo.",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "Adicione um botão aos controles de mídia para alternar manualmente a miniatura",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botão permitirá que você alterne manualmente a miniatura ligada e desligada. Isso não é afetado se a sobreposição estiver definida como \"nunca mostrada\".\nAssim que um novo vídeo ou música começar a ser reproduzido, o estado padrão será restaurado.\nMantenha pressionada a tecla shift enquanto clica ou pressione o botão do meio do mouse para abrir a miniatura da mais alta qualidade em uma nova guia.",
-    "feature_desc_thumbnailOverlayShowIndicator": "Mostrar um indicador na miniatura enquanto ela estiver ativa?",
-    "feature_desc_thumbnailOverlayImageFit": "Como ajustar a miniatura sobre o elemento de vídeo",
-    "feature_desc_hideCursorOnIdle": "Ocultar o cursor após alguns segundos de inatividade sobre o vídeo",
-    "feature_desc_hideCursorOnIdleDelay": "Quantos segundos de inatividade antes de ocultar o cursor?",
-    "feature_desc_fixHdrIssues": "Corrigir problemas de renderização ao usar um GPU e monitor compatíveis com HDR",
-    "feature_desc_disableDarkReaderSites": "Em quais sites o Dark Reader deve ser desativado para corrigir problemas de layout?",
-
     "feature_desc_scrollToActiveSongBtn": "Adicione um botão acima da fila para rolar para a música que está tocando atualmente",
     "feature_desc_clearQueueBtn": "Adicione um botão acima da fila de reprodução ou lista de reprodução atual para limpar rapidamente",
 
@@ -207,6 +208,8 @@
     "feature_desc_advancedLyricsFilter": "Experimental: Ativar filtragem avançada para a pesquisa de letras",
     "feature_helptext_advancedLyricsFilter": "A filtragem avançada inclui várias camadas de filtros que visam tornar as pesquisas de letras mais confiáveis.\nEsses filtros podem não funcionar bem para músicas em seu idioma e músicas e artistas com títulos menos únicos em geral.\nAviso: Este recurso ainda é experimental e pode não funcionar melhor do que a pesquisa de letras padrão. Certifique-se de confirmar o prompt que aparece se você alterou esta configuração.",
 
+    "feature_desc_disableDarkReaderSites": "Em quais sites o Dark Reader deve ser desativado para corrigir problemas de layout?",
+
     "feature_desc_locale": "Idioma",
     "feature_desc_localeFallback": "Utilizar o inglês para traduções em falta (desativar se contribuir para traduções)",
     "feature_desc_versionCheck": "Verificar atualizações",
@@ -217,8 +220,6 @@
     "feature_desc_logLevel": "Quanta informação registrar no console",
     "feature_helptext_logLevel": "Alterar isso é realmente necessário apenas para fins de depuração como resultado de experimentar um problema.\nSe você tiver um, você pode aumentar o nível de log aqui, abrir o console JavaScript do seu navegador (geralmente com Ctrl + Shift + K) e anexar capturas de tela desse log em um problema do GitHub.",
     "feature_desc_advancedMode": "Mostrar configurações avançadas (isso recarrega o menu)",
-    "feature_helptext_advancedMode": "Depois de ativar isso, o menu recarregará e mostrará configurações avançadas que estão ocultas por padrão.\nIsso é útil se você deseja personalizar mais profundamente o comportamento do script e não se importa com um menu lotado.",
-
-    "plugin_validation_error_no_property": "Nenhuma propriedade '%1' com o tipo '%2'"
+    "feature_helptext_advancedMode": "Depois de ativar isso, o menu recarregará e mostrará configurações avançadas que estão ocultas por padrão.\nIsso é útil se você deseja personalizar mais profundamente o comportamento do script e não se importa com um menu lotado."
   }
 }
