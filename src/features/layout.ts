@@ -380,7 +380,7 @@ export async function initAboveQueueBtns() {
 
         activeItem.scrollIntoView({
           behavior: evt.shiftKey ? "instant" : "smooth",
-          block: evt.ctrlKey || evt.altKey ? "end" : "center",
+          block: evt.ctrlKey || evt.altKey ? "start" : "center",
           inline: "center",
         });
       },
