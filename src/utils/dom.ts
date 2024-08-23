@@ -18,6 +18,8 @@ export function getVideoElement() {
   return document.querySelector<HTMLVideoElement>(getVideoSelector());
 }
 
+let vidElemReady = false;
+
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).  
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.  
@@ -26,23 +28,32 @@ export function getVideoElement() {
  */
 export function getVideoTime(precision = 2) {
   return new Promise<number | null>(async (res) => {
-    await waitVideoElementReady();
+    if(!vidElemReady) {
+      await waitVideoElementReady();
+      vidElemReady = true;
+    }
+
+    const resolveWithVal = (time: number | null) => res(
+      time && !isNaN(time)
+        ? Number(precision <= 0 ? Math.floor(time) : time.toFixed(precision))
+        : null
+    );
 
     try {
       if(getDomain() === "ytm") {
         const vidElem = getVideoElement();
         if(vidElem)
-          return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
+          return resolveWithVal(vidElem.currentTime);
 
         addSelectorListener<HTMLProgressElement>("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
           listener: (pbEl) =>
-            res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
+            resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
         });
       }
       else if(getDomain() === "yt") {
         const vidElem = getVideoElement();
         if(vidElem)
-          return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
+          return resolveWithVal(vidElem.currentTime);
 
         // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
         ytForceShowVideoTime();
@@ -62,12 +73,12 @@ export function getVideoTime(precision = 2) {
           });
 
           if(videoTime >= 0 && !isNaN(videoTime)) {
-            res(Math.floor(videoTime));
+            resolveWithVal(Math.floor(videoTime));
             mut.disconnect();
           }
           else
             setTimeout(() => {
-              res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
+              resolveWithVal(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
               mut.disconnect();
             }, 500);
         };

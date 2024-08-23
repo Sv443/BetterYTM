@@ -448,7 +448,7 @@ export const featInfo = {
   rememberSongTimeMinPlayTime: {
     type: "slider",
     category: "behavior",
-    min: 0.5,
+    min: 3,
     max: 30,
     step: 0.5,
     default: 10,

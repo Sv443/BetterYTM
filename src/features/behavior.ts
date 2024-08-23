@@ -163,36 +163,30 @@ let remVidCheckTimeout: ReturnType<typeof setTimeout> | undefined;
 /** Only call once as this calls itself after a timeout! - Updates the currently playing video's entry in GM storage */
 async function remTimeStartUpdateLoop() {
   if(location.pathname.startsWith("/watch")) {
+    const watchID = getWatchId();
     const songTime = await getVideoTime() ?? 0;
 
-    if(songTime === lastSongTime)
-      return;
-    lastSongTime = songTime;
+    if(watchID && songTime !== lastSongTime) {
+      lastSongTime = songTime;
 
-    // TODO:FIXME: stops looping after a while
-    dbg("># looped, different songTime:", songTime);
+      const paused = getVideoElement()?.paused ?? false;
 
-    const watchID = getWatchId();
-    if(!watchID)
-      return;
-
-    const paused = getVideoElement()?.paused ?? false;
-
-    // don't immediately update to reduce race conditions and only update if the video is playing
-    // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-    if(songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-      const entry = {
-        watchID,
-        songTime,
-        updateTimestamp: Date.now(),
-      };
-      await remTimeUpsertEntry(entry);
-    }
-    // if the song is rewound to the beginning, update the entry accordingly
-    else if(!paused) {
-      const entry = remVidsCache.find(entry => entry.watchID === watchID);
-      if(entry && songTime <= entry.songTime)
-        await remTimeUpsertEntry({ ...entry, songTime, updateTimestamp: Date.now() });
+      // don't immediately update to reduce race conditions and only update if the video is playing
+      // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+      if(songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+        const entry = {
+          watchID,
+          songTime,
+          updateTimestamp: Date.now(),
+        };
+        await remTimeUpsertEntry(entry);
+      }
+      // if the song is rewound to the beginning, update the entry accordingly
+      else if(!paused) {
+        const entry = remVidsCache.find(entry => entry.watchID === watchID);
+        if(entry && songTime <= entry.songTime)
+          await remTimeUpsertEntry({ ...entry, songTime, updateTimestamp: Date.now() });
+      }
     }
   }
 
