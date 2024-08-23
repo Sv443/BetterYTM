@@ -17,14 +17,14 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 292 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`de_DE`](./de_DE.json) | `202/292` (69.2%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `292` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `203/292` (69.5%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `203/292` (69.5%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `203/292` (69.5%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `203/292` (69.5%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `203/292` (69.5%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `203/292` (69.5%) | ─ |
+| ‼️ | [`es_ES`](./es_ES.json) | `202/292` (69.2%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `202/292` (69.2%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `202/292` (69.2%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `202/292` (69.2%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `202/292` (69.2%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `202/292` (69.2%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -107,6 +107,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -141,7 +142,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -203,6 +204,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -237,7 +239,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -299,6 +301,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -333,7 +336,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -395,6 +398,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -429,7 +433,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -491,6 +495,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -525,7 +530,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -587,6 +592,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -621,7 +627,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 89 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 90 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -683,6 +689,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |

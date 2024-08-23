@@ -160,7 +160,6 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "थंबनेल ओवरले के ऊपर एक बटन दिखाएं जो इसे त्वरित रूप से बंद करता है",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "यह बटन आपको थंबनेल को मैन्युअल रूप से चालू और बंद करने की अनुमति देगा। यह इस पर प्रभावित नहीं होगा यदि ओवरले को \"कभी नहीं दिखाया\" पर सेट किया गया है।\nएक नया वीडियो या गीत चलने पर, डिफ़ॉल्ट स्थिति पुनः स्थापित हो जाएगी।\nएक नई टैब में उच्चतम गुणवत्ता का थंबनेल खोलने के लिए एक नया टैब खोलने के लिए शिफ्ट दबाएं या मिडल माउस बटन दबाएं।",
     "feature_desc_thumbnailOverlayShowIndicator": "थंबनेल ओवरले के ऊपर एक संकेतक दिखाएं जब यह सक्रिय हो",
-    "feature_desc_thumbnailOverlayIndicatorOpacity": "नीचे दाएं कोने में संकेतक की अस्पष्टता",
     "feature_desc_thumbnailOverlayImageFit": "थंबनेल छवि को वीडियो तत्व पर कैसे फिट करें",
     "feature_desc_hideCursorOnIdle": "वीडियो पर निष्क्रियता के कुछ सेकंड बाद कर्सर छुपाएं",
     "feature_desc_hideCursorOnIdleDelay": "कितने सेकंड निष्क्रियता के बाद कर्सर छुपाना चाहिए?",

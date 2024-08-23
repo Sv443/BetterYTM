@@ -214,7 +214,7 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Add a button to the media controls to manually toggle the thumbnail",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "This button will allow you to manually toggle the thumbnail on and off. This is not affected if the thumbnail replacement option is set to \"never\".\nOnce a new video or song starts playing, the default state will be restored.\nHold shift while clicking or press the middle mouse button to open the thumbnail of the highest quality in a new tab.",
     "feature_desc_thumbnailOverlayShowIndicator": "Show an indicator in the bottom right corner of the thumbnail while it's active?",
-    "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacity of the indicator in the bottom right corner",
+    "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacity of the thumbnail indicator",
     "feature_desc_thumbnailOverlayImageFit": "How to fit the thumbnail image over the video element",
     "feature_desc_hideCursorOnIdle": "Hide the cursor after a few seconds of inactivity over the video",
     "feature_desc_hideCursorOnIdleDelay": "How many seconds of inactivity before the cursor should be hidden?",
