@@ -160,7 +160,6 @@
     "feature_desc_thumbnailOverlayToggleBtnShown": "Adicione um botão aos controles de mídia para alternar manualmente a miniatura",
     "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botão permitirá que você alterne manualmente a miniatura ligada e desligada. Isso não é afetado se a sobreposição estiver definida como \"nunca mostrada\".\nAssim que um novo vídeo ou música começar a ser reproduzido, o estado padrão será restaurado.\nMantenha pressionada a tecla shift enquanto clica ou pressione o botão do meio do mouse para abrir a miniatura da mais alta qualidade em uma nova guia.",
     "feature_desc_thumbnailOverlayShowIndicator": "Mostrar um indicador na miniatura enquanto ela estiver ativa?",
-    "feature_desc_thumbnailOverlayIndicatorOpacity": "Opacidade do indicador no canto inferior direito",
     "feature_desc_thumbnailOverlayImageFit": "Como ajustar a miniatura sobre o elemento de vídeo",
     "feature_desc_hideCursorOnIdle": "Ocultar o cursor após alguns segundos de inatividade sobre o vídeo",
     "feature_desc_hideCursorOnIdleDelay": "Quantos segundos de inatividade antes de ocultar o cursor?",
