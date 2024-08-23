@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,54 +33,54 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/98652461/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/80644f01/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -131,7 +131,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "98652461";
+const buildNumberRaw = "80644f01";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -3346,7 +3346,7 @@ async function initAboveQueueBtns() {
                     return;
                 activeItem.scrollIntoView({
                     behavior: evt.shiftKey ? "instant" : "smooth",
-                    block: evt.ctrlKey || evt.altKey ? "end" : "center",
+                    block: evt.ctrlKey || evt.altKey ? "start" : "center",
                     inline: "center",
                 });
             },
@@ -3838,30 +3838,27 @@ let remVidCheckTimeout;
 async function remTimeStartUpdateLoop() {
     var _a, _b, _c;
     if (location.pathname.startsWith("/watch")) {
-        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
-        if (songTime === lastSongTime)
-            return;
-        lastSongTime = songTime;
-        dbg("># looped, different songTime:", songTime);
         const watchID = getWatchId();
-        if (!watchID)
-            return;
-        const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
-        // don't immediately update to reduce race conditions and only update if the video is playing
-        // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
-        if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
-            const entry = {
-                watchID,
-                songTime,
-                updateTimestamp: Date.now(),
-            };
-            await remTimeUpsertEntry(entry);
-        }
-        // if the song is rewound to the beginning, update the entry accordingly
-        else if (!paused) {
-            const entry = remVidsCache.find(entry => entry.watchID === watchID);
-            if (entry && songTime <= entry.songTime)
-                await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+        const songTime = (_a = await getVideoTime()) !== null && _a !== void 0 ? _a : 0;
+        if (watchID && songTime !== lastSongTime) {
+            lastSongTime = songTime;
+            const paused = (_c = (_b = getVideoElement()) === null || _b === void 0 ? void 0 : _b.paused) !== null && _c !== void 0 ? _c : false;
+            // don't immediately update to reduce race conditions and only update if the video is playing
+            // also it just sounds better if the song starts at the beginning if only a couple seconds have passed
+            if (songTime > getFeature("rememberSongTimeMinPlayTime") && !paused) {
+                const entry = {
+                    watchID,
+                    songTime,
+                    updateTimestamp: Date.now(),
+                };
+                await remTimeUpsertEntry(entry);
+            }
+            // if the song is rewound to the beginning, update the entry accordingly
+            else if (!paused) {
+                const entry = remVidsCache.find(entry => entry.watchID === watchID);
+                if (entry && songTime <= entry.songTime)
+                    await remTimeUpsertEntry(Object.assign(Object.assign({}, entry), { songTime, updateTimestamp: Date.now() }));
+            }
         }
     }
     const expiredEntries = remVidsCache.filter(entry => Date.now() - entry.updateTimestamp > getFeature("rememberSongTimeDuration") * 1000);
@@ -5668,7 +5665,7 @@ const featInfo = {
     rememberSongTimeMinPlayTime: {
         type: "slider",
         category: "behavior",
-        min: 0.5,
+        min: 3,
         max: 30,
         step: 0.5,
         default: 10,
@@ -6627,6 +6624,7 @@ const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : 
 function getVideoElement() {
     return document.querySelector(getVideoSelector());
 }
+let vidElemReady = false;
 /**
  * Returns the current video time in seconds, with the given {@linkcode precision} (2 decimal digits by default).
  * Rounds down if the precision is set to 0. The maximum average available precision on YTM is 6.
@@ -6635,20 +6633,26 @@ function getVideoElement() {
  */
 function getVideoTime(precision = 2) {
     return new Promise(async (res) => {
-        await waitVideoElementReady();
+        if (!vidElemReady) {
+            await waitVideoElementReady();
+            vidElemReady = true;
+        }
+        const resolveWithVal = (time) => res(time && !isNaN(time)
+            ? Number(precision <= 0 ? Math.floor(time) : time.toFixed(precision))
+            : null);
         try {
             if (getDomain() === "ytm") {
                 const vidElem = getVideoElement();
                 if (vidElem)
-                    return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
+                    return resolveWithVal(vidElem.currentTime);
                 addSelectorListener("playerBar", "tp-yt-paper-slider#progress-bar tp-yt-paper-progress#sliderBar", {
-                    listener: (pbEl) => res(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
+                    listener: (pbEl) => resolveWithVal(!isNaN(Number(pbEl.value)) ? Math.floor(Number(pbEl.value)) : null)
                 });
             }
             else if (getDomain() === "yt") {
                 const vidElem = getVideoElement();
                 if (vidElem)
-                    return res(Number(precision <= 0 ? Math.floor(vidElem.currentTime) : vidElem.currentTime.toFixed(precision)));
+                    return resolveWithVal(vidElem.currentTime);
                 // YT doesn't update the progress bar when it's hidden (contrary to YTM which never hides it)
                 ytForceShowVideoTime();
                 const pbSelector = ".ytp-chrome-bottom div.ytp-progress-bar[role=\"slider\"]";
@@ -6663,12 +6667,12 @@ function getVideoTime(precision = 2) {
                         attributeFilter: ["aria-valuenow"],
                     });
                     if (videoTime >= 0 && !isNaN(videoTime)) {
-                        res(Math.floor(videoTime));
+                        resolveWithVal(Math.floor(videoTime));
                         mut.disconnect();
                     }
                     else
                         setTimeout(() => {
-                            res(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
+                            resolveWithVal(videoTime >= 0 && !isNaN(videoTime) ? Math.floor(videoTime) : null);
                             mut.disconnect();
                         }, 500);
                 };
