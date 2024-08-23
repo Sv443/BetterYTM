@@ -368,12 +368,15 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
   display: none;
   background-color: #030303;
   z-index: 0;
+  border-radius: var(--ts-songimg-border-radius, initial);
 }
 
 #bytm-thumbnail-overlay-img {
   position: relative;
   width: 100%;
   height: 100%;
+  border-radius: inherit;
+  box-shadow: var(--ts-songimg-box-shadow, initial);
 }
 
 #bytm-thumbnail-overlay-indicator {

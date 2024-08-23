@@ -169,6 +169,7 @@ async function remTimeStartUpdateLoop() {
       return;
     lastSongTime = songTime;
 
+    // TODO:FIXME: stops looping after a while
     dbg("># looped, different songTime:", songTime);
 
     const watchID = getWatchId();

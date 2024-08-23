@@ -2,6 +2,7 @@ import { getDomain } from "../utils/misc.js";
 import { addStyleFromResource } from "../utils/dom.js";
 import { error, info } from "../utils/logging.js";
 import { getFeature } from "../config.js";
+import "./integrations.css";
 
 //#region Dark Reader
 
