@@ -22,7 +22,7 @@
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0%,
-    var(--ts-palette-darkmuted-hex, #1d1d1d) 15%
+    var(--bytm-themesong-bg-accent-col, #1d1d1d) 15%
   );
 }
 

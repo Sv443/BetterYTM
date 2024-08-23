@@ -2,7 +2,7 @@ import { getLocale, getPreferredLocale, getResourceUrl, resourceAsString, t, tp 
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
-import { FeatureInfo, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
+import { FeatureInfo, type ColorLightness, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 import { getAutoLikeDialog } from "../dialogs/index.js";
@@ -95,6 +95,11 @@ const options = {
       }];
     }, [] as SelectOption[])
     .sort((a, b) => a.label.localeCompare(b.label)),
+  colorLightness: (): SelectOption<ColorLightness>[] => [
+    { value: "darker", label: t("color_lightness_darker") },
+    { value: "normal", label: t("color_lightness_normal") },
+    { value: "lighter", label: t("color_lightness_lighter") },
+  ],
 };
 
 /** Renders a long number with a thousands separator */
@@ -652,6 +657,13 @@ export const featInfo = {
     type: "toggle",
     category: "integrations",
     default: false,
+    textAdornment: adornments.reloadRequired,
+  },
+  themeSongLightness: {
+    type: "select",
+    category: "integrations",
+    options: options.colorLightness,
+    default: "darker",
     textAdornment: adornments.reloadRequired,
   },
 

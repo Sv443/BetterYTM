@@ -99,6 +99,8 @@ export type VideoVotesObj = {
 
 export type NumberNotation = "short" | "long";
 
+export type ColorLightness = "darker" | "normal" | "lighter";
+
 //#region global
 
 /** All properties of the `unsafeWindow.BYTM` object (also called "plugin interface") */
@@ -576,6 +578,8 @@ export interface FeatureConfig {
   sponsorBlockIntegration: boolean;
   /** Whether to adjust styles so they look better when using the ThemeSong extension */
   themeSongIntegration: boolean;
+  /** Lightness of the color used when ThemeSong is enabled */
+  themeSongLightness: ColorLightness;
 
   //#region misc
   /** The locale to use for translations */
