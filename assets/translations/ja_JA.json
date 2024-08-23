@@ -124,8 +124,11 @@
 
     "unit_entries-1": "項目",
     "unit_entries-n": "項目",
+
     "unit_days-1": "日",
     "unit_days-n": "日",
+
+    "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません",
 
     "feature_category_layout": "レイアウト",
     "feature_category_volume": "音量",
@@ -144,6 +147,15 @@
     "feature_desc_numKeysSkipToTime": "数字キー (0-9) を押して特定の時間にスキップする",
     "feature_desc_fixSpacing": "レイアウトのスペーシング問題を修正する",
     "feature_helptext_fixSpacing": "ユーザーインターフェイスには、要素間のスペーシングが一貫していない場所がいくつかあります。この機能はそれらの問題を修正します。",
+    "feature_desc_thumbnailOverlayBehavior": "最高解像度のサムネイルでビデオ要素を自動的に置き換えるタイミング",
+    "feature_helptext_thumbnailOverlayBehavior": "この機能を使用すると、ビデオ要素が自動的にサムネイルで置き換えられます。これにより、ビデオの読み込みが遅くなり、帯域幅が節約されます。\nサムネイルをクリックしてビデオを再生することもできます。",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "サムネイルオーバーレイを手動で切り替えるボタンを追加する",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "このボタンを押すと、サムネイルのオンとオフを手動で切り替えることができます\n新しいビデオや曲の再生が始まると、デフォルトの状態に戻ります。シフトを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
+    "feature_desc_thumbnailOverlayShowIndicator": "サムネイルがアクティブな間、サムネイルの右下隅にインジケータを表示する",
+    "feature_desc_thumbnailOverlayImageFit": "サムネイル画像をビデオ要素に合わせる方法",
+    "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
+    "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
+    "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
 
     "feature_desc_volumeSliderLabel": "音量スライダーの横にパーセンテージラベルを追加する",
     "feature_desc_volumeSliderSize": "音量スライダーの幅（ピクセル単位）",
@@ -155,17 +167,6 @@
     "feature_desc_setInitialTabVolume": "サイトを開いたときに音量レベルを特定の値に設定する",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "この機能は「タブ間で音量を共有する」機能と互換性がなく、共有音量機能を使用している間は無視されます！",
     "feature_desc_initialTabVolumeLevel": "サイトを開いたときに音量レベルを設定する値",
-    "feature_desc_thumbnailOverlayBehavior": "最高解像度のサムネイルでビデオ要素を自動的に置き換えるタイミング",
-    "feature_helptext_thumbnailOverlayBehavior": "この機能を使用すると、ビデオ要素が自動的にサムネイルで置き換えられます。これにより、ビデオの読み込みが遅くなり、帯域幅が節約されます。\nサムネイルをクリックしてビデオを再生することもできます。",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "サムネイルオーバーレイを手動で切り替えるボタンを追加する",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "このボタンを押すと、サムネイルのオンとオフを手動で切り替えることができます\n新しいビデオや曲の再生が始まると、デフォルトの状態に戻ります。シフトを押しながらクリックするか、マウスの中ボタンを押すと、最高画質のサムネイルが新しいタブで開きます。",
-    "feature_desc_thumbnailOverlayShowIndicator": "サムネイルがアクティブな間、サムネイルの右下隅にインジケータを表示する",
-    "feature_desc_thumbnailOverlayImageFit": "サムネイル画像をビデオ要素に合わせる方法",
-    "feature_desc_hideCursorOnIdle": "ビデオの上で数秒間アクティビティがないとカーソルを非表示にする",
-    "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
-    "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
-    "feature_desc_disableDarkReaderSites": "レイアウト問題を修正するために Dark Reader 拡張機能を無効にするサイト",
-
     "feature_desc_scrollToActiveSongBtn": "現在再生中の曲にスクロールするボタンをキューの上に追加する",
     "feature_desc_clearQueueBtn": "現在再生中のキューまたはプレイリストの上にボタンを追加して、すばやくクリアする",
 
@@ -207,6 +208,8 @@
     "feature_desc_advancedLyricsFilter": "実験的: 歌詞検索のための高度なフィルタリングを有効にする",
     "feature_helptext_advancedLyricsFilter": "高度なフィルタリングには、歌詞検索をより信頼性の高いものにするための複数のフィルタのレイヤが含まれています。\nこれらのフィルタは、あなたの言語の曲や、一般的にタイトルが一意でない曲やアーティストにはうまく機能しないかもしれません。\n警告: この機能はまだ実験的であり、デフォルトの歌詞検索よりも実際に優れたパフォーマンスを発揮しないかもしれません。この設定を変更した場合は、表示されるプロンプトを確認してください。",
 
+    "feature_desc_disableDarkReaderSites": "レイアウト問題を修正するために Dark Reader 拡張機能を無効にするサイト",
+
     "feature_desc_locale": "言語",
     "feature_desc_localeFallback": "翻訳が欠落している場合に英語をフォールバック言語として使用する（翻訳を提供している場合は無効にする）",
     "feature_desc_versionCheck": "バージョンチェック",
@@ -217,8 +220,6 @@
     "feature_desc_logLevel": "ログレベル",
     "feature_helptext_logLevel": "これを変更するのは、問題が発生した結果としてデバッグ目的でのみ必要です。\n問題が発生した場合にのみ、ここでログレベルを増やし、ブラウザの JavaScript コンソールを開いて（通常は Ctrl + Shift + K）そのログのスクリーンショットを GitHub の課題に添付してください。",
     "feature_desc_advancedMode": "詳細設定を表示する（メニューを再読み込み）",
-    "feature_helptext_advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。",
-
-    "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません"
+    "feature_helptext_advancedMode": "これを有効にすると、メニューが再読み込まれ、デフォルトで非表示になっている詳細設定が表示されます。\nこれは、スクリプトの動作をより深くカスタマイズしたい場合に便利です。メニューが過密になっていることを気にしない場合に役立ちます。"
   }
 }

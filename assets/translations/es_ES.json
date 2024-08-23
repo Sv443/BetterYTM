@@ -124,8 +124,11 @@
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
+
     "unit_days-1": "día",
     "unit_days-n": "días",
+
+    "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'",
 
     "feature_category_layout": "Diseño",
     "feature_category_volume": "Volumen",
@@ -144,6 +147,15 @@
     "feature_desc_numKeysSkipToTime": "Habilitar el salto a un momento específico en el video presionando una tecla numérica (0-9)",
     "feature_desc_fixSpacing": "Solucionar problemas de espaciado en el diseño",
     "feature_helptext_fixSpacing": "Hay varios lugares en la interfaz de usuario donde el espaciado entre elementos es inconsistente. Esta función soluciona esos problemas.",
+    "feature_desc_thumbnailOverlayBehavior": "Cuándo reemplazar automáticamente el elemento de video con su miniatura en la mayor resolución",
+    "feature_helptext_thumbnailOverlayBehavior": "La miniatura se mostrará sobre el video o la canción que se está reproduciendo actualmente.\n¡Esto no ahorrará ancho de banda ya que el video seguirá cargándose y reproduciéndose en segundo plano!",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "Agregue un botón a los controles multimedia para mostrar u ocultar manualmente la miniatura",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botón le permitirá alternar manualmente la miniatura.\nEsto no se verá afectado si la superposición está configurada en \"nunca se muestra\".\nUna vez que comienza a reproducirse un nuevo video o canción, el estado predeterminado se restaurará.\nMantenga presionada la tecla Mayús mientras hace clic o presione el botón central del mouse para abrir la miniatura de mayor calidad en una nueva pestaña.",
+    "feature_desc_thumbnailOverlayShowIndicator": "Mostrar un indicador en la esquina inferior derecha de la miniatura mientras está activo",
+    "feature_desc_thumbnailOverlayImageFit": "Cómo ajustar la imagen de la miniatura sobre el elemento de video",
+    "feature_desc_hideCursorOnIdle": "Ocultar el cursor después de unos segundos de inactividad sobre el video",
+    "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
+    "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
 
     "feature_desc_volumeSliderLabel": "Agregue una etiqueta de porcentaje junto al control deslizante de volumen",
     "feature_desc_volumeSliderSize": "El ancho del control deslizante de volumen en píxeles",
@@ -155,17 +167,6 @@
     "feature_desc_setInitialTabVolume": "Establece el nivel de volumen en un valor específico una vez al abrir el sitio",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Esta función es incompatible con la función \"Volumen compartido entre pestañas\" y se ignorará mientras se use la función de volumen compartido!",
     "feature_desc_initialTabVolumeLevel": "El valor para establecer el nivel de volumen al abrir el sitio",
-    "feature_desc_thumbnailOverlayBehavior": "Cuándo reemplazar automáticamente el elemento de video con su miniatura en la mayor resolución",
-    "feature_helptext_thumbnailOverlayBehavior": "La miniatura se mostrará sobre el video o la canción que se está reproduciendo actualmente.\n¡Esto no ahorrará ancho de banda ya que el video seguirá cargándose y reproduciéndose en segundo plano!",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "Agregue un botón a los controles multimedia para mostrar u ocultar manualmente la miniatura",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "Este botón le permitirá alternar manualmente la miniatura.\nEsto no se verá afectado si la superposición está configurada en \"nunca se muestra\".\nUna vez que comienza a reproducirse un nuevo video o canción, el estado predeterminado se restaurará.\nMantenga presionada la tecla Mayús mientras hace clic o presione el botón central del mouse para abrir la miniatura de mayor calidad en una nueva pestaña.",
-    "feature_desc_thumbnailOverlayShowIndicator": "Mostrar un indicador en la esquina inferior derecha de la miniatura mientras está activo",
-    "feature_desc_thumbnailOverlayImageFit": "Cómo ajustar la imagen de la miniatura sobre el elemento de video",
-    "feature_desc_hideCursorOnIdle": "Ocultar el cursor después de unos segundos de inactividad sobre el video",
-    "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
-    "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
-    "feature_desc_disableDarkReaderSites": "En qué sitios debería deshabilitarse la extensión Dark Reader para corregir problemas de diseño",
-
     "feature_desc_scrollToActiveSongBtn": "Agregue un botón para desplazarse hasta la canción que se está reproduciendo actualmente",
     "feature_desc_clearQueueBtn": "Agregue un botón para borrar rápidamente la cola de reproducción o la lista de reproducción actual",
 
@@ -207,6 +208,8 @@
     "feature_desc_advancedLyricsFilter": "Experimental: Habilitar el filtrado avanzado para la búsqueda de letras",
     "feature_helptext_advancedLyricsFilter": "El filtrado avanzado incluye múltiples capas de filtros que tienen como objetivo hacer que las búsquedas de letras sean más confiables.\nEstos filtros pueden no funcionar bien para canciones en su idioma y canciones y artistas con títulos menos únicos en general.\nAdvertencia: esta función todavía es experimental y es posible que no funcione mejor que la búsqueda de letras predeterminada. Asegúrese de confirmar el mensaje que aparece si cambió esta configuración.",
 
+    "feature_desc_disableDarkReaderSites": "En qué sitios debería deshabilitarse la extensión Dark Reader para corregir problemas de diseño",
+
     "feature_desc_locale": "Idioma",
     "feature_desc_localeFallback": "Utilizar el inglés para las traducciones que faltan (desactivar si contribuye a las traducciones)",
     "feature_desc_versionCheck": "Compruebe si hay actualizaciones",
@@ -217,8 +220,6 @@
     "feature_desc_logLevel": "Cuánta información registrar en la consola",
     "feature_helptext_logLevel": "Cambiar esto solo es necesario para fines de depuración como resultado de experimentar un problema.\nSi tiene uno, puede aumentar el nivel de registro aquí, abrir la consola de JavaScript de su navegador (generalmente con Ctrl + Shift + K) y adjuntar capturas de pantalla de ese registro en un problema de GitHub.",
     "feature_desc_advancedMode": "Mostrar configuración avanzada (recarga el menú)",
-    "feature_helptext_advancedMode": "Después de habilitar esto, el menú se recargará y mostrará configuraciones avanzadas que están ocultas de forma predeterminada.\nEsto es útil si desea personalizar más profundamente el comportamiento del script y no le importa un menú abarrotado.",
-
-    "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'"
+    "feature_helptext_advancedMode": "Después de habilitar esto, el menú se recargará y mostrará configuraciones avanzadas que están ocultas de forma predeterminada.\nEsto es útil si desea personalizar más profundamente el comportamiento del script y no le importa un menú abarrotado."
   }
 }

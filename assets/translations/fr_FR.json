@@ -124,8 +124,11 @@
 
     "unit_entries-1": "entrée",
     "unit_entries-n": "entrées",
+
     "unit_days-1": "jour",
     "unit_days-n": "jours",
+
+    "plugin_validation_error_no_property": "Aucune propriété '%1' avec le type '%2'",
 
     "feature_category_layout": "Disposition",
     "feature_category_volume": "Volume",
@@ -144,6 +147,15 @@
     "feature_desc_numKeysSkipToTime": "Activer le saut à un moment spécifique de la vidéo en appuyant sur une touche numérique (0-9)",
     "feature_desc_fixSpacing": "Corriger les problèmes d'espacement dans la mise en page",
     "feature_helptext_fixSpacing": "Il existe divers endroits dans l'interface utilisateur où l'espacement entre les éléments est incohérent. Cette fonctionnalité corrige ces problèmes.",
+    "feature_desc_thumbnailOverlayBehavior": "Quand remplacer automatiquement l'élément vidéo par sa vignette dans la plus haute résolution",
+    "feature_helptext_thumbnailOverlayBehavior": "Si vous choisissez de ne jamais afficher la vignette, vous pouvez toujours la voir en cliquant sur le bouton de superposition de vignette dans les contrôles multimédias.\nSi vous choisissez de toujours afficher la vignette, vous pouvez la masquer en cliquant sur le même bouton.",
+    "feature_desc_thumbnailOverlayToggleBtnShown": "Ajouter un bouton aux contrôles multimédias pour activer ou désactiver manuellement la vignette",
+    "feature_helptext_thumbnailOverlayToggleBtnShown": "Ce bouton vous permettra d'activer ou de désactiver manuellement la vignette. Cela n'est pas affecté si la superposition est définie sur \"jamais affichée\".\nUne fois qu'une nouvelle vidéo ou chanson commence à jouer, l'état par défaut sera restauré.\nMaintenez la touche Maj enfoncée tout en cliquant ou appuyez sur le bouton du milieu de la souris pour ouvrir la vignette de la plus haute qualité dans un nouvel onglet.",
+    "feature_desc_thumbnailOverlayShowIndicator": "Afficher un indicateur dans le coin inférieur droit de la vignette lorsqu'elle est active?",
+    "feature_desc_thumbnailOverlayImageFit": "Comment ajuster l'image de la vignette sur l'élément vidéo",
+    "feature_desc_hideCursorOnIdle": "Masquer le curseur après quelques secondes d'inactivité sur la vidéo",
+    "feature_desc_hideCursorOnIdleDelay": "Combien de secondes d'inactivité avant que le curseur ne soit masqué?",
+    "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
 
     "feature_desc_volumeSliderLabel": "Ajouter une étiquette de pourcentage à côté du curseur de volume",
     "feature_desc_volumeSliderSize": "La largeur du curseur de volume en pixels",
@@ -155,17 +167,6 @@
     "feature_desc_setInitialTabVolume": "Définir le niveau de volume sur une valeur spécifique une fois lors de l'ouverture du site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Cette fonctionnalité est incompatible avec la fonctionnalité \"Niveau de volume partagé entre les onglets\" et sera ignorée lors de l'utilisation de la fonctionnalité de volume partagé!",
     "feature_desc_initialTabVolumeLevel": "La valeur à définir pour le niveau de volume lors de l'ouverture du site",
-    "feature_desc_thumbnailOverlayBehavior": "Quand remplacer automatiquement l'élément vidéo par sa vignette dans la plus haute résolution",
-    "feature_helptext_thumbnailOverlayBehavior": "Si vous choisissez de ne jamais afficher la vignette, vous pouvez toujours la voir en cliquant sur le bouton de superposition de vignette dans les contrôles multimédias.\nSi vous choisissez de toujours afficher la vignette, vous pouvez la masquer en cliquant sur le même bouton.",
-    "feature_desc_thumbnailOverlayToggleBtnShown": "Ajouter un bouton aux contrôles multimédias pour activer ou désactiver manuellement la vignette",
-    "feature_helptext_thumbnailOverlayToggleBtnShown": "Ce bouton vous permettra d'activer ou de désactiver manuellement la vignette. Cela n'est pas affecté si la superposition est définie sur \"jamais affichée\".\nUne fois qu'une nouvelle vidéo ou chanson commence à jouer, l'état par défaut sera restauré.\nMaintenez la touche Maj enfoncée tout en cliquant ou appuyez sur le bouton du milieu de la souris pour ouvrir la vignette de la plus haute qualité dans un nouvel onglet.",
-    "feature_desc_thumbnailOverlayShowIndicator": "Afficher un indicateur dans le coin inférieur droit de la vignette lorsqu'elle est active?",
-    "feature_desc_thumbnailOverlayImageFit": "Comment ajuster l'image de la vignette sur l'élément vidéo",
-    "feature_desc_hideCursorOnIdle": "Masquer le curseur après quelques secondes d'inactivité sur la vidéo",
-    "feature_desc_hideCursorOnIdleDelay": "Combien de secondes d'inactivité avant que le curseur ne soit masqué?",
-    "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
-    "feature_desc_disableDarkReaderSites": "Sur quels sites devrait-on désactiver l'extension Dark Reader pour corriger les problèmes de mise en page?",
-
     "feature_desc_scrollToActiveSongBtn": "Ajouter un bouton au-dessus de la file d'attente pour faire défiler jusqu'à la chanson en cours de lecture",
     "feature_desc_clearQueueBtn": "Ajouter un bouton au-dessus de la file d'attente ou de la liste de lecture en cours pour la vider rapidement",
 
@@ -207,6 +208,8 @@
     "feature_desc_advancedLyricsFilter": "Expérimental: Activer le filtrage avancé pour la recherche de paroles",
     "feature_helptext_advancedLyricsFilter": "Le filtrage avancé comprend plusieurs couches de filtres qui visent à rendre les recherches de paroles plus fiables.\nCes filtres peuvent ne pas bien fonctionner pour les chansons dans votre langue et les chansons et artistes avec des titres moins uniques en général.\nAvertissement: Cette fonctionnalité est encore expérimentale et pourrait ne pas fonctionner mieux que la recherche de paroles par défaut. Assurez-vous de confirmer l'invite qui apparaît si vous avez modifié ce paramètre.",
 
+    "feature_desc_disableDarkReaderSites": "Sur quels sites devrait-on désactiver l'extension Dark Reader pour corriger les problèmes de mise en page?",
+
     "feature_desc_locale": "Langue",
     "feature_desc_localeFallback": "Utiliser l'anglais pour les traductions manquantes (désactiver si vous contribuez aux traductions)",
     "feature_desc_versionCheck": "Vérifier les mises à jour",
@@ -217,8 +220,6 @@
     "feature_desc_logLevel": "Combien d'informations à enregistrer dans la console",
     "feature_helptext_logLevel": "Changer cela n'est vraiment nécessaire que pour le débogage à la suite d'un problème rencontré.\nSi vous en avez un, vous pouvez augmenter le niveau de journalisation ici, ouvrir la console JavaScript de votre navigateur (généralement avec Ctrl + Maj + K) et joindre des captures d'écran de ce journal dans un problème GitHub.",
     "feature_desc_advancedMode": "Afficher les paramètres avancés (cela recharge le menu)",
-    "feature_helptext_advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé.",
-
-    "plugin_validation_error_no_property": "Aucune propriété '%1' avec le type '%2'"
+    "feature_helptext_advancedMode": "Après avoir activé cela, le menu se rechargera et affichera les paramètres avancés qui sont masqués par défaut.\nCela est utile si vous souhaitez personnaliser plus en profondeur le comportement du script et que vous ne vous souciez pas d'un menu surchargé."
   }
 }
