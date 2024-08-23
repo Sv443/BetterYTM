@@ -107,7 +107,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -204,7 +204,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -301,7 +301,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -398,7 +398,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -495,7 +495,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -592,7 +592,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
@@ -689,7 +689,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `color_lightness_lighter` | `Lighter` |
 | `plugin_validation_error_invalid_property-1` | `Property '%1' with value '%2' is invalid. Example value: %3` |
 | `plugin_validation_error_invalid_property-n` | `Property '%1' with value '%2' is invalid. Example values: %3` |
-| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator in the bottom right corner` |
+| `feature_desc_thumbnailOverlayIndicatorOpacity` | `Opacity of the thumbnail indicator` |
 | `feature_desc_showVotes` | `Show the amount of likes and dislikes on the currently playing song` |
 | `feature_helptext_showVotes` | `This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.` |
 | `feature_desc_showVotesFormat` | `How should the likes and dislikes be formatted?` |
