@@ -70,7 +70,8 @@
   background-color: var(--bytm-dialog-bg);
   border: 2px solid var(--bytm-dialog-separator-color);
   border-style: none none solid none !important;
-  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
+  border-radius: var(--bytm-dialog-border-radius)
+    var(--bytm-dialog-border-radius) 0px 0px;
 }
 
 .bytm-dialog-header.small {
@@ -157,15 +158,13 @@
 }
 
 .bytm-dialog-header-img,
-.bytm-dialog-close
-{
+.bytm-dialog-close {
   width: 32px;
   height: 32px;
 }
 
 .bytm-dialog-header-img.small,
-.bytm-dialog-close.small
-{
+.bytm-dialog-close.small {
   width: 24px;
   height: 24px;
 }
@@ -183,10 +182,16 @@
   margin-top: 6px;
   padding: 15px 20px;
   background: var(--bytm-dialog-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-dialog-bg) 30%,
+    var(--bytm-dialog-bg) 100%
+  );
   border: 2px solid var(--bytm-dialog-separator-color);
   border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
+  border-radius: 0px 0px var(--bytm-dialog-border-radius)
+    var(--bytm-dialog-border-radius);
 }
 
 .bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
@@ -275,19 +280,19 @@
   min-width: 80px;
 }
 
-.bytm-ftconf-input[type=number] {
+.bytm-ftconf-input[type="number"] {
   width: 75px;
 }
 
-.bytm-ftconf-input[type=range] {
+.bytm-ftconf-input[type="range"] {
   width: 200px;
 }
 
-.bytm-ftconf-input[type=text] {
+.bytm-ftconf-input[type="text"] {
   width: 200px;
 }
 
-.bytm-ftconf-input[type=checkbox] {
+.bytm-ftconf-input[type="checkbox"] {
   margin-left: 5px;
 }
 
@@ -296,7 +301,8 @@ select.bytm-ftconf-input {
   cursor: revert;
 }
 
-#bytm-export-dialog-text, #bytm-import-dialog-text {
+#bytm-export-dialog-text,
+#bytm-import-dialog-text {
   font-size: 1.6em;
   margin-bottom: 15px;
 }
@@ -310,7 +316,8 @@ select.bytm-ftconf-input {
   overflow-y: auto;
 }
 
-#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
+#bytm-export-dialog-textarea,
+#bytm-import-dialog-textarea {
   width: 100%;
   height: 150px;
   resize: none;
@@ -326,7 +333,8 @@ select.bytm-ftconf-input {
 
 /* Markdown stuff */
 
-.bytm-markdown-container kbd, .bytm-kbd {
+.bytm-markdown-container kbd,
+.bytm-kbd {
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
@@ -338,16 +346,21 @@ select.bytm-ftconf-input {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-kbd-easing), margin-top 0.1s var(--bytm-kbd-easing), box-shadow 0.1s var(--bytm-kbd-easing);
+  transition:
+    padding 0.1s var(--bytm-kbd-easing),
+    margin-top 0.1s var(--bytm-kbd-easing),
+    box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active, .bytm-kbd:active {
+.bytm-markdown-container kbd:active,
+.bytm-kbd:active {
   padding-bottom: 2px;
   margin-top: 2px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
+.bytm-markdown-container kbd::selection,
+.bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -377,7 +390,8 @@ select.bytm-ftconf-input {
   font-weight: bolder;
 }
 
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+#bytm-feat-help-dialog-desc,
+#bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   font-size: 1.5em;

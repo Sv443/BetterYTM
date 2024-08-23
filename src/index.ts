@@ -29,7 +29,7 @@ import {
   addPlayerBarLyricsBtn, initLyricsCache,
   // integrations
   disableDarkReader, fixSponsorBlock,
-  fixThemeSong,
+  fixPlayerPageTheming,
   // general
   initVersionCheck,
   // menu
@@ -208,8 +208,8 @@ async function onDomLoad() {
       if(feats.sponsorBlockIntegration)
         ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
 
-      if(feats.themeSongIntegration)
-        ftInit.push(["themeSongIntegration", fixThemeSong()]);
+      if(!feats.themeSongIntegration)
+        ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
     }
 
     //#region (ytm+yt) cfg menu
@@ -304,15 +304,22 @@ async function injectCssBundle() {
 
 /** Initializes global CSS variables */
 function initGlobalCssVars() {
-  const applyVars = () => setGlobalCssVars({
-    "inner-height": `${window.innerHeight}px`,
-    "outer-height": `${window.outerHeight}px`,
-    "inner-width": `${window.innerWidth}px`,
-    "outer-width": `${window.outerWidth}px`,
-  });
+  try {
+    const applyVars = () => {
+      setGlobalCssVars({
+        "inner-height": `${window.innerHeight}px`,
+        "outer-height": `${window.outerHeight}px`,
+        "inner-width": `${window.innerWidth}px`,
+        "outer-width": `${window.outerWidth}px`,
+      });
+    };
 
-  window.addEventListener("resize", applyVars);
-  applyVars();
+    window.addEventListener("resize", applyVars);
+    applyVars();
+  }
+  catch(err) {
+    error("Couldn't initialize global CSS variables:", err);
+  }
 }
 
 //#region dev menu cmds

@@ -166,7 +166,6 @@
     "feature_desc_hideCursorOnIdleDelay": "在几秒钟的不活动后隐藏光标？",
     "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",
     "feature_desc_disableDarkReaderSites": "在哪些网站上应该禁用 Dark Reader 扩展以修复布局问题？",
-    "feature_helptext_disableDarkReaderSites": "Dark Reader 扩展可能会导致网站布局问题。\n此功能允许您禁用某些或所有网站上的 Dark Reader 以防止这些问题。\n如果未安装扩展，此功能将不起作用，可以保持激活。",
 
     "feature_desc_scrollToActiveSongBtn": "在队列中添加一个按钮，以滚动到当前播放的歌曲",
     "feature_desc_clearQueueBtn": "在当前播放的队列或播放列表上方添加一个按钮，以快速清除它",

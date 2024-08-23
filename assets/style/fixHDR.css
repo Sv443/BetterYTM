@@ -1,5 +1,5 @@
 #side-panel ytmusic-player-queue-item[play-button-state="loading"],
 #side-panel ytmusic-player-queue-item[play-button-state="playing"],
 #side-panel ytmusic-player-queue-item[play-button-state="paused"] {
-  background-color: #1D1D1D !important;
+  background-color: var(--ts-palette-darkmuted-hex, rgba(255, 255, 255, 0.1));
 }

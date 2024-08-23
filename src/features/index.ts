@@ -646,11 +646,13 @@ export const featInfo = {
     type: "toggle",
     category: "integrations",
     default: true,
+    textAdornment: adornments.reloadRequired,
   },
   themeSongIntegration: {
     type: "toggle",
     category: "integrations",
     default: false,
+    textAdornment: adornments.reloadRequired,
   },
 
   //#region general

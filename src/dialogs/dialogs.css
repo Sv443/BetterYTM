@@ -10,8 +10,7 @@
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg
-{
+#bytm-cfg-menu-bg {
   --bytm-dialog-width-max: 1150px;
   --bytm-menu-width-max: 1150px;
   --bytm-dialog-height-max: 800px;
@@ -166,7 +165,8 @@
 #bytm-welcome-menu-footer-cont {
   display: flex;
   justify-content: space-between;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
 }
 
 #bytm-auto-like-channels-dialog-body {

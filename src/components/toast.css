@@ -19,7 +19,9 @@
   background-color: var(--bytm-toast-bg-color);
   color: var(--bytm-toast-text-color);
 
-  transition: opacity var(--bytm-toast-transition-time) ease, transform var(--bytm-toast-transition-time) ease;
+  transition:
+    opacity var(--bytm-toast-transition-time) ease,
+    transform var(--bytm-toast-transition-time) ease;
 }
 
 #bytm-toast.clickable {
@@ -58,8 +60,7 @@
 #bytm-toast.visible.pos-tl,
 #bytm-toast.visible.pos-tr,
 #bytm-toast.visible.pos-br,
-#bytm-toast.visible.pos-bl
-{
+#bytm-toast.visible.pos-bl {
   transform: translate(0, 0);
 }
 
@@ -71,8 +72,7 @@
 }
 
 .bytm-toast-icon.img,
-.bytm-toast-icon svg
-{
+.bytm-toast-icon svg {
   width: 24px;
   height: 24px;
 }

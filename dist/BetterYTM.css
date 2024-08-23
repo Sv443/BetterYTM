@@ -10,8 +10,7 @@
 
 /* TODO: after cfg menu migration, leave only dialog styles here */
 #bytm-cfg-dialog-bg,
-#bytm-cfg-menu-bg
-{
+#bytm-cfg-menu-bg {
   --bytm-dialog-width-max: 1150px;
   --bytm-menu-width-max: 1150px;
   --bytm-dialog-height-max: 800px;
@@ -166,7 +165,8 @@
 #bytm-welcome-menu-footer-cont {
   display: flex;
   justify-content: space-between;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
 }
 
 #bytm-auto-like-channels-dialog-body {
@@ -246,7 +246,8 @@
   background-color: var(--bytm-dialog-bg);
   border: 2px solid var(--bytm-dialog-separator-color);
   border-style: none none solid none !important;
-  border-radius: var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius) 0px 0px;
+  border-radius: var(--bytm-dialog-border-radius)
+    var(--bytm-dialog-border-radius) 0px 0px;
 }
 
 .bytm-dialog-header.small {
@@ -333,15 +334,13 @@
 }
 
 .bytm-dialog-header-img,
-.bytm-dialog-close
-{
+.bytm-dialog-close {
   width: 32px;
   height: 32px;
 }
 
 .bytm-dialog-header-img.small,
-.bytm-dialog-close.small
-{
+.bytm-dialog-close.small {
   width: 24px;
   height: 24px;
 }
@@ -359,10 +358,16 @@
   margin-top: 6px;
   padding: 15px 20px;
   background: var(--bytm-dialog-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-dialog-bg) 30%, var(--bytm-dialog-bg) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-dialog-bg) 30%,
+    var(--bytm-dialog-bg) 100%
+  );
   border: 2px solid var(--bytm-dialog-separator-color);
   border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-dialog-border-radius) var(--bytm-dialog-border-radius);
+  border-radius: 0px 0px var(--bytm-dialog-border-radius)
+    var(--bytm-dialog-border-radius);
 }
 
 .bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
@@ -451,19 +456,19 @@
   min-width: 80px;
 }
 
-.bytm-ftconf-input[type=number] {
+.bytm-ftconf-input[type="number"] {
   width: 75px;
 }
 
-.bytm-ftconf-input[type=range] {
+.bytm-ftconf-input[type="range"] {
   width: 200px;
 }
 
-.bytm-ftconf-input[type=text] {
+.bytm-ftconf-input[type="text"] {
   width: 200px;
 }
 
-.bytm-ftconf-input[type=checkbox] {
+.bytm-ftconf-input[type="checkbox"] {
   margin-left: 5px;
 }
 
@@ -472,7 +477,8 @@ select.bytm-ftconf-input {
   cursor: revert;
 }
 
-#bytm-export-dialog-text, #bytm-import-dialog-text {
+#bytm-export-dialog-text,
+#bytm-import-dialog-text {
   font-size: 1.6em;
   margin-bottom: 15px;
 }
@@ -486,7 +492,8 @@ select.bytm-ftconf-input {
   overflow-y: auto;
 }
 
-#bytm-export-dialog-textarea, #bytm-import-dialog-textarea {
+#bytm-export-dialog-textarea,
+#bytm-import-dialog-textarea {
   width: 100%;
   height: 150px;
   resize: none;
@@ -502,7 +509,8 @@ select.bytm-ftconf-input {
 
 /* Markdown stuff */
 
-.bytm-markdown-container kbd, .bytm-kbd {
+.bytm-markdown-container kbd,
+.bytm-kbd {
   --bytm-kbd-easing: cubic-bezier(0.31, 0.58, 0.24, 1.15);
   display: inline-block;
   vertical-align: bottom;
@@ -514,16 +522,21 @@ select.bytm-ftconf-input {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-kbd-easing), margin-top 0.1s var(--bytm-kbd-easing), box-shadow 0.1s var(--bytm-kbd-easing);
+  transition:
+    padding 0.1s var(--bytm-kbd-easing),
+    margin-top 0.1s var(--bytm-kbd-easing),
+    box-shadow 0.1s var(--bytm-kbd-easing);
 }
 
-.bytm-markdown-container kbd:active, .bytm-kbd:active {
+.bytm-markdown-container kbd:active,
+.bytm-kbd:active {
   padding-bottom: 2px;
   margin-top: 2px;
   box-shadow: inset 0 0 0 initial;
 }
 
-.bytm-markdown-container kbd::selection, .bytm-kbd::selection {
+.bytm-markdown-container kbd::selection,
+.bytm-kbd::selection {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -553,7 +566,8 @@ select.bytm-ftconf-input {
   font-weight: bolder;
 }
 
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+#bytm-feat-help-dialog-desc,
+#bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   font-size: 1.5em;
@@ -624,7 +638,8 @@ body .bytm-ripple.slower {
   transform: translate(-50%, -50%);
   pointer-events: none;
   border-radius: 50%;
-  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s) cubic-bezier(0.375, 0.330, 0.225, 0.930);
+  animation: bytm-scale-ripple var(--bytm-ripple-anim-duration, 0.55s)
+    cubic-bezier(0.375, 0.33, 0.225, 0.93);
 }
 
 @keyframes bytm-scale-ripple {
@@ -635,8 +650,18 @@ body .bytm-ripple.slower {
   }
   100% {
     /* Variable is added to .bytm-ripple by JS at runtime since there's no better way of getting the parent's width inside of here */
-    width: calc(max(var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2, var(--bytm-ripple-min-size)));
-    height: calc(max(var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2, var(--bytm-ripple-min-size)));
+    width: calc(
+      max(
+        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
+        var(--bytm-ripple-min-size)
+      )
+    );
+    height: calc(
+      max(
+        var(--bytm-ripple-cont-width, var(--bytm-ripple-min-size)) * 2,
+        var(--bytm-ripple-min-size)
+      )
+    );
     opacity: 0;
   }
 }
@@ -705,7 +730,9 @@ body .bytm-ripple.slower {
   background-color: var(--bytm-toast-bg-color);
   color: var(--bytm-toast-text-color);
 
-  transition: opacity var(--bytm-toast-transition-time) ease, transform var(--bytm-toast-transition-time) ease;
+  transition:
+    opacity var(--bytm-toast-transition-time) ease,
+    transform var(--bytm-toast-transition-time) ease;
 }
 
 #bytm-toast.clickable {
@@ -744,8 +771,7 @@ body .bytm-ripple.slower {
 #bytm-toast.visible.pos-tl,
 #bytm-toast.visible.pos-tr,
 #bytm-toast.visible.pos-br,
-#bytm-toast.visible.pos-bl
-{
+#bytm-toast.visible.pos-bl {
   transform: translate(0, 0);
 }
 
@@ -757,8 +783,7 @@ body .bytm-ripple.slower {
 }
 
 .bytm-toast-icon.img,
-.bytm-toast-icon svg
-{
+.bytm-toast-icon svg {
   width: 24px;
   height: 24px;
 }
@@ -806,7 +831,9 @@ body .bytm-ripple.slower {
   padding: var(--toggle-knob-offset);
   cursor: pointer;
   background-color: var(--toggle-color-off);
-  transition: justify-content 0.2s ease, background-color 0.2s ease;
+  transition:
+    justify-content 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .bytm-toggle-input input[data-toggled="true"] {
@@ -814,8 +841,12 @@ body .bytm-ripple.slower {
 }
 
 .bytm-toggle-input input .bytm-toggle-input-knob {
-  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  --toggle-knob-calc-width: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
+  --toggle-knob-calc-height: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
   width: var(--toggle-knob-calc-width);
   height: var(--toggle-knob-calc-height);
   background-color: var(--toggle-knob-color);
@@ -828,8 +859,12 @@ body .bytm-ripple.slower {
 }
 
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
-  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
+  left: calc(
+    var(--toggle-width) - var(--toggle-knob-offset) -
+      var(--toggle-knob-calc-width)
+  );
 }
+
 .bytm-auto-like-channels-footer-wrapper {
   display: flex;
   justify-content: space-between;
@@ -899,7 +934,8 @@ body .bytm-ripple.slower {
   background-color: var(--bytm-menu-bg);
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: none none solid none !important;
-  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius)
+    0px 0px;
 }
 
 .bytm-menu-header.small {
@@ -958,11 +994,13 @@ body .bytm-ripple.slower {
   z-index: 7;
 }
 
-#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
+#bytm-menu-subtitle-cont,
+#bytm-menu-version-anchor {
   color: var(--bytm-menu-subtitle-color) !important;
 }
 
-#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
+#bytm-menu-subtitle-cont,
+#bytm-menu-mode-display {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1000,7 +1038,9 @@ body .bytm-ripple.slower {
   border-radius: 50%;
   padding: 0px;
   transform: translateY(0px);
-  transition: transform 0.15s ease-out, padding 0.15s ease-out;
+  transition:
+    transform 0.15s ease-out,
+    padding 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
@@ -1019,7 +1059,9 @@ body .bytm-ripple.slower {
   color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
   font-size: 1.1rem;
-  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
+  transition:
+    visibility 0.15s ease-out,
+    opacity 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .extended-link {
@@ -1054,10 +1096,16 @@ body .bytm-ripple.slower {
   margin-top: 6px;
   padding: 15px;
   background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-menu-bg) 30%,
+    var(--bytm-menu-bg) 100%
+  );
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
 }
 
 .bytm-menu-footer-buttons-cont button:not(:last-of-type) {
@@ -1150,15 +1198,16 @@ body .bytm-ripple.slower {
   min-width: 50px;
 }
 
-.bytm-ftconf-input[type=number] {
+.bytm-ftconf-input[type="number"] {
   width: 75px;
 }
 
-.bytm-ftconf-input[type=checkbox] {
+.bytm-ftconf-input[type="checkbox"] {
   margin-left: 5px;
 }
 
-#bytm-export-menu-text, #bytm-import-menu-text {
+#bytm-export-menu-text,
+#bytm-import-menu-text {
   white-space: pre-wrap;
   font-size: 1.6rem;
   margin-bottom: 15px;
@@ -1189,7 +1238,8 @@ body .bytm-ripple.slower {
   font-size: 2rem;
 }
 
-#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+#bytm-export-menu-textarea,
+#bytm-import-menu-textarea {
   width: 100%;
   height: 150px;
   resize: none;
@@ -1217,7 +1267,9 @@ body .bytm-ripple.slower {
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+  transition:
+    padding 0.1s var(--bytm-easing),
+    box-shadow 0.1s var(--bytm-easing);
 }
 
 .bytm-markdown-container kbd:active {
@@ -1288,7 +1340,8 @@ body .bytm-ripple.slower {
   padding-top: 10px;
 }
 
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+#bytm-feat-help-dialog-desc,
+#bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   font-size: 1.5rem;
@@ -1321,6 +1374,10 @@ hr {
 }
 
 /* #region misc */
+
+:root {
+  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+}
 
 .bytm-disable-scroll {
   overflow: hidden !important;
@@ -1494,13 +1551,15 @@ button.bytm-btn {
   line-height: 1.4em;
 }
 
-.bytm-link, .bytm-markdown-container a {
+.bytm-link,
+.bytm-markdown-container a {
   color: #369bff !important;
   text-decoration: none !important;
   cursor: pointer;
 }
 
-.bytm-link:hover, .bytm-markdown-container a:hover {
+.bytm-link:hover,
+.bytm-markdown-container a:hover {
   color: #369bff !important;
   text-decoration: underline !important;
 }
@@ -1576,7 +1635,10 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .bytm-yt-cfg-menu-option-inner:hover {
-  background-color: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
+  background-color: var(
+    --yt-spec-badge-chip-background,
+    rgba(255, 255, 255, 0.1)
+  );
 }
 
 .bytm-yt-cfg-menu-option-icon {
@@ -1713,7 +1775,7 @@ ytmusic-player#player #bezel {
   padding-left: 3px;
 }
 
-ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
+ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   color: white;
 }
 
@@ -1724,19 +1786,37 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
 /* #region fullscreen player bar */
 
 /* Increase specificity to override YTM's default styles without having to use !important */
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] {
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"] {
   width: 100%;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px) brightness(90%);
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .ytmusic-menu-renderer svg path,
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] tp-yt-paper-icon-button svg path
-{
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  .ytmusic-menu-renderer
+  svg
+  path,
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  tp-yt-paper-icon-button
+  svg
+  path {
   fill: #fff;
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .time-info {
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  .time-info {
   color: #fff;
 }
 
@@ -1797,7 +1877,8 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
   background-color: var(--bytm-menu-bg-highlight);
 }
 
-.bytm-auto-like-channel-row .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
+.bytm-auto-like-channel-row
+  .bytm-toggle-input-wrapper.bytm-auto-like-channel-toggle {
   --toggle-height: 18px !important;
   --toggle-width: 36px !important;
 }
@@ -1843,7 +1924,10 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-body.bytm-dom-ytm ytmusic-subscribe-button-renderer #button-shape-subscribe:hover > button {
+body.bytm-dom-ytm
+  ytmusic-subscribe-button-renderer
+  #button-shape-subscribe:hover
+  > button {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -1872,9 +1956,10 @@ body.bytm-dom-ytm ytmusic-subscribe-button-renderer #button-shape-subscribe:hove
   transition: color 0.2s ease;
 }
 
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active .bytm-generic-long-btn-txt,
-.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled .bytm-generic-long-btn-txt
-{
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn:active
+  .bytm-generic-long-btn-txt,
+.bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
+  .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
 }
 
@@ -1885,8 +1970,12 @@ body.bytm-dom-ytm ytmusic-subscribe-button-renderer #button-shape-subscribe:hove
 }
 
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-themed-bg) 15%
+  );
   display: none;
   position: absolute;
   right: 0;
@@ -1895,7 +1984,11 @@ body.bytm-dom-ytm ytmusic-subscribe-button-renderer #button-shape-subscribe:hove
 }
 
 #side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--ts-palette-darkmuted-hex, #1d1d1d) 15%
+  );
 }
 
 .bytm-generic-list-queue-btn-container {
@@ -1909,8 +2002,7 @@ ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-b
 /* same thing but with :focus-within */
 #side-panel ytmusic-player-queue-item:focus-within .bytm-queue-btn-container,
 ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container,
-ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container
-{
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container {
   display: inline-flex;
   align-items: center;
 }
@@ -1919,43 +2011,36 @@ ytmusic-responsive-list-item-renderer .title-column {
   align-items: center;
 }
 
-#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-}
-
-#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+ytmusic-app
+  ytmusic-popup-container
+  tp-yt-iron-dropdown[data-bytm-hidden="true"] {
   display: none !important;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns
+  .bytm-generic-list-queue-btn-container {
   visibility: hidden;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn {
   visibility: hidden !important;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container
-{
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover
+  .bytm-generic-list-queue-btn-container,
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
+  .bytm-generic-list-queue-btn-container {
   visibility: visible;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container a.bytm-generic-btn
-{
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn,
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn {
   visibility: visible !important;
 }
 
@@ -1996,7 +2081,10 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-gen
   opacity: 1;
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] #bytm-vol-slider-label {
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  #bytm-vol-slider-label {
   color: #fff;
 }
 

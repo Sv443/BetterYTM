@@ -1,5 +1,9 @@
 /* #region misc */
 
+:root {
+  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+}
+
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
@@ -172,13 +176,15 @@ button.bytm-btn {
   line-height: 1.4em;
 }
 
-.bytm-link, .bytm-markdown-container a {
+.bytm-link,
+.bytm-markdown-container a {
   color: #369bff !important;
   text-decoration: none !important;
   cursor: pointer;
 }
 
-.bytm-link:hover, .bytm-markdown-container a:hover {
+.bytm-link:hover,
+.bytm-markdown-container a:hover {
   color: #369bff !important;
   text-decoration: underline !important;
 }
@@ -254,7 +260,10 @@ yt-multi-page-menu-section-renderer.ytd-multi-page-menu-renderer {
 }
 
 .bytm-yt-cfg-menu-option-inner:hover {
-  background-color: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
+  background-color: var(
+    --yt-spec-badge-chip-background,
+    rgba(255, 255, 255, 0.1)
+  );
 }
 
 .bytm-yt-cfg-menu-option-icon {
@@ -391,7 +400,7 @@ ytmusic-player#player #bezel {
   padding-left: 3px;
 }
 
-ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
+ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   color: white;
 }
 
@@ -402,18 +411,36 @@ ytmusic-app-layout[player-ui-state=FULLSCREEN] .bytm-vote-label {
 /* #region fullscreen player bar */
 
 /* Increase specificity to override YTM's default styles without having to use !important */
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] {
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"] {
   width: 100%;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px) brightness(90%);
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .ytmusic-menu-renderer svg path,
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] tp-yt-paper-icon-button svg path
-{
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  .ytmusic-menu-renderer
+  svg
+  path,
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  tp-yt-paper-icon-button
+  svg
+  path {
   fill: #fff;
 }
 
-:root body.bytm-dom-ytm ytmusic-app-layout[player-ui-state=FULLSCREEN] ytmusic-player-bar[slot=player-bar] .time-info {
+:root
+  body.bytm-dom-ytm
+  ytmusic-app-layout[player-ui-state="FULLSCREEN"]
+  ytmusic-player-bar[slot="player-bar"]
+  .time-info {
   color: #fff;
 }
