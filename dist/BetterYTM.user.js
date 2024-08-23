@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,54 +33,54 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns    https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/anchorImprovements.css
-// @resource          css-auto_like           https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/autoLike.css
-// @resource          css-bundle              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/dist/BetterYTM.css
-// @resource          css-fix_hdr             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixHDR.css
-// @resource          css-fix_spacing         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock    https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixSponsorBlock.css
-// @resource          css-fix_themesong       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/fixThemeSong.css
-// @resource          css-show_votes          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/showVotes.css
-// @resource          css-vol_slider_size     https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/style/volSliderSize.css
-// @resource          doc-changelog           https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/changelog.md
-// @resource          icon-advanced_mode      https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/arrow_down.svg
-// @resource          icon-auto_like          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled  https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list         https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/clear_list.svg
-// @resource          icon-copy               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/copy.svg
-// @resource          icon-delete             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/delete.svg
-// @resource          icon-edit               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/edit.svg
-// @resource          icon-error              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/error.svg
-// @resource          icon-experimental       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/beaker_small.svg
-// @resource          icon-globe              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/globe.svg
-// @resource          icon-globe_small        https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/globe_small.svg
-// @resource          icon-help               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/help.svg
-// @resource          icon-image              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/image.svg
-// @resource          icon-image_filled       https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/image_filled.svg
-// @resource          icon-link               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/link.svg
-// @resource          icon-lyrics             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/lyrics.svg
-// @resource          icon-reload             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/refresh.svg
-// @resource          icon-skip_to            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/skip_to.svg
-// @resource          icon-spinner            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/spinner.svg
-// @resource          icon-upload             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/icons/upload.svg
-// @resource          img-close               https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/close.png
-// @resource          img-discord             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/discord.png
-// @resource          img-github              https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/github.png
-// @resource          img-greasyfork          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/greasyfork.png
-// @resource          img-logo                https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_48.png
-// @resource          img-logo_dev            https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs          https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/images/external/openuserjs.png
-// @resource          trans-de_DE             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/de_DE.json
-// @resource          trans-en_UK             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/en_UK.json
-// @resource          trans-en_US             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/en_US.json
-// @resource          trans-es_ES             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/es_ES.json
-// @resource          trans-fr_FR             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/fr_FR.json
-// @resource          trans-hi_IN             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/hi_IN.json
-// @resource          trans-ja_JA             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/ja_JA.json
-// @resource          trans-pt_BR             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/pt_BR.json
-// @resource          trans-zh_CN             https://raw.githubusercontent.com/Sv443/BetterYTM/ed6c2a9c/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/b54fb312/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -131,7 +131,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "ed6c2a9c";
+const buildNumberRaw = "b54fb312";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -4562,13 +4562,30 @@ async function fixSponsorBlock() {
     }
 }
 //#region ThemeSong
-/** Adjust the BetterYTM styles to respect the theme from ThemeSong */
-async function fixThemeSong() {
+/** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
+async function fixPlayerPageTheming() {
     try {
-        return addStyleFromResource("css-fix_themesong");
+        return addStyleFromResource("css-fix_playerpage_theming");
     }
     catch (err) {
-        error("Failed to fix ThemeSong styling:", err);
+        error("Failed to fix BetterYTM player page theming:", err);
+    }
+}
+/** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
+async function setThemeSongLightness() {
+    try {
+        const cssVarName = (() => {
+            switch (getFeature("themeSongLightness")) {
+                case "darker": return "--ts-palette-darkmuted-hex";
+                case "normal": return "--ts-palette-muted-hex";
+                case "lighter": return "--ts-palette-lightmuted-hex";
+            }
+            ;
+        })();
+        document.documentElement.style.setProperty("--bytm-themesong-bg-accent-col", `var(${cssVarName})`);
+    }
+    catch (err) {
+        error("Failed to set ThemeSong integration color lightness:", err);
     }
 }/** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -5307,6 +5324,11 @@ const options = {
             }];
     }, [])
         .sort((a, b) => a.label.localeCompare(b.label)),
+    colorLightness: () => [
+        { value: "darker", label: t("color_lightness_darker") },
+        { value: "normal", label: t("color_lightness_normal") },
+        { value: "lighter", label: t("color_lightness_lighter") },
+    ],
 };
 /** Renders a long number with a thousands separator */
 function renderLongNumberValue(val, maximumFractionDigits = 0) {
@@ -5846,11 +5868,20 @@ const featInfo = {
         type: "toggle",
         category: "integrations",
         default: true,
+        textAdornment: adornments.reloadRequired,
     },
     themeSongIntegration: {
         type: "toggle",
         category: "integrations",
         default: false,
+        textAdornment: adornments.reloadRequired,
+    },
+    themeSongLightness: {
+        type: "select",
+        category: "integrations",
+        options: options.colorLightness,
+        default: "darker",
+        textAdornment: adornments.reloadRequired,
     },
     //#region general
     locale: {
@@ -6014,8 +6045,8 @@ const migrations = {
     // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
     // 6 -> 7 (v2.2)
     7: (oldData) => useDefaultConfig(oldData, [
-        "showToastOnGenericError", "themeSongIntegration",
-        "sponsorBlockIntegration",
+        "showToastOnGenericError", "sponsorBlockIntegration",
+        "themeSongIntegration", "themeSongLightness",
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -6974,8 +7005,10 @@ async function onDomLoad() {
             // #region (ytm) integrations
             if (feats.sponsorBlockIntegration)
                 ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
-            if (feats.themeSongIntegration)
-                ftInit.push(["themeSongIntegration", fixThemeSong()]);
+            if (!feats.themeSongIntegration)
+                ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
+            else
+                ftInit.push(["themeSongIntegration", setThemeSongLightness()]);
         }
         //#region (ytm+yt) cfg menu
         try {
@@ -7047,14 +7080,21 @@ async function injectCssBundle() {
 }
 /** Initializes global CSS variables */
 function initGlobalCssVars() {
-    const applyVars = () => setGlobalCssVars({
-        "inner-height": `${window.innerHeight}px`,
-        "outer-height": `${window.outerHeight}px`,
-        "inner-width": `${window.innerWidth}px`,
-        "outer-width": `${window.outerWidth}px`,
-    });
-    window.addEventListener("resize", applyVars);
-    applyVars();
+    try {
+        const applyVars = () => {
+            setGlobalCssVars({
+                "inner-height": `${window.innerHeight}px`,
+                "outer-height": `${window.outerHeight}px`,
+                "inner-width": `${window.innerWidth}px`,
+                "outer-width": `${window.outerWidth}px`,
+            });
+        };
+        window.addEventListener("resize", applyVars);
+        applyVars();
+    }
+    catch (err) {
+        error("Couldn't initialize global CSS variables:", err);
+    }
 }
 //#region dev menu cmds
 /** Registers dev commands using `GM.registerMenuCommand` */
