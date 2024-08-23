@@ -7,7 +7,7 @@
 🇨🇳&nbsp;Chinese (simpl.), 🇬🇧&nbsp;English (UK), 🇺🇸&nbsp;English (US), 🇫🇷&nbsp;French, 🇩🇪&nbsp;German, 🇮🇳&nbsp;Hindi, 🇯🇵&nbsp;Japanese, 🇵🇹&nbsp;Portuguese, 🇪🇸&nbsp;Spanish
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{HEADER}}> -->
-[**Features**](#features) • [**Installation**](#installation) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
+[**Features**](#features) • [**Installation**](#installation) • [**Integrations**](#integrations) • [**Plugins**](#plugins) • [**Support**](#support) • [**Development**](#development) • [**Attributions**](#attributions) • [**Disclaimers**](#disclaimers)
   
 ---
 
@@ -69,6 +69,18 @@ To install the latest development build [click here](https://github.com/Sv443/Be
 </sup>
 
 <br><br><br>
+
+## Integrations:
+BetterYTM integrates with other extensions and tools to adjust their behavior and provide a smoother experience:
+- [Dark Reader](https://darkreader.org/)
+- [Enhancer for YouTube](https://www.mrfdev.com/enhancer-for-youtube)
+- [Return YouTube Dislike](https://returnyoutubedislike.com/)
+- [SponsorBlock](https://sponsor.ajay.app/)
+- [ThemeSong](https://github.com/KristofferTroncoso/ThemeSong)
+  
+To find out more about these integrations, [click here](./src/dev/integrations.md)
+
+<br><br>
 
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
