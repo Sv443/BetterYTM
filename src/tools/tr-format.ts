@@ -66,6 +66,10 @@ async function run() {
     if(localeObj.base)
       localeFile = localeFile.replace(/\s*\{\s*/, `{\n  "base": "${localeObj.base}",\n  `);
 
+    // add EOL newline if not present
+    if(!localeFile.endsWith("\n"))
+      localeFile += "\n";
+
     // overwrite original file
     // (backup is available through git history so idc)
 
