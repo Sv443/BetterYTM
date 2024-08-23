@@ -1,4 +1,4 @@
-import { clamp, compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
+import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
 import { type Domain, type ResourceKey } from "../types.js";
@@ -7,7 +7,7 @@ import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc
 
-let domain: Domain; 
+let domain: Domain;
 
 /**
  * Returns the current domain as a constant string representation
@@ -176,71 +176,6 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   await pauseFor(250);
 
   return parsed;
-}
-
-/** Converts a hex color string to a tuple of RGB values */
-export function hexToRgb(hex: string): [red: number, green: number, blue: number] {
-  const bigint = parseInt(hex.slice(1), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = (bigint & 255);
-  return [clamp(r, 0, 255), clamp(g, 0, 255), clamp(b, 0, 255)];
-};
-
-/** Converts RGB values to a hex color string */
-export function rgbToHex(red: number, green: number, blue: number): string {
-  const toHexVal = (n: number) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, "0").toUpperCase();
-  return `#${toHexVal(red)}${toHexVal(green)}${toHexVal(blue)}`;
-};
-
-/**
- * Lightens a CSS color value (in hex, RGB or RGBA format) by a given percentage.  
- * Will not exceed the maximum range (00-FF or 0-255).
- * @returns Returns the new color value in the same format as the input
- * @throws Throws if the color format is invalid or not supported
- */
-export function lightenColor(color: string, percent: number): string {
-  return darkenColor(color, percent * -1);
-}
-
-/**
- * Darkens a CSS color value (in hex, RGB or RGBA format) by a given percentage.  
- * Will not exceed the maximum range (00-FF or 0-255).
- * @returns Returns the new color value in the same format as the input
- * @throws Throws if the color format is invalid or not supported
- */
-export function darkenColor(color: string, percent: number): string {
-  const darkenRgb = (r: number, g: number, b: number, percent: number): [number, number, number] => {
-    r = Math.max(0, Math.min(255, r - (r * percent / 100)));
-    g = Math.max(0, Math.min(255, g - (g * percent / 100)));
-    b = Math.max(0, Math.min(255, b - (b * percent / 100)));
-    return [r, g, b];
-  };
-
-  let r: number, g: number, b: number, a: number | undefined;
-
-  if(color.startsWith("#"))
-    [r, g, b] = hexToRgb(color);
-  else if(color.startsWith("rgb")) {
-    const rgbValues = color.match(/\d+(\.\d+)?/g)?.map(Number);
-    if (rgbValues)
-      [r, g, b, a] = rgbValues;
-    else
-      throw new Error("Invalid RGB/RGBA color format");
-  }
-  else
-    throw new Error("Unsupported color format");
-
-  [r, g, b] = darkenRgb(r, g, b, percent);
-
-  if (color.startsWith("#"))
-    return rgbToHex(r, g, b);
-  else if (color.startsWith("rgba"))
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  else if (color.startsWith("rgb"))
-    return `rgb(${r}, ${g}, ${b})`;
-  else
-    throw new Error("Unsupported color format");
 }
 
 //#region resources
