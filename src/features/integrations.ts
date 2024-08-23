@@ -32,12 +32,12 @@ export async function fixSponsorBlock() {
 
 //#region ThemeSong
 
-/** Adjust the BetterYTM styles to respect the theme from ThemeSong */
-export async function fixThemeSong() {
+/** Adjust the BetterYTM styles if ThemeSong is ***not*** used */
+export async function fixPlayerPageTheming() {
   try {
-    return addStyleFromResource("css-fix_themesong");
+    return addStyleFromResource("css-fix_playerpage_theming");
   }
   catch(err) {
-    error("Failed to fix ThemeSong styling:", err);
+    error("Failed to fix BetterYTM player page theming:", err);
   }
 }

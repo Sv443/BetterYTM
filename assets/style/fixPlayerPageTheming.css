@@ -1,0 +1,44 @@
+/* This file should only be loaded if the ThemeSong extension is ***NOT*** installed */
+
+:root #side-panel ytmusic-player-queue-item[play-button-state="loading"],
+:root #side-panel ytmusic-player-queue-item[play-button-state="playing"],
+:root #side-panel ytmusic-player-queue-item[play-button-state="paused"] {
+  background-color: #1d1d1d !important;
+}
+
+:root
+  #side-panel
+  ytmusic-player-queue-item[play-button-state="loading"]
+  .bytm-queue-btn-container,
+:root
+  #side-panel
+  ytmusic-player-queue-item[play-button-state="playing"]
+  .bytm-queue-btn-container,
+:root
+  #side-panel
+  ytmusic-player-queue-item[play-button-state="paused"]
+  .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+}
+
+:root
+  #side-panel
+  ytmusic-player-queue-item[selected][play-button-state="loading"]
+  .bytm-queue-btn-container,
+:root
+  #side-panel
+  ytmusic-player-queue-item[selected][play-button-state="playing"]
+  .bytm-queue-btn-container,
+:root
+  #side-panel
+  ytmusic-player-queue-item[selected][play-button-state="paused"]
+  .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1d1d1d 15%);
+}
+
+:root
+  #side-panel
+  ytmusic-player-queue-item[selected]
+  .bytm-queue-btn-container {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1d1d1d 15%);
+}

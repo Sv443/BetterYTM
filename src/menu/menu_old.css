@@ -62,7 +62,8 @@
   background-color: var(--bytm-menu-bg);
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: none none solid none !important;
-  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius) 0px 0px;
+  border-radius: var(--bytm-menu-border-radius) var(--bytm-menu-border-radius)
+    0px 0px;
 }
 
 .bytm-menu-header.small {
@@ -121,11 +122,13 @@
   z-index: 7;
 }
 
-#bytm-menu-subtitle-cont, #bytm-menu-version-anchor {
+#bytm-menu-subtitle-cont,
+#bytm-menu-version-anchor {
   color: var(--bytm-menu-subtitle-color) !important;
 }
 
-#bytm-menu-subtitle-cont, #bytm-menu-mode-display {
+#bytm-menu-subtitle-cont,
+#bytm-menu-mode-display {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -163,7 +166,9 @@
   border-radius: 50%;
   padding: 0px;
   transform: translateY(0px);
-  transition: transform 0.15s ease-out, padding 0.15s ease-out;
+  transition:
+    transform 0.15s ease-out,
+    padding 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .bytm-menu-img {
@@ -182,7 +187,9 @@
   color: var(--bytm-menu-subtitle-color) !important;
   white-space: pre;
   font-size: 1.1rem;
-  transition: visibility 0.15s ease-out, opacity 0.15s ease-out;
+  transition:
+    visibility 0.15s ease-out,
+    opacity 0.15s ease-out;
 }
 
 .bytm-menu-link:hover .extended-link {
@@ -217,10 +224,16 @@
   margin-top: 6px;
   padding: 15px;
   background: var(--bytm-menu-bg);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bytm-menu-bg) 30%, var(--bytm-menu-bg) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-menu-bg) 30%,
+    var(--bytm-menu-bg) 100%
+  );
   border: 2px solid var(--bytm-menu-separator-color);
   border-style: solid none none none !important;
-  border-radius: 0px 0px var(--bytm-menu-border-radius) var(--bytm-menu-border-radius);
+  border-radius: 0px 0px var(--bytm-menu-border-radius)
+    var(--bytm-menu-border-radius);
 }
 
 .bytm-menu-footer-buttons-cont button:not(:last-of-type) {
@@ -313,15 +326,16 @@
   min-width: 50px;
 }
 
-.bytm-ftconf-input[type=number] {
+.bytm-ftconf-input[type="number"] {
   width: 75px;
 }
 
-.bytm-ftconf-input[type=checkbox] {
+.bytm-ftconf-input[type="checkbox"] {
   margin-left: 5px;
 }
 
-#bytm-export-menu-text, #bytm-import-menu-text {
+#bytm-export-menu-text,
+#bytm-import-menu-text {
   white-space: pre-wrap;
   font-size: 1.6rem;
   margin-bottom: 15px;
@@ -352,7 +366,8 @@
   font-size: 2rem;
 }
 
-#bytm-export-menu-textarea, #bytm-import-menu-textarea {
+#bytm-export-menu-textarea,
+#bytm-import-menu-textarea {
   width: 100%;
   height: 150px;
   resize: none;
@@ -380,7 +395,9 @@
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: inset 0 -2px 0 #515559;
-  transition: padding 0.1s var(--bytm-easing), box-shadow 0.1s var(--bytm-easing);
+  transition:
+    padding 0.1s var(--bytm-easing),
+    box-shadow 0.1s var(--bytm-easing);
 }
 
 .bytm-markdown-container kbd:active {
@@ -451,7 +468,8 @@
   padding-top: 10px;
 }
 
-#bytm-feat-help-dialog-desc, #bytm-feat-help-dialog-text {
+#bytm-feat-help-dialog-desc,
+#bytm-feat-help-dialog-text {
   overflow-wrap: break-word;
   white-space: pre-wrap;
   font-size: 1.5rem;

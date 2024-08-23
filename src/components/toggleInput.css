@@ -37,7 +37,9 @@
   padding: var(--toggle-knob-offset);
   cursor: pointer;
   background-color: var(--toggle-color-off);
-  transition: justify-content 0.2s ease, background-color 0.2s ease;
+  transition:
+    justify-content 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .bytm-toggle-input input[data-toggled="true"] {
@@ -45,8 +47,12 @@
 }
 
 .bytm-toggle-input input .bytm-toggle-input-knob {
-  --toggle-knob-calc-width: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
-  --toggle-knob-calc-height: calc(var(--toggle-height) - (var(--toggle-knob-offset) * 2));
+  --toggle-knob-calc-width: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
+  --toggle-knob-calc-height: calc(
+    var(--toggle-height) - (var(--toggle-knob-offset) * 2)
+  );
   width: var(--toggle-knob-calc-width);
   height: var(--toggle-knob-calc-height);
   background-color: var(--toggle-knob-color);
@@ -59,5 +65,8 @@
 }
 
 .bytm-toggle-input input[data-toggled="true"] .bytm-toggle-input-knob {
-  left: calc(var(--toggle-width) - var(--toggle-knob-offset) - var(--toggle-knob-calc-width));
+  left: calc(
+    var(--toggle-width) - var(--toggle-knob-offset) -
+      var(--toggle-knob-calc-width)
+  );
 }

@@ -285,11 +285,11 @@
     "feature_helptext_advancedLyricsFilter": "Advanced filtering includes multiple layers of filters that aim to make the lyrics lookups more reliable.\nThese filters may not work well for songs in your language, and songs and artists with less unique titles in general.\nWarning: This feature is still experimental and might not actually perform any better than the default lyrics lookup. Make sure to confirm the prompt that appears if you changed this setting.",
 
     "feature_desc_disableDarkReaderSites": "On which sites should the Dark Reader extension be disabled to fix layout issues?",
-    "feature_helptext_disableDarkReaderSites": "The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\nIf the extension is not installed, this feature will have no effect and can be left activated.",
+    "feature_helptext_disableDarkReaderSites": "The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.",
     "feature_desc_sponsorBlockIntegration": "Make some fixes to the layout in case SponsorBlock is installed",
-    "feature_helptext_sponsorBlockIntegration": "If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
-    "feature_desc_themeSongIntegration": "Make the styling of the page match the theme set by the ThemeSong extension",
-    "feature_helptext_themeSongIntegration": "If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.",
+    "feature_helptext_sponsorBlockIntegration": "If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.",
+    "feature_desc_themeSongIntegration": "Fix some styling issues if the ThemeSong extension is installed",
+    "feature_helptext_themeSongIntegration": "If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!",
 
     "feature_desc_locale": "Language",
     "feature_desc_localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",

@@ -17,14 +17,14 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 | ─ | [`en_US`](./en_US.json) | 287 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `204/287` (71.1%) | ─ |
+| ‼️ | [`de_DE`](./de_DE.json) | `203/287` (70.7%) | ─ |
 | ─ | [`en_UK`](./en_UK.json) | `287` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `204/287` (71.1%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `204/287` (71.1%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `204/287` (71.1%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `204/287` (71.1%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `204/287` (71.1%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `204/287` (71.1%) | ─ |
+| ‼️ | [`es_ES`](./es_ES.json) | `203/287` (70.7%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `203/287` (70.7%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `203/287` (70.7%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `203/287` (70.7%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `203/287` (70.7%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `203/287` (70.7%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -120,10 +120,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -135,7 +136,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -210,10 +211,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -225,7 +227,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -300,10 +302,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -315,7 +318,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -390,10 +393,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -405,7 +409,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -480,10 +484,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -495,7 +500,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -570,10 +575,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |
@@ -585,7 +591,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 83 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 84 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -660,10 +666,11 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `feature_desc_autoLikeOpenMgmtDialog` | `Open the dialog to manage auto-liked channels` |
 | `feature_btn_autoLikeOpenMgmtDialog` | `Open dialog` |
 | `feature_btn_autoLikeOpenMgmtDialog_running` | `Opening...` |
+| `feature_helptext_disableDarkReaderSites` | `The Dark Reader extension can cause issues with the layout of the site.\nThis feature allows you to disable Dark Reader on certain or all sites to prevent those issues.\n\nIf the extension is not installed, this feature will have no effect and can be left activated.` |
 | `feature_desc_sponsorBlockIntegration` | `Make some fixes to the layout in case SponsorBlock is installed` |
-| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
-| `feature_desc_themeSongIntegration` | `Make the styling of the page match the theme set by the ThemeSong extension` |
-| `feature_helptext_themeSongIntegration` | `If you have the ThemeSong extension installed, this feature will make the styling of the page match the theme set by ThemeSong.\nThis feature might mess up the layout of the page if the extension is not installed, so make sure to disable it in that case.` |
+| `feature_helptext_sponsorBlockIntegration` | `If you have the SponsorBlock extension installed, this feature will make some fixes to the layout of the site to prevent issues that might occur.\n\nThis feature will have no effect if the extension is not installed and can be left activated in that case.` |
+| `feature_desc_themeSongIntegration` | `Fix some styling issues if the ThemeSong extension is installed` |
+| `feature_helptext_themeSongIntegration` | `If the ThemeSong extension is installed but this feature is turned off (or vice versa), you might notice broken styling on the site.\n\nPlease always make sure this feature reflects whether the extension is installed or not!` |
 | `feature_desc_initTimeout` | `How many seconds to wait for features to initialize before considering them to likely be in an errored state` |
 | `feature_helptext_initTimeout` | `This is the amount of time in milliseconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.` |
 | `feature_desc_toastDuration` | `For how many seconds custom toast notifications should be shown - 0 to disable them entirely` |

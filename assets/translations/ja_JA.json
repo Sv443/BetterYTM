@@ -166,7 +166,6 @@
     "feature_desc_hideCursorOnIdleDelay": "カーソルを非表示にするまでのアイドル時間（秒）",
     "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
     "feature_desc_disableDarkReaderSites": "レイアウト問題を修正するために Dark Reader 拡張機能を無効にするサイト",
-    "feature_helptext_disableDarkReaderSites": "Dark Reader 拡張機能はサイトのレイアウトに問題を引き起こす可能性があります。\nこの機能を使用すると、それらの問題を防ぐために特定のサイトまたはすべてのサイトで Dark Reader を無効にできます。\n拡張機能がインストールされていない場合、この機能は効果がありませんので、有効にしたままにしておいてください。",
 
     "feature_desc_scrollToActiveSongBtn": "現在再生中の曲にスクロールするボタンをキューの上に追加する",
     "feature_desc_clearQueueBtn": "現在再生中のキューまたはプレイリストの上にボタンを追加して、すばやくクリアする",

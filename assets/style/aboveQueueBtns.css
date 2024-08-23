@@ -5,7 +5,7 @@
   z-index: 2;
   padding: 16px 8px;
   margin: unset;
-  background-color: #030303;
+  background-color: var(--bytm-themed-bg);
   border-bottom: 1px solid var(--ytmusic-divider);
 }
 

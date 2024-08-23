@@ -166,7 +166,6 @@
     "feature_desc_hideCursorOnIdleDelay": "¿Cuántos segundos de inactividad antes de que se oculte el cursor?",
     "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
     "feature_desc_disableDarkReaderSites": "En qué sitios debería deshabilitarse la extensión Dark Reader para corregir problemas de diseño",
-    "feature_helptext_disableDarkReaderSites": "La extensión Dark Reader puede causar problemas con el diseño del sitio.\nEsta función le permite deshabilitar Dark Reader en ciertos o todos los sitios para evitar esos problemas.\nSi la extensión no está instalada, esta función no tendrá efecto y se puede dejar activada.",
 
     "feature_desc_scrollToActiveSongBtn": "Agregue un botón para desplazarse hasta la canción que se está reproduciendo actualmente",
     "feature_desc_clearQueueBtn": "Agregue un botón para borrar rápidamente la cola de reproducción o la lista de reproducción actual",

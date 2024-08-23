@@ -5,8 +5,12 @@
 }
 
 #side-panel ytmusic-player-queue-item .bytm-queue-btn-container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
+  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--bytm-themed-bg) 15%
+  );
   display: none;
   position: absolute;
   right: 0;
@@ -15,7 +19,11 @@
 }
 
 #side-panel ytmusic-player-queue-item[selected] .bytm-queue-btn-container {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--ts-palette-darkmuted-hex, #1d1d1d) 15%
+  );
 }
 
 .bytm-generic-list-queue-btn-container {
@@ -29,8 +37,7 @@ ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:hover .bytm-queue-b
 /* same thing but with :focus-within */
 #side-panel ytmusic-player-queue-item:focus-within .bytm-queue-btn-container,
 ytmusic-playlist-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container,
-ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container
-{
+ytmusic-shelf-renderer ytmusic-responsive-list-item-renderer:focus-within .bytm-queue-btn-container {
   display: inline-flex;
   align-items: center;
 }
@@ -39,42 +46,35 @@ ytmusic-responsive-list-item-renderer .title-column {
   align-items: center;
 }
 
-#side-panel ytmusic-player-queue-item[play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #030303 15%);
-}
-
-#side-panel ytmusic-player-queue-item[selected][play-button-state="loading"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="playing"] .bytm-queue-btn-container,
-#side-panel ytmusic-player-queue-item[selected][play-button-state="paused"] .bytm-queue-btn-container
-{
-  /* using a var() with predefined value from YTM is not viable since the nesting changes the actual value of the variable */
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #1D1D1D 15%);
-}
-
-ytmusic-app ytmusic-popup-container tp-yt-iron-dropdown[data-bytm-hidden=true] {
+ytmusic-app
+  ytmusic-popup-container
+  tp-yt-iron-dropdown[data-bytm-hidden="true"] {
   display: none !important;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container {
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns
+  .bytm-generic-list-queue-btn-container {
   visibility: hidden;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns .bytm-generic-list-queue-btn-container a.bytm-generic-btn {
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn {
   visibility: hidden !important;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container
-{
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover
+  .bytm-generic-list-queue-btn-container,
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
+  .bytm-generic-list-queue-btn-container {
   visibility: visible;
 }
 
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover .bytm-generic-list-queue-btn-container a.bytm-generic-btn,
-ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within .bytm-generic-list-queue-btn-container a.bytm-generic-btn
-{
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:hover
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn,
+ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
+  .bytm-generic-list-queue-btn-container
+  a.bytm-generic-btn {
   visibility: visible !important;
 }
