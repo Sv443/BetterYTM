@@ -380,6 +380,12 @@ export const featInfo = {
     default: true,
     textAdornment: adornments.reloadRequired,
   },
+  clearQueueBtn: {
+    type: "toggle",
+    category: "songLists",
+    default: true,
+    textAdornment: adornments.reloadRequired,
+  },
 
   //#region behavior
   disableBeforeUnloadPopup: {
