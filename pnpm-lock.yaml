@@ -17,9 +17,6 @@ importers:
       marked:
         specifier: ^12.0.2
         version: 12.0.2
-      nanoevents:
-        specifier: ^9.0.0
-        version: 9.0.0
       tslib:
         specifier: ^2.6.3
         version: 2.6.3
