@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, currentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, currentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp, getVideoTime } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -365,7 +365,7 @@ export async function fixSpacing() {
 //#region ab.queue btns
 
 export async function initAboveQueueBtns() {
-  const { scrollToActiveSongBtn } = getFeatures();
+  const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
 
   const contBtns = [
     {
@@ -383,6 +383,26 @@ export async function initAboveQueueBtns() {
           block: evt.ctrlKey || evt.altKey ? "start" : "center",
           inline: "center",
         });
+      },
+    },
+    {
+      condition: clearQueueBtn,
+      id: "clear-queue",
+      resourceName: "icon-clear_list",
+      titleKey: "clear_list",
+      async interaction(evt: KeyboardEvent | MouseEvent) {
+        try {
+          // TODO: better confirmation dialog?
+          if(evt.shiftKey || confirm(t("clear_list_confirm"))) {
+            const url = new URL(location.href);
+            url.searchParams.delete("list");
+            url.searchParams.set("time_continue", String(await getVideoTime(0)));
+            location.assign(url);
+          }
+        }
+        catch(err) {
+          error("Couldn't clear queue due to an error:", err);
+        }
       },
     },
   ];

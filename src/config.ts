@@ -94,15 +94,10 @@ export const migrations: DataMigrationsDict = {
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
   // 6 -> 7 (v2.2)
-  7: (oldData: FeatureConfig) => {
-    const newData = useDefaultConfig(oldData, [
-      "showToastOnGenericError", "sponsorBlockIntegration",
-      "themeSongIntegration", "themeSongLightness",
-    ]);
-    if("clearQueueBtn" in newData)
-      delete newData.clearQueueBtn;
-    return newData;
-  },
+  7: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
+    "showToastOnGenericError", "sponsorBlockIntegration",
+    "themeSongIntegration", "themeSongLightness",
+  ]),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
