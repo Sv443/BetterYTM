@@ -1,3 +1,7 @@
+:root {
+  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
+}
+
 #ts-visualizer-container #ThemeSong-Visualizer canvas {
   /* Fix for the thumbnail overlay */
   z-index: 1;

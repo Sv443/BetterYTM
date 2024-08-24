@@ -1,9 +1,5 @@
 /* #region misc */
 
-:root {
-  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
-}
-
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
