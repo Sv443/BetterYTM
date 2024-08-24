@@ -7,6 +7,8 @@
   margin: unset;
   background-color: var(--bytm-themed-bg);
   border-bottom: 1px solid var(--ytmusic-divider);
+  /* fallback for when the ThemeSong bg color is a gradient function instead of a color value */
+  backdrop-filter: blur(8px);
 }
 
 #side-panel ytmusic-tab-renderer ytmusic-queue-header-renderer.hidden {
