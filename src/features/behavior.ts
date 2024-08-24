@@ -1,5 +1,5 @@
 import { clamp, interceptWindowEvent, pauseFor } from "@sv443-network/userutils";
-import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, currentMediaType, dbg, getVideoElement } from "../utils/index.js";
+import { domLoaded, error, getDomain, getVideoTime, getWatchId, info, log, waitVideoElementReady, clearNode, currentMediaType, getVideoElement } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import { addSelectorListener } from "../observers.js";
 import { initialParams } from "../constants.js";
@@ -139,7 +139,6 @@ async function remTimeRestoreTime() {
       else {
         let vidElem: HTMLVideoElement;
         const doRestoreTime = async () => {
-          dbg("Restoring time to", entry.songTime);
           if(!vidElem)
             vidElem = await waitVideoElementReady();
           const vidRestoreTime = entry.songTime - (getFeature("rememberSongTimeReduction") ?? 0);
@@ -213,7 +212,6 @@ async function remTimeUpsertEntry(data: RemVidObj) {
 
 /** Deletes an entry in the "remember cache" */
 async function remTimeDeleteEntry(watchID: string) {
-  dbg("Deleting entry with watchID", watchID);
   remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
   await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }
