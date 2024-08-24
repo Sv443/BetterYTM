@@ -44,7 +44,7 @@ export async function fixPlayerPageTheming() {
 }
 
 /** Sets the lightness of the theme color used by BYTM according to the configured lightness value */
-export async function setThemeSongLightness() {
+export async function fixThemeSong() {
   try {
     const cssVarName = (() => {
       switch(getFeature("themeSongLightness")) {

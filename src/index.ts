@@ -29,7 +29,7 @@ import {
   addPlayerBarLyricsBtn, initLyricsCache,
   // integrations
   disableDarkReader, fixSponsorBlock,
-  fixPlayerPageTheming, setThemeSongLightness,
+  fixPlayerPageTheming, fixThemeSong,
   // general
   initVersionCheck,
   // menu
@@ -208,10 +208,10 @@ async function onDomLoad() {
       if(feats.sponsorBlockIntegration)
         ftInit.push(["sponsorBlockIntegration", fixSponsorBlock()]);
 
-      if(!feats.themeSongIntegration)
-        ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
+      if(feats.themeSongIntegration)
+        ftInit.push(["themeSongIntegration", fixThemeSong()]);
       else
-        ftInit.push(["themeSongIntegration", setThemeSongLightness()]);
+        ftInit.push(["themeSongIntegration", fixPlayerPageTheming()]);
     }
 
     //#region (ytm+yt) cfg menu

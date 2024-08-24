@@ -1375,10 +1375,6 @@ hr {
 
 /* #region misc */
 
-:root {
-  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
-}
-
 .bytm-disable-scroll {
   overflow: hidden !important;
 }
@@ -1964,6 +1960,10 @@ body.bytm-dom-ytm
 .bytm-generic-btn.long.bytm-auto-like-toggle-btn.toggled
   .bytm-generic-long-btn-txt {
   color: var(--ytmusic-subscribe-button-color, rgba(255, 255, 255, 0.7));
+}
+
+:root {
+  --bytm-themed-bg: var(--ts-playerpage-color, #030303);
 }
 
 #ts-visualizer-container #ThemeSong-Visualizer canvas {
