@@ -1,5 +1,5 @@
 import { randomId } from "@sv443-network/userutils";
-import { t } from "../utils/index.js";
+import { setInnerHtmlTrusted, t } from "../utils/index.js";
 import "./toggleInput.css";
 
 export interface ToggleInputProps {
@@ -47,7 +47,7 @@ export async function createToggleInput({
 
   const toggleKnobEl = document.createElement("div");
   toggleKnobEl.classList.add("bytm-toggle-input-knob");
-  toggleKnobEl.innerHTML = "&nbsp;";
+  setInnerHtmlTrusted(toggleKnobEl, "&nbsp;");
 
   const toggleElClicked = (e: Event) => {
     e.preventDefault();

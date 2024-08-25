@@ -1,4 +1,4 @@
-import { getResourceUrl, initTranslations, setLocale, t, warn, type TrLocale } from "../utils/index.js";
+import { getResourceUrl, initTranslations, setInnerHtmlTrusted, setLocale, t, warn, type TrLocale } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { mode, scriptInfo } from "../constants.js";
@@ -171,11 +171,11 @@ function retranslateWelcomeMenu() {
       e.textContent = e.ariaLabel = t("close");
       e.ariaLabel = e.title = t("close_menu_tooltip");
     },
-    "#bytm-welcome-text-line1": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_1"),
-    "#bytm-welcome-text-line2": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_2", scriptInfo.name),
-    "#bytm-welcome-text-line3": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
-    "#bytm-welcome-text-line4": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
-    "#bytm-welcome-text-line5": (e: HTMLElement) => e.innerHTML = e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
+    "#bytm-welcome-text-line1": (e: HTMLElement) => setInnerHtmlTrusted(e, e.ariaLabel = t("welcome_text_line_1")),
+    "#bytm-welcome-text-line2": (e: HTMLElement) => setInnerHtmlTrusted(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
+    "#bytm-welcome-text-line3": (e: HTMLElement) => setInnerHtmlTrusted(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs))),
+    "#bytm-welcome-text-line4": (e: HTMLElement) => setInnerHtmlTrusted(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url))),
+    "#bytm-welcome-text-line5": (e: HTMLElement) => setInnerHtmlTrusted(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url))),
   };
 
   for(const [selector, fn] of Object.entries(changes)) {

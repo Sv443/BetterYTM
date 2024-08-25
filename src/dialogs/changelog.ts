@@ -1,4 +1,4 @@
-import { getChangelogHtmlWithDetails, t } from "../utils/index.js";
+import { getChangelogHtmlWithDetails, setInnerHtmlTrusted, t } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { scriptInfo } from "../constants.js";
 
@@ -56,7 +56,7 @@ async function renderBody() {
   const mdContElem = document.createElement("div");
   mdContElem.id = "bytm-changelog-dialog-text";
   mdContElem.classList.add("bytm-markdown-container");
-  mdContElem.innerHTML = await getChangelogHtmlWithDetails();
+  setInnerHtmlTrusted(mdContElem, await getChangelogHtmlWithDetails());
 
   contElem.appendChild(mdContElem);
 

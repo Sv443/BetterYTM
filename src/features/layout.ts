@@ -2,7 +2,7 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, currentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp, getVideoTime } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, currentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp, getVideoTime, setInnerHtmlTrusted } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
@@ -56,7 +56,7 @@ export async function improveLogo() {
     addSelectorListener("navBar", "ytmusic-logo a", {
       listener: (logoElem) => {
         logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-        logoElem.innerHTML = svg;
+        setInnerHtmlTrusted(logoElem, svg);
 
         logoElem.querySelectorAll("ellipse").forEach((e) => {
           e.classList.add("bytm-mod-logo-ellipse");

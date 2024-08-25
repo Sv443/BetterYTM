@@ -1,5 +1,5 @@
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { onInteraction, t } from "../utils/index.js";
+import { onInteraction, setInnerHtmlTrusted, t } from "../utils/index.js";
 import type { HotkeyObj } from "../types.js";
 import "./hotkeyInput.css";
 
@@ -51,7 +51,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = curHk?.code ?? t("hotkey_input_click_to_change");
     inputElem.dataset.state = "inactive";
     inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-    infoElem.innerHTML = curHk ? getHotkeyInfoHtml(curHk) : "";
+    setInnerHtmlTrusted(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
   };
 
   const activate = () => {
@@ -72,14 +72,14 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     currentHotkey = initialValue!;
     deactivate();
     inputElem.innerText = initialValue!.code;
-    infoElem.innerHTML = getHotkeyInfoHtml(initialValue!);
+    setInnerHtmlTrusted(infoElem, getHotkeyInfoHtml(initialValue!));
     resetElem.classList.add("bytm-hidden");
   };
 
   onInteraction(resetElem, resetClicked);
 
   if(initialValue)
-    infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
+    setInnerHtmlTrusted(infoElem, getHotkeyInfoHtml(initialValue));
 
   let lastKeyDown: HotkeyObj | undefined;
 
@@ -100,7 +100,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 
     inputElem.innerText = hotkey.code;
     inputElem.dataset.state = "inactive";
-    infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
+    setInnerHtmlTrusted(infoElem, getHotkeyInfoHtml(hotkey));
     inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
 
     onChange(hotkey);
@@ -144,7 +144,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
 
     inputElem.innerText = hotkey.code;
     inputElem.dataset.state = "inactive";
-    infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
+    setInnerHtmlTrusted(infoElem, getHotkeyInfoHtml(hotkey));
   });
 
   siteEvents.on("cfgMenuClosed", deactivate);
