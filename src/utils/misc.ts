@@ -129,19 +129,24 @@ export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 
 
 /** Returns the best available thumbnail URL for a video with the given watch ID */
 export async function getBestThumbnailUrl(watchId: string) {
-  const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+  try {
+    const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
 
-  for(const quality of priorityList) {
-    let response: GM.Response<unknown> | undefined;
-    const url = getThumbnailUrl(watchId, quality as ThumbQuality);
-    try {
-      response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
+    for(const quality of priorityList) {
+      let response: GM.Response<unknown> | undefined;
+      const url = getThumbnailUrl(watchId, quality as ThumbQuality);
+      try {
+        response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
+      }
+      catch(e) {
+        void e;
+      }
+      if(response && response.status < 300 && response.status >= 200)
+        return url;
     }
-    catch(e) {
-      void e;
-    }
-    if(response && response.status < 300 && response.status >= 200)
-      return url;
+  }
+  catch(err) {
+    throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
   }
 }
 

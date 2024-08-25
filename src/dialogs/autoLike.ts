@@ -33,12 +33,17 @@ export async function getAutoLikeDialog() {
     });
 
     siteEvents.on("autoLikeChannelsUpdated", async () => {
-      if(autoLikeImExDialog?.isOpen())
-        autoLikeImExDialog.unmount();
-      if(autoLikeDialog?.isOpen()) {
-        autoLikeDialog.unmount();
-        await autoLikeDialog.open();
-        log("Auto-like channels updated, refreshed dialog");
+      try {
+        if(autoLikeImExDialog?.isOpen())
+          autoLikeImExDialog.unmount();
+        if(autoLikeDialog?.isOpen()) {
+          autoLikeDialog.unmount();
+          await autoLikeDialog.open();
+          log("Auto-like channels updated, refreshed dialog");
+        }
+      }
+      catch(err) {
+        error("Couldn't refresh auto-like channels dialog:", err);
       }
     });
 
@@ -232,8 +237,8 @@ async function renderBody() {
         autoLikeStore.setData({
           channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
         });
-        emitSiteEvent("autoLikeChannelsUpdated");
         rowElem.remove();
+        emitSiteEvent("autoLikeChannelsUpdated");
       },
     });
     btnCont.appendChild(removeBtn);
