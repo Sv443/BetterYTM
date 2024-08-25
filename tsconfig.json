@@ -29,6 +29,10 @@
     "esm": true,
     "preferTsExts": true,
   },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+  ],
   "exclude": [
     "**/*.js",
     "dist/**",

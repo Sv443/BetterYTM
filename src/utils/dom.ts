@@ -1,14 +1,15 @@
 import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain, t } from "./index.js";
+import { error, fetchCss, getBrowserType, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
-import type { ResourceKey } from "../types.js";
+import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
+import DOMPurify from "dompurify";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;
 document.addEventListener("DOMContentLoaded", () => domLoaded = true);
 
-//#region video time, volume
+//#region vid time & vol.
 
 /** Returns the video element selector string based on the current domain */
 export const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
@@ -230,4 +231,19 @@ export function copyToClipboard(text: Stringifiable) {
   catch {
     alert(t("copy_to_clipboard_error", String(text)));
   }
+}
+
+let ttPolicy: TTPolicy | undefined;
+
+/** On Firefox, sets innerHTML directly, on Chromium, uses a [TrustedTypes](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) policy to set the HTML */
+export function setInnerHtmlTrusted(element: HTMLElement, html: string) {
+  if(!ttPolicy && window?.trustedTypes?.createPolicy)
+    ttPolicy = window.trustedTypes?.createPolicy("default", {
+      createHTML: (unsafeHtml) =>
+        DOMPurify.sanitize(unsafeHtml, {
+          RETURN_TRUSTED_TYPE: getBrowserType() === "chromium",
+        }),
+    });
+
+  element.innerHTML = ttPolicy ? ttPolicy!.createHTML(html) : html;
 }
