@@ -519,18 +519,23 @@ export async function initThumbnailOverlay() {
     };
 
     const applyThumbUrl = async (watchId: string) => {
-      const thumbUrl = await getBestThumbnailUrl(watchId);
-      if(thumbUrl) {
-        const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
-        const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
-        if(toggleBtnElem)
-          toggleBtnElem.href = thumbUrl;
-        if(thumbImgElem)
-          thumbImgElem.src = thumbUrl;
+      try {
+        const thumbUrl = await getBestThumbnailUrl(watchId);
+        if(thumbUrl) {
+          const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
+          const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
+          if(toggleBtnElem)
+            toggleBtnElem.href = thumbUrl;
+          if(thumbImgElem)
+            thumbImgElem.src = thumbUrl;
 
-        log("Applied thumbnail URL to overlay:", thumbUrl);
+          log("Applied thumbnail URL to overlay:", thumbUrl);
+        }
+        else error("Couldn't get thumbnail URL for watch ID", watchId);
       }
-      else error("Couldn't get thumbnail URL for watch ID", watchId);
+      catch(err) {
+        error("Couldn't apply thumbnail URL to overlay due to an error:", err);
+      }
     };
 
     const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
@@ -544,74 +549,79 @@ export async function initThumbnailOverlay() {
     });
 
     const createElements = async () => {
-      // overlay
-      const overlayElem = document.createElement("div");
-      overlayElem.id = "bytm-thumbnail-overlay";
-      overlayElem.title = ""; // prevent child titles from propagating
-      overlayElem.classList.add("bytm-no-select");
-      overlayElem.style.display = "none";
+      try {
+        // overlay
+        const overlayElem = document.createElement("div");
+        overlayElem.id = "bytm-thumbnail-overlay";
+        overlayElem.title = ""; // prevent child titles from propagating
+        overlayElem.classList.add("bytm-no-select");
+        overlayElem.style.display = "none";
 
-      let indicatorElem: HTMLImageElement | undefined;
-      if(getFeature("thumbnailOverlayShowIndicator")) {
-        indicatorElem = document.createElement("img");
-        indicatorElem.id = "bytm-thumbnail-overlay-indicator";
-        indicatorElem.src = await getResourceUrl("icon-image");
-        indicatorElem.role = "presentation";
-        indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
-        indicatorElem.ariaHidden = "true";
-        indicatorElem.style.display = "none";
-        indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
-      }
-    
-      const thumbImgElem = document.createElement("img");
-      thumbImgElem.id = "bytm-thumbnail-overlay-img";
-      thumbImgElem.role = "presentation";
-      thumbImgElem.ariaHidden = "true";
-      thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
-    
-      overlayElem.appendChild(thumbImgElem);
-      playerEl.appendChild(overlayElem);
-      indicatorElem && playerEl.appendChild(indicatorElem);
+        let indicatorElem: HTMLImageElement | undefined;
+        if(getFeature("thumbnailOverlayShowIndicator")) {
+          indicatorElem = document.createElement("img");
+          indicatorElem.id = "bytm-thumbnail-overlay-indicator";
+          indicatorElem.src = await getResourceUrl("icon-image");
+          indicatorElem.role = "presentation";
+          indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+          indicatorElem.ariaHidden = "true";
+          indicatorElem.style.display = "none";
+          indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
+        }
+      
+        const thumbImgElem = document.createElement("img");
+        thumbImgElem.id = "bytm-thumbnail-overlay-img";
+        thumbImgElem.role = "presentation";
+        thumbImgElem.ariaHidden = "true";
+        thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
+      
+        overlayElem.appendChild(thumbImgElem);
+        playerEl.appendChild(overlayElem);
+        indicatorElem && playerEl.appendChild(indicatorElem);
 
 
-      siteEvents.on("watchIdChanged", async (watchId) => {
-        invertOverlay = false;
-        applyThumbUrl(watchId);
-        updateOverlayVisibility();
-      });
-
-      const params = new URL(location.href).searchParams;
-      if(params.has("v")) {
-        applyThumbUrl(params.get("v")!);
-        updateOverlayVisibility();
-      }
-    
-      // toggle button
-      if(toggleBtnShown) {
-        const toggleBtnElem = createRipple(document.createElement("a"));
-        toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
-        toggleBtnElem.role = "button";
-        toggleBtnElem.tabIndex = 0;
-        toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-    
-        onInteraction(toggleBtnElem, (e) => {
-          if(e.shiftKey)
-            return openInTab(toggleBtnElem.href, false);
-          invertOverlay = !invertOverlay;
+        siteEvents.on("watchIdChanged", async (watchId) => {
+          invertOverlay = false;
+          applyThumbUrl(watchId);
           updateOverlayVisibility();
         });
-    
-        const imgElem = document.createElement("img");
-        imgElem.classList.add("bytm-generic-btn-img");
-    
-        toggleBtnElem.appendChild(imgElem);
-    
-        addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-          listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
-        });
-      }
 
-      log("Added thumbnail overlay");
+        const params = new URL(location.href).searchParams;
+        if(params.has("v")) {
+          applyThumbUrl(params.get("v")!);
+          updateOverlayVisibility();
+        }
+      
+        // toggle button
+        if(toggleBtnShown) {
+          const toggleBtnElem = createRipple(document.createElement("a"));
+          toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+          toggleBtnElem.role = "button";
+          toggleBtnElem.tabIndex = 0;
+          toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+      
+          onInteraction(toggleBtnElem, (e) => {
+            if(e.shiftKey)
+              return openInTab(toggleBtnElem.href, false);
+            invertOverlay = !invertOverlay;
+            updateOverlayVisibility();
+          });
+      
+          const imgElem = document.createElement("img");
+          imgElem.classList.add("bytm-generic-btn-img");
+      
+          toggleBtnElem.appendChild(imgElem);
+      
+          addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
+            listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
+          });
+        }
+
+        log("Added thumbnail overlay");
+      }
+      catch(err) {
+        error("Couldn't create thumbnail overlay elements due to an error:", err);
+      }
     };
 
     addSelectorListener("mainPanel", playerSelector, {
