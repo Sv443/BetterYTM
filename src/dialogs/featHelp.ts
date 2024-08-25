@@ -1,4 +1,4 @@
-import { resourceAsString, t } from "../utils/index.js";
+import { resourceAsString, setInnerHtmlTrusted, t } from "../utils/index.js";
 import { BytmDialog } from "../components/index.js";
 import { featInfo } from "../features/index.js";
 import type { FeatureKey } from "../types.js";
@@ -39,7 +39,7 @@ async function renderHeader() {
   const headerEl = document.createElement("div");
   const helpIconSvg = await resourceAsString("icon-help");
   if(helpIconSvg)
-    headerEl.innerHTML = helpIconSvg;
+    setInnerHtmlTrusted(headerEl, helpIconSvg);
 
   return headerEl;
 }

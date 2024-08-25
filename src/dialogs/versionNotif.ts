@@ -1,5 +1,5 @@
 import { host, mode, scriptInfo } from "../constants.js";
-import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, t } from "../utils/index.js";
+import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtmlTrusted, t } from "../utils/index.js";
 import { BytmDialog, createToggleInput } from "../components/index.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
 import pkg from "../../package.json" with { type: "json" };
@@ -89,7 +89,7 @@ async function renderBody({
   const changelogEl = document.createElement("p");
   changelogEl.id = "bytm-version-notif-changelog-cont";
   changelogEl.classList.add("bytm-markdown-container");
-  changelogEl.innerHTML = changelogHtml;
+  setInnerHtmlTrusted(changelogEl, changelogHtml);
 
   changelogEl.querySelectorAll("a").forEach((a) => {
     a.target = "_blank";
