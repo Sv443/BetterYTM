@@ -138,8 +138,9 @@ export async function getBestThumbnailUrl(watchId: string) {
       try {
         response = await sendRequest({ url, method: "HEAD", timeout: 6_000 });
       }
-      catch(e) {
-        void e;
+      catch(err) {
+        error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+        void err;
       }
       if(response && response.status < 300 && response.status >= 200)
         return url;
