@@ -127,11 +127,21 @@ export type BytmObject =
     compareVersions: typeof import("compare-versions");
   };
 
+export type TTPolicy = {
+  createHTML: (to_sanitize: string) => string;
+};
+
 declare global {
   interface Window {
     // to see the expanded type, install the VS Code extension "MylesMurphy.prettify-ts" and hover over the property below
     // alternatively navigate with ctrl+click to find the types
     BYTM: BytmObject;
+    // polyfill for the new Trusted Types API
+    trustedTypes: {
+      createPolicy(name: string, policy: {
+        createHTML: (to_sanitize: string) => string;
+      }): TTPolicy;
+    };
   }
 }
 

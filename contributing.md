@@ -1441,8 +1441,8 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   small: true,
 >   verticalAlign: "top", // if the content's height changes, it's better to anchor it to the top or bottom
 >   // add elements to the header, body and footer here, in one of these ways:
+>   // - setInnerHtmlTrusted(foo, "..."); // (see contributing guide)
 >   // - foo.appendChild(document.createElement("..."));
->   // - foo.innerHTML = "..."
 >   // - ReactDOM.render(<MyComponent />, foo);
 >   // - etc.
 >   renderHeader: () => {

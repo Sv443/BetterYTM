@@ -184,6 +184,11 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   return parsed;
 }
 
+/** Returns the browser type as either "firefox" or "chromium" */
+export function getBrowserType(): "firefox" | "chromium" {
+  return navigator.userAgent.match(/firefox/i) ? "firefox" : "chromium";
+}
+
 //#region resources
 
 /**
