@@ -376,6 +376,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
+  - [setInnerHtmlTrusted()](#setinnerhtmltrusted) - Sets the innerHTML property of the specified element to the provided string, after sanitizing it (for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API))
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -648,6 +649,33 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   // or store values persistently that should be unique per session:
 >   await GM.setValue("_myPlugin-sesId", sessionId);
 > }
+> ```
+> </details>
+
+<br>
+
+> #### setInnerHtmlTrusted()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.setInnerHtmlTrusted(element: HTMLElement, html: string): void
+> ```
+>   
+> Description:  
+> Sets the innerHTML property of the specified element to the provided string, after sanitizing it.  
+> This is done for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and to prevent XSS attacks.  
+> Uses the library [DOMPurify](https://github.com/cure53/DOMPurify) on default settings to sanitize the HTML.  
+>   
+> Arguments:  
+> - `element` - The element to set the innerHTML property of
+> - `html` - The HTML string to sanitize and set as the innerHTML property
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const myElement = document.querySelector("#myElement");
+> const htmlString = "<img onload='alert(\"XSS attack!\")' src='https://picsum.photos/100/100'>";
+> 
+> unsafeWindow.BYTM.setInnerHtmlTrusted(myElement, htmlString);
 > ```
 > </details>
 
