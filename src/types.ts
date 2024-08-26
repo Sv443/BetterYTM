@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtmlTrusted } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
@@ -280,6 +280,8 @@ export type InterfaceFunctions = {
   getSessionId: typeof getSessionId;
 
   // dom:
+  /** Sets the innerHTML property of the provided element to a sanitized version of the provided HTML string */
+  setInnerHtmlTrusted: typeof setInnerHtmlTrusted;
   /** Adds a listener to one of the already present SelectorObserver instances */
   addSelectorListener: typeof addSelectorListener;
   /** Registers accessible interaction listeners (click, enter, space) on the provided element */
