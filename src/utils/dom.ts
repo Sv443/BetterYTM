@@ -1,5 +1,5 @@
 import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getBrowserType, getDomain, t } from "./index.js";
+import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
@@ -241,7 +241,7 @@ export function setInnerHtmlTrusted(element: HTMLElement, html: string) {
     ttPolicy = window.trustedTypes?.createPolicy("default", {
       createHTML: (unsafeHtml) =>
         DOMPurify.sanitize(unsafeHtml, {
-          RETURN_TRUSTED_TYPE: getBrowserType() === "chromium",
+          RETURN_TRUSTED_TYPE: false,
         }),
     });
 
