@@ -376,7 +376,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
-  - [setInnerHtmlTrusted()](#setinnerhtmltrusted) - Sets the innerHTML property of the specified element to the provided string, after sanitizing it (for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API))
+  - [setInnerHtml()](#setInnerHtml) - Sets the innerHTML property of the specified element to the provided string, after sanitizing it (for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API))
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -654,10 +654,10 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 
 <br>
 
-> #### setInnerHtmlTrusted()
+> #### setInnerHtml()
 > Usage:  
 > ```ts
-> unsafeWindow.BYTM.setInnerHtmlTrusted(element: HTMLElement, html: string): void
+> unsafeWindow.BYTM.setInnerHtml(element: HTMLElement, html: string): void
 > ```
 >   
 > Description:  
@@ -675,7 +675,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > const myElement = document.querySelector("#myElement");
 > const htmlString = "<img onload='alert(\"XSS attack!\")' src='https://picsum.photos/100/100'>";
 > 
-> unsafeWindow.BYTM.setInnerHtmlTrusted(myElement, htmlString);
+> unsafeWindow.BYTM.setInnerHtml(myElement, htmlString);
 > ```
 > </details>
 
@@ -1469,7 +1469,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   small: true,
 >   verticalAlign: "top", // if the content's height changes, it's better to anchor it to the top or bottom
 >   // add elements to the header, body and footer here, in one of these ways:
->   // - setInnerHtmlTrusted(foo, "..."); // (see contributing guide)
+>   // - setInnerHtml(foo, "..."); // (see contributing guide)
 >   // - foo.appendChild(document.createElement("..."));
 >   // - ReactDOM.render(<MyComponent />, foo);
 >   // - etc.

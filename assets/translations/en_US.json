@@ -74,6 +74,9 @@
     "middle_click_open_tab": "Middle-click to open in a new tab",
     "generic_error_toast": "Encountered %1",
     "error": "Error",
+    "generic_error_dialog_message": "Encountered an error.",
+    "generic_error_dialog_open_console_note": "Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with \"BetterYTM\" to a [GitHub issue.](%1)",
+
     "active_mode_display": "%1 Mode",
     "active_mode_tooltip-1": "The %1 is currently active",
     "active_mode_tooltip-n": "The %1 are currently active",

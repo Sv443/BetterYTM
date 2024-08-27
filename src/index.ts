@@ -473,7 +473,9 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+  GM.registerMenuCommand("Throw specific Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+
+  GM.registerMenuCommand("Throw generic Error", () => error());
 
   GM.registerMenuCommand("Example MarkdownDialog", async () => {
     const mdDlg = new MarkdownDialog({

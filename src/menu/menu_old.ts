@@ -2,7 +2,7 @@ import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-net
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtmlTrusted } from "../utils/index.js";
+import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getFeatHelpDialog } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
@@ -420,7 +420,7 @@ async function mountCfgMenu() {
           adornmentElem = document.createElement("span");
           adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
           adornmentElem.classList.add("bytm-ftitem-adornment");
-          setInnerHtmlTrusted(adornmentElem, adornContent);
+          setInnerHtml(adornmentElem, adornContent);
         }
 
         let helpElem: undefined | HTMLDivElement;
@@ -438,7 +438,7 @@ async function mountCfgMenu() {
             helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
             helpElem.role = "button";
             helpElem.tabIndex = 0;
-            setInnerHtmlTrusted(helpElem, helpElemImgHtml);
+            setInnerHtml(helpElem, helpElemImgHtml);
             onInteraction(helpElem, async (e: MouseEvent | KeyboardEvent) => {
               e.preventDefault();
               e.stopPropagation();

@@ -67,7 +67,7 @@
     - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed
     - BytmDialog's private members and methods have been changed to protected for easier extension (when using TypeScript)
   - Added interface functions:
-    - `setInnerHtmlTrusted()` to set the innerHTML property of an element to a sanitized string using the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and the library [DOMPurify](https://github.com/cure53/DOMPurify)
+    - `setInnerHtml()` to set the innerHTML property of an element to a sanitized string using the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and the library [DOMPurify](https://github.com/cure53/DOMPurify)
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)
     - `saveAutoLikeData()` to overwrite the auto-like data (authenticated function)
     - `fetchVideoVotes()` to fetch the approximate like and dislike count of a video from [Return Youtube Dislike](https://returnyoutubedislike.com/)
