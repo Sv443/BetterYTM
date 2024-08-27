@@ -1,5 +1,5 @@
-import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain, t } from "./index.js";
+import { addGlobalStyle, debounce, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import { error, fetchCss, getDomain, t, warn } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
@@ -234,15 +234,26 @@ export function copyToClipboard(text: Stringifiable) {
 
 let ttPolicy: TTPolicy | undefined;
 
-/** On Firefox, sets innerHTML directly, on Chromium, uses a [TrustedTypes](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) policy to set the HTML */
+/** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
 export function setInnerHtml(element: HTMLElement, html: string) {
-  if(!ttPolicy && window?.trustedTypes?.createPolicy)
-    ttPolicy = window.trustedTypes?.createPolicy("default", {
-      createHTML: (unsafeHtml) =>
-        DOMPurify.sanitize(unsafeHtml, {
-          RETURN_TRUSTED_TYPE: false,
-        }),
+  if(!ttPolicy && getUnsafeWindow()?.trustedTypes?.createPolicy) {
+    ttPolicy = getUnsafeWindow().trustedTypes.createPolicy("my-policy", {
+      createHTML: (dirty) => DOMPurify.sanitize(dirty, {
+        RETURN_TRUSTED_TYPE: true,
+      }) as unknown as string,
+      createScriptURL(dirty) {
+        const u = new URL(dirty, document.baseURI);
+        if(u.origin === window.origin)
+          return u.href;
+        throw new Error("Only same-origin scripts are allowed in this Trusted Types policy!");
+      },
     });
+  }
 
-  element.innerHTML = ttPolicy ? ttPolicy!.createHTML(html) : html;
+  if(ttPolicy)
+    element.innerHTML = ttPolicy.createHTML(html);
+  else {
+    debounce(() => warn("TrustedTypes policy not available, using innerHTML directly"), 1000, "rising")();
+    element.innerHTML = html;
+  }
 }

@@ -128,7 +128,8 @@ export type BytmObject =
   };
 
 export type TTPolicy = {
-  createHTML: (to_sanitize: string) => string;
+  createHTML: (dirty: string) => string;
+  createScriptURL: (dirty: string) => string;
 };
 
 declare global {
@@ -138,9 +139,7 @@ declare global {
     BYTM: BytmObject;
     // polyfill for the new Trusted Types API
     trustedTypes: {
-      createPolicy(name: string, policy: {
-        createHTML: (to_sanitize: string) => string;
-      }): TTPolicy;
+      createPolicy(name: string, policy: TTPolicy): TTPolicy;
     };
   }
 }
