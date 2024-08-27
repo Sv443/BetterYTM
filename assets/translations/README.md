@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 292 (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `202/292` (69.2%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `292` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `202/292` (69.2%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `202/292` (69.2%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `202/292` (69.2%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `202/292` (69.2%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `202/292` (69.2%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `202/292` (69.2%) | ─ |
+| ─ | [`en_US`](./en_US.json) | 294 (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `202/294` (68.7%) | ─ |
+| ─ | [`en_UK`](./en_UK.json) | `294` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `202/294` (68.7%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `202/294` (68.7%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `202/294` (68.7%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `202/294` (68.7%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `202/294` (68.7%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `202/294` (68.7%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -69,6 +69,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -142,7 +144,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -166,6 +168,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -239,7 +243,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -263,6 +267,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -336,7 +342,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -360,6 +366,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -433,7 +441,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -457,6 +465,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -530,7 +540,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -554,6 +564,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -627,7 +639,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 90 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 92 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -651,6 +663,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `edit_entry` | `Edit this entry` |
 | `generic_error_toast` | `Encountered %1` |
 | `error` | `Error` |
+| `generic_error_dialog_message` | `Encountered an error.` |
+| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the error starting with "BetterYTM" to a [GitHub issue.](%1)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |

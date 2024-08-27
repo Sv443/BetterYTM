@@ -1,4 +1,4 @@
-import { onInteraction, resourceAsString, setInnerHtmlTrusted } from "../utils/index.js";
+import { onInteraction, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { createRipple } from "./ripple.js";
 import type { ResourceKey } from "../types.js";
 
@@ -92,7 +92,7 @@ export async function createLongBtn({
   if("src" in rest)
     (imgElem as HTMLImageElement).src = rest.src;
   else
-    setInnerHtmlTrusted(imgElem, await resourceAsString(rest.resourceName as "_") ?? "");
+    setInnerHtml(imgElem, await resourceAsString(rest.resourceName as "_") ?? "");
 
   const txtElem = document.createElement("span");
   txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");

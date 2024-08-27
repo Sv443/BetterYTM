@@ -171,7 +171,7 @@ export async function addStyle(css: string, ref?: string, transform: (css: strin
 }
 
 /**
- * Adds a global style element with the contents fetched from the specified CSS resource.  
+ * Adds a global style element with the contents fetched from the specified resource starting with `css-`  
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
 export async function addStyleFromResource(key: ResourceKey & `css-${string}`, transform: (css: string) => string = (c) => c) {
@@ -183,12 +183,12 @@ export async function addStyleFromResource(key: ResourceKey & `css-${string}`, t
   return false;
 }
 
-/** Sets a global CSS variable on the &lt;document&gt; element */
+/** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
 export function setGlobalCssVar(name: string, value: Stringifiable) {
-  document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
+  document.documentElement.style.setProperty(`--bytm-global-${name.toLowerCase().trim()}`, String(value));
 }
 
-/** Sets multiple global CSS variables on the &lt;document&gt; element */
+/** Sets multiple global CSS variables on the &lt;document&gt; element with the name `--bytm-global-${name}` */
 export function setGlobalCssVars(vars: Record<string, Stringifiable>) {
   for(const [name, value] of Object.entries(vars))
     setGlobalCssVar(name, value);
@@ -236,7 +236,7 @@ export function copyToClipboard(text: Stringifiable) {
 let ttPolicy: TTPolicy | undefined;
 
 /** On Firefox, sets innerHTML directly, on Chromium, uses a [TrustedTypes](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) policy to set the HTML */
-export function setInnerHtmlTrusted(element: HTMLElement, html: string) {
+export function setInnerHtml(element: HTMLElement, html: string) {
   if(!ttPolicy && window?.trustedTypes?.createPolicy)
     ttPolicy = window.trustedTypes?.createPolicy("default", {
       createHTML: (unsafeHtml) =>

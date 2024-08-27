@@ -1,10 +1,11 @@
-import { clamp } from "@sv443-network/userutils";
+import { clamp, debounce } from "@sv443-network/userutils";
 import { scriptInfo } from "../constants.js";
 import { setGlobalProp } from "../interface.js";
 import { LogLevel } from "../types.js";
 import { MarkdownDialog, showIconToast } from "../components/index.js";
 import { t } from "./translations.js";
 import { getFeature } from "../config.js";
+import packageJson from "../../package.json" with { type: "json" };
 
 let curLogLevel = LogLevel.Info;
 
@@ -55,17 +56,13 @@ export function warn(...args: unknown[]): void {
   console.warn(consPrefix, ...args);
 }
 
-let errorDialog: MarkdownDialog;
-
 function getErrorDialog(errName: string, args: unknown[]) {
-  if(errorDialog)
-    return errorDialog;
-
-  return errorDialog = new MarkdownDialog({
+  return new MarkdownDialog({
     id: "generic-error",
     height: 400,
     width: 500,
     small: true,
+    destroyOnClose: true,
     renderHeader() {
       const header = document.createElement("h2");
       header.classList.add("bytm-dialog-title");
@@ -75,7 +72,7 @@ function getErrorDialog(errName: string, args: unknown[]) {
       header.textContent = header.ariaLabel = errName;
       return header;
     },
-    body: args.join(" "),
+    body: `${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}\n\n${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
   });
 }
 
@@ -85,12 +82,12 @@ export function error(...args: unknown[]): void {
 
   if(getFeature("showToastOnGenericError")) {
     const errName = args.find(a => a instanceof Error)?.name ?? t("error");
-    showIconToast({
+    debounce(() => showIconToast({
       message: t("generic_error_toast", errName),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-    });
+    }))();
   }
 }
 

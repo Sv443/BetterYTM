@@ -1,5 +1,5 @@
 import { clamp, pauseFor } from "@sv443-network/userutils";
-import { info, resourceAsString, setInnerHtmlTrusted } from "../utils/index.js";
+import { info, resourceAsString, setInnerHtml } from "../utils/index.js";
 import { getFeature } from "../config.js";
 import type { ResourceKey } from "../types.js";
 import "./toast.css";
@@ -74,7 +74,7 @@ export async function showIconToast({
     toastIcon.classList.add("bytm-toast-icon");
     const iconHtml = await resourceAsString(rest.icon);
     if(iconHtml)
-      setInnerHtmlTrusted(toastIcon, iconHtml);
+      setInnerHtml(toastIcon, iconHtml);
 
     if("iconFill" in rest && rest.iconFill)
       toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);

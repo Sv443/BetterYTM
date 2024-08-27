@@ -1,6 +1,6 @@
 import { addParent, type Stringifiable } from "@sv443-network/userutils";
 import { getFeature } from "../config.js";
-import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtmlTrusted, t, waitVideoElementReady } from "../utils/index.js";
+import { addStyleFromResource, error, log, resourceAsString, setGlobalCssVar, setInnerHtml, t, waitVideoElementReady } from "../utils/index.js";
 import { siteEvents } from "../siteEvents.js";
 import { featInfo } from "./index.js";
 import "./volume.css";
@@ -78,7 +78,7 @@ async function addVolumeSliderLabel(sliderElem: HTMLInputElement, sliderContaine
     if(linkIconHtml) {
       const linkIconElem = document.createElement("div");
       linkIconElem.id = "bytm-vol-slider-shared";
-      setInnerHtmlTrusted(linkIconElem, linkIconHtml);
+      setInnerHtml(linkIconElem, linkIconHtml);
       linkIconElem.role = "alert";
       linkIconElem.ariaLive = "polite";
       linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
