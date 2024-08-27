@@ -792,6 +792,12 @@ body .bytm-ripple.slower {
   fill: var(--toast-icon-fill, #fff);
 }
 
+.bytm-toast-subtitle {
+  color: #ccc;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
 .bytm-toggle-input-wrapper {
   --toggle-height: 20px;
   --toggle-width: 40px;

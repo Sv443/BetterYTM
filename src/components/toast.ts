@@ -17,6 +17,8 @@ export type ToastProps = {
   | {
     /** Message (plus title) for the toast */
     message: string;
+    /** Optional subtitle for the toast */
+    subtitle?: string;
   }
   | {
     /** Element to be shown in the toast */
@@ -82,8 +84,15 @@ export async function showIconToast({
 
   const toastMessage = document.createElement("div");
   toastMessage.classList.add("bytm-toast-message");
-  if("message" in rest)
+  if("message" in rest) {
     toastMessage.textContent = rest.message;
+    if("subtitle" in rest && rest.subtitle) {
+      const subtitleEl = document.createElement("div");
+      subtitleEl.classList.add("bytm-toast-subtitle");
+      subtitleEl.textContent = rest.subtitle;
+      toastMessage.appendChild(subtitleEl);
+    }
+  }
   else
     toastMessage.appendChild(rest.element);
 

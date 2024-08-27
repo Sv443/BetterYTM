@@ -72,7 +72,9 @@ function getErrorDialog(errName: string, args: unknown[]) {
       header.textContent = header.ariaLabel = errName;
       return header;
     },
-    body: `${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}\n\n${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
+    body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
   });
 }
 
@@ -83,7 +85,8 @@ export function error(...args: unknown[]): void {
   if(getFeature("showToastOnGenericError")) {
     const errName = args.find(a => a instanceof Error)?.name ?? t("error");
     debounce(() => showIconToast({
-      message: t("generic_error_toast", errName),
+      message: t("generic_error_toast_encountered_error_type", errName),
+      subtitle: t("generic_error_toast_click_for_details"),
       icon: "icon-error",
       iconFill: "var(--bytm-error-col)",
       onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
