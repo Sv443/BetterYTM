@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,57 +33,58 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/e1708d99/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
+// @require           https://cdn.jsdelivr.net/npm/dompurify@3.1.6
 // @grant             GM.registerMenuCommand
 // @grant             GM.listValues
 // ==/UserScript==
@@ -101,7 +102,7 @@ I welcome every contribution on GitHub!
 /* Disclaimer: I am not affiliated with or endorsed by YouTube, Google, Alphabet, Genius or anyone else */
 /* C&D this 🖕 */
 
-(function(UserUtils,compareVersions,marked){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
+(function(UserUtils,compareVersions,marked,DOMPurify){'use strict';function _interopNamespaceDefault(e){var n=Object.create(null);if(e){Object.keys(e).forEach(function(k){if(k!=='default'){var d=Object.getOwnPropertyDescriptor(e,k);Object.defineProperty(n,k,d.get?d:{enumerable:true,get:function(){return e[k]}});}})}n.default=e;return Object.freeze(n)}var UserUtils__namespace=/*#__PURE__*/_interopNamespaceDefault(UserUtils);var compareVersions__namespace=/*#__PURE__*/_interopNamespaceDefault(compareVersions);// I know TS enums are impure but it doesn't really matter here, plus imo they are cooler than pure enums anyway
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -131,7 +132,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "e1708d99";
+const buildNumberRaw = "22591348";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1005,7 +1006,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         inputElem.innerText = (_a = curHk === null || curHk === void 0 ? void 0 : curHk.code) !== null && _a !== void 0 ? _a : t("hotkey_input_click_to_change");
         inputElem.dataset.state = "inactive";
         inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(curHk));
-        infoElem.innerHTML = curHk ? getHotkeyInfoHtml(curHk) : "";
+        setInnerHtml(infoElem, curHk ? getHotkeyInfoHtml(curHk) : "");
     };
     const activate = () => {
         if (otherHotkeyInputActive)
@@ -1023,12 +1024,12 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         currentHotkey = initialValue;
         deactivate();
         inputElem.innerText = initialValue.code;
-        infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
+        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
         resetElem.classList.add("bytm-hidden");
     };
     onInteraction(resetElem, resetClicked);
     if (initialValue)
-        infoElem.innerHTML = getHotkeyInfoHtml(initialValue);
+        setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue));
     let lastKeyDown;
     document.addEventListener("keypress", (e) => {
         if (inputElem.dataset.state === "inactive")
@@ -1045,7 +1046,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
         };
         inputElem.innerText = hotkey.code;
         inputElem.dataset.state = "inactive";
-        infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
+        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
         inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
         onChange(hotkey);
         currentHotkey = hotkey;
@@ -1081,7 +1082,7 @@ function createHotkeyInput({ initialValue, onChange, createTitle }) {
             resetElem.classList.add("bytm-hidden");
         inputElem.innerText = hotkey.code;
         inputElem.dataset.state = "inactive";
-        infoElem.innerHTML = getHotkeyInfoHtml(hotkey);
+        setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
     });
     siteEvents.on("cfgMenuClosed", deactivate);
     inputElem.addEventListener("click", () => {
@@ -1179,7 +1180,7 @@ async function createLongBtn(_a) {
     if ("src" in rest)
         imgElem.src = rest.src;
     else
-        imgElem.innerHTML = (_b = await resourceAsString(rest.resourceName)) !== null && _b !== void 0 ? _b : "";
+        setInnerHtml(imgElem, (_b = await resourceAsString(rest.resourceName)) !== null && _b !== void 0 ? _b : "");
     const txtElem = document.createElement("span");
     txtElem.classList.add("bytm-generic-long-btn-txt", "bytm-no-select");
     txtElem.textContent = txtElem.ariaLabel = text;
@@ -1214,8 +1215,8 @@ async function createLongBtn(_a) {
             ? this.opts.body
             : await this.opts.body();
         const markdownEl = document.createElement("div");
-        markdownEl.classList.add("bytm-markdown-dialog-content");
-        markdownEl.innerHTML = await MarkdownDialog.parseMd(mdCont);
+        markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+        setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
         bodyEl.appendChild(markdownEl);
         return bodyEl;
     }
@@ -1244,14 +1245,21 @@ async function showIconToast(_a) {
         toastIcon.classList.add("bytm-toast-icon");
         const iconHtml = await resourceAsString(rest.icon);
         if (iconHtml)
-            toastIcon.innerHTML = iconHtml;
+            setInnerHtml(toastIcon, iconHtml);
         if ("iconFill" in rest && rest.iconFill)
             toastIcon.style.setProperty("--toast-icon-fill", rest.iconFill);
     }
     const toastMessage = document.createElement("div");
     toastMessage.classList.add("bytm-toast-message");
-    if ("message" in rest)
+    if ("message" in rest) {
         toastMessage.textContent = rest.message;
+        if ("subtitle" in rest && rest.subtitle) {
+            const subtitleEl = document.createElement("div");
+            subtitleEl.classList.add("bytm-toast-subtitle");
+            subtitleEl.textContent = rest.subtitle;
+            toastMessage.appendChild(subtitleEl);
+        }
+    }
     else
         toastMessage.appendChild(rest.element);
     iconPos === "left" && toastWrapper.appendChild(toastIcon);
@@ -1345,7 +1353,7 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
         toggleEl.id = `bytm-toggle-input-${id}`;
     const toggleKnobEl = document.createElement("div");
     toggleKnobEl.classList.add("bytm-toggle-input-knob");
-    toggleKnobEl.innerHTML = "&nbsp;";
+    setInnerHtml(toggleKnobEl, "&nbsp;");
     const toggleElClicked = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -1390,12 +1398,17 @@ async function getAutoLikeDialog() {
             renderFooter: renderFooter$1,
         });
         siteEvents.on("autoLikeChannelsUpdated", async () => {
-            if (autoLikeImExDialog === null || autoLikeImExDialog === void 0 ? void 0 : autoLikeImExDialog.isOpen())
-                autoLikeImExDialog.unmount();
-            if (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.isOpen()) {
-                autoLikeDialog.unmount();
-                await autoLikeDialog.open();
-                log("Auto-like channels updated, refreshed dialog");
+            try {
+                if (autoLikeImExDialog === null || autoLikeImExDialog === void 0 ? void 0 : autoLikeImExDialog.isOpen())
+                    autoLikeImExDialog.unmount();
+                if (autoLikeDialog === null || autoLikeDialog === void 0 ? void 0 : autoLikeDialog.isOpen()) {
+                    autoLikeDialog.unmount();
+                    await autoLikeDialog.open();
+                    log("Auto-like channels updated, refreshed dialog");
+                }
+            }
+            catch (err) {
+                error("Couldn't refresh auto-like channels dialog:", err);
             }
         });
         autoLikeDialog.on("close", () => emitSiteEvent("autoLikeChannelsUpdated"));
@@ -1552,8 +1565,8 @@ async function renderBody$4() {
                 autoLikeStore.setData({
                     channels: autoLikeStore.getData().channels.filter((ch) => ch.id !== chanId),
                 });
-                emitSiteEvent("autoLikeChannelsUpdated");
                 rowElem.remove();
+                emitSiteEvent("autoLikeChannelsUpdated");
             },
         });
         btnCont.appendChild(removeBtn);
@@ -1676,7 +1689,7 @@ async function renderBody$3() {
     const mdContElem = document.createElement("div");
     mdContElem.id = "bytm-changelog-dialog-text";
     mdContElem.classList.add("bytm-markdown-container");
-    mdContElem.innerHTML = await getChangelogHtmlWithDetails();
+    setInnerHtml(mdContElem, await getChangelogHtmlWithDetails());
     contElem.appendChild(mdContElem);
     return contElem;
 }let featHelpDialog = null;
@@ -1706,7 +1719,7 @@ async function renderHeader$2() {
     const headerEl = document.createElement("div");
     const helpIconSvg = await resourceAsString("icon-help");
     if (helpIconSvg)
-        headerEl.innerHTML = helpIconSvg;
+        setInnerHtml(headerEl, helpIconSvg);
     return headerEl;
 }
 async function renderBody$2() {
@@ -1793,6 +1806,7 @@ var updates = {
 var dependencies = {
 	"@sv443-network/userutils": "^7.1.0",
 	"compare-versions": "^6.1.0",
+	dompurify: "^3.1.6",
 	marked: "^12.0.2",
 	tslib: "^2.6.3"
 };
@@ -1810,6 +1824,7 @@ var devDependencies = {
 	"@storybook/html": "^8.1.10",
 	"@storybook/html-vite": "^8.1.10",
 	"@storybook/test": "^8.1.10",
+	"@types/dompurify": "^3.0.5",
 	"@types/express": "^4.17.21",
 	"@types/greasemonkey": "^4.0.7",
 	"@types/node": "^20.14.8",
@@ -1856,7 +1871,7 @@ var nodemonConfig = {
 		"*/stories/*"
 	]
 };
-var pkg = {
+var packageJson = {
 	name: name,
 	userscriptName: userscriptName,
 	version: version,
@@ -1936,7 +1951,7 @@ async function renderBody$1({ latestTag, changelogHtml, }) {
     const changelogEl = document.createElement("p");
     changelogEl.id = "bytm-version-notif-changelog-cont";
     changelogEl.classList.add("bytm-markdown-container");
-    changelogEl.innerHTML = changelogHtml;
+    setInnerHtml(changelogEl, changelogHtml);
     changelogEl.querySelectorAll("a").forEach((a) => {
         a.target = "_blank";
         a.rel = "noopener noreferrer";
@@ -1989,7 +2004,7 @@ async function renderBody$1({ latestTag, changelogHtml, }) {
     btnUpdate.tabIndex = 0;
     btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
     onInteraction(btnUpdate, () => {
-        window.open(pkg.updates[host]);
+        window.open(packageJson.updates[host]);
         verNotifDialog === null || verNotifDialog === void 0 ? void 0 : verNotifDialog.close();
     });
     const btnClose = document.createElement("button");
@@ -2100,8 +2115,8 @@ async function mountCfgMenu() {
     };
     const links = [
         ["github", await getResourceUrl("img-github"), scriptInfo.namespace, t("open_github", scriptInfo.name), "github"],
-        ["greasyfork", await getResourceUrl("img-greasyfork"), pkg.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
-        ["openuserjs", await getResourceUrl("img-openuserjs"), pkg.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
+        ["greasyfork", await getResourceUrl("img-greasyfork"), packageJson.hosts.greasyfork, t("open_greasyfork", scriptInfo.name), "greasyfork"],
+        ["openuserjs", await getResourceUrl("img-openuserjs"), packageJson.hosts.openuserjs, t("open_openuserjs", scriptInfo.name), "openuserjs"],
     ];
     const hostLink = links.find(([name]) => name === host);
     const otherLinks = links.filter(([name]) => name !== host);
@@ -2322,13 +2337,13 @@ async function mountCfgMenu() {
                 const textElem = document.createElement("span");
                 textElem.textContent = t(`feature_desc_${featKey}`);
                 let adornmentElem;
-                const adornContent = (_b = ftInfo.textAdornment) === null || _b === void 0 ? void 0 : _b.call(ftInfo);
-                const adornContentAw = adornContent instanceof Promise ? await adornContent : adornContent;
-                if ((typeof adornContent === "string" || adornContent instanceof Promise) && typeof adornContentAw !== "undefined") {
+                const adornContentAsync = (_b = ftInfo.textAdornment) === null || _b === void 0 ? void 0 : _b.call(ftInfo);
+                const adornContent = adornContentAsync instanceof Promise ? await adornContentAsync : adornContentAsync;
+                if ((typeof adornContentAsync === "string" || adornContentAsync instanceof Promise) && typeof adornContent !== "undefined") {
                     adornmentElem = document.createElement("span");
                     adornmentElem.id = `bytm-ftitem-${featKey}-adornment`;
                     adornmentElem.classList.add("bytm-ftitem-adornment");
-                    adornmentElem.innerHTML = adornContentAw;
+                    setInnerHtml(adornmentElem, adornContent);
                 }
                 let helpElem;
                 // @ts-ignore
@@ -2343,7 +2358,7 @@ async function mountCfgMenu() {
                         helpElem.ariaLabel = helpElem.title = t("feature_help_button_tooltip", t(`feature_desc_${featKey}`));
                         helpElem.role = "button";
                         helpElem.tabIndex = 0;
-                        helpElem.innerHTML = helpElemImgHtml;
+                        setInnerHtml(helpElem, helpElemImgHtml);
                         onInteraction(helpElem, async (e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -2966,11 +2981,11 @@ function retranslateWelcomeMenu() {
             e.textContent = e.ariaLabel = t("close");
             e.ariaLabel = e.title = t("close_menu_tooltip");
         },
-        "#bytm-welcome-text-line1": (e) => e.innerHTML = e.ariaLabel = t("welcome_text_line_1"),
-        "#bytm-welcome-text-line2": (e) => e.innerHTML = e.ariaLabel = t("welcome_text_line_2", scriptInfo.name),
-        "#bytm-welcome-text-line3": (e) => e.innerHTML = e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${pkg.hosts.greasyfork}/feedback`), ...getLink(pkg.hosts.openuserjs)),
-        "#bytm-welcome-text-line4": (e) => e.innerHTML = e.ariaLabel = t("welcome_text_line_4", ...getLink(pkg.funding.url)),
-        "#bytm-welcome-text-line5": (e) => e.innerHTML = e.ariaLabel = t("welcome_text_line_5", ...getLink(pkg.bugs.url)),
+        "#bytm-welcome-text-line1": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_1")),
+        "#bytm-welcome-text-line2": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_2", scriptInfo.name)),
+        "#bytm-welcome-text-line3": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_3", scriptInfo.name, ...getLink(`${packageJson.hosts.greasyfork}/feedback`), ...getLink(packageJson.hosts.openuserjs))),
+        "#bytm-welcome-text-line4": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_4", ...getLink(packageJson.funding.url))),
+        "#bytm-welcome-text-line5": (e) => setInnerHtml(e, e.ariaLabel = t("welcome_text_line_5", ...getLink(packageJson.bugs.url))),
     };
     for (const [selector, fn] of Object.entries(changes)) {
         const el = document.querySelector(selector);
@@ -3088,7 +3103,7 @@ async function improveLogo() {
             listener: (logoElem) => {
                 var _a;
                 logoElem.classList.add("bytm-mod-logo", "bytm-no-select");
-                logoElem.innerHTML = svg;
+                setInnerHtml(logoElem, svg);
                 logoElem.querySelectorAll("ellipse").forEach((e) => {
                     e.classList.add("bytm-mod-logo-ellipse");
                 });
@@ -3333,6 +3348,8 @@ async function fixSpacing() {
 //#region ab.queue btns
 async function initAboveQueueBtns() {
     const { scrollToActiveSongBtn, clearQueueBtn } = getFeatures();
+    if (!await addStyleFromResource("css-above_queue_btns"))
+        error("Couldn't add CSS for above queue buttons");
     const contBtns = [
         {
             condition: scrollToActiveSongBtn,
@@ -3385,8 +3402,6 @@ async function initAboveQueueBtns() {
                 siteEvents.on("fullscreenToggled", (isFullscreen) => {
                     headerEl.classList[isFullscreen ? "add" : "remove"]("hidden");
                 });
-                if (!await addStyleFromResource("css-above_queue_btns"))
-                    return error("Couldn't add CSS for above queue buttons");
                 const wrapperElem = document.createElement("div");
                 wrapperElem.id = "bytm-above-queue-btn-wrapper";
                 for (const item of contBtns) {
@@ -3458,18 +3473,23 @@ async function initThumbnailOverlay() {
             }
         };
         const applyThumbUrl = async (watchId) => {
-            const thumbUrl = await getBestThumbnailUrl(watchId);
-            if (thumbUrl) {
-                const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
-                const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
-                if (toggleBtnElem)
-                    toggleBtnElem.href = thumbUrl;
-                if (thumbImgElem)
-                    thumbImgElem.src = thumbUrl;
-                log("Applied thumbnail URL to overlay:", thumbUrl);
+            try {
+                const thumbUrl = await getBestThumbnailUrl(watchId);
+                if (thumbUrl) {
+                    const toggleBtnElem = document.querySelector("#bytm-thumbnail-overlay-toggle");
+                    const thumbImgElem = document.querySelector("#bytm-thumbnail-overlay-img");
+                    if (toggleBtnElem)
+                        toggleBtnElem.href = thumbUrl;
+                    if (thumbImgElem)
+                        thumbImgElem.src = thumbUrl;
+                    log("Applied thumbnail URL to overlay:", thumbUrl);
+                }
+                else
+                    error("Couldn't get thumbnail URL for watch ID", watchId);
             }
-            else
-                error("Couldn't get thumbnail URL for watch ID", watchId);
+            catch (err) {
+                error("Couldn't apply thumbnail URL to overlay due to an error:", err);
+            }
         };
         const unsubWatchIdChanged = siteEvents.on("watchIdChanged", (watchId) => {
             unsubWatchIdChanged();
@@ -3481,62 +3501,67 @@ async function initThumbnailOverlay() {
             });
         });
         const createElements = async () => {
-            // overlay
-            const overlayElem = document.createElement("div");
-            overlayElem.id = "bytm-thumbnail-overlay";
-            overlayElem.title = ""; // prevent child titles from propagating
-            overlayElem.classList.add("bytm-no-select");
-            overlayElem.style.display = "none";
-            let indicatorElem;
-            if (getFeature("thumbnailOverlayShowIndicator")) {
-                indicatorElem = document.createElement("img");
-                indicatorElem.id = "bytm-thumbnail-overlay-indicator";
-                indicatorElem.src = await getResourceUrl("icon-image");
-                indicatorElem.role = "presentation";
-                indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
-                indicatorElem.ariaHidden = "true";
-                indicatorElem.style.display = "none";
-                indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
-            }
-            const thumbImgElem = document.createElement("img");
-            thumbImgElem.id = "bytm-thumbnail-overlay-img";
-            thumbImgElem.role = "presentation";
-            thumbImgElem.ariaHidden = "true";
-            thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
-            overlayElem.appendChild(thumbImgElem);
-            playerEl.appendChild(overlayElem);
-            indicatorElem && playerEl.appendChild(indicatorElem);
-            siteEvents.on("watchIdChanged", async (watchId) => {
-                invertOverlay = false;
-                applyThumbUrl(watchId);
-                updateOverlayVisibility();
-            });
-            const params = new URL(location.href).searchParams;
-            if (params.has("v")) {
-                applyThumbUrl(params.get("v"));
-                updateOverlayVisibility();
-            }
-            // toggle button
-            if (toggleBtnShown) {
-                const toggleBtnElem = createRipple(document.createElement("a"));
-                toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
-                toggleBtnElem.role = "button";
-                toggleBtnElem.tabIndex = 0;
-                toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
-                onInteraction(toggleBtnElem, (e) => {
-                    if (e.shiftKey)
-                        return openInTab(toggleBtnElem.href, false);
-                    invertOverlay = !invertOverlay;
+            try {
+                // overlay
+                const overlayElem = document.createElement("div");
+                overlayElem.id = "bytm-thumbnail-overlay";
+                overlayElem.title = ""; // prevent child titles from propagating
+                overlayElem.classList.add("bytm-no-select");
+                overlayElem.style.display = "none";
+                let indicatorElem;
+                if (getFeature("thumbnailOverlayShowIndicator")) {
+                    indicatorElem = document.createElement("img");
+                    indicatorElem.id = "bytm-thumbnail-overlay-indicator";
+                    indicatorElem.src = await getResourceUrl("icon-image");
+                    indicatorElem.role = "presentation";
+                    indicatorElem.title = indicatorElem.ariaLabel = t("thumbnail_overlay_indicator_tooltip");
+                    indicatorElem.ariaHidden = "true";
+                    indicatorElem.style.display = "none";
+                    indicatorElem.style.opacity = String(getFeature("thumbnailOverlayIndicatorOpacity") / 100);
+                }
+                const thumbImgElem = document.createElement("img");
+                thumbImgElem.id = "bytm-thumbnail-overlay-img";
+                thumbImgElem.role = "presentation";
+                thumbImgElem.ariaHidden = "true";
+                thumbImgElem.style.objectFit = getFeature("thumbnailOverlayImageFit");
+                overlayElem.appendChild(thumbImgElem);
+                playerEl.appendChild(overlayElem);
+                indicatorElem && playerEl.appendChild(indicatorElem);
+                siteEvents.on("watchIdChanged", async (watchId) => {
+                    invertOverlay = false;
+                    applyThumbUrl(watchId);
                     updateOverlayVisibility();
                 });
-                const imgElem = document.createElement("img");
-                imgElem.classList.add("bytm-generic-btn-img");
-                toggleBtnElem.appendChild(imgElem);
-                addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
-                    listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
-                });
+                const params = new URL(location.href).searchParams;
+                if (params.has("v")) {
+                    applyThumbUrl(params.get("v"));
+                    updateOverlayVisibility();
+                }
+                // toggle button
+                if (toggleBtnShown) {
+                    const toggleBtnElem = createRipple(document.createElement("a"));
+                    toggleBtnElem.id = "bytm-thumbnail-overlay-toggle";
+                    toggleBtnElem.role = "button";
+                    toggleBtnElem.tabIndex = 0;
+                    toggleBtnElem.classList.add("ytmusic-player-bar", "bytm-generic-btn", "bytm-no-select");
+                    onInteraction(toggleBtnElem, (e) => {
+                        if (e.shiftKey)
+                            return openInTab(toggleBtnElem.href, false);
+                        invertOverlay = !invertOverlay;
+                        updateOverlayVisibility();
+                    });
+                    const imgElem = document.createElement("img");
+                    imgElem.classList.add("bytm-generic-btn-img");
+                    toggleBtnElem.appendChild(imgElem);
+                    addSelectorListener("playerBarMiddleButtons", "ytmusic-like-button-renderer#like-button-renderer", {
+                        listener: (likeContainer) => likeContainer.insertAdjacentElement("afterend", toggleBtnElem),
+                    });
+                }
+                log("Added thumbnail overlay");
             }
-            log("Added thumbnail overlay");
+            catch (err) {
+                error("Couldn't create thumbnail overlay elements due to an error:", err);
+            }
         };
         addSelectorListener("mainPanel", playerSelector, {
             listener(playerEl) {
@@ -3815,7 +3840,6 @@ async function remTimeRestoreTime() {
                 let vidElem;
                 const doRestoreTime = async () => {
                     var _a;
-                    dbg("Restoring time to", entry.songTime);
                     if (!vidElem)
                         vidElem = await waitVideoElementReady();
                     const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
@@ -3879,7 +3903,6 @@ async function remTimeUpsertEntry(data) {
 }
 /** Deletes an entry in the "remember cache" */
 async function remTimeDeleteEntry(watchID) {
-    dbg("Deleting entry with watchID", watchID);
     remVidsCache = [...remVidsCache.filter(entry => entry.watchID !== watchID)];
     await GM.setValue("bytm-rem-songs", JSON.stringify(remVidsCache));
 }const inputIgnoreTagNames = ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"];
@@ -4183,7 +4206,7 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
                 const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
                 const imgHtml = await resourceAsString(`icon-auto_like${toggled ? "_enabled" : ""}`);
                 if (imgEl && imgHtml)
-                    imgEl.innerHTML = imgHtml;
+                    setInnerHtml(imgEl, imgHtml);
                 if (autoLikeStore.getData().channels.find((ch) => ch.id === chanId) === undefined) {
                     await autoLikeStore.setData({
                         channels: [
@@ -4226,7 +4249,7 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         const imgEl = buttonEl.querySelector(".bytm-generic-btn-img");
         const imgHtml = await resourceAsString(`icon-auto_like${enabled ? "_enabled" : ""}`);
         if (imgEl && imgHtml)
-            imgEl.innerHTML = imgHtml;
+            setInnerHtml(imgEl, imgHtml);
     });
 }//#region misc
 let domain;
@@ -4326,17 +4349,24 @@ function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
 }
 /** Returns the best available thumbnail URL for a video with the given watch ID */
 async function getBestThumbnailUrl(watchId) {
-    const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
-    for (const quality of priorityList) {
-        let response;
-        const url = getThumbnailUrl(watchId, quality);
-        try {
-            response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+    try {
+        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+        for (const quality of priorityList) {
+            let response;
+            const url = getThumbnailUrl(watchId, quality);
+            try {
+                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+            }
+            catch (err) {
+                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+                void err;
+            }
+            if (response && response.status < 300 && response.status >= 200)
+                return url;
         }
-        catch (e) {
-        }
-        if (response && response.status < 300 && response.status >= 200)
-            return url;
+    }
+    catch (err) {
+        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
     }
 }
 /** Opens the given URL in a new tab, using GM.openInTab if available */
@@ -4498,15 +4528,13 @@ function info(...args) {
 function warn(...args) {
     console.warn(consPrefix, ...args);
 }
-let errorDialog;
 function getErrorDialog(errName, args) {
-    if (errorDialog)
-        return errorDialog;
-    return errorDialog = new MarkdownDialog({
+    return new MarkdownDialog({
         id: "generic-error",
         height: 400,
         width: 500,
         small: true,
+        destroyOnClose: true,
         renderHeader() {
             const header = document.createElement("h2");
             header.classList.add("bytm-dialog-title");
@@ -4516,7 +4544,9 @@ function getErrorDialog(errName, args) {
             header.textContent = header.ariaLabel = errName;
             return header;
         },
-        body: args.join(" "),
+        body: `\
+${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
+${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
     });
 }
 /** Logs all passed values to the console as an error, no matter the log level. */
@@ -4525,12 +4555,13 @@ function error(...args) {
     console.error(consPrefix, ...args);
     if (getFeature("showToastOnGenericError")) {
         const errName = (_b = (_a = args.find(a => a instanceof Error)) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : t("error");
-        showIconToast({
-            message: t("generic_error_toast", errName),
+        UserUtils.debounce(() => showIconToast({
+            message: t("generic_error_toast_encountered_error_type", errName),
+            subtitle: t("generic_error_toast_click_for_details"),
             icon: "icon-error",
             iconFill: "var(--bytm-error-col)",
             onClick: () => getErrorDialog(errName, Array.isArray(args) ? args : []).open(),
-        });
+        }))();
     }
 }
 /** Logs all passed values to the console with a debug-specific prefix */
@@ -5153,7 +5184,7 @@ async function addVolumeSliderLabel(sliderElem, sliderContainer) {
         if (linkIconHtml) {
             const linkIconElem = document.createElement("div");
             linkIconElem.id = "bytm-vol-slider-shared";
-            linkIconElem.innerHTML = linkIconHtml;
+            setInnerHtml(linkIconElem, linkIconHtml);
             linkIconElem.role = "alert";
             linkIconElem.ariaLive = "polite";
             linkIconElem.title = linkIconElem.ariaLabel = t("volume_shared_tooltip");
@@ -5265,8 +5296,7 @@ async function setInitialTabVolume(sliderElem) {
     sliderElem.value = String(initialVol);
     sliderElem.dispatchEvent(new Event("change", { bubbles: true }));
     log(`Set initial tab volume to ${initialVol}%`);
-}//#region dependencies
-/** Decoration elements that can be added next to the label */
+}/** Decoration elements that can be added next to the label */
 const adornments = {
     advanced: async () => getAdornHtml("bytm-advanced-mode-icon", t("advanced_mode"), "icon-advanced_mode"),
     experimental: async () => getAdornHtml("bytm-experimental-icon", t("experimental_feature"), "icon-experimental"),
@@ -5326,6 +5356,7 @@ const options = {
         { value: "lighter", label: t("color_lightness_lighter") },
     ],
 };
+//#region rendering
 /** Renders a long number with a thousands separator */
 function renderLongNumberValue(val, maximumFractionDigits = 0) {
     return Number(val).toLocaleString(getLocale().replace(/_/g, "-"), {
@@ -5371,7 +5402,7 @@ function renderLongNumberValue(val, maximumFractionDigits = 0) {
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 const featInfo = {
-    //#region layout
+    //#region cat:layout
     watermarkEnabled: {
         type: "toggle",
         category: "layout",
@@ -5504,7 +5535,7 @@ const featInfo = {
     //   default: "disabled",
     //   textAdornment: adornments.reloadRequired,
     // },
-    //#region volume
+    //#region cat:volume
     volumeSliderLabel: {
         type: "toggle",
         category: "volume",
@@ -5567,7 +5598,7 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
-    //#region song lists
+    //#region cat:song lists
     lyricsQueueButton: {
         type: "toggle",
         category: "songLists",
@@ -5603,7 +5634,7 @@ const featInfo = {
         default: true,
         textAdornment: adornments.reloadRequired,
     },
-    //#region behavior
+    //#region cat:behavior
     disableBeforeUnloadPopup: {
         type: "toggle",
         category: "behavior",
@@ -5674,7 +5705,7 @@ const featInfo = {
         reloadRequired: false,
         enable: noop,
     },
-    //#region input
+    //#region cat:input
     arrowKeySupport: {
         type: "toggle",
         category: "input",
@@ -5774,7 +5805,7 @@ const featInfo = {
         category: "input",
         click: () => getAutoLikeDialog().then(d => d.open()),
     },
-    //#region lyrics
+    //#region cat:lyrics
     geniusLyrics: {
         type: "toggle",
         category: "lyrics",
@@ -5851,7 +5882,7 @@ const featInfo = {
     //   reloadRequired: false,
     //   enable: noop,
     // },
-    //#region integrations
+    //#region cat:integrations
     disableDarkReaderSites: {
         type: "select",
         category: "integrations",
@@ -5879,7 +5910,7 @@ const featInfo = {
         default: "darker",
         textAdornment: adornments.reloadRequired,
     },
-    //#region general
+    //#region cat:general
     locale: {
         type: "select",
         category: "general",
@@ -5931,7 +5962,7 @@ const featInfo = {
         category: "general",
         min: 0,
         max: 15,
-        default: 3,
+        default: 4,
         step: 0.5,
         unit: "s",
         reloadRequired: false,
@@ -5939,7 +5970,7 @@ const featInfo = {
         textAdornment: adornments.advanced,
         enable: noop,
         change: () => showIconToast({
-            message: "Example",
+            message: t("example_toast"),
             iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
         }),
     },
@@ -6040,9 +6071,11 @@ const migrations = {
     // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
     // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
     // 6 -> 7 (v2.2)
-    7: (oldData) => useDefaultConfig(oldData, [
+    7: (oldData) => useNewDefaultIfUnchanged(useDefaultConfig(oldData, [
         "showToastOnGenericError", "sponsorBlockIntegration",
         "themeSongIntegration", "themeSongLightness",
+    ]), [
+        { key: "toastDuration", oldDefault: 3 },
     ]),
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -6181,6 +6214,7 @@ const globalFuncs = {
     getResourceUrl,
     getSessionId,
     // dom:
+    setInnerHtml,
     addSelectorListener,
     onInteraction,
     getVideoTime,
@@ -6616,7 +6650,7 @@ function initObservers() {
 }/** Whether the DOM has finished loading and elements can be added or modified */
 let domLoaded = false;
 document.addEventListener("DOMContentLoaded", () => domLoaded = true);
-//#region video time, volume
+//#region vid time & vol.
 /** Returns the video element selector string based on the current domain */
 const getVideoSelector = () => getDomain() === "ytm" ? "ytmusic-player video" : "#player-container ytd-player video";
 /** Returns the video element based on the current domain */
@@ -6746,7 +6780,7 @@ async function addStyle(css, ref, transform = (c) => c) {
     return elem;
 }
 /**
- * Adds a global style element with the contents fetched from the specified CSS resource.
+ * Adds a global style element with the contents fetched from the specified resource starting with `css-`
  * The CSS can be transformed using the provided function before being added to the DOM.
  */
 async function addStyleFromResource(key, transform = (c) => c) {
@@ -6757,11 +6791,11 @@ async function addStyleFromResource(key, transform = (c) => c) {
     }
     return false;
 }
-/** Sets a global CSS variable on the &lt;document&gt; element */
+/** Sets a global CSS variable on the &lt;document&gt; element with the name `--bytm-global-${name}` */
 function setGlobalCssVar(name, value) {
-    document.documentElement.style.setProperty(`--bytm-global-${name}`, String(value));
+    document.documentElement.style.setProperty(`--bytm-global-${name.toLowerCase().trim()}`, String(value));
 }
-/** Sets multiple global CSS variables on the &lt;document&gt; element */
+/** Sets multiple global CSS variables on the &lt;document&gt; element with the name `--bytm-global-${name}` */
 function setGlobalCssVars(vars) {
     for (const [name, value] of Object.entries(vars))
         setGlobalCssVar(name, value);
@@ -6799,6 +6833,18 @@ function copyToClipboard(text) {
     catch (_a) {
         alert(t("copy_to_clipboard_error", String(text)));
     }
+}
+let ttPolicy;
+/** On Firefox, sets innerHTML directly, on Chromium, uses a [TrustedTypes](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) policy to set the HTML */
+function setInnerHtml(element, html) {
+    var _a, _b;
+    if (!ttPolicy && ((_a = window === null || window === void 0 ? void 0 : window.trustedTypes) === null || _a === void 0 ? void 0 : _a.createPolicy))
+        ttPolicy = (_b = window.trustedTypes) === null || _b === void 0 ? void 0 : _b.createPolicy("default", {
+            createHTML: (unsafeHtml) => DOMPurify.sanitize(unsafeHtml, {
+                RETURN_TRUSTED_TYPE: false,
+            }),
+        });
+    element.innerHTML = ttPolicy ? ttPolicy.createHTML(html) : html;
 }/**
  * Constructs a URL from a base URL and a record of query parameters.
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
@@ -7230,7 +7276,8 @@ function registerDevCommands() {
             alert("Imported data. Reload the page to apply changes.");
         }
     });
-    GM.registerMenuCommand("Throw Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    GM.registerMenuCommand("Throw specific Error", () => error("Test error thrown by user command:", new SyntaxError("Test error")));
+    GM.registerMenuCommand("Throw generic Error", () => error());
     GM.registerMenuCommand("Example MarkdownDialog", async () => {
         const mdDlg = new MarkdownDialog({
             id: "example",
@@ -7247,4 +7294,4 @@ function registerDevCommands() {
     });
     log("Registered dev menu commands");
 }
-preInit();})(UserUtils,compareVersions,marked);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
+preInit();})(UserUtils,compareVersions,marked,DOMPurify);//# sourceMappingURL=http://localhost:8710/BetterYTM.user.js.map
