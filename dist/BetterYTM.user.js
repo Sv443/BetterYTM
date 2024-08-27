@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,54 +33,54 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/22591348/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/plus_circle_small.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/a116d98b/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.1.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -132,7 +132,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "22591348";
+const buildNumberRaw = "a116d98b";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -416,37 +416,29 @@ class BytmDialog extends UserUtils.NanoEmitter {
      * Prevents default action and immediate propagation of the passed event
      */
     async open(e) {
-        var _a, _b, _c;
+        var _a;
         e === null || e === void 0 ? void 0 : e.preventDefault();
         e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
         if (this.isOpen())
             return;
         this.dialogOpen = true;
-        if (openDialogs.includes(this.id))
+        if (openDialogs.includes(this.id)) {
+            openDialogs.splice(openDialogs.indexOf(this.id), 1);
+            currentDialogId = (_a = openDialogs[0]) !== null && _a !== void 0 ? _a : null;
+            this.removeBgInert();
+            this.close();
             throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
+        }
         if (!this.isMounted())
             await this.mount();
+        this.setBgInert();
         const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
         if (!dialogBg)
             return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
         dialogBg.style.visibility = "visible";
         dialogBg.style.display = "block";
-        dialogBg.inert = false;
         currentDialogId = this.id;
         openDialogs.unshift(this.id);
-        // make sure all other dialogs are inert
-        for (const dialogId of openDialogs) {
-            if (dialogId !== this.id) {
-                // special treatment for the old config menu, as always
-                if (dialogId === "cfg-menu")
-                    (_a = document.querySelector("#bytm-cfg-menu-bg")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
-                else
-                    (_b = document.querySelector(`#bytm-${dialogId}-dialog-bg`)) === null || _b === void 0 ? void 0 : _b.setAttribute("inert", "true");
-            }
-        }
-        // make sure body is inert and scroll is locked
-        document.body.classList.add("bytm-disable-scroll");
-        (_c = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _c === void 0 ? void 0 : _c.setAttribute("inert", "true");
         this.events.emit("open");
         emitInterface("bytm:dialogOpened", this);
         emitInterface(`bytm:dialogOpened:${this.id}`, this);
@@ -454,7 +446,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
     }
     /** Closes the dialog - prevents default action and immediate propagation of the passed event */
     close(e) {
-        var _a, _b, _c, _d;
+        var _a;
         e === null || e === void 0 ? void 0 : e.preventDefault();
         e === null || e === void 0 ? void 0 : e.stopImmediatePropagation();
         if (!this.isOpen())
@@ -465,22 +457,9 @@ class BytmDialog extends UserUtils.NanoEmitter {
             return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
         dialogBg.style.visibility = "hidden";
         dialogBg.style.display = "none";
-        dialogBg.inert = true;
         openDialogs.splice(openDialogs.indexOf(this.id), 1);
         currentDialogId = (_a = openDialogs[0]) !== null && _a !== void 0 ? _a : null;
-        // make sure the new top-most dialog is not inert
-        if (currentDialogId) {
-            // special treatment for the old config menu, as always
-            if (currentDialogId === "cfg-menu")
-                (_b = document.querySelector("#bytm-cfg-menu-bg")) === null || _b === void 0 ? void 0 : _b.removeAttribute("inert");
-            else
-                (_c = document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)) === null || _c === void 0 ? void 0 : _c.removeAttribute("inert");
-        }
-        // remove the scroll lock and inert attribute on the body if no dialogs are open
-        if (openDialogs.length === 0) {
-            document.body.classList.remove("bytm-disable-scroll");
-            (_d = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _d === void 0 ? void 0 : _d.removeAttribute("inert");
-        }
+        this.removeBgInert();
         this.events.emit("close");
         emitInterface("bytm:dialogClosed", this);
         emitInterface(`bytm:dialogClosed:${this.id}`, this);
@@ -489,6 +468,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         // don't destroy *and* unmount at the same time
         else if (this.options.unmountOnClose)
             this.unmount();
+        this.removeBgInert();
     }
     /** Returns true if the dialog is currently open */
     isOpen() {
@@ -514,6 +494,44 @@ class BytmDialog extends UserUtils.NanoEmitter {
         return openDialogs;
     }
     //#region protected
+    /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
+    removeBgInert() {
+        var _a, _b, _c;
+        // make sure the new top-most dialog is not inert
+        if (currentDialogId) {
+            // special treatment for the old config menu, as always
+            if (currentDialogId === "cfg-menu")
+                (_a = document.querySelector("#bytm-cfg-menu-bg")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert");
+            else
+                (_b = document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)) === null || _b === void 0 ? void 0 : _b.removeAttribute("inert");
+        }
+        // remove the scroll lock and inert attribute on the body if no dialogs are open
+        if (openDialogs.length === 0) {
+            document.body.classList.remove("bytm-disable-scroll");
+            (_c = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _c === void 0 ? void 0 : _c.removeAttribute("inert");
+        }
+        const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+        dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.setAttribute("inert", "true");
+    }
+    /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
+    setBgInert() {
+        var _a, _b, _c;
+        // make sure all other dialogs are inert
+        for (const dialogId of openDialogs) {
+            if (dialogId !== this.id) {
+                // special treatment for the old config menu, as always
+                if (dialogId === "cfg-menu")
+                    (_a = document.querySelector("#bytm-cfg-menu-bg")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true");
+                else
+                    (_b = document.querySelector(`#bytm-${dialogId}-dialog-bg`)) === null || _b === void 0 ? void 0 : _b.setAttribute("inert", "true");
+            }
+        }
+        // make sure body is inert and scroll is locked
+        document.body.classList.add("bytm-disable-scroll");
+        (_c = document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")) === null || _c === void 0 ? void 0 : _c.setAttribute("inert", "true");
+        const dialogBg = document.querySelector(`#bytm-${this.id}-dialog-bg`);
+        dialogBg === null || dialogBg === void 0 ? void 0 : dialogBg.removeAttribute("inert");
+    }
     /** Called once to attach all generic event listeners */
     attachListeners(bgElem) {
         if (this.options.closeOnBgClick) {
@@ -530,7 +548,6 @@ class BytmDialog extends UserUtils.NanoEmitter {
             });
         }
     }
-    //#region private
     /** Returns the dialog content element and all its children */
     async getDialogContent() {
         var _a, _b, _c, _d;
@@ -1216,6 +1233,7 @@ async function createLongBtn(_a) {
             : await this.opts.body();
         const markdownEl = document.createElement("div");
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+        markdownEl.tabIndex = 0;
         setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
         bodyEl.appendChild(markdownEl);
         return bodyEl;
@@ -3443,7 +3461,7 @@ async function initThumbnailOverlay() {
                 return;
             const behavior = getFeature("thumbnailOverlayBehavior");
             let showOverlay = behavior === "always";
-            const isVideo = currentMediaType() === "video";
+            const isVideo = getCurrentMediaType() === "video";
             if (behavior === "videosOnly" && isVideo)
                 showOverlay = true;
             else if (behavior === "songsOnly" && !isVideo)
@@ -3845,7 +3863,7 @@ async function remTimeRestoreTime() {
                     const vidRestoreTime = entry.songTime - ((_a = getFeature("rememberSongTimeReduction")) !== null && _a !== void 0 ? _a : 0);
                     vidElem.currentTime = UserUtils.clamp(Math.max(vidRestoreTime, 0), 0, vidElem.duration);
                     await remTimeDeleteEntry(entry.watchID);
-                    info(`Restored ${currentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
+                    info(`Restored ${getCurrentMediaType()} time to ${Math.floor(vidRestoreTime / 60)}m, ${(vidRestoreTime % 60).toFixed(1)}s`, LogLevel.Info);
                 };
                 if (!domLoaded)
                     document.addEventListener("DOMContentLoaded", doRestoreTime);
@@ -4068,10 +4086,10 @@ async function initAutoLike() {
                     if (likeRendererEl.getAttribute("like-status") !== "LIKE") {
                         likeBtnEl.click();
                         getFeature("autoLikeShowToast") && showIconToast({
-                            message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
+                            message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
                             icon: "icon-auto_like",
                         });
-                        log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+                        log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
                     }
                 };
                 timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);
@@ -4546,7 +4564,7 @@ function getErrorDialog(errName, args) {
         },
         body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", consPrefixDbg, packageJson.bugs.url)}`,
     });
 }
 /** Logs all passed values to the console as an error, no matter the log level. */
@@ -4734,7 +4752,7 @@ function sanitizeArtists(artists) {
 async function getCurrentLyricsUrl() {
     try {
         // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-        const isVideo = currentMediaType() === "video";
+        const isVideo = getCurrentMediaType() === "video";
         const songTitleElem = document.querySelector(".content-info-wrapper > yt-formatted-string");
         const songMetaElem = document.querySelector("span.subtitle > yt-formatted-string :first-child");
         if (!songTitleElem || !songMetaElem)
@@ -6221,6 +6239,7 @@ const globalFuncs = {
     getThumbnailUrl,
     getBestThumbnailUrl,
     waitVideoElementReady,
+    getCurrentMediaType,
     // translations:
     /**/ setLocale: setLocaleInterface,
     getLocale,
@@ -6269,7 +6288,7 @@ function initInterface() {
         setGlobalProp(key, value);
     log("Initialized BYTM interface");
 }
-/** Sets a global property on the unsafeWindow.BYTM object */
+/** Sets a global property on the unsafeWindow.BYTM object - ⚠️ use with caution as these props can be accessed by any script on the page! */
 function setGlobalProp(key, value) {
     // use unsafeWindow so the properties are available to plugins outside of the userscript's scope
     const win = getUnsafeWindow();
@@ -6813,17 +6832,16 @@ function clearNode(element) {
     element.parentNode.removeChild(element);
 }
 /**
- * Checks if the currently playing media is a song or a video.
- * Only works on YTM and will throw on YT!
- * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
+ * Returns an identifier for the currently playing media type on YTM (song or video).
+ * Only works on YTM and will throw on YT or if {@linkcode waitVideoElementReady} hasn't been awaited yet.
  */
-function currentMediaType() {
+function getCurrentMediaType() {
     if (getDomain() === "yt")
         throw new Error("currentMediaType() is only available on YTM!");
     const songImgElem = document.querySelector("ytmusic-player #song-image");
     if (!songImgElem)
-        throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
-    return UserUtils.getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
+        throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
+    return window.getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 /** Copies the provided text to the clipboard and shows an error message for manual copying if the grant `GM.setClipboard` is not given. */
 function copyToClipboard(text) {
