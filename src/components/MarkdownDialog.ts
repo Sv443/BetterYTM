@@ -1,4 +1,4 @@
-import { setInnerHtmlTrusted } from "src/utils/dom.js";
+import { setInnerHtml } from "src/utils/dom.js";
 import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { marked } from "marked";
 
@@ -39,8 +39,8 @@ export class MarkdownDialog extends BytmDialog {
       : await this.opts.body();
 
     const markdownEl = document.createElement("div");
-    markdownEl.classList.add("bytm-markdown-dialog-content");
-    setInnerHtmlTrusted(markdownEl, await MarkdownDialog.parseMd(mdCont));
+    markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+    setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
 
     bodyEl.appendChild(markdownEl);
 
