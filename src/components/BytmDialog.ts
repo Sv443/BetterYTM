@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "@sv443-network/userutils";
-import { clearInner, dbg, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -155,7 +155,6 @@ export class BytmDialog extends NanoEmitter<{
 
     if(openDialogs.includes(this.id)) {
       openDialogs.splice(openDialogs.indexOf(this.id), 1);
-      dbg("openDialogs", openDialogs);
       currentDialogId = openDialogs[0] ?? null;
       this.removeBgInert();
       this.close();
@@ -216,6 +215,8 @@ export class BytmDialog extends NanoEmitter<{
     // don't destroy *and* unmount at the same time
     else if(this.options.unmountOnClose)
       this.unmount();
+
+    this.removeBgInert();
   }
 
   /** Returns true if the dialog is currently open */
@@ -253,7 +254,6 @@ export class BytmDialog extends NanoEmitter<{
   protected removeBgInert() {
     // make sure the new top-most dialog is not inert
     if(currentDialogId) {
-      dbg("currentDialogId", currentDialogId);
       // special treatment for the old config menu, as always
       if(currentDialogId === "cfg-menu")
         document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
@@ -268,11 +268,7 @@ export class BytmDialog extends NanoEmitter<{
     }
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
-
-    if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-
-    dialogBg.inert = true;
+    dialogBg?.setAttribute("inert", "true");
   }
 
   /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
@@ -293,11 +289,7 @@ export class BytmDialog extends NanoEmitter<{
     document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
-
-    if(!dialogBg)
-      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
-
-    dialogBg.removeAttribute("inert");
+    dialogBg?.removeAttribute("inert");
   }
 
   /** Called once to attach all generic event listeners */
