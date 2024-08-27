@@ -74,7 +74,7 @@ function getErrorDialog(errName: string, args: unknown[]) {
     },
     body: `\
 ${args.length > 0 ? args.join(" ") : t("generic_error_dialog_message")}  
-${t("generic_error_dialog_open_console_note", packageJson.bugs.url)}`,
+${t("generic_error_dialog_open_console_note", consPrefixDbg, packageJson.bugs.url)}`,
   });
 }
 

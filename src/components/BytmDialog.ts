@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "@sv443-network/userutils";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, dbg, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -153,11 +153,19 @@ export class BytmDialog extends NanoEmitter<{
       return;
     this.dialogOpen = true;
 
-    if(openDialogs.includes(this.id))
+    if(openDialogs.includes(this.id)) {
+      openDialogs.splice(openDialogs.indexOf(this.id), 1);
+      dbg("openDialogs", openDialogs);
+      currentDialogId = openDialogs[0] ?? null;
+      this.removeBgInert();
+      this.close();
       throw new Error(`A dialog with the same ID of '${this.id}' already exists and is open!`);
+    }
 
     if(!this.isMounted())
       await this.mount();
+
+    this.setBgInert();
 
     const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
 
@@ -166,25 +174,9 @@ export class BytmDialog extends NanoEmitter<{
 
     dialogBg.style.visibility = "visible";
     dialogBg.style.display = "block";
-    dialogBg.inert = false;
 
     currentDialogId = this.id;
     openDialogs.unshift(this.id);
-
-    // make sure all other dialogs are inert
-    for(const dialogId of openDialogs) {
-      if(dialogId !== this.id) {
-        // special treatment for the old config menu, as always
-        if(dialogId === "cfg-menu")
-          document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
-        else
-          document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
-      }
-    }
-
-    // make sure body is inert and scroll is locked
-    document.body.classList.add("bytm-disable-scroll");
-    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
 
     this.events.emit("open");
     emitInterface("bytm:dialogOpened", this as BytmDialog);
@@ -209,25 +201,11 @@ export class BytmDialog extends NanoEmitter<{
 
     dialogBg.style.visibility = "hidden";
     dialogBg.style.display = "none";
-    dialogBg.inert = true;
 
     openDialogs.splice(openDialogs.indexOf(this.id), 1);
     currentDialogId = openDialogs[0] ?? null;
 
-    // make sure the new top-most dialog is not inert
-    if(currentDialogId) {
-      // special treatment for the old config menu, as always
-      if(currentDialogId === "cfg-menu")
-        document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
-      else
-        document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
-    }
-
-    // remove the scroll lock and inert attribute on the body if no dialogs are open
-    if(openDialogs.length === 0) {
-      document.body.classList.remove("bytm-disable-scroll");
-      document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
-    }
+    this.removeBgInert();
 
     this.events.emit("close");
     emitInterface("bytm:dialogClosed", this as BytmDialog);
@@ -271,6 +249,57 @@ export class BytmDialog extends NanoEmitter<{
 
   //#region protected
 
+  /** Sets this dialog and the body to be inert and makes sure the top-most dialog is not inert. If no other dialogs are open, the body is not set to be inert. */
+  protected removeBgInert() {
+    // make sure the new top-most dialog is not inert
+    if(currentDialogId) {
+      dbg("currentDialogId", currentDialogId);
+      // special treatment for the old config menu, as always
+      if(currentDialogId === "cfg-menu")
+        document.querySelector("#bytm-cfg-menu-bg")?.removeAttribute("inert");
+      else
+        document.querySelector(`#bytm-${currentDialogId}-dialog-bg`)?.removeAttribute("inert");
+    }
+
+    // remove the scroll lock and inert attribute on the body if no dialogs are open
+    if(openDialogs.length === 0) {
+      document.body.classList.remove("bytm-disable-scroll");
+      document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.removeAttribute("inert");
+    }
+
+    const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
+
+    if(!dialogBg)
+      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+
+    dialogBg.inert = true;
+  }
+
+  /** Sets this dialog to be not inert and the body and all other dialogs to be inert */
+  protected setBgInert() {
+    // make sure all other dialogs are inert
+    for(const dialogId of openDialogs) {
+      if(dialogId !== this.id) {
+        // special treatment for the old config menu, as always
+        if(dialogId === "cfg-menu")
+          document.querySelector("#bytm-cfg-menu-bg")?.setAttribute("inert", "true");
+        else
+          document.querySelector(`#bytm-${dialogId}-dialog-bg`)?.setAttribute("inert", "true");
+      }
+    }
+
+    // make sure body is inert and scroll is locked
+    document.body.classList.add("bytm-disable-scroll");
+    document.querySelector(getDomain() === "ytm" ? "ytmusic-app" : "ytd-app")?.setAttribute("inert", "true");
+
+    const dialogBg = document.querySelector<HTMLElement>(`#bytm-${this.id}-dialog-bg`);
+
+    if(!dialogBg)
+      return warn(`Couldn't find background element for dialog with ID '${this.id}'`);
+
+    dialogBg.removeAttribute("inert");
+  }
+
   /** Called once to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
     if(this.options.closeOnBgClick) {
@@ -287,8 +316,6 @@ export class BytmDialog extends NanoEmitter<{
       });
     }
   }
-
-  //#region private
 
   /** Returns the dialog content element and all its children */
   protected async getDialogContent() {

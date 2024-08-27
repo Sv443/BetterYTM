@@ -40,6 +40,7 @@ export class MarkdownDialog extends BytmDialog {
 
     const markdownEl = document.createElement("div");
     markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
+    markdownEl.tabIndex = 0;
     setInnerHtml(markdownEl, await MarkdownDialog.parseMd(mdCont));
 
     bodyEl.appendChild(markdownEl);
