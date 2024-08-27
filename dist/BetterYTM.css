@@ -726,15 +726,15 @@ body .bytm-ripple.slower {
   padding: 10px 16px;
   border-radius: 3px;
   font-size: 1.5rem;
+  cursor: default;
 
   background-color: var(--bytm-toast-bg-color);
   color: var(--bytm-toast-text-color);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 
   transition:
     opacity var(--bytm-toast-transition-time) ease,
     transform var(--bytm-toast-transition-time) ease;
-
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 #bytm-toast.clickable {
