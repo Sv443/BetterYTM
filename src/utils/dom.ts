@@ -210,17 +210,16 @@ export function clearNode(element: Element) {
 }
 
 /**
- * Checks if the currently playing media is a song or a video.  
- * Only works on YTM and will throw on YT!  
- * This function should only be called after awaiting {@linkcode waitVideoElementReady}!
+ * Returns an identifier for the currently playing media type on YTM (song or video).  
+ * Only works on YTM and will throw on YT or if {@linkcode waitVideoElementReady} hasn't been awaited yet.
  */
-export function currentMediaType(): "video" | "song" {
+export function getCurrentMediaType(): "video" | "song" {
   if(getDomain() === "yt")
     throw new Error("currentMediaType() is only available on YTM!");
   const songImgElem = document.querySelector("ytmusic-player #song-image");
   if(!songImgElem)
-    throw new Error("Couldn't find the song image element. Use this function only after `await waitVideoElementReady()`!");
-  return getUnsafeWindow().getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
+    throw new Error("Couldn't find the song image element. Use this function only after awaiting `waitVideoElementReady()`!");
+  return window.getComputedStyle(songImgElem).display !== "none" ? "song" : "video";
 }
 
 /** Copies the provided text to the clipboard and shows an error message for manual copying if the grant `GM.setClipboard` is not given. */

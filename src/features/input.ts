@@ -1,5 +1,5 @@
 import { DataStore, clamp, compress, decompress } from "@sv443-network/userutils";
-import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, currentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
+import { error, getVideoTime, info, log, warn, getDomain, compressionSupported, t, clearNode, resourceAsString, getCurrentChannelId, getCurrentMediaType, sanitizeChannelId, addStyleFromResource, isValidChannelId, getVideoElement, setInnerHtml } from "../utils/index.js";
 import type { AutoLikeData, Domain } from "../types.js";
 import { disableBeforeUnload } from "./behavior.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
@@ -217,10 +217,10 @@ export async function initAutoLike() {
           if(likeRendererEl.getAttribute("like-status") !== "LIKE") {
             likeBtnEl.click();
             getFeature("autoLikeShowToast") && showIconToast({
-              message: t(`auto_liked_a_channels_${currentMediaType()}`, likeChan.name),
+              message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
               icon: "icon-auto_like",
             });
-            log(`Auto-liked ${currentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
+            log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
           }
         };
         timeout = setTimeout(ytmTryAutoLike, autoLikeTimeoutMs);

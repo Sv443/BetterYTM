@@ -383,6 +383,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [getThumbnailUrl()](#getthumbnailurl) - Returns the URL to the thumbnail of the currently playing video
   - [getBestThumbnailUrl()](#getbestthumbnailurl) - Returns the URL to the best quality thumbnail of the currently playing video
   - [waitVideoElementReady()](#waitvideoelementready) - Waits for the video element to be queryable in the DOM - has to be called after `bytm:observersReady`
+  - [getCurrentMediaType()](#getcurrentmediatype) - (On YTM only) returns the type of media that is currently playing (either "video" or "song")
 - Components:
   - [createHotkeyInput()](#createhotkeyinput) - Creates a hotkey input element
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
@@ -865,6 +866,32 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   const videoElement = await unsafeWindow.BYTM.waitVideoElementReady();
 >   console.log("The video element:", videoElement);
 > });
+> ```
+> </details>
+
+<br>
+
+> #### getCurrentMediaType()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.getCurrentMediaType(): "video" | "song"
+> ```
+>   
+> Description:  
+> Returns the type of media that is currently playing (works on YTM only).  
+> It will return `"video"` for videos and `"song"` for songs.  
+> Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet or the function is called on YT.  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> try {
+>   const mediaType = unsafeWindow.BYTM.getCurrentMediaType();
+>   console.log(`The current media type is: ${mediaType}`);
+> }
+> catch(err) {
+>   console.error("Couldn't get the current media type:", err);
+> }
 > ```
 > </details>
 

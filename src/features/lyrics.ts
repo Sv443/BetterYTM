@@ -1,5 +1,5 @@
 import { fetchAdvanced } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log, warn, t, tp, currentMediaType, constructUrl, onInteraction, openInTab } from "../utils/index.js";
+import { error, getResourceUrl, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
@@ -153,7 +153,7 @@ export function sanitizeArtists(artists: string) {
 export async function getCurrentLyricsUrl() {
   try {
     // In videos the video title contains both artist and song title, in "regular" YTM songs, the video title only contains the song title
-    const isVideo = currentMediaType() === "video";
+    const isVideo = getCurrentMediaType() === "video";
 
     const songTitleElem = document.querySelector<HTMLElement>(".content-info-wrapper > yt-formatted-string");
     const songMetaElem = document.querySelector<HTMLElement>("span.subtitle > yt-formatted-string :first-child");
