@@ -83,7 +83,7 @@ export const migrations: DataMigrationsDict = {
       ]), [
         { key: "rememberSongTimeSites", oldDefault: "ytm" },
         { key: "volumeSliderScrollStep", oldDefault: 10 },
-      ],
+      ]
     );
     "removeUpgradeTab" in newData && delete newData.removeUpgradeTab;
     "advancedLyricsFilter" in newData && delete newData.advancedLyricsFilter;
@@ -94,10 +94,14 @@ export const migrations: DataMigrationsDict = {
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
   // 6 -> 7 (v2.2)
-  7: (oldData: FeatureConfig) => useDefaultConfig(oldData, [
-    "showToastOnGenericError", "sponsorBlockIntegration",
-    "themeSongIntegration", "themeSongLightness",
-  ]),
+  7: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
+    useDefaultConfig(oldData, [
+      "showToastOnGenericError", "sponsorBlockIntegration",
+      "themeSongIntegration", "themeSongLightness",
+    ]), [
+      { key: "toastDuration", oldDefault: 3 },
+    ]
+  ),
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */

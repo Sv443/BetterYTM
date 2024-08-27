@@ -1830,11 +1830,16 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > If the second overload is used, the duration will default to the value of the `toastDuration` option in the feature config.  
 >   
 > Properties for first overload:
-> - either of:
->   - `message: string` - The message to show in the toast
->   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
-> - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config) - use `Infinity` for a persistent toast and `0` to not show it at all
-> - `position?: "tl" | "tr" | "bl" | "br"` - Which corner of the screen the toast should show up in (defaults to "tr")
+> - either:
+>   - for showing a string:
+>     - `message: string` - The message to show in the toast
+>     - `subtitle?: string` - An optional subtitle to show below the message
+>   - for showing a generic element:
+>     - `element: HTMLElement` - The element to show in the toast
+>     - `title: string` - The hover and accessibility title of the toast
+> - and any of:
+>   - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config) - use `Infinity` for a persistent toast and `0` to not show it at all
+>   - `position?: ToastPos` - Corner position of the toast on the screen. Can be `"tl"`, `"tr"`, `"bl"` or `"br"` (defaults to `"tr"`)
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1859,17 +1864,22 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > If a toast is already shown, it will be immediately closed and the new one will be shown shortly afterwards.  
 >   
 > Properties:
-> - either of:
->   - `message: string` - The message to show in the toast
->   - `element: HTMLElement` and `title: string` - The element to show in the toast and the hover and accessibility title of the toast
-> - either of:
->   - `iconSrc: string | Promise<string>` - URL of the image to use as the icon
->   - or:
->     - `icon: string` - An SVG resource name starting with `icon-` to use as the icon (see [`assets/resources.json`](assets/resources.json))
+> - either:
+>   - for showing a string:
+>     - `message: string` - The message to show in the toast
+>     - `subtitle?: string` - An optional subtitle to show below the message
+>   - for showing a generic element:
+>     - `element: HTMLElement` - The element to show in the toast
+>     - `title: string` - The hover and accessibility title of the toast
+> - and either:
+>   - for using an &lt;img&gt; with a URL:
+>     - `iconSrc: string | Promise<string>` - URL to the image file to use as the icon
+>   - or when using a BYTM SVG resource:
+>     - `icon: string` - Any SVG resource name (has to start with `icon-`!) to use as the icon (see [`assets/resources.json`](assets/resources.json))
 >     - `iconFill?: string` - CSS color value to set the icon's &lt;path&gt; elements' `fill` property to
-> - any or none of:
+> - and any of:
 >   - `duration?: number` - Duration in milliseconds to show the toast for (defaults to what is set in the feature config)
->   - `position?: "tl" | "tr" | "bl" | "br"` - Position of the toast on the screen. Can be "tl", "tr", "bl" or "br" (defaults to "tr")
+>   - `position?: ToastPos` - Corner position of the toast on the screen. Can be `"tl"`, `"tr"`, `"bl"` or `"br"` (defaults to `"tr"`)
 > 
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 

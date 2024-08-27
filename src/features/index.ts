@@ -9,6 +9,8 @@ import { getAutoLikeDialog } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
 
+//#region re-exports
+
 export * from "./layout.js";
 export * from "./behavior.js";
 export * from "./input.js";
@@ -19,16 +21,11 @@ export * from "./songLists.js";
 export * from "./versionCheck.js";
 export * from "./volume.js";
 
-interface SelectOption<TValue = number | string> {
-  value: TValue;
-  label: string;
-}
+//#region adornments
 
 type AdornmentFunc =
   | ((...args: any[]) => Promise<string | undefined>)
   | Promise<string | undefined>;
-
-//#region dependencies
 
 /** Decoration elements that can be added next to the label */
 const adornments = {
@@ -74,6 +71,13 @@ const combineAdornments = (
   }
 );
 
+//#region select options
+
+interface SelectOption<TValue = number | string> {
+  value: TValue;
+  label: string;
+}
+
 /** Common options for config items of type "select" */
 const options = {
   siteSelection: (): SelectOption<SiteSelection>[] => [
@@ -101,6 +105,8 @@ const options = {
     { value: "lighter", label: t("color_lightness_lighter") },
   ],
 };
+
+//#region rendering
 
 /** Renders a long number with a thousands separator */
 function renderLongNumberValue(val: string, maximumFractionDigits = 0) {
@@ -152,7 +158,7 @@ function renderLongNumberValue(val: string, maximumFractionDigits = 0) {
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
 export const featInfo = {
-  //#region layout
+  //#region cat:layout
   watermarkEnabled: {
     type: "toggle",
     category: "layout",
@@ -286,7 +292,7 @@ export const featInfo = {
   //   textAdornment: adornments.reloadRequired,
   // },
 
-  //#region volume
+  //#region cat:volume
   volumeSliderLabel: {
     type: "toggle",
     category: "volume",
@@ -350,7 +356,7 @@ export const featInfo = {
     enable: noop,
   },
 
-  //#region song lists
+  //#region cat:song lists
   lyricsQueueButton: {
     type: "toggle",
     category: "songLists",
@@ -387,7 +393,7 @@ export const featInfo = {
     textAdornment: adornments.reloadRequired,
   },
 
-  //#region behavior
+  //#region cat:behavior
   disableBeforeUnloadPopup: {
     type: "toggle",
     category: "behavior",
@@ -459,7 +465,7 @@ export const featInfo = {
     enable: noop,
   },
 
-  //#region input
+  //#region cat:input
   arrowKeySupport: {
     type: "toggle",
     category: "input",
@@ -560,7 +566,7 @@ export const featInfo = {
     click: () => getAutoLikeDialog().then(d => d.open()),
   },
 
-  //#region lyrics
+  //#region cat:lyrics
   geniusLyrics: {
     type: "toggle",
     category: "lyrics",
@@ -638,7 +644,7 @@ export const featInfo = {
   //   enable: noop,
   // },
 
-  //#region integrations
+  //#region cat:integrations
   disableDarkReaderSites: {
     type: "select",
     category: "integrations",
@@ -667,7 +673,7 @@ export const featInfo = {
     textAdornment: adornments.reloadRequired,
   },
 
-  //#region general
+  //#region cat:general
   locale: {
     type: "select",
     category: "general",
@@ -719,7 +725,7 @@ export const featInfo = {
     category: "general",
     min: 0,
     max: 15,
-    default: 3,
+    default: 4,
     step: 0.5,
     unit: "s",
     reloadRequired: false,
@@ -727,7 +733,7 @@ export const featInfo = {
     textAdornment: adornments.advanced,
     enable: noop,
     change: () => showIconToast({
-      message: "Example",
+      message: t("example_toast"),
       iconSrc: getResourceUrl(`img-logo${mode === "development" ? "_dev" : ""}`),
     }),
   },
