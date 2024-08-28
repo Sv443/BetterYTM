@@ -38,7 +38,10 @@
   - Fixed messed up time restoration feature on YT because of the `&t` param
   - Fixed broken autoplay queue delete button after a redesign
   - Fixed transparent player bar background in fullscreen being barely readable with thumbnail overlay active
-  - Fixed thumbnail overlay not updating in fullscreen mode
+  - Fixed thumbnail overlay not updating in fullscreen mode and in the mini player
+  - Fixed video time restoring breaking after pausing for a longer time
+  - Fixed "This document requires 'TrustedHTML' assignment" error on Chromium browsers
+  - Fixed toasts being shown with a 1000x higher duration than intended
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
