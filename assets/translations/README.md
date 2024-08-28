@@ -16,9 +16,9 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-| ─ | [`en_US`](./en_US.json) | 296 (default locale) |  |
+|  | [`en_US`](./en_US.json) | `296` (default locale) |  |
 | ✅ | [`de_DE`](./de_DE.json) | `296/296` (100%) | ─ |
-| ─ | [`en_UK`](./en_UK.json) | `296` (100%) | `en_US` |
+|  | [`en_UK`](./en_UK.json) | `296/296` (100%) | `en_US` |
 | ‼️ | [`es_ES`](./es_ES.json) | `202/296` (68.2%) | ─ |
 | ‼️ | [`fr_FR`](./fr_FR.json) | `202/296` (68.2%) | ─ |
 | ‼️ | [`hi_IN`](./hi_IN.json) | `202/296` (68.2%) | ─ |
