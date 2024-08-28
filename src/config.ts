@@ -1,4 +1,4 @@
-import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion } from "@sv443-network/userutils";
+import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUnion, clamp } from "@sv443-network/userutils";
 import { disableBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
@@ -94,14 +94,18 @@ export const migrations: DataMigrationsDict = {
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
   // 6 -> 7 (v2.2)
-  7: (oldData: FeatureConfig) => useNewDefaultIfUnchanged(
-    useDefaultConfig(oldData, [
-      "showToastOnGenericError", "sponsorBlockIntegration",
-      "themeSongIntegration", "themeSongLightness",
-    ]), [
-      { key: "toastDuration", oldDefault: 3 },
-    ]
-  ),
+  7: (oldData: FeatureConfig) => {
+    const newData = useNewDefaultIfUnchanged(
+      useDefaultConfig(oldData, [
+        "showToastOnGenericError", "sponsorBlockIntegration",
+        "themeSongIntegration", "themeSongLightness",
+      ]), [
+        { key: "toastDuration", oldDefault: 3 },
+      ]
+    );
+    newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
+    return newData;
+  },
 } as const satisfies DataMigrationsDict;
 
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */

@@ -474,10 +474,10 @@ export const featInfo = {
     enable: noop,
   },
   arrowKeySkipBy: {
-    type: "number",
+    type: "slider",
     category: "input",
     min: 0.5,
-    max: 60,
+    max: 30,
     step: 0.5,
     default: 5,
     reloadRequired: false,
