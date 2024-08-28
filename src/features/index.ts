@@ -45,8 +45,8 @@ adornmentOrder.set(adornments.reloadRequired, 3);
 adornmentOrder.set(adornments.advanced, 4);
 
 /** Creates an HTML string for the given adornment properties */
-const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraParams?: string) =>
-  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraParams ? " " + extraParams : ""}>${await resourceAsString(resource) ?? ""}</span>`;
+const getAdornHtml = async (className: string, title: string, resource: ResourceKey, extraAttributes?: string) =>
+  `<span class="${className} bytm-adorn-icon" title="${title}" aria-label="${title}"${extraAttributes ? " " + extraAttributes : ""}>${await resourceAsString(resource) ?? ""}</span>`;
 
 /** Combines multiple async functions or promises that resolve with an adornment HTML string into a single string */
 const combineAdornments = (
@@ -518,9 +518,8 @@ export const featInfo = {
   autoLikeChannels: {
     type: "toggle",
     category: "input",
-    default: false,
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
+    default: true,
+    textAdornment: adornments.reloadRequired,
   },
   autoLikeChannelToggleBtn: {
     type: "toggle",
