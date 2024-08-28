@@ -219,6 +219,7 @@ export async function initAutoLike() {
             getFeature("autoLikeShowToast") && showIconToast({
               message: t(`auto_liked_a_channels_${getCurrentMediaType()}`, likeChan.name),
               icon: "icon-auto_like",
+              onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
             });
             log(`Auto-liked ${getCurrentMediaType()} from channel '${likeChan.name}' (${likeChan.id})`);
           }
@@ -280,6 +281,7 @@ export async function initAutoLike() {
                     getFeature("autoLikeShowToast") && showIconToast({
                       message: t("auto_liked_a_channels_video", likeChan.name),
                       icon: "icon-auto_like",
+                      onClick: () => getAutoLikeDialog().then((dlg) => dlg.open()),
                     });
                     log(`Auto-liked video from channel '${likeChan.name}' (${likeChan.id})`);
                   }
