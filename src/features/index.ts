@@ -480,6 +480,7 @@ export const featInfo = {
     max: 30,
     step: 0.5,
     default: 5,
+    unit: "s",
     reloadRequired: false,
     enable: noop,
   },
