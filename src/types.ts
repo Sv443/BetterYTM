@@ -129,7 +129,6 @@ export type BytmObject =
 
 export type TTPolicy = {
   createHTML: (dirty: string) => string;
-  createScriptURL: (dirty: string) => string;
 };
 
 declare global {
