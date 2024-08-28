@@ -339,7 +339,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
       e.stopPropagation();
 
       const search = prompt(t("open_lyrics_search_prompt"));
-      if(search)
+      if(search && search.length > 0)
         openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
     }
   }, {
