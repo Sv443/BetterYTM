@@ -30,6 +30,7 @@
   - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
   - Made all integration features configurable and gave them their own config category
 - **Fixes:**
+  - Fixed major bug that threw "This document requires 'TrustedHTML' assignment" errors on Chromium browsers
   - Adjusted script to UI redesign of playlists
   - Fixed song list buttons disappearing when dragging the row around
   - Fixed song list buttons not always appearing immediately
@@ -40,7 +41,6 @@
   - Fixed transparent player bar background in fullscreen being barely readable with thumbnail overlay active
   - Fixed thumbnail overlay not updating in fullscreen mode and in the mini player
   - Fixed video time restoring breaking after pausing for a longer time
-  - Fixed "This document requires 'TrustedHTML' assignment" error on Chromium browsers
   - Fixed toasts being shown with a 1000x higher duration than intended
 
 <details><summary>Click to expand internal and plugin changes</summary>
