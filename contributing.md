@@ -147,7 +147,8 @@ To edit an existing translation, please follow these steps:
 - **`pnpm run dep-cruise`**  
   Runs dependency-cruiser to show problems with the dependency tree like circular, missing or orphaned dependencies.
 - **`pnpm run dep-graph`**  
-  Generates a dependency graph of the project, visually showing the dependencies between files and problems with the dependency tree.
+  Generates a dependency graph of the project, visually showing the dependencies between files and problems with the dependency tree.  
+  Requires the [Graphviz](https://www.graphviz.org/download/) binary `dot` to be in the system PATH.
 
 > [!NOTE]
 > 
