@@ -46,9 +46,12 @@ My work relies on donations, so if you like this userscript please consider [sup
 <b>
 
 Requires a userscript manager browser extension.  
-I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)
+I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)  
 
 </b>
+<sup>Other extensions are known to be less reliable and may not work as expected, especially on more restrictive browsers like Brave.</sup>
+
+<br>
 
 Once you have the extension, click the install button at the top of this page!
 
@@ -57,12 +60,11 @@ Once you have the extension, click the install button at the top of this page!
 <sup>
 
 Note: the `unsafeWindow` grant is required due to limitations in some browsers, [see this issue for more info.](https://github.com/Sv443/BetterYTM/issues/18#show_issue)
-
 </sup>
 <br>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (note: the script will not auto-update to the next release version)
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (make sure to fully reinstall the userscript once the next release is out)
 
 </sup>
 

@@ -49,9 +49,12 @@ If you disabled the watermark, you can still click your avatar in the top right 
 <b>
 
 Requires a userscript manager browser extension.  
-I really recommend ViolentMonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)
+I really recommend Violentmonkey: [Firefox](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/) &bull; [Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) &bull; [Edge](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao?hl=en-GB&gl=DE)  
 
 </b>
+<sup>Other extensions are known to be less reliable and may not work as expected, especially on more restrictive browsers like Brave.</sup>
+
+<br>
 
 Once you have the extension, **[visit the Releases page](https://github.com/Sv443/BetterYTM/releases) and click the install button** on the latest release.
 
@@ -64,7 +67,7 @@ Note: the `unsafeWindow` grant is required due to limitations in some browsers, 
 </sup>
 <sup>
 
-To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (the script should auto-update when the next release comes out)
+To install the latest development build [click here](https://github.com/Sv443/BetterYTM/raw/develop/dist/BetterYTM.user.js) (make sure to fully reinstall the userscript once the next release is out)
 
 </sup>
 
