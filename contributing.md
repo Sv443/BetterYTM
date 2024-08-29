@@ -1,10 +1,12 @@
 ## BetterYTM - Contributing Guide
 Thank you for your interest in contributing to BetterYTM!  
 This guide will help you get started with contributing to the project.  
-If you have any questions or need help, feel free to contact me, [see my homepage](https://sv443.net/) for contact info.
+If you have any questions or need help, feel free to contact me, [see my homepage](https://sv443.net/) for contact info.  
+Or you can also [join my Discord server](https://dc.sv443.net) to get in touch or get help.  
 
 <br>
 
+### Table of contents:
 - [Submitting translations](#submitting-translations)
   - [Adding translations for a new language](#adding-translations-for-a-new-language)
   - [Editing an existing translation](#editing-an-existing-translation)
@@ -224,19 +226,20 @@ If you want your plugin to be displayed in the readme and possibly inside the us
   
 <br>
 
-**Strongly recommended knowledge:**
-- Intermediate JavaScript knowledge (DOM, events, async functions, fetch, localStorage, etc.)
-  - Understanding JS types and reading TypeScript definitions
-  - Semantic versioning (for versioning your plugin in the correct format)
-- Basic knowledge of userscripts (start on the [GreaseSpot wiki](https://wiki.greasespot.net/Greasemonkey_Manual))
+**Required knowledge:**
+- Intermediate JavaScript knowledge (DOM API, events, Promise API, etc.)
+  - Understanding JS types and reading TypeScript type declarations
+  - [Semantic versioning](https://semver.org/) (for versioning your plugin in the correct format)
+- At least basic knowledge of userscripts (start on the [GreaseSpot wiki](https://wiki.greasespot.net/Greasemonkey_Manual))
 - Reading the file [`license-for-plugins.txt`](./license-for-plugins.txt) to understand the licensing conditions for plugins
   
-**Helpful knowledge:**
+**Recommended knowledge:**
 - TypeScript (for type safety and better autocomplete)
 - The source code of BetterYTM  
   This is especially regarding the files `src/interface.ts`, `src/types.ts`, `src/siteEvents.ts` and `src/observers.ts`
 - Being on the lookout for pull requests, since they will list new features and changes to the interface that you probably want to prepare for
 - This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find the actual information
+- The fact you can [join my Discord server](https://dc.sv443.net) to ask questions or get help with writing your plugin
   
 <br>
 
@@ -363,11 +366,11 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 ### Global functions and classes:
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
-Functions marked with 🔒 need to be passed a per-session and per-plugin authentication token. It can be acquire by calling [registerPlugin()](#registerplugin)  
+Functions marked with 🔒 need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
   
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
-  - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - also used to check if a certain plugin is registered
+  - [getPluginInfo()](#getplugininfo) 🔒 - Returns the plugin info object for the specified plugin - can be used to check if a certain plugin is registered
 - BYTM-specific:
   - [getDomain()](#getdomain) - Returns the current domain of the page as a constant string (either "yt" or "ytm")
   - [getResourceUrl()](#getresourceurl) - Returns a `blob:` URL provided by the local userscript extension for the specified BYTM resource file
