@@ -31,7 +31,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "dep-cruise": "npx depcruise src",
-    "dep-graph": "npx depcruise src --include-only \"^src\" --output-type dot | dot -T svg > dependency-graph.svg && open dependency-graph.svg -R"
+    "dep-graph": "npx depcruise src --include-only \"^src\" --output-type dot | dot -T svg > dependency-graph.svg && open-cli dependency-graph.svg -R"
   },
   "engines": {
     "node": ">=19",
@@ -100,7 +100,7 @@
     "globals": "^15.6.0",
     "knip": "^5.22.2",
     "nodemon": "^3.1.4",
-    "open": "^10.1.0",
+    "open-cli": "^8.0.0",
     "pnpm": "^9.4.0",
     "rollup": "^4.18.0",
     "rollup-plugin-execute": "^1.1.1",
