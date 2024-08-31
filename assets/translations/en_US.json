@@ -171,6 +171,10 @@
     "auto_like_export_desc": "Copy the following text to export your auto-liked channels.",
     "auto_like_import_desc": "Paste the auto-liked channels you want to import into the field below, then click the import button:",
 
+    "prompt_confirm": "Confirm",
+    "prompt_close": "Close",
+    "prompt_cancel": "Cancel",
+
     "vote_label_likes-1": "%1 like",
     "vote_label_likes-n": "%1 likes",
     "vote_label_dislikes-1": "%1 dislike",

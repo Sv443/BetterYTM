@@ -1,0 +1,21 @@
+#bytm-prompt-dialog-header svg {
+  width: 24px;
+  height: 24px;
+}
+
+#bytm-prompt-dialog-message {
+  margin-bottom: 15px;
+}
+
+#bytm-prompt-dialog-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+}
+
+#bytm-prompt-dialog-buttons-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}

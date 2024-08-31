@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en_US`](./en_US.json) | `296` (default locale) |  |
-| ✅ | [`de_DE`](./de_DE.json) | `296/296` (100%) | ─ |
-|  | [`en_UK`](./en_UK.json) | `296/296` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `202/296` (68.2%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `202/296` (68.2%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `202/296` (68.2%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `202/296` (68.2%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `202/296` (68.2%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `202/296` (68.2%) | ─ |
+|  | [`en_US`](./en_US.json) | `299` (default locale) |  |
+| ⚠ | [`de_DE`](./de_DE.json) | `296/299` (99%) | ─ |
+|  | [`en_UK`](./en_UK.json) | `299/299` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `202/299` (67.6%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `202/299` (67.6%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `202/299` (67.6%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `202/299` (67.6%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `202/299` (67.6%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `202/299` (67.6%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,7 +45,17 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>es_ES</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 3 missing keys <i>(click to show)</i></summary><br>
+
+| Key | English text |
+| --- | ------------ |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
+
+<br></details>
+
+<details><summary><code>es_ES</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -97,6 +107,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -146,7 +159,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -198,6 +211,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -247,7 +263,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -299,6 +315,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -348,7 +367,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -400,6 +419,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -449,7 +471,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -501,6 +523,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -550,7 +575,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 94 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 97 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -602,6 +627,9 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `auto_like_export_import_title` | `Export or Import Auto-liked Channels` |
 | `auto_like_export_desc` | `Copy the following text to export your auto-liked channels.` |
 | `auto_like_import_desc` | `Paste the auto-liked channels you want to import into the field below, then click the import button:` |
+| `prompt_confirm` | `Confirm` |
+| `prompt_close` | `Close` |
+| `prompt_cancel` | `Cancel` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
