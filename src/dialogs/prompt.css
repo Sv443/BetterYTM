@@ -1,3 +1,9 @@
+#bytm-prompt-dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 #bytm-prompt-dialog-header svg {
   width: 24px;
   height: 24px;
