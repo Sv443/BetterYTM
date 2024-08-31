@@ -22,7 +22,7 @@ class PromptDialog extends BytmDialog {
   constructor(props: PromptDialogRenderProps) {
     super({
       id: "prompt-dialog",
-      width: 400,
+      width: 500,
       height: 400,
       destroyOnClose: true,
       closeBtnEnabled: true,
@@ -49,11 +49,11 @@ class PromptDialog extends BytmDialog {
 
     const contElem = document.createElement("div");
 
-    const messageElem = document.createElement("h3");
-    messageElem.role = "subheading";
+    const messageElem = document.createElement("p");
+    messageElem.id = "bytm-prompt-dialog-message";
+    messageElem.role = "alert";
     messageElem.tabIndex = 0;
     messageElem.textContent = String(message);
-    messageElem.id = "bytm-prompt-dialog-message";
     contElem.appendChild(messageElem);
 
     const buttonsWrapper = document.createElement("div");
@@ -65,9 +65,11 @@ class PromptDialog extends BytmDialog {
     let confirmBtn: HTMLButtonElement | undefined;
     if(type === "confirm") {
       confirmBtn = document.createElement("button");
-      confirmBtn.textContent = confirmBtn.ariaLabel = confirmBtn.title = t("prompt_confirm");
       confirmBtn.id = "bytm-prompt-dialog-confirm";
+      confirmBtn.classList.add("bytm-prompt-dialog-button");
+      confirmBtn.textContent = confirmBtn.ariaLabel = confirmBtn.title = t("prompt_confirm");
       confirmBtn.tabIndex = 0;
+      confirmBtn.autofocus = true;
       confirmBtn.addEventListener("click", () => {
         resolve(true);
         promptDialog?.close();
@@ -75,8 +77,9 @@ class PromptDialog extends BytmDialog {
     }
 
     const closeBtn = document.createElement("button");
-    closeBtn.textContent = closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "prompt_close" : "prompt_cancel");
     closeBtn.id = "bytm-prompt-dialog-close";
+    closeBtn.classList.add("bytm-prompt-dialog-button");
+    closeBtn.textContent = closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "prompt_close" : "prompt_cancel");
     closeBtn.tabIndex = 0;
     closeBtn.addEventListener("click", () => {
       resolve(type === "alert");
