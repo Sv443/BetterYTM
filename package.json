@@ -99,6 +99,7 @@
     "express": "^4.19.2",
     "globals": "^15.6.0",
     "knip": "^5.22.2",
+    "nanoevents": "^9.0.0",
     "nodemon": "^3.1.4",
     "open-cli": "^8.0.0",
     "pnpm": "^9.4.0",
