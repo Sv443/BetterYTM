@@ -129,28 +129,32 @@ function ytForceShowVideoTime() {
 
 /**
  * Waits for the video element to be in its readyState 4 / canplay state and returns it.  
+ * Could take a very long time to resolve if the `/watch` page isn't open.  
  * Resolves immediately if the video element is already ready.
  */
 export function waitVideoElementReady(): Promise<HTMLVideoElement> {
-  return new Promise(async (res) => {
-    if(getVideoElement()?.readyState === 4)
-      return res(getVideoElement()!);
+  return new Promise(async (res, rej) => {
+    try {
+      const vidEl = getVideoElement();
+      if(vidEl?.readyState === 4)
+        return res(vidEl);
 
-    const waitForEl = () => addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
-      listener: async (vidElem) => {
-        if(vidElem) {
-        // this is just after YT has finished doing their own shenanigans with the video time and volume
+      if(!location.pathname.startsWith("/watch"))
+        await siteEvents.once("watchIdChanged");
+
+      addSelectorListener<HTMLVideoElement>("body", getVideoSelector(), {
+        listener(vidElem) {
+          // this is just after YT has finished doing their own shenanigans with the video time and volume
           if(vidElem.readyState === 4)
             res(vidElem);
           else
             vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
-        }
-      },
-    });
-
-    if(!location.pathname.startsWith("/watch"))
-      await siteEvents.once("watchIdChanged");
-    waitForEl();
+        },
+      });
+    }
+    catch(err) {
+      rej(err);
+    }
   });
 }
 
