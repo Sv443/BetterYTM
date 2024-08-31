@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,54 +33,56 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/plus_circle_small.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/2d276b37/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/clear_list.svg
+// @resource          icon-confirm               https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/help.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/b7182d20/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.2.2/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -132,7 +134,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "2d276b37";
+const buildNumberRaw = "b7182d20";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1135,12 +1137,6 @@ function getHotkeyInfoHtml(hotkey) {
   </span>
 </div>`;
 }
-/** Crude OS detection for keyboard layout purposes */
-function getOS() {
-    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
-        return "mac";
-    return "other";
-}
 /** Converts a hotkey object to a string */
 function hotkeyToString(hotkey) {
     if (!hotkey)
@@ -1394,7 +1390,104 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     wrapperEl.appendChild(toggleWrapperEl);
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
-}let autoLikeDialog = null;
+}let promptDialog = null;
+// TODO: implement prompt() equivalent for text input
+class PromptDialog extends BytmDialog {
+    constructor(props) {
+        super({
+            id: "prompt-dialog",
+            width: 400,
+            height: 400,
+            destroyOnClose: true,
+            closeBtnEnabled: true,
+            closeOnBgClick: props.type === "alert",
+            closeOnEscPress: true,
+            small: true,
+            renderHeader: () => this.renderHeader(props),
+            renderBody: () => this.renderBody(props),
+        });
+    }
+    async renderHeader({ type }) {
+        const headerEl = document.createElement("div");
+        headerEl.id = "bytm-prompt-dialog-header";
+        const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-confirm");
+        if (iconSvg)
+            setInnerHtml(headerEl, iconSvg);
+        return headerEl;
+    }
+    async renderBody({ type, message }) {
+        const resolve = (val) => this.events.emit("resolve", val);
+        const contElem = document.createElement("div");
+        const messageElem = document.createElement("h3");
+        messageElem.role = "subheading";
+        messageElem.tabIndex = 0;
+        messageElem.textContent = String(message);
+        messageElem.id = "bytm-prompt-dialog-message";
+        contElem.appendChild(messageElem);
+        const buttonsWrapper = document.createElement("div");
+        buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
+        const buttonsCont = document.createElement("div");
+        buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
+        let confirmBtn;
+        if (type === "confirm") {
+            confirmBtn = document.createElement("button");
+            confirmBtn.textContent = confirmBtn.ariaLabel = confirmBtn.title = t("prompt_confirm");
+            confirmBtn.id = "bytm-prompt-dialog-confirm";
+            confirmBtn.tabIndex = 0;
+            confirmBtn.addEventListener("click", () => {
+                resolve(true);
+                promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+            }, { once: true });
+        }
+        const closeBtn = document.createElement("button");
+        closeBtn.textContent = closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "prompt_close" : "prompt_cancel");
+        closeBtn.id = "bytm-prompt-dialog-close";
+        closeBtn.tabIndex = 0;
+        closeBtn.addEventListener("click", () => {
+            resolve(type === "alert");
+            promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+        }, { once: true });
+        confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
+        buttonsCont.appendChild(closeBtn);
+        confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
+        buttonsWrapper.appendChild(buttonsCont);
+        contElem.appendChild(buttonsWrapper);
+        return contElem;
+    }
+}
+/** Shows a prompt dialog of the specified type and resolves true if the user confirms it or false if they cancel it - always resolves true with type "alert" */
+function showPrompt({ type = "alert", message, }) {
+    return new Promise((resolve) => {
+        if (BytmDialog.getOpenDialogs().includes("prompt-dialog"))
+            promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
+        promptDialog = new PromptDialog({
+            type,
+            message,
+        });
+        // make config menu inert while prompt dialog is open
+        promptDialog.once("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
+        promptDialog.once("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
+        let resolveVal;
+        const tryResolve = () => resolve(typeof resolveVal === "boolean" ? resolveVal : false);
+        const resolveUnsub = promptDialog.on("resolve", (val) => {
+            resolveUnsub();
+            if (resolveVal)
+                return;
+            resolveVal = val;
+            tryResolve();
+        });
+        const closeUnsub = promptDialog.on("close", () => {
+            closeUnsub();
+            if (resolveVal)
+                return;
+            resolveVal = type === "alert";
+            tryResolve();
+        });
+        promptDialog.open();
+    });
+}
+//@ts-ignore
+unsafeWindow.showPrompt = showPrompt;let autoLikeDialog = null;
 let autoLikeImExDialog = null;
 /** Creates and/or returns the import dialog */
 async function getAutoLikeDialog() {
@@ -1447,9 +1540,9 @@ async function getAutoLikeDialog() {
                     const parsed = await tryToDecompressAndParse(data);
                     log("Trying to import auto-like data:", parsed);
                     if (!parsed || typeof parsed !== "object")
-                        return alert(t("import_error_invalid"));
+                        return await showPrompt({ message: t("import_error_invalid") });
                     if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-                        return alert(t("import_error_no_data"));
+                        return await showPrompt({ message: t("import_error_no_data") });
                     await autoLikeStore.setData(parsed);
                     emitSiteEvent("autoLikeChannelsUpdated");
                     showToast({ message: t("import_success") });
@@ -1627,11 +1720,11 @@ async function addAutoLikeEntryPrompts() {
         return;
     const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (isValidChannelId(idPrompt) ? idPrompt : null);
     if (!id || id.length <= 0)
-        return alert(t("add_auto_like_channel_invalid_id"));
+        return await showPrompt({ message: t("add_auto_like_channel_invalid_id") });
     let overwriteName = false;
     const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
     if (hasChannelEntry) {
-        if (!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
+        if (!await showPrompt({ type: "confirm", message: t("add_auto_like_channel_already_exists_prompt_new_name") }))
             return;
         overwriteName = true;
     }
@@ -1857,6 +1950,7 @@ var devDependencies = {
 	express: "^4.19.2",
 	globals: "^15.6.0",
 	knip: "^5.22.2",
+	nanoevents: "^9.0.0",
 	nodemon: "^3.1.4",
 	"open-cli": "^8.0.0",
 	pnpm: "^9.4.0",
@@ -2192,11 +2286,11 @@ async function mountCfgMenu() {
                 const parsed = await tryToDecompressAndParse(data.trim());
                 log("Trying to import configuration:", parsed);
                 if (!parsed || typeof parsed !== "object")
-                    return alert(t("import_error_invalid"));
+                    return await showPrompt({ message: t("import_error_invalid") });
                 if (typeof parsed.formatVersion !== "number")
-                    return alert(t("import_error_no_format_version"));
+                    return await showPrompt({ message: t("import_error_no_format_version") });
                 if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                    return alert(t("import_error_no_data"));
+                    return await showPrompt({ message: t("import_error_no_data") });
                 if (parsed.formatVersion < formatVersion) {
                     let newData = JSON.parse(JSON.stringify(parsed.data));
                     const sortedMigrations = Object.entries(migrations)
@@ -2219,9 +2313,9 @@ async function mountCfgMenu() {
                     parsed.data = newData;
                 }
                 else if (parsed.formatVersion !== formatVersion)
-                    return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+                    return await showPrompt({ message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
                 await setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
-                if (confirm(t("import_success_confirm_reload"))) {
+                if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
                     disableBeforeUnload();
                     return location.reload();
                 }
@@ -2230,7 +2324,7 @@ async function mountCfgMenu() {
             }
             catch (err) {
                 warn("Couldn't import configuration:", err);
-                alert(t("import_error_invalid"));
+                await showPrompt({ message: t("import_error_invalid") });
             }
         },
         title: () => t("bytm_config_export_import_title"),
@@ -2276,7 +2370,7 @@ async function mountCfgMenu() {
             setLocale(featConf.locale);
             const newText = t("lang_changed_prompt_reload");
             const confirmText = newText !== initLangReloadText ? `${newText}\n\n────────────────────────────────\n\n${initLangReloadText}` : newText;
-            if (confirm(confirmText)) {
+            if (await showPrompt({ type: "confirm", message: confirmText })) {
                 closeCfgMenu();
                 disableBeforeUnload();
                 location.reload();
@@ -3073,17 +3167,17 @@ async function doVersionCheck(notifyNoUpdatesFound = false) {
         url: releaseURL,
     });
     // TODO: small dialog for "no update found" message?
-    const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+    const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ message: t("no_updates_found") }) : undefined;
     const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
     if (!latestTag)
-        return noUpdateFound();
+        return await noUpdateFound();
     info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
     if (compareVersions.compare(scriptInfo.version, latestTag, "<")) {
         const dialog = await getVersionNotifDialog({ latestTag });
         await dialog.open();
         return;
     }
-    return noUpdateFound();
+    return await noUpdateFound();
 }//#region cfg menu btns
 let logoExchanged = false, improveLogoCalled = false;
 /** Adds a watermark beneath the logo */
@@ -3392,8 +3486,7 @@ async function initAboveQueueBtns() {
             titleKey: "clear_list",
             async interaction(evt) {
                 try {
-                    // TODO: better confirmation dialog?
-                    if (evt.shiftKey || confirm(t("clear_list_confirm"))) {
+                    if (evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
                         const url = new URL(location.href);
                         url.searchParams.delete("list");
                         url.searchParams.set("time_continue", String(await getVideoTime(0)));
@@ -4365,7 +4458,7 @@ function isValidChannelId(channelId) {
 }
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
 function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
-    return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
 }
 /** Returns the best available thumbnail URL for a video with the given watch ID */
 async function getBestThumbnailUrl(watchId) {
@@ -4416,6 +4509,12 @@ async function tryToDecompressAndParse(input) {
     // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
     await UserUtils.pauseFor(250);
     return parsed;
+}
+/** Very crude OS detection */
+function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
+        return "mac";
+    return "other";
 }
 //#region resources
 /**
@@ -4825,7 +4924,7 @@ async function fetchLyricsUrls(artist, song) {
         } : {})));
         if (fetchRes.status === 429) {
             const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-            alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+            await showPrompt({ message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
             return undefined;
         }
         else if (fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -5071,7 +5170,7 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
                 }
                 if (!lyricsUrl) {
                     resetImgElem();
-                    if (confirm(t("lyrics_not_found_confirm_open_search")))
+                    if (await showPrompt({ type: "confirm", message: t("lyrics_not_found_confirm_open_search") }))
                         openInTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
                     return;
                 }
@@ -5884,9 +5983,10 @@ const featInfo = {
         category: "lyrics",
         async click() {
             const entries = getLyricsCache().length;
-            if (confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
+            const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
+            if (await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
                 await clearLyricsCache();
-                alert(t("lyrics_clear_cache_success"));
+                await showPrompt({ message: t("lyrics_clear_cache_success") });
             }
         },
         advanced: true,
@@ -5896,7 +5996,7 @@ const featInfo = {
     //   type: "toggle",
     //   category: "lyrics",
     //   default: false,
-    //   change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
+    //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
     //   advanced: true,
     //   textAdornment: adornments.experimental,
     //   reloadRequired: false,
@@ -6204,7 +6304,7 @@ function setDefaultFeatures() {
     return res;
 }
 async function promptResetConfig() {
-    if (confirm(t("reset_config_confirm"))) {
+    if (await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
         closeCfgMenu();
         disableBeforeUnload();
         await setDefaultFeatures();
@@ -6272,6 +6372,7 @@ const globalFuncs = {
     createRipple,
     showToast,
     showIconToast,
+    showPrompt,
 };
 /** Initializes the BYTM interface */
 function initInterface() {
@@ -6767,27 +6868,30 @@ function ytForceShowVideoTime() {
 }
 /**
  * Waits for the video element to be in its readyState 4 / canplay state and returns it.
+ * Could take a very long time to resolve if the `/watch` page isn't open.
  * Resolves immediately if the video element is already ready.
  */
 function waitVideoElementReady() {
-    return new Promise(async (res) => {
-        var _a;
-        if (((_a = getVideoElement()) === null || _a === void 0 ? void 0 : _a.readyState) === 4)
-            return res(getVideoElement());
-        const waitForEl = () => addSelectorListener("body", getVideoSelector(), {
-            listener: async (vidElem) => {
-                if (vidElem) {
+    return new Promise(async (res, rej) => {
+        try {
+            const vidEl = getVideoElement();
+            if ((vidEl === null || vidEl === void 0 ? void 0 : vidEl.readyState) === 4)
+                return res(vidEl);
+            if (!location.pathname.startsWith("/watch"))
+                await siteEvents.once("watchIdChanged");
+            addSelectorListener("body", getVideoSelector(), {
+                listener(vidElem) {
                     // this is just after YT has finished doing their own shenanigans with the video time and volume
                     if (vidElem.readyState === 4)
                         res(vidElem);
                     else
                         vidElem.addEventListener("canplay", () => res(vidElem), { once: true });
-                }
-            },
-        });
-        if (!location.pathname.startsWith("/watch"))
-            await siteEvents.once("watchIdChanged");
-        waitForEl();
+                },
+            });
+        }
+        catch (err) {
+            rej(err);
+        }
     });
 }
 //#region css utils
@@ -6855,13 +6959,13 @@ function copyToClipboard(text) {
         GM.setClipboard(String(text));
     }
     catch (_a) {
-        alert(t("copy_to_clipboard_error", String(text)));
+        showPrompt({ message: t("copy_to_clipboard_error", String(text)) });
     }
 }
 let ttPolicy;
 /** Sets innerHTML directly on Firefox and Safari, while on Chromium a [Trusted Types policy](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) is used to set the HTML */
 function setInnerHtml(element, html) {
-    var _a;
+    var _a, _b;
     if (!ttPolicy && ((_a = window === null || window === void 0 ? void 0 : window.trustedTypes) === null || _a === void 0 ? void 0 : _a.createPolicy)) {
         ttPolicy = window.trustedTypes.createPolicy("my-policy", {
             createHTML: (dirty) => DOMPurify.sanitize(dirty, {
@@ -6869,12 +6973,7 @@ function setInnerHtml(element, html) {
             }),
         });
     }
-    if (ttPolicy)
-        element.innerHTML = ttPolicy.createHTML(html);
-    else {
-        UserUtils.debounce(() => warn("Trusted Types policy not available, using innerHTML directly"), 1000, "rising")();
-        element.innerHTML = html;
-    }
+    element.innerHTML = (_b = ttPolicy === null || ttPolicy === void 0 ? void 0 : ttPolicy.createHTML(html)) !== null && _b !== void 0 ? _b : html;
 }/**
  * Constructs a URL from a base URL and a record of query parameters.
  * If a value is null, the parameter will be valueless. If a value is undefined, the parameter will be omitted.
