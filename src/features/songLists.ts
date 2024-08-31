@@ -6,6 +6,7 @@ import { fetchLyricsUrlTop, createLyricsBtn, sanitizeArtists, sanitizeSong, spli
 import { getLyricsCacheEntry } from "./lyricsCache.js";
 import { addSelectorListener } from "../observers.js";
 import { createRipple } from "../components/ripple.js";
+import { showPrompt } from "../dialogs/prompt.js";
 import { getFeature } from "../config.js";
 import type { LyricsCacheEntry } from "../types.js";
 import "./songLists.css";
@@ -212,7 +213,7 @@ async function addQueueButtons(
 
         if(!lyricsUrl) {
           resetImgElem();
-          if(confirm(t("lyrics_not_found_confirm_open_search")))
+          if(await showPrompt({ type: "confirm", message: t("lyrics_not_found_confirm_open_search") }))
             openInTab(`https://genius.com/search?q=${encodeURIComponent(`${artistsSan} - ${songSan}`)}`);
           return;
         }

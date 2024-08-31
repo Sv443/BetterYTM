@@ -5,7 +5,7 @@ import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, type ColorLightness, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { getAutoLikeDialog } from "../dialogs/index.js";
+import { getAutoLikeDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
 
@@ -625,9 +625,10 @@ export const featInfo = {
     category: "lyrics",
     async click() {
       const entries = getLyricsCache().length;
-      if(confirm(tp("lyrics_clear_cache_confirm_prompt", entries, entries))) {
+      const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
+      if(await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
         await clearLyricsCache();
-        alert(t("lyrics_clear_cache_success"));
+        await showPrompt({ message: t("lyrics_clear_cache_success") });
       }
     },
     advanced: true,
@@ -637,7 +638,7 @@ export const featInfo = {
   //   type: "toggle",
   //   category: "lyrics",
   //   default: false,
-  //   change: () => setTimeout(() => confirm(t("lyrics_cache_changed_clear_confirm")) && clearLyricsCache(), 200),
+  //   change: () => setTimeout(async () => await showPrompt({ type: "confirm", message: t("lyrics_cache_changed_clear_confirm") }) && clearLyricsCache(), 200),
   //   advanced: true,
   //   textAdornment: adornments.experimental,
   //   reloadRequired: false,

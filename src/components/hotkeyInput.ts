@@ -1,5 +1,5 @@
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { onInteraction, setInnerHtml, t } from "../utils/index.js";
+import { getOS, onInteraction, setInnerHtml, t } from "../utils/index.js";
 import type { HotkeyObj } from "../types.js";
 import "./hotkeyInput.css";
 
@@ -184,13 +184,6 @@ function getHotkeyInfoHtml(hotkey: HotkeyObj) {
     ${modifiers.length > 0 ? "+" : ""}
   </span>
 </div>`;
-}
-
-/** Crude OS detection for keyboard layout purposes */
-function getOS() {
-  if(navigator.userAgent.match(/mac(\s?os|intel)/i))
-    return "mac";
-  return "other";
 }
 
 /** Converts a hotkey object to a string */

@@ -8,6 +8,7 @@ import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
 import type { NumberNotation, ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
+import { showPrompt } from "src/dialogs/prompt.js";
 
 //#region cfg menu btns
 
@@ -395,8 +396,7 @@ export async function initAboveQueueBtns() {
       titleKey: "clear_list",
       async interaction(evt: KeyboardEvent | MouseEvent) {
         try {
-          // TODO: better confirmation dialog?
-          if(evt.shiftKey || confirm(t("clear_list_confirm"))) {
+          if(evt.shiftKey || await showPrompt({ type: "confirm", message: t("clear_list_confirm") })) {
             const url = new URL(location.href);
             url.searchParams.delete("list");
             url.searchParams.set("time_continue", String(await getVideoTime(0)));

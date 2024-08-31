@@ -7,6 +7,7 @@ import { ExImDialog } from "../components/ExImDialog.js";
 import { compressionFormat } from "../constants.js";
 import type { AutoLikeData } from "../types.js";
 import "./autoLike.css";
+import { showPrompt } from "./prompt.js";
 
 let autoLikeDialog: BytmDialog | null = null;
 let autoLikeImExDialog: ExImDialog | null = null;
@@ -67,9 +68,9 @@ export async function getAutoLikeDialog() {
           log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
-            return alert(t("import_error_invalid"));
+            return await showPrompt({ message: t("import_error_invalid") });
           if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-            return alert(t("import_error_no_data"));
+            return await showPrompt({ message: t("import_error_no_data") });
 
           await autoLikeStore.setData(parsed);
           emitSiteEvent("autoLikeChannelsUpdated");
@@ -297,14 +298,14 @@ async function addAutoLikeEntryPrompts() {
   const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
 
   if(!id || id.length <= 0)
-    return alert(t("add_auto_like_channel_invalid_id"));
+    return await showPrompt({ message: t("add_auto_like_channel_invalid_id") });
 
   let overwriteName = false;
 
   const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
 
   if(hasChannelEntry) {
-    if(!confirm(t("add_auto_like_channel_already_exists_prompt_new_name")))
+    if(!await showPrompt({ type: "confirm", message: t("add_auto_like_channel_already_exists_prompt_new_name") }))
       return;
     overwriteName = true;
   }

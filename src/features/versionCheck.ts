@@ -1,7 +1,7 @@
 import { scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
 import { error, info, sendRequest, t } from "../utils/index.js";
-import { getVersionNotifDialog } from "../dialogs/index.js";
+import { getVersionNotifDialog, showPrompt } from "../dialogs/index.js";
 import { compare } from "compare-versions";
 import { LogLevel } from "../types.js";
 
@@ -37,12 +37,12 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
   });
 
   // TODO: small dialog for "no update found" message?
-  const noUpdateFound = () => notifyNoUpdatesFound ? alert(t("no_updates_found")) : undefined;
+  const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ message: t("no_updates_found") }) : undefined;
 
   const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 
   if(!latestTag)
-    return noUpdateFound();
+    return await noUpdateFound();
 
   info("Version check - current version:", scriptInfo.version, "- latest version:", latestTag, LogLevel.Info);
 
@@ -51,5 +51,5 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
     await dialog.open();
     return;
   }
-  return noUpdateFound();
+  return await noUpdateFound();
 }

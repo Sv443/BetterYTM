@@ -6,6 +6,7 @@ import { compressionFormat, mode } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey } from "./types.js";
+import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
 export const formatVersion = 7;
@@ -225,7 +226,7 @@ export function setDefaultFeatures() {
 }
 
 export async function promptResetConfig() {
-  if(confirm(t("reset_config_confirm"))) {
+  if(await showPrompt({ type: "confirm", message: t("reset_config_confirm") })) {
     closeCfgMenu();
     disableBeforeUnload();
     await setDefaultFeatures();
