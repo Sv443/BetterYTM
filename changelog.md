@@ -63,9 +63,10 @@
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
+    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
-    - `createRipple()` to create a click ripple animation effect on a given element (experimental)
+    - `showPrompt()` to show a styled prompt dialog that replaces the `confirm()` and `alert()` functions
     - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
   - Changed components:
     - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed

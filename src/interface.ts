@@ -8,6 +8,7 @@ import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, saniti
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
 import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { BytmDialog, ExImDialog, MarkdownDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
+import { showPrompt } from "./dialogs/prompt.js";
 
 const { getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
 
@@ -159,6 +160,7 @@ const globalFuncs: InterfaceFunctions = {
   createRipple,
   showToast,
   showIconToast,
+  showPrompt,
 };
 
 /** Initializes the BYTM interface */

@@ -393,9 +393,10 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [createToggleInput()](#createtoggleinput) - Creates a toggle input element
   - [createCircularBtn()](#createcircularbtn) - Creates a generic, circular button element with just an icon
   - [createLongBtn()](#createlongbtn) - Creates a generic, long and circular button element with an icon and text
+  - [createRipple()](#createripple) - Creates a click ripple effect on the given element
   - [showToast()](#showtoast) - Shows a toast notification and a message string or element
   - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
-  - [createRipple()](#createripple) - Creates a click ripple effect on the given element
+  - [showPrompt()](#showprompt) - Shows a styled prompt of the type `confirm` or `alert`
 - Translations:
   - [setLocale()](#setlocale) 🔒 - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -1855,6 +1856,32 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 
 <br>
 
+> #### createRipple()
+> Usages:  
+> ```ts
+> unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
+> unsafeWindow.BYTM.createRipple(rippleElement?: undefined, props?: RippleProps): HTMLDivElement
+> ```
+>   
+> Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
+> Returns either the new element or the initially passed one.  
+> External CSS overrides can be used to change the color, size, speed values and opacity.  
+> The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
+>   
+> Properties:  
+> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const myBoringButton = document.querySelector("#my-boring-button");
+> if(myBoringButton)
+>   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
+> ```
+> </details>
+
+<br>
+
 > #### showToast()
 > Usages:  
 > ```ts
@@ -1933,27 +1960,39 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 
 <br>
 
-> #### createRipple()
-> Usages:  
+> #### showPrompt()
+> Usage:  
 > ```ts
-> unsafeWindow.BYTM.createRipple<TElement>(rippleElement: TElement, props?: RippleProps): TElement
-> unsafeWindow.BYTM.createRipple(rippleElement?: undefined, props?: RippleProps): HTMLDivElement
+> unsafeWindow.BYTM.showPrompt(props: ShowPromptProps): Promise<boolean>
 > ```
 >   
-> Creates a circular, expanding ripple effect on the specified element or creates a new one with the effect already applied if none is provided.  
-> Returns either the new element or the initially passed one.  
-> External CSS overrides can be used to change the color, size, speed values and opacity.  
-> The exact speed values and variable names and locations can be found in [`src/components/ripple.css`](./src/components/ripple.css)
+> Shows a prompt dialog with the specified message and type.  
+> The user can choose between confirming or canceling the prompt.  
+> Closing the dialog counts as canceling.  
+> The Promise resolves with `true` if the user confirmed the prompt and `false` if they canceled it.  
+> The Promise always resolves with `true` when the type `alert` is used.  
 >   
 > Properties:  
-> - `speed?: string` - The speed of the ripple effect. Can be "faster", "fast", "normal", "slow" or "slower" (defaults to "normal")
-> 
+> - `message: string` - The message to show in the prompt
+> - `type?: "confirm" | "alert"` - The type of the prompt. Can be "confirm" or "alert" (default)
+>   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const myBoringButton = document.querySelector("#my-boring-button");
-> if(myBoringButton)
->   unsafeWindow.BYTM.createRipple(myBoringButton, { speed: "slowest" }); // it's as easy as this
+> const confirmed = await unsafeWindow.BYTM.showPrompt({
+>   message: "Are you sure you want to delete this?",
+>   type: "confirm",
+> });
+>
+> if(confirmed) {
+>   await deleteSomething();
+>   unsafeWindow.BYTM.showPrompt({
+>     // uses type "alert" by default
+>     message: "Deleted successfully.",
+>   });
+> }
+> else
+>   console.log("The user canceled the prompt.");
 > ```
 > </details>
 
