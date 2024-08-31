@@ -809,18 +809,18 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```
 >   
 > Description:  
-> Returns the URL to the thumbnail of the video with the specified watch/video ID and quality.  
-> If a number is passed, 0 will return a low quality thumbnail and 1-3 will return a low quality frame from the video.  
+> Returns the URL to the thumbnail of the video with the specified watch/video ID and quality (resolution).  
+> If an index number is passed, 0 will return a very low resolution thumbnail and 1-3 will return a very low resolution frame from the video (if available).  
 >   
 > Arguments:
 > - `watchID` - The watch/video ID of the video to get the thumbnail for
-> - `qualityOrIndex` - The quality or index of the thumbnail to get. Quality strings sorted highest resolution first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`. If no quality is specified, `maxresdefault` (highest resolution) is used.
+> - `qualityOrIndex` - The quality or index of the thumbnail to get. Possible quality strings sorted by highest resolution first: `maxresdefault` > `sddefault` > `hqdefault` > `mqdefault` > `default`. If no quality is specified, `maxresdefault` (highest resolution) is used.
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
 > const thumbnailUrl = unsafeWindow.BYTM.getThumbnailUrl("dQw4w9WgXcQ", "maxresdefault");
-> console.log(thumbnailUrl); // "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+> console.log(thumbnailUrl); // "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
 > ```
 > </details>
 
@@ -833,11 +833,12 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```
 >   
 > Description:  
-> Returns the URL to the best quality thumbnail of the video with the specified watch/video ID.  
+> Returns the URL to the best resolution thumbnail of the video with the specified watch/video ID.  
 > Will sequentially try to get the highest quality thumbnail available until one is found.  
-> Order of quality values tried: `maxresdefault` > `sddefault` > `hqdefault` > `0`  
+> Resolution priority list: `maxresdefault.jpg` > `sddefault.jpg` > `hqdefault.jpg` > `0.jpg`  
 >   
 > If no thumbnail is found, the Promise will resolve with `undefined`  
+> May throw if an error occurs while fetching the thumbnails.  
 >   
 > Arguments:
 > - `watchID` - The watch/video ID of the video to get the thumbnail for
@@ -845,8 +846,14 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const thumbnailUrl = await unsafeWindow.BYTM.getBestThumbnailUrl("dQw4w9WgXcQ");
-> console.log(thumbnailUrl); // "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+> try {
+>   const thumbnailUrl = await unsafeWindow.BYTM.getBestThumbnailUrl("dQw4w9WgXcQ");
+>   if(thumbnailUrl)
+>     console.log(thumbnailUrl); // "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+> }
+> catch(err) {
+>   console.error("Failed to get the best thumbnail URL:", err);
+> }
 > ```
 > </details>
 
@@ -860,7 +867,8 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   
 > Description:  
 > Waits for the video element to be queryable in the DOM.  
-> If it already exists, the Promise will resolve immediately.  
+> The Promise could potentially take a while, since it will only resolve if the `/watch` page is loaded and the video element is queryable and has the media buffered and ready.  
+> If the video element already exists, the Promise will resolve immediately.  
 > This function has to be called after the `bytm:observersReady` event has been dispatched.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
@@ -883,18 +891,16 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   
 > Description:  
 > Returns the type of media that is currently playing (works on YTM only).  
-> It will return `"video"` for videos and `"song"` for songs.  
+> It will return `"video"` for videos (manually uploaded to YT - plays an actual video) and `"song"` for songs (automatic YTM releases - only displays a static, square image).  
 > Throws an error if [`waitVideoElementReady()`](#waitvideoelementready) hasn't been awaited yet or the function is called on YT.  
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> try {
+> // only available on YTM:
+> if(unsafeWindow.BYTM.getDomain() === "ytm") {
 >   const mediaType = unsafeWindow.BYTM.getCurrentMediaType();
->   console.log(`The current media type is: ${mediaType}`);
-> }
-> catch(err) {
->   console.error("Couldn't get the current media type:", err);
+>   console.log(`The current media type is: ${mediaType}`); // "video" or "song"
 > }
 > ```
 > </details>

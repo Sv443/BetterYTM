@@ -124,7 +124,7 @@ export function getThumbnailUrl(watchId: string, quality?: ThumbQuality): string
 export function getThumbnailUrl(watchId: string, index: 0 | 1 | 2 | 3): string
 /** Returns the thumbnail URL for a video with either a given quality identifier or index */
 export function getThumbnailUrl(watchId: string, qualityOrIndex: ThumbQuality | 0 | 1 | 2 | 3 = "maxresdefault") {
-  return `https://i.ytimg.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+  return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
 }
 
 /** Returns the best available thumbnail URL for a video with the given watch ID */
