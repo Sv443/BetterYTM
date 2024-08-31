@@ -884,6 +884,7 @@ body .bytm-ripple.slower {
 }
 
 #bytm-prompt-dialog-message {
+  font-size: 1.8rem;
   margin-bottom: 15px;
 }
 
@@ -898,6 +899,11 @@ body .bytm-ripple.slower {
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+.bytm-prompt-dialog-button {
+  padding: 3px 6px;
+  font-size: 1.5rem;
 }
 
 :root {
