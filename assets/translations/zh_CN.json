@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "您已更改了影响歌词缓存中数据的设置，这会破坏歌词 URL 查找。\n您是否要现在清除缓存？",
 
     "hotkey_input_click_to_change": "点击更改",
-    "hotkey_input_click_to_cancel_tooltip": "点击取消",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
     "hotkey_key_mac_option": "Option",
@@ -121,6 +120,7 @@
     "thumbnail_overlay_image_fit_crop": "裁剪",
     "thumbnail_overlay_image_fit_full": "显示完整图像",
     "thumbnail_overlay_image_fit_stretch": "拉伸以适应",
+    "click_to_cancel_tooltip": "点击取消",
 
     "unit_entries-1": "条记录",
     "unit_entries-n": "条记录",

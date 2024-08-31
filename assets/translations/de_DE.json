@@ -50,7 +50,6 @@
 
     "reset": "Zurücksetzen",
     "close": "Schließen",
-    "close_tooltip": "Zum Schließen klicken",
     "log_level_debug": "Debug (sehr viele)",
     "log_level_info": "Info (nur wichtige)",
     "toggled_on": "An",
@@ -102,7 +101,6 @@
 
     "hotkey_input_click_to_change": "Zum Ändern klicken",
     "hotkey_input_click_to_change_tooltip": "%1 - Derzeit gesetzt auf: %2 - Gib zum Ändern eine beliebige Tastenkombination ein. Hinweis: Einige Screenreader könnten bestimmte Tastenkombinationen blockieren.",
-    "hotkey_input_click_to_cancel_tooltip": "Klicke, um abzubrechen",
     "hotkey_input_click_to_reset_tooltip": "Zurücksetzen auf die zuletzt gespeicherte Tastenkombination",
     "hotkey_key_ctrl": "Strg",
     "hotkey_key_shift": "Shift",
@@ -150,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "Zuschneiden falls nötig",
     "thumbnail_overlay_image_fit_full": "Vollständiges Bild",
     "thumbnail_overlay_image_fit_stretch": "Auf Passform strecken",
+
     "auto_like_channels_dialog_title": "Auto-gelikte Kanäle",
     "auto_like_channels_dialog_desc": "Hier kannst du sehen, welche Kanäle du zum Auto-Liken eingestellt hast und sie bearbeiten, aktivieren, deaktivieren und entfernen.\nDu kannst auch manuell Einträge erstellen, obwohl es einfacher ist, einfach die Kanalseite zu besuchen und dort auf den Button zu klicken.",
     "auto_like": "Auto-Like",
@@ -169,13 +168,18 @@
     "auto_like_export_import_title": "Auto-gelikte Kanäle exportieren oder importieren",
     "auto_like_export_desc": "Kopiere den folgenden Text um deine auto-gelikten Kanäle zu exportieren.",
     "auto_like_import_desc": "Füge die auto-gelikten Kanäle, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:",
+    "click_to_close_tooltip": "Zum Schließen klicken",
+    "click_to_cancel_tooltip": "Klicke, um abzubrechen",
+
     "vote_label_likes-1": "%1 Like",
     "vote_label_likes-n": "%1 Likes",
     "vote_label_dislikes-1": "%1 Dislike",
     "vote_label_dislikes-n": "%1 Dislikes",
+
     "vote_ratio_disabled": "Deaktiviert",
     "vote_ratio_green_red": "Grün und rot",
     "vote_ratio_blue_gray": "Blau und grau",
+
     "votes_format_short": "Gekürzte Zahl",
     "votes_format_long": "Vollständige Zahl",
 
@@ -184,6 +188,7 @@
 
     "unit_days-1": "Tag",
     "unit_days-n": "Tage",
+
     "color_lightness_darker": "Dunkler",
     "color_lightness_normal": "Normal",
     "color_lightness_lighter": "Heller",
@@ -233,6 +238,7 @@
     "feature_desc_setInitialTabVolume": "Setze den Lautstärkepegel auf einen bestimmten Wert, wenn die Seite geöffnet wird",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Diese Funktion ist mit der Funktion \"Lautstärke zwischen Tabs teilen\" nicht kompatibel und wird ignoriert, während die Funktion zum Teilen der Lautstärke aktiviert ist.",
     "feature_desc_initialTabVolumeLevel": "Der Wert, auf den die Lautstärke eingestellt werden soll, wenn die Seite geöffnet wird",
+  
     "feature_desc_lyricsQueueButton": "Füge einen Knopf zu jedem Song in einer Liste hinzu, um die Songtext-Seite zu öffnen",
     "feature_desc_deleteFromQueueButton": "Füge einen Knopf zu jedem Song in einer Liste hinzu, um ihn schnell zu entfernen",
     "feature_desc_listButtonsPlacement": "Wo sollen die Listen-Knöpfe erscheinen?",

@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en_US`](./en_US.json) | `299` (default locale) |  |
-| ⚠ | [`de_DE`](./de_DE.json) | `296/299` (99%) | ─ |
-|  | [`en_UK`](./en_UK.json) | `299/299` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `202/299` (67.6%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `202/299` (67.6%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `202/299` (67.6%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `202/299` (67.6%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `202/299` (67.6%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `202/299` (67.6%) | ─ |
+|  | [`en_US`](./en_US.json) | `300` (default locale) |  |
+| ⚠ | [`de_DE`](./de_DE.json) | `296/300` (98.7%) | ─ |
+|  | [`en_UK`](./en_UK.json) | `300/300` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `202/300` (67.3%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `202/300` (67.3%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `202/300` (67.3%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `202/300` (67.3%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `202/300` (67.3%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `202/300` (67.3%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,17 +45,18 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 3 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 4 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -72,7 +73,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -110,6 +110,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -159,7 +161,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -176,7 +178,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -214,6 +215,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -263,7 +266,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -280,7 +283,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -318,6 +320,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -367,7 +371,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -384,7 +388,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -422,6 +425,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -471,7 +476,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -488,7 +493,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -526,6 +530,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |
@@ -575,7 +581,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 97 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
@@ -592,7 +598,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `copy_hidden` | `Copy hidden` |
 | `search_placeholder` | `Search...` |
 | `search_clear` | `Clear search` |
-| `close_tooltip` | `Click to close` |
 | `new_entry` | `New entry` |
 | `new_entry_tooltip` | `Click to create a new entry` |
 | `remove_entry` | `Remove this entry` |
@@ -630,6 +635,8 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `prompt_confirm` | `Confirm` |
 | `prompt_close` | `Close` |
 | `prompt_cancel` | `Cancel` |
+| `click_to_confirm_tooltip` | `Click to confirm` |
+| `click_to_close_tooltip` | `Click to close` |
 | `vote_label_likes-1` | `%1 like` |
 | `vote_label_likes-n` | `%1 likes` |
 | `vote_label_dislikes-1` | `%1 dislike` |

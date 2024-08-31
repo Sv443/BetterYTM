@@ -61,7 +61,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     otherHotkeyInputActive = true;
     inputElem.innerText = "< ... >";
     inputElem.dataset.state = "active";
-    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+    inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
   };
 
   const resetClicked = (e: MouseEvent | KeyboardEvent) => {
@@ -101,7 +101,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = hotkey.code;
     inputElem.dataset.state = "inactive";
     setInnerHtml(infoElem, getHotkeyInfoHtml(hotkey));
-    inputElem.ariaLabel = inputElem.title = t("hotkey_input_click_to_cancel_tooltip");
+    inputElem.ariaLabel = inputElem.title = t("click_to_cancel_tooltip");
 
     onChange(hotkey);
     currentHotkey = hotkey;

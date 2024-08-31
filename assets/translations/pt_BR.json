@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "Você alterou configurações que afetam os dados no cache de letras, o que quebra as pesquisas de URL de letras.\nVocê deseja limpar o cache agora?",
 
     "hotkey_input_click_to_change": "Clique para alterar",
-    "hotkey_input_click_to_cancel_tooltip": "Clique para cancelar",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
     "hotkey_key_mac_option": "Option",
@@ -121,6 +120,7 @@
     "thumbnail_overlay_image_fit_crop": "Cortar se necessário",
     "thumbnail_overlay_image_fit_full": "Mostrar a imagem completa",
     "thumbnail_overlay_image_fit_stretch": "Esticar para ajustar",
+    "click_to_cancel_tooltip": "Clique para cancelar",
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
