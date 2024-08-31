@@ -524,6 +524,10 @@ export async function initThumbnailOverlay() {
         if(thumbUrl) {
           const toggleBtnElem = document.querySelector<HTMLAnchorElement>("#bytm-thumbnail-overlay-toggle");
           const thumbImgElem = document.querySelector<HTMLImageElement>("#bytm-thumbnail-overlay-img");
+
+          if(toggleBtnElem?.href === thumbUrl && thumbImgElem?.src === thumbUrl)
+            return;
+
           if(toggleBtnElem)
             toggleBtnElem.href = thumbUrl;
           if(thumbImgElem)

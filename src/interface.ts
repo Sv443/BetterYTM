@@ -108,12 +108,12 @@ export const allInterfaceEvents = [
 
 /**
  * All functions that can be called on the BYTM interface using `unsafeWindow.BYTM.functionName();` (or `const { functionName } = unsafeWindow.BYTM;`)  
- * If prefixed with /**\/, the function is authenticated and requires a token to be passed as the first argument.
+ * If prefixed with /\*🔒\*\/, the function is authenticated and requires a token to be passed as the first argument.
  */
 const globalFuncs: InterfaceFunctions = {
   // meta:
   registerPlugin,
-  /**/ getPluginInfo,
+  /*🔒*/ getPluginInfo,
 
   // bytm-specific:
   getDomain,
@@ -131,7 +131,7 @@ const globalFuncs: InterfaceFunctions = {
   getCurrentMediaType,
 
   // translations:
-  /**/ setLocale: setLocaleInterface,
+  /*🔒*/ setLocale: setLocaleInterface,
   getLocale,
   hasKey,
   hasKeyFor,
@@ -139,8 +139,8 @@ const globalFuncs: InterfaceFunctions = {
   tp,
 
   // feature config:
-  /**/ getFeatures: getFeaturesInterface,
-  /**/ saveFeatures: saveFeaturesInterface,
+  /*🔒*/ getFeatures: getFeaturesInterface,
+  /*🔒*/ saveFeatures: saveFeaturesInterface,
 
   // lyrics:
   fetchLyricsUrlTop,
@@ -149,8 +149,8 @@ const globalFuncs: InterfaceFunctions = {
   sanitizeSong,
 
   // auto-like:
-  /**/ getAutoLikeData: getAutoLikeDataInterface,
-  /**/ saveAutoLikeData: saveAutoLikeDataInterface,
+  /*🔒*/ getAutoLikeData: getAutoLikeDataInterface,
+  /*🔒*/ saveAutoLikeData: saveAutoLikeDataInterface,
   fetchVideoVotes,
 
   // components:
