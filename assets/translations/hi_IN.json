@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "आपने उन सेटिंग्स को बदल दिया है जो बोल कैश में डेटा पर प्रभाव डालते हैं, जो बोल URL खोजों को तोड़ देते हैं।\nक्या आप वाकई अब बोल कैश हटाना चाहते हैं?",
 
     "hotkey_input_click_to_change": "बदलने के लिए क्लिक करें",
-    "hotkey_input_click_to_cancel_tooltip": "बदलने के लिए क्लिक करें, फिर रिकवर करें",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
     "hotkey_key_mac_option": "Option",
@@ -121,6 +120,7 @@
     "thumbnail_overlay_image_fit_crop": "क्रॉप करें यदि आवश्यक है",
     "thumbnail_overlay_image_fit_full": "पूरी छवि दिखाएं",
     "thumbnail_overlay_image_fit_stretch": "खींचें ताकि फिट हो जाए",
+    "click_to_cancel_tooltip": "बदलने के लिए क्लिक करें, फिर रिकवर करें",
 
     "unit_entries-1": "विषय",
     "unit_entries-n": "विषय",

@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "Vous avez modifié des paramètres qui affectent les données dans le cache des paroles, ce qui casse les recherches d'URL de paroles.\nVoulez-vous vider le cache maintenant?",
 
     "hotkey_input_click_to_change": "Cliquez pour changer",
-    "hotkey_input_click_to_cancel_tooltip": "Cliquez pour annuler",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Maj",
     "hotkey_key_mac_option": "Option",
@@ -121,6 +120,7 @@
     "thumbnail_overlay_image_fit_crop": "Rogner si nécessaire",
     "thumbnail_overlay_image_fit_full": "Afficher l'image complète",
     "thumbnail_overlay_image_fit_stretch": "Étirer pour s'adapter",
+    "click_to_cancel_tooltip": "Cliquez pour annuler",
 
     "unit_entries-1": "entrée",
     "unit_entries-n": "entrées",

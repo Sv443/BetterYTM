@@ -67,7 +67,8 @@ class PromptDialog extends BytmDialog {
       confirmBtn = document.createElement("button");
       confirmBtn.id = "bytm-prompt-dialog-confirm";
       confirmBtn.classList.add("bytm-prompt-dialog-button");
-      confirmBtn.textContent = confirmBtn.ariaLabel = confirmBtn.title = t("prompt_confirm");
+      confirmBtn.textContent = t("prompt_confirm");
+      confirmBtn.ariaLabel = confirmBtn.title = t("click_to_confirm_tooltip");
       confirmBtn.tabIndex = 0;
       confirmBtn.autofocus = true;
       confirmBtn.addEventListener("click", () => {
@@ -79,8 +80,11 @@ class PromptDialog extends BytmDialog {
     const closeBtn = document.createElement("button");
     closeBtn.id = "bytm-prompt-dialog-close";
     closeBtn.classList.add("bytm-prompt-dialog-button");
-    closeBtn.textContent = closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "prompt_close" : "prompt_cancel");
+    closeBtn.textContent = t(type === "alert" ? "prompt_close" : "prompt_cancel");
+    closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip");
     closeBtn.tabIndex = 0;
+    if(type === "alert")
+      closeBtn.autofocus = true;
     closeBtn.addEventListener("click", () => {
       resolve(type === "alert");
       promptDialog?.close();

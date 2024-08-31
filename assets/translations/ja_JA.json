@@ -76,7 +76,6 @@
     "lyrics_cache_changed_clear_confirm": "歌詞キャッシュに影響を与える設定を変更しました。これにより歌詞 URL の検索が壊れます。\nキャッシュをクリアしますか？",
 
     "hotkey_input_click_to_change": "クリックして変更",
-    "hotkey_input_click_to_cancel_tooltip": "クリックしてキャンセル",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
     "hotkey_key_mac_option": "Option",
@@ -121,6 +120,7 @@
     "thumbnail_overlay_image_fit_crop": "切り取る",
     "thumbnail_overlay_image_fit_full": "フルイメージ",
     "thumbnail_overlay_image_fit_stretch": "ストレッチ",
+    "click_to_cancel_tooltip": "クリックしてキャンセル",
 
     "unit_entries-1": "項目",
     "unit_entries-n": "項目",

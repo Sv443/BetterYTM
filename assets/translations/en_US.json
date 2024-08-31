@@ -50,7 +50,6 @@
 
     "reset": "Reset",
     "close": "Close",
-    "close_tooltip": "Click to close",
     "log_level_debug": "Debug (most)",
     "log_level_info": "Info (only important)",
     "toggled_on": "On",
@@ -102,7 +101,6 @@
 
     "hotkey_input_click_to_change": "Click to change",
     "hotkey_input_click_to_change_tooltip": "%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.",
-    "hotkey_input_click_to_cancel_tooltip": "Click to cancel",
     "hotkey_input_click_to_reset_tooltip": "Reset to the last saved key combination",
     "hotkey_key_ctrl": "Ctrl",
     "hotkey_key_shift": "Shift",
@@ -174,6 +172,10 @@
     "prompt_confirm": "Confirm",
     "prompt_close": "Close",
     "prompt_cancel": "Cancel",
+
+    "click_to_confirm_tooltip": "Click to confirm",
+    "click_to_close_tooltip": "Click to close",
+    "click_to_cancel_tooltip": "Click to cancel",
 
     "vote_label_likes-1": "%1 like",
     "vote_label_likes-n": "%1 likes",
