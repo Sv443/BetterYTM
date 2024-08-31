@@ -10,6 +10,7 @@ import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
+import type { showPrompt } from "./dialogs/prompt.js";
 
 //#region other
 
@@ -350,6 +351,8 @@ export type InterfaceFunctions = {
   showToast: typeof showToast;
   /** Shows a toast with the provided text and an icon */
   showIconToast: typeof showIconToast;
+  /** Shows a styled confirm() or alert() dialog with the provided message */
+  showPrompt: typeof showPrompt;
 };
 
 //#region feature defs
