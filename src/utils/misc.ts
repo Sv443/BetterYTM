@@ -184,6 +184,13 @@ export async function tryToDecompressAndParse<TData = Record<string, unknown>>(i
   return parsed;
 }
 
+/** Very crude OS detection */
+export function getOS() {
+  if(navigator.userAgent.match(/mac(\s?os|intel)/i))
+    return "mac";
+  return "other";
+}
+
 //#region resources
 
 /**

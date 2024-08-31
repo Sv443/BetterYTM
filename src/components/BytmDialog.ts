@@ -4,6 +4,7 @@ import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } fro
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
+import type { EventsMap } from "nanoevents";
 
 export interface BytmDialogOptions {
   /** ID that gets added to child element IDs - has to be unique and conform to HTML ID naming rules! */
@@ -36,16 +37,7 @@ export interface BytmDialogOptions {
   renderFooter?: () => HTMLElement | Promise<HTMLElement>;
 }
 
-// TODO: remove export as soon as config menu is migrated to use BytmDialog
-/** ID of the last opened (top-most) dialog */
-export let currentDialogId: string | null = null;
-/** IDs of all currently open dialogs, top-most first */
-export const openDialogs: string[] = [];
-/** TODO: remove as soon as config menu is migrated to use BytmDialog */
-export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
-
-/** Creates and manages a modal dialog element */
-export class BytmDialog extends NanoEmitter<{
+export interface BytmDialogEvents extends EventsMap {
   /** Emitted just **after** the dialog is closed */
   close: () => void;
   /** Emitted just **after** the dialog is opened */
@@ -56,7 +48,18 @@ export class BytmDialog extends NanoEmitter<{
   clear: () => void;
   /** Emitted just **after** the dialog is destroyed and **before** all listeners are removed */
   destroy: () => void;
-}> {
+};
+
+// TODO: remove export as soon as config menu is migrated to use BytmDialog
+/** ID of the last opened (top-most) dialog */
+export let currentDialogId: string | null = null;
+/** IDs of all currently open dialogs, top-most first */
+export const openDialogs: string[] = [];
+/** TODO: remove as soon as config menu is migrated to use BytmDialog */
+export const setCurrentDialogId = (id: string | null) => currentDialogId = id;
+
+/** Creates and manages a modal dialog element */
+export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
   public readonly options;
   public readonly id;
 

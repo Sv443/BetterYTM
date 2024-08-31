@@ -6,6 +6,7 @@ import { getFeature } from "../config.js";
 import { addLyricsCacheEntryBest, getLyricsCacheEntry } from "./lyricsCache.js";
 import type { LyricsCacheEntry } from "../types.js";
 import { addSelectorListener } from "../observers.js";
+import { showPrompt } from "../dialogs/prompt.js";
 
 /** Ratelimit budget timeframe in seconds - should reflect what's in geniURL's docs */
 const geniUrlRatelimitTimeframe = 30;
@@ -238,7 +239,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     if(fetchRes.status === 429) {
       const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
-      alert(tp("lyrics_rate_limited", waitSeconds, waitSeconds));
+      await showPrompt({ message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {

@@ -1,9 +1,10 @@
-import { addGlobalStyle, debounce, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
-import { error, fetchCss, getDomain, t, warn } from "./index.js";
+import { addGlobalStyle, getUnsafeWindow, randomId, type Stringifiable } from "@sv443-network/userutils";
+import { error, fetchCss, getDomain, t } from "./index.js";
 import { addSelectorListener } from "../observers.js";
 import type { ResourceKey, TTPolicy } from "../types.js";
 import { siteEvents } from "../siteEvents.js";
 import DOMPurify from "dompurify";
+import { showPrompt } from "src/dialogs/prompt.js";
 
 /** Whether the DOM has finished loading and elements can be added or modified */
 export let domLoaded = false;
@@ -232,7 +233,7 @@ export function copyToClipboard(text: Stringifiable) {
     GM.setClipboard(String(text));
   }
   catch {
-    alert(t("copy_to_clipboard_error", String(text)));
+    showPrompt({ message: t("copy_to_clipboard_error", String(text)) });
   }
 }
 
@@ -248,10 +249,5 @@ export function setInnerHtml(element: HTMLElement, html: string) {
     });
   }
 
-  if(ttPolicy)
-    element.innerHTML = ttPolicy.createHTML(html);
-  else {
-    debounce(() => warn("Trusted Types policy not available, using innerHTML directly"), 1000, "rising")();
-    element.innerHTML = html;
-  }
+  element.innerHTML = ttPolicy?.createHTML(html) ?? html;
 }

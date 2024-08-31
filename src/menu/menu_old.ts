@@ -4,7 +4,7 @@ import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../const
 import { featInfo, disableBeforeUnload } from "../features/index.js";
 import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
-import { getChangelogDialog, getFeatHelpDialog } from "../dialogs/index.js";
+import { getChangelogDialog, getFeatHelpDialog, showPrompt } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import { emitInterface } from "../interface.js";
@@ -204,11 +204,11 @@ async function mountCfgMenu() {
         log("Trying to import configuration:", parsed);
 
         if(!parsed || typeof parsed !== "object")
-          return alert(t("import_error_invalid"));
+          return await showPrompt({ message: t("import_error_invalid") });
         if(typeof parsed.formatVersion !== "number")
-          return alert(t("import_error_no_format_version"));
+          return await showPrompt({ message: t("import_error_no_format_version") });
         if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-          return alert(t("import_error_no_data"));
+          return await showPrompt({ message: t("import_error_no_data") });
         if(parsed.formatVersion < formatVersion) {
           let newData = JSON.parse(JSON.stringify(parsed.data));
           const sortedMigrations = Object.entries(migrations)
@@ -233,11 +233,11 @@ async function mountCfgMenu() {
           parsed.data = newData;
         }
         else if(parsed.formatVersion !== formatVersion)
-          return alert(t("import_error_wrong_format_version", formatVersion, parsed.formatVersion));
+          return await showPrompt({ message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
   
         await setFeatures({ ...getFeatures(), ...parsed.data });
   
-        if(confirm(t("import_success_confirm_reload"))) {
+        if(await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
           disableBeforeUnload();
           return location.reload();
         }
@@ -247,7 +247,7 @@ async function mountCfgMenu() {
       }
       catch(err) {
         warn("Couldn't import configuration:", err);
-        alert(t("import_error_invalid"));
+        await showPrompt({ message: t("import_error_invalid") });
       }
     },
     title: () => t("bytm_config_export_import_title"),
@@ -314,7 +314,7 @@ async function mountCfgMenu() {
 
       const confirmText = newText !== initLangReloadText ? `${newText}\n\n────────────────────────────────\n\n${initLangReloadText}` : newText;
 
-      if(confirm(confirmText)) {
+      if(await showPrompt({ type: "confirm", message: confirmText })) {
         closeCfgMenu();
         disableBeforeUnload();
         location.reload();
