@@ -60,7 +60,6 @@ function updateLyricsCacheEntry(artist: string, song: string) {
   if(idx !== -1) {
     const newEntry = cache.splice(idx, 1)[0]!;
     newEntry.viewed = Date.now();
-    log(`Updating cache entry for '${artist} - ${song}' to`, newEntry);
     lyricsCacheMgr.setData({ cache: [ newEntry, ...cache ] });
   }
 }

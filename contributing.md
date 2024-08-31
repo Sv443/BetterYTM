@@ -1967,10 +1967,13 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```
 >   
 > Shows a prompt dialog with the specified message and type.  
-> The user can choose between confirming or canceling the prompt.  
-> Closing the dialog counts as canceling.  
-> The Promise resolves with `true` if the user confirmed the prompt and `false` if they canceled it.  
-> The Promise always resolves with `true` when the type `alert` is used.  
+> If another prompt is already shown, it will be closed (and resolve as closed or canceled) and the new one will be shown immediately afterwards.  
+>   
+> If the type is `alert` (default), the user can only close the prompt.  
+> In this case the Promise always resolves with `true`.  
+>   
+> For the type `confirm`, the user can choose between confirming or canceling the prompt.  
+> In this case the Promise resolves with `true` if the user confirmed and `false` if the user canceled or closed.  
 >   
 > Properties:  
 > - `message: string` - The message to show in the prompt
