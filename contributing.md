@@ -119,7 +119,7 @@ To edit an existing translation, please follow these steps:
     Sets `--config-mode=production` and `--config-branch=main` and `--config-assetSource=github`
   - `pnpm run build-dev` - Builds a preview version, targeting the develop branch and the public asset source so no local dev environment is needed.  
     Sets `--config-mode=development`, `--config-branch=develop` and `--config-assetSource=github`
-  - `pnpm run preview` - Same as `pnpm run build-dev but also starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
+  - `pnpm run preview` - Same as `pnpm run build-prod`, but sets `--config-host=github` and `--config-assetSource=local`, then starts the dev server for a few seconds so the extension that's waiting for file changes can update the script and assets
 - **`pnpm run lint`**  
   Builds the userscript with the TypeScript compiler and lints it with ESLint. Doesn't verify the functionality of the script, only checks for syntax and TypeScript errors!
 - **`pnpm run storybook`**  
