@@ -44,6 +44,7 @@ class PromptDialog extends BytmDialog {
       small: true,
       renderHeader: () => this.renderHeader(props),
       renderBody: () => this.renderBody(props),
+      renderFooter: () => this.renderFooter(props),
     });
   }
 
@@ -58,9 +59,8 @@ class PromptDialog extends BytmDialog {
   }
 
   async renderBody({ type, message, ...rest }: PromptDialogRenderProps) {
-    const resolve = (val: boolean | string | null) => (this.events as PromptDialogEmitter).emit("resolve", val);
-
     const contElem = document.createElement("div");
+    contElem.classList.add(`bytm-prompt-type-${type}`);
 
     const upperContElem = document.createElement("div");
     upperContElem.id = "bytm-prompt-dialog-upper-cont";
@@ -84,6 +84,12 @@ class PromptDialog extends BytmDialog {
 
       upperContElem.appendChild(inputElem);
     }
+
+    return contElem;
+  }
+
+  async renderFooter({ type }: PromptDialogRenderProps) {
+    const resolve = (val: boolean | string | null) => (this.events as PromptDialogEmitter).emit("resolve", val);
 
     const buttonsWrapper = document.createElement("div");
     buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
@@ -129,9 +135,8 @@ class PromptDialog extends BytmDialog {
     confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
 
     buttonsWrapper.appendChild(buttonsCont);
-    contElem.appendChild(buttonsWrapper);
 
-    return contElem;
+    return buttonsWrapper;
   }
 }
 
