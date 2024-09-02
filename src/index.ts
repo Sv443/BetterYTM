@@ -42,26 +42,37 @@ import { MarkdownDialog } from "./components/index.js";
 
 {
   // console watermark with sexy gradient
-  const styleGradient = "background: rgba(165, 38, 38, 1); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(184, 64, 41) 100%);";
+  const [styleGradient, gradientContBg] = (() => {
+    switch(mode) {
+    case "production": return ["background: rgb(165, 57, 36); background: linear-gradient(90deg, rgb(154, 31, 103) 0%, rgb(135, 31, 31) 40%, rgb(165, 57, 36) 100%);", "rgb(165, 57, 36)"];
+    case "development": return ["background: rgb(72, 66, 178); background: linear-gradient(90deg, rgb(44, 166, 178) 0%, rgb(33, 48, 158) 40%, rgb(72, 66, 178) 100%);", "rgb(72, 66, 178)"];
+    }
+  })();
   const styleCommon = "color: #fff; font-size: 1.3rem;";
 
+  const poweredBy = `Powered by:
+─ Lots of ambition and dedication
+─ My song metadata API: https://api.sv443.net/geniurl
+─ My userscript utility library: https://github.com/Sv443-Network/UserUtils
+─ This library for semver comparison: https://github.com/omichelsen/compare-versions
+─ This TrustedTypes-compatible HTML sanitization library: https://github.com/cure53/DOMPurify
+─ This markdown parser library: https://github.com/markedjs/marked
+─ This tiny event listener library: https://github.com/ai/nanoevents
+─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript`;
+
   console.log(
-    `%c${scriptInfo.name}%c${scriptInfo.version}%c • ${scriptInfo.namespace}%c\n\nBuild #${buildNumber}`,
+    `\
+%c${scriptInfo.name}%cv${scriptInfo.version}%c • ${scriptInfo.namespace}%c
+
+Build #${buildNumber}${mode === "development" ? " (dev mode)" : ""}
+
+%c${poweredBy}`,
     `${styleCommon} ${styleGradient} font-weight: bold; padding-left: 6px; padding-right: 6px;`,
-    `${styleCommon} background-color: #333; padding-left: 8px; padding-right: 8px;`,
+    `${styleCommon} background-color: ${gradientContBg}; padding-left: 8px; padding-right: 8px;`,
     "color: #fff; font-size: 1.2rem;",
-    "padding: initial; font-size: 0.9rem;"
+    "padding: initial; font-size: 0.9rem;",
+    "padding: initial; font-size: 1rem;",
   );
-  console.log([
-    "Powered by:",
-    "─ Lots of ambition and dedication",
-    "─ My song metadata API: https://api.sv443.net/geniurl",
-    "─ My userscript utility library: https://github.com/Sv443-Network/UserUtils",
-    "─ This library for semver comparison: https://github.com/omichelsen/compare-versions",
-    "─ This tiny event listener library: https://github.com/ai/nanoevents",
-    "─ This markdown parser library: https://github.com/markedjs/marked",
-    "─ TypeScript and the tslib runtime: https://github.com/microsoft/TypeScript",
-  ].join("\n"));
 }
 
 //#region preInit
