@@ -17,7 +17,7 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
 |  | [`en_US`](./en_US.json) | `300` (default locale) |  |
-| ⚠ | [`de_DE`](./de_DE.json) | `296/300` (98.7%) | ─ |
+| ✅ | [`de_DE`](./de_DE.json) | `300/300` (100%) | ─ |
 |  | [`en_UK`](./en_UK.json) | `300/300` (100%) | `en_US` |
 | ‼️ | [`es_ES`](./es_ES.json) | `202/300` (67.3%) | ─ |
 | ‼️ | [`fr_FR`](./fr_FR.json) | `202/300` (67.3%) | ─ |
@@ -45,17 +45,6 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 4 missing keys <i>(click to show)</i></summary><br>
-
-| Key | English text |
-| --- | ------------ |
-| `prompt_confirm` | `Confirm` |
-| `prompt_close` | `Close` |
-| `prompt_cancel` | `Cancel` |
-| `click_to_confirm_tooltip` | `Click to confirm` |
-
-<br></details>
-
 <details><summary><code>es_ES</code> - 98 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
@@ -82,7 +71,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -187,7 +176,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -292,7 +281,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -397,7 +386,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -502,7 +491,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
@@ -607,7 +596,7 @@ This means to figure out which keys are untranslated, you will need to manually 
 | `generic_error_toast_click_for_details` | `Click for details` |
 | `error` | `Error` |
 | `generic_error_dialog_message` | `Encountered an error.` |
-| `generic_error_dialog_open_console_note` | `Please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
+| `generic_error_dialog_open_console_note` | `If this error keeps occuring, please open the JavaScript console (usually with Ctrl + Shift + K) and attach a screenshot of the **entire** error message that starts with %1 to a new [GitHub issue.](%2)` |
 | `open_lyrics_search_prompt` | `Enter the song title and artist to search for the lyrics:` |
 | `hotkey_input_click_to_change_tooltip` | `%1 - Currently set to: %2 - Enter any key combination to change. Note: some screen readers might block certain key combinations.` |
 | `hotkey_input_click_to_reset_tooltip` | `Reset to the last saved key combination` |
