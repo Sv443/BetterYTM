@@ -415,7 +415,8 @@ ytmusic-app-layout[player-ui-state="FULLSCREEN"] .bytm-vote-label {
   ytmusic-app-layout[player-ui-state="FULLSCREEN"]
   ytmusic-player-bar[slot="player-bar"] {
   width: 100%;
-  background: rgba(0, 0, 0, 0.35);
+  /* ...except in this case because of the ThemeSong extension: */
+  background: rgba(0, 0, 0, 0.35) !important;
   backdrop-filter: blur(10px) brightness(90%);
 }
 
