@@ -168,9 +168,11 @@
     "auto_like_export_import_title": "Auto-gelikte Kanäle exportieren oder importieren",
     "auto_like_export_desc": "Kopiere den folgenden Text um deine auto-gelikten Kanäle zu exportieren.",
     "auto_like_import_desc": "Füge die auto-gelikten Kanäle, die du importieren möchtest, in das Feld unten ein und klicke dann auf Importieren:",
+
     "prompt_confirm": "Ok",
     "prompt_close": "Schließen",
     "prompt_cancel": "Abbrechen",
+
     "click_to_confirm_tooltip": "Klicke um zu bestätigen",
     "click_to_close_tooltip": "Zum Schließen klicken",
     "click_to_cancel_tooltip": "Klicke um abzubrechen",
