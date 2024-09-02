@@ -13,7 +13,7 @@
     "build": "rollup -c",
     "build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
     "build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",
-    "preview": "pnpm run build-dev && pnpm run serve --auto-exit=3",
+    "preview": "pnpm run build-prod-gh --config-assetSource=local && pnpm run serve --auto-exit=5",
     "build-prod": "pnpm run build-prod-gh && pnpm run build-prod-gf && pnpm run build-prod-oujs",
     "build-prod-base": "rollup -c --config-mode production --config-branch main",
     "build-prod-gh": "pnpm run build-prod-base --config-host github",

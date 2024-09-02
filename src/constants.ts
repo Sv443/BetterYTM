@@ -36,7 +36,7 @@ export const sessionStorageAvailable =
   typeof sessionStorage?.setItem === "function"
   && (() => {
     try {
-      const key = `_bytm_test_${randomId(4, 36)}`;
+      const key = `_bytm_test_${randomId(6, 36)}`;
       sessionStorage.setItem(key, "test");
       sessionStorage.removeItem(key);
       return true;
