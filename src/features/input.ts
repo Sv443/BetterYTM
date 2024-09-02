@@ -177,7 +177,7 @@ export const autoLikeStore = new DataStore<AutoLikeData>({
 let autoLikeStoreLoaded = false;
 
 /** Inits the auto-like DataStore instance */
-export function initAutoLikeStore() {
+export async function initAutoLikeStore() {
   if(autoLikeStoreLoaded)
     return;
   autoLikeStoreLoaded = true;
