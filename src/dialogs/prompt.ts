@@ -62,23 +62,18 @@ class PromptDialog extends BytmDialog {
 
     const contElem = document.createElement("div");
 
+    const upperContElem = document.createElement("div");
+    upperContElem.id = "bytm-prompt-dialog-upper-cont";
+    contElem.appendChild(upperContElem);
+
     const messageElem = document.createElement("p");
     messageElem.id = "bytm-prompt-dialog-message";
     messageElem.role = "alert";
     messageElem.tabIndex = 0;
     messageElem.textContent = String(message);
-    contElem.appendChild(messageElem);
+    upperContElem.appendChild(messageElem);
 
     if(type === "prompt") {
-      const inputCont = document.createElement("div");
-      inputCont.id = "bytm-prompt-dialog-input-cont";
-
-      const inputLabel = document.createElement("label");
-      inputLabel.id = "bytm-prompt-dialog-input-label";
-      inputLabel.htmlFor = "bytm-prompt-dialog-input";
-      inputLabel.textContent = t("prompt_input_label");
-      inputCont.appendChild(inputLabel);
-
       const inputElem = document.createElement("input");
       inputElem.id = "bytm-prompt-dialog-input";
       inputElem.type = "text";
@@ -86,9 +81,8 @@ class PromptDialog extends BytmDialog {
       inputElem.spellcheck = false;
       inputElem.value = "defaultValue" in rest ? rest.defaultValue ?? "" : "";
       inputElem.autofocus = true;
-      inputCont.appendChild(inputElem);
 
-      contElem.appendChild(inputCont);
+      upperContElem.appendChild(inputElem);
     }
 
     const buttonsWrapper = document.createElement("div");

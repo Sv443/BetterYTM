@@ -889,9 +889,14 @@ body .bytm-ripple.slower {
   height: 24px;
 }
 
+#bytm-prompt-dialog-upper-cont,
 #bytm-prompt-dialog-message {
   font-size: 1.8rem;
   margin-bottom: 15px;
+}
+
+#bytm-prompt-dialog-input {
+  width: 100%;
 }
 
 #bytm-prompt-dialog-button-wrapper {
