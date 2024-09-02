@@ -131,11 +131,12 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
 
   if(durationMs <= 0)
     return info("Toast duration is <= 0, so it won't be shown");
-  const toastEl = document.querySelector("#bytm-toast");
-  if(toastEl)
+
+  if(document.querySelector("#bytm-toast"))
     await closeToast();
 
   const toastElem = document.createElement("div");
+  toastElem.classList.add(`pos-${position.toLowerCase()}`);
   onClick && toastElem.classList.add("clickable");
   toastElem.id = "bytm-toast";
   toastElem.role = "alert";
@@ -155,9 +156,9 @@ export async function showToast(arg: string | ToastProps): Promise<HTMLDivElemen
   }
 
   document.body.appendChild(toastElem);
-  
-  pauseFor(100).then(async () => {
-    toastElem.classList.add("visible", `pos-${position.toLowerCase()}`);
+
+  pauseFor(100).then(() => {
+    toastElem.classList.add("visible");
 
     if(durationMs < Number.POSITIVE_INFINITY && durationMs > 0) {
       timeout && clearTimeout(timeout);
