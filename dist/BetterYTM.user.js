@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,56 +33,56 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/clear_list.svg
-// @resource          icon-confirm               https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/help.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/12224f1b/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/clear_list.svg
+// @resource          icon-confirm               https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/help.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/f02c764d/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.2.2/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -134,7 +134,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "12224f1b";
+const buildNumberRaw = "f02c764d";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1390,7 +1390,6 @@ async function createToggleInput({ onChange, initialValue = false, id = UserUtil
     labelEl && labelPos === "right" && wrapperEl.appendChild(labelEl);
     return wrapperEl;
 }let promptDialog = null;
-// TODO: implement prompt() equivalent for text input
 class PromptDialog extends BytmDialog {
     constructor(props) {
         super({
@@ -1414,7 +1413,9 @@ class PromptDialog extends BytmDialog {
             setInnerHtml(headerEl, iconSvg);
         return headerEl;
     }
-    async renderBody({ type, message }) {
+    async renderBody(_a) {
+        var _b;
+        var { type, message } = _a, rest = __rest(_a, ["type", "message"]);
         const resolve = (val) => this.events.emit("resolve", val);
         const contElem = document.createElement("div");
         const messageElem = document.createElement("p");
@@ -1423,21 +1424,40 @@ class PromptDialog extends BytmDialog {
         messageElem.tabIndex = 0;
         messageElem.textContent = String(message);
         contElem.appendChild(messageElem);
+        if (type === "prompt") {
+            const inputCont = document.createElement("div");
+            inputCont.id = "bytm-prompt-dialog-input-cont";
+            const inputLabel = document.createElement("label");
+            inputLabel.id = "bytm-prompt-dialog-input-label";
+            inputLabel.htmlFor = "bytm-prompt-dialog-input";
+            inputLabel.textContent = t("prompt_input_label");
+            inputCont.appendChild(inputLabel);
+            const inputElem = document.createElement("input");
+            inputElem.id = "bytm-prompt-dialog-input";
+            inputElem.type = "text";
+            inputElem.autocomplete = "off";
+            inputElem.spellcheck = false;
+            inputElem.value = "defaultValue" in rest ? (_b = rest.defaultValue) !== null && _b !== void 0 ? _b : "" : "";
+            inputElem.autofocus = true;
+            inputCont.appendChild(inputElem);
+            contElem.appendChild(inputCont);
+        }
         const buttonsWrapper = document.createElement("div");
         buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
         const buttonsCont = document.createElement("div");
         buttonsCont.id = "bytm-prompt-dialog-buttons-cont";
         let confirmBtn;
-        if (type === "confirm") {
+        if (type === "confirm" || type === "prompt") {
             confirmBtn = document.createElement("button");
             confirmBtn.id = "bytm-prompt-dialog-confirm";
             confirmBtn.classList.add("bytm-prompt-dialog-button");
             confirmBtn.textContent = t("prompt_confirm");
             confirmBtn.ariaLabel = confirmBtn.title = t("click_to_confirm_tooltip");
             confirmBtn.tabIndex = 0;
-            confirmBtn.autofocus = true;
+            confirmBtn.autofocus = type === "confirm";
             confirmBtn.addEventListener("click", () => {
-                resolve(true);
+                var _a, _b, _c;
+                resolve(type === "confirm" ? true : (_c = (_b = (_a = (document.querySelector("#bytm-prompt-dialog-input"))) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : null);
                 promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
             }, { once: true });
         }
@@ -1450,7 +1470,12 @@ class PromptDialog extends BytmDialog {
         if (type === "alert")
             closeBtn.autofocus = true;
         closeBtn.addEventListener("click", () => {
-            resolve(type === "alert");
+            const resVals = {
+                alert: true,
+                confirm: false,
+                prompt: null,
+            };
+            resolve(resVals[type]);
             promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
         }, { once: true });
         confirmBtn && getOS() !== "mac" && buttonsCont.appendChild(confirmBtn);
@@ -1461,39 +1486,36 @@ class PromptDialog extends BytmDialog {
         return contElem;
     }
 }
-/** Shows a prompt dialog of the specified type and resolves true if the user confirms it or false if they cancel it - always resolves true with type "alert" */
-function showPrompt({ type = "alert", message, }) {
+function showPrompt(_a) {
+    var { type } = _a, rest = __rest(_a, ["type"]);
     return new Promise((resolve) => {
         if (BytmDialog.getOpenDialogs().includes("prompt-dialog"))
             promptDialog === null || promptDialog === void 0 ? void 0 : promptDialog.close();
-        promptDialog = new PromptDialog({
-            type,
-            message,
-        });
+        promptDialog = new PromptDialog(Object.assign({ type }, rest));
         // make config menu inert while prompt dialog is open
         promptDialog.once("open", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.setAttribute("inert", "true"); });
         promptDialog.once("close", () => { var _a; return (_a = document.querySelector("#bytm-cfg-menu")) === null || _a === void 0 ? void 0 : _a.removeAttribute("inert"); });
         let resolveVal;
-        const tryResolve = () => resolve(typeof resolveVal === "boolean" ? resolveVal : false);
+        const tryResolve = () => resolve(typeof resolveVal !== "undefined" ? resolveVal : false);
         const resolveUnsub = promptDialog.on("resolve", (val) => {
             resolveUnsub();
-            if (resolveVal)
+            if (resolveVal !== undefined)
                 return;
             resolveVal = val;
             tryResolve();
         });
         const closeUnsub = promptDialog.on("close", () => {
             closeUnsub();
-            if (resolveVal)
+            if (resolveVal !== undefined)
                 return;
             resolveVal = type === "alert";
+            if (type === "prompt")
+                resolveVal = null;
             tryResolve();
         });
         promptDialog.open();
     });
-}
-//@ts-ignore
-unsafeWindow.showPrompt = showPrompt;let autoLikeDialog = null;
+}let autoLikeDialog = null;
 let autoLikeImExDialog = null;
 /** Creates and/or returns the import dialog */
 async function getAutoLikeDialog() {
@@ -1546,9 +1568,9 @@ async function getAutoLikeDialog() {
                     const parsed = await tryToDecompressAndParse(data);
                     log("Trying to import auto-like data:", parsed);
                     if (!parsed || typeof parsed !== "object")
-                        return await showPrompt({ message: t("import_error_invalid") });
+                        return await showPrompt({ type: "alert", message: t("import_error_invalid") });
                     if (!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-                        return await showPrompt({ message: t("import_error_no_data") });
+                        return await showPrompt({ type: "alert", message: t("import_error_no_data") });
                     await autoLikeStore.setData(parsed);
                     emitSiteEvent("autoLikeChannelsUpdated");
                     showToast({ message: t("import_success") });
@@ -1659,11 +1681,11 @@ async function renderBody$4() {
             title: t("edit_entry"),
             async onClick() {
                 var _a, _b, _c;
-                const newNamePr = (_a = prompt(t("auto_like_channel_edit_name_prompt"), chanName)) === null || _a === void 0 ? void 0 : _a.trim();
+                const newNamePr = (_a = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))) === null || _a === void 0 ? void 0 : _a.trim();
                 if (!newNamePr || newNamePr.length === 0)
                     return;
                 const newName = newNamePr.length > 0 ? newNamePr : chanName;
-                const newIdPr = (_b = prompt(t("auto_like_channel_edit_id_prompt"), chanId)) === null || _b === void 0 ? void 0 : _b.trim();
+                const newIdPr = (_b = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))) === null || _b === void 0 ? void 0 : _b.trim();
                 if (!newIdPr || newIdPr.length === 0)
                     return;
                 const newId = newIdPr.length > 0 ? (_c = getChannelIdFromPrompt(newIdPr)) !== null && _c !== void 0 ? _c : chanId : chanId;
@@ -1721,12 +1743,12 @@ async function openImportExportAutoLikeChannelsDialog() {
 async function addAutoLikeEntryPrompts() {
     var _a, _b, _c;
     await autoLikeStore.loadData();
-    const idPrompt = (_a = prompt(t("add_auto_like_channel_id_prompt"))) === null || _a === void 0 ? void 0 : _a.trim();
+    const idPrompt = (_a = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))) === null || _a === void 0 ? void 0 : _a.trim();
     if (!idPrompt)
         return;
     const id = (_b = parseChannelIdFromUrl(idPrompt)) !== null && _b !== void 0 ? _b : (isValidChannelId(idPrompt) ? idPrompt : null);
     if (!id || id.length <= 0)
-        return await showPrompt({ message: t("add_auto_like_channel_invalid_id") });
+        return await showPrompt({ type: "alert", message: t("add_auto_like_channel_invalid_id") });
     let overwriteName = false;
     const hasChannelEntry = autoLikeStore.getData().channels.find((ch) => ch.id === id);
     if (hasChannelEntry) {
@@ -1734,7 +1756,7 @@ async function addAutoLikeEntryPrompts() {
             return;
         overwriteName = true;
     }
-    const name = (_c = prompt(t("add_auto_like_channel_name_prompt"), hasChannelEntry === null || hasChannelEntry === void 0 ? void 0 : hasChannelEntry.name)) === null || _c === void 0 ? void 0 : _c.trim();
+    const name = (_c = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry === null || hasChannelEntry === void 0 ? void 0 : hasChannelEntry.name }))) === null || _c === void 0 ? void 0 : _c.trim();
     if (!name || name.length === 0)
         return;
     await autoLikeStore.setData(overwriteName
@@ -2292,11 +2314,11 @@ async function mountCfgMenu() {
                 const parsed = await tryToDecompressAndParse(data.trim());
                 log("Trying to import configuration:", parsed);
                 if (!parsed || typeof parsed !== "object")
-                    return await showPrompt({ message: t("import_error_invalid") });
+                    return await showPrompt({ type: "alert", message: t("import_error_invalid") });
                 if (typeof parsed.formatVersion !== "number")
-                    return await showPrompt({ message: t("import_error_no_format_version") });
+                    return await showPrompt({ type: "alert", message: t("import_error_no_format_version") });
                 if (typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-                    return await showPrompt({ message: t("import_error_no_data") });
+                    return await showPrompt({ type: "alert", message: t("import_error_no_data") });
                 if (parsed.formatVersion < formatVersion) {
                     let newData = JSON.parse(JSON.stringify(parsed.data));
                     const sortedMigrations = Object.entries(migrations)
@@ -2319,7 +2341,7 @@ async function mountCfgMenu() {
                     parsed.data = newData;
                 }
                 else if (parsed.formatVersion !== formatVersion)
-                    return await showPrompt({ message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
+                    return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
                 await setFeatures(Object.assign(Object.assign({}, getFeatures()), parsed.data));
                 if (await showPrompt({ type: "confirm", message: t("import_success_confirm_reload") })) {
                     disableBeforeUnload();
@@ -2330,7 +2352,7 @@ async function mountCfgMenu() {
             }
             catch (err) {
                 warn("Couldn't import configuration:", err);
-                await showPrompt({ message: t("import_error_invalid") });
+                await showPrompt({ type: "alert", message: t("import_error_invalid") });
             }
         },
         title: () => t("bytm_config_export_import_title"),
@@ -3173,7 +3195,7 @@ async function doVersionCheck(notifyNoUpdatesFound = false) {
         url: releaseURL,
     });
     // TODO: small dialog for "no update found" message?
-    const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ message: t("no_updates_found") }) : undefined;
+    const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ type: "alert", message: t("no_updates_found") }) : undefined;
     const latestTag = (_a = res.finalUrl.split("/").pop()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, "");
     if (!latestTag)
         return await noUpdateFound();
@@ -4932,7 +4954,7 @@ async function fetchLyricsUrls(artist, song) {
         } : {})));
         if (fetchRes.status === 429) {
             const waitSeconds = Number((_a = fetchRes.headers.get("retry-after")) !== null && _a !== void 0 ? _a : geniUrlRatelimitTimeframe);
-            await showPrompt({ message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
+            await showPrompt({ type: "alert", message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
             return undefined;
         }
         else if (fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -5006,7 +5028,7 @@ async function createLyricsBtn(geniusUrl, hideIfLoading = true) {
         if (e.ctrlKey || e.altKey) {
             e.preventDefault();
             e.stopPropagation();
-            const search = prompt(t("open_lyrics_search_prompt"));
+            const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
             if (search && search.length > 0)
                 openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
         }
@@ -5994,7 +6016,7 @@ const featInfo = {
             const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
             if (await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
                 await clearLyricsCache();
-                await showPrompt({ message: t("lyrics_clear_cache_success") });
+                await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
             }
         },
         advanced: true,
@@ -6967,7 +6989,7 @@ function copyToClipboard(text) {
         GM.setClipboard(String(text));
     }
     catch (_a) {
-        showPrompt({ message: t("copy_to_clipboard_error", String(text)) });
+        showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
     }
 }
 let ttPolicy;
@@ -7360,7 +7382,7 @@ function registerDevCommands() {
     }, "d");
     GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
         var _a;
-        const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+        const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
         if (!keys)
             return;
         for (const key of (_a = keys === null || keys === void 0 ? void 0 : keys.split(",")) !== null && _a !== void 0 ? _a : []) {
@@ -7397,14 +7419,14 @@ function registerDevCommands() {
         dbg(`Showing currently active listeners for ${Object.keys(globservers).length} observers with ${listenersAmt} total listeners:\n${lines.join("\n")}`);
     }, "s");
     GM.registerMenuCommand("Compress value", async () => {
-        const input = prompt("Enter the value to compress.\nSee console for output.");
+        const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
         if (input && input.length > 0) {
             const compressed = await UserUtils.compress(input, compressionFormat);
             dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
         }
     });
     GM.registerMenuCommand("Decompress value", async () => {
-        const input = prompt("Enter the value to decompress.\nSee console for output.");
+        const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output." });
         if (input && input.length > 0) {
             const decompressed = await UserUtils.decompress(input, compressionFormat);
             dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
@@ -7416,7 +7438,7 @@ function registerDevCommands() {
         alert("See console.");
     });
     GM.registerMenuCommand("Import using DataStoreSerializer", async () => {
-        const input = prompt("Enter the serialized data to import:");
+        const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
         if (input && input.length > 0) {
             await storeSerializer.deserialize(input);
             alert("Imported data. Reload the page to apply changes.");
