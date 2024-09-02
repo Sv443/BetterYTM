@@ -68,9 +68,9 @@ export async function getAutoLikeDialog() {
           log("Trying to import auto-like data:", parsed);
 
           if(!parsed || typeof parsed !== "object")
-            return await showPrompt({ message: t("import_error_invalid") });
+            return await showPrompt({ type: "alert", message: t("import_error_invalid") });
           if(!parsed.channels || typeof parsed.channels !== "object" || Object.keys(parsed.channels).length === 0)
-            return await showPrompt({ message: t("import_error_no_data") });
+            return await showPrompt({ type: "alert", message: t("import_error_no_data") });
 
           await autoLikeStore.setData(parsed);
           emitSiteEvent("autoLikeChannelsUpdated");
@@ -211,12 +211,12 @@ async function renderBody() {
       resourceName: "icon-edit",
       title: t("edit_entry"),
       async onClick() {
-        const newNamePr = prompt(t("auto_like_channel_edit_name_prompt"), chanName)?.trim();
+        const newNamePr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_name_prompt"), defaultValue: chanName }))?.trim();
         if(!newNamePr || newNamePr.length === 0)
           return;
         const newName = newNamePr.length > 0 ? newNamePr : chanName;
 
-        const newIdPr = prompt(t("auto_like_channel_edit_id_prompt"), chanId)?.trim();
+        const newIdPr = (await showPrompt({ type: "prompt", message: t("auto_like_channel_edit_id_prompt"), defaultValue: chanId }))?.trim();
         if(!newIdPr || newIdPr.length === 0)
           return;
         const newId = newIdPr.length > 0 ? getChannelIdFromPrompt(newIdPr) ?? chanId : chanId;
@@ -291,14 +291,14 @@ async function openImportExportAutoLikeChannelsDialog() {
 async function addAutoLikeEntryPrompts() {
   await autoLikeStore.loadData();
 
-  const idPrompt = prompt(t("add_auto_like_channel_id_prompt"))?.trim();
+  const idPrompt = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_id_prompt") }))?.trim();
   if(!idPrompt)
     return;
 
   const id = parseChannelIdFromUrl(idPrompt) ?? (isValidChannelId(idPrompt) ? idPrompt : null);
 
   if(!id || id.length <= 0)
-    return await showPrompt({ message: t("add_auto_like_channel_invalid_id") });
+    return await showPrompt({ type: "alert", message: t("add_auto_like_channel_invalid_id") });
 
   let overwriteName = false;
 
@@ -310,7 +310,7 @@ async function addAutoLikeEntryPrompts() {
     overwriteName = true;
   }
 
-  const name = prompt(t("add_auto_like_channel_name_prompt"), hasChannelEntry?.name)?.trim();
+  const name = (await showPrompt({ type: "prompt", message: t("add_auto_like_channel_name_prompt"), defaultValue: hasChannelEntry?.name }))?.trim();
   if(!name || name.length === 0)
     return;
 

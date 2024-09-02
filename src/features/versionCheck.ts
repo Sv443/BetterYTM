@@ -37,7 +37,7 @@ export async function doVersionCheck(notifyNoUpdatesFound = false) {
   });
 
   // TODO: small dialog for "no update found" message?
-  const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ message: t("no_updates_found") }) : undefined;
+  const noUpdateFound = () => notifyNoUpdatesFound ? showPrompt({ type: "alert", message: t("no_updates_found") }) : undefined;
 
   const latestTag = res.finalUrl.split("/").pop()?.replace(/[a-zA-Z]/g, "");
 

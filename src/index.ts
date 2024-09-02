@@ -6,7 +6,7 @@ import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTransl
 import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { getWelcomeDialog } from "./dialogs/index.js";
+import { getWelcomeDialog, showPrompt } from "./dialogs/index.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
@@ -414,7 +414,7 @@ function registerDevCommands() {
   }, "d");
 
   GM.registerMenuCommand("Delete GM values by name (comma separated)", async () => {
-    const keys = prompt("Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation.");
+    const keys = await showPrompt({ type: "prompt", message: "Enter the name(s) of the GM value to delete (comma separated).\nEmpty input cancels the operation." });
     if(!keys)
       return;
     for(const key of keys?.split(",") ?? []) {
@@ -455,7 +455,7 @@ function registerDevCommands() {
   }, "s");
 
   GM.registerMenuCommand("Compress value", async () => {
-    const input = prompt("Enter the value to compress.\nSee console for output.");
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to compress.\nSee console for output." });
     if(input && input.length > 0) {
       const compressed = await compress(input, compressionFormat);
       dbg(`Compression result (${input.length} chars -> ${compressed.length} chars)\nValue: ${compressed}`);
@@ -463,7 +463,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Decompress value", async () => {
-    const input = prompt("Enter the value to decompress.\nSee console for output.");
+    const input = await showPrompt({ type: "prompt", message: "Enter the value to decompress.\nSee console for output." });
     if(input && input.length > 0) {
       const decompressed = await decompress(input, compressionFormat);
       dbg(`Decompresion result (${input.length} chars -> ${decompressed.length} chars)\nValue: ${decompressed}`);
@@ -477,7 +477,7 @@ function registerDevCommands() {
   });
 
   GM.registerMenuCommand("Import using DataStoreSerializer", async () => {
-    const input = prompt("Enter the serialized data to import:");
+    const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
     if(input && input.length > 0) {
       await storeSerializer.deserialize(input);
       alert("Imported data. Reload the page to apply changes.");

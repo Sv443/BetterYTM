@@ -233,7 +233,7 @@ export function copyToClipboard(text: Stringifiable) {
     GM.setClipboard(String(text));
   }
   catch {
-    showPrompt({ message: t("copy_to_clipboard_error", String(text)) });
+    showPrompt({ type: "alert", message: t("copy_to_clipboard_error", String(text)) });
   }
 }
 

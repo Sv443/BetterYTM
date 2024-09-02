@@ -74,11 +74,11 @@ async function renderFooter() {
       log("Trying to import config object:", parsed);
 
       if(!parsed || typeof parsed !== "object")
-        return await showPrompt({ message: t("import_error_invalid") });
+        return await showPrompt({ type: "alert", message: t("import_error_invalid") });
       if(typeof parsed.formatVersion !== "number")
-        return await showPrompt({ message: t("import_error_no_format_version") });
+        return await showPrompt({ type: "alert", message: t("import_error_no_format_version") });
       if(typeof parsed.data !== "object" || parsed.data === null || Object.keys(parsed.data).length === 0)
-        return await showPrompt({ message: t("import_error_no_data") });
+        return await showPrompt({ type: "alert", message: t("import_error_no_data") });
       if(parsed.formatVersion < formatVersion) {
         let newData = JSON.parse(JSON.stringify(parsed.data));
         const sortedMigrations = Object.entries(migrations)
@@ -103,7 +103,7 @@ async function renderFooter() {
         parsed.data = newData;
       }
       else if(parsed.formatVersion !== formatVersion)
-        return await showPrompt({ message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
+        return await showPrompt({ type: "alert", message: t("import_error_wrong_format_version", formatVersion, parsed.formatVersion) });
 
       await setFeatures({ ...getFeatures(), ...parsed.data });
 
@@ -118,7 +118,7 @@ async function renderFooter() {
     }
     catch(err) {
       warn("Couldn't import configuration:", err);
-      await showPrompt({ message: t("import_error_invalid") });
+      await showPrompt({ type: "alert", message: t("import_error_invalid") });
     }
   });
 

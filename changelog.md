@@ -66,7 +66,7 @@
     - `createRipple()` to create a click ripple animation effect on a given element (experimental)
     - `showToast()` to show a custom toast notification with a message string or element and duration
     - `showIconToast()` to show a custom toast notification with a message string or element, icon and duration
-    - `showPrompt()` to show a styled prompt dialog that replaces the `confirm()` and `alert()` functions
+    - `showPrompt()` to show a styled dialog that replaces the `confirm()`, `alert()` and `prompt()` functions
     - `ExImDialog` class for creating a BytmDialog instance that is designed for exporting and importing generic data as a string
   - Changed components:
     - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed

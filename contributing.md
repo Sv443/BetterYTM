@@ -396,7 +396,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [createRipple()](#createripple) - Creates a click ripple effect on the given element
   - [showToast()](#showtoast) - Shows a toast notification and a message string or element
   - [showIconToast()](#showicontoast) - Shows a toast notification with an icon and a message string or element
-  - [showPrompt()](#showprompt) - Shows a styled prompt of the type `confirm` or `alert`
+  - [showPrompt()](#showprompt) - Shows a styled prompt dialog of the type `confirm`, `alert` or `prompt`
 - Translations:
   - [setLocale()](#setlocale) 🔒 - Sets the locale for BetterYTM
   - [getLocale()](#getlocale) - Returns the currently set locale
@@ -1969,33 +1969,45 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > Shows a prompt dialog with the specified message and type.  
 > If another prompt is already shown, it will be closed (and resolve as closed or canceled) and the new one will be shown immediately afterwards.  
 >   
-> If the type is `alert` (default), the user can only close the prompt.  
+> If the type is `alert`, the user can only close the prompt.  
 > In this case the Promise always resolves with `true`.  
 >   
 > For the type `confirm`, the user can choose between confirming or canceling the prompt.  
 > In this case the Promise resolves with `true` if the user confirmed and `false` if the user canceled or closed.  
 >   
+> If the type `prompt` is used, the user can input a text value.  
+> In this case the Promise resolves with the entered text if the user confirmed and `null` if the user canceled or closed.  
+> If the user confirms with an empty text field, the Promise resolves with an empty string.  
+> Additionally, the property `defaultValue` can be used to set the preset value for the input field.  
+>   
 > Properties:  
 > - `message: string` - The message to show in the prompt
-> - `type?: "confirm" | "alert"` - The type of the prompt. Can be "confirm" or "alert" (default)
+> - `type: "confirm" | "alert" | "prompt"` - The type of the prompt. Can be "confirm", "alert" or "prompt"
+> - `defaultValue?: string` - The default value for the input field (only when using type "prompt")
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
 > ```ts
-> const confirmed = await unsafeWindow.BYTM.showPrompt({
->   message: "Are you sure you want to delete this?",
->   type: "confirm",
+> const itemName = await unsafeWindow.BYTM.showPrompt({
+>   type: "prompt",
+>   message: "Enter the name of the item to delete:",
+>   defaultValue: "My Item",
 > });
->
-> if(confirmed) {
->   await deleteSomething();
+> 
+> const confirmed = itemName && await unsafeWindow.BYTM.showPrompt({
+>   type: "confirm",
+>   message: "Are you sure you want to delete this?",
+> });
+> 
+> if(confirmed && itemName) {
+>   await deleteItem(itemName);
 >   unsafeWindow.BYTM.showPrompt({
->     // uses type "alert" by default
->     message: "Deleted successfully.",
+>     type: "alert",
+>     message: `Deleted "${itemName}" successfully.`,
 >   });
 > }
 > else
->   console.log("The user canceled the prompt.");
+>   console.log("The user canceled one of the prompts.");
 > ```
 > </details>
 

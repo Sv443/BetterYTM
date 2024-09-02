@@ -628,7 +628,7 @@ export const featInfo = {
       const formattedEntries = entries.toLocaleString(getLocale().replace(/_/g, "-"), { style: "decimal", maximumFractionDigits: 0 });
       if(await showPrompt({ type: "confirm", message: tp("lyrics_clear_cache_confirm_prompt", entries, formattedEntries) })) {
         await clearLyricsCache();
-        await showPrompt({ message: t("lyrics_clear_cache_success") });
+        await showPrompt({ type: "alert", message: t("lyrics_clear_cache_success") });
       }
     },
     advanced: true,

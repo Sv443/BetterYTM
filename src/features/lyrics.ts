@@ -239,7 +239,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
 
     if(fetchRes.status === 429) {
       const waitSeconds = Number(fetchRes.headers.get("retry-after") ?? geniUrlRatelimitTimeframe);
-      await showPrompt({ message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
+      await showPrompt({ type: "alert", message: tp("lyrics_rate_limited", waitSeconds, waitSeconds) });
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
@@ -339,7 +339,7 @@ export async function createLyricsBtn(geniusUrl?: string, hideIfLoading = true) 
       e.preventDefault();
       e.stopPropagation();
 
-      const search = prompt(t("open_lyrics_search_prompt"));
+      const search = await showPrompt({ type: "prompt", message: t("open_lyrics_search_prompt") });
       if(search && search.length > 0)
         openInTab(`https://genius.com/search?q=${encodeURIComponent(search)}`);
     }
