@@ -12,6 +12,10 @@
 #bytm-prompt-dialog-upper-cont,
 #bytm-prompt-dialog-message {
   font-size: 1.6rem;
+  white-space: pre-wrap;
+}
+
+.bytm-prompt-type-prompt #bytm-prompt-dialog-message {
   margin-bottom: 15px;
 }
 

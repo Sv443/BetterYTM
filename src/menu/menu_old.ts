@@ -2,13 +2,14 @@ import { compress, debounce, isScrollable, type Stringifiable } from "@sv443-net
 import { type defaultData, formatVersion, getFeature, getFeatures, migrations, setFeatures } from "../config.js";
 import { buildNumber, compressionFormat, host, mode, scriptInfo } from "../constants.js";
 import { featInfo, disableBeforeUnload } from "../features/index.js";
-import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml } from "../utils/index.js";
+import { error, getResourceUrl, info, log, resourceAsString, getLocale, hasKey, initTranslations, setLocale, t, arrayWithSeparators, tp, type TrKey, onInteraction, getDomain, copyToClipboard, warn, compressionSupported, tryToDecompressAndParse, setInnerHtml, type TrLocale } from "../utils/index.js";
 import { emitSiteEvent, siteEvents } from "../siteEvents.js";
 import { getChangelogDialog, getFeatHelpDialog, showPrompt } from "../dialogs/index.js";
 import type { FeatureCategory, FeatureKey, FeatureConfig, HotkeyObj, FeatureInfo } from "../types.js";
 import { BytmDialog, ExImDialog, createHotkeyInput, createToggleInput, openDialogs, setCurrentDialogId } from "../components/index.js";
 import { emitInterface } from "../interface.js";
 import pkg from "../../package.json" with { type: "json" };
+import localeMapping from "../../assets/locales.json" with { type: "json" };
 import "./menu_old.css";
 
 //#region create menu
@@ -20,7 +21,7 @@ export let isCfgMenuOpen = false;
 const scrollIndicatorOffsetThreshold = 50;
 let scrollIndicatorEnabled = true;
 /** Locale at the point of initializing the config menu */
-let initLocale: string | undefined;
+let initLocale: TrLocale | undefined;
 /** Stringified config at the point of initializing the config menu */
 let initConfig: FeatureConfig | undefined;
 /** Timeout id for the "copied" text in the hidden value copy button */
@@ -312,7 +313,10 @@ async function mountCfgMenu() {
       setLocale(featConf.locale);
       const newText = t("lang_changed_prompt_reload");
 
-      const confirmText = newText !== initLangReloadText ? `${newText}\n\n────────────────────────────────\n\n${initLangReloadText}` : newText;
+      const newLangEmoji = localeMapping[featConf.locale]?.emoji ? `${localeMapping[featConf.locale].emoji}\n` : "";
+      const initLangEmoji = initLocale && localeMapping[initLocale]?.emoji ? `${localeMapping[initLocale].emoji}\n` : "";
+
+      const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
 
       if(await showPrompt({ type: "confirm", message: confirmText })) {
         closeCfgMenu();
