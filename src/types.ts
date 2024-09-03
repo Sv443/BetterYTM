@@ -1,4 +1,4 @@
-import { NanoEmitter } from "@sv443-network/userutils";
+import { NanoEmitter, type Stringifiable } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
@@ -13,6 +13,12 @@ import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
 
 //#region other
+
+/**
+ * Value that is either a string (or stringifiable value) or a sync or async function that returns a string (or a stringifiable value)  
+ * Use `await consumeStringGen(strGen)` to get the actual string value from this type
+ */
+export type StringGen = Stringifiable | (() => Stringifiable | Promise<Stringifiable>);
 
 /** Custom CLI args passed to rollup */
 export type RollupArgs = Partial<{
