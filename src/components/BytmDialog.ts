@@ -383,6 +383,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     if(footer) {
       const footerWrapper = document.createElement("div");
       footerWrapper.classList.add("bytm-dialog-footer-cont");
+      this.options.small && footerWrapper.classList.add("small");
       dialogWrapperEl.appendChild(footerWrapper);
       footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
     }

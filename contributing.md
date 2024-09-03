@@ -1981,9 +1981,15 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > Additionally, the property `defaultValue` can be used to set the preset value for the input field.  
 >   
 > Properties:  
-> - `message: string` - The message to show in the prompt
+> - `message: string | ((type: string) => string | Promise<string>)` - The message to show in the prompt
 > - `type: "confirm" | "alert" | "prompt"` - The type of the prompt. Can be "confirm", "alert" or "prompt"
-> - `defaultValue?: string` - The default value for the input field (only when using type "prompt")
+> - for type "prompt" only:
+>   - `defaultValue?: string` - The default value for the input field (only has an effect when using type "prompt")
+> - for overriding button text and tooltips:
+>   - `confirmBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the confirm button (only when using type "confirm" or "prompt")
+>   - `confirmBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the confirm button (only when using type "confirm" or "prompt")
+>   - `denyBtnText?: string | ((type: string) => string | Promise<string>)` - Text for the deny button (shows up for all types)
+>   - `denyBtnTooltip?: string | ((type: string) => string | Promise<string>)` - Tooltip for the deny button (shows up for all types)
 >   
 > <details><summary><b>Example <i>(click to expand)</i></b></summary>
 > 
@@ -1991,19 +1997,29 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > const itemName = await unsafeWindow.BYTM.showPrompt({
 >   type: "prompt",
 >   message: "Enter the name of the item to delete:",
+>   // default value for the input field:
 >   defaultValue: "My Item",
 > });
 > 
 > const confirmed = itemName && await unsafeWindow.BYTM.showPrompt({
 >   type: "confirm",
 >   message: "Are you sure you want to delete this?",
+>   confirmBtnText: "Yes, delete",
+>   denyBtnText: "No, cancel",
+>   // can also be sync or async functions:
+>   confirmBtnTooltip: () => "Click to confirm the deletion",
+>   // and the type parameter can be used for further customization:
+>   denyBtnTooltip: async (type: "confirm" | "alert" | "prompt") => await getText(`prompts.${type}.cancel_deletion`),
 > });
 > 
 > if(confirmed && itemName) {
 >   await deleteItem(itemName);
 >   unsafeWindow.BYTM.showPrompt({
 >     type: "alert",
->     message: `Deleted "${itemName}" successfully.`,
+>     message: () => `Deleted "${itemName}" successfully.`,
+>     // only the deny button is shown in alerts:
+>     denyBtnText: "Sure thing",
+>     denyBtnTooltip: "Click to close the dialog, bud",
 >   });
 > }
 > else

@@ -194,6 +194,10 @@
     var(--bytm-dialog-border-radius);
 }
 
+.bytm-dialog-footer-cont.small {
+  padding: 15px;
+}
+
 .bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }

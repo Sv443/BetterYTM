@@ -4,7 +4,11 @@ import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
 import "./prompt.css";
 
+type PromptStringGen = Stringifiable | ((type: PromptType) => Stringifiable | Promise<Stringifiable>);
+
 export type PromptDialogRenderProps = ConfirmRenderProps | AlertRenderProps | PromptRenderProps;
+
+export type PromptType = PromptDialogRenderProps["type"];
 
 type ConfirmRenderProps = BaseRenderProps & {
   type: "confirm";
@@ -20,7 +24,11 @@ type PromptRenderProps = BaseRenderProps & {
 };
 
 type BaseRenderProps = {
-  message: Stringifiable;
+  message: PromptStringGen;
+  confirmBtnText?: PromptStringGen;
+  confirmBtnTooltip?: PromptStringGen;
+  denyBtnText?: PromptStringGen;
+  denyBtnTooltip?: PromptStringGen;
 };
 
 export type ShowPromptProps = Partial<PromptDialogRenderProps> & Required<Pick<PromptDialogRenderProps, "message">>;
@@ -48,7 +56,7 @@ class PromptDialog extends BytmDialog {
     });
   }
 
-  async renderHeader({ type }: PromptDialogRenderProps) {
+  protected async renderHeader({ type }: PromptDialogRenderProps) {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
     const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-confirm");
@@ -58,7 +66,7 @@ class PromptDialog extends BytmDialog {
     return headerEl;
   }
 
-  async renderBody({ type, message, ...rest }: PromptDialogRenderProps) {
+  protected async renderBody({ type, message, ...rest }: PromptDialogRenderProps) {
     const contElem = document.createElement("div");
     contElem.classList.add(`bytm-prompt-type-${type}`);
 
@@ -88,7 +96,7 @@ class PromptDialog extends BytmDialog {
     return contElem;
   }
 
-  async renderFooter({ type }: PromptDialogRenderProps) {
+  protected async renderFooter({ type, ...rest }: PromptDialogRenderProps) {
     const resolve = (val: boolean | string | null) => (this.events as PromptDialogEmitter).emit("resolve", val);
 
     const buttonsWrapper = document.createElement("div");
@@ -102,8 +110,8 @@ class PromptDialog extends BytmDialog {
       confirmBtn = document.createElement("button");
       confirmBtn.id = "bytm-prompt-dialog-confirm";
       confirmBtn.classList.add("bytm-prompt-dialog-button");
-      confirmBtn.textContent = t("prompt_confirm");
-      confirmBtn.ariaLabel = confirmBtn.title = t("click_to_confirm_tooltip");
+      confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
+      confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
       confirmBtn.autofocus = type === "confirm";
       confirmBtn.addEventListener("click", () => {
@@ -115,13 +123,13 @@ class PromptDialog extends BytmDialog {
     const closeBtn = document.createElement("button");
     closeBtn.id = "bytm-prompt-dialog-close";
     closeBtn.classList.add("bytm-prompt-dialog-button");
-    closeBtn.textContent = t(type === "alert" ? "prompt_close" : "prompt_cancel");
-    closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip");
+    closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
+    closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
     closeBtn.tabIndex = 0;
     if(type === "alert")
       closeBtn.autofocus = true;
     closeBtn.addEventListener("click", () => {
-      const resVals: Record<PromptDialogRenderProps["type"], boolean | null> = {
+      const resVals: Record<PromptType, boolean | null> = {
         alert: true,
         confirm: false,
         prompt: null,
@@ -137,6 +145,12 @@ class PromptDialog extends BytmDialog {
     buttonsWrapper.appendChild(buttonsCont);
 
     return buttonsWrapper;
+  }
+
+  protected async consumePromptStringGen(type: PromptType, txtGen?: PromptStringGen, fallback?: Stringifiable): Promise<string> {
+    if(typeof txtGen === "function")
+      return await txtGen(type);
+    return String(txtGen ?? fallback);
   }
 }
 
