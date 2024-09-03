@@ -370,6 +370,10 @@
     var(--bytm-dialog-border-radius);
 }
 
+.bytm-dialog-footer-cont.small {
+  padding: 15px;
+}
+
 .bytm-dialog-footer-buttons-cont button:not(:last-of-type) {
   margin-right: 15px;
 }
@@ -915,6 +919,10 @@ body .bytm-ripple.slower {
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+#bytm-prompt-dialog-buttons-cont button {
+  cursor: pointer;
 }
 
 .bytm-prompt-dialog-button {

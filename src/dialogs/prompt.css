@@ -37,6 +37,10 @@
   gap: 15px;
 }
 
+#bytm-prompt-dialog-buttons-cont button {
+  cursor: pointer;
+}
+
 .bytm-prompt-dialog-button {
   padding: 2px 6px;
   font-size: 1.45rem;
