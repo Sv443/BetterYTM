@@ -11,8 +11,6 @@ export type TrLocale = keyof typeof langMapping;
 export type TrKey = keyof (typeof tr_enUS["translations"]);
 type TFuncKey = TrKey | (string & {});
 
-/** Contains all translation keys of all initialized and loaded translations */
-const allTrKeys = new Map<TrLocale, Set<TrKey>>();
 /** Contains the identifiers of all initialized and loaded translation locales */
 const initializedLocales = new Set<TrLocale>();
 
@@ -41,7 +39,6 @@ export async function initTranslations(locale: TrLocale) {
     };
 
     tr.addLanguage(locale, translations);
-    allTrKeys.set(locale, new Set(Object.keys(translations) as TrKey[]));
 
     info(`Loaded translations for locale '${locale}'`);
   }
@@ -81,7 +78,7 @@ export function hasKey(key: TFuncKey) {
 
 /** Returns whether the given translation key exists in the given locale */
 export function hasKeyFor(locale: TrLocale, key: TFuncKey) {
-  return allTrKeys.get(locale)?.has(key as TrKey) ?? false;
+  return typeof tr.getTranslations(locale)?.[key] === "string";
 }
 
 /** Returns the translated string for the given key, after optionally inserting values */
@@ -90,18 +87,33 @@ export function t(key: TFuncKey, ...values: Stringifiable[]) {
 }
 
 /**
- * Returns the translated string for the given key with an added pluralization identifier based on the passed `num`  
+ * Returns the translated string for the given {@linkcode key} with an added pluralization identifier based on the passed {@linkcode num}  
+ * Also inserts the passed {@linkcode values} into the translation at the markers `%1`, `%2`, etc.  
  * Tries to fall back to the non-pluralized syntax if no translation was found
  */
 export function tp(key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]) {
+  return tlp(getLocale(), key, num, ...values);
+}
+
+/** Returns the translated string for the given key in the specified locale, after optionally inserting values */
+export function tl(locale: TrLocale, key: TFuncKey, ...values: Stringifiable[]) {
+  return tr.forLang(locale, key, ...values);
+}
+
+/**
+ * Returns the translated string for the given {@linkcode key} in the given {@linkcode locale} with an added pluralization identifier based on the passed {@linkcode num}  
+ * Also inserts the passed {@linkcode values} into the translation at the markers `%1`, `%2`, etc.  
+ * Tries to fall back to the non-pluralized syntax if no translation was found
+ */
+export function tlp(locale: TrLocale, key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]) {
   if(typeof num !== "number")
     num = num.length;
   const plNum = num === 1 ? "1" : "n";
 
-  const trans = t(`${key}-${plNum}`, ...values);
+  const trans = tl(locale, `${key}-${plNum}`, ...values);
 
   if(trans === key)
     return t(key, ...values);
 
   return trans;
-}
+};

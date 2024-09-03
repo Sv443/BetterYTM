@@ -4,7 +4,7 @@ import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
@@ -315,10 +315,14 @@ export type InterfaceFunctions = {
   hasKey: typeof hasKey;
   /** Returns whether a translation key exists for the provided locale */
   hasKeyFor: typeof hasKeyFor;
-  /** Returns the translation for the provided translation key and set locale (check the files in the folder `assets/translations`) */
+  /** Returns the translation for the provided translation key and currently set locale (check the files in the folder `assets/translations`) */
   t: typeof t;
   /** Returns the translation for the provided translation key, including pluralization identifier and set locale (check the files in the folder `assets/translations`) */
   tp: typeof tp;
+  /** Returns the translation for the provided translation key and provided locale (check the files in the folder `assets/translations`) */
+  tl: typeof tl;
+  /** Returns the translation for the provided translation key, including pluralization identifier and provided locale (check the files in the folder `assets/translations`) */
+  tlp: typeof tlp;
 
   // feature config:
   /** 🔒 Returns the current feature configuration */

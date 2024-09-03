@@ -404,6 +404,8 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [hasKeyFor()](#haskeyfor) - Checks if the specified translation key exists in the specified locale
   - [t()](#t) - Translates the specified translation key using the currently set locale
   - [tp()](#tp) - Translates the specified translation key including pluralization using the currently set locale
+  - [tl()](#tl) - Returns the translation for the provided key and provided locale
+  - [tlp()](#tlp) - Returns the translation for the provided locale and key, including pluralization identifier
 - Feature config:
   - [getFeatures()](#getfeatures) 🔒 - Returns the current BYTM feature configuration object
   - [saveFeatures()](#savefeatures) 🔒 - Overwrites the current BYTM feature configuration object with the provided one
@@ -1060,6 +1062,47 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > }
 > ```
 > </details>
+
+<br>
+
+> #### tl()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.tl(locale: string, key: TFuncKey, ...values: Stringifiable[]): string
+> ```  
+>   
+> Description:  
+> Returns the translation for the provided translation key and locale.  
+> Useful to get the translation for a specific locale without changing the currently set locale.  
+> To see a list of possible translation values, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+>   
+> Arguments:  
+> - `locale` - The locale to get the translation for.
+> - `translationKey` - The key of the translation to get.
+> - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
+> 
+> For an example, see [`t()`](#t) which behaves in the same way, but uses the currently set locale instead of a specified one.
+
+<br>
+
+> #### tlp()
+> Usage:  
+> ```ts
+> unsafeWindow.BYTM.tlp(locale: string, key: TFuncKey, num: number | unknown[] | NodeList, ...values: Stringifiable[]): string
+> ```  
+>   
+> Description:  
+> Returns the translation for the provided translation key, including pluralization identifier and locale.  
+> Useful to get the translation for a specific locale without changing the currently set locale.  
+> To see a list of possible translation values, check the file [`assets/translations/en_US.json`](assets/translations/en_US.json)  
+>   
+> Arguments:  
+> - `locale` - The locale to get the translation for.
+> - `key` - The key of the translation to get.
+> - `num` - The number of items to determine the pluralization identifier from. Can also be an array or NodeList.
+> - `...values` - A spread parameter of values that can be converted to strings to replace the numbered placeholders in the translation with.
+>   
+> For an example, see [`tp()`](#tp) which behaves in the same way, but uses the currently set locale instead of a specified one.
 
 <br>
 
