@@ -79,6 +79,8 @@
     - `getDomain()` returns the current domain ("yt" or "ytm")
     - `waitVideoElementReady()` returns a promise that resolves when the video element is ready
     - `getCurrentMediaType()` (on YTM only) returns the current media type ("video" or "song")
+    - `tl()` returns the translation for the provided translation key and provided locale
+    - `tlp()` returns the translation for the provided translation key, including pluralization identifier and provided locale
   - SelectorObserver / `addSelectorListener()` changes:
     - Added `ytMasthead` instance for the title bar on YT
     - Renamed all YT-specific instances to have the `yt` prefix
