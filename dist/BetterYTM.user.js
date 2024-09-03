@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,56 +33,56 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/clear_list.svg
-// @resource          icon-confirm               https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/help.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/lyrics.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/2feaf6db/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/clear_list.svg
+// @resource          icon-confirm               https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/help.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/lyrics.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/ff15e1e3/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@7.2.2/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -134,7 +134,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "2feaf6db";
+const buildNumberRaw = "ff15e1e3";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -607,6 +607,7 @@ class BytmDialog extends UserUtils.NanoEmitter {
         if (footer) {
             const footerWrapper = document.createElement("div");
             footerWrapper.classList.add("bytm-dialog-footer-cont");
+            this.options.small && footerWrapper.classList.add("small");
             dialogWrapperEl.appendChild(footerWrapper);
             footerWrapper.appendChild(footer instanceof Promise ? await footer : footer);
         }
@@ -1200,6 +1201,346 @@ async function createLongBtn(_a) {
     btnElem.appendChild(txtElem);
     iconPosition === "right" && btnElem.appendChild(imgElem);
     return ripple ? createRipple(btnElem, { speed: "normal" }) : btnElem;
+}var de_DE = {
+	name: "Deutsch (Deutschland)",
+	nameEnglish: "German",
+	emoji: "🇩🇪",
+	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var en_US = {
+	name: "English (United States)",
+	nameEnglish: "English (US)",
+	emoji: "🇺🇸",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var en_UK = {
+	name: "English (United Kingdom)",
+	nameEnglish: "English (UK)",
+	emoji: "🇬🇧",
+	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var es_ES = {
+	name: "Español (España)",
+	nameEnglish: "Spanish",
+	emoji: "🇪🇸",
+	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var fr_FR = {
+	name: "Français (France)",
+	nameEnglish: "French",
+	emoji: "🇫🇷",
+	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var hi_IN = {
+	name: "हिंदी (भारत)",
+	nameEnglish: "Hindi",
+	emoji: "🇮🇳",
+	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
+	authors: [
+		"Sv443"
+	]
+};
+var ja_JA = {
+	name: "日本語 (日本)",
+	nameEnglish: "Japanese",
+	emoji: "🇯🇵",
+	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
+	authors: [
+		"Sv443"
+	]
+};
+var pt_BR = {
+	name: "Português (Brasil)",
+	nameEnglish: "Portuguese",
+	emoji: "🇵🇹",
+	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
+	authors: [
+		"Sv443"
+	]
+};
+var zh_CN = {
+	name: "中文（简化，中国）",
+	nameEnglish: "Chinese (simpl.)",
+	emoji: "🇨🇳",
+	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
+	authors: [
+		"Sv443"
+	]
+};
+var langMapping = {
+	de_DE: de_DE,
+	en_US: en_US,
+	en_UK: en_UK,
+	es_ES: es_ES,
+	fr_FR: fr_FR,
+	hi_IN: hi_IN,
+	ja_JA: ja_JA,
+	pt_BR: pt_BR,
+	zh_CN: zh_CN
+};//#region misc
+let domain;
+/**
+ * Returns the current domain as a constant string representation
+ * @throws Throws if script runs on an unexpected website
+ */
+function getDomain() {
+    if (domain)
+        return domain;
+    if (location.hostname.match(/^music\.youtube/))
+        return domain = "ytm";
+    else if (location.hostname.match(/youtube\./))
+        return domain = "yt";
+    else
+        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
+}
+/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
+function getSessionId() {
+    try {
+        if (!sessionStorageAvailable)
+            throw new Error("Session storage unavailable");
+        let sesId = window.sessionStorage.getItem("_bytm-session-id");
+        if (!sesId)
+            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(8, 36));
+        return sesId;
+    }
+    catch (err) {
+        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
+        return null;
+    }
+}
+let isCompressionSupported;
+/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
+async function compressionSupported() {
+    if (typeof isCompressionSupported === "boolean")
+        return isCompressionSupported;
+    try {
+        await UserUtils.compress(".", compressionFormat, "string");
+        return isCompressionSupported = true;
+    }
+    catch (_a) {
+        return isCompressionSupported = false;
+    }
+}
+/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
+function arrayWithSeparators(array, separator = ", ", lastSeparator) {
+    const arr = [...array];
+    if (arr.length === 0)
+        return "";
+    else if (arr.length <= 2)
+        return arr.join(lastSeparator);
+    else
+        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
+}
+/** Returns the watch ID of the current video or null if not on a video page */
+function getWatchId() {
+    const { searchParams, pathname } = new URL(location.href);
+    return pathname.includes("/watch") ? searchParams.get("v") : null;
+}
+/**
+ * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
+ * Returns null if the current page is not a channel page or there was an error parsing the URL
+ */
+function getCurrentChannelId() {
+    return parseChannelIdFromUrl(location.href);
+}
+/** Returns the channel ID from a URL or null if the URL is invalid */
+function parseChannelIdFromUrl(url) {
+    try {
+        const { pathname } = url instanceof URL ? url : new URL(url);
+        if (pathname.includes("/channel/"))
+            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
+        else if (pathname.includes("/@"))
+            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
+        else
+            return null;
+    }
+    catch (_a) {
+        return null;
+    }
+}
+/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
+function sanitizeChannelId(channelId) {
+    channelId = String(channelId).trim();
+    return isValidChannelId(channelId)
+        ? channelId
+        : `@${channelId}`;
+}
+/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
+function isValidChannelId(channelId) {
+    return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
+}
+/** Returns the thumbnail URL for a video with either a given quality identifier or index */
+function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
+    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
+}
+/** Returns the best available thumbnail URL for a video with the given watch ID */
+async function getBestThumbnailUrl(watchId) {
+    try {
+        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
+        for (const quality of priorityList) {
+            let response;
+            const url = getThumbnailUrl(watchId, quality);
+            try {
+                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
+            }
+            catch (err) {
+                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
+                void err;
+            }
+            if (response && response.status < 300 && response.status >= 200)
+                return url;
+        }
+    }
+    catch (err) {
+        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
+    }
+}
+/** Opens the given URL in a new tab, using GM.openInTab if available */
+function openInTab(href, background = false) {
+    try {
+        UserUtils.openInNewTab(href, background);
+    }
+    catch (_a) {
+        window.open(href, "_blank", "noopener noreferrer");
+    }
+}
+/** Tries to parse an uncompressed or compressed input string as a JSON object */
+async function tryToDecompressAndParse(input) {
+    let parsed = null;
+    try {
+        parsed = JSON.parse(input);
+    }
+    catch (_a) {
+        try {
+            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
+        }
+        catch (err) {
+            error("Couldn't decompress and parse data due to an error:", err);
+            return null;
+        }
+    }
+    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
+    await UserUtils.pauseFor(250);
+    return parsed;
+}
+/** Very crude OS detection */
+function getOS() {
+    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
+        return "mac";
+    return "other";
+}
+/** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
+async function consumeStringGen(strGen) {
+    return String(typeof strGen === "function" ? await strGen() : strGen);
+}
+//#region resources
+/**
+ * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
+ * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
+ */
+async function getResourceUrl(name) {
+    var _a;
+    let url = await GM.getResourceUrl(name);
+    if (!url || url.length === 0) {
+        const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
+        if (typeof resource === "string") {
+            const resourceUrl = new URL(resource);
+            const resourcePath = resourceUrl.pathname;
+            if (resourcePath)
+                return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
+        }
+        warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
+        // @ts-ignore
+        url = await GM.getResourceUrl(name, false);
+    }
+    return url;
+}
+/**
+ * Returns the preferred locale of the user, provided it is supported by the userscript.
+ * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
+ */
+function getPreferredLocale() {
+    var _a;
+    const navLang = navigator.language.replace(/-/g, "_");
+    const navLangs = navigator.languages
+        .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
+        .map(lang => lang.replace(/-/g, "_"));
+    if (Object.entries(langMapping).find(([key]) => key === navLang))
+        return navLang;
+    for (const loc of navLangs) {
+        if (Object.entries(langMapping).find(([key]) => key === loc))
+            return loc;
+    }
+    // if navigator.languages has entries that aren't locale codes in the format xx_XX
+    if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
+        for (const lang of navLangs) {
+            const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
+            if (foundLoc)
+                return foundLoc;
+        }
+    }
+    return "en_US";
+}
+/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
+async function resourceAsString(resource) {
+    try {
+        const resourceUrl = await getResourceUrl(resource);
+        if (!resourceUrl)
+            throw new Error(`Couldn't find URL for resource '${resource}'`);
+        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
+    }
+    catch (err) {
+        error("Couldn't get SVG element from resource:", err);
+        return null;
+    }
+}
+/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
+function parseMarkdown(mdString) {
+    return marked.marked.parse(mdString, {
+        async: true,
+        gfm: true,
+    });
+}
+/** Returns the content of the changelog markdown file */
+async function getChangelogMd() {
+    return await (await UserUtils.fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
+}
+/** Returns the changelog as HTML with a details element for each version */
+async function getChangelogHtmlWithDetails() {
+    try {
+        const changelogMd = await getChangelogMd();
+        let changelogHtml = await parseMarkdown(changelogMd);
+        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
+        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
+        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
+        for (const match of h2Matches) {
+            const [fullMatch, , verStr] = match;
+            const verId = getVerId(verStr);
+            const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
+            const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
+            changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
+        }
+        changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
+        return changelogHtml;
+    }
+    catch (err) {
+        return `Error while preparing changelog: ${err}`;
+    }
 }class MarkdownDialog extends BytmDialog {
     constructor(options) {
         super(Object.assign(Object.assign({}, options), { id: `md-${options.id}`, renderBody: () => this.renderBody() }));
@@ -1225,7 +1566,7 @@ async function createLongBtn(_a) {
         bodyEl.classList.add("bytm-md-dialog-body");
         const mdCont = typeof this.opts.body === "string"
             ? this.opts.body
-            : await this.opts.body();
+            : await consumeStringGen(this.opts.body);
         const markdownEl = document.createElement("div");
         markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
         markdownEl.tabIndex = 0;
@@ -1403,6 +1744,7 @@ class PromptDialog extends BytmDialog {
             small: true,
             renderHeader: () => this.renderHeader(props),
             renderBody: () => this.renderBody(props),
+            renderFooter: () => this.renderFooter(props),
         });
     }
     async renderHeader({ type }) {
@@ -1416,8 +1758,8 @@ class PromptDialog extends BytmDialog {
     async renderBody(_a) {
         var _b;
         var { type, message } = _a, rest = __rest(_a, ["type", "message"]);
-        const resolve = (val) => this.events.emit("resolve", val);
         const contElem = document.createElement("div");
+        contElem.classList.add(`bytm-prompt-type-${type}`);
         const upperContElem = document.createElement("div");
         upperContElem.id = "bytm-prompt-dialog-upper-cont";
         contElem.appendChild(upperContElem);
@@ -1437,6 +1779,11 @@ class PromptDialog extends BytmDialog {
             inputElem.autofocus = true;
             upperContElem.appendChild(inputElem);
         }
+        return contElem;
+    }
+    async renderFooter(_a) {
+        var { type } = _a, rest = __rest(_a, ["type"]);
+        const resolve = (val) => this.events.emit("resolve", val);
         const buttonsWrapper = document.createElement("div");
         buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
         const buttonsCont = document.createElement("div");
@@ -1446,8 +1793,8 @@ class PromptDialog extends BytmDialog {
             confirmBtn = document.createElement("button");
             confirmBtn.id = "bytm-prompt-dialog-confirm";
             confirmBtn.classList.add("bytm-prompt-dialog-button");
-            confirmBtn.textContent = t("prompt_confirm");
-            confirmBtn.ariaLabel = confirmBtn.title = t("click_to_confirm_tooltip");
+            confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
+            confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
             confirmBtn.tabIndex = 0;
             confirmBtn.autofocus = type === "confirm";
             confirmBtn.addEventListener("click", () => {
@@ -1459,8 +1806,8 @@ class PromptDialog extends BytmDialog {
         const closeBtn = document.createElement("button");
         closeBtn.id = "bytm-prompt-dialog-close";
         closeBtn.classList.add("bytm-prompt-dialog-button");
-        closeBtn.textContent = t(type === "alert" ? "prompt_close" : "prompt_cancel");
-        closeBtn.ariaLabel = closeBtn.title = t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip");
+        closeBtn.textContent = await this.consumePromptStringGen(type, rest.denyBtnText, t(type === "alert" ? "prompt_close" : "prompt_cancel"));
+        closeBtn.ariaLabel = closeBtn.title = await this.consumePromptStringGen(type, rest.denyBtnTooltip, t(type === "alert" ? "click_to_close_tooltip" : "click_to_cancel_tooltip"));
         closeBtn.tabIndex = 0;
         if (type === "alert")
             closeBtn.autofocus = true;
@@ -1477,8 +1824,12 @@ class PromptDialog extends BytmDialog {
         buttonsCont.appendChild(closeBtn);
         confirmBtn && getOS() === "mac" && buttonsCont.appendChild(confirmBtn);
         buttonsWrapper.appendChild(buttonsCont);
-        contElem.appendChild(buttonsWrapper);
-        return contElem;
+        return buttonsWrapper;
+    }
+    async consumePromptStringGen(type, txtGen, fallback) {
+        if (typeof txtGen === "function")
+            return await txtGen(type);
+        return String(txtGen !== null && txtGen !== void 0 ? txtGen : fallback);
     }
 }
 function showPrompt(_a) {
@@ -2367,7 +2718,7 @@ async function mountCfgMenu() {
     const featuresCont = document.createElement("div");
     featuresCont.id = "bytm-menu-opts";
     const onCfgChange = async (key, initialVal, newVal) => {
-        var _a, _b;
+        var _a, _b, _c, _d;
         const fmt = (val) => typeof val === "object" ? JSON.stringify(val) : String(val);
         info(`Feature config changed at key '${key}', from value '${fmt(initialVal)}' to '${fmt(newVal)}'`);
         const featConf = JSON.parse(JSON.stringify(getFeatures()));
@@ -2392,7 +2743,9 @@ async function mountCfgMenu() {
             await initTranslations(featConf.locale);
             setLocale(featConf.locale);
             const newText = t("lang_changed_prompt_reload");
-            const confirmText = newText !== initLangReloadText ? `${newText}\n\n────────────────────────────────\n\n${initLangReloadText}` : newText;
+            const newLangEmoji = ((_c = langMapping[featConf.locale]) === null || _c === void 0 ? void 0 : _c.emoji) ? `${langMapping[featConf.locale].emoji}\n` : "";
+            const initLangEmoji = initLocale && ((_d = langMapping[initLocale]) === null || _d === void 0 ? void 0 : _d.emoji) ? `${langMapping[initLocale].emoji}\n` : "";
+            const confirmText = newText !== initLangReloadText ? `${newLangEmoji}${newText}\n\n\n${initLangEmoji}${initLangReloadText}` : newText;
             if (await showPrompt({ type: "confirm", message: confirmText })) {
                 closeCfgMenu();
                 disableBeforeUnload();
@@ -2894,98 +3247,7 @@ function checkToggleScrollIndicator() {
             scrollIndicator.classList.add("bytm-hidden");
         }
     }
-}var de_DE = {
-	name: "Deutsch (Deutschland)",
-	nameEnglish: "German",
-	emoji: "🇩🇪",
-	userscriptDesc: "Konfigurierbare Layout- und Benutzererfahrungs-Verbesserungen für YouTube Music™ und YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var en_US = {
-	name: "English (United States)",
-	nameEnglish: "English (US)",
-	emoji: "🇺🇸",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var en_UK = {
-	name: "English (United Kingdom)",
-	nameEnglish: "English (UK)",
-	emoji: "🇬🇧",
-	userscriptDesc: "Configurable layout and user experience improvements for YouTube Music™ and YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var es_ES = {
-	name: "Español (España)",
-	nameEnglish: "Spanish",
-	emoji: "🇪🇸",
-	userscriptDesc: "Mejoras de diseño y experiencia de usuario configurables para YouTube Music™ y YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var fr_FR = {
-	name: "Français (France)",
-	nameEnglish: "French",
-	emoji: "🇫🇷",
-	userscriptDesc: "Améliorations de la mise en page et de l'expérience utilisateur configurables pour YouTube Music™ et YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var hi_IN = {
-	name: "हिंदी (भारत)",
-	nameEnglish: "Hindi",
-	emoji: "🇮🇳",
-	userscriptDesc: "YouTube Music™ और YouTube™ के लिए कॉन्फ़िगर करने योग्य लेआउट और उपयोगकर्ता अनुभव में सुधार",
-	authors: [
-		"Sv443"
-	]
-};
-var ja_JA = {
-	name: "日本語 (日本)",
-	nameEnglish: "Japanese",
-	emoji: "🇯🇵",
-	userscriptDesc: "YouTube Music™ と YouTube™ の構成可能なレイアウトとユーザー エクスペリエンスの向上",
-	authors: [
-		"Sv443"
-	]
-};
-var pt_BR = {
-	name: "Português (Brasil)",
-	nameEnglish: "Portuguese",
-	emoji: "🇵🇹",
-	userscriptDesc: "Melhorias configuráveis no layout e na experiência do usuário para o YouTube Music™ e o YouTube™",
-	authors: [
-		"Sv443"
-	]
-};
-var zh_CN = {
-	name: "中文（简化，中国）",
-	nameEnglish: "Chinese (simpl.)",
-	emoji: "🇨🇳",
-	userscriptDesc: "YouTube Music™ 和 YouTube™ 的可配置布局和用户体验改进",
-	authors: [
-		"Sv443"
-	]
-};
-var langMapping = {
-	de_DE: de_DE,
-	en_US: en_US,
-	en_UK: en_UK,
-	es_ES: es_ES,
-	fr_FR: fr_FR,
-	hi_IN: hi_IN,
-	ja_JA: ja_JA,
-	pt_BR: pt_BR,
-	zh_CN: zh_CN
-};let welcomeDialog = null;
+}let welcomeDialog = null;
 /** Creates and/or returns the import dialog */
 async function getWelcomeDialog() {
     if (!welcomeDialog) {
@@ -4389,251 +4651,6 @@ async function addAutoLikeToggleBtn(siblingEl, channelId, channelName, extraClas
         if (imgEl && imgHtml)
             setInnerHtml(imgEl, imgHtml);
     });
-}//#region misc
-let domain;
-/**
- * Returns the current domain as a constant string representation
- * @throws Throws if script runs on an unexpected website
- */
-function getDomain() {
-    if (domain)
-        return domain;
-    if (location.hostname.match(/^music\.youtube/))
-        return domain = "ytm";
-    else if (location.hostname.match(/youtube\./))
-        return domain = "yt";
-    else
-        throw new Error("BetterYTM is running on an unexpected website. Please don't tamper with the @match directives in the userscript header.");
-}
-/** Returns a pseudo-random ID unique to each session - returns null if sessionStorage is unavailable */
-function getSessionId() {
-    try {
-        if (!sessionStorageAvailable)
-            throw new Error("Session storage unavailable");
-        let sesId = window.sessionStorage.getItem("_bytm-session-id");
-        if (!sesId)
-            window.sessionStorage.setItem("_bytm-session-id", sesId = UserUtils.randomId(8, 36));
-        return sesId;
-    }
-    catch (err) {
-        warn("Couldn't get session ID, sessionStorage / cookies might be disabled:", err);
-        return null;
-    }
-}
-let isCompressionSupported;
-/** Tests whether compression via the predefined {@linkcode compressionFormat} is supported (only on the first call, then returns the cached result) */
-async function compressionSupported() {
-    if (typeof isCompressionSupported === "boolean")
-        return isCompressionSupported;
-    try {
-        await UserUtils.compress(".", compressionFormat, "string");
-        return isCompressionSupported = true;
-    }
-    catch (_a) {
-        return isCompressionSupported = false;
-    }
-}
-/** Returns a string with the given array's items separated by a default separator (`", "` by default), with an optional different separator for the last item */
-function arrayWithSeparators(array, separator = ", ", lastSeparator) {
-    const arr = [...array];
-    if (arr.length === 0)
-        return "";
-    else if (arr.length <= 2)
-        return arr.join(lastSeparator);
-    else
-        return `${arr.slice(0, -1).join(separator)}${lastSeparator}${arr.at(-1)}`;
-}
-/** Returns the watch ID of the current video or null if not on a video page */
-function getWatchId() {
-    const { searchParams, pathname } = new URL(location.href);
-    return pathname.includes("/watch") ? searchParams.get("v") : null;
-}
-/**
- * Returns the ID of the current channel in the format `@User` or `UC...` from URLs with the path `/@User`, `/@User/videos`, `/channel/UC...` or `/channel/UC.../videos`
- * Returns null if the current page is not a channel page or there was an error parsing the URL
- */
-function getCurrentChannelId() {
-    return parseChannelIdFromUrl(location.href);
-}
-/** Returns the channel ID from a URL or null if the URL is invalid */
-function parseChannelIdFromUrl(url) {
-    try {
-        const { pathname } = url instanceof URL ? url : new URL(url);
-        if (pathname.includes("/channel/"))
-            return sanitizeChannelId(pathname.split("/channel/")[1].split("/")[0]);
-        else if (pathname.includes("/@"))
-            return sanitizeChannelId(pathname.split("/@")[1].split("/")[0]);
-        else
-            return null;
-    }
-    catch (_a) {
-        return null;
-    }
-}
-/** Sanitizes a channel ID by adding a leading `@` if the ID doesn't start with `UC...` */
-function sanitizeChannelId(channelId) {
-    channelId = String(channelId).trim();
-    return isValidChannelId(channelId)
-        ? channelId
-        : `@${channelId}`;
-}
-/** Tests whether a string is a valid channel ID in the format `@User` or `.C...` */
-function isValidChannelId(channelId) {
-    return channelId.match(/^([A-Z]C|@)\w+$/) !== null;
-}
-/** Returns the thumbnail URL for a video with either a given quality identifier or index */
-function getThumbnailUrl(watchId, qualityOrIndex = "maxresdefault") {
-    return `https://img.youtube.com/vi/${watchId}/${qualityOrIndex}.jpg`;
-}
-/** Returns the best available thumbnail URL for a video with the given watch ID */
-async function getBestThumbnailUrl(watchId) {
-    try {
-        const priorityList = ["maxresdefault", "sddefault", "hqdefault", 0];
-        for (const quality of priorityList) {
-            let response;
-            const url = getThumbnailUrl(watchId, quality);
-            try {
-                response = await sendRequest({ url, method: "HEAD", timeout: 6000 });
-            }
-            catch (err) {
-                error(`Error while sending HEAD request to thumbnail URL for video '${watchId}' with quality '${quality}':`, err);
-                void err;
-            }
-            if (response && response.status < 300 && response.status >= 200)
-                return url;
-        }
-    }
-    catch (err) {
-        throw new Error(`Couldn't get thumbnail URL for video '${watchId}': ${err}`);
-    }
-}
-/** Opens the given URL in a new tab, using GM.openInTab if available */
-function openInTab(href, background = false) {
-    try {
-        UserUtils.openInNewTab(href, background);
-    }
-    catch (_a) {
-        window.open(href, "_blank", "noopener noreferrer");
-    }
-}
-/** Tries to parse an uncompressed or compressed input string as a JSON object */
-async function tryToDecompressAndParse(input) {
-    let parsed = null;
-    try {
-        parsed = JSON.parse(input);
-    }
-    catch (_a) {
-        try {
-            parsed = JSON.parse(await UserUtils.decompress(input, compressionFormat, "string"));
-        }
-        catch (err) {
-            error("Couldn't decompress and parse data due to an error:", err);
-            return null;
-        }
-    }
-    // artificial timeout to allow animations to finish and because dumb monkey brains *expect* a delay
-    await UserUtils.pauseFor(250);
-    return parsed;
-}
-/** Very crude OS detection */
-function getOS() {
-    if (navigator.userAgent.match(/mac(\s?os|intel)/i))
-        return "mac";
-    return "other";
-}
-//#region resources
-/**
- * Returns the URL of a resource by its name, as defined in `assets/resources.json`, from GM resource cache - [see GM.getResourceUrl docs](https://wiki.greasespot.net/GM.getResourceUrl)
- * Falls back to a `raw.githubusercontent.com` URL or base64-encoded data URI if the resource is not available in the GM resource cache
- */
-async function getResourceUrl(name) {
-    var _a;
-    let url = await GM.getResourceUrl(name);
-    if (!url || url.length === 0) {
-        const resource = (_a = GM.info.script.resources) === null || _a === void 0 ? void 0 : _a[name].url;
-        if (typeof resource === "string") {
-            const resourceUrl = new URL(resource);
-            const resourcePath = resourceUrl.pathname;
-            if (resourcePath)
-                return `https://raw.githubusercontent.com/${repo}/${branch}${resourcePath}`;
-        }
-        warn(`Couldn't get blob URL nor external URL for @resource '${name}', trying to use base64-encoded fallback`);
-        // @ts-ignore
-        url = await GM.getResourceUrl(name, false);
-    }
-    return url;
-}
-/**
- * Returns the preferred locale of the user, provided it is supported by the userscript.
- * Prioritizes `navigator.language`, then `navigator.languages`, then `"en_US"` as a fallback.
- */
-function getPreferredLocale() {
-    var _a;
-    const navLang = navigator.language.replace(/-/g, "_");
-    const navLangs = navigator.languages
-        .filter(lang => lang.match(/^[a-z]{2}(-|_)[A-Z]$/) !== null)
-        .map(lang => lang.replace(/-/g, "_"));
-    if (Object.entries(langMapping).find(([key]) => key === navLang))
-        return navLang;
-    for (const loc of navLangs) {
-        if (Object.entries(langMapping).find(([key]) => key === loc))
-            return loc;
-    }
-    // if navigator.languages has entries that aren't locale codes in the format xx_XX
-    if (navigator.languages.some(lang => lang.match(/^[a-z]{2}$/))) {
-        for (const lang of navLangs) {
-            const foundLoc = (_a = Object.entries(langMapping).find(([key]) => key.startsWith(lang))) === null || _a === void 0 ? void 0 : _a[0];
-            if (foundLoc)
-                return foundLoc;
-        }
-    }
-    return "en_US";
-}
-/** Returns the content behind the passed resource identifier as a string, for example to be assigned to an element's innerHTML property */
-async function resourceAsString(resource) {
-    try {
-        const resourceUrl = await getResourceUrl(resource);
-        if (!resourceUrl)
-            throw new Error(`Couldn't find URL for resource '${resource}'`);
-        return await (await UserUtils.fetchAdvanced(resourceUrl)).text();
-    }
-    catch (err) {
-        error("Couldn't get SVG element from resource:", err);
-        return null;
-    }
-}
-/** Parses a markdown string using marked and turns it into an HTML string with default settings - doesn't sanitize against XSS! */
-function parseMarkdown(mdString) {
-    return marked.marked.parse(mdString, {
-        async: true,
-        gfm: true,
-    });
-}
-/** Returns the content of the changelog markdown file */
-async function getChangelogMd() {
-    return await (await UserUtils.fetchAdvanced(await getResourceUrl("doc-changelog"))).text();
-}
-/** Returns the changelog as HTML with a details element for each version */
-async function getChangelogHtmlWithDetails() {
-    try {
-        const changelogMd = await getChangelogMd();
-        let changelogHtml = await parseMarkdown(changelogMd);
-        const getVerId = (verStr) => verStr.trim().replace(/[._#\s-]/g, "");
-        changelogHtml = changelogHtml.replace(/<div\s+class="split">\s*<\/div>\s*\n?\s*<br(\s\/)?>/gm, "</details>\n<br>\n<details class=\"bytm-changelog-version-details\" tabindex=\"0\">");
-        const h2Matches = Array.from(changelogHtml.matchAll(/<h2(\s+id=".+")?>([\d\w\s.]+)<\/h2>/gm));
-        for (const match of h2Matches) {
-            const [fullMatch, , verStr] = match;
-            const verId = getVerId(verStr);
-            const h2Elem = `<h2 id="${verId}" role="subheading" aria-level="1">${verStr}</h2>`;
-            const summaryElem = `<summary tab-index="0">${h2Elem}</summary>`;
-            changelogHtml = changelogHtml.replace(fullMatch, `${summaryElem}`);
-        }
-        changelogHtml = `<details class="bytm-changelog-version-details" tabindex="0">${changelogHtml}</details>`;
-        return changelogHtml;
-    }
-    catch (err) {
-        return `Error while preparing changelog: ${err}`;
-    }
 }let curLogLevel = LogLevel.Info;
 /** Common prefix to be able to tell logged messages apart and filter them in devtools */
 const consPrefix = `[${scriptInfo.name}]`;
