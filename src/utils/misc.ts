@@ -1,7 +1,7 @@
 import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type ResourceKey } from "../types.js";
+import { type Domain, type ResourceKey, type StringGen } from "../types.js";
 import { error, type TrLocale, warn, sendRequest } from "./index.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 
@@ -189,6 +189,11 @@ export function getOS() {
   if(navigator.userAgent.match(/mac(\s?os|intel)/i))
     return "mac";
   return "other";
+}
+
+/** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
+export async function consumeStringGen(strGen: StringGen): Promise<string> {
+  return String(typeof strGen === "function" ? await strGen() : strGen);
 }
 
 //#region resources

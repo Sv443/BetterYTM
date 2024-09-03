@@ -1,10 +1,12 @@
-import { setInnerHtml } from "src/utils/dom.js";
-import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
 import { marked } from "marked";
+import { setInnerHtml } from "../utils/dom.js";
+import { consumeStringGen } from "../utils/misc.js";
+import { BytmDialog, type BytmDialogOptions } from "./BytmDialog.js";
+import type { StringGen } from "../types.js";
 
 type MarkdownDialogOptions = Omit<BytmDialogOptions, "renderBody"> & {
   /** The markdown to render */
-  body: string | (() => string | Promise<string>);
+  body: StringGen;
 };
 
 export class MarkdownDialog extends BytmDialog {
@@ -36,7 +38,7 @@ export class MarkdownDialog extends BytmDialog {
 
     const mdCont = typeof this.opts.body === "string"
       ? this.opts.body
-      : await this.opts.body();
+      : await consumeStringGen(this.opts.body);
 
     const markdownEl = document.createElement("div");
     markdownEl.classList.add("bytm-markdown-dialog-content", "bytm-markdown-container");
