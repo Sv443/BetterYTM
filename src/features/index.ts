@@ -571,13 +571,14 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
-    reloadRequired: false,
-    enable: noop,
+    textAdornment: adornments.reloadRequired,
   },
   errorOnLyricsNotFound: {
     type: "toggle",
     category: "lyrics",
-    default: true,
+    default: false,
+    reloadRequired: false,
+    enable: noop,
   },
   geniUrlBase: {
     type: "text",
