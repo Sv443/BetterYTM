@@ -276,6 +276,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "Ouverture...",
 
     "feature_desc_geniusLyrics": "Ajouter un bouton aux contrôles multimédias de la chanson en cours de lecture pour ouvrir ses paroles sur genius.com",
+    "feature_desc_errorOnLyricsNotFound": "Afficher une erreur lorsque la page de paroles pour la chanson en cours de lecture n'a pas pu être trouvée",
     "feature_desc_geniUrlBase": "URL de base de votre instance geniURL, voir https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "Si vous avez votre propre instance de geniURL en cours d'exécution (par exemple pour contourner la limitation du taux), vous pouvez entrer son URL de base ici pour l'utiliser pour le bouton de paroles de genius.com.\nSi vous ne savez pas ce que c'est, vous pouvez laisser cette option telle quelle.",
     "feature_desc_geniUrlToken": "Jeton d'authentification pour votre instance geniURL",

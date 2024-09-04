@@ -276,6 +276,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "खोल रहा है...",
 
     "feature_desc_geniusLyrics": "वर्तमान में चल रहे गीत के मीडिया नियंत्रणों में एक बटन जो genius.com पर इसके बोल खोलता है",
+    "feature_desc_errorOnLyricsNotFound": "वर्तमान में चल रहे गीत के लिए बोल पृष्ठ नहीं मिलने पर एक त्रुटि दिखाएं",
     "feature_desc_geniUrlBase": "आपके geniURL इंस्टेंस का बेस URL, https://github.com/Sv443/geniURL देखें",
     "feature_helptext_geniUrlBase": "यदि आपके पास अपना geniURL इंस्टेंस चल रहा है (उदाहरण के लिए रेट लिमिटिंग को छोड़ने के लिए), तो आप इसका बेस URL यहां दर्ज कर सकते हैं ताकि आप genius.com बोल बटन के लिए इसका उपयोग कर सकें।\nयदि आप नहीं जानते कि यह क्या है, तो आप इस विकल्प को वैसे ही छोड़ सकते हैं।",
     "feature_desc_geniUrlToken": "आपके geniURL इंस्टेंस के लिए एक ऑथ टोकन",

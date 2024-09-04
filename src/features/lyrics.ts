@@ -192,7 +192,7 @@ export async function getCurrentLyricsUrl() {
     return url;
   }
   catch(err) {
-    error("Couldn't resolve lyrics URL:", err);
+    getFeature("errorOnLyricsNotFound") && error("Couldn't resolve lyrics URL:", err);
     return undefined;
   }
 }
@@ -203,7 +203,7 @@ export async function fetchLyricsUrlTop(artist: string, song: string): Promise<s
     return (await fetchLyricsUrls(artist, song))?.[0]?.url;
   }
   catch(err) {
-    error("Couldn't get lyrics URL due to error:", err);
+    getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
 }
@@ -243,14 +243,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
+      getFeature("errorOnLyricsNotFound") && error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
       return undefined;
     }
 
     const result = await fetchRes.json();
 
     if(typeof result === "object" && result.error || !result || !result.all) {
-      error("Couldn't fetch lyrics URL:", result.message);
+      getFeature("errorOnLyricsNotFound") && error("Couldn't fetch lyrics URL:", result.message);
       return undefined;
     }
 
@@ -292,7 +292,7 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
     }));
   }
   catch(err) {
-    error("Couldn't get lyrics URL due to error:", err);
+    getFeature("errorOnLyricsNotFound") && error("Couldn't get lyrics URL due to error:", err);
     return undefined;
   }
 }

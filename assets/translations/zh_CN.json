@@ -282,6 +282,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "正在打开...",
 
     "feature_desc_geniusLyrics": "在当前播放的歌曲的媒体控件中添加一个按钮，以在 genius.com 上打开其歌词",
+    "feature_desc_errorOnLyricsNotFound": "当找不到当前播放歌曲的歌词页面时显示一个错误",
     "feature_desc_geniUrlBase": "geniURL 实例的基本 URL，请参阅 https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "如果您有自己运行的 geniURL 实例（例如为了绕过速率限制），您可以在此处输入其基本 URL 以在 genius.com 歌词按钮中使用它。\n如果您不知道这是什么，您可以将此选项保留为默认值。",
     "feature_desc_geniUrlToken": "您的 geniURL 实例的身份验证令牌",

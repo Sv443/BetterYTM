@@ -284,6 +284,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "Opening...",
 
     "feature_desc_geniusLyrics": "Add a button to the media controls of the currently playing song to open its lyrics on genius.com",
+    "feature_desc_errorOnLyricsNotFound": "Show an error when the lyrics page for the currently playing song couldn't be found",
     "feature_desc_geniUrlBase": "Base URL of your geniURL instance, see https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "If you have your own instance of geniURL running (for example to bypass rate limiting), you can enter its base URL here to use it for the genius.com lyrics button.\nIf you don't know what this is, you can leave this option as is.",
     "feature_desc_geniUrlToken": "Auth token for your geniURL instance",

@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en_US`](./en_US.json) | `300` (default locale) |  |
-| ✅ | [`de_DE`](./de_DE.json) | `300/300` (100%) | ─ |
-|  | [`en_UK`](./en_UK.json) | `300/300` (100%) | `en_US` |
-| ✅ | [`es_ES`](./es_ES.json) | `300/300` (100%) | ─ |
-| ✅ | [`fr_FR`](./fr_FR.json) | `300/300` (100%) | ─ |
-| ✅ | [`hi_IN`](./hi_IN.json) | `300/300` (100%) | ─ |
-| ✅ | [`ja_JA`](./ja_JA.json) | `300/300` (100%) | ─ |
-| ✅ | [`pt_BR`](./pt_BR.json) | `300/300` (100%) | ─ |
-| ✅ | [`zh_CN`](./zh_CN.json) | `300/300` (100%) | ─ |
+|  | [`en_US`](./en_US.json) | `301` (default locale) |  |
+| ✅ | [`de_DE`](./de_DE.json) | `301/301` (100%) | ─ |
+|  | [`en_UK`](./en_UK.json) | `301/301` (100%) | `en_US` |
+| ✅ | [`es_ES`](./es_ES.json) | `301/301` (100%) | ─ |
+| ✅ | [`fr_FR`](./fr_FR.json) | `301/301` (100%) | ─ |
+| ✅ | [`hi_IN`](./hi_IN.json) | `301/301` (100%) | ─ |
+| ✅ | [`ja_JA`](./ja_JA.json) | `301/301` (100%) | ─ |
+| ✅ | [`pt_BR`](./pt_BR.json) | `301/301` (100%) | ─ |
+| ✅ | [`zh_CN`](./zh_CN.json) | `301/301` (100%) | ─ |
 
 <sub>
 ✅ - Fully translated

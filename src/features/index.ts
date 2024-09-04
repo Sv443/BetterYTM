@@ -571,6 +571,13 @@ export const featInfo = {
     type: "toggle",
     category: "lyrics",
     default: true,
+    reloadRequired: false,
+    enable: noop,
+  },
+  errorOnLyricsNotFound: {
+    type: "toggle",
+    category: "lyrics",
+    default: true,
   },
   geniUrlBase: {
     type: "text",

@@ -284,6 +284,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "Wird geöffnet...",
 
     "feature_desc_geniusLyrics": "Füge einen Knopf zu dem aktuell spielenden Song hinzu, um den Songtext auf genius.com zu öffnen",
+    "feature_desc_errorOnLyricsNotFound": "Zeige einen Error, wenn die Songtext-Seite für den aktuell spielenden Song nicht gefunden werden konnte",
     "feature_desc_geniUrlBase": "Base URL deiner geniURL Instanz, siehe https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "Wenn du deine eigene geniURL Instanz laufen hast (zum Beispiel um Rate Limiting zu umgehen), kannst du hier ihre Base URL eingeben, um sie für die genius.com Songtext-Suche zu benutzen.\nWenn du nicht weißt, was das ist, kannst du diese Option so lassen, wie sie ist.",
     "feature_desc_geniUrlToken": "Auth Token deiner geniURL Instanz",
