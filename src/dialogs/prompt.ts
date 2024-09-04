@@ -59,7 +59,7 @@ class PromptDialog extends BytmDialog {
   protected async renderHeader({ type }: PromptDialogRenderProps) {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
-    const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-confirm");
+    const iconSvg = await resourceAsString(type === "alert" ? "icon-alert" : "icon-prompt");
     if(iconSvg)
       setInnerHtml(headerEl, iconSvg);
 
@@ -172,22 +172,26 @@ export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<
     let resolveVal: boolean | string | null | undefined;
     const tryResolve = () => resolve(typeof resolveVal !== "undefined" ? resolveVal : false);
 
+    let closeUnsub: (() => void) | undefined; // eslint-disable-line prefer-const
+
     const resolveUnsub = promptDialog.on("resolve" as "_", (val: boolean | string | null) => {
       resolveUnsub();
       if(resolveVal !== undefined)
         return;
       resolveVal = val;
       tryResolve();
+      closeUnsub?.();
     });
 
-    const closeUnsub = promptDialog.on("close", () => {
-      closeUnsub();
+    closeUnsub = promptDialog.on("close", () => {
+      closeUnsub!();
       if(resolveVal !== undefined)
         return;
       resolveVal = type === "alert";
       if(type === "prompt")
         resolveVal = null;
       tryResolve();
+      resolveUnsub();
     });
 
     promptDialog.open();
