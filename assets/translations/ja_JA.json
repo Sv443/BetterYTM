@@ -276,6 +276,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "開いています...",
 
     "feature_desc_geniusLyrics": "現在再生中の曲のメディアコントロールにボタンを追加して、genius.com で歌詞を開く",
+    "feature_desc_errorOnLyricsNotFound": "現在再生中の曲の歌詞ページが見つからなかった場合にエラーを表示する",
     "feature_desc_geniUrlBase": "geniURL インスタンスのベース URL。https://github.com/Sv443/geniURL を参照してください。",
     "feature_helptext_geniUrlBase": "自分の geniURL インスタンスを実行している場合（例えばレート制限をバイパスするため）、ここにそのベース URL を入力して、genius.com の歌詞ボタンに使用できます。\nこれが何かわからない場合は、このオプションをそのままにしておくことができます。",
     "feature_desc_geniUrlToken": "geniURL インスタンスの認証トークン",

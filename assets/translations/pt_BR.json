@@ -276,6 +276,7 @@
     "feature_btn_autoLikeOpenMgmtDialog_running": "Abrindo...",
 
     "feature_desc_geniusLyrics": "Adicione um botão aos controles de mídia da música que está tocando atualmente para abrir suas letras em genius.com",
+    "feature_desc_errorOnLyricsNotFound": "Mostrar um erro quando a página de letras para a música que está tocando atualmente não pôde ser encontrada",
     "feature_desc_geniUrlBase": "URL base da sua instância geniURL, veja https://github.com/Sv443/geniURL",
     "feature_helptext_geniUrlBase": "Se você tiver sua própria instância do geniURL em execução (por exemplo, para evitar limites de taxa), você pode inserir sua URL base aqui para usá-la para o botão de letras do genius.com.\nSe você não sabe o que é isso, pode deixar esta opção como está.",
     "feature_desc_geniUrlToken": "Token de autenticação para sua instância geniURL",

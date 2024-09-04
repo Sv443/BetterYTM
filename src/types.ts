@@ -583,6 +583,8 @@ export interface FeatureConfig {
   //#region lyrics
   /** Add a button to the media controls to open the current song's lyrics on genius.com in a new tab */
   geniusLyrics: boolean;
+  /** Whether to show an error when no lyrics were found */
+  errorOnLyricsNotFound: boolean;
   /** Base URL to use for GeniURL */
   geniUrlBase: string;
   /** Token to use for GeniURL */
