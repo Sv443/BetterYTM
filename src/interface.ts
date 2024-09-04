@@ -66,14 +66,14 @@ export type InterfaceEvents = {
    */
   "bytm:fatalError": string;
 
-  /** Emitted when a dialog was opened - returns the dialog's instance */
-  "bytm:dialogOpened": BytmDialog;
-  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance - in TS, use `"bytm:dialogOpened:myIdWhatever" as "bytm:dialogOpened:id"` to make the error go away */
-  "bytm:dialogOpened:id": BytmDialog;
-  /** Emitted when a dialog was closed - returns the dialog's instance */
-  "bytm:dialogClosed": BytmDialog;
-  /** Emitted when the dialog with the specified ID was closed - returns the dialog's instance - in TS, use `"bytm:dialogClosed:myIdWhatever" as "bytm:dialogClosed:id"` to make the error go away */
-  "bytm:dialogClosed:id": BytmDialog;
+  /** Emitted when a dialog was opened - returns the dialog's instance (or undefined in the case of the config menu) */
+  "bytm:dialogOpened": BytmDialog | undefined;
+  /** Emitted when the dialog with the specified ID was opened - returns the dialog's instance (or undefined in the case of the config menu) - in TS, use `"bytm:dialogOpened:myIdWhatever" as "bytm:dialogOpened:id"` to make the error go away */
+  "bytm:dialogOpened:id": BytmDialog | undefined;
+  /** Emitted when a dialog was closed - returns the dialog's instance (or undefined in the case of the config menu) */
+  "bytm:dialogClosed": BytmDialog | undefined;
+  /** Emitted when the dialog with the specified ID was closed - returns the dialog's instance (or undefined in the case of the config menu) - in TS, use `"bytm:dialogClosed:myIdWhatever" as "bytm:dialogClosed:id"` to make the error go away */
+  "bytm:dialogClosed:id": BytmDialog | undefined;
 
   /** Emitted whenever the lyrics URL for a song is loaded */
   "bytm:lyricsLoaded": { type: "current" | "queue", artists: string, title: string, url: string };
