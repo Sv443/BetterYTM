@@ -127,19 +127,6 @@
   color: var(--bytm-menu-subtitle-color) !important;
 }
 
-#bytm-menu-subtitle-cont,
-#bytm-menu-mode-display {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#bytm-menu-version-anchor {
-  overflow: hidden;
-  text-wrap: nowrap;
-  text-overflow: ellipsis;
-}
-
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;

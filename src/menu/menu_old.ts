@@ -35,6 +35,9 @@ async function mountCfgMenu() {
   if(isCfgMenuMounted)
     return;
   isCfgMenuMounted = true;
+
+  BytmDialog.initDialogs();
+
   initLocale = getFeature("locale");
   initConfig = getFeatures();
 
@@ -417,11 +420,12 @@ async function mountCfgMenu() {
           const rel = "reloadRequired" in ftInfo && ftInfo.reloadRequired !== false ? " (reload required)" : "";
           const adv = ftInfo.advanced ? " (advanced feature)" : "";
 
-          featLeftSideElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
+          ftConfElem.title = `${featKey}${rel}${adv}${extraTxts.length > 0 ? `\n${extraTxts.join(" - ")}` : ""}`;
         }
 
         const textElem = document.createElement("span");
-        textElem.textContent = t(`feature_desc_${featKey}`);
+        textElem.classList.add("bytm-ftitem-text", "bytm-ellipsis-wrap");
+        textElem.textContent = textElem.title = textElem.ariaLabel = t(`feature_desc_${featKey}`);
 
         let adornmentElem: undefined | HTMLElement;
 
@@ -505,6 +509,8 @@ async function mountCfgMenu() {
 
         const ctrlElem = document.createElement("span");
         ctrlElem.classList.add("bytm-ftconf-ctrl");
+        // to prevent dev mode title from propagating:
+        ctrlElem.title = "";
 
         let advCopyHiddenCont: HTMLElement | undefined;
 
@@ -796,10 +802,11 @@ async function mountCfgMenu() {
 
   const subtitleElemCont = document.createElement("div");
   subtitleElemCont.id = "bytm-menu-subtitle-cont";
+  subtitleElemCont.classList.add("bytm-ellipsis");
 
   const versionEl = document.createElement("a");
   versionEl.id = "bytm-menu-version-anchor";
-  versionEl.classList.add("bytm-link");
+  versionEl.classList.add("bytm-link", "bytm-ellipsis");
   versionEl.role = "button";
   versionEl.tabIndex = 0;
   versionEl.ariaLabel = versionEl.title = t("version_tooltip", scriptInfo.version, buildNumber);
@@ -825,6 +832,7 @@ async function mountCfgMenu() {
   if(modeItems.length > 0) {
     const modeDisplayEl = document.createElement("span");
     modeDisplayEl.id = "bytm-menu-mode-display";
+    modeDisplayEl.classList.add("bytm-ellipsis");
     modeDisplayEl.textContent = `[${t("active_mode_display", arrayWithSeparators(modeItems.map(v => t(`${v}_short`)), ", ", " & "))}]`;
     modeDisplayEl.ariaLabel = modeDisplayEl.title = tp("active_mode_tooltip", modeItems, arrayWithSeparators(modeItems.map(t), ", ", " & "));
 
@@ -834,7 +842,7 @@ async function mountCfgMenu() {
   menuContainer.appendChild(footerCont);
   backgroundElem.appendChild(menuContainer);
 
-  document.body.appendChild(backgroundElem);
+  (document.querySelector("#bytm-dialog-container") ?? document.body).appendChild(backgroundElem);
 
   window.addEventListener("resize", debounce(checkToggleScrollIndicator, 250, "rising"));
 
