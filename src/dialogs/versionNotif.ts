@@ -31,10 +31,7 @@ export async function getVersionNotifDialog({
       destroyOnClose: true,
       small: true,
       renderHeader,
-      renderBody: () => renderBody({
-        latestTag,
-        changelogHtml,
-      }),
+      renderBody: () => renderBody({ latestTag, changelogHtml }),
     });
   }
   return verNotifDialog;
