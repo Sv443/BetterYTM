@@ -135,7 +135,6 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     const clearSelectors = [
       `#bytm-${this.id}-dialog-bg`,
-      `#bytm-style-dialog-${this.id}`,
     ];
 
     for(const sel of clearSelectors) {
@@ -322,7 +321,7 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
     dialogBg?.removeAttribute("inert");
   }
 
-  /** Called once to attach all generic event listeners */
+  /** Called on every {@linkcode mount()} to attach all generic event listeners */
   protected attachListeners(bgElem: HTMLElement) {
     if(this.options.closeOnBgClick) {
       bgElem.addEventListener("click", (e) => {

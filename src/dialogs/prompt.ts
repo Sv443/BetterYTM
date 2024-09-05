@@ -5,6 +5,8 @@ import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
 import "./prompt.css";
 import { addSelectorListener } from "src/observers.js";
 
+//#region types
+
 type PromptStringGen = Stringifiable | ((type: PromptType) => Stringifiable | Promise<Stringifiable>);
 
 export type PromptDialogRenderProps = ConfirmRenderProps | AlertRenderProps | PromptRenderProps;
@@ -32,11 +34,15 @@ type BaseRenderProps = {
   denyBtnTooltip?: PromptStringGen;
 };
 
+export type PromptDialogResolveVal = boolean | string | null;
+
 export type ShowPromptProps = Partial<PromptDialogRenderProps> & Required<Pick<PromptDialogRenderProps, "message">>;
 
 export type PromptDialogEmitter = Emitter<BytmDialogEvents & {
-  resolve: (result: boolean | string | null) => void;
+  resolve: (result: PromptDialogResolveVal) => void;
 }>;
+
+//#region PromptDialog
 
 let promptDialog: PromptDialog | null = null;
 
@@ -98,7 +104,7 @@ class PromptDialog extends BytmDialog {
   }
 
   protected async renderFooter({ type, ...rest }: PromptDialogRenderProps) {
-    const resolve = (val: boolean | string | null) => (this.events as PromptDialogEmitter).emit("resolve", val);
+    const emitResolve = (val: PromptDialogResolveVal) => (this.events as PromptDialogEmitter).emit("resolve", val);
 
     const buttonsWrapper = document.createElement("div");
     buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
@@ -114,9 +120,9 @@ class PromptDialog extends BytmDialog {
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
-      confirmBtn.autofocus = type === "confirm";
+      confirmBtn.autofocus = true;
       confirmBtn.addEventListener("click", () => {
-        resolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
+        emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
         promptDialog?.close();
       }, { once: true });
     }
@@ -135,7 +141,7 @@ class PromptDialog extends BytmDialog {
         confirm: false,
         prompt: null,
       };
-      resolve(resVals[type]);
+      emitResolve(resVals[type]);
       promptDialog?.close();
     }, { once: true });
 
@@ -148,19 +154,22 @@ class PromptDialog extends BytmDialog {
     return buttonsWrapper;
   }
 
-  protected async consumePromptStringGen(type: PromptType, txtGen?: PromptStringGen, fallback?: Stringifiable): Promise<string> {
-    if(typeof txtGen === "function")
-      return await txtGen(type);
-    return String(txtGen ?? fallback);
+  /** Converts a {@linkcode stringGen} (stringifiable value or sync or async function that returns a stringifiable value) to a string - uses {@linkcode fallback} as a fallback */
+  protected async consumePromptStringGen(curPromptType: PromptType, stringGen?: PromptStringGen, fallback?: Stringifiable): Promise<string> {
+    if(typeof stringGen === "function")
+      return await stringGen(curPromptType);
+    return String(stringGen ?? fallback);
   }
 }
+
+//#region showPrompt fn
 
 /** Shows a confirm() or alert() prompt dialog of the specified type and resolves true if the user confirms it or false if they cancel it - always resolves true with type "alert" */
 export function showPrompt(props: ConfirmRenderProps | AlertRenderProps): Promise<boolean>;
 /** Shows a prompt() dialog with the specified message and default value and resolves the entered value if the user confirms it or null if they cancel it */
 export function showPrompt(props: PromptRenderProps): Promise<string | null>;
-export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<boolean | string | null> {
-  return new Promise<boolean | string | null>((resolve) => {
+export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<PromptDialogResolveVal> {
+  return new Promise<PromptDialogResolveVal>((resolve) => {
     if(BytmDialog.getOpenDialogs().includes("prompt-dialog"))
       promptDialog?.close();
 
@@ -176,12 +185,12 @@ export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<
     promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
     promptDialog.once("close", () => document.querySelector("#bytm-cfg-menu")?.removeAttribute("inert"));
 
-    let resolveVal: boolean | string | null | undefined;
+    let resolveVal: PromptDialogResolveVal | undefined;
     const tryResolve = () => resolve(typeof resolveVal !== "undefined" ? resolveVal : false);
 
     let closeUnsub: (() => void) | undefined; // eslint-disable-line prefer-const
 
-    const resolveUnsub = promptDialog.on("resolve" as "_", (val: boolean | string | null) => {
+    const resolveUnsub = promptDialog.on("resolve" as "_", (val: PromptDialogResolveVal) => {
       resolveUnsub();
       if(resolveVal !== undefined)
         return;
