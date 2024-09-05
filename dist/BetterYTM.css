@@ -1059,19 +1059,6 @@ body .bytm-ripple.slower {
   color: var(--bytm-menu-subtitle-color) !important;
 }
 
-#bytm-menu-subtitle-cont,
-#bytm-menu-mode-display {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#bytm-menu-version-anchor {
-  overflow: hidden;
-  text-wrap: nowrap;
-  text-overflow: ellipsis;
-}
-
 #bytm-menu-linkscont {
   display: flex;
   align-items: center;
@@ -1437,6 +1424,20 @@ hr {
 
 .bytm-disable-scroll {
   overflow: hidden !important;
+}
+
+.bytm-ellipsis {
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bytm-ellipsis-wrap {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: auto;
+  white-space: normal;
 }
 
 /* #region generic (circular) button */

@@ -1,6 +1,6 @@
 // hoist the class declaration because either rollup or babel is being a hoe
 import { NanoEmitter } from "@sv443-network/userutils";
-import { clearInner, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
+import { clearInner, domLoaded, error, getDomain, getResourceUrl, onInteraction, warn } from "../utils/index.js";
 import { t } from "../utils/translations.js";
 import { emitInterface } from "../interface.js";
 import "./BytmDialog.css";
@@ -50,6 +50,10 @@ export interface BytmDialogEvents extends EventsMap {
   destroy: () => void;
 };
 
+/** Whether the dialog system has been initialized */
+let dialogsInitialized = false;
+/** Container element for all BytmDialog elements */
+let dialogContainer: HTMLElement | undefined;
 // TODO: remove export as soon as config menu is migrated to use BytmDialog
 /** ID of the last opened (top-most) dialog */
 export let currentDialogId: string | null = null;
@@ -68,6 +72,8 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
   constructor(options: BytmDialogOptions) {
     super();
+
+    BytmDialog.initDialogs();
 
     this.options = {
       closeOnBgClick: true,
@@ -106,7 +112,10 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
 
     try {
       bgElem.appendChild(await this.getDialogContent());
-      document.body.appendChild(bgElem);
+      if(dialogContainer)
+        dialogContainer.appendChild(bgElem);
+      else
+        document.addEventListener("DOMContentLoaded", () => dialogContainer?.appendChild(bgElem));
     }
     catch(e) {
       return error("Failed to render dialog content:", e);
@@ -240,6 +249,24 @@ export class BytmDialog extends NanoEmitter<BytmDialogEvents> {
   }
 
   //#region static
+
+  /** Initializes the dialog system */
+  public static initDialogs() {
+    if(dialogsInitialized)
+      return;
+    dialogsInitialized = true;
+
+    const createContainer = () => {
+      const bytmDialogCont = dialogContainer = document.createElement("div");
+      bytmDialogCont.id = "bytm-dialog-container";
+      document.body.appendChild(bytmDialogCont);
+    };
+
+    if(!domLoaded)
+      document.addEventListener("DOMContentLoaded", createContainer);
+    else
+      createContainer();
+  }
 
   /** Returns the ID of the top-most dialog (the dialog that has been opened last) */
   public static getCurrentDialogId() {

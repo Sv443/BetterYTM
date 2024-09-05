@@ -4,6 +4,20 @@
   overflow: hidden !important;
 }
 
+.bytm-ellipsis {
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bytm-ellipsis-wrap {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: auto;
+  white-space: normal;
+}
+
 /* #region generic (circular) button */
 .bytm-generic-btn {
   --bytm-generic-btn-width: 36px;
