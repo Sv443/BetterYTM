@@ -3,6 +3,7 @@ import type { Stringifiable } from "@sv443-network/userutils";
 import { getOS, resourceAsString, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog, type BytmDialogEvents } from "../components/index.js";
 import "./prompt.css";
+import { addSelectorListener } from "src/observers.js";
 
 type PromptStringGen = Stringifiable | ((type: PromptType) => Stringifiable | Promise<Stringifiable>);
 
@@ -164,6 +165,12 @@ export function showPrompt({ type, ...rest }: PromptDialogRenderProps): Promise<
       promptDialog?.close();
 
     promptDialog = new PromptDialog({ type, ...rest });
+
+    promptDialog.once("render" as "_", () => {
+      addSelectorListener<HTMLButtonElement>("bytmDialogContainer", `#bytm-prompt-dialog-${type === "alert" ? "close" : "confirm"}`, {
+        listener: (btn) => btn.focus(),
+      });
+    });
 
     // make config menu inert while prompt dialog is open
     promptDialog.once("open", () => document.querySelector("#bytm-cfg-menu")?.setAttribute("inert", "true"));
