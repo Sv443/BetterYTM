@@ -18,7 +18,8 @@ export type ObserverNameByDomain<TDomain extends Domain> = SharedObserverName | 
 
 // Shared between YTM and YT
 export type SharedObserverName =
-  | "body"; // the entire <body> element
+  | "body"                 // the entire <body> element
+  | "bytmDialogContainer"; // the container for all BytmDialog instances
 
 // YTM only
 export type YTMObserverName =
@@ -110,6 +111,19 @@ export function initObservers() {
     });
 
     globservers.body.enable();
+
+    //#region bytmDialogContainer
+    // -> the container for all BytmDialog instances
+    //    enabled immediately
+    const bytmDialogContainerSelector = "#bytm-dialog-container";
+    globservers.bytmDialogContainer = new SelectorObserver(bytmDialogContainerSelector, {
+      ...defaultObserverOptions,
+      defaultDebounceEdge: "falling",
+      defaultDebounce: 100,
+      subtree: true,
+    });
+
+    globservers.bytmDialogContainer.enable();
 
     switch(getDomain()) {
     case "ytm": {
