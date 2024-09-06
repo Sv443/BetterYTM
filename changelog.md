@@ -29,6 +29,7 @@
   - Removed broken feature "remove upgrade tab"
   - Removed unnecessary experimental feature "advancedLyricsFilter" as the API's native search improved a lot
   - Made all integration features configurable and gave them their own config category
+  - Created a prompt dialog to replace the browser's native dialogs, which could accidentally be turned off by the user and would softlock the script
 - **Fixes:**
   - Fixed major bug that threw "This document requires 'TrustedHTML' assignment" errors on Chromium browsers
   - Adjusted script to UI redesign of playlists
