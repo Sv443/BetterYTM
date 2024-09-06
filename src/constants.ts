@@ -21,12 +21,12 @@ export const buildNumber = (buildNumberRaw.match(/^#{{.+}}$/) ? "BUILD_ERROR!" :
 /** The URL search parameters at the earliest possible time */
 export const initialParams = new URL(location.href).searchParams;
 
-/** Names of platforms by value of {@linkcode host} */
-export const platformNames: Record<typeof host, string> = {
+/** Names of platforms by key of {@linkcode host} */
+export const platformNames = {
   github: "GitHub",
   greasyfork: "GreasyFork",
   openuserjs: "OpenUserJS",
-};
+} as const;
 
 /** Default compression format used throughout BYTM */
 export const compressionFormat: CompressionFormat = "deflate-raw";
