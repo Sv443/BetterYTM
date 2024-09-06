@@ -1,4 +1,4 @@
-import { host, mode, scriptInfo } from "../constants.js";
+import { host, mode, platformNames, scriptInfo } from "../constants.js";
 import { getChangelogMd, getResourceUrl, onInteraction, parseMarkdown, setInnerHtml, t } from "../utils/index.js";
 import { BytmDialog, createToggleInput } from "../components/index.js";
 import { getFeature, getFeatures, setFeatures } from "../config.js";
@@ -57,16 +57,10 @@ async function renderBody({
 }) {
   disableUpdateCheck = false;
 
-  const hostPlatformNames: Record<typeof host, string> = {
-    github: "GitHub",
-    greasyfork: "GreasyFork",
-    openuserjs: "OpenUserJS",
-  };
-
   const wrapperEl = document.createElement("div");
 
   const pEl = document.createElement("p");
-  pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, hostPlatformNames[host]);
+  pEl.textContent = t("new_version_available", scriptInfo.name, scriptInfo.version, latestTag, platformNames[host]);
   wrapperEl.appendChild(pEl);
 
   const changelogDetailsEl = document.createElement("details");
@@ -151,7 +145,7 @@ async function renderBody({
   const btnUpdate = document.createElement("button");
   btnUpdate.classList.add("bytm-btn");
   btnUpdate.tabIndex = 0;
-  btnUpdate.textContent = t("open_update_page_install_manually", hostPlatformNames[host]);
+  btnUpdate.textContent = t("open_update_page_install_manually", platformNames[host]);
 
   onInteraction(btnUpdate, () => {
     window.open(pkg.updates[host]);
