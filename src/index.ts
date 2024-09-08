@@ -340,8 +340,6 @@ function registerDevCommands() {
   if(mode !== "development")
     return;
 
-  GM.registerMenuCommand("Open plugin list", () => getPluginListDialog().then(dlg => dlg.open()));
-
   GM.registerMenuCommand("Reset config", async () => {
     if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {
       await clearConfig();
@@ -470,13 +468,13 @@ function registerDevCommands() {
     }
   });
 
-  GM.registerMenuCommand("Export using DataStoreSerializer", async () => {
+  GM.registerMenuCommand("Export all data using DataStoreSerializer", async () => {
     const ser = await storeSerializer.serialize();
     dbg("Serialized data stores:", JSON.stringify(JSON.parse(ser)));
     alert("See console.");
   });
 
-  GM.registerMenuCommand("Import using DataStoreSerializer", async () => {
+  GM.registerMenuCommand("Import all data using DataStoreSerializer", async () => {
     const input = await showPrompt({ type: "prompt", message: "Enter the serialized data to import:" });
     if(input && input.length > 0) {
       await storeSerializer.deserialize(input);
