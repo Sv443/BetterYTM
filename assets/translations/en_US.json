@@ -200,6 +200,7 @@
     "color_lightness_lighter": "Lighter",
 
     "plugin_list_title": "Plugin List",
+    "plugin_list_no_plugins": "No plugins are currently installed.",
     "plugin_list_permissions_header": "Permissions:",
 
     "plugin_link_type_source": "Repository",

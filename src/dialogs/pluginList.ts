@@ -42,6 +42,14 @@ async function renderBody() {
   const listContainerEl = document.createElement("div");
   listContainerEl.id = "bytm-plugin-list-container";
 
+  if(registeredPlugins.size === 0) {
+    const noPluginsEl = document.createElement("div");
+    noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
+    noPluginsEl.textContent = t("plugin_list_no_plugins");
+    listContainerEl.appendChild(noPluginsEl);
+    return listContainerEl;
+  }
+
   for(const [, { def: { plugin, intents } }] of registeredPlugins.entries()) {
     const rowEl = document.createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");

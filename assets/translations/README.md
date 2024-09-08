@@ -16,15 +16,15 @@ To submit or edit a translation, please follow [this guide](../../contributing.m
 ### Translation progress:
 | &nbsp; | Locale | Translated keys | Based on |
 | :----: | ------ | --------------- | :------: |
-|  | [`en_US`](./en_US.json) | `320` (default locale) |  |
-| ‼️ | [`de_DE`](./de_DE.json) | `301/320` (94.1%) | ─ |
-|  | [`en_UK`](./en_UK.json) | `320/320` (100%) | `en_US` |
-| ‼️ | [`es_ES`](./es_ES.json) | `301/320` (94.1%) | ─ |
-| ‼️ | [`fr_FR`](./fr_FR.json) | `301/320` (94.1%) | ─ |
-| ‼️ | [`hi_IN`](./hi_IN.json) | `301/320` (94.1%) | ─ |
-| ‼️ | [`ja_JA`](./ja_JA.json) | `301/320` (94.1%) | ─ |
-| ‼️ | [`pt_BR`](./pt_BR.json) | `301/320` (94.1%) | ─ |
-| ‼️ | [`zh_CN`](./zh_CN.json) | `301/320` (94.1%) | ─ |
+|  | [`en_US`](./en_US.json) | `321` (default locale) |  |
+| ‼️ | [`de_DE`](./de_DE.json) | `301/321` (93.8%) | ─ |
+|  | [`en_UK`](./en_UK.json) | `321/321` (100%) | `en_US` |
+| ‼️ | [`es_ES`](./es_ES.json) | `301/321` (93.8%) | ─ |
+| ‼️ | [`fr_FR`](./fr_FR.json) | `301/321` (93.8%) | ─ |
+| ‼️ | [`hi_IN`](./hi_IN.json) | `301/321` (93.8%) | ─ |
+| ‼️ | [`ja_JA`](./ja_JA.json) | `301/321` (93.8%) | ─ |
+| ‼️ | [`pt_BR`](./pt_BR.json) | `301/321` (93.8%) | ─ |
+| ‼️ | [`zh_CN`](./zh_CN.json) | `301/321` (93.8%) | ─ |
 
 <sub>
 ✅ - Fully translated
@@ -45,11 +45,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 ### Missing keys:
 
-<details><summary><code>de_DE</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>de_DE</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -71,11 +72,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>es_ES</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>es_ES</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -97,11 +99,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>fr_FR</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>fr_FR</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -123,11 +126,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>hi_IN</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>hi_IN</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -149,11 +153,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>ja_JA</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>ja_JA</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -175,11 +180,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>pt_BR</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>pt_BR</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
@@ -201,11 +207,12 @@ This means to figure out which keys are untranslated, you will need to manually 
 
 <br></details>
 
-<details><summary><code>zh_CN</code> - 19 missing keys <i>(click to show)</i></summary><br>
+<details><summary><code>zh_CN</code> - 20 missing keys <i>(click to show)</i></summary><br>
 
 | Key | English text |
 | --- | ------------ |
 | `plugin_list_title` | `Plugin List` |
+| `plugin_list_no_plugins` | `No plugins are currently installed.` |
 | `plugin_list_permissions_header` | `Permissions:` |
 | `plugin_link_type_source` | `Repository` |
 | `plugin_link_type_other` | `Other / Homepage` |
