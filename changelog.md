@@ -72,6 +72,8 @@
   - Changed components:
     - BytmDialog now has the option `removeListenersOnDestroy` (true by default) to configure removing all event listeners when the dialog is destroyed
     - BytmDialog's private members and methods have been changed to protected for easier extension (when using TypeScript)
+  - Plugin definition changes:
+    - Some intents were added or moved around in their order. See the new values in `src/types.ts -> enum PluginIntent`
   - Added interface functions:
     - `setInnerHtml()` to set the innerHTML property of an element to a sanitized string using the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API) and the library [DOMPurify](https://github.com/cure53/DOMPurify)
     - `getAutoLikeData()` to return the current auto-like data (authenticated function)

@@ -158,18 +158,22 @@ declare global {
  * Never request more permissions than you need, as this is a bad practice and can lead to your plugin being rejected.
  */
 export enum PluginIntent {
-  /** Plugin has access to hidden config values */
-  HiddenConfigValues = 1,
+  /** Plugin can read the feature configuration */
+  ReadConfig = 1,
   /** Plugin can write to the feature configuration */
-  WriteFeatureConfig = 2,
+  WriteConfig = 2,
+  /** Plugin has access to hidden config values */
+  SeeHiddenConfigValues = 4,
   /** Plugin can write to the lyrics cache */
-  WriteLyricsCache = 4,
+  WriteLyricsCache = 8,
   /** Plugin can add new translations and overwrite existing ones */
-  WriteTranslations = 8,
+  WriteTranslations = 16,
   /** Plugin can create modal dialogs */
-  CreateModalDialogs = 16,
-  /** Plugin can read and write auto-like data */
-  ReadAndWriteAutoLikeData = 32,
+  CreateModalDialogs = 32,
+  /** Plugin can read auto-like data */
+  ReadAutoLikeData = 64,
+  /** Plugin can write to auto-like data */
+  WriteAutoLikeData = 128,
 }
 
 /** Result of a plugin registration */
