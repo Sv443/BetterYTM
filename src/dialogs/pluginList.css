@@ -1,18 +1,27 @@
+#bytm-plugin-list-dialog-bg {
+  --bytm-plugin-list-secondary-col: #c8c8c8;
+  --bytm-plugin-list-row-padding-ver: 12px;
+  --bytm-plugin-list-row-max-height: 130px;
+}
+
+#bytm-plugin-list-dialog-body {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
 .bytm-plugin-list-no-plugins {
   font-size: 1.7rem;
   text-align: center;
-  padding: 8px 0px;
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
 }
 
 .bytm-plugin-list-row {
-  --bytm-plugin-list-row-max-height: 120px;
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
-  padding: 8px 0px;
+  padding: var(--bytm-plugin-list-row-padding-ver) 0px;
   gap: 20px;
   max-height: var(--bytm-plugin-list-row-max-height);
 }
@@ -35,17 +44,34 @@
 .bytm-plugin-list-row-title {
   display: inline-flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
   font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 1px;
+}
+
+.bytm-plugin-list-row-version {
+  font-size: 1.25rem;
+  color: var(--bytm-plugin-list-secondary-col);
+  padding-left: 10px;
+  font-weight: normal;
 }
 
 .bytm-plugin-list-row-namespace {
-  font-size: 1rem;
+  color: var(--bytm-plugin-list-secondary-col);
+  font-size: 1.1rem;
   font-weight: 400;
-  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.bytm-plugin-list-row-desc {
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+  max-height: calc(var(--bytm-plugin-list-row-max-height) - 30px);
+  overflow-y: auto;
 }
 
 .bytm-plugin-list-row-links-list {

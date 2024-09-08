@@ -8,22 +8,19 @@ let pluginListDialog: BytmDialog | null = null;
 
 /** Creates and/or returns the import dialog */
 export async function getPluginListDialog() {
-  if(!pluginListDialog) {
-    pluginListDialog = new BytmDialog({
-      id: "welcome",
-      width: 900,
-      height: 1000,
-      verticalAlign: "top",
-      closeBtnEnabled: true,
-      closeOnBgClick: true,
-      closeOnEscPress: true,
-      destroyOnClose: true,
-      small: true,
-      renderHeader,
-      renderBody,
-    });
-  }
-  return pluginListDialog;
+  return pluginListDialog = pluginListDialog ?? new BytmDialog({
+    id: "plugin-list",
+    width: 800,
+    height: 600,
+    verticalAlign: "top",
+    closeBtnEnabled: true,
+    closeOnBgClick: true,
+    closeOnEscPress: true,
+    destroyOnClose: true,
+    small: true,
+    renderHeader,
+    renderBody,
+  });
 }
 
 async function renderHeader() {
@@ -61,14 +58,20 @@ async function renderBody() {
     const titleEl = document.createElement("div");
     titleEl.classList.add("bytm-plugin-list-row-title");
     titleEl.tabIndex = 0;
-    titleEl.textContent = titleEl.title = titleEl.ariaLabel = `${plugin.name} - ${plugin.version}`;
+    titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
     leftEl.appendChild(titleEl);
+
+    const verEl = document.createElement("span");
+    verEl.classList.add("bytm-plugin-list-row-version");
+    verEl.tabIndex = 0;
+    verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
+    titleEl.appendChild(verEl);
 
     const namespaceEl = document.createElement("div");
     namespaceEl.classList.add("bytm-plugin-list-row-namespace");
     namespaceEl.tabIndex = 0;
     namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
-    titleEl.appendChild(namespaceEl);
+    leftEl.appendChild(namespaceEl);
 
     const descEl = document.createElement("p");
     descEl.classList.add("bytm-plugin-list-row-desc");
