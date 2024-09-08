@@ -159,9 +159,9 @@ declare global {
  */
 export enum PluginIntent {
   /** Plugin can read the feature configuration */
-  ReadConfig = 1,
+  ReadFeatureConfig = 1,
   /** Plugin can write to the feature configuration */
-  WriteConfig = 2,
+  WriteFeatureConfig = 2,
   /** Plugin has access to hidden config values */
   SeeHiddenConfigValues = 4,
   /** Plugin can write to the lyrics cache */
@@ -235,7 +235,7 @@ export type PluginDef = {
       openuserjs?: string;
     };
   };
-  /** Intents (permissions) BYTM has to grant the plugin for it to work */
+  /** Intents (permissions) BYTM has to grant the plugin for it to work - use bitwise OR to combine multiple intents */
   intents?: number;
   /** Info about the plugin contributors */
   contributors?: Array<{
