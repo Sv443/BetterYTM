@@ -148,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "切り取る",
     "thumbnail_overlay_image_fit_full": "フルイメージ",
     "thumbnail_overlay_image_fit_stretch": "ストレッチ",
+
     "auto_like_channels_dialog_title": "自動的に好きなチャンネル",
     "auto_like_channels_dialog_desc": "ここでは、自動的に好きなチャンネルを設定しているかどうかを確認し、編集、有効化、無効化、削除することができます。\n手動でエントリを作成することもできますが、チャンネルページを訪れてそこでボタンをクリックする方が簡単です。",
     "auto_like": "自動的に好き",
@@ -167,19 +168,24 @@
     "auto_like_export_import_title": "自動的に好きなチャンネルをエクスポートまたはインポート",
     "auto_like_export_desc": "次のテキストをコピーして自動的に好きなチャンネルをエクスポートします。",
     "auto_like_import_desc": "インポートする自動的に好きなチャンネルを以下のフィールドに貼り付け、インポートボタンをクリックしてください：",
+
     "prompt_confirm": "確認",
     "prompt_close": "閉じる",
     "prompt_cancel": "キャンセル",
+
     "click_to_confirm_tooltip": "クリックして確認",
     "click_to_close_tooltip": "クリックして閉じる",
     "click_to_cancel_tooltip": "クリックしてキャンセル",
+
     "vote_label_likes-1": "%1 いいね",
     "vote_label_likes-n": "%1 いいね",
     "vote_label_dislikes-1": "%1 嫌い",
     "vote_label_dislikes-n": "%1 嫌い",
+
     "vote_ratio_disabled": "無効",
     "vote_ratio_green_red": "緑と赤",
     "vote_ratio_blue_gray": "青と灰色",
+
     "votes_format_short": "短縮",
     "votes_format_long": "完全な数",
 
@@ -188,9 +194,28 @@
 
     "unit_days-1": "日",
     "unit_days-n": "日",
+
     "color_lightness_darker": "暗い",
     "color_lightness_normal": "通常",
     "color_lightness_lighter": "明るい",
+
+    "plugin_list_title": "プラグインリスト",
+    "plugin_list_no_plugins": "現在インストールされているプラグインはありません。",
+    "plugin_list_permissions_header": "権限：",
+
+    "plugin_link_type_source": "リポジトリ",
+    "plugin_link_type_other": "その他 / ホームページ",
+    "plugin_link_type_bug": "バグを報告",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+    "plugin_intent_description_ReadFeatureConfig": "このプラグインは機能構成を読み取ることができます",
+    "plugin_intent_description_WriteFeatureConfig": "このプラグインは機能構成に書き込むことができます",
+    "plugin_intent_description_SeeHiddenConfigValues": "このプラグインは隠し構成値にアクセスできます",
+    "plugin_intent_description_WriteLyricsCache": "このプラグインは歌詞キャッシュに書き込むことができます",
+    "plugin_intent_description_WriteTranslations": "このプラグインは新しい翻訳を追加し、既存の翻訳を上書きできます",
+    "plugin_intent_description_CreateModalDialogs": "このプラグインはモーダルダイアログを作成できます",
+    "plugin_intent_description_ReadAutoLikeData": "このプラグインは自動的に好きなデータを読み取ることができます",
+    "plugin_intent_description_WriteAutoLikeData": "このプラグインは自動的に好きなデータに書き込むことができます",
 
     "plugin_validation_error_no_property": "タイプ '%2' のプロパティ '%1' がありません",
     "plugin_validation_error_invalid_property-1": "プロパティ '%1' の値 '%2' が無効です。例： %3",
@@ -203,6 +228,7 @@
     "feature_category_input": "入力",
     "feature_category_lyrics": "歌詞",
     "feature_category_integrations": "統合",
+    "feature_category_plugins": "プラグイン",
     "feature_category_general": "一般的な",
 
     "feature_desc_watermarkEnabled": "この構成メニューを開くサイトロゴの下に透かしを表示する",
@@ -237,6 +263,7 @@
     "feature_desc_setInitialTabVolume": "サイトを開いたときに音量レベルを特定の値に設定する",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "この機能は「タブ間で音量を共有する」機能と互換性がなく、共有音量機能を使用している間は無視されます！",
     "feature_desc_initialTabVolumeLevel": "サイトを開いたときに音量レベルを設定する値",
+  
     "feature_desc_lyricsQueueButton": "リスト内の各曲にボタンを追加して、歌詞ページを開く",
     "feature_desc_deleteFromQueueButton": "リスト内の各曲にボタンを追加して、すばやく削除する",
     "feature_desc_listButtonsPlacement": "リストボタンの配置場所",
@@ -300,6 +327,11 @@
     "feature_helptext_themeSongIntegration": "ThemeSong 拡張機能がインストールされている場合、この機能を有効にすると、サイトのスタイリングに問題が発生するのを防ぐためにいくつかの修正が行われます。\n\nこの機能は拡張機能がインストールされていない場合には効果がありませんので、その場合は有効にしたままにしておくことができます。",
     "feature_desc_themeSongLightness": "現在の ThemeSong テーマから派生したアクセントカラーの明るさ",
     "feature_helptext_themeSongLightness": "ThemeSong 拡張機能の設定に応じて、この機能を使用して、現在のテーマから派生したアクセントカラーの明るさを調整できます。\n\nThemeSong 拡張機能がインストールされていない場合、この機能は効果がありません。",
+    "feature_desc_openPluginList": "インストールされているプラグインのリストを開く",
+    "feature_btn_openPluginList": "リストを開く",
+    "feature_btn_openPluginList_running": "開いています...",
+    "feature_desc_initTimeout": "機能が初期化されるまでの待機時間（エラー状態と見なされる前に）",
+    "feature_helptext_initTimeout": "これは、機能が初期化されるまでの待機時間（秒単位）です。\nこれはスクリプトの動作に大きな影響を与えませんが、プラグインの初期化に時間がかかる場合は、この値を増やしてみてください。",
 
     "feature_desc_locale": "言語",
     "feature_desc_localeFallback": "翻訳が欠落している場合に英語をフォールバック言語として使用する（翻訳を提供している場合は無効にする）",
@@ -310,8 +342,6 @@
     "feature_btn_checkVersionNow_running": "チェック中...",
     "feature_desc_logLevel": "ログレベル",
     "feature_helptext_logLevel": "これを変更するのは、問題が発生した結果としてデバッグ目的でのみ必要です。\n問題が発生した場合にのみ、ここでログレベルを増やし、ブラウザの JavaScript コンソールを開いて（通常は Ctrl + Shift + K）そのログのスクリーンショットを GitHub の課題に添付してください。",
-    "feature_desc_initTimeout": "機能が初期化されるまでの待機時間（エラー状態と見なされる前に）",
-    "feature_helptext_initTimeout": "これは、機能が初期化されるまでの待機時間（秒単位）です。\nこれはスクリプトの動作に大きな影響を与えませんが、プラグインの初期化に時間がかかる場合は、この値を増やしてみてください。",
     "feature_desc_toastDuration": "カスタムトースト通知を表示する秒数 - 0 で完全に無効にする",
     "feature_desc_showToastOnGenericError": "一般的なエラーが発生したときに通知を表示する？",
     "feature_helptext_showToastOnGenericError": "スクリプトでエラーが発生し、それが一部の機能の正常な動作を妨げる場合、通知が表示され、そのことを通知します。\n問題が頻繁に発生する場合は、JavaScript コンソールからエラーをコピーして（通常は F12 メニューにあります）GitHub で問題を開いてください。",

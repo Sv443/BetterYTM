@@ -148,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "Cortar se necessário",
     "thumbnail_overlay_image_fit_full": "Mostrar a imagem completa",
     "thumbnail_overlay_image_fit_stretch": "Esticar para ajustar",
+
     "auto_like_channels_dialog_title": "Canais auto-curtidos",
     "auto_like_channels_dialog_desc": "Aqui você pode ver quais canais você definiu para auto-curtir e pode editá-los, ativar, desativar e removê-los.\nVocê também pode criar manualmente entradas, embora seja mais fácil apenas visitar a página do canal e clicar no botão lá.",
     "auto_like": "Auto-curtir",
@@ -167,19 +168,24 @@
     "auto_like_export_import_title": "Exportar ou Importar Canais Auto-curtidos",
     "auto_like_export_desc": "Copie o texto a seguir para exportar seus canais auto-curtidos.",
     "auto_like_import_desc": "Cole os canais auto-curtidos que você deseja importar no campo abaixo e clique no botão de importação:",
+
     "prompt_confirm": "Confirmar",
     "prompt_close": "Fechar",
     "prompt_cancel": "Cancelar",
+
     "click_to_confirm_tooltip": "Clique para confirmar",
     "click_to_close_tooltip": "Clique para fechar",
     "click_to_cancel_tooltip": "Clique para cancelar",
+
     "vote_label_likes-1": "%1 curtida",
     "vote_label_likes-n": "%1 curtidas",
     "vote_label_dislikes-1": "%1 descurtida",
     "vote_label_dislikes-n": "%1 descurtidas",
+
     "vote_ratio_disabled": "Desativado",
     "vote_ratio_green_red": "Verde e vermelho",
     "vote_ratio_blue_gray": "Azul e cinza",
+
     "votes_format_short": "Abreviado",
     "votes_format_long": "Número completo",
 
@@ -188,9 +194,29 @@
 
     "unit_days-1": "dia",
     "unit_days-n": "dias",
+
     "color_lightness_darker": "Mais escuro",
     "color_lightness_normal": "Normal",
     "color_lightness_lighter": "Mais claro",
+
+    "plugin_list_title": "Lista de plugins",
+    "plugin_list_no_plugins": "Nenhum plugin está atualmente instalado.",
+    "plugin_list_permissions_header": "Permissões:",
+
+    "plugin_link_type_source": "Repositório",
+    "plugin_link_type_other": "Outro / Página inicial",
+    "plugin_link_type_bug": "Reportar um bug",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+
+    "plugin_intent_description_ReadFeatureConfig": "Este plugin pode ler a configuração do recurso",
+    "plugin_intent_description_WriteFeatureConfig": "Este plugin pode escrever na configuração do recurso",
+    "plugin_intent_description_SeeHiddenConfigValues": "Este plugin tem acesso a valores de configuração ocultos",
+    "plugin_intent_description_WriteLyricsCache": "Este plugin pode escrever no cache de letras",
+    "plugin_intent_description_WriteTranslations": "Este plugin pode adicionar novas traduções e sobrescrever as existentes",
+    "plugin_intent_description_CreateModalDialogs": "Este plugin pode criar diálogos modais",
+    "plugin_intent_description_ReadAutoLikeData": "Este plugin pode ler dados de auto-curtir",
+    "plugin_intent_description_WriteAutoLikeData": "Este plugin pode escrever em dados de auto-curtir",
 
     "plugin_validation_error_no_property": "Nenhuma propriedade '%1' com o tipo '%2'",
     "plugin_validation_error_invalid_property-1": "Propriedade '%1' com valor '%2' é inválida. Valor de exemplo: %3",
@@ -203,6 +229,7 @@
     "feature_category_input": "Entrada",
     "feature_category_lyrics": "Letras",
     "feature_category_integrations": "Integrações",
+    "feature_category_plugins": "Plugins",
     "feature_category_general": "Geral",
 
     "feature_desc_watermarkEnabled": "Mostrar uma marca d'água sob o logotipo do site que abre este menu de configuração",
@@ -237,6 +264,7 @@
     "feature_desc_setInitialTabVolume": "Definir o nível de volume para um valor específico ao abrir o site",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Este recurso é incompatível com o recurso \"Volume compartilhado entre guias\" e será ignorado ao usar o recurso de volume compartilhado!",
     "feature_desc_initialTabVolumeLevel": "O valor para definir o nível de volume ao abrir o site",
+  
     "feature_desc_lyricsQueueButton": "Adicionar um botão a cada música em uma lista para abrir sua página de letras",
     "feature_desc_deleteFromQueueButton": "Adicionar um botão a cada música em uma lista para removê-la rapidamente",
     "feature_desc_listButtonsPlacement": "Onde os botões da lista devem aparecer?",
@@ -300,6 +328,11 @@
     "feature_helptext_themeSongIntegration": "Se a extensão ThemeSong estiver instalada, este recurso fará algumas correções no layout do site para evitar problemas que possam ocorrer.\n\nEste recurso não terá efeito se a extensão não estiver instalada e pode ser deixado ativado nesse caso.",
     "feature_desc_themeSongLightness": "Quão claro os acentos derivados do tema atual do ThemeSong devem ser",
     "feature_helptext_themeSongLightness": "Dependendo das configurações que você escolheu para a extensão ThemeSong, este recurso permite ajustar a claridade das cores de destaque que são derivadas do tema atual.\n\nEste recurso não terá efeito se a extensão ThemeSong não estiver instalada.",
+    "feature_desc_openPluginList": "Abrir a lista de plugins que você instalou",
+    "feature_btn_openPluginList": "Abrir lista",
+    "feature_btn_openPluginList_running": "Abrindo...",
+    "feature_desc_initTimeout": "Quantos segundos esperar para que os recursos se inicializem antes de considerá-los provavelmente em um estado de erro",
+    "feature_helptext_initTimeout": "Este é o tempo em segundos que o script esperará para que os recursos se inicializem antes de considerá-los provavelmente em um estado de erro.\nIsso não afetará significativamente o comportamento do script, mas se um de seus plugins não puder se inicializar a tempo, você deve tentar aumentar esse valor.",
 
     "feature_desc_locale": "Idioma",
     "feature_desc_localeFallback": "Utilizar o inglês para traduções em falta (desativar se contribuir para traduções)",
@@ -310,8 +343,6 @@
     "feature_btn_checkVersionNow_running": "Verificando...",
     "feature_desc_logLevel": "Quanta informação registrar no console",
     "feature_helptext_logLevel": "Alterar isso é realmente necessário apenas para fins de depuração como resultado de experimentar um problema.\nSe você tiver um, você pode aumentar o nível de log aqui, abrir o console JavaScript do seu navegador (geralmente com Ctrl + Shift + K) e anexar capturas de tela desse log em um problema do GitHub.",
-    "feature_desc_initTimeout": "Quantos segundos esperar para que os recursos se inicializem antes de considerá-los provavelmente em um estado de erro",
-    "feature_helptext_initTimeout": "Este é o tempo em segundos que o script esperará para que os recursos se inicializem antes de considerá-los provavelmente em um estado de erro.\nIsso não afetará significativamente o comportamento do script, mas se um de seus plugins não puder se inicializar a tempo, você deve tentar aumentar esse valor.",
     "feature_desc_toastDuration": "Por quantos segundos as notificações personalizadas devem ser exibidas - 0 para desativá-las completamente",
     "feature_desc_showToastOnGenericError": "Mostrar uma notificação quando ocorrer um erro genérico?",
     "feature_helptext_showToastOnGenericError": "Se ocorrer um erro no script que impeça partes dele de funcionar corretamente, uma notificação será exibida para informá-lo sobre isso.\nSe você encontrar um problema com frequência, copie o erro do console JavaScript (geralmente no menu F12) e abra um problema no GitHub.",

@@ -148,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "Recortar si es necesario",
     "thumbnail_overlay_image_fit_full": "Mostrar la imagen completa",
     "thumbnail_overlay_image_fit_stretch": "Estirar para ajustar",
+
     "auto_like_channels_dialog_title": "Canales con me gusta automático",
     "auto_like_channels_dialog_desc": "Aquí puedes ver qué canales tienes configurados para dar me gusta automáticamente y puedes editar, habilitar, deshabilitar y eliminarlos.\nTambién puedes crear manualmente entradas, aunque es más fácil simplemente visitar la página del canal y hacer clic en el botón allí.",
     "auto_like": "Me gusta automático",
@@ -167,19 +168,24 @@
     "auto_like_export_import_title": "Exportar o importar canales con me gusta automático",
     "auto_like_export_desc": "Copia el siguiente texto para exportar tus canales con me gusta automático.",
     "auto_like_import_desc": "Pega los canales con me gusta automático que deseas importar en el campo a continuación, luego haz clic en el botón de importación:",
+
     "prompt_confirm": "Confirmar",
     "prompt_close": "Cerrar",
     "prompt_cancel": "Cancelar",
+
     "click_to_confirm_tooltip": "Haga clic para confirmar",
     "click_to_close_tooltip": "Haga clic para cerrar",
     "click_to_cancel_tooltip": "Haga clic para cancelar",
+
     "vote_label_likes-1": "%1 me gusta",
     "vote_label_likes-n": "%1 me gusta",
     "vote_label_dislikes-1": "%1 no me gusta",
     "vote_label_dislikes-n": "%1 no me gusta",
+
     "vote_ratio_disabled": "Deshabilitado",
     "vote_ratio_green_red": "Verde y rojo",
     "vote_ratio_blue_gray": "Azul y gris",
+
     "votes_format_short": "Corto",
     "votes_format_long": "Número completo",
 
@@ -188,9 +194,29 @@
 
     "unit_days-1": "día",
     "unit_days-n": "días",
+
     "color_lightness_darker": "Más oscuro",
     "color_lightness_normal": "Normal",
     "color_lightness_lighter": "Más claro",
+
+    "plugin_list_title": "Lista de plugins",
+    "plugin_list_no_plugins": "Actualmente no hay ningún plugin instalado.",
+    "plugin_list_permissions_header": "Permisos:",
+
+    "plugin_link_type_source": "Repositorio",
+    "plugin_link_type_other": "Otro / Página de inicio",
+    "plugin_link_type_bug": "Informar de un error",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+
+    "plugin_intent_description_ReadFeatureConfig": "Este plugin puede leer la configuración de la función",
+    "plugin_intent_description_WriteFeatureConfig": "Este plugin puede escribir en la configuración de la función",
+    "plugin_intent_description_SeeHiddenConfigValues": "Este plugin tiene acceso a valores de configuración ocultos",
+    "plugin_intent_description_WriteLyricsCache": "Este plugin puede escribir en la caché de letras",
+    "plugin_intent_description_WriteTranslations": "Este plugin puede agregar nuevas traducciones y sobrescribir las existentes",
+    "plugin_intent_description_CreateModalDialogs": "Este plugin puede crear diálogos modales",
+    "plugin_intent_description_ReadAutoLikeData": "Este plugin puede leer datos de me gusta automático",
+    "plugin_intent_description_WriteAutoLikeData": "Este plugin puede escribir en datos de me gusta automático",
 
     "plugin_validation_error_no_property": "No hay ninguna propiedad '%1' con el tipo '%2'",
     "plugin_validation_error_invalid_property-1": "La propiedad '%1' con el valor '%2' no es válida. Valor de ejemplo: %3",
@@ -203,6 +229,7 @@
     "feature_category_input": "Entrada",
     "feature_category_lyrics": "Letras",
     "feature_category_integrations": "Integraciones",
+    "feature_category_plugins": "Plugins",
     "feature_category_general": "General",
 
     "feature_desc_watermarkEnabled": "Mostrar una marca de agua debajo del logotipo del sitio que abre este menú de configuración",
@@ -237,6 +264,7 @@
     "feature_desc_setInitialTabVolume": "Establece el nivel de volumen en un valor específico una vez al abrir el sitio",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "Esta función es incompatible con la función \"Volumen compartido entre pestañas\" y se ignorará mientras se use la función de volumen compartido!",
     "feature_desc_initialTabVolumeLevel": "El valor para establecer el nivel de volumen al abrir el sitio",
+  
     "feature_desc_lyricsQueueButton": "Agregue un botón a cada canción en una lista para abrir su página de letras",
     "feature_desc_deleteFromQueueButton": "Agregue un botón a cada canción en una lista para eliminarla rápidamente",
     "feature_desc_listButtonsPlacement": "¿Dónde deberían aparecer los botones de la lista?",
@@ -300,6 +328,11 @@
     "feature_helptext_themeSongIntegration": "Si la extensión ThemeSong está instalada pero esta función está desactivada (o viceversa), es posible que notes un estilo roto en el sitio.\n\n¡Asegúrate siempre de que esta función refleje si la extensión está instalada o no!",
     "feature_desc_themeSongLightness": "¿Qué tan claro deben ser los colores de acento derivados del tema actual de ThemeSong?",
     "feature_helptext_themeSongLightness": "Dependiendo de la configuración que hayas elegido para la extensión ThemeSong, esta función te permite ajustar la claridad de los colores de acento que se derivan del tema actual.\n\nEsta función no tendrá efecto si la extensión ThemeSong no está instalada.",
+    "feature_desc_openPluginList": "Abrir la lista de plugins que tienes instalados",
+    "feature_btn_openPluginList": "Abrir lista",
+    "feature_btn_openPluginList_running": "Abriendo...",
+    "feature_desc_initTimeout": "Cuántos segundos esperar a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error",
+    "feature_helptext_initTimeout": "Este es el tiempo en segundos que el script esperará a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error.\nEsto no afectará significativamente el comportamiento del script, pero si uno de sus complementos no puede inicializarse a tiempo, debería intentar aumentar este valor.",
 
     "feature_desc_locale": "Idioma",
     "feature_desc_localeFallback": "Utilizar el inglés para las traducciones que faltan (desactivar si contribuye a las traducciones)",
@@ -310,8 +343,6 @@
     "feature_btn_checkVersionNow_running": "Comprobando...",
     "feature_desc_logLevel": "Cuánta información registrar en la consola",
     "feature_helptext_logLevel": "Cambiar esto solo es necesario para fines de depuración como resultado de experimentar un problema.\nSi tiene uno, puede aumentar el nivel de registro aquí, abrir la consola de JavaScript de su navegador (generalmente con Ctrl + Shift + K) y adjuntar capturas de pantalla de ese registro en un problema de GitHub.",
-    "feature_desc_initTimeout": "Cuántos segundos esperar a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error",
-    "feature_helptext_initTimeout": "Este es el tiempo en segundos que el script esperará a que se inicialicen las funciones antes de considerarlas probablemente en un estado de error.\nEsto no afectará significativamente el comportamiento del script, pero si uno de sus complementos no puede inicializarse a tiempo, debería intentar aumentar este valor.",
     "feature_desc_toastDuration": "Duración en segundos durante cuánto tiempo se deben mostrar las notificaciones personalizadas - 0 para deshabilitarlas por completo",
     "feature_desc_showToastOnGenericError": "¿Mostrar una notificación cuando se produce un error genérico?",
     "feature_helptext_showToastOnGenericError": "Si se produce un error en el script que impide que partes de él funcionen correctamente, se mostrará una notificación para informarle al respecto.\nSi encuentra un problema con frecuencia, copie el error de la consola de JavaScript (generalmente en el menú F12) y abra un problema en GitHub.",
