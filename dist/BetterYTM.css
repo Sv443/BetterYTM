@@ -930,6 +930,12 @@ body .bytm-ripple.slower {
   font-size: 1.45rem;
 }
 
+.bytm-plugin-list-no-plugins {
+  font-size: 1.7rem;
+  text-align: center;
+  padding: 8px 0px;
+}
+
 .bytm-plugin-list-row {
   --bytm-plugin-list-row-max-height: 120px;
 
