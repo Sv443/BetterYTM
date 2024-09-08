@@ -61,6 +61,7 @@
   - Made `getThumbnailUrl()` and `getBestThumbnailUrl()` use the domain `youtube.com` to prevent cross-origin issues
 - **Plugin Changes:**  
   <sup>See the [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for the latest documentation of the plugin interface</sup>
+  - Changed the way plugins are registered by making the `registerPlugin()` function the sole argument passed by the `bytm:registerPlugin` event. Call this function synchronously to register your plugin.
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
@@ -98,7 +99,7 @@
       - `bytm:dialogClosed:id` - emitted only when the dialog with the given ID is closed and gets passed the instance
       - `bytm:siteEvent:pathChanged` - emitted whenever the URL path (`location.pathname`) changes
     - Now the event `bytm:siteEvent:fullscreenToggled` is only emitted once per fullscreen change
-    - Renamed event `bytm:initPlugins` to `bytm:registerPlugins` to be more consistent
+    - Renamed event `bytm:initPlugins` to `bytm:registerPlugin` to be more consistent
     - Changed `event` property returned by `registerPlugin()` from nanoevents Emitter to NanoEmitter instance (see [the UserUtils docs](https://github.com/Sv443-Network/UserUtils#nanoemitter))  
       In practice this changes nothing, but it benefits from plugins having access to the additional methods `once()` for immediately unsubscribing from an event after it was emitted once and `unsubscribeAll()` to remove all event listeners.
 

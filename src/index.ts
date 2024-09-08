@@ -108,7 +108,13 @@ async function init() {
     await initTranslations(features.locale ?? "en_US");
     setLocale(features.locale ?? "en_US");
 
-    emitInterface("bytm:registerPlugins");
+    try {
+      initPlugins();
+    }
+    catch(err) {
+      error("Plugin loading error:", err);
+      emitInterface("bytm:fatalError", "Error while loading plugins");
+    }
 
     if(features.disableBeforeUnloadPopup && domain === "ytm")
       disableBeforeUnload();
@@ -266,14 +272,6 @@ async function onDomLoad() {
     }
 
     emitInterface("bytm:featureInitStarted");
-
-    try {
-      initPlugins();
-    }
-    catch(err) {
-      error("Plugin loading error:", err);
-      emitInterface("bytm:fatalError", "Error while loading plugins");
-    }
 
     const initStartTs = Date.now();
 

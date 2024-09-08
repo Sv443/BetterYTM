@@ -30,11 +30,8 @@ export type InterfaceEvents = {
   "bytm:lyricsCacheReady": undefined;
   /** Emitted whenever the locale is changed - if a plugin changed the locale, the plugin ID is provided as well */
   "bytm:setLocale": { locale: TrLocale, pluginId?: string };
-  /**
-   * When this is emitted, this is your call to register your plugin using `unsafeWindow.BYTM.registerPlugin()`  
-   * To be safe, you should wait for this event before doing anything else in your plugin script.
-   */
-  "bytm:registerPlugins": undefined;
+  /** When this is emitted, this is your call to register your plugin using the function passed as the sole argument */
+  "bytm:registerPlugin": (pluginDef: PluginDef) => PluginRegisterResult;
   /**
    * Emitted whenever the SelectorObserver instances have been initialized and can be used to listen for DOM changes and wait for elements to be available.  
    * Use `unsafeWindow.BYTM.addObserverListener(name, selector, opts)` to add custom listener functions to the observers (see contributing guide).
@@ -46,11 +43,6 @@ export type InterfaceEvents = {
    * As soon as this is emitted, you cannot register any more plugins.
    */
   "bytm:featureInitStarted": undefined;
-  /**
-   * Emitted whenever all plugins have been registered and are allowed to call token-authenticated functions.  
-   * All parts of your plugin that require those functions should wait for this event to be emitted.
-   */
-  "bytm:pluginsRegistered": undefined;
   /** Emitted when a feature has been initialized. The data is the feature's key as seen in `onDomLoad()` of `src/index.ts` */
   "bytm:featureInitialized": string;
   /** Emitted when BYTM has finished initializing all features or has reached the init timeout and has entered an idle state. */
@@ -89,8 +81,7 @@ export type InterfaceEvents = {
 
 /** Array of all events emittable on the interface (excluding plugin-specific, private events) */
 export const allInterfaceEvents = [
-  "bytm:registerPlugins",
-  "bytm:pluginsRegistered",
+  "bytm:registerPlugin",
   "bytm:ready",
   "bytm:featureInitfeatureInitStarted",
   "bytm:fatalError",
@@ -112,7 +103,6 @@ export const allInterfaceEvents = [
  */
 const globalFuncs: InterfaceFunctions = {
   // meta:
-  registerPlugin,
   /*🔒*/ getPluginInfo,
 
   // bytm-specific:
@@ -231,9 +221,6 @@ export function emitInterface<
 
 //#region register plugins
 
-/** Map of plugin ID and plugins that are queued up for registration */
-const queuedPlugins = new Map<string, PluginItem>();
-
 /** Map of plugin ID and all registered plugins */
 const registeredPlugins = new Map<string, PluginItem>();
 
@@ -243,6 +230,32 @@ const registeredPluginTokens = new Map<string, string>();
 /** Initializes plugins that have been registered already. Needs to be run after `bytm:ready`! */
 export function initPlugins() {
   // TODO(v1.3): check perms and ask user for initial activation
+
+  /** Map of plugin ID and plugins that are queued up for registration */
+  const queuedPlugins = new Map<string, PluginItem>();
+
+  const registerPlugin = (def: PluginDef): PluginRegisterResult => {
+    const validationErrors = validatePluginDef(def);
+    if(validationErrors)
+      throw new Error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+
+    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
+    const token = randomId(32, 36);
+
+    queuedPlugins.set(getPluginKey(def), {
+      def: def,
+      events,
+    });
+    registeredPluginTokens.set(getPluginKey(def), token);
+
+    return {
+      info: getPluginInfo(token, def)!,
+      events,
+      token,
+    };
+  };
+
+  emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
 
   for(const [key, { def, events }] of queuedPlugins) {
     try {
@@ -255,8 +268,6 @@ export function initPlugins() {
       error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
     }
   }
-
-  emitInterface("bytm:pluginsRegistered");
 }
 
 /** Returns the key for a given plugin definition */
@@ -377,31 +388,6 @@ function validatePluginDef(pluginDef: Partial<PluginDef>) {
     addInvalidPropErr("plugin.version", plugin.version, ["0.0.1", "2.5.21-rc.1"]);
 
   return errors.length > 0 ? errors : undefined;
-}
-
-/** Registers a plugin on the BYTM interface */
-export function registerPlugin(def: PluginDef): PluginRegisterResult {
-  const validationErrors = validatePluginDef(def);
-  if(validationErrors)
-    throw new Error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
-
-  const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
-  const token = randomId(32, 36);
-
-  const { plugin: { name } } = def;
-  queuedPlugins.set(getPluginKey(def), {
-    def: def,
-    events,
-  });
-  registeredPluginTokens.set(getPluginKey(def), token);
-
-  info(`Registered plugin: ${name}`, LogLevel.Info);
-
-  return {
-    info: getPluginInfo(token, def)!,
-    events,
-    token,
-  };
 }
 
 /** Checks whether the passed token is a valid auth token for any registered plugin and returns the plugin ID, else returns undefined */
