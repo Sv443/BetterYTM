@@ -62,6 +62,7 @@
 - **Plugin Changes:**  
   <sup>See the [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for the latest documentation of the plugin interface</sup>
   - Changed the way plugins are registered by making the `registerPlugin()` function the sole argument passed by the `bytm:registerPlugin` event. Call this function synchronously to register your plugin.
+  - Plugins will now load at an earlier point in BetterYTM's startup sequence. This means that plugins can now be initialized before the script's features are fully initialized and the DOM is ready. Use site events to wait for the right moment to interact with the page.
   - Added new components:
     -  `createLongBtn()` to create a button with an icon and text (works either as normal or as a toggle button)  
       The design follows that of the subscribe button on YTM's channel pages, but the consistent class names make it easy to style it differently.
