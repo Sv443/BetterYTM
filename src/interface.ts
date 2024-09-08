@@ -10,7 +10,7 @@ import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type Plugi
 import { BytmDialog, ExImDialog, MarkdownDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
-const { getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
+const { autoPlural, getUnsafeWindow, randomId, NanoEmitter } = UserUtils;
 
 //#region interface globals
 
@@ -269,7 +269,8 @@ export function initPlugins() {
     }
   }
 
-  log("Registered all plugins:", registeredPlugins);
+  if(registeredPlugins.size > 0)
+    log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
 }
 
 /** Returns the key for a given plugin definition */
