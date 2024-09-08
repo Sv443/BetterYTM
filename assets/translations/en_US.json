@@ -199,6 +199,24 @@
     "color_lightness_normal": "Normal",
     "color_lightness_lighter": "Lighter",
 
+    "plugin_list_title": "Plugin List",
+    "plugin_list_permissions_header": "Permissions:",
+
+    "plugin_link_type_source": "Repository",
+    "plugin_link_type_other": "Other / Homepage",
+    "plugin_link_type_bug": "Report a bug",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+
+    "plugin_intent_description_ReadFeatureConfig": "This plugin can read the feature configuration",
+    "plugin_intent_description_WriteFeatureConfig": "This plugin can write to the feature configuration",
+    "plugin_intent_description_SeeHiddenConfigValues": "This plugin has access to hidden config values",
+    "plugin_intent_description_WriteLyricsCache": "This plugin can write to the lyrics cache",
+    "plugin_intent_description_WriteTranslations": "This plugin can add new translations and overwrite existing ones",
+    "plugin_intent_description_CreateModalDialogs": "This plugin can create modal dialogs",
+    "plugin_intent_description_ReadAutoLikeData": "This plugin can read auto-like data",
+    "plugin_intent_description_WriteAutoLikeData": "This plugin can write to auto-like data",
+
     "plugin_validation_error_no_property": "No property '%1' with type '%2'",
     "plugin_validation_error_invalid_property-1": "Property '%1' with value '%2' is invalid. Example value: %3",
     "plugin_validation_error_invalid_property-n": "Property '%1' with value '%2' is invalid. Example values: %3",
@@ -210,6 +228,7 @@
     "feature_category_input": "Input",
     "feature_category_lyrics": "Lyrics",
     "feature_category_integrations": "Integrations",
+    "feature_category_plugins": "Plugins",
     "feature_category_general": "General",
 
     "feature_desc_watermarkEnabled": "Show a watermark under the site logo that opens this config menu",
@@ -309,6 +328,12 @@
     "feature_desc_themeSongLightness": "How light the accent colors should be that are derived from the current ThemeSong theme",
     "feature_helptext_themeSongLightness": "Depending on the settings you chose for the ThemeSong extension, this feature allows you to adjust the lightness of the accent colors that are derived from the current theme.\n\nThis feature will have no effect if the ThemeSong extension is not installed.",
 
+    "feature_desc_openPluginList": "Open the list of plugins you have installed",
+    "feature_btn_openPluginList": "Open list",
+    "feature_btn_openPluginList_running": "Opening...",
+    "feature_desc_initTimeout": "How many seconds to wait for features to initialize before considering them to likely be in an errored state",
+    "feature_helptext_initTimeout": "This is the amount of time in seconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
+
     "feature_desc_locale": "Language",
     "feature_desc_localeFallback": "Use English as a fallback for missing translations (disable if you are contributing translations)",
     "feature_desc_versionCheck": "Check for updates every 24 hours",
@@ -318,8 +343,6 @@
     "feature_btn_checkVersionNow_running": "Checking...",
     "feature_desc_logLevel": "How much information to log to the console",
     "feature_helptext_logLevel": "Changing this is really only needed for debugging purposes as a result of experiencing a problem.\nShould you have one, you can increase the log level here, open your browser's JavaScript console (usually with Ctrl + Shift + K) and attach screenshots of that log in a GitHub issue.",
-    "feature_desc_initTimeout": "How many seconds to wait for features to initialize before considering them to likely be in an errored state",
-    "feature_helptext_initTimeout": "This is the amount of time in seconds that the script will wait for features to initialize before considering them to likely be in an errored state.\nThis will not affect the script's behavior in a significant way, but if one of your plugins can't initialize in time, you should try increasing this value.",
     "feature_desc_toastDuration": "For how many seconds custom toast notifications should be shown - 0 to disable them entirely",
     "feature_desc_showToastOnGenericError": "Show a notification when an error occurs?",
     "feature_helptext_showToastOnGenericError": "Should an error occur in the script that prevents parts of it from working correctly, a notification will be shown to inform you about it.\nIf you encounter a problem often, please copy the error from the JavaScript console (usually in the F12 menu) and please open an issue on GitHub.",

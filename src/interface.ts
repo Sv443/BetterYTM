@@ -222,7 +222,7 @@ export function emitInterface<
 //#region register plugins
 
 /** Map of plugin ID and all registered plugins */
-const registeredPlugins = new Map<string, PluginItem>();
+export const registeredPlugins = new Map<string, PluginItem>();
 
 /** Map of plugin ID to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
@@ -231,43 +231,40 @@ const registeredPluginTokens = new Map<string, string>();
 export function initPlugins() {
   // TODO(v1.3): check perms and ask user for initial activation
 
-  /** Map of plugin ID and plugins that are queued up for registration */
-  const queuedPlugins = new Map<string, PluginItem>();
-
   const registerPlugin = (def: PluginDef): PluginRegisterResult => {
-    const validationErrors = validatePluginDef(def);
-    if(validationErrors)
-      throw new Error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
+    try {
+      if(registeredPlugins.has(getPluginKey(def)))
+        throw new Error(`Failed to register plugin '${getPluginKey(def)}': Plugin with the same name and namespace is already registered`);
 
-    const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
-    const token = randomId(32, 36);
+      const validationErrors = validatePluginDef(def);
+      if(validationErrors)
+        throw new Error(`Failed to register plugin${def?.plugin?.name ? ` '${def?.plugin?.name}'` : ""} with invalid definition:\n- ${validationErrors.join("\n- ")}`);
 
-    queuedPlugins.set(getPluginKey(def), {
-      def: def,
-      events,
-    });
-    registeredPluginTokens.set(getPluginKey(def), token);
+      const events = new NanoEmitter<PluginEventMap>({ publicEmit: true });
+      const token = randomId(32, 36, true);
 
-    return {
-      info: getPluginInfo(token, def)!,
-      events,
-      token,
-    };
+      registeredPlugins.set(getPluginKey(def), {
+        def: def,
+        events,
+      });
+      registeredPluginTokens.set(getPluginKey(def), token);
+
+      info(`Successfully registered plugin '${getPluginKey(def)}'`);
+      setTimeout(() => emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!), 1);
+
+      return {
+        info: getPluginInfo(token, def)!,
+        events,
+        token,
+      };
+    }
+    catch(err) {
+      error(`Failed to register plugin '${getPluginKey(def)}':`, err);
+      throw err;
+    }
   };
 
   emitInterface("bytm:registerPlugin", (def: PluginDef) => registerPlugin(def));
-
-  for(const [key, { def, events }] of queuedPlugins) {
-    try {
-      registeredPlugins.set(key, { def, events });
-      queuedPlugins.delete(key);
-      emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
-      info(`Initialized plugin '${getPluginKey(def)}'`);
-    }
-    catch(err) {
-      error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
-    }
-  }
 
   if(registeredPlugins.size > 0)
     log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);

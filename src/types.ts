@@ -379,6 +379,7 @@ export type FeatureCategory =
   | "input"
   | "lyrics"
   | "integrations"
+  | "plugins"
   | "general";
 
 type SelectOption = {
@@ -610,6 +611,12 @@ export interface FeatureConfig {
   /** Lightness of the color used when ThemeSong is enabled */
   themeSongLightness: ColorLightness;
 
+  //#region plugins
+  /** Button that opens the plugin list dialog */
+  openPluginList: undefined;
+  /** Amount of seconds until the feature initialization times out */
+  initTimeout: number;
+
   //#region misc
   /** The locale to use for translations */
   locale: TrLocale;
@@ -621,8 +628,6 @@ export interface FeatureConfig {
   checkVersionNow: undefined;
   /** The console log level - 0 = Debug, 1 = Info */
   logLevel: LogLevel;
-  /** Amount of seconds until the feature initialization times out */
-  initTimeout: number;
   /** Amount of seconds to show BYTM's toasts for */
   toastDuration: number;
   /** Whether to show a toast on generic errors */

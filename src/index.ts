@@ -6,7 +6,7 @@ import { dbg, error, getDomain, info, getSessionId, log, setLogLevel, initTransl
 import { initSiteEvents } from "./siteEvents.js";
 import { emitInterface, initInterface, initPlugins } from "./interface.js";
 import { initObservers, addSelectorListener, globservers } from "./observers.js";
-import { getWelcomeDialog, showPrompt } from "./dialogs/index.js";
+import { getPluginListDialog, showPrompt } from "./dialogs/index.js";
 import type { FeatureConfig } from "./types.js";
 import {
   // layout
@@ -164,7 +164,7 @@ async function onDomLoad() {
 
     if(typeof await GM.getValue("bytm-installed") !== "string") {
       // open welcome menu with language selector
-      const dlg = await getWelcomeDialog();
+      const dlg = await getPluginListDialog();
       dlg.on("close", () => GM.setValue("bytm-installed", JSON.stringify({ timestamp: Date.now(), version: scriptInfo.version })));
       info("Showing welcome menu");
       await dlg.open();
@@ -339,6 +339,8 @@ function initGlobalCssVars() {
 function registerDevCommands() {
   if(mode !== "development")
     return;
+
+  GM.registerMenuCommand("Open plugin list", () => getPluginListDialog().then(dlg => dlg.open()));
 
   GM.registerMenuCommand("Reset config", async () => {
     if(confirm("Reset the configuration to its default values?\nThis will automatically reload the page.")) {

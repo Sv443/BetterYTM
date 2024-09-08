@@ -100,7 +100,7 @@ export const migrations: DataMigrationsDict = {
       useDefaultConfig(oldData, [
         "showToastOnGenericError", "sponsorBlockIntegration",
         "themeSongIntegration", "themeSongLightness",
-        "errorOnLyricsNotFound",
+        "errorOnLyricsNotFound", "openPluginList",
       ]), [
         { key: "toastDuration", oldDefault: 3 },
       ]
