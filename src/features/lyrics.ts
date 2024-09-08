@@ -1,5 +1,5 @@
 import { fetchAdvanced } from "@sv443-network/userutils";
-import { error, getResourceUrl, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab } from "../utils/index.js";
+import { error, getResourceUrl, info, log, warn, t, tp, getCurrentMediaType, constructUrl, onInteraction, openInTab, LyricsError } from "../utils/index.js";
 import { emitInterface } from "../interface.js";
 import { mode, scriptInfo } from "../constants.js";
 import { getFeature } from "../config.js";
@@ -243,14 +243,14 @@ export async function fetchLyricsUrls(artist: string, song: string): Promise<Omi
       return undefined;
     }
     else if(fetchRes.status < 200 || fetchRes.status >= 300) {
-      getFeature("errorOnLyricsNotFound") && error(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`);
+      getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL - status: ${fetchRes.status} - response: ${(await fetchRes.json()).message ?? await fetchRes.text() ?? "(none)"}`));
       return undefined;
     }
 
     const result = await fetchRes.json();
 
     if(typeof result === "object" && result.error || !result || !result.all) {
-      getFeature("errorOnLyricsNotFound") && error("Couldn't fetch lyrics URL:", result.message);
+      getFeature("errorOnLyricsNotFound") && error(new LyricsError(`Couldn't fetch lyrics URLs from geniURL: ${result.message}`));
       return undefined;
     }
 

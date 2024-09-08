@@ -70,7 +70,6 @@ async function renderBody() {
 
     const linksList = document.createElement("div");
     linksList.classList.add("bytm-plugin-list-row-links-list");
-    linksList.tabIndex = 0;
     leftEl.appendChild(linksList);
 
     let linkElCreated = false;
