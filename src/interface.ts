@@ -6,7 +6,7 @@ import { addSelectorListener } from "./observers.js";
 import { getFeatures, setFeatures } from "./config.js";
 import { autoLikeStore, featInfo, fetchLyricsUrlTop, getLyricsCacheEntry, sanitizeArtists, sanitizeSong } from "./features/index.js";
 import { allSiteEvents, type SiteEventsMap } from "./siteEvents.js";
-import { LogLevel, type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
+import { type FeatureConfig, type FeatureInfo, type LyricsCacheEntry, type PluginDef, type PluginInfo, type PluginRegisterResult, type PluginDefResolvable, type PluginEventMap, type PluginItem, type BytmObject, type AutoLikeData, type InterfaceFunctions } from "./types.js";
 import { BytmDialog, ExImDialog, MarkdownDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
@@ -262,12 +262,14 @@ export function initPlugins() {
       registeredPlugins.set(key, { def, events });
       queuedPlugins.delete(key);
       emitOnPlugins("pluginRegistered", (d) => sameDef(d, def), pluginDefToInfo(def)!);
-      info(`Initialized plugin '${getPluginKey(def)}'`, LogLevel.Info);
+      info(`Initialized plugin '${getPluginKey(def)}'`);
     }
     catch(err) {
       error(`Failed to initialize plugin '${getPluginKey(def)}':`, err);
     }
   }
+
+  log("Registered all plugins:", registeredPlugins);
 }
 
 /** Returns the key for a given plugin definition */
