@@ -4,6 +4,7 @@ export * from "./autoLike.js";
 export * from "./changelog.js";
 export * from "./featConfig.js";
 export * from "./featHelp.js";
+export * from "./pluginList.js";
 export * from "./prompt.js";
 export * from "./versionNotif.js";
 export * from "./welcome.js";

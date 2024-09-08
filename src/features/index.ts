@@ -5,7 +5,7 @@ import { getFeature, promptResetConfig } from "../config.js";
 import { FeatureInfo, type ColorLightness, type ResourceKey, type SiteSelection, type SiteSelectionOrNone } from "../types.js";
 import { emitSiteEvent } from "../siteEvents.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
-import { getAutoLikeDialog, showPrompt } from "../dialogs/index.js";
+import { getAutoLikeDialog, getPluginListDialog, showPrompt } from "../dialogs/index.js";
 import { showIconToast } from "../components/index.js";
 import { mode } from "../constants.js";
 
@@ -666,7 +666,8 @@ export const featInfo = {
     type: "toggle",
     category: "integrations",
     default: true,
-    textAdornment: adornments.reloadRequired,
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   themeSongIntegration: {
     type: "toggle",
@@ -680,6 +681,25 @@ export const featInfo = {
     options: options.colorLightness,
     default: "darker",
     textAdornment: adornments.reloadRequired,
+  },
+
+  //#region cat:plugins
+  openPluginList: {
+    type: "button",
+    category: "plugins",
+    default: undefined,
+    click: () => getPluginListDialog().then(d => d.open()),
+  },
+  initTimeout: {
+    type: "number",
+    category: "plugins",
+    min: 3,
+    max: 30,
+    default: 8,
+    step: 0.1,
+    unit: "s",
+    advanced: true,
+    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
 
   //#region cat:general
@@ -717,17 +737,6 @@ export const featInfo = {
     ],
     default: 1,
     textAdornment: adornments.reloadRequired,
-  },
-  initTimeout: {
-    type: "number",
-    category: "general",
-    min: 3,
-    max: 30,
-    default: 8,
-    step: 0.1,
-    unit: "s",
-    advanced: true,
-    textAdornment: () => combineAdornments([adornments.advanced, adornments.reloadRequired]),
   },
   toastDuration: {
     type: "slider",
