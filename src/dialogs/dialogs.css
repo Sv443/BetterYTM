@@ -94,15 +94,15 @@
 /* #region cfg menu adornments */
 
 .bytm-ftitem-adornment svg path {
-  fill: var(--bytm-locale-color, #fff) !important;
+  fill: var(--bytm-locale-color, #fff);
 }
 
 .bytm-advanced-mode-icon svg path {
-  fill: var(--bytm-advanced-mode-color, #fff) !important;
+  fill: var(--bytm-advanced-mode-color, #fff);
 }
 
 .bytm-experimental-icon svg path {
-  fill: var(--bytm-experimental-col, #fff) !important;
+  fill: var(--bytm-experimental-col, #fff);
 }
 
 .bytm-warning-icon svg {
@@ -111,11 +111,11 @@
 }
 
 .bytm-warning-icon svg path {
-  fill: var(--bytm-warning-col, #fff) !important;
+  fill: var(--bytm-warning-col, #fff);
 }
 
 .bytm-reload-icon svg path {
-  fill: var(--bytm-reload-col, #fff) !important;
+  fill: var(--bytm-reload-col, #fff);
 }
 
 /* #region welcome dialog */
