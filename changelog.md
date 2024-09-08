@@ -59,6 +59,7 @@
   - Migrated to pnpm for faster compilation times
   - Moved `NanoEmitter` class over to the [UserUtils library](https://github.com/Sv443-Network/UserUtils#nanoemitter) (it is still re-exported by the plugin interface as before)
   - Made `getThumbnailUrl()` and `getBestThumbnailUrl()` use the domain `youtube.com` to prevent cross-origin issues
+  - Added custom error instances `LyricsError` and `PluginError` for better error handling using `instanceof`
 - **Plugin Changes:**  
   <sup>See the [contributing guide](https://github.com/Sv443/BetterYTM/blob/main/contributing.md) for the latest documentation of the plugin interface</sup>
   - Changed the way plugins are registered by making the `registerPlugin()` function the sole argument passed by the `bytm:registerPlugin` event. Call this function synchronously to register your plugin.
