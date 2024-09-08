@@ -500,10 +500,10 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 >   return authToken;
 > }
 > 
-> unsafeWindow.addEventListener("bytm:registerPlugins", () => {
+> unsafeWindow.addEventListener("bytm:registerPlugin", (registerPlugin) => {
 >   try {
 >     // register the plugin
->     const { token, events } = unsafeWindow.BYTM.registerPlugin(pluginDef);
+>     const { token, events } = registerPlugin(pluginDef);
 >     // listen for the pluginRegistered event
 >     events.on("pluginRegistered", (info) => {
 >       // store the private token for later use in authenticated function calls

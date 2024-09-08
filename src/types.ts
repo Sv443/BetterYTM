@@ -6,7 +6,7 @@ import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
-import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, registerPlugin, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
+import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
@@ -269,8 +269,6 @@ export type PluginItem =
 /** All functions exposed by the interface on the global `BYTM` object */
 export type InterfaceFunctions = {
   // meta:
-  /** Registers a plugin with BYTM. Needed to receive the token for making authenticated function calls. */
-  registerPlugin: typeof registerPlugin;
   /** 🔒 Checks if the plugin with the given name and namespace is registered and returns an info object about it */
   getPluginInfo: typeof getPluginInfo;
 
