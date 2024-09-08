@@ -148,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "裁剪",
     "thumbnail_overlay_image_fit_full": "显示完整图像",
     "thumbnail_overlay_image_fit_stretch": "拉伸以适应",
+
     "auto_like_channels_dialog_title": "自动喜欢的频道",
     "auto_like_channels_dialog_desc": "在这里，您可以查看您设置为自动喜欢的频道，并对其进行编辑、启用、禁用和删除。\n您还可以手动创建条目，尽管最好的方法是访问频道页面并在那里单击按钮。",
     "auto_like": "自动喜欢",
@@ -198,6 +199,25 @@
     "color_lightness_normal": "正常",
     "color_lightness_lighter": "更亮",
 
+    "plugin_list_title": "插件列表",
+    "plugin_list_no_plugins": "当前未安装任何插件。",
+    "plugin_list_permissions_header": "权限：",
+
+    "plugin_link_type_source": "存储库",
+    "plugin_link_type_other": "其他 / 主页",
+    "plugin_link_type_bug": "报告错误",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+
+    "plugin_intent_description_ReadFeatureConfig": "此插件可以读取功能配置",
+    "plugin_intent_description_WriteFeatureConfig": "此插件可以写入功能配置",
+    "plugin_intent_description_SeeHiddenConfigValues": "此插件可以访问隐藏的配置值",
+    "plugin_intent_description_WriteLyricsCache": "此插件可以写入歌词缓存",
+    "plugin_intent_description_WriteTranslations": "此插件可以添加新的翻译并覆盖现有的翻译",
+    "plugin_intent_description_CreateModalDialogs": "此插件可以创建模态对话框",
+    "plugin_intent_description_ReadAutoLikeData": "此插件可以读取自动喜欢的数据",
+    "plugin_intent_description_WriteAutoLikeData": "此插件可以写入自动喜欢的数据",
+
     "plugin_validation_error_no_property": "没有类型为 '%2' 的属性 '%1'",
     "plugin_validation_error_invalid_property-1": "属性 '%1' 的值 '%2' 无效。示例值：%3",
     "plugin_validation_error_invalid_property-n": "属性 '%1' 的值 '%2' 无效。示例值：%3",
@@ -209,6 +229,7 @@
     "feature_category_input": "输入",
     "feature_category_lyrics": "歌词",
     "feature_category_integrations": "集成",
+    "feature_category_plugins": "插件",
     "feature_category_general": "一般的",
 
     "feature_desc_watermarkEnabled": "在网站标志下方显示一个水印，以打开此配置菜单",
@@ -243,6 +264,7 @@
     "feature_desc_setInitialTabVolume": "打开网站时将音量级别设置为特定值",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "此功能与 \"音量级别在标签页之间共享\" 功能不兼容，将在使用共享音量功能时被忽略！",
     "feature_desc_initialTabVolumeLevel": "打开网站时将音量级别设置为的值",
+  
     "feature_desc_lyricsQueueButton": "在每首歌曲的列表中添加一个按钮，以打开其歌词页面",
     "feature_desc_deleteFromQueueButton": "在每首歌曲的列表中添加一个按钮，以快速删除它",
     "feature_desc_listButtonsPlacement": "列表按钮应该显示在哪里？",
@@ -306,6 +328,11 @@
     "feature_helptext_themeSongIntegration": "如果安装了 ThemeSong 扩展但此功能已关闭（反之亦然），您可能会注意到网站上的样式损坏。\n\n请始终确保此功能反映了扩展程序是否已安装！",
     "feature_desc_themeSongLightness": "从当前 ThemeSong 主题派生的强调颜色应该有多亮",
     "feature_helptext_themeSongLightness": "根据您为 ThemeSong 扩展选择的设置，此功能允许您调整从当前主题派生的强调颜色的亮度。\n\n如果未安装 ThemeSong 扩展，此功能将不起作用。",
+    "feature_desc_openPluginList": "打开您安装的插件列表",
+    "feature_btn_openPluginList": "打开列表",
+    "feature_btn_openPluginList_running": "正在打开...",
+    "feature_desc_initTimeout": "在考虑它们可能处于错误状态之前等待功能初始化的时间",
+    "feature_helptext_initTimeout": "这是脚本等待功能初始化的时间，以考虑它们可能处于错误状态。\n这不会对脚本的行为产生重大影响，但如果您的插件之一无法及时初始化，您应该尝试增加此值。",
 
     "feature_desc_locale": "语言",
     "feature_desc_localeFallback": "如果找不到翻译，请使用英语（如果您提供翻译，请禁用）。",
@@ -316,8 +343,6 @@
     "feature_btn_checkVersionNow_running": "正在检查...",
     "feature_desc_logLevel": "更改扩展程序的日志级别",
     "feature_helptext_logLevel": "更改这个只是为了调试目的，因为遇到了问题。\n如果您有一个，您可以在这里增加日志级别，打开您的浏览器的 JavaScript 控制台（通常是 Ctrl + Shift + K）并在 GitHub 问题中附上那个日志的截图。",
-    "feature_desc_initTimeout": "在考虑它们可能处于错误状态之前等待功能初始化的时间",
-    "feature_helptext_initTimeout": "这是脚本等待功能初始化的时间，以考虑它们可能处于错误状态。\n这不会对脚本的行为产生重大影响，但如果您的插件之一无法及时初始化，您应该尝试增加此值。",
     "feature_desc_toastDuration": "自定义提示通知应显示多少秒 - 0 以完全禁用它们",
     "feature_desc_showToastOnGenericError": "当发生错误时显示通知？",
     "feature_helptext_showToastOnGenericError": "如果脚本中发生错误，阻止其部分工作的通知将显示给您。\n如果您经常遇到问题，请从 JavaScript 控制台（通常在 F12 菜单中）复制错误，并在 GitHub 上打开一个问题。",

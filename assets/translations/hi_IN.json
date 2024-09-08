@@ -148,6 +148,7 @@
     "thumbnail_overlay_image_fit_crop": "क्रॉप करें यदि आवश्यक है",
     "thumbnail_overlay_image_fit_full": "पूरी छवि दिखाएं",
     "thumbnail_overlay_image_fit_stretch": "खींचें ताकि फिट हो जाए",
+
     "auto_like_channels_dialog_title": "ऑटो-पसंद किए गए चैनल",
     "auto_like_channels_dialog_desc": "यहां आप देख सकते हैं कि आपने किस चैनल को ऑटो-पसंद करने के लिए सेट किया है और आप उन्हें संपादित, सक्षम, अक्षम और हटा सकते हैं।\nआप भी मैन्युअल रूप से एंट्री बना सकते हैं, हालांकि यह चैनल पृष्ठ पर जाना और वहां बटन पर क्लिक करना आसान है।",
     "auto_like": "ऑटो-पसंद",
@@ -167,19 +168,24 @@
     "auto_like_export_import_title": "स्वतः पसंद किए गए चैनलों का निर्यात या आयात करें",
     "auto_like_export_desc": "निम्नलिखित पाठ को अपने स्वतः पसंद किए गए चैनलों का निर्यात करने के लिए कॉपी करें।",
     "auto_like_import_desc": "निम्नलिखित क्षेत्र में आपके द्वारा आयात करना चाहिए ऑटो-पसंद किए गए चैनलों को दर्ज करें, फिर आयात बटन पर क्लिक करें:",
+
     "prompt_confirm": "पुष्टि करना",
     "prompt_close": "बंद करें",
     "prompt_cancel": "रद्द करें",
+
     "click_to_confirm_tooltip": "क्लिक करने के लिए पुष्टि करें",
     "click_to_close_tooltip": "बंद करने के लिए क्लिक करें",
     "click_to_cancel_tooltip": "बदलने के लिए क्लिक करें, फिर रिकवर करें",
+
     "vote_label_likes-1": "%1 लाइक",
     "vote_label_likes-n": "%1 लाइक",
     "vote_label_dislikes-1": "%1 नापसंद",
     "vote_label_dislikes-n": "%1 नापसंद",
+
     "vote_ratio_disabled": "अक्षम",
     "vote_ratio_green_red": "हरा और लाल",
     "vote_ratio_blue_gray": "नीला और ग्रे",
+
     "votes_format_short": "संक्षेपित",
     "votes_format_long": "पूर्ण संख्या",
 
@@ -188,9 +194,29 @@
 
     "unit_days-1": "दिन",
     "unit_days-n": "दिन",
+
     "color_lightness_darker": "गहरे",
     "color_lightness_normal": "सामान्य",
     "color_lightness_lighter": "हल्का",
+
+    "plugin_list_title": "प्लगइन सूची",
+    "plugin_list_no_plugins": "वर्तमान में कोई प्लगइन स्थापित नहीं हैं।",
+    "plugin_list_permissions_header": "अनुमतियाँ:",
+
+    "plugin_link_type_source": "संग्रह",
+    "plugin_link_type_other": "अन्य / होमपेज",
+    "plugin_link_type_bug": "बग रिपोर्ट करें",
+    "plugin_link_type_greasyfork": "GreasyFork",
+    "plugin_link_type_openuserjs": "OpenUserJS",
+
+    "plugin_intent_description_ReadFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन को पढ़ सकता है",
+    "plugin_intent_description_WriteFeatureConfig": "यह प्लगइन फीचर कॉन्फ़िगरेशन में लिख सकता है",
+    "plugin_intent_description_SeeHiddenConfigValues": "इस प्लगइन में छिपे हुए कॉन्फ़िगरेशन मानों तक पहुंच है",
+    "plugin_intent_description_WriteLyricsCache": "यह प्लगइन गीत कैश में लिख सकता है",
+    "plugin_intent_description_WriteTranslations": "यह प्लगइन नए अनुवाद जोड़ सकता है और मौजूदा अनुवादों को अधिलेखित कर सकता है",
+    "plugin_intent_description_CreateModalDialogs": "यह प्लगइन मोडल डायलॉग बना सकता है",
+    "plugin_intent_description_ReadAutoLikeData": "यह प्लगइन ऑटो-पसंद डेटा पढ़ सकता है",
+    "plugin_intent_description_WriteAutoLikeData": "यह प्लगइन ऑटो-पसंद डेटा में लिख सकता है",
 
     "plugin_validation_error_no_property": "कोई गुण '%1' जिसके पास '%2' प्रकार है नहीं है",
     "plugin_validation_error_invalid_property-1": "गुण '%1' जिसके पास '%2' प्रकार है अमान्य है। उदाहरण मान: %3",
@@ -203,6 +229,7 @@
     "feature_category_input": "इनपुट",
     "feature_category_lyrics": "बोल",
     "feature_category_integrations": "एकीकरण",
+    "feature_category_plugins": "प्लगइन्स",
     "feature_category_general": "सामान्य",
 
     "feature_desc_watermarkEnabled": "एक वॉटरमार्क दिखाएं जो इस कॉन्फ़िग मेनू को खोलता है",
@@ -237,6 +264,7 @@
     "feature_desc_setInitialTabVolume": "साइट खोलने पर वॉल्यूम स्तर को एक विशिष्ट मान पर सेट करें",
     "feature_warning_setInitialTabVolume_volumeSharedBetweenTabs_incompatible": "यह सुविधा \"टैब के बीच साझा वॉल्यूम स्तर\" सुविधा के साथ असंगत है और साझा वॉल्यूम सुविधा का उपयोग करते समय नजरअंदाज किया जाएगा!",
     "feature_desc_initialTabVolumeLevel": "साइट खोलने पर वॉल्यूम स्तर को सेट करने के लिए मान",
+  
     "feature_desc_lyricsQueueButton": "प्रत्येक गीत में एक बटन जोड़ें जो इसके बोल वेबपृष्ठ को खोलता है",
     "feature_desc_deleteFromQueueButton": "प्रत्येक गीत में एक बटन जोड़ें जो इसे त्वरित रूप से कतार से हटाता है",
     "feature_desc_listButtonsPlacement": "कतार में बटन कहाँ दिखाएं?",
@@ -300,6 +328,11 @@
     "feature_helptext_themeSongIntegration": "यदि थीमसॉंग एक्सटेंशन इंस्टॉल किया गया है लेकिन यह सुविधा बंद है (या उम्मीद है कि इसे बंद किया गया है), तो आप साइट पर टूटी हुई स्टाइलिंग देख सकते हैं।\n\nकृपया हमेशा सुनिश्चित करें कि यह सुविधा यह दर्शाती है कि एक्सटेंशन इंस्टॉल किया गया है या नहीं!",
     "feature_desc_themeSongLightness": "वर्तमान थीमसॉंग थीम से निकले एक्सेंट रंगों को कितना हल्का होना चाहिए",
     "feature_helptext_themeSongLightness": "थीमसॉंग एक्सटेंशन के लिए आपने जो सेटिंग्स चुनी हैं, उन एक्सेंट रंगों की हल्काई को समायोजित करने की अनुमति देती है।\n\nयदि थीमसॉंग एक्सटेंशन इंस्टॉल नहीं है, तो इस सुविधा का कोई प्रभाव नहीं होगा।",
+    "feature_desc_openPluginList": "आपके द्वारा इंस्टॉल किए गए प्लगइनों की सूची खोलें",
+    "feature_btn_openPluginList": "सूची खोलें",
+    "feature_btn_openPluginList_running": "खोल रहा है...",
+    "feature_desc_initTimeout": "विशेषताएँ शुरू होने के लिए कितने सेकंड इंतजार करें - उन्हें लिखने के लिए लिकेली एरर्ड स्थिति में माना जाएगा",
+    "feature_helptext_initTimeout": "यह वक्त जिसमें स्क्रिप्ट विशेषताएँ शुरू होने के लिए इंतजार करेगा इसे उन्हें लिखने के लिए लिखा जाएगा।\nयह स्क्रिप्ट के व्यवहार पर किसी बड़े तरीके से प्रभाव नहीं डालेगा, लेकिन यदि आपके प्लगइन में से कोई भी वक्त में शुरू नहीं हो सकता है, तो आपको इस मानक को बढ़ाने की कोशिश करनी चाहिए।",
 
     "feature_desc_locale": "भाषा",
     "feature_desc_localeFallback": "अनुवादों के लिए अंग्रेजी का उपयोग करें (अनुवाद में योगदान कर रहे हैं तो इसे अक्षम करें)",
@@ -310,8 +343,6 @@
     "feature_btn_checkVersionNow_running": "जांच रहा है...",
     "feature_desc_logLevel": "कंसोल पर कितनी जानकारी लॉग इन करनी है",
     "feature_helptext_logLevel": "इसे बदलने की वास्तव में केवल डिबगिंग के उद्देश्य से आवश्यक है क्योंकि किसी समस्या का सामना करने के परिणामस्वरूप।\nयदि आपके पास एक है, तो आप यहां लॉग स्तर बढ़ा सकते हैं, अपने ब्राउज़र के जावास्क्रिप्ट कंसोल (सामान्यतः Ctrl + Shift + K के साथ) खोल सकते हैं और उस लॉग की स्क्रीनशॉट एक गिटहब समस्या में अटैच कर सकते हैं।",
-    "feature_desc_initTimeout": "विशेषताएँ शुरू होने के लिए कितने सेकंड इंतजार करें - उन्हें लिखने के लिए लिकेली एरर्ड स्थिति में माना जाएगा",
-    "feature_helptext_initTimeout": "यह वक्त जिसमें स्क्रिप्ट विशेषताएँ शुरू होने के लिए इंतजार करेगा इसे उन्हें लिखने के लिए लिखा जाएगा।\nयह स्क्रिप्ट के व्यवहार पर किसी बड़े तरीके से प्रभाव नहीं डालेगा, लेकिन यदि आपके प्लगइन में से कोई भी वक्त में शुरू नहीं हो सकता है, तो आपको इस मानक को बढ़ाने की कोशिश करनी चाहिए।",
     "feature_desc_toastDuration": "कितने सेकंड तक कस्टम टोस्ट सूचनाएं दिखाई जानी चाहिए - उन्हें पूरी तरह से अक्षम करने के लिए 0",
     "feature_desc_showToastOnGenericError": "जब कोई त्रुटि होती है, तो एक सूचना दिखाएं?",
     "feature_helptext_showToastOnGenericError": "यदि स्क्रिप्ट में कोई त्रुटि होती है जो इसके कुछ हिस्से को सही से काम नहीं करने देती है, तो एक सूचना दिखाई जाएगी जो आपको इसके बारे में सूचित करेगी।\nयदि आप बार-बार किसी समस्या का सामना करते हैं, तो कृपया जावास्क्रिप्ट कंसोल से त्रुटि की प्रतिलिपि कॉपी करें (सामान्यतः F12 मेनू में) और कृपया गिटहब पर एक मुद्दा खोलें।",
