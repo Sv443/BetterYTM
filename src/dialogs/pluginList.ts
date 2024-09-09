@@ -1,5 +1,5 @@
 import { BytmDialog } from "../components/index.js";
-import { registeredPlugins } from "../interface.js";
+import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
 import { PluginIntent } from "../types.js";
 import "./pluginList.css";
@@ -12,7 +12,6 @@ export async function getPluginListDialog() {
     id: "plugin-list",
     width: 800,
     height: 600,
-    verticalAlign: "top",
     closeBtnEnabled: true,
     closeOnBgClick: true,
     closeOnEscPress: true,
@@ -39,15 +38,18 @@ async function renderBody() {
   const listContainerEl = document.createElement("div");
   listContainerEl.id = "bytm-plugin-list-container";
 
-  if(registeredPlugins.size === 0) {
+  const registeredPlugins = getRegisteredPlugins();
+
+  if(registeredPlugins.length === 0) {
     const noPluginsEl = document.createElement("div");
     noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
-    noPluginsEl.textContent = t("plugin_list_no_plugins");
+    noPluginsEl.tabIndex = 0;
+    noPluginsEl.textContent = noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins");
     listContainerEl.appendChild(noPluginsEl);
     return listContainerEl;
   }
 
-  for(const [, { def: { plugin, intents } }] of registeredPlugins.entries()) {
+  for(const [, { def: { plugin, intents } }] of registeredPlugins) {
     const rowEl = document.createElement("div");
     rowEl.classList.add("bytm-plugin-list-row");
 

@@ -222,7 +222,7 @@ export function emitInterface<
 //#region register plugins
 
 /** Map of plugin ID and all registered plugins */
-export const registeredPlugins = new Map<string, PluginItem>();
+const registeredPlugins = new Map<string, PluginItem>();
 
 /** Map of plugin ID to auth token for plugins that have been registered */
 const registeredPluginTokens = new Map<string, string>();
@@ -268,6 +268,11 @@ export function initPlugins() {
 
   if(registeredPlugins.size > 0)
     log(`Registered ${registeredPlugins.size} ${autoPlural("plugin", registeredPlugins.size)}`);
+}
+
+/** Returns the registered plugins as an array of tuples with the items `[id: string, item: PluginItem]` */
+export function getRegisteredPlugins() {
+  return [...registeredPlugins.entries()];
 }
 
 /** Returns the key for a given plugin definition */
