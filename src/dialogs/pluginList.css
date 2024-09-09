@@ -23,7 +23,6 @@
   border-bottom: 1px solid var(--bytm-dialog-separator-color, #ccc);
   padding: var(--bytm-plugin-list-row-padding-ver) 0px;
   gap: 20px;
-  max-height: var(--bytm-plugin-list-row-max-height);
 }
 
 .bytm-plugin-list-row:first-child {
