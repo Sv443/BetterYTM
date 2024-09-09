@@ -984,15 +984,15 @@ body .bytm-ripple.slower {
 
 .bytm-plugin-list-row-version {
   font-size: 1.25rem;
-  color: var(--bytm-plugin-list-secondary-col);
-  padding-left: 10px;
   font-weight: normal;
+  color: var(--bytm-plugin-list-secondary-col);
+  margin-left: 10px;
 }
 
 .bytm-plugin-list-row-namespace {
-  color: var(--bytm-plugin-list-secondary-col);
   font-size: 1.1rem;
   font-weight: 400;
+  color: var(--bytm-plugin-list-secondary-col);
   margin-bottom: 5px;
 }
 
