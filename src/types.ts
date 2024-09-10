@@ -1,10 +1,10 @@
-import { NanoEmitter, type Stringifiable } from "@sv443-network/userutils";
+import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
 import type resources from "../assets/resources.json";
 import type locales from "../assets/locales.json";
-import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp } from "./utils/index.js";
+import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
 import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, createRipple, createToggleInput, showIconToast, showToast } from "./components/index.js";
@@ -125,7 +125,7 @@ export type BytmObject =
   & InterfaceFunctions
   // others
   & {
-    NanoEmitter: typeof NanoEmitter;
+    NanoEmitter: NanoEmitter;
     BytmDialog: typeof BytmDialog;
     ExImDialog: typeof ExImDialog;
     // the entire UserUtils library
@@ -365,6 +365,10 @@ export type InterfaceFunctions = {
   showIconToast: typeof showIconToast;
   /** Shows a styled confirm() or alert() dialog with the provided message */
   showPrompt: typeof showPrompt;
+
+  // other:
+  /** Formats a number to a string using the configured locale and configured or passed number notation */
+  formatNumber: typeof formatNumber;
 };
 
 //#region feature defs
