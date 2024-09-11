@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "緑と赤",
     "vote_ratio_blue_gray": "青と灰色",
 
-    "votes_format_short": "短縮",
-    "votes_format_long": "完全な数",
+    "votes_format_short": "短い: %1",
+    "votes_format_long": "完全: %1",
 
     "unit_entries-1": "項目",
     "unit_entries-n": "項目",
@@ -251,7 +251,7 @@
     "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
     "feature_desc_showVotes": "現在再生中の曲のいいねと嫌いの数を表示する",
     "feature_helptext_showVotes": "この機能は Return YouTube Dislike によって提供され、現在再生中の曲のいいねと嫌いの数をおおよその数で表示します。",
-    "feature_desc_showVotesFormat": "いいねと嫌いの数をどのようにフォーマットするか",
+    "feature_desc_numbersFormat": "いいねと嫌いの数をどのようにフォーマットするか",
 
     "feature_desc_volumeSliderLabel": "音量スライダーの横にパーセンテージラベルを追加する",
     "feature_desc_volumeSliderSize": "音量スライダーの幅（ピクセル単位）",

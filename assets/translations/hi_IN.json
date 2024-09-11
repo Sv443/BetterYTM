@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "हरा और लाल",
     "vote_ratio_blue_gray": "नीला और ग्रे",
 
-    "votes_format_short": "संक्षेपित",
-    "votes_format_long": "पूर्ण संख्या",
+    "votes_format_short": "लघु: %1",
+    "votes_format_long": "दीर्घ: %1",
 
     "unit_entries-1": "विषय",
     "unit_entries-n": "विषय",
@@ -252,7 +252,7 @@
     "feature_desc_fixHdrIssues": "एचडीआर-संगत जीपीयू और मॉनिटर का उपयोग करते समय कुछ रेंडरिंग समस्याओं को रोकें",
     "feature_desc_showVotes": "वर्तमान गाने पर लाइक और नापसंद की संख्या दिखाएं",
     "feature_helptext_showVotes": "यह सुविधा Return YouTube Dislike द्वारा संचालित है और वर्तमान गाने पर लाइक और नापसंद की लगभग संख्या दिखाएगी।",
-    "feature_desc_showVotesFormat": "लाइक और नापसंद को कैसे स्वरूपित किया जाना चाहिए?",
+    "feature_desc_numbersFormat": "लाइक और नापसंद को कैसे स्वरूपित किया जाना चाहिए?",
 
     "feature_desc_volumeSliderLabel": "वॉल्यूम स्लाइडर के पास एक प्रतिशत लेबल जोड़ें",
     "feature_desc_volumeSliderSize": "वॉल्यूम स्लाइडर की चौड़ाई पिक्सेल में",

@@ -1,8 +1,9 @@
 import { compress, decompress, fetchAdvanced, openInNewTab, pauseFor, randomId } from "@sv443-network/userutils";
 import { marked } from "marked";
 import { branch, compressionFormat, repo, sessionStorageAvailable } from "../constants.js";
-import { type Domain, type ResourceKey, type StringGen } from "../types.js";
-import { error, type TrLocale, warn, sendRequest } from "./index.js";
+import { type Domain, type NumberLength, type ResourceKey, type StringGen } from "../types.js";
+import { error, type TrLocale, warn, sendRequest, getLocale } from "./index.js";
+import { getFeature } from "../config.js";
 import langMapping from "../../assets/locales.json" with { type: "json" };
 
 //#region misc
@@ -194,6 +195,23 @@ export function getOS() {
 /** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
 export async function consumeStringGen(strGen: StringGen): Promise<string> {
   return String(typeof strGen === "function" ? await strGen() : strGen);
+}
+
+/** Formats a number based on the config or the passed {@linkcode notation} */
+export function formatNumber(num: number, notation?: NumberLength): string {
+  return num.toLocaleString(
+    getLocale().replace(/_/g, "-"),
+    (notation ?? getFeature("numbersFormat")) === "short"
+      ? {
+        notation: "compact",
+        compactDisplay: "short",
+        maximumFractionDigits: 1,
+      }
+      : {
+        style: "decimal",
+        maximumFractionDigits: 0,
+      },
+  );
 }
 
 //#region resources

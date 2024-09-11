@@ -1,4 +1,4 @@
-import { getLocale, getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
+import { formatNumber, getLocale, getPreferredLocale, getResourceUrl, resourceAsString, t, tp } from "../utils/index.js";
 import { clearLyricsCache, getLyricsCache } from "./lyricsCache.js";
 import { doVersionCheck } from "./versionCheck.js";
 import { getFeature, promptResetConfig } from "../config.js";
@@ -268,17 +268,6 @@ export const featInfo = {
     category: "layout",
     default: true,
     textAdornment: adornments.reloadRequired,
-  },
-  showVotesFormat: {
-    type: "select",
-    category: "layout",
-    options: () => [
-      { value: "long", label: t("votes_format_full") },
-      { value: "short", label: t("votes_format_short") },
-    ],
-    default: "short",
-    reloadRequired: false,
-    enable: noop,
   },
   // archived idea for future version
   // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
@@ -730,15 +719,16 @@ export const featInfo = {
     category: "general",
     click: () => doVersionCheck(true),
   },
-  logLevel: {
+  numbersFormat: {
     type: "select",
-    category: "general",
+    category: "layout",
     options: () => [
-      { value: 0, label: t("log_level_debug") },
-      { value: 1, label: t("log_level_info") },
+      { value: "long", label: `${formatNumber(12_345_678, "long")} (${t("votes_format_long")})` },
+      { value: "short", label: `${formatNumber(12_345_678, "short")} (${t("votes_format_short")})` },
     ],
-    default: 1,
-    textAdornment: adornments.reloadRequired,
+    default: "short",
+    reloadRequired: false,
+    enable: noop,
   },
   toastDuration: {
     type: "slider",
@@ -768,6 +758,16 @@ export const featInfo = {
     type: "button",
     category: "general",
     click: promptResetConfig,
+    textAdornment: adornments.reloadRequired,
+  },
+  logLevel: {
+    type: "select",
+    category: "general",
+    options: () => [
+      { value: 0, label: t("log_level_debug") },
+      { value: 1, label: t("log_level_info") },
+    ],
+    default: 1,
     textAdornment: adornments.reloadRequired,
   },
   advancedMode: {

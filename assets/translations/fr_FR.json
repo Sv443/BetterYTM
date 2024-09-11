@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "Vert et rouge",
     "vote_ratio_blue_gray": "Bleu et gris",
 
-    "votes_format_short": "Raccourci",
-    "votes_format_long": "Nombre complet",
+    "votes_format_short": "Court: %1",
+    "votes_format_long": "Complet: %1",
 
     "unit_entries-1": "entrée",
     "unit_entries-n": "entrées",
@@ -252,7 +252,7 @@
     "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
     "feature_desc_showVotes": "Afficher le nombre de j'aime et de je n'aime pas sur la chanson en cours de lecture",
     "feature_helptext_showVotes": "Cette fonctionnalité est alimentée par Return YouTube Dislike et affichera le nombre approximatif de j'aime et de je n'aime pas sur la chanson en cours de lecture.",
-    "feature_desc_showVotesFormat": "Comment les j'aime et les je n'aime pas doivent-ils être formatés?",
+    "feature_desc_numbersFormat": "Comment les j'aime et les je n'aime pas doivent-ils être formatés?",
 
     "feature_desc_volumeSliderLabel": "Ajouter une étiquette de pourcentage à côté du curseur de volume",
     "feature_desc_volumeSliderSize": "La largeur du curseur de volume en pixels",
