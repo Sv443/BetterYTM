@@ -1,3 +1,4 @@
-#bytm-vol-slider-cont tp-yt-paper-slider#volume-slider {
+.bytm-vol-slider-cont tp-yt-paper-slider#volume-slider,
+.bytm-vol-slider-cont tp-yt-paper-slider#expand-volume-slider {
   width: var(--bytm-global-vol-slider-size, 68px) !important;
 }
