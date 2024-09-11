@@ -2,14 +2,14 @@ import { DataStore, compress, type DataMigrationsDict, decompress, type LooseUni
 import { disableBeforeUnload, featInfo } from "./features/index.js";
 import { compressionSupported, error, getVideoTime, info, log, t } from "./utils/index.js";
 import { emitSiteEvent } from "./siteEvents.js";
-import { compressionFormat, mode } from "./constants.js";
+import { compressionFormat } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu } from "./menu/menu_old.js";
 import type { FeatureConfig, FeatureKey, NumberLength } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
-export const formatVersion = 7;
+export const formatVersion = 8;
 
 export const defaultData = (Object.keys(featInfo) as (keyof typeof featInfo)[])
   // @ts-ignore
@@ -94,7 +94,7 @@ export const migrations: DataMigrationsDict = {
   // TODO(v2.2): use default for "autoLikePlayerBarToggleBtn"
   // TODO(v2.2): set autoLikeChannels to true on migration once feature is fully implemented
 
-  // 6 -> 7 (v2.2)
+  // 6 -> 7 (v2.1-dev)
   7: (oldData: FeatureConfig) => {
     const newData = useNewDefaultIfUnchanged(
       useDefaultConfig(oldData, [
@@ -108,12 +108,15 @@ export const migrations: DataMigrationsDict = {
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
   },
+  // 7 -> 8 (v2.1)
   8: (oldData: FeatureConfig) => {
     if("showVotesFormat" in oldData) {
       oldData.numbersFormat = oldData.showVotesFormat as NumberLength;
       delete oldData.showVotesFormat;
     }
-    return oldData;
+    return useDefaultConfig(oldData, [
+      "autoLikeChannels"
+    ]);
   },
 } as const satisfies DataMigrationsDict;
 
@@ -159,13 +162,10 @@ export const configStore = new DataStore({
 export async function initConfig() {
   canCompress = await compressionSupported();
   const oldFmtVer = Number(await GM.getValue(`_uucfgver-${configStore.id}`, NaN));
-  let data = await configStore.loadData();
 
-  // since the config changes so much in development keys need to be fixed in this special way
-  if(mode === "development") {
-    await configStore.setData(fixCfgKeys(data));
-    data = configStore.getData();
-  }
+  // remove extraneous keys
+  let data = fixCfgKeys(await configStore.loadData());
+  await configStore.setData(data);
 
   log(`Initialized feature config DataStore with version ${configStore.formatVersion}`);
   if(isNaN(oldFmtVer))
