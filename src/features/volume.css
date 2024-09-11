@@ -6,8 +6,8 @@
 
 .bytm-vol-slider-label {
   --bytm-slider-label-bg-col: var(
-    --bytm-themed-bg,
-    var(--ytmusic-player-bar-background)
+    --ytmusic-player-bar-background,
+    var(--bytm-themed-bg)
   );
   position: absolute;
   top: 50%;
