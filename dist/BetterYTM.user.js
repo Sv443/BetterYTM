@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,56 +33,56 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/lyrics.svg
-// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/help.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/f449995a/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/lyrics.svg
+// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/help.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/09abbee1/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.0.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -138,7 +138,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "f449995a";
+const buildNumberRaw = "09abbee1";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -1489,6 +1489,19 @@ function getOS() {
 /** Turns the passed StringGen (either a string, stringifiable object or a sync or async function returning a string or stringifiable object) into a string */
 async function consumeStringGen(strGen) {
     return String(typeof strGen === "function" ? await strGen() : strGen);
+}
+/** Formats a number based on the config or the passed {@linkcode notation} */
+function formatNumber(num, notation) {
+    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("numbersFormat")) === "short"
+        ? {
+            notation: "compact",
+            compactDisplay: "short",
+            maximumFractionDigits: 1,
+        }
+        : {
+            style: "decimal",
+            maximumFractionDigits: 0,
+        });
 }
 //#region resources
 /**
@@ -4068,12 +4081,12 @@ async function initShowVotes() {
                         const voteObj = await fetchVideoVotes(watchId);
                         if (!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
                             return error("Couldn't fetch votes from the Return YouTube Dislike API");
-                        const likesLabelText = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
-                        const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
+                        const likesLabelText = tp("vote_label_likes", voteObj.likes, formatNumber(voteObj.likes, "long"));
+                        const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatNumber(voteObj.dislikes, "long"));
                         labelLikes.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
-                        labelLikes.textContent = formatVoteNumber(voteObj.likes);
+                        labelLikes.textContent = formatNumber(voteObj.likes);
                         labelLikes.title = labelLikes.ariaLabel = likesLabelText;
-                        labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
+                        labelDislikes.textContent = formatNumber(voteObj.dislikes);
                         labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
                         labelDislikes.dataset.watchId = (_b = getWatchId()) !== null && _b !== void 0 ? _b : "";
                         addSelectorListener("playerBar", "ytmusic-like-button-renderer#like-button-renderer", {
@@ -4097,8 +4110,8 @@ function addVoteNumbers(voteCont, voteObj) {
         var _a;
         const label = document.createElement("span");
         label.classList.add("bytm-vote-label", "bytm-no-select", type);
-        label.textContent = String(formatVoteNumber(amount));
-        label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "long"));
+        label.textContent = String(formatNumber(amount));
+        label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatNumber(amount, "long"));
         label.dataset.watchId = (_a = getWatchId()) !== null && _a !== void 0 ? _a : "";
         label.addEventListener("click", (e) => {
             var _a;
@@ -4116,19 +4129,6 @@ function addVoteNumbers(voteCont, voteObj) {
     dislikeBtn.insertAdjacentElement("afterend", dislikeLblEl);
     upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
     log("Added vote number labels to like and dislike buttons");
-}
-/** Formats a number formatted based on the config or the passed {@linkcode notation} */
-function formatVoteNumber(num, notation) {
-    return num.toLocaleString(getLocale().replace(/_/g, "-"), (notation !== null && notation !== void 0 ? notation : getFeature("showVotesFormat")) === "short"
-        ? {
-            notation: "compact",
-            compactDisplay: "short",
-            maximumFractionDigits: 1,
-        }
-        : {
-            style: "decimal",
-            maximumFractionDigits: 0,
-        });
 }
 /** Updates or inserts the labels on the native like and dislike buttons */
 function upsertVoteBtnLabels(parentEl, likesLabelText, dislikesLabelText) {
@@ -5286,27 +5286,46 @@ async function addQueueButtons(queueItem, containerParentSelector = ".song-info"
 }//#region init vol features
 /** Initializes all volume-related features */
 async function initVolumeFeatures() {
-    // not technically an input element but behaves pretty much the same
+    let listenerOnce = false;
+    // sliderElem is not technically an input element but behaves pretty much the same
+    const listener = async (type, sliderElem) => {
+        const volSliderCont = document.createElement("div");
+        volSliderCont.classList.add("bytm-vol-slider-cont");
+        if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
+            initScrollStep(volSliderCont, sliderElem);
+        UserUtils.addParent(sliderElem, volSliderCont);
+        if (getFeature("volumeSliderLabel"))
+            await addVolumeSliderLabel(type, sliderElem, volSliderCont);
+        setVolSliderStep(sliderElem);
+        if (getFeature("volumeSharedBetweenTabs"))
+            sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
+        if (listenerOnce)
+            return;
+        listenerOnce = true;
+        // the following are only run once:
+        if (getFeature("setInitialTabVolume"))
+            setInitialTabVolume(sliderElem);
+        if (typeof getFeature("volumeSliderSize") === "number")
+            setVolSliderSize();
+        if (getFeature("volumeSharedBetweenTabs"))
+            checkSharedVolume();
+    };
     addSelectorListener("playerBarRightControls", "tp-yt-paper-slider#volume-slider", {
-        listener: async (sliderElem) => {
-            const volSliderCont = document.createElement("div");
-            volSliderCont.id = "bytm-vol-slider-cont";
-            if (getFeature("volumeSliderScrollStep") !== featInfo.volumeSliderScrollStep.default)
-                initScrollStep(volSliderCont, sliderElem);
-            UserUtils.addParent(sliderElem, volSliderCont);
-            if (typeof getFeature("volumeSliderSize") === "number")
-                setVolSliderSize();
-            if (getFeature("volumeSliderLabel"))
-                await addVolumeSliderLabel(sliderElem, volSliderCont);
-            setVolSliderStep(sliderElem);
-            if (getFeature("volumeSharedBetweenTabs")) {
-                sliderElem.addEventListener("change", () => sharedVolumeChanged(Number(sliderElem.value)));
-                checkSharedVolume();
-            }
-            if (getFeature("setInitialTabVolume"))
-                setInitialTabVolume(sliderElem);
-        },
+        listener: (el) => listener("normal", el),
     });
+    let sizeSmOnce = false;
+    const onResize = () => {
+        if (sizeSmOnce || window.innerWidth >= 1150)
+            return;
+        sizeSmOnce = true;
+        addSelectorListener("playerBarRightControls", "ytmusic-player-expanding-menu tp-yt-paper-slider#expand-volume-slider", {
+            listener: (el) => listener("expand", el),
+            debounceEdge: "falling",
+        });
+    };
+    window.addEventListener("resize", UserUtils.debounce(onResize, 150, "falling"));
+    waitVideoElementReady().then(onResize);
+    onResize();
 }
 //#region scroll step
 /** Initializes the volume slider scroll step features */
@@ -5332,15 +5351,15 @@ function initScrollStep(volSliderCont, sliderElem) {
 }
 //#region volume slider label
 /** Adds a percentage label to the volume slider and tooltip */
-async function addVolumeSliderLabel(sliderElem, sliderContainer) {
+async function addVolumeSliderLabel(type, sliderElem, sliderContainer) {
     const labelContElem = document.createElement("div");
-    labelContElem.id = "bytm-vol-slider-label";
+    labelContElem.classList.add("bytm-vol-slider-label");
     const volShared = getFeature("volumeSharedBetweenTabs");
     if (volShared) {
         const linkIconHtml = await resourceAsString("icon-link");
         if (linkIconHtml) {
             const linkIconElem = document.createElement("div");
-            linkIconElem.id = "bytm-vol-slider-shared";
+            linkIconElem.classList.add("bytm-vol-slider-shared");
             setInnerHtml(linkIconElem, linkIconHtml);
             linkIconElem.role = "alert";
             linkIconElem.ariaLive = "polite";
@@ -5367,15 +5386,13 @@ async function addVolumeSliderLabel(sliderElem, sliderContainer) {
         sliderContainer.setAttribute("title", labelFull);
         sliderElem.setAttribute("title", labelFull);
         sliderElem.setAttribute("aria-valuetext", labelFull);
-        const labelElem2 = document.querySelector("#bytm-vol-slider-label div.label");
-        if (labelElem2)
-            labelElem2.textContent = getLabel(sliderElem.value);
+        const labelElem2 = document.querySelectorAll(".bytm-vol-slider-label div.label");
+        for (const el of labelElem2)
+            el.textContent = getLabel(sliderElem.value);
     };
-    sliderElem.addEventListener("change", () => updateLabel());
-    siteEvents.on("configChanged", () => {
-        updateLabel();
-    });
-    addSelectorListener("playerBarRightControls", "#bytm-vol-slider-cont", {
+    sliderElem.addEventListener("change", updateLabel);
+    siteEvents.on("configChanged", updateLabel);
+    addSelectorListener("playerBarRightControls", type === "normal" ? ".bytm-vol-slider-cont" : "ytmusic-player-expanding-menu .bytm-vol-slider-cont", {
         listener: (volumeCont) => volumeCont.appendChild(labelContElem),
     });
     let lastSliderVal = Number(sliderElem.value);
@@ -5526,35 +5543,37 @@ function renderLongNumberValue(val, maximumFractionDigits = 0) {
  * Contains all possible features with their default values and other configuration.
  *
  * **Required props:**
- * <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
- * | Property             | Description                                                                                                                      |
- * | :------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
- * | `type`               | type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
- * | `category`           | category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
- * | `default`            | default value of the feature - type of the value depends on the given `type`                                                     |
- * | `enable(value: any)` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
+ * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+ * | Property                       | Description                                                                                                                      |
+ * | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+ * | `type: string`                 | Type of the feature configuration element - use autocomplete or check `FeatureTypeProps` in `src/types.ts`                       |
+ * | `category: string`             | Category of the feature - use autocomplete or check `FeatureCategory` in `src/types.ts`                                          |
+ * | `default: unknown`             | Default value of the feature - type of the value depends on the given `type`                                                     |
+ * | `enable(value: unknown): void` | (required if reloadRequired = false) - function that will be called when the feature is enabled / initialized for the first time |
+ * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------>
  *
  *
  * **Optional props:**
- * <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- * | Property                                                       | Description                                                                                                                                              |
- * | :------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- |
- * | `disable: (newValue: any) => void`                             | for type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                       |
- * | `change: (key: string, prevValue: any, newValue: any)` => void | for types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                        |
- * | `click: () => void`                                            | for type `button` only - function that will be called when the button is clicked                                                                         |
- * | `helpText: string / () => string`                              | function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
- * | `textAdornment: () => string / Promise<string>`                | function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                        |
- * | `unit: string / (val: number) => string`                       | Only if type is `number` or `slider` - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too!     |
- * | `min: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `min` property of the HTML input element                                            |
- * | `max: number`                                                  | Only if type is `number` or `slider` - Overwrites the default of the `max` property of the HTML input element                                            |
- * | `step: number`                                                 | Only if type is `number` or `slider` - Overwrites the default of the `step` property of the HTML input element                                           |
- * | `options: SelectOption[] / () => SelectOption[]`               | Only if type is `select` - function that returns an array of objects with `value` and `label` properties                                                 |
- * | `reloadRequired: boolean`                                      | if true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                              |
- * | `advanced: boolean`                                            | if true, the feature will only be shown if the advanced mode feature has been turned on                                                                  |
- * | `hidden: boolean`                                              | if true, the feature will not be shown in the settings - default is undefined (false)                                                                    |
- * | `valueHidden: boolean`                                         | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                             |
- * | `normalize: (val: any) => any`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                          |
- * | `renderValue: (val: string) => string`                         | If provided, is used to render the value's label in the config menu                                                                                      |
+ * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+ * | Property                                                           | Description                                                                                                                                         |
+ * | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------|
+ * | `disable(newValue: unknown): void`                                 | For type `toggle` only - function that will be called when the feature is disabled - can be a synchronous or asynchronous function                  |
+ * | `change(key: string, prevValue: unknown, newValue: unknown): void` | For types `number`, `select`, `slider` and `hotkey` only - function that will be called when the value is changed                                   |
+ * | `click(): void`                                                    | For type `button` only - function that will be called when the button is clicked                                                                    |
+ * | `helpText: string \| () => string`                                 | Function that returns an HTML string or the literal string itself that will be the help text for this feature - writing as function is useful for pluralizing or inserting values into the translation at runtime - if not set, translation with key `feature_helptext_featureKey` will be used instead, if available |
+ * | `textAdornment(): string \| Promise<string>`                       | Function that returns an HTML string that will be appended to the text in the config menu as an adornment element                                   |
+ * | `unit: string \| (val: number) => string`                          | For types `number` or `slider` only - The unit text that is displayed next to the input element, i.e. " px" - a leading space need to be added too! |
+ * | `min: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `min` property of the HTML input element                                        |
+ * | `max: number`                                                      | For types `number` or `slider` only - Overwrites the default of the `max` property of the HTML input element                                        |
+ * | `step: number`                                                     | For types `number` or `slider` only - Overwrites the default of the `step` property of the HTML input element                                       |
+ * | `options: SelectOption[] \| () => SelectOption[]`                  | For type `select` only - function that returns an array of objects with `value` and `label` properties                                              |
+ * | `reloadRequired: boolean`                                          | If true (default), the page needs to be reloaded for the changes to take effect - if false, `enable()` needs to be provided                         |
+ * | `advanced: boolean`                                                | If true, the feature will only be shown if the advanced mode feature has been turned on                                                             |
+ * | `hidden: boolean`                                                  | If true, the feature will not be shown in the settings - default is undefined (false)                                                               |
+ * | `valueHidden: boolean`                                             | If true, the value of the feature will be hidden in the settings and via the plugin interface - default is undefined (false)                        |
+ * | `normalize(val: unknown): unknown`                                 | Function that will be called to normalize the value before it is saved - useful for trimming strings or other simple operations                     |
+ * | `renderValue(val: string): string`                                 | If provided, is used to render the value's label in the config menu                                                                                 |
+ * <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  *
  * TODO: go through all features and set as many as possible to reloadRequired = false
  */
@@ -5667,17 +5686,6 @@ const featInfo = {
         category: "layout",
         default: true,
         textAdornment: adornments.reloadRequired,
-    },
-    showVotesFormat: {
-        type: "select",
-        category: "layout",
-        options: () => [
-            { value: "long", label: t("votes_format_full") },
-            { value: "short", label: t("votes_format_short") },
-        ],
-        default: "short",
-        reloadRequired: false,
-        enable: noop,
     },
     // archived idea for future version
     // (shows a bar under the like/dislike buttons that shows the ratio of likes to dislikes)
@@ -6121,15 +6129,16 @@ const featInfo = {
         category: "general",
         click: () => doVersionCheck(true),
     },
-    logLevel: {
+    numbersFormat: {
         type: "select",
-        category: "general",
+        category: "layout",
         options: () => [
-            { value: 0, label: t("log_level_debug") },
-            { value: 1, label: t("log_level_info") },
+            { value: "long", label: `${formatNumber(12345678, "long")} (${t("votes_format_long")})` },
+            { value: "short", label: `${formatNumber(12345678, "short")} (${t("votes_format_short")})` },
         ],
-        default: 1,
-        textAdornment: adornments.reloadRequired,
+        default: "short",
+        reloadRequired: false,
+        enable: noop,
     },
     toastDuration: {
         type: "slider",
@@ -6159,6 +6168,16 @@ const featInfo = {
         type: "button",
         category: "general",
         click: promptResetConfig,
+        textAdornment: adornments.reloadRequired,
+    },
+    logLevel: {
+        type: "select",
+        category: "general",
+        options: () => [
+            { value: 0, label: t("log_level_debug") },
+            { value: 1, label: t("log_level_info") },
+        ],
+        default: 1,
         textAdornment: adornments.reloadRequired,
     },
     advancedMode: {
@@ -6230,7 +6249,7 @@ const migrations = {
             "autoLikeChannels", "autoLikeChannelToggleBtn",
             "autoLikeTimeout", "autoLikeShowToast",
             "autoLikeOpenMgmtDialog", "showVotes",
-            "showVotesFormat", "toastDuration",
+            "numbersFormat", "toastDuration",
             "initTimeout",
             // forgot to add this to the migration when adding the feature way before so now will have to do:
             "volumeSliderLabel",
@@ -6255,6 +6274,13 @@ const migrations = {
         ]);
         newData.arrowKeySkipBy = UserUtils.clamp(newData.arrowKeySkipBy, 0.5, 30);
         return newData;
+    },
+    8: (oldData) => {
+        if ("showVotesFormat" in oldData) {
+            oldData.numbersFormat = oldData.showVotesFormat;
+            delete oldData.showVotesFormat;
+        }
+        return oldData;
     },
 };
 /** Uses the default config as the base, then overwrites all values with the passed {@linkcode baseData}, then sets all passed {@linkcode resetKeys} to their default values */
@@ -6429,6 +6455,8 @@ const globalFuncs = {
     showToast,
     showIconToast,
     showPrompt,
+    // other:
+    formatNumber,
 };
 /** Initializes the BYTM interface */
 function initInterface() {
