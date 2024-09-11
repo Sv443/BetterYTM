@@ -5,7 +5,7 @@ import { emitSiteEvent } from "./siteEvents.js";
 import { compressionFormat, mode } from "./constants.js";
 import { emitInterface } from "./interface.js";
 import { closeCfgMenu } from "./menu/menu_old.js";
-import type { FeatureConfig, FeatureKey } from "./types.js";
+import type { FeatureConfig, FeatureKey, NumberLength } from "./types.js";
 import { showPrompt } from "./dialogs/prompt.js";
 
 /** If this number is incremented, the features object data will be migrated to the new format */
@@ -77,7 +77,7 @@ export const migrations: DataMigrationsDict = {
         "autoLikeChannels", "autoLikeChannelToggleBtn",
         "autoLikeTimeout", "autoLikeShowToast",
         "autoLikeOpenMgmtDialog", "showVotes",
-        "showVotesFormat", "toastDuration",
+        "numbersFormat", "toastDuration",
         "initTimeout",
         // forgot to add this to the migration when adding the feature way before so now will have to do:
         "volumeSliderLabel",
@@ -107,6 +107,13 @@ export const migrations: DataMigrationsDict = {
     );
     newData.arrowKeySkipBy = clamp(newData.arrowKeySkipBy, 0.5, 30);
     return newData;
+  },
+  8: (oldData: FeatureConfig) => {
+    if("showVotesFormat" in oldData) {
+      oldData.numbersFormat = oldData.showVotesFormat as NumberLength;
+      delete oldData.showVotesFormat;
+    }
+    return oldData;
   },
 } as const satisfies DataMigrationsDict;
 

@@ -259,7 +259,7 @@ These are the ways to interact with BetterYTM; through constants, events and glo
 
 - Another way of dynamically interacting is through global functions, which are also exposed by BetterYTM through the global `BYTM` object.  
   You can find all functions that are available in the `InterfaceFunctions` type in [`src/types.ts`](src/types.ts)  
-  There is also a summary with examples [below.](#global-functions)  
+  [**Find a summary with examples below.**](#global-functions-and-classes)  
 
 - Additionally, the following namespaces expose entire libraries for you that BetterYTM has already loaded in:
   - `unsafeWindow.BYTM.UserUtils` contains all exported members from the [UserUtils library.](https://github.com/Sv443-Network/UserUtils)  
@@ -338,7 +338,7 @@ unsafeWindow.addEventListener("bytm:siteEvent:queueChanged", (event) => {
 
 <br>
 
-**For global function examples [see below.](#global-functions)**
+**For global function examples [see below.](#global-functions-and-classes)**
 
 <br><br>
 
@@ -367,7 +367,11 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 ### Global functions and classes:
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
-Functions marked with 🔒 need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
+  
+> [!NOTE]  
+> Authenticated functions are marked with 🔒 and need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
+
+<br>
   
 - Meta:
   - [registerPlugin()](#registerplugin) - Registers a plugin with BetterYTM with the given plugin definition object
@@ -380,7 +384,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [BytmDialog](#bytmdialog) - A class for creating and managing modal, fully customizable dialogs
   - [ExImDialog](#eximdialog) - Subclass of BytmDialog for allowing users to export and import serializable data
   - [MarkdownDialog](#markdowndialog) - Subclass of BytmDialog for displaying markdown content
-  - [setInnerHtml()](#setInnerHtml) - Sets the innerHTML property of the specified element to the provided string, after sanitizing it (for compatibility with the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API))
+  - [setInnerHtml()](#setinnerhtml) - Sets the innerHTML property of an element after sanitizing the string with [DOMPurify](https://github.com/cure53/DOMPurify) and [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API)
   - [addSelectorListener()](#addselectorlistener) - Adds a listener that checks for changes in DOM elements matching a CSS selector
   - [onInteraction()](#oninteraction) - Adds accessible event listeners to the specified element for button or link-like keyboard and mouse interactions
   - [getVideoTime()](#getvideotime) - Returns the current video time (on both YT and YTM)
@@ -420,6 +424,7 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
   - [fetchVideoVotes()](#fetchvideovotes) - Fetches the approximate like and dislike count for the video with the specified ID
 - Other:
   - [NanoEmitter](#nanoemitter) - Abstract class for creating lightweight, type safe event emitting classes
+  - [formatNumber](#formatnumber) - Formats a number with the configured locale and passed or configured format
 
 <br><br>
 
@@ -450,23 +455,23 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > ```ts
 > // Search for "type PluginDef" in "src/types.ts" to see the whole type
 > const pluginDef = {
->   plugin: {                                         // required
+>   plugin: { // required
 >     // The name and namespace should combine to be unique across all plugins
 >     // Also, you should never change them after releasing the plugin, so other plugins can rely on them as an identifier
 >     name: "My cool plugin",                         // required
 >     namespace: "https://www.github.com/MyUsername", // required
 >     version: "4.2.0",                               // required
->     description: {                               // required
+>     iconUrl: "https://picsum.photos/128/128",       // required
+>     description: { // required
 >       en_US: "This plugin does cool stuff",      // required
 >       de_DE: "Dieses Plugin macht coole Sachen", // (all other locales are optional)
 >       // (see all supported locale codes in "assets/locales.json")
 >     },
->     iconUrl: "https://picsum.photos/128/128", // required
->     license: {                                    // (optional)
->       name: "MIT",                                // required
->       url: "https://opensource.org/licenses/MIT", // required
+>     license: { // (optional)
+>       name: "MIT",                                // both required
+>       url: "https://opensource.org/licenses/MIT", // both required
 >     },
->     homepage: {                                                     // required
+>     homepage: { // required
 >       source: "https://github.com/MyUsername/MyCoolBYTMPlugin",     // required
 >       other: "https://example.org/MyCoolBYTMPlugin",                // (optional)
 >       bug: "https://github.com/MyUsername/MyCoolBYTMPlugin/issues", // (optional)
@@ -1387,75 +1392,6 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 
 <br>
 
-> #### NanoEmitter
-> Usage:  
-> ```ts
-> new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
-> ```
->   
-> Abstract class that can be extended to create custom event emitting classes.  
-> The methods are fully typed through the generic `TEventMap`, which is an object map of event names to a callback function signature (the type is `Record<string, (...args: any) => void>`)  
-> 
-> <br>
-> 
-> Settings properties:  
-> | Property | Description |
-> | :--- | :--- |
-> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method `emit()`<br>If false, the only way to emit events is inside your derived class using `this.events.emit()` |
-> 
-> <br>
-> 
-> Methods:
-> - `on(event: string, callback: Function<any>): Function`  
->   Registers a callback for the specified event.  
->   Returns a function that can be called to unsubscribe from the event at any time.
-> - `once(event: string, callback?: Function<any>): Promise<any[]>`  
->   Registers a callback for the specified event that gets called only once.  
->   The callback is called and the Promise is resolved at the same time.
-> - `emit(event: string, ...args: any[]): boolean`  
->   Emits the specified event with the passed arguments.  
->   Has to be enabled through the `publicEmit` option in the constructor first!  
->   Returns true if the event was emitted successfully, false if not.
-> - `unsubscribeAll(): void`  
->   Unsubscribes all listeners from all events and clears the internal listener map.
-> 
-> <details><summary><b>Example <i>(click to expand)</i></b></summary>
-> 
-> ```ts
-> interface MyEvents {
->   /** Emitted when the foo is bar */
->   foo: (bar: string) => void;
-> }
-> 
-> class MyEmitter extends unsafeWindow.BYTM.NanoEmitter<MyEvents> {
->   constructor() {
->     // allow calling emit() from outside this class instance
->     super({ publicEmit: true });
->   }
-> 
->   public doSomething() {
->     this.emit("foo", "baz");
->   }
-> }
-> 
-> function run() {
->   const emitter = new MyEmitter();
-> 
->   emitter.on("foo", (bar) => {
->     //                ^ automatically typed as string
->     console.log(`The bar is ${bar}`);
->   });
-> 
->   // will log "The bar is baz" to the console, see above
->   emitter.doSomething();
-> }
-> 
-> run();
-> ```
-> </details>
-
-<br>
-
 > #### BytmDialog
 > Usage:  
 > ```ts
@@ -2071,6 +2007,101 @@ Functions marked with 🔒 need to be passed a per-session and per-plugin authen
 > </details>
 
 <br>
+
+> #### formatNumber()
+> Usage:
+> ```ts
+> unsafeWindow.BYTM.formatNumber(num: number, notation?: "short" | "long"): string
+> ```
+>   
+> Formats a number according to the configured locale and notation (unless specified).  
+> The default notation can be found in `numbersFormat` in `src/features/index.ts`  
+>   
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> const { formatNumber, setLocale } = unsafeWindow.BYTM;
+> 
+> // (underscores in numbers are ignored in JS/TS)
+> const num = 123_456_789;
+> 
+> setLocale(myToken, "de_DE");             // German's commas and dots are swapped:
+> console.log(formatNumber(num, "short")); // 123,5 Mio.
+> console.log(formatNumber(num, "long"));  // 123.456.789
+> 
+> setLocale(myToken, "hi_HI");             // In Hindi it's a bit different:
+> console.log(formatNumber(num, "long"));  // 12,34,56,789
+> ```
+> </details>
+
+<br>
+
+> #### NanoEmitter
+> Usage:  
+> ```ts
+> new unsafeWindow.BYTM.NanoEmitter<TEventMap>(settings: NanoEmitterSettings): NanoEmitter
+> ```
+>   
+> Abstract class that can be extended to create custom event emitting classes.  
+> The methods are fully typed through the generic `TEventMap`, which is an object map of event names to a callback function signature (the type is `Record<string, (...args: any) => void>`)  
+> 
+> <br>
+> 
+> Settings properties:  
+> | Property | Description |
+> | :--- | :--- |
+> | `publicEmit?: boolean` | If set to true, allows emitting events through the public method `emit()`<br>If false, the only way to emit events is inside your derived class using `this.events.emit()` |
+> 
+> <br>
+> 
+> Methods:
+> - `on(event: string, callback: Function<any>): Function`  
+>   Registers a callback for the specified event.  
+>   Returns a function that can be called to unsubscribe from the event at any time.
+> - `once(event: string, callback?: Function<any>): Promise<any[]>`  
+>   Registers a callback for the specified event that gets called only once.  
+>   The callback is called and the Promise is resolved at the same time.
+> - `emit(event: string, ...args: any[]): boolean`  
+>   Emits the specified event with the passed arguments.  
+>   Has to be enabled through the `publicEmit` option in the constructor first!  
+>   Returns true if the event was emitted successfully, false if not.
+> - `unsubscribeAll(): void`  
+>   Unsubscribes all listeners from all events and clears the internal listener map.
+> 
+> <details><summary><b>Example <i>(click to expand)</i></b></summary>
+> 
+> ```ts
+> interface MyEvents {
+>   /** Emitted when the foo is bar */
+>   foo: (bar: string) => void;
+> }
+> 
+> class MyEmitter extends unsafeWindow.BYTM.NanoEmitter<MyEvents> {
+>   constructor() {
+>     // allow calling emit() from outside this class instance
+>     super({ publicEmit: true });
+>   }
+> 
+>   public doSomething() {
+>     this.emit("foo", "baz");
+>   }
+> }
+> 
+> function run() {
+>   const emitter = new MyEmitter();
+> 
+>   emitter.on("foo", (bar) => {
+>     //                ^ automatically typed as string
+>     console.log(`The bar is ${bar}`);
+>   });
+> 
+>   // will log "The bar is baz" to the console, see above
+>   emitter.doSomething();
+> }
+> 
+> run();
+> ```
+> </details>
 
 
 <br><br><br><br><br><br>

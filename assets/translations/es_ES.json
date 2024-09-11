@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "Verde y rojo",
     "vote_ratio_blue_gray": "Azul y gris",
 
-    "votes_format_short": "Corto",
-    "votes_format_long": "Número completo",
+    "votes_format_short": "Corto: %1",
+    "votes_format_long": "Completo: %1",
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
@@ -252,7 +252,7 @@
     "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
     "feature_desc_showVotes": "Mostrar la cantidad de me gusta y no me gusta en la canción que se está reproduciendo actualmente",
     "feature_helptext_showVotes": "Esta función está alimentada por Return YouTube Dislike y mostrará la cantidad aproximada de me gusta y no me gusta en la canción que se está reproduciendo actualmente.",
-    "feature_desc_showVotesFormat": "¿Cómo deberían formatearse los me gusta y no me gusta?",
+    "feature_desc_numbersFormat": "¿Cómo deberían formatearse los me gusta y no me gusta?",
 
     "feature_desc_volumeSliderLabel": "Agregue una etiqueta de porcentaje junto al control deslizante de volumen",
     "feature_desc_volumeSliderSize": "El ancho del control deslizante de volumen en píxeles",

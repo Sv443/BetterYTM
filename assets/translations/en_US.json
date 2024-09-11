@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "Green and red",
     "vote_ratio_blue_gray": "Blue and gray",
 
-    "votes_format_short": "Shortened",
-    "votes_format_long": "Full number",
+    "votes_format_short": "Short: %1",
+    "votes_format_long": "Full: %1",
 
     "unit_entries-1": "entry",
     "unit_entries-n": "entries",
@@ -252,7 +252,7 @@
     "feature_desc_fixHdrIssues": "Prevent some rendering issues when using an HDR-compatible GPU and monitor",
     "feature_desc_showVotes": "Show the amount of likes and dislikes on the currently playing song",
     "feature_helptext_showVotes": "This feature is powered by Return YouTube Dislike and will show the approximate amount of likes and dislikes on the currently playing song.",
-    "feature_desc_showVotesFormat": "How should the likes and dislikes be formatted?",
+    "feature_desc_numbersFormat": "How should the likes and dislikes be formatted?",
 
     "feature_desc_volumeSliderLabel": "Add a percentage label next to the volume slider",
     "feature_desc_volumeSliderSize": "The width of the volume slider in pixels",

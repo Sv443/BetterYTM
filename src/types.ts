@@ -2,8 +2,6 @@ import type { NanoEmitter, Stringifiable } from "@sv443-network/userutils";
 import type * as consts from "./constants.js";
 import type { scriptInfo } from "./constants.js";
 import type { addSelectorListener } from "./observers.js";
-import type resources from "../assets/resources.json";
-import type locales from "../assets/locales.json";
 import type { getResourceUrl, getSessionId, getVideoTime, TrLocale, t, tp, fetchVideoVotes, onInteraction, getThumbnailUrl, getBestThumbnailUrl, getLocale, hasKey, hasKeyFor, getDomain, waitVideoElementReady, setInnerHtml, getCurrentMediaType, tl, tlp, formatNumber } from "./utils/index.js";
 import type { SiteEventsMap } from "./siteEvents.js";
 import type { InterfaceEventsMap, getAutoLikeDataInterface, getFeaturesInterface, getPluginInfo, saveAutoLikeDataInterface, saveFeaturesInterface, setLocaleInterface } from "./interface.js";
@@ -11,6 +9,8 @@ import type { BytmDialog, ExImDialog, createCircularBtn, createHotkeyInput, crea
 import type { fetchLyricsUrlTop, sanitizeArtists, sanitizeSong } from "./features/lyrics.js";
 import type { getLyricsCacheEntry } from "./features/lyricsCache.js";
 import type { showPrompt } from "./dialogs/prompt.js";
+import type resources from "../assets/resources.json";
+import type locales from "../assets/locales.json";
 
 //#region other
 
@@ -104,7 +104,7 @@ export type VideoVotesObj = {
   timestamp: number;
 };
 
-export type NumberNotation = "short" | "long";
+export type NumberLength = "short" | "long";
 
 export type ColorLightness = "darker" | "normal" | "lighter";
 
@@ -516,7 +516,7 @@ export interface FeatureConfig {
   /** Whether to show the like/dislike ratio on the currently playing song */
   showVotes: boolean;
   /** Which format to use for the like/dislike ratio on the currently playing song */
-  showVotesFormat: NumberNotation;
+  numbersFormat: NumberLength;
 
   //#region volume
   /** Add a percentage label to the volume slider */

@@ -2,11 +2,11 @@ import { addParent, autoPlural, debounce, fetchAdvanced, pauseFor } from "@sv443
 import { getFeature, getFeatures } from "../config.js";
 import { siteEvents } from "../siteEvents.js";
 import { addSelectorListener } from "../observers.js";
-import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, getLocale, tp, getVideoTime, setInnerHtml } from "../utils/index.js";
+import { error, getResourceUrl, log, warn, t, onInteraction, openInTab, getBestThumbnailUrl, getDomain, getCurrentMediaType, domLoaded, waitVideoElementReady, addStyleFromResource, fetchVideoVotes, getWatchId, tp, getVideoTime, setInnerHtml, formatNumber } from "../utils/index.js";
 import { mode, scriptInfo } from "../constants.js";
 import { openCfgMenu } from "../menu/menu_old.js";
 import { createCircularBtn, createRipple } from "../components/index.js";
-import type { NumberNotation, ResourceKey, VideoVotesObj } from "../types.js";
+import type { ResourceKey, VideoVotesObj } from "../types.js";
 import "./layout.css";
 import { showPrompt } from "src/dialogs/prompt.js";
 
@@ -762,14 +762,14 @@ export async function initShowVotes() {
             if(!voteObj || !("likes" in voteObj) || !("dislikes" in voteObj) || !("rating" in voteObj))
               return error("Couldn't fetch votes from the Return YouTube Dislike API");
 
-            const likesLabelText = tp("vote_label_likes", voteObj.likes, formatVoteNumber(voteObj.likes, "long"));
-            const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatVoteNumber(voteObj.dislikes, "long"));
+            const likesLabelText = tp("vote_label_likes", voteObj.likes, formatNumber(voteObj.likes, "long"));
+            const dislikesLabelText = tp("vote_label_dislikes", voteObj.dislikes, formatNumber(voteObj.dislikes, "long"));
 
             labelLikes.dataset.watchId = getWatchId() ?? "";
-            labelLikes.textContent = formatVoteNumber(voteObj.likes);
+            labelLikes.textContent = formatNumber(voteObj.likes);
             labelLikes.title = labelLikes.ariaLabel = likesLabelText;
 
-            labelDislikes.textContent = formatVoteNumber(voteObj.dislikes);
+            labelDislikes.textContent = formatNumber(voteObj.dislikes);
             labelDislikes.title = labelDislikes.ariaLabel = dislikesLabelText;
             labelDislikes.dataset.watchId = getWatchId() ?? "";
 
@@ -796,8 +796,8 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   const createLabel = (amount: number, type: "likes" | "dislikes"): HTMLElement => {
     const label = document.createElement("span");
     label.classList.add("bytm-vote-label", "bytm-no-select", type);
-    label.textContent = String(formatVoteNumber(amount));
-    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatVoteNumber(amount, "long"));
+    label.textContent = String(formatNumber(amount));
+    label.title = label.ariaLabel = tp(`vote_label_${type}`, amount, formatNumber(amount, "long"));
     label.dataset.watchId = getWatchId() ?? "";
     label.addEventListener("click", (e) => {
       e.preventDefault();
@@ -819,23 +819,6 @@ function addVoteNumbers(voteCont: HTMLElement, voteObj: VideoVotesObj) {
   upsertVoteBtnLabels(voteCont, likeLblEl.title, dislikeLblEl.title);
 
   log("Added vote number labels to like and dislike buttons");
-}
-
-/** Formats a number formatted based on the config or the passed {@linkcode notation} */
-function formatVoteNumber(num: number, notation?: NumberNotation) {
-  return num.toLocaleString(
-    getLocale().replace(/_/g, "-"),
-    (notation ?? getFeature("showVotesFormat")) === "short"
-      ? {
-        notation: "compact",
-        compactDisplay: "short",
-        maximumFractionDigits: 1,
-      }
-      : {
-        style: "decimal",
-        maximumFractionDigits: 0,
-      },
-  );
 }
 
 /** Updates or inserts the labels on the native like and dislike buttons */

@@ -186,8 +186,8 @@
     "vote_ratio_green_red": "Verde e vermelho",
     "vote_ratio_blue_gray": "Azul e cinza",
 
-    "votes_format_short": "Abreviado",
-    "votes_format_long": "Número completo",
+    "votes_format_short": "Curto: %1",
+    "votes_format_long": "Completo: %1",
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
@@ -252,7 +252,7 @@
     "feature_desc_fixHdrIssues": "Corrigir problemas de renderização ao usar um GPU e monitor compatíveis com HDR",
     "feature_desc_showVotes": "Mostrar a quantidade de curtidas e descurtidas na música que está tocando atualmente",
     "feature_helptext_showVotes": "Este recurso é alimentado pelo Return YouTube Dislike e mostrará a quantidade aproximada de curtidas e descurtidas na música que está tocando atualmente.",
-    "feature_desc_showVotesFormat": "Como as curtidas e descurtidas devem ser formatadas?",
+    "feature_desc_numbersFormat": "Como as curtidas e descurtidas devem ser formatadas?",
 
     "feature_desc_volumeSliderLabel": "Adicionar um rótulo de porcentagem ao lado do controle de volume",
     "feature_desc_volumeSliderSize": "A largura do controle deslizante de volume em pixels",
