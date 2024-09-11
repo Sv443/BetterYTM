@@ -44,6 +44,7 @@
   - Fixed thumbnail overlay not updating in fullscreen mode and in the mini player
   - Fixed video time restoring breaking after pausing for a longer time
   - Fixed toasts being shown with a 1000x higher duration than intended
+  - Fixed volume slider features not working on the reduced size layout for screens with <1150px width
 
 <details><summary>Click to expand internal and plugin changes</summary>
 
