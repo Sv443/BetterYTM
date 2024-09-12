@@ -2247,7 +2247,7 @@ ytmusic-responsive-list-item-renderer.bytm-has-queue-btns:focus-within
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0%,
-    var(--bytm-slider-label-bg-col) 25%
+    var(--bytm-slider-label-bg-col) 20%
   );
   font-size: 1.4rem;
   text-align: right;
