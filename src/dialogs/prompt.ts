@@ -63,6 +63,10 @@ class PromptDialog extends BytmDialog {
     });
   }
 
+  protected emitResolve(val: PromptDialogResolveVal) {
+    (this.events as PromptDialogEmitter).emit("resolve", val);
+  }
+
   protected async renderHeader({ type }: PromptDialogRenderProps) {
     const headerEl = document.createElement("div");
     headerEl.id = "bytm-prompt-dialog-header";
@@ -97,6 +101,17 @@ class PromptDialog extends BytmDialog {
       inputElem.value = "defaultValue" in rest ? rest.defaultValue ?? "" : "";
       inputElem.autofocus = true;
 
+      const inputEnterListener = (e: KeyboardEvent) => {
+        if(e.key === "Enter") {
+          inputElem.removeEventListener("keydown", inputEnterListener);
+          this.emitResolve(inputElem?.value?.trim() ?? null);
+          promptDialog?.close();
+        }
+      };
+
+      inputElem.addEventListener("keydown", inputEnterListener);
+      promptDialog?.once("close", () => inputElem.removeEventListener("keydown", inputEnterListener));
+
       upperContElem.appendChild(inputElem);
     }
 
@@ -104,8 +119,6 @@ class PromptDialog extends BytmDialog {
   }
 
   protected async renderFooter({ type, ...rest }: PromptDialogRenderProps) {
-    const emitResolve = (val: PromptDialogResolveVal) => (this.events as PromptDialogEmitter).emit("resolve", val);
-
     const buttonsWrapper = document.createElement("div");
     buttonsWrapper.id = "bytm-prompt-dialog-button-wrapper";
 
@@ -120,9 +133,9 @@ class PromptDialog extends BytmDialog {
       confirmBtn.textContent = await this.consumePromptStringGen(type, rest.confirmBtnText, t("prompt_confirm"));
       confirmBtn.ariaLabel = confirmBtn.title = await this.consumePromptStringGen(type, rest.confirmBtnTooltip, t("click_to_confirm_tooltip"));
       confirmBtn.tabIndex = 0;
-      confirmBtn.autofocus = true;
+      confirmBtn.autofocus = type !== "prompt";
       confirmBtn.addEventListener("click", () => {
-        emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
+        this.emitResolve(type === "confirm" ? true : (document.querySelector<HTMLInputElement>("#bytm-prompt-dialog-input"))?.value?.trim() ?? null);
         promptDialog?.close();
       }, { once: true });
     }
@@ -141,7 +154,7 @@ class PromptDialog extends BytmDialog {
         confirm: false,
         prompt: null,
       };
-      emitResolve(resVals[type]);
+      this.emitResolve(resVals[type]);
       promptDialog?.close();
     }, { once: true });
 
