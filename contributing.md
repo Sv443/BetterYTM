@@ -31,7 +31,7 @@ Before submitting a translation, please check on [this document](https://github.
 <br>
 
 #### Adding translations for a new language:
-> [!NOTE]
+> [!IMPORTANT]
 > 
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**  
   
@@ -56,7 +56,7 @@ To submit a translation, please follow these steps:
 <br>
 
 #### Editing an existing translation:
-> [!NOTE]
+> [!IMPORTANT]
 > 
 > **Please make sure you always select the `develop` branch when translating, as the `main` branch is only used for releases.**
 To edit an existing translation, please follow these steps:
@@ -225,6 +225,11 @@ The main files you will be working with are:
 BetterYTM has a built-in interface based on events and exposed global constants and functions that allows other "plugin" userscripts to benefit from its features.  
 If you want your plugin to be displayed in the readme and possibly inside the userscript itself, please [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose)  
   
+> [!TIP]  
+> Want to quickly get started with a plugin? **Check out the [official plugin template.](https://github.com/Sv443/BetterYTM-Plugin-Template)**  
+> It is based on Vite and TypeScript and has all the necessary setup for you to start developing a plugin right away.  
+> It also contains some small examples to show you how to interact with the BYTM API.  
+  
 <br>
 
 **Required knowledge:**
@@ -240,6 +245,7 @@ If you want your plugin to be displayed in the readme and possibly inside the us
   This is especially regarding the files `src/interface.ts`, `src/types.ts`, `src/siteEvents.ts` and `src/observers.ts`
 - Being on the lookout for pull requests, since they will list new features and changes to the interface that you probably want to prepare for
 - This document, as it contains most of the information you need to know about the BetterYTM interface, or at least points you to the places where you can find the actual information
+- The [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start with a plugin
 - The fact you can [join my Discord server](https://dc.sv443.net) to ask questions or get help with writing your plugin
   
 <br>
@@ -368,7 +374,7 @@ An easy way to do this might be to include BetterYTM as a Git submodule, as long
 These are the global functions and classes that are exposed by BetterYTM through the `unsafeWindow.BYTM` object.  
 The usage and example blocks on each are written in TypeScript but can be used in JavaScript as well, after removing all type annotations.  
   
-> [!NOTE]  
+> [!IMPORTANT]  
 > Authenticated functions are marked with 🔒 and need to be passed a per-session and per-plugin authentication token. It can be acquired by calling [registerPlugin()](#registerplugin)  
 
 <br>
