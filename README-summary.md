@@ -84,6 +84,7 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
+Check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start.  
   
 <!-- <{{PLUGINS}}> -->
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->

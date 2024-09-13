@@ -87,6 +87,7 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
+Check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start.  
   
 <!-- <{{PLUGINS}}> -->
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
@@ -101,7 +102,7 @@ Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-
 If you have any questions, issues, or feature requests, please [open an issue here.](https://github.com/Sv443/BetterYTM/issues/new/choose)  
 You can also join my Discord server and ask your questions there or just hang out with other community members and me:  
   
-[![Discord](https://img.shields.io/discord/565933531214118942)](https://discord.gg/aBH4uRG)
+[![Discord](https://img.shields.io/discord/565933531214118942)](https://dc.sv443.net/)
 
 <br><br>
 
