@@ -201,7 +201,8 @@
     "color_lightness_lighter": "हल्का",
 
     "plugin_list_title": "प्लगइन सूची",
-    "plugin_list_no_plugins": "वर्तमान में कोई प्लगइन स्थापित नहीं हैं।",
+    "plugin_list_no_plugins": "कोई प्लगइन वर्तमान में स्थापित नहीं हैं।\nअधिक जानकारी के लिए %1इस पृष्ठ%2 पर जाएं।",
+    "plugin_list_no_plugins_tooltip": "कोई प्लगइन वर्तमान में स्थापित नहीं हैं।",
     "plugin_list_permissions_header": "अनुमतियाँ:",
 
     "plugin_link_type_source": "संग्रह",

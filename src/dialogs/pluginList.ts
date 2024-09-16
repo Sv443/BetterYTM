@@ -1,7 +1,9 @@
 import { BytmDialog } from "../components/index.js";
 import { getRegisteredPlugins } from "../interface.js";
 import { getLocale, t } from "../utils/translations.js";
+import { setInnerHtml } from "../utils/dom.js";
 import { PluginIntent } from "../types.js";
+import packageJson from "../../package.json" with { type: "json" };
 import "./pluginList.css";
 
 let pluginListDialog: BytmDialog | null = null;
@@ -44,7 +46,8 @@ async function renderBody() {
     const noPluginsEl = document.createElement("div");
     noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
     noPluginsEl.tabIndex = 0;
-    noPluginsEl.textContent = noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins");
+    setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+    noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
     listContainerEl.appendChild(noPluginsEl);
     return listContainerEl;
   }

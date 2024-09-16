@@ -201,7 +201,8 @@
     "color_lightness_lighter": "Mais claro",
 
     "plugin_list_title": "Lista de plugins",
-    "plugin_list_no_plugins": "Nenhum plugin está atualmente instalado.",
+    "plugin_list_no_plugins": "Nenhum plugin está atualmente instalado.\nVisite %1esta página%2 para mais informações.",
+    "plugin_list_no_plugins_tooltip": "Nenhum plugin está atualmente instalado.",
     "plugin_list_permissions_header": "Permissões:",
 
     "plugin_link_type_source": "Repositório",
