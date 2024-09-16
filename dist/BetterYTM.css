@@ -945,6 +945,7 @@ body .bytm-ripple.slower {
   font-size: 1.7rem;
   text-align: center;
   padding: var(--bytm-plugin-list-row-padding-ver) 0px;
+  white-space: pre-wrap;
 }
 
 .bytm-plugin-list-row {

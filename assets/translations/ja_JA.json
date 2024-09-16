@@ -201,7 +201,8 @@
     "color_lightness_lighter": "明るい",
 
     "plugin_list_title": "プラグインリスト",
-    "plugin_list_no_plugins": "現在インストールされているプラグインはありません。",
+    "plugin_list_no_plugins": "現在インストールされているプラグインはありません。\n詳細については %1このページ%2 をご覧ください。",
+    "plugin_list_no_plugins_tooltip": "現在インストールされているプラグインはありません。",
     "plugin_list_permissions_header": "権限：",
 
     "plugin_link_type_source": "リポジトリ",

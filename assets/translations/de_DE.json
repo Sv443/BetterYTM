@@ -201,7 +201,8 @@
     "color_lightness_lighter": "Heller",
 
     "plugin_list_title": "Plugin-Liste",
-    "plugin_list_no_plugins": "Momentan sind keine Plugins installiert.",
+    "plugin_list_no_plugins": "Derzeit sind keine Plugins installiert.\nBesuche %1diese Seite%2 für mehr Informationen.",
+    "plugin_list_no_plugins_tooltip": "Derzeit sind keine Plugins installiert.",
     "plugin_list_permissions_header": "Berechtigungen:",
 
     "plugin_link_type_source": "Quellcode",
