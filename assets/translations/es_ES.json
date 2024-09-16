@@ -154,6 +154,7 @@
     "auto_like": "Me gusta automático",
     "auto_like_button_tooltip_enabled": "Haga clic para deshabilitar el me gusta automático. Haga clic con Mayús para abrir el diálogo de administración.",
     "auto_like_button_tooltip_disabled": "Haga clic para habilitar el me gusta automático. Haga clic con Mayús para abrir el diálogo de administración.",
+    "auto_like_channel_toggle_tooltip": "Alternar el me gusta automático para el canal %1",
     "add_auto_like_channel_id_prompt": "Ingrese el ID de usuario (@Nombre / UC...) o la URL completa del canal que desea dar me gusta automáticamente.\nPresione \"cancelar\" para salir.",
     "add_auto_like_channel_invalid_id": "El ID de usuario ingresado no es válido.\n¡Asegúrese de copiar la URL completa del canal! Debería contener una parte como \"channel/UC...\" o \"/@...\"",
     "add_auto_like_channel_already_exists_prompt_new_name": "Ya hay un canal con ese ID en la lista.\n¿Quieres cambiar el nombre?",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "Verde y rojo",
     "vote_ratio_blue_gray": "Azul y gris",
 
-    "votes_format_short": "Corto: %1",
-    "votes_format_long": "Completo: %1",
+    "votes_format_short": "Corto",
+    "votes_format_long": "Largo",
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
@@ -252,7 +253,7 @@
     "feature_desc_fixHdrIssues": "Prevenir algunos problemas de renderizado al usar una GPU y un monitor compatibles con HDR",
     "feature_desc_showVotes": "Mostrar la cantidad de me gusta y no me gusta en la canción que se está reproduciendo actualmente",
     "feature_helptext_showVotes": "Esta función está alimentada por Return YouTube Dislike y mostrará la cantidad aproximada de me gusta y no me gusta en la canción que se está reproduciendo actualmente.",
-    "feature_desc_numbersFormat": "¿Cómo deberían formatearse los me gusta y no me gusta?",
+    "feature_desc_numbersFormat": "¿Cómo deberían formatearse los números?",
 
     "feature_desc_volumeSliderLabel": "Agregue una etiqueta de porcentaje junto al control deslizante de volumen",
     "feature_desc_volumeSliderSize": "El ancho del control deslizante de volumen en píxeles",

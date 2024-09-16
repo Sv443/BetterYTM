@@ -88,6 +88,7 @@ class PromptDialog extends BytmDialog {
     const messageElem = document.createElement("p");
     messageElem.id = "bytm-prompt-dialog-message";
     messageElem.role = "alert";
+    messageElem.ariaLive = "polite";
     messageElem.tabIndex = 0;
     messageElem.textContent = String(message);
     upperContElem.appendChild(messageElem);

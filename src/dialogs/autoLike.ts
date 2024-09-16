@@ -204,6 +204,7 @@ async function renderBody() {
       onChange: (en) => setChannelEnabled(chanId, en),
     });
     toggleElem.classList.add("bytm-auto-like-channel-toggle");
+    toggleElem.title = toggleElem.ariaLabel = t("auto_like_channel_toggle_tooltip", chanName);
 
     const btnCont = document.createElement("div");
     btnCont.classList.add("bytm-auto-like-channel-row-btn-cont");

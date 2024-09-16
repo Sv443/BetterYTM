@@ -74,6 +74,7 @@ export function createHotkeyInput({ initialValue, onChange, createTitle }: Hotke
     inputElem.innerText = initialValue!.code;
     setInnerHtml(infoElem, getHotkeyInfoHtml(initialValue!));
     resetElem.classList.add("bytm-hidden");
+    inputElem.ariaLabel = inputElem.title = createTitle(hotkeyToString(initialValue));
   };
 
   onInteraction(resetElem, resetClicked);

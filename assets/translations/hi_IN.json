@@ -154,6 +154,7 @@
     "auto_like": "ऑटो-पसंद",
     "auto_like_button_tooltip_enabled": "ऑटो-पसंद को अक्षम करने के लिए क्लिक करें। शिफ्ट-क्लिक करने पर प्रबंधन संवाद खोलें।",
     "auto_like_button_tooltip_disabled": "ऑटो-पसंद को सक्षम करने के लिए क्लिक करें। शिफ्ट-क्लिक करने पर प्रबंधन संवाद खोलें।",
+    "auto_like_channel_toggle_tooltip": "चैनल %1 के लिए ऑटो-पसंद को सक्षम/अक्षम करें",
     "add_auto_like_channel_id_prompt": "उस चैनल का उपयोगकर्ता आईडी (@नाम / यूसी...) या पूरा यूआरएल दर्ज करें जिसे आप स्वतः पसंद करना चाहते हैं।\nबाहर निकलने के लिए \"रद्द करें\" दबाएँ।",
     "add_auto_like_channel_invalid_id": "दर्ज किया गया उपयोगकर्ता आईडी अमान्य है।\nकृपया सुनिश्चित करें कि आपने पूरा चैनल यूआरएल कॉपी किया है! इसमें \"चैनल/UC...\" या \"/@...\" जैसा भाग होना चाहिए",
     "add_auto_like_channel_already_exists_prompt_new_name": "उस चैनल का नाम पहले से ही सूची में है।\nक्या आप नाम बदलना चाहते हैं?",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "हरा और लाल",
     "vote_ratio_blue_gray": "नीला और ग्रे",
 
-    "votes_format_short": "लघु: %1",
-    "votes_format_long": "दीर्घ: %1",
+    "votes_format_short": "छोटा",
+    "votes_format_long": "लंबा",
 
     "unit_entries-1": "विषय",
     "unit_entries-n": "विषय",
@@ -252,7 +253,7 @@
     "feature_desc_fixHdrIssues": "एचडीआर-संगत जीपीयू और मॉनिटर का उपयोग करते समय कुछ रेंडरिंग समस्याओं को रोकें",
     "feature_desc_showVotes": "वर्तमान गाने पर लाइक और नापसंद की संख्या दिखाएं",
     "feature_helptext_showVotes": "यह सुविधा Return YouTube Dislike द्वारा संचालित है और वर्तमान गाने पर लाइक और नापसंद की लगभग संख्या दिखाएगी।",
-    "feature_desc_numbersFormat": "लाइक और नापसंद को कैसे स्वरूपित किया जाना चाहिए?",
+    "feature_desc_numbersFormat": "संख्याएँ कैसे स्वरूपित की जाएं?",
 
     "feature_desc_volumeSliderLabel": "वॉल्यूम स्लाइडर के पास एक प्रतिशत लेबल जोड़ें",
     "feature_desc_volumeSliderSize": "वॉल्यूम स्लाइडर की चौड़ाई पिक्सेल में",
