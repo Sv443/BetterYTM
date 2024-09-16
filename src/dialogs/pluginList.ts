@@ -57,15 +57,30 @@ async function renderBody() {
     leftEl.classList.add("bytm-plugin-list-row-left");
     rowEl.appendChild(leftEl);
 
+    const headerWrapperEl = document.createElement("div");
+    headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
+    leftEl.appendChild(headerWrapperEl);
+
+    if(plugin.iconUrl) {
+      const iconEl = document.createElement("img");
+      iconEl.classList.add("bytm-plugin-list-row-icon");
+      iconEl.src = plugin.iconUrl;
+      iconEl.alt = "";
+      headerWrapperEl.appendChild(iconEl);
+    }
+
+    const headerEl = document.createElement("div");
+    headerEl.classList.add("bytm-plugin-list-row-header");
+    headerWrapperEl.appendChild(headerEl);
+
     const titleEl = document.createElement("div");
     titleEl.classList.add("bytm-plugin-list-row-title");
     titleEl.tabIndex = 0;
     titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
-    leftEl.appendChild(titleEl);
+    headerEl.appendChild(titleEl);
 
     const verEl = document.createElement("span");
     verEl.classList.add("bytm-plugin-list-row-version");
-    verEl.tabIndex = 0;
     verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
     titleEl.appendChild(verEl);
 
@@ -73,7 +88,7 @@ async function renderBody() {
     namespaceEl.classList.add("bytm-plugin-list-row-namespace");
     namespaceEl.tabIndex = 0;
     namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
-    leftEl.appendChild(namespaceEl);
+    headerEl.appendChild(namespaceEl);
 
     const descEl = document.createElement("p");
     descEl.classList.add("bytm-plugin-list-row-desc");
@@ -105,8 +120,7 @@ async function renderBody() {
       linkEl.tabIndex = 0;
       linkEl.target = "_blank";
       linkEl.rel = "noopener noreferrer";
-      linkEl.textContent = t(`plugin_link_type_${key}`);
-      linkEl.title = linkEl.ariaLabel = url;
+      linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
       linksList.appendChild(linkEl);
     }
 
