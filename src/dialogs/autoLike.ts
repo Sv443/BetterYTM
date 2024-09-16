@@ -129,8 +129,9 @@ async function renderBody() {
     const searchVal = searchbarEl.value.trim().toLowerCase();
     const rows = document.querySelectorAll<HTMLDivElement>(".bytm-auto-like-channel-row");
     for(const row of rows) {
-      const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase() ?? "";
-      row.classList.toggle("hidden", !name.includes(searchVal));
+      const name = row.querySelector(".bytm-auto-like-channel-name")?.textContent?.trim().toLowerCase().replace(/\s/g, "") ?? "";
+      const id = row.querySelector(".bytm-auto-like-channel-id")?.textContent?.trim() ?? "";
+      row.classList.toggle("hidden", !name.includes(searchVal) && !(id.startsWith("@") ? id : "").includes(searchVal));
     }
   });
 
