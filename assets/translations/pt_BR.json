@@ -154,6 +154,7 @@
     "auto_like": "Auto-curtir",
     "auto_like_button_tooltip_enabled": "Clique para desativar o auto-curtir. Shift-clique para abrir o diálogo de gerenciamento.",
     "auto_like_button_tooltip_disabled": "Clique para ativar o auto-curtir. Shift-clique para abrir o diálogo de gerenciamento.",
+    "auto_like_channel_toggle_tooltip": "Alternar auto-curtir para o canal %1",
     "add_auto_like_channel_id_prompt": "Digite o ID do usuário (@Nome / UC...) ou a URL completa do canal que você deseja auto-curtir.\nPressione \"cancelar\" para sair.",
     "add_auto_like_channel_invalid_id": "O ID do usuário inserido é inválido.\nCertifique-se de copiar a URL do canal inteira! Deve conter uma parte como \"channel/UC...\" ou \"/@...\"",
     "add_auto_like_channel_already_exists_prompt_new_name": "Um canal com esse ID já está na lista.\nVocê deseja alterar o nome?",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "Verde e vermelho",
     "vote_ratio_blue_gray": "Azul e cinza",
 
-    "votes_format_short": "Curto: %1",
-    "votes_format_long": "Completo: %1",
+    "votes_format_short": "Curto",
+    "votes_format_long": "Longo",
 
     "unit_entries-1": "entrada",
     "unit_entries-n": "entradas",
@@ -252,7 +253,7 @@
     "feature_desc_fixHdrIssues": "Corrigir problemas de renderização ao usar um GPU e monitor compatíveis com HDR",
     "feature_desc_showVotes": "Mostrar a quantidade de curtidas e descurtidas na música que está tocando atualmente",
     "feature_helptext_showVotes": "Este recurso é alimentado pelo Return YouTube Dislike e mostrará a quantidade aproximada de curtidas e descurtidas na música que está tocando atualmente.",
-    "feature_desc_numbersFormat": "Como as curtidas e descurtidas devem ser formatadas?",
+    "feature_desc_numbersFormat": "Como os números devem ser formatados?",
 
     "feature_desc_volumeSliderLabel": "Adicionar um rótulo de porcentagem ao lado do controle de volume",
     "feature_desc_volumeSliderSize": "A largura do controle deslizante de volume em pixels",

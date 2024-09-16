@@ -154,6 +154,7 @@
     "auto_like": "自动喜欢",
     "auto_like_button_tooltip_enabled": "点击以禁用自动喜欢。Shift + 单击以打开管理对话框。",
     "auto_like_button_tooltip_disabled": "点击以启用自动喜欢。Shift + 单击以打开管理对话框。",
+    "auto_like_channel_toggle_tooltip": "切换频道 %1 的自动喜欢",
     "add_auto_like_channel_id_prompt": "输入您要自动喜欢的频道的用户 ID（@Name / UC...）或完整 URL。\n按“取消”退出。",
     "add_auto_like_channel_invalid_id": "输入的用户 ID 无效。\n请确保您复制了整个频道 URL！它应该包含类似于“channel/UC...”或“/@...”的部分",
     "add_auto_like_channel_already_exists_prompt_new_name": "列表中已经存在具有该 ID 的频道。\n您是否要更改名称？",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "绿色和红色",
     "vote_ratio_blue_gray": "蓝色和灰色",
 
-    "votes_format_short": "简短：%1",
-    "votes_format_long": "完整：%1",
+    "votes_format_short": "短",
+    "votes_format_long": "长",
 
     "unit_entries-1": "条记录",
     "unit_entries-n": "条记录",
@@ -252,7 +253,7 @@
     "feature_desc_fixHdrIssues": "在 HDR 兼容的 GPU 和显示器上防止一些渲染问题",
     "feature_desc_showVotes": "显示当前播放的歌曲的喜欢和不喜欢的数量",
     "feature_helptext_showVotes": "此功能由 Return YouTube Dislike 提供支持，将显示当前播放的歌曲的大致喜欢和不喜欢的数量。",
-    "feature_desc_numbersFormat": "喜欢和不喜欢应该如何格式化？",
+    "feature_desc_numbersFormat": "数字应该如何格式化？",
 
     "feature_desc_volumeSliderLabel": "在音量滑块旁边添加百分比标签",
     "feature_desc_volumeSliderSize": "音量滑块的宽度（像素）",

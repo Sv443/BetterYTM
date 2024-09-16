@@ -154,6 +154,7 @@
     "auto_like": "Auto-aimer",
     "auto_like_button_tooltip_enabled": "Cliquez pour désactiver l'auto-aimer. Cliquez sur Maj pour ouvrir le dialogue de gestion.",
     "auto_like_button_tooltip_disabled": "Cliquez pour activer l'auto-aimer. Cliquez sur Maj pour ouvrir le dialogue de gestion.",
+    "auto_like_channel_toggle_tooltip": "Activer ou désactiver l'auto-aimer pour la chaîne %1",
     "add_auto_like_channel_id_prompt": "Entrez l'ID de l'utilisateur (@Nom / UC...) ou l'URL complète de la chaîne que vous souhaitez auto-aimer.\nAppuyez sur \"Annuler\" pour quitter.",
     "add_auto_like_channel_invalid_id": "L'ID de l'utilisateur saisi est invalide.\nAssurez-vous de copier l'intégralité de l'URL de la chaîne! Elle doit contenir une partie comme \"channel/UC...\" ou \"/@...\"",
     "add_auto_like_channel_already_exists_prompt_new_name": "Une chaîne avec cet ID est déjà dans la liste.\nVoulez-vous changer le nom?",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "Vert et rouge",
     "vote_ratio_blue_gray": "Bleu et gris",
 
-    "votes_format_short": "Court: %1",
-    "votes_format_long": "Complet: %1",
+    "votes_format_short": "Court",
+    "votes_format_long": "Long",
 
     "unit_entries-1": "entrée",
     "unit_entries-n": "entrées",
@@ -252,7 +253,7 @@
     "feature_desc_fixHdrIssues": "Prévenir certains problèmes de rendu lors de l'utilisation d'un GPU et d'un moniteur compatibles HDR",
     "feature_desc_showVotes": "Afficher le nombre de j'aime et de je n'aime pas sur la chanson en cours de lecture",
     "feature_helptext_showVotes": "Cette fonctionnalité est alimentée par Return YouTube Dislike et affichera le nombre approximatif de j'aime et de je n'aime pas sur la chanson en cours de lecture.",
-    "feature_desc_numbersFormat": "Comment les j'aime et les je n'aime pas doivent-ils être formatés?",
+    "feature_desc_numbersFormat": "Comment les nombres doivent-ils être formatés?",
 
     "feature_desc_volumeSliderLabel": "Ajouter une étiquette de pourcentage à côté du curseur de volume",
     "feature_desc_volumeSliderSize": "La largeur du curseur de volume en pixels",

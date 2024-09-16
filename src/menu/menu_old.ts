@@ -693,7 +693,7 @@ async function mountCfgMenu() {
 
               (customInputEl as HTMLButtonElement).disabled = true;
               customInputEl!.classList.add("bytm-busy");
-              customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
+              customInputEl!.textContent = hasKey(`feature_btn_${featKey}_running`) ? t(`feature_btn_${featKey}_running`) : t("trigger_btn_action_running");
 
               if(res instanceof Promise)
                 await res;
@@ -701,7 +701,7 @@ async function mountCfgMenu() {
               const finalize = () => {
                 (customInputEl as HTMLButtonElement).disabled = false;
                 customInputEl!.classList.remove("bytm-busy");
-                customInputEl!.textContent = customInputEl!.ariaLabel = customInputEl!.title = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
+                customInputEl!.textContent = hasKey(`feature_btn_${featKey}`) ? t(`feature_btn_${featKey}`) : t("trigger_btn_action");
               };
 
               // artificial timeout ftw

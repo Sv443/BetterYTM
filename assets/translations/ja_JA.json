@@ -154,6 +154,7 @@
     "auto_like": "自動的に好き",
     "auto_like_button_tooltip_enabled": "クリックして自動的に好きにするのを無効にします。シフトクリックで管理ダイアログを開きます。",
     "auto_like_button_tooltip_disabled": "クリックして自動的に好きにするのを有効にします。シフトクリックで管理ダイアログを開きます。",
+    "auto_like_channel_toggle_tooltip": "チャンネル %1 の自動的に好きにするを切り替える",
     "add_auto_like_channel_id_prompt": "自動的に好きなチャンネルのユーザー ID（@名前 / UC...）またはフル URL を入力してください。\n「キャンセル」を押して終了します。",
     "add_auto_like_channel_invalid_id": "入力されたユーザー ID が無効です。\nチャンネル URL 全体をコピーしたことを確認してください！「channel/UC...」または「/@...」のような部分が含まれている必要があります。",
     "add_auto_like_channel_already_exists_prompt_new_name": "その ID のチャンネルはすでにリストにあります。\n名前を変更しますか？",
@@ -186,8 +187,8 @@
     "vote_ratio_green_red": "緑と赤",
     "vote_ratio_blue_gray": "青と灰色",
 
-    "votes_format_short": "短い: %1",
-    "votes_format_long": "完全: %1",
+    "votes_format_short": "短い",
+    "votes_format_long": "長い",
 
     "unit_entries-1": "項目",
     "unit_entries-n": "項目",
@@ -251,7 +252,7 @@
     "feature_desc_fixHdrIssues": "HDR 互換 GPU とモニターを使用しているときの一部のレンダリング問題を防止する",
     "feature_desc_showVotes": "現在再生中の曲のいいねと嫌いの数を表示する",
     "feature_helptext_showVotes": "この機能は Return YouTube Dislike によって提供され、現在再生中の曲のいいねと嫌いの数をおおよその数で表示します。",
-    "feature_desc_numbersFormat": "いいねと嫌いの数をどのようにフォーマットするか",
+    "feature_desc_numbersFormat": "数字のフォーマット方法",
 
     "feature_desc_volumeSliderLabel": "音量スライダーの横にパーセンテージラベルを追加する",
     "feature_desc_volumeSliderSize": "音量スライダーの幅（ピクセル単位）",
