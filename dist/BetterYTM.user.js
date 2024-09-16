@@ -17,7 +17,7 @@
 // @license           AGPL-3.0-only
 // @author            Sv443
 // @copyright         Sv443 (https://github.com/Sv443)
-// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/logo/logo_dev_48.png
+// @icon              https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/logo/logo_dev_48.png
 // @match             https://music.youtube.com/*
 // @match             https://www.youtube.com/*
 // @run-at            document-start
@@ -33,56 +33,56 @@
 // @grant             GM.openInTab
 // @grant             unsafeWindow
 // @noframes
-// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/aboveQueueBtns.css
-// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/anchorImprovements.css
-// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/autoLike.css
-// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/dist/BetterYTM.css
-// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/fixHDR.css
-// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/fixPlayerPageTheming.css
-// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/fixSpacing.css
-// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/fixSponsorBlock.css
-// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/showVotes.css
-// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/style/volSliderSize.css
-// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/changelog.md
-// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/plus_circle_small.svg
-// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/alert.svg
-// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/arrow_down.svg
-// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/auto_like.svg
-// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/auto_like_enabled.svg
-// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/clear_list.svg
-// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/copy.svg
-// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/delete.svg
-// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/edit.svg
-// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/error.svg
-// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/beaker_small.svg
-// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/globe.svg
-// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/globe_small.svg
-// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/help.svg
-// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/image.svg
-// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/image_filled.svg
-// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/link.svg
-// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/lyrics.svg
-// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/help.svg
-// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/refresh.svg
-// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/skip_to.svg
-// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/spinner.svg
-// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/icons/upload.svg
-// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/close.png
-// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/external/discord.png
-// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/external/github.png
-// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/external/greasyfork.png
-// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/logo/logo_48.png
-// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/logo/logo_dev_48.png
-// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/images/external/openuserjs.png
-// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/de_DE.json
-// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/en_UK.json
-// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/en_US.json
-// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/es_ES.json
-// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/fr_FR.json
-// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/hi_IN.json
-// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/ja_JA.json
-// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/pt_BR.json
-// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/35491d4f/assets/translations/zh_CN.json
+// @resource          css-above_queue_btns       https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/aboveQueueBtns.css
+// @resource          css-anchor_improvements    https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/anchorImprovements.css
+// @resource          css-auto_like              https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/autoLike.css
+// @resource          css-bundle                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/dist/BetterYTM.css
+// @resource          css-fix_hdr                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/fixHDR.css
+// @resource          css-fix_playerpage_theming https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/fixPlayerPageTheming.css
+// @resource          css-fix_spacing            https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/fixSpacing.css
+// @resource          css-fix_sponsorblock       https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/fixSponsorBlock.css
+// @resource          css-show_votes             https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/showVotes.css
+// @resource          css-vol_slider_size        https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/style/volSliderSize.css
+// @resource          doc-changelog              https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/changelog.md
+// @resource          icon-advanced_mode         https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/plus_circle_small.svg
+// @resource          icon-alert                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/alert.svg
+// @resource          icon-arrow_down            https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/arrow_down.svg
+// @resource          icon-auto_like             https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/auto_like.svg
+// @resource          icon-auto_like_enabled     https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/auto_like_enabled.svg
+// @resource          icon-clear_list            https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/clear_list.svg
+// @resource          icon-copy                  https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/copy.svg
+// @resource          icon-delete                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/delete.svg
+// @resource          icon-edit                  https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/edit.svg
+// @resource          icon-error                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/error.svg
+// @resource          icon-experimental          https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/beaker_small.svg
+// @resource          icon-globe                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/globe.svg
+// @resource          icon-globe_small           https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/globe_small.svg
+// @resource          icon-help                  https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/help.svg
+// @resource          icon-image                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/image.svg
+// @resource          icon-image_filled          https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/image_filled.svg
+// @resource          icon-link                  https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/link.svg
+// @resource          icon-lyrics                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/lyrics.svg
+// @resource          icon-prompt                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/help.svg
+// @resource          icon-reload                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/refresh.svg
+// @resource          icon-skip_to               https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/skip_to.svg
+// @resource          icon-spinner               https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/spinner.svg
+// @resource          icon-upload                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/icons/upload.svg
+// @resource          img-close                  https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/close.png
+// @resource          img-discord                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/external/discord.png
+// @resource          img-github                 https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/external/github.png
+// @resource          img-greasyfork             https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/external/greasyfork.png
+// @resource          img-logo                   https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/logo/logo_48.png
+// @resource          img-logo_dev               https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/logo/logo_dev_48.png
+// @resource          img-openuserjs             https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/images/external/openuserjs.png
+// @resource          trans-de_DE                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/de_DE.json
+// @resource          trans-en_UK                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/en_UK.json
+// @resource          trans-en_US                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/en_US.json
+// @resource          trans-es_ES                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/es_ES.json
+// @resource          trans-fr_FR                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/fr_FR.json
+// @resource          trans-hi_IN                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/hi_IN.json
+// @resource          trans-ja_JA                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/ja_JA.json
+// @resource          trans-pt_BR                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/pt_BR.json
+// @resource          trans-zh_CN                https://raw.githubusercontent.com/Sv443/BetterYTM/dc5f6ea7/assets/translations/zh_CN.json
 // @require           https://cdn.jsdelivr.net/npm/@sv443-network/userutils@8.0.0/dist/index.global.js
 // @require           https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.umd.js
 // @require           https://cdn.jsdelivr.net/npm/compare-versions@6.1.0/lib/umd/index.js
@@ -138,7 +138,7 @@ var PluginIntent;
 const modeRaw = "development";
 const branchRaw = "develop";
 const hostRaw = "github";
-const buildNumberRaw = "35491d4f";
+const buildNumberRaw = "dc5f6ea7";
 /** The mode in which the script was built (production or development) */
 const mode = (modeRaw.match(/^#{{.+}}$/) ? "production" : modeRaw);
 /** The branch to use in various URLs that point to the GitHub repo */
@@ -2305,134 +2305,6 @@ async function renderBody$2() {
     contElem.appendChild(featDescElem);
     contElem.appendChild(helpTextElem);
     return contElem;
-}let pluginListDialog = null;
-/** Creates and/or returns the import dialog */
-async function getPluginListDialog() {
-    return pluginListDialog = pluginListDialog !== null && pluginListDialog !== void 0 ? pluginListDialog : new BytmDialog({
-        id: "plugin-list",
-        width: 800,
-        height: 600,
-        closeBtnEnabled: true,
-        closeOnBgClick: true,
-        closeOnEscPress: true,
-        destroyOnClose: true,
-        small: true,
-        renderHeader: renderHeader$1,
-        renderBody: renderBody$1,
-    });
-}
-async function renderHeader$1() {
-    const titleElem = document.createElement("h2");
-    titleElem.id = "bytm-plugin-list-title";
-    titleElem.classList.add("bytm-dialog-title");
-    titleElem.role = "heading";
-    titleElem.ariaLevel = "1";
-    titleElem.tabIndex = 0;
-    titleElem.textContent = t("plugin_list_title");
-    return titleElem;
-}
-async function renderBody$1() {
-    var _a;
-    const listContainerEl = document.createElement("div");
-    listContainerEl.id = "bytm-plugin-list-container";
-    const registeredPlugins = getRegisteredPlugins();
-    if (registeredPlugins.length === 0) {
-        const noPluginsEl = document.createElement("div");
-        noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
-        noPluginsEl.tabIndex = 0;
-        noPluginsEl.textContent = noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins");
-        listContainerEl.appendChild(noPluginsEl);
-        return listContainerEl;
-    }
-    for (const [, { def: { plugin, intents } }] of registeredPlugins) {
-        const rowEl = document.createElement("div");
-        rowEl.classList.add("bytm-plugin-list-row");
-        const leftEl = document.createElement("div");
-        leftEl.classList.add("bytm-plugin-list-row-left");
-        rowEl.appendChild(leftEl);
-        const headerWrapperEl = document.createElement("div");
-        headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
-        leftEl.appendChild(headerWrapperEl);
-        if (plugin.iconUrl) {
-            const iconEl = document.createElement("img");
-            iconEl.classList.add("bytm-plugin-list-row-icon");
-            iconEl.src = plugin.iconUrl;
-            iconEl.alt = "";
-            headerWrapperEl.appendChild(iconEl);
-        }
-        const headerEl = document.createElement("div");
-        headerEl.classList.add("bytm-plugin-list-row-header");
-        headerWrapperEl.appendChild(headerEl);
-        const titleEl = document.createElement("div");
-        titleEl.classList.add("bytm-plugin-list-row-title");
-        titleEl.tabIndex = 0;
-        titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
-        headerEl.appendChild(titleEl);
-        const verEl = document.createElement("span");
-        verEl.classList.add("bytm-plugin-list-row-version");
-        verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
-        titleEl.appendChild(verEl);
-        const namespaceEl = document.createElement("div");
-        namespaceEl.classList.add("bytm-plugin-list-row-namespace");
-        namespaceEl.tabIndex = 0;
-        namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
-        headerEl.appendChild(namespaceEl);
-        const descEl = document.createElement("p");
-        descEl.classList.add("bytm-plugin-list-row-desc");
-        descEl.tabIndex = 0;
-        descEl.textContent = descEl.title = descEl.ariaLabel = (_a = plugin.description[getLocale()]) !== null && _a !== void 0 ? _a : plugin.description.en_US;
-        leftEl.appendChild(descEl);
-        const linksList = document.createElement("div");
-        linksList.classList.add("bytm-plugin-list-row-links-list");
-        leftEl.appendChild(linksList);
-        let linkElCreated = false;
-        for (const key in plugin.homepage) {
-            const url = plugin.homepage[key];
-            if (!url)
-                continue;
-            if (linkElCreated) {
-                const bulletEl = document.createElement("span");
-                bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
-                bulletEl.textContent = "•";
-                linksList.appendChild(bulletEl);
-            }
-            linkElCreated = true;
-            const linkEl = document.createElement("a");
-            linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
-            linkEl.href = url;
-            linkEl.tabIndex = 0;
-            linkEl.target = "_blank";
-            linkEl.rel = "noopener noreferrer";
-            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
-            linksList.appendChild(linkEl);
-        }
-        const rightEl = document.createElement("div");
-        rightEl.classList.add("bytm-plugin-list-row-right");
-        rowEl.appendChild(rightEl);
-        const intentsAmount = Object.keys(PluginIntent).length / 2;
-        const intentsArr = typeof intents === "number" && intents > 0 ? (() => {
-            const arr = [];
-            for (let i = 0; i < intentsAmount; i++)
-                if (intents & (2 ** i))
-                    arr.push(2 ** i);
-            return arr;
-        })() : [];
-        const permissionsHeaderEl = document.createElement("div");
-        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
-        permissionsHeaderEl.tabIndex = 0;
-        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
-        rightEl.appendChild(permissionsHeaderEl);
-        for (const intent of intentsArr) {
-            const intentEl = document.createElement("div");
-            intentEl.classList.add("bytm-plugin-list-row-intent-item");
-            intentEl.tabIndex = 0;
-            intentEl.textContent = PluginIntent[intent];
-            intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
-            rightEl.appendChild(intentEl);
-        }
-        listContainerEl.appendChild(rowEl);
-    }
-    return listContainerEl;
 }var name = "betterytm";
 var userscriptName = "BetterYTM";
 var version = "2.0.0";
@@ -2587,7 +2459,136 @@ var packageJson = {
 	devDependencies: devDependencies,
 	browserslist: browserslist,
 	nodemonConfig: nodemonConfig
-};let verNotifDialog = null;
+};let pluginListDialog = null;
+/** Creates and/or returns the import dialog */
+async function getPluginListDialog() {
+    return pluginListDialog = pluginListDialog !== null && pluginListDialog !== void 0 ? pluginListDialog : new BytmDialog({
+        id: "plugin-list",
+        width: 800,
+        height: 600,
+        closeBtnEnabled: true,
+        closeOnBgClick: true,
+        closeOnEscPress: true,
+        destroyOnClose: true,
+        small: true,
+        renderHeader: renderHeader$1,
+        renderBody: renderBody$1,
+    });
+}
+async function renderHeader$1() {
+    const titleElem = document.createElement("h2");
+    titleElem.id = "bytm-plugin-list-title";
+    titleElem.classList.add("bytm-dialog-title");
+    titleElem.role = "heading";
+    titleElem.ariaLevel = "1";
+    titleElem.tabIndex = 0;
+    titleElem.textContent = t("plugin_list_title");
+    return titleElem;
+}
+async function renderBody$1() {
+    var _a;
+    const listContainerEl = document.createElement("div");
+    listContainerEl.id = "bytm-plugin-list-container";
+    const registeredPlugins = getRegisteredPlugins();
+    if (registeredPlugins.length === 0) {
+        const noPluginsEl = document.createElement("div");
+        noPluginsEl.classList.add("bytm-plugin-list-no-plugins");
+        noPluginsEl.tabIndex = 0;
+        setInnerHtml(noPluginsEl, t("plugin_list_no_plugins", `<a class="bytm-link" href="${packageJson.homepage}#plugins" target="_blank" rel="noopener noreferrer">`, "</a>"));
+        noPluginsEl.title = noPluginsEl.ariaLabel = t("plugin_list_no_plugins_tooltip");
+        listContainerEl.appendChild(noPluginsEl);
+        return listContainerEl;
+    }
+    for (const [, { def: { plugin, intents } }] of registeredPlugins) {
+        const rowEl = document.createElement("div");
+        rowEl.classList.add("bytm-plugin-list-row");
+        const leftEl = document.createElement("div");
+        leftEl.classList.add("bytm-plugin-list-row-left");
+        rowEl.appendChild(leftEl);
+        const headerWrapperEl = document.createElement("div");
+        headerWrapperEl.classList.add("bytm-plugin-list-row-header-wrapper");
+        leftEl.appendChild(headerWrapperEl);
+        if (plugin.iconUrl) {
+            const iconEl = document.createElement("img");
+            iconEl.classList.add("bytm-plugin-list-row-icon");
+            iconEl.src = plugin.iconUrl;
+            iconEl.alt = "";
+            headerWrapperEl.appendChild(iconEl);
+        }
+        const headerEl = document.createElement("div");
+        headerEl.classList.add("bytm-plugin-list-row-header");
+        headerWrapperEl.appendChild(headerEl);
+        const titleEl = document.createElement("div");
+        titleEl.classList.add("bytm-plugin-list-row-title");
+        titleEl.tabIndex = 0;
+        titleEl.textContent = titleEl.title = titleEl.ariaLabel = plugin.name;
+        headerEl.appendChild(titleEl);
+        const verEl = document.createElement("span");
+        verEl.classList.add("bytm-plugin-list-row-version");
+        verEl.textContent = verEl.title = verEl.ariaLabel = `v${plugin.version}`;
+        titleEl.appendChild(verEl);
+        const namespaceEl = document.createElement("div");
+        namespaceEl.classList.add("bytm-plugin-list-row-namespace");
+        namespaceEl.tabIndex = 0;
+        namespaceEl.textContent = namespaceEl.title = namespaceEl.ariaLabel = plugin.namespace;
+        headerEl.appendChild(namespaceEl);
+        const descEl = document.createElement("p");
+        descEl.classList.add("bytm-plugin-list-row-desc");
+        descEl.tabIndex = 0;
+        descEl.textContent = descEl.title = descEl.ariaLabel = (_a = plugin.description[getLocale()]) !== null && _a !== void 0 ? _a : plugin.description.en_US;
+        leftEl.appendChild(descEl);
+        const linksList = document.createElement("div");
+        linksList.classList.add("bytm-plugin-list-row-links-list");
+        leftEl.appendChild(linksList);
+        let linkElCreated = false;
+        for (const key in plugin.homepage) {
+            const url = plugin.homepage[key];
+            if (!url)
+                continue;
+            if (linkElCreated) {
+                const bulletEl = document.createElement("span");
+                bulletEl.classList.add("bytm-plugin-list-row-links-list-bullet");
+                bulletEl.textContent = "•";
+                linksList.appendChild(bulletEl);
+            }
+            linkElCreated = true;
+            const linkEl = document.createElement("a");
+            linkEl.classList.add("bytm-plugin-list-row-link", "bytm-link");
+            linkEl.href = url;
+            linkEl.tabIndex = 0;
+            linkEl.target = "_blank";
+            linkEl.rel = "noopener noreferrer";
+            linkEl.textContent = linkEl.title = linkEl.ariaLabel = t(`plugin_link_type_${key}`);
+            linksList.appendChild(linkEl);
+        }
+        const rightEl = document.createElement("div");
+        rightEl.classList.add("bytm-plugin-list-row-right");
+        rowEl.appendChild(rightEl);
+        const intentsAmount = Object.keys(PluginIntent).length / 2;
+        const intentsArr = typeof intents === "number" && intents > 0 ? (() => {
+            const arr = [];
+            for (let i = 0; i < intentsAmount; i++)
+                if (intents & (2 ** i))
+                    arr.push(2 ** i);
+            return arr;
+        })() : [];
+        const permissionsHeaderEl = document.createElement("div");
+        permissionsHeaderEl.classList.add("bytm-plugin-list-row-permissions-header");
+        permissionsHeaderEl.tabIndex = 0;
+        permissionsHeaderEl.textContent = permissionsHeaderEl.title = permissionsHeaderEl.ariaLabel = t("plugin_list_permissions_header");
+        rightEl.appendChild(permissionsHeaderEl);
+        for (const intent of intentsArr) {
+            const intentEl = document.createElement("div");
+            intentEl.classList.add("bytm-plugin-list-row-intent-item");
+            intentEl.tabIndex = 0;
+            intentEl.textContent = PluginIntent[intent];
+            intentEl.title = intentEl.ariaLabel = t(`plugin_intent_description_${PluginIntent[intent]}`);
+            rightEl.appendChild(intentEl);
+        }
+        listContainerEl.appendChild(rowEl);
+    }
+    return listContainerEl;
+}let verNotifDialog = null;
 /** Creates and/or returns the dialog to be shown when a new version is available */
 async function getVersionNotifDialog({ latestTag, }) {
     if (!verNotifDialog) {
