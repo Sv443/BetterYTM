@@ -721,7 +721,7 @@ export const featInfo = {
   },
   numbersFormat: {
     type: "select",
-    category: "layout",
+    category: "general",
     options: () => [
       { value: "long", label: `${formatNumber(12_345_678, "long")} (${t("votes_format_long")})` },
       { value: "short", label: `${formatNumber(12_345_678, "short")} (${t("votes_format_short")})` },
