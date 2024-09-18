@@ -6,7 +6,14 @@ import locales from "../../assets/locales.json" with { type: "json" };
 import pluginsJson from "../../assets/plugins.json" with { type: "json" };
 import pkgJson from "../../package.json" with { type: "json" };
 
-/** Map of section name and an async function that returns the new content for that section */
+/**
+ * Map of section name and an async function that returns the new content for that section.  
+ * The syntax of the section is as follows:
+ * ```md
+ * <!-- <{{SECTION_NAME}}> -->
+ * (generated content is inserted here)
+ * <!-- </{{SECTION_NAME}}> -->
+ */
 const changes = {
   HEADER: genHeader,
   PLUGINS: genPluginList,
@@ -15,11 +22,10 @@ const changes = {
 const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
 const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
 
-
-
 const pluginList = pluginsJson as PluginDef[];
-void ["TODO:", pluginList];
 
+
+/** Modifies the readme files with content inserted into the sections defined in {@linkcode changes} */
 async function run() {
   const readmeFiles = [
     {
@@ -63,7 +69,7 @@ async function modifyReadme(readmeLines: string[], changes: Record<string, () =>
     // find line number that matches endRegex
     const endLine = lines.findIndex((line) => endRegex.test(line));
     if(endLine === -1)
-      throw new Error(`No end tag found for ${name.toUpperCase()}`);
+      throw new Error(`No end tag found for section <{{${name.toUpperCase()}}}>`);
 
     // replace the content between the two lines
     const newContent = await getContent();
@@ -95,6 +101,8 @@ ${langStr}\
 }
 
 async function genPluginList() {
+  void ["TODO:", pluginList];
+
   return `\
 <sup>
 
