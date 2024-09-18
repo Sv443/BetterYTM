@@ -12,16 +12,8 @@ const changes = {
   PLUGINS: genPluginList,
 };
 
-/** Get the path and content of all README files that need sections to be regenerated */
-async function getReadmeFiles() {
-  const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
-  const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
-
-  return [
-    { path: readmePath, content: await readFile(readmePath, "utf-8") },
-    { path: readmeSummaryPath, content: await readFile(readmeSummaryPath, "utf-8") },
-  ];
-}
+const readmePath = join(fileURLToPath(import.meta.url), "../../../README.md");
+const readmeSummaryPath = join(fileURLToPath(import.meta.url), "../../../README-summary.md");
 
 
 
@@ -29,10 +21,19 @@ const pluginList = pluginsJson as PluginDef[];
 void ["TODO:", pluginList];
 
 async function run() {
-  const readmeFiles = await getReadmeFiles();
+  const readmeFiles = [
+    {
+      path: readmePath,
+      content: await readFile(readmePath, "utf-8"),
+    },
+    {
+      path: readmeSummaryPath,
+      content: await readFile(readmeSummaryPath, "utf-8"),
+    },
+  ];
 
   for(const { path, content } of readmeFiles) {
-    console.info(`- Generating '${path}'`);
+    console.info(`Generating '${path}'...`);
 
     const result = await modifyReadme(content.split(/\r?\n/gm), changes);
 
@@ -44,6 +45,7 @@ async function run() {
   setImmediate(() => process.exit(0));
 }
 
+/** Modify the given lines with the passed {@linkcode changes} */
 async function modifyReadme(readmeLines: string[], changes: Record<string, () => Promise<string>>) {
   let lines = [...readmeLines];
   let retLines = [] as string[];
@@ -83,6 +85,7 @@ async function genHeader() {
     .reduce((acc, { nameEnglish, emoji }, i) => {
       return `${acc}${i > 0 ? ", " : ""}${emoji}&nbsp;${nameEnglish}`;
     }, "");
+
   return `\
 <h1><img src="https://raw.githubusercontent.com/Sv443/BetterYTM/main/assets/images/logo/logo_128.png" width="96" height="96" /><br>${pkgJson.userscriptName}</h1>
 
@@ -93,8 +96,13 @@ ${langStr}\
 
 async function genPluginList() {
   return `\
+<sup>
+
+Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin.
+
+</sup>
+
 Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
-Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.\
 `;
 }
 
