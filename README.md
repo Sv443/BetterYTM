@@ -87,12 +87,17 @@ To find out more about these integrations, [click here](./src/dev/integrations.m
 
 ## Plugins:
 BetterYTM supports plugin userscripts that can be installed in parallel and can make use of BetterYTM's pre-existing API.  
-Check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start.  
   
 <!-- <{{PLUGINS}}> -->
 <!-- THIS IS GENERATED CONTENT - DO NOT MODIFY DIRECTLY -->
+<sup>
+
+Refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information or check out the [official plugin template](https://github.com/Sv443/BetterYTM-Plugin-Template) for a quick start on creating a plugin.
+
+</sup>
+
 Currently there are no available plugins, but you can [submit an issue using the plugin submission template](https://github.com/Sv443/BetterYTM/issues/new/choose) so it will be listed here.  
-Also refer to the [plugin creation guide](./contributing.md#developing-a-plugin-that-interfaces-with-betterytm) for more information on how to use the API to create a plugin.
+
 <!-- END OF GENERATED CONTENT -->
 <!-- </{{PLUGINS}}> -->
 
