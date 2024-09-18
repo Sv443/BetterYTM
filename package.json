@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "concurrently \"nodemon --exec pnpm run build-private-dev\" \"pnpm run serve\"",
     "serve": "pnpm run node-ts ./src/tools/serve.ts",
-    "lint": "tsc --noEmit && eslint .",
+    "lint": "eslint . && tsc --noEmit",
     "build": "rollup -c",
     "build-private-dev": "rollup -c --config-mode development --config-host github --config-branch develop --config-assetSource=local",
     "build-dev": "rollup -c --config-mode development --config-host github --config-branch develop",

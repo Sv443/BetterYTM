@@ -16,7 +16,8 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-export default [
+/** @type {import("eslint").Linter.Config} */
+const config = [
   {
     ignores: [
       "**/*.min.*",
@@ -44,7 +45,6 @@ export default [
         GM: "readonly",
         unsafeWindow: "writable",
       },
-
       parser: tsParser,
       ecmaVersion: "latest",
       sourceType: "module",
@@ -99,3 +99,5 @@ export default [
     },
   },
 ];
+
+export default config;
